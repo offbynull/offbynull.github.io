@@ -1236,6 +1236,10 @@ using BasicGraph = DirectedGraph::Graph<std::string, std::map<std::string, std::
 BasicGraph removeLimbs(const BasicGraph &g);
 ```
 
+```{seealso}
+Core Language/Templates/Type Aliasing_TOPIC
+```
+
 ### Constant
 
 `{bm} /(Core Language\/Variables\/Constant)_TOPIC/`
@@ -4539,6 +4543,45 @@ template<>
 bool sum(bool a, bool b) {  // type removed after name: "sum<bool>" to just "sum"
     return a | b;
 }
+```
+
+### Type Aliasing
+
+`{bm} /(Core Language\/Templates\/Type Aliasing)_TOPIC/`
+
+```{prereq}
+Core Language/Variables/Aliasing_TOPIC
+```
+
+Similar to classes and functions, type aliasing can be templated. A `template` declaration is needed before the the type alias itself.
+
+```c++
+template<typename T>
+using V = std::vector<T>;
+
+// usage
+V<int> my_vec { 1, 2, 3 };
+```
+
+In certain cases, when using a templated type within a templated type alias, the keywords `typename` and `template` may be required within the type alias declaration itself.
+
+```c++
+struct Option {
+    template<typename T>
+    using Vector = std::vector<T>;
+};
+
+template<typename O, typename T>
+using Vector = typename O::template Vector<T>;
+
+// usage
+Vector<Option, int> v { 1, 2, 3 };
+```
+
+The rules for this are complex, but essentially in certain cases the compiler can't decide how to parse a templated type alias and the keywords `typename` and `template` act as disambiguation. The compiler will usually generate an error telling you that `typename` is needed, but may not warn for `template` and essentially interpret it as something other than what the programmer intended.
+
+```{note}
+For a full breakdown, see [here](https://stackoverflow.com/a/613132).
 ```
 
 ## Unions
@@ -9909,6 +9952,10 @@ Any object that has a particular set of type traits is a range. Those type trait
  * contiguous range has usage patterns similar to contiguous iterator.
 
 One major difference between iterators and ranges is that a range's `end()` function doesn't necessarily have to return the same type as its `begin()` function. It can instead return a sentinel type that marks the end of the range. If a range does return the same type for both `begin()` and `end()`, it's referred to as a common range. Containers in the C++ standard library are all of common ranges. However, once a container gets piped into an operation, it may end up not being a common range.
+
+```{note}
+See `std::views::common()` below. It wraps a view and makes it so that `begin()` and `end()` have a common return type.
+```
 
 | container                 | range type          |
 |---------------------------|---------------------|

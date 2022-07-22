@@ -108,6 +108,7 @@
 <li><a href="#H_Concepts">Concepts</a></li>
 <li><a href="#H1_Variadic">Variadic</a></li>
 <li><a href="#H_Specialization">Specialization</a></li>
+<li><a href="#H_Type%20Aliasing">Type Aliasing</a></li>
 </ul>
 <li><a href="#H_Unions">Unions</a></li>
 <li><a href="#H_Namespaces">Namespaces</a></li>
@@ -1892,6 +1893,12 @@ IntegerButWithNewName z {x + y}; <span class="hljs-comment">// equivalent to:  i
 
 <span class="hljs-function">BasicGraph <span class="hljs-title">removeLimbs</span><span class="hljs-params">(<span class="hljs-keyword">const</span> BasicGraph &amp;g)</span></span>;
 </code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FType%20Aliasing)_TOPIC%2F">Core Language/Templates/Type Aliasing</a></li>
+</ul>
+</div>
 <a name="H_Constant"></a><h3>Constant</h3>
 <p><a name="BM_(Core%20Language%5C%2FVariables%2FConstant)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -4812,6 +4819,38 @@ T <span class="hljs-title">sum</span><span class="hljs-params">(T a, T b)</span>
     <span class="hljs-keyword">return</span> a | b;
 }
 </code></pre>
+<a name="H_Type%20Aliasing"></a><h3>Type Aliasing</h3>
+<p><a name="BM_(Core%20Language%5C%2FTemplates%2FType%20Aliasing)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FVariables%2FAliasing)_TOPIC%2F">Core Language/Variables/Aliasing</a></li>
+</ul>
+</div>
+<p>Similar to <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es and functions, <a href="#BM_(type%20alias)%2Fi">type alias</a>ing can be <a href="#BM_(template)%2Fi">template</a>d. A <code>template</code> declaration is needed before the the <a href="#BM_(type%20alias)%2Fi">type alias</a> itself.</p>
+<pre class="hljs"><code><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-keyword">using</span> V = std::vector&lt;T&gt;;
+
+<span class="hljs-comment">// usage</span>
+V&lt;<span class="hljs-type">int</span>&gt; my_vec { <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> };
+</code></pre>
+<p>In certain cases, when using a <a href="#BM_(template)%2Fi">template</a>d type within a <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(type%20alias)%2Fi">type alias</a>, the keywords <code>typename</code> and <code>template</code> may be required within the <a href="#BM_(type%20alias)%2Fi">type alias</a> declaration itself.</p>
+<pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Option</span> {
+    <span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+    <span class="hljs-keyword">using</span> Vector = std::vector&lt;T&gt;;
+};
+
+<span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> O, <span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-keyword">using</span> Vector = <span class="hljs-keyword">typename</span> O::<span class="hljs-keyword">template</span> Vector&lt;T&gt;;
+
+<span class="hljs-comment">// usage</span>
+Vector&lt;Option, <span class="hljs-type">int</span>&gt; v { <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> };
+</code></pre>
+<p>The rules for this are complex, but essentially in certain cases the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> can't decide how to parse a <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(type%20alias)%2Fi">type alias</a> and the keywords <code>typename</code> and <code>template</code> act as disambiguation. The <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> will usually generate an error telling you that <code>typename</code> is needed, but may not warn for <code>template</code> and essentially interpret it as something other than what the programmer intended.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>For a full breakdown, see <a href="https://stackoverflow.com/a/613132">here</a>.</p>
+</div>
 <a name="H_Unions"></a><h2>Unions</h2>
 <p><a name="BM_(Core%20Language%5C%2FUnions)_TOPIC%2F"></a><strong></strong></p>
 <p>C++ <a href="#BM_(union)%2Fi">union</a>s are a set of variables that point to the same underlying memory. Each <a href="#BM_(union)%2Fi">union</a> takes up only as much memory as its largest <a href="#BM_%5Cb(member)%2Fi">member</a>.</p>
@@ -9715,6 +9754,10 @@ std::vector&lt;<span class="hljs-type">int</span>&gt; v{ <span class="hljs-numbe
 <li>contiguous range has usage patterns similar to contiguous <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a>.</li>
 </ul>
 <p>One major difference between <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a>s and ranges is that a range's <code>end()</code> function doesn't necessarily have to return the same type as its <code>begin()</code> function. It can instead return a sentinel type that marks the end of the range. If a range does return the same type for both <code>begin()</code> and <code>end()</code>, it's referred to as a common range. Containers in the C++ standard library are all of common ranges. However, once a container gets piped into an operation, it may end up not being a common range.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>See <code>std::views::common()</code> below. It wraps a view and makes it so that <code>begin()</code> and <code>end()</code> have a common return type.</p>
+</div>
 <table>
 <thead>
 <tr>
