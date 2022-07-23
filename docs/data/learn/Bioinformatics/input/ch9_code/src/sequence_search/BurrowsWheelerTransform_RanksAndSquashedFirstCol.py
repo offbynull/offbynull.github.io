@@ -1,4 +1,5 @@
 import functools
+from bisect import bisect_left
 from collections import Counter
 
 from helpers.Utils import rotate_right
@@ -26,26 +27,23 @@ def cmp(a: str, b: str, end_marker: str):
 
 
 class BWTRecord:
-    __slots__ = ['first_ch', 'first_ch_idx', 'last_ch', 'last_ch_idx', 'last_to_first_idx']
+    __slots__ = ['last_ch', 'last_ch_idx']
 
-    def __init__(self, first_ch: str, first_ch_idx: int, last_ch: str, last_ch_idx: int):
-        self.first_ch = first_ch
-        self.first_ch_idx = first_ch_idx
+    def __init__(self, last_ch: str, last_ch_idx: int):
         self.last_ch = last_ch
         self.last_ch_idx = last_ch_idx
-        self.last_to_first_idx = -1
 
     def __str__(self):
-        return str((self.first_ch + str(self.first_ch_idx), self.last_ch + str(self.last_ch_idx), self.last_to_first_idx))
+        return f'{self.last_ch}{self.last_ch_idx}'
 
     def __repr__(self):
         return str(self)
 
 
-def to_bwt(
+def to_bwt_and_first_occurrences(
         seq: str,
         end_marker: str
-) -> list[BWTRecord]:
+) -> tuple[list[BWTRecord], dict[str, int]]:
     assert end_marker == seq[-1], f'{seq} missing end marker'
     assert end_marker not in seq[:-1], f'{seq} has end marker but not at the end'
     rotations_with_counts = zip(
@@ -56,26 +54,21 @@ def to_bwt(
         rotations_with_counts,
         key=functools.cmp_to_key(lambda a, b: cmp(a[0], b[0], end_marker))
     )
-    first_ch_counter = Counter()
+    last_first_ch = None
     last_ch_counter = Counter()
-    ret = []
+    bwt_array = []
+    bwt_first_occurrence_map = {}
     for i, (s, idx) in enumerate(rotations_with_counts_sorted):
         first_ch = s[0]
-        first_ch_counter[first_ch] += 1
-        first_ch_idx = first_ch_counter[first_ch]
         last_ch = s[-1]
         last_ch_counter[last_ch] += 1
         last_ch_idx = last_ch_counter[last_ch]
-        record = BWTRecord(first_ch, first_ch_idx, last_ch, last_ch_idx)
-        ret.append(record)
-    for i, record_a in enumerate(ret):
-        last = record_a.last_ch, record_a.last_ch_idx
-        for j, record_b in enumerate(ret):
-            first = record_b.first_ch, record_b.first_ch_idx
-            if last == first:
-                record_a.last_to_first_idx = j
-                break
-    return ret
+        bwt_record = BWTRecord(last_ch, last_ch_idx)
+        bwt_array.append(bwt_record)
+        if first_ch != last_first_ch:
+            bwt_first_occurrence_map[first_ch] = i
+            last_first_ch = first_ch
+    return bwt_array, bwt_first_occurrence_map
 
 
 def to_counts(
@@ -87,17 +80,6 @@ def to_counts(
         counter = ret[-1].copy()
         counter[ch] += 1
         ret.append(counter)
-    return ret
-
-
-def to_first_col_index(
-        bwt_array: list[BWTRecord]
-) -> dict[str, int]:
-    ret = {}
-    for i, record in enumerate(bwt_array):
-        ch = record.first_ch
-        if ch not in ret:
-            ret[ch] = i
     return ret
 # MARKDOWN_BUILD
 
@@ -128,30 +110,29 @@ def to_first_col_index(
 # MARKDOWN_TEST
 def find(
         bwt_array: list[BWTRecord],
-        bwt_counters: list[Counter],
-        bwt_first_ch_index: dict[str, int],
+        bwt_first_occurrence_map: dict[str, int],
+        bwt_counts: list[Counter],
         test: str
 ) -> int:
     top = 0
     bottom = len(bwt_array) - 1
     for ch in reversed(test):
-        ch_top = bwt_counters[top][ch] + 1
-        ch_bottom = bwt_counters[bottom + 1][ch]
-        if ch_bottom < ch_top not in bwt_counters:
+        ch_top = bwt_counts[top][ch] + 1
+        ch_bottom = bwt_counts[bottom + 1][ch]
+        if ch_bottom < ch_top not in bwt_counts:
             return 0
-        top = bwt_first_ch_index[ch] + ch_top - 1
-        bottom = bwt_first_ch_index[ch] + ch_bottom - 1
+        top = bwt_first_occurrence_map[ch] + ch_top - 1
+        bottom = bwt_first_occurrence_map[ch] + ch_bottom - 1
     return (bottom - top) + 1
 # MARKDOWN_TEST
 
 
-bwt_array = to_bwt(
+bwt_array, bwt_first_occurrence_map = to_bwt_and_first_occurrences(
     'panamabananas$',
     '$'
 )
 bwt_counters = to_counts(bwt_array)
-bwt_first_ch_index = to_first_col_index(bwt_array)
 for e in bwt_array:
     print(f'{e}')
-print(f'{find(bwt_array, bwt_counters, bwt_first_ch_index, "ana")}')
-print(f'{find(bwt_array, bwt_counters, bwt_first_ch_index, "bna")}')
+print(f'{find(bwt_array, bwt_first_occurrence_map, bwt_counters, "ana")}')
+print(f'{find(bwt_array, bwt_first_occurrence_map, bwt_counters, "bna")}')
