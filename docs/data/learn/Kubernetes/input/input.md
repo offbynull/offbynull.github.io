@@ -604,6 +604,70 @@ spec:
 Why not use ConfigMaps for secrets? Apparently there's some extra work going on to make sure this secrets volume is secure / transient.
 ```
 
+### Service Discovery
+
+`{bm} /(Pods\/Service Discovery)_TOPIC/`
+
+```{prereq}
+Resources/Services_TOPIC
+```
+
+
+#### Environment Variables
+
+`{bm} /(Pods\/Service Discovery\/Environment Variables)_TOPIC/`
+
+When a pod launches, all IP and port combinations for services within the same namespace are stored as environment variables which the container(s) within the pod can query. A service's  The environment variable names are in the format `{SVCNAME}_SERVICE_HOST` / `{SVCNAME}_SERVICE_PORT`, where `{SVCNAME}` is the service converted to uppercase and dashes swapped with underscores. For example, two services `service-a` and `service-b` as environment variables:
+
+```
+SERVICE_A_SERVICE_HOST=10.111.240.1
+SERVICE_A_SERVICE_PORT=443
+SERVICE_B_SERVICE_HOST=10.111.249.153
+SERVICE_B_SERVICE_PORT=80
+```
+
+If a service exposes multiple ports, only the first port goes in `{SVCNAME}_SERVICE_PORT`. When multiple ports are present, additional environment variables get created in the format  `{SVCNAME}_SERVICE_PORT_{PORTNAME}`, where `{PORTNAME}` is the name of service's port modified the same way that `{SVCNAME}` is. For example, the service `service-c` exposes two ports named `web-1` and `metrics-1`:
+
+```
+SERVICE_A_SERVICE_HOST=10.111.240.1
+SERVICE_A_SERVICE_PORT=443
+SERVICE_A_SERVICE_PORT_WEB_1=443
+SERVICE_A_SERVICE_PORT_METRICS_1=8080
+```
+
+```{note}
+Looking at the k8s code, it looks like for a service port needs to be named for it as an environment variable. Service ports that don't have a name won't show up as environment variables. See [here](https://github.com/kubernetes/kubernetes/blob/master/pkg/kubelet/envvars/envvars.go#L51-L55).
+```
+
+Aside from the only listing services within the same namespace and potential naming conflicts that happen during name normalization (uppercase-ing and dash to underscore -- e.g. `My-name` and `my_namE` both end up as `MY_NAME`), another problem with using environment variables for service discovery is that the services required by a pod need to be active before the pod starts. The reason for this is that environment variables can only be set prior to the launch of a container process. If a process launches and a service comes up afterwards, that process's environment variables won't include that service's host and port.
+
+#### DNS
+
+`{bm} /(Pods\/Service Discovery\/DNS)_TOPIC/`
+
+```{prereq}
+Resources/Pods/Service Discovery/DNS_TOPIC
+```
+
+Kubernetes provides a DNS server which is used for service discovery. Each pod in the cluster is automatically configured to use this DNS server and simply has to query it for a service's name. If the queried service is present in the cluster, the DNS server will return the stable IP for the service.
+
+```{note}
+The DNS server runs as an internal Kubernetes application called 'coredns` or `kube-dns`. This is usually in the `kube-system` namespace. Recall that the IP of a service is stable for the entire lifetime of the service, meaning that service restarts and DNS caching by the application and / or OS isn't an issue here.
+```
+
+The general domain query format is `{SVCNAME}.{NAMESPACE}.svc.{CLUSTERDOMAIN}`, where ...
+
+ * `{SVCNAME}` is the name of the service.
+ * `{NAMESPACE}` is the name of the namespace that `{SVCNAME}` is in.
+ * `{CLUSTERDOMAIN}` is the cluster domain suffix of the cluster that `{SVCNAME}` and `{NAMESPACE}` are in.
+
+For example, to query for the IP of service `serviceA` in namespace `ns1` within a cluster with the domain name suffix `cluster.local`, the domain name to query is `serviceA.ns1.svc.cluster.local`. Alternatively, if the pod doing the querying is ...
+
+ * within the same cluster, the cluster domain suffix can be omitted: `serviceA.ns1`.
+ * within the same cluster and namespace, both the namespace and the cluster domain suffix can be omitted: `serviceA`.
+
+Compared to environment variable service discovery, using DNS to discover services won't include information about ports.
+
 ## Nodes
 
 `{bm} /(Resources\/Nodes)_TOPIC/i`
@@ -974,11 +1038,6 @@ volumeBindingMode: WaitForFirstConsumer
 
 `{bm} /(Resources\/Services)_TOPIC/i`
 
-```{prereq}
-Resources/Pods_TOPIC
-Resources/Nodes_TOPIC
-```
-
 Services are a discovery and load balancing mechanism. A service exposes a set of pods under a single fixed unified hostname and IP, routing traffic to that set by load balancing incoming requests across the set. Any external application would need to use a service's hostname because the IP / host of the single pod instances aren't fixed, exposed, or known. That is, pods are transient and aren't guaranteed to always reside on the same node. As they shutdown, come up, restart, move between nodes, etc.., there's no implicit mechanism that requestors can use to route their requests accordingly.
 
 A service fixes this my internally tracking such changes and providing a single unified point of access.
@@ -1014,7 +1073,8 @@ spec:
   selector:
     app: MyApp
   ports:
-    - protocol: TCP
+    - name: webapp-port
+      protocol: TCP
       port: 80
       targetPort: 9376
 ```
@@ -1025,7 +1085,7 @@ spec:
 Introduction/Labels_TOPIC
 ```
 
-A service determines which pods it should route traffic to via the `spec/selector` manifest path. This manifest path contains key-value mappings, where these key-value mappings are labels that a pod needs before being considered for this service's traffic ...
+A service determines which pods it should route traffic to via the `spec.selector` manifest path. This manifest path contains key-value mappings, where these key-value mappings are labels that a pod needs before being considered for this service's traffic ...
 
 ```yaml
 spec:
@@ -1041,18 +1101,75 @@ spec:
 Resources/Pods/Ports_TOPIC
 ```
 
-Requests are load balanced across the determined set of pods using ports defined via the `spec/ports` manifest path.
+A service can listen on multiple ports, controlled via the `spec.ports` manifest path.
 
 ```yaml
 spec:
   ports:
-    - protocol: TCP
+    - name: webapp-port
+      protocol: TCP
       port: 80
       targetPort: 9376
+    - name: api-port
+      protocol: TCP
+      port: 8080
+      targetPort: 1111
     ...
 ```
 
-`port` defines the port that the service listens on, while `targetPort` is the port requests are forwarded to on the pod. If `targetPort` is omitted, the value of `port` is assigned to it automatically.
+ * `name` is a friendly name to identify the port (optional)
+ * `protocol` is either `TCP` or `UDP` (defaults to `TCP`).
+ * `port` is the port that the service listens on.
+ * `targetPort` is the port that requests are forwarded to on the pod  (defaults to value set for `port`).
+
+```{note}
+Not having a name makes it more difficult for pods to discover a service. Discussed further in the service discovery section.
+```
+
+The example above forwards requests on two ports. Requests on port ...
+
+ * 80 of the service get forwarded to port 9376 of a pod assigned to that service.
+ * 8080 of the service get forwarded to port 1111 of a pod assigned to that service.
+
+Ports may also reference the names of ports in a pod manifest. For example, imagine the pod manifest for a pod assigned to a service provides names for its ports.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my_pod
+spec:
+  containers:
+    - ...
+      ports:
+        - containerPort: 8080
+          name: my-http-port
+          protocol: TCP
+      ...
+```
+
+In the service for that targets this pod manifest, you can use `my_http_port` as a `targetPort`.
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: MyApp
+  ports:
+    - name: webapp-port
+      protocol: TCP
+      port: 80
+      targetPort: my-http-port
+```
+
+```{note}
+A service decides which pods it routes to based key-value pairs in on `spec.selector`. What happens if the key-value pairs identify a set of pod instances where some of those instances don't have a port named `my-http-port`. For example, a service may be forwarding to two applications rather than a single application which just could be sharing the same set of key-value labels (pod instances are heterogenous).
+
+Maybe this isn't possible with Kubernetes?
+```
 
 ### Health
 
@@ -1083,9 +1200,34 @@ These probes are defined directly in the pod manifest.
 Internally, an EndPoints object is used to track pods. When you create a service, Kubernetes automatically creates an accompanying EndPoints object that the service makes use of.
 ```
 
+### Session Affinity
+
+How a service decides to forward incoming requests to the pod instances assigned to it is controlled via `spec.sessionAffinity` manifest path. Assigning a value of ...
+
+ * `None` forwards each request to a randomly selected pod instance (default behaviour).
+ * `ClientIP` forwards each request originating from the same IP to the same pod instance.
+
+When using `ClientIP`, you may also provide a maximum session "sticky time" via the manifest path `spec.sessionAffinityConfig.clientIP.timeoutSeconds`. By default, this value is set to 108300 (around 3 hours).
+
+```yaml
+spec:
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 10000
+```
+
+```{note}
+When using `ClientIP`? What happens when the service runs out memory to track IPs? LRU algorithm to decide which to keep / discard?
+```
+
+```{note}
+The book mentions that because services work on the TCP/UDP level and not at HTTP/HTTPS level, forwarding requests by tracking session cookies isn't a thing.
+```
+
 ### Exposure
 
-The service type defines where and how a service gets exposed, controlled via the `spec.type` manifest pth. For example, a service may only be accessible within the cluster, to specific parts of the cluster, to an external network, to the Internet, etc...
+The service type defines where and how a service gets exposed, controlled via the `spec.type` manifest path. For example, a service may only be accessible within the cluster, to specific parts of the cluster, to an external network, to the Internet, etc...
 
 Services of type `ClusterIP` are only accessible from within the cluster. The hostname for a `ClusterIP` service is broken down as follows: NAME.NAMESPACE.svc.CLUSTER
 
@@ -1157,6 +1299,40 @@ status:
     ingress:
       ip: 192.0.5.6
 ```
+
+### Custom Endpoints
+
+FILL ME IN -- FROM SECTION 5.2.1
+
+FILL ME IN -- FROM SECTION 5.2.1
+
+FILL ME IN -- FROM SECTION 5.2.1
+
+FILL ME IN -- FROM SECTION 5.2.1
+
+FILL ME IN -- FROM SECTION 5.2.1
+
+FILL ME IN -- FROM SECTION 5.2.1
+
+FILL ME IN -- FROM SECTION 5.2.1
+
+FILL ME IN -- FROM SECTION 5.2.1
+
+FILL ME IN -- FROM SECTION 5.2.1
+
+FILL ME IN -- FROM SECTION 5.2.1
+
+FILL ME IN -- FROM SECTION 5.2.1
+
+FILL ME IN -- FROM SECTION 5.2.1
+
+FILL ME IN -- FROM SECTION 5.2.1
+
+FILL ME IN -- FROM SECTION 5.2.1
+
+FILL ME IN -- FROM SECTION 5.2.1
+
+FILL ME IN -- FROM SECTION 5.2.1
 
 ## Replica Sets
 
@@ -1594,6 +1770,26 @@ When referencing objects, the ...
 
  * `kubectl top nodes` - view node resource usages.
  * `kubectl top pods` - view pod resource usages.
+
+# Amazon
+
+The managed Kubernetes service on Amazon Web Services (AWS) is called Elastic Kubernetes Service (EKS). The quickest way to get an EKS instance running on AWS is to use the third-party `eksctl` tool, which uses AWS's CloudFormation service to set up all required networking, VMs, roles, etc.. to get EKS up and running. Assuming you're working in AWS region `us-east-2` and you want your cluster to be called `my-cluster`, the command to create a new cluster is ...
+
+```
+eksctl create cluster --name my-cluster --region us-east-2 --fargate
+
+eksctl create cluster --name my-cluster --region us-east-2 --fargate
+
+
+
+```
+
+
+```{note}
+Original guide can be found [here](https://docs.aws.amazon.com/eks/latest/userguide/eks-ug.pdf#getting-started-eksctl)
+```
+
+https://aws-controllers-k8s.github.io/community/docs/tutorials/rds-example/
 
 # Terminology
 
