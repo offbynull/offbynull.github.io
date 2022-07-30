@@ -156,22 +156,20 @@ def walk_back_until_suffix_array_entries(
         bwt_bottom: int,
         walk_back_count: int = 0
 ) -> list[int]:
-    walk_cnts = []
-    for index in range(bwt_top, bwt_bottom + 1):
-        cnts = get_suffix_array_entry_or_continue_walking_back(
+    found_seq_indexes = []
+    for bwt_index in range(bwt_top, bwt_bottom + 1):
+        seq_index = get_suffix_array_entry_or_continue_walking_back(
             bwt_array,
             bwt_first_occurrence_map,
             bwt_partial_counts,
             bwt_partial_counts_skip,
             partial_suffix_array,
-            index,
-            bwt_top,
-            bwt_bottom,
+            bwt_index,
             walk_back_count
         )
-        for cnt in cnts:
-            walk_cnts.append(cnt)
-    return walk_cnts
+        found_seq_indexes.append(seq_index)
+    return found_seq_indexes
+
 
 
 def get_suffix_array_entry_or_continue_walking_back(
@@ -181,31 +179,23 @@ def get_suffix_array_entry_or_continue_walking_back(
         bwt_partial_counts_skip: int,
         partial_suffix_array: dict[int, int],
         bwt_index: int,
-        bwt_top: int,
-        bwt_bottom: int,
         walk_back_count: int
-) -> list[int]:
+) -> int:
     if bwt_index in partial_suffix_array:
         seq_index = partial_suffix_array[bwt_index]
-        return [seq_index + walk_back_count]
+        return seq_index + walk_back_count
     next_ch = bwt_array[bwt_index].last_ch
-    next_counter_top = walk_to_count(bwt_array, bwt_top, bwt_partial_counts, bwt_partial_counts_skip)
-    next_ch_top = next_counter_top[next_ch] + 1
-    next_counter_bottom = walk_to_count(bwt_array, bwt_bottom + 1, bwt_partial_counts, bwt_partial_counts_skip)
-    next_ch_bottom = next_counter_bottom[next_ch]
-    next_bwt_top = bwt_first_occurrence_map[next_ch] + next_ch_top - 1
-    next_bwt_bottom = bwt_first_occurrence_map[next_ch] + next_ch_bottom - 1
-    walk_cnts = walk_back_until_suffix_array_entries(
+    next_ch_idx = bwt_array[bwt_index].last_ch_idx
+    next_bwt_index = bwt_first_occurrence_map[next_ch] + (next_ch_idx - 1)
+    return get_suffix_array_entry_or_continue_walking_back(
         bwt_array,
         bwt_first_occurrence_map,
         bwt_partial_counts,
         bwt_partial_counts_skip,
         partial_suffix_array,
-        next_bwt_top,
-        next_bwt_bottom,
+        next_bwt_index,
         walk_back_count + 1
     )
-    return walk_cnts
 
 
 def find(
