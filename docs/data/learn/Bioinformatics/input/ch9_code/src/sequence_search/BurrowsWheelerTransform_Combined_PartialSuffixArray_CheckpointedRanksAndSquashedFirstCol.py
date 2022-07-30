@@ -152,55 +152,60 @@ def walk_back_until_suffix_array_entries(
         bwt_partial_counts: dict[int, Counter[str]],
         bwt_partial_counts_skip: int,
         partial_suffix_array: dict[int, int],
-        index: int,
-        top: int,
-        bottom: int
+        bwt_top: int,
+        bwt_bottom: int,
+        walk_back_count: int = 0
 ) -> list[int]:
-    ch = bwt_array[index].last_ch
-    if index in partial_suffix_array:
-        index_in_str = partial_suffix_array[index]
-        return [index_in_str]
-    next_counter_top = walk_to_count(bwt_array, top, bwt_partial_counts, bwt_partial_counts_skip)
-    next_ch_top = next_counter_top[ch] + 1
-    next_counter_bottom = walk_to_count(bwt_array, bottom + 1, bwt_partial_counts, bwt_partial_counts_skip)
-    next_ch_bottom = next_counter_bottom[ch]
-    next_top = bwt_first_occurrence_map[ch] + next_ch_top - 1
-    next_bottom = bwt_first_occurrence_map[ch] + next_ch_bottom - 1
     walk_cnts = []
-    for next_index in range(top, bottom + 1):
-        cnts = walk_back_until_suffix_array_entries(
+    for index in range(bwt_top, bwt_bottom + 1):
+        cnts = get_suffix_array_entry_or_continue_walking_back(
             bwt_array,
             bwt_first_occurrence_map,
             bwt_partial_counts,
             bwt_partial_counts_skip,
             partial_suffix_array,
-            next_index,
-            next_top,
-            next_bottom
+            index,
+            bwt_top,
+            bwt_bottom,
+            walk_back_count
         )
         for cnt in cnts:
-            walk_cnts.append(cnt + 1)
+            walk_cnts.append(cnt)
     return walk_cnts
 
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
-TEST THE ABOVE FUNCTION
+
+def get_suffix_array_entry_or_continue_walking_back(
+        bwt_array: list[BWTRecord],
+        bwt_first_occurrence_map: dict[str, int],
+        bwt_partial_counts: dict[int, Counter[str]],
+        bwt_partial_counts_skip: int,
+        partial_suffix_array: dict[int, int],
+        bwt_index: int,
+        bwt_top: int,
+        bwt_bottom: int,
+        walk_back_count: int
+) -> list[int]:
+    if bwt_index in partial_suffix_array:
+        seq_index = partial_suffix_array[bwt_index]
+        return [seq_index + walk_back_count]
+    next_ch = bwt_array[bwt_index].last_ch
+    next_counter_top = walk_to_count(bwt_array, bwt_top, bwt_partial_counts, bwt_partial_counts_skip)
+    next_ch_top = next_counter_top[next_ch] + 1
+    next_counter_bottom = walk_to_count(bwt_array, bwt_bottom + 1, bwt_partial_counts, bwt_partial_counts_skip)
+    next_ch_bottom = next_counter_bottom[next_ch]
+    next_bwt_top = bwt_first_occurrence_map[next_ch] + next_ch_top - 1
+    next_bwt_bottom = bwt_first_occurrence_map[next_ch] + next_ch_bottom - 1
+    walk_cnts = walk_back_until_suffix_array_entries(
+        bwt_array,
+        bwt_first_occurrence_map,
+        bwt_partial_counts,
+        bwt_partial_counts_skip,
+        partial_suffix_array,
+        next_bwt_top,
+        next_bwt_bottom,
+        walk_back_count + 1
+    )
+    return walk_cnts
 
 
 def find(
@@ -210,7 +215,7 @@ def find(
         bwt_partial_counts_skip: int,
         partial_suffix_array: dict[int, int],
         test: str
-) -> int:
+) -> list[int]:
     top = 0
     bottom = len(bwt_array) - 1
     for ch in reversed(test):
@@ -219,7 +224,7 @@ def find(
         counter_bottom = walk_to_count(bwt_array, bottom + 1, bwt_partial_counts, bwt_partial_counts_skip)
         ch_bottom = counter_bottom[ch]
         if ch_bottom < ch_top not in bwt_partial_counts:
-            return 0
+            return []
         top = bwt_first_occurrence_map[ch] + ch_top - 1
         bottom = bwt_first_occurrence_map[ch] + ch_bottom - 1
     positions = walk_back_until_suffix_array_entries(
@@ -228,10 +233,10 @@ def find(
         bwt_partial_counts,
         bwt_partial_counts_skip,
         partial_suffix_array,
-        i,
         top,
-        bottom + 1
+        bottom
     )
+    return positions
 # MARKDOWN_TEST
 
 
@@ -249,5 +254,5 @@ for i in range(len(bwt_array) + 1):
     print(f'{walk_to_count(bwt_array, i, bwt_partial_counts, 5)}')
 for e in bwt_array:
     print(f'{e}')
-print(f'{find(bwt_array, bwt_first_occurrence_map, bwt_partial_counts, 5, "ana")}')
-print(f'{find(bwt_array, bwt_first_occurrence_map, bwt_partial_counts, 5, "bna")}')
+print(f'{find(bwt_array, bwt_first_occurrence_map, bwt_partial_counts, 5, partial_suffix_array, "ana")}')
+print(f'{find(bwt_array, bwt_first_occurrence_map, bwt_partial_counts, 5, partial_suffix_array, "bna")}')
