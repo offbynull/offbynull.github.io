@@ -14420,8 +14420,228 @@ Other uses such as longest repeating substring, longest shared substring, shorte
 `{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform)_TOPIC/`
 
 ```{prereq}
-Algorithms/Single Nucleotide Polymorphism/Suffix Tree_TOPIC
+Algorithms/Single Nucleotide Polymorphism/Suffix Array_TOPIC
 ```
+
+**WHAT**: Burrows-wheeler transform (BWT) is a matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. It's used for efficiently determining the number of times some substring appears in a sequence, and with some extensions it can also determine the position of each occurrence of that substring.
+
+Similar to suffix arrays, the sequence must have an end marker where the end marker symbol comes first in the lexicographical sort order. For example, the BWT of the "banana¶" ("¶" is the end marker), first creates a matrix by stacking all possible cyclical rotations...
+
+|   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+| b | a | n | a | n | a | ¶ |
+| ¶ | b | a | n | a | n | a |
+| a | ¶ | b | a | n | a | n |
+| n | a | ¶ | b | a | n | a |
+| a | n | a | ¶ | b | a | n |
+| n | a | n | a | ¶ | b | a |
+| a | n | a | n | a | ¶ | b |
+
+, then lexicographically sorting the rows of the matrix ...
+
+|   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+| ¶ | b | a | n | a | n | a |
+| a | ¶ | b | a | n | a | n |
+| a | n | a | ¶ | b | a | n |
+| a | n | a | n | a | ¶ | b |
+| b | a | n | a | n | a | ¶ |
+| n | a | ¶ | b | a | n | a |
+| n | a | n | a | ¶ | b | a |
+     
+BWT matrices have a special property called the first-last property: For each symbol, the order in which instances of that symbol appear in the first column of the matrix matches that of the last column in the matrix. For example, consider how the above matrix would look with symbol instance counts included. The symbols in "banana¶" are [a, b, n, ¶]. At index ...
+
+0. the first "b" occurs: b1
+1. the first "a" occurs: a1
+2. the first "n" occurs: n1
+3. the second "a" occurs: a2
+4. the second "n" occurs: n2
+5. the third "a" occurs: a3
+6. the first "¶" occurs: ¶1
+
+The sequence "banana¶" with symbol instance counts included is [b1, a1, n1, a2, n2, a3, ¶1]. Performing the same cyclic rotations and lexicographically sorting where these symbol instance counts are visible results in the following matrix.
+
+|    |    |    |    |    |    |    |
+|----|----|----|----|----|----|----|
+| ¶1 | b1 | a1 | n1 | a2 | n2 | a3 |
+| a3 | ¶1 | b1 | a1 | n1 | a2 | n2 |
+| a2 | n2 | a3 | ¶1 | b1 | a1 | n1 |
+| a1 | n1 | a2 | n2 | a3 | ¶1 | b1 |
+| b1 | a1 | n1 | a2 | n2 | a3 | ¶1 |
+| n2 | a3 | ¶1 | b1 | a1 | n1 | a2 |
+| n1 | a2 | n2 | a3 | ¶1 | b1 | a1 |
+
+```{note}
+Nothing has changed in the matrix. It's exactly the same matrix is exactly the same as before, it's just that the symbol instance counts are now visible where as before they were hidden.
+
+These symbol instance counts _aren't included_ in the lexicographic sorting that happens.
+```
+
+For each symbol [a, b, n, ¶] in "banana¶", even though the position of symbol instances are different between the first and last columns of the matrix, the order in which those instances appear in are the same. For example, symbol ...
+
+ * "a" has its instances are ordered as [`{h}#f00 a3`, `{h}#b00 a2`, `{h}#800 a1`] in both the first and last column.
+ * "n" has its instances are ordered as [`{h}#00f n2`, `{h}#00b n1`] in both the first and last column.
+
+|              |    |    |    |    |    |              |
+|--------------|----|----|----|----|----|--------------|
+|          ¶1  | b1 | a1 | n1 | a2 | n2 | `{h}#f00 a3` |
+| `{h}#f00 a3` | ¶1 | b1 | a1 | n1 | a2 | `{h}#00f n2` |
+| `{h}#b00 a2` | n2 | a3 | ¶1 | b1 | a1 | `{h}#00b n1` |
+| `{h}#800 a1` | n1 | a2 | n2 | a3 | ¶1 |          b1  |
+|          b1  | a1 | n1 | a2 | n2 | a3 |          ¶1  |
+| `{h}#00f n2` | a3 | ¶1 | b1 | a1 | n1 | `{h}#b00 a2` |
+| `{h}#00b n1` | a2 | n2 | a3 | ¶1 | b1 | `{h}#800 a1` |
+
+The first-last property is a result of the lexicographic sorting that happens. In the example matrix above, isolating the matrix to those rows starting with "a" shows that the second column is also lexicographically sorted.
+
+|              |  ▼ |    |    |    |    |    |
+|--------------|----|----|----|----|----|----|
+| `{h}#f00 a3` | ¶1 | b1 | a1 | n1 | a2 | n2 |
+| `{h}#b00 a2` | n2 | a3 | ¶1 | b1 | a1 | n1 |
+| `{h}#800 a1` | n1 | a2 | n2 | a3 | ¶1 | b1 |
+
+In other words, cyclically rotating each row right by 1 moves each corresponding "a" to the end but doesn't change the lexicographic ordering of the rows.
+
+|  ▼ |    |    |    |    |    |              |
+|----|----|----|----|----|----|--------------|
+| ¶1 | b1 | a1 | n1 | a2 | n2 | `{h}#f00 a3` |
+| n2 | a3 | ¶1 | b1 | a1 | n1 | `{h}#b00 a2` |
+| n1 | a2 | n2 | a3 | ¶1 | b1 | `{h}#800 a1` |
+
+After the cyclic rotations above, the rows in the isolated matrix become different rows from the original matrix. Since the rows in the isolated matrix are still lexicographically sorted, they're ordered as they appear in that original matrix.
+
+|  ▼ |    |    |    |    |    |              |
+|----|----|----|----|----|----|--------------|
+| ¶1 | b1 | a1 | n1 | a2 | n2 | `{h}#f00 a3` |
+| a3 | ¶1 | b1 | a1 | n1 | a2 |          n2  |
+| a2 | n2 | a3 | ¶1 | b1 | a1 |          n1  |
+| a1 | n1 | a2 | n2 | a3 | ¶1 |          b1  |
+| b1 | a1 | n1 | a2 | n2 | a3 |          ¶1  |
+| n2 | a3 | ¶1 | b1 | a1 | n1 | `{h}#b00 a2` |
+| n1 | a2 | n2 | a3 | ¶1 | b1 | `{h}#800 a1` |
+
+Given just the first and last column of a BWT matrix, the original sequence can be pulled out by walking between those columns. The row containing the end marker ("¶") in the last column has the sequence's first element in its first column.
+  
+```{svgbob}
+              b                                ban                               banan
+.------------------------------.  .------------------------------.  .------------------------------.
+|                              |  |                              |  |                              |
+|  +--+--+           +--+--+   |  |  +--+--+           +--+--+   |  |  +--+--+           +--+--+   |        +--+--+
+|  |¶1|a3|           |¶1|a3|   |  |  |¶1|a3|           |¶1|a3|   |  |  |¶1|a3|           |¶1|a3|   |   *<-- |¶1|a3| <-.
+|  |a3|n2|           |a3|n2|   |  |  |a3|n2|           |a3|n2|   |  |  |a3|n2|        .- |a3|n2| <-'        |a3|n2|   |
+|  |a2|n1|           |a2|n1|   |  |  |a2|n1|        .- |a2|n1| <-'  |  |a2|n1|        |  |a2|n1|            |a2|n1|   |
+|  |a1|b1|        .- |a1|b1| <-'  |  |a1|b1|        |  |a1|b1|      |  |a1|b1|        |  |a1|b1|            |a1|b1|   |
+'- |b1|¶1|        |  |b1|¶1|      |  |b1|¶1|        |  |b1|¶1|      |  |b1|¶1|        |  |b1|¶1|            |b1|¶1|   |
+   |n2|a2|        |  |n2|a2|      |  |n2|a2|        |  |n2|a2|      '- |n2|a2| <-.    |  |n2|a2|            |n2|a2|   |
+   |n1|a1|        |  |n1|a1|      '- |n1|a1| <-.    |  |n1|a1|         |n1|a1|   |    |  |n1|a1|            |n1|a1|   |
+   +--+--+        |  +--+--+         +--+--+   |    |  +--+--+         +--+--+   |    |  +--+--+            +--+--+   |
+                  |                            |    |                            |    |                               |
+                  '----------------------------'    '----------------------------'    '-------------------------------'
+                                ba                              bana                               banana
+```
+
+Likewise, given just the first and last column of a BWT matrix, it's possible to quickly identify if and how many instances of some substring exists in th original sequence.
+
+```{svgbob}
+"* search for substring nana"
+
+             "2 x na"                        "1 x nana"
+.------------------------------.  .------------------------->*
+|                              |  |              
+|  +--+--+           +--+--+   |  |  +--+--+     
+|  |¶1|a3|      *<-- |¶1|a3| <-+  |  |¶1|a3|     
++- |a3|n2|           |a3|n2|   |  '- |a3|n2| <-. 
+'- |a2|n1|           |a2|n1|   |     |a2|n1|   | 
+   |a1|b1|           |a1|b1|   |     |a1|b1|   | 
+   |b1|¶1|           |b1|¶1|   |     |b1|¶1|   | 
+   |n2|a2|        .- |n2|a2| <-'     |n2|a2|   | 
+   |n1|a1|        |  |n1|a1|         |n1|a1|   | 
+   +--+--+        |  +--+--+         +--+--+   | 
+                  |                            |  
+                  '----------------------------'  
+                             "1 x nan"         
+```
+
+````{note}
+Notice that the first column of the matrix is just the last column but lexicographically sorted.
+
+When storing the first and last columns of the matrix, you technically only need to store just the elements of the last column. You can generate the first column by simply sorting the elements of the last column. For example, the elements in last column of the example above are "annb¶aa". To convert that back into the first and last columns of the matrix with symbol instance counts, the steps are as follows:
+
+1. Last column: augment "annb¶aa" with symbol instance counts: [a1, n1, n2, b1, ¶1, a2, a3].
+
+   In this case, the augmentation isn't with symbol counts from the original sequence ("banana¶") but from the sequence that makes up the last column ("annb¶aa").
+
+2. First column: Sorting the result of step 1, _taking the symbol instance counts into account_: [¶1, a1, a2, a3, b1, n1, n2].
+
+   The sort is still a lexicographical sort but the symbol instance are included as well. A lower symbol instance count should be given precedence over a higher symbol instance count. For example, once sorted, "a2" should appear before "a3" but after "a1". This is done because the ordering of symbol occurrences need to be preserved between the first and last columns.
+
+The end result of reconstructing from "annb¶aa" is the following first and last columns, ...
+
+```{svgbob}
++--+--+
+|¶1|a1|
+|a1|n1|
+|a2|n2|
+|a3|b1|
+|b1|¶1|
+|n1|a2|
+|n2|a3|
++--+--+
+```
+
+While the symbol instance counts are different, the mapping between symbol instances between the first and last columns are the same, meaning that you can still use it to search for substrings in "banana¶"...
+
+```{svgbob}
+RECONSTRUCTED          ORIGINAL
+
+   +--+--+             +--+--+
+   |¶1|a1|             |¶1|a3|
+   |a1|n1|             |a3|n2|
+   |a2|n2|             |a2|n1|
+   |a3|b1|      vs     |a1|b1|
+   |b1|¶1|             |b1|¶1|
+   |n1|a2|             |n2|a2|
+   |n2|a3|             |n1|a1|
+   +--+--+             +--+--+
+
+
+"* search for substring nana using RECONSTRUCTED first and last column"
+
+             "2 x na"                        "1 x nana"
+.------------------------------.  .------------------------->*
+|                              |  |                           
+|  +--+--+           +--+--+   |  |  +--+--+    
+|  |¶1|a1|      *<-- |¶1|a1| <-+  |  |¶1|a1|    
++- |a1|n1|           |a1|n1|   |  '- |a1|n1| <-.
+'- |a2|n2|           |a2|n2|   |     |a2|n2|   |
+   |a3|b1|           |a3|b1|   |     |a3|b1|   |
+   |b1|¶1|           |b1|¶1|   |     |b1|¶1|   |
+   |n1|a2|        .- |n1|a2| <-'     |n1|a2|   |
+   |n2|a3|        |  |n2|a3|         |n2|a3|   |
+   +--+--+        |  +--+--+         +--+--+   |
+                  |                            |  
+                  '----------------------------'  
+                             "1 x nan"         
+```
+````
+
+**WHY**: Implementations of BWT can be deeply memory efficient and fast, rivaling those of suffix arrays. In addition, not only can BWT determine the number of times some substring appears in a sequence, but with some extensions it can identify where found substrings are located in the sequence.
+
+```{note}
+These extensions are detailed in the subsections belows.
+```
+
+#### Standard Algorithm
+
+#### Rank Checkpoints Algorithm
+
+#### Partial Suffix Array Algorithm
+
+```{prereq}
+Algorithms/Single Nucleotide Polymorphism/Suffix Array_TOPIC
+```
+
+#### Rank Checkpoints and Partial Suffix Array Algorithm
 
 TODO: CONTINUE HERE
 

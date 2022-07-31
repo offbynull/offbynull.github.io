@@ -195,6 +195,12 @@
 <li><a href="#H_Suffix%20Tree">Suffix Tree</a></li>
 <li><a href="#H_Suffix%20Array">Suffix Array</a></li>
 <li><a href="#H_Burrows-Wheeler%20Transform">Burrows-Wheeler Transform</a></li>
+<ul>
+<li><a href="#H1_Standard%20Algorithm">Standard Algorithm</a></li>
+<li><a href="#H_Rank%20Checkpoints%20Algorithm">Rank Checkpoints Algorithm</a></li>
+<li><a href="#H_Partial%20Suffix%20Array%20Algorithm">Partial Suffix Array Algorithm</a></li>
+<li><a href="#H_Rank%20Checkpoints%20and%20Partial%20Suffix%20Array%20Algorithm">Rank Checkpoints and Partial Suffix Array Algorithm</a></li>
+</ul>
 <li><a href="#H_BLAST">BLAST</a></li>
 </ul>
 </ul>
@@ -18604,7 +18610,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_aa3e748b8b94a867a770a36d6b761e30.svg" alt="Dot diagram"></p>
+<p><img src="dot_ba09fe514ef75b5df228460821f1e062.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>Testing if a <a href="#BM_(trie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> requires walking the <a href="#BM_(trie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching the end-of-<a href="#BM_(sequence)%2Fi">sequence</a> marker.</p>
@@ -18734,7 +18740,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_7548577a14de4ee9fae874cba09c8257.svg" alt="Dot diagram"></p>
+<p><img src="dot_72810e8af106f5188a0c3fa1fe58d906.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19003,7 +19009,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_5ece8c925c4b3e1618cc65da15f1d991.svg" alt="Dot diagram"></p>
+<p><img src="dot_cc269be44962b04228a1d3bdbfe234ba.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19142,7 +19148,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_409a5483456423f21085c64f61716b82.svg" alt="Dot diagram"></p>
+<p><img src="dot_7fde12f399917a9744997e142fa22455.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>If a scan walks the <a href="#BM_(trie)%2Fi">trie</a> to "arat" and fails, the next scan position must contain "rat". Since the prefix "rat" exists in the <a href="#BM_(trie)%2Fi">trie</a>, a special edge connects "arat" to "rat" such that the scan for the next position can jump past "rat" in the <a href="#BM_(trie)%2Fi">trie</a> walk.</p>
@@ -19220,7 +19226,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_e8aaff6d28d4bbf4ce30f9248c9c8316.svg" alt="Dot diagram"></p>
+<p><img src="dot_7e4adf05e1e6b2f4907e5d5dd1f4bb04.svg" alt="Dot diagram"></p>
 <p>Searching <em>There were multiple narrations in the play</em> with the trie revealed the following was found: {(23, ration)}</p>
 </div>
 <p></p>
@@ -19299,7 +19305,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_43e57eb7d331ebc0f0713003db6ad13f.svg" alt="Dot diagram"></p>
+<p><img src="dot_d0e255d9bc632bbeab4fd1cb62a778be.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19901,9 +19907,548 @@ xxa vehicle__¶
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FSuffix%20Tree)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Suffix Tree</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FSuffix%20Array)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Suffix Array</a></li>
 </ul>
 </div>
+<p><strong>WHAT</strong>: <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">Burrows-wheeler transform</a> (<a href="#BM_(BWT)%2F">BWT</a>) is a matrix formed by combining all cyclic rotations of a <a href="#BM_(sequence)%2Fi">sequence</a> and sorting lexicographically. It's used for efficiently determining the number of times some <a href="#BM_(substring)%2Fi">substring</a> appears in a <a href="#BM_(sequence)%2Fi">sequence</a>, and with some extensions it can also determine the position of each occurrence of that <a href="#BM_(substring)%2Fi">substring</a>.</p>
+<p>Similar to <a href="#BM_(suffix%20array)%2Fi">suffix array</a>s, the <a href="#BM_(sequence)%2Fi">sequence</a> must have an end marker where the end marker symbol comes first in the lexicographical sort order. For example, the <a href="#BM_(BWT)%2F">BWT</a> of the "banana¶" ("¶" is the end marker), first creates a matrix by stacking all possible cyclical rotations...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+</tr>
+<tr>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+</tr>
+<tr>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+</tr>
+<tr>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+</tr>
+<tr>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+</tr>
+<tr>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+</tr>
+<tr>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+</tr>
+</tbody>
+</table>
+<p>, then lexicographically sorting the rows of the matrix ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+</tr>
+<tr>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+</tr>
+<tr>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+</tr>
+<tr>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+</tr>
+<tr>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+</tr>
+<tr>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+</tr>
+<tr>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+</tr>
+</tbody>
+</table>
+<p><a href="#BM_(BWT)%2F">BWT</a> matrices have a special property called the <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a>: For each symbol, the order in which instances of that symbol appear in the first column of the matrix matches that of the last column in the matrix. For example, consider how the above matrix would look with symbol instance counts included. The symbols in "banana¶" are [a, b, n, ¶]. At index ...</p>
+<ol start="0">
+<li>the first "b" occurs: b1</li>
+<li>the first "a" occurs: a1</li>
+<li>the first "n" occurs: n1</li>
+<li>the second "a" occurs: a2</li>
+<li>the second "n" occurs: n2</li>
+<li>the third "a" occurs: a3</li>
+<li>the first "¶" occurs: ¶1</li>
+</ol>
+<p>The <a href="#BM_(sequence)%2Fi">sequence</a> "banana¶" with symbol instance counts included is [b1, a1, n1, a2, n2, a3, ¶1]. Performing the same cyclic rotations and lexicographically sorting where these symbol instance counts are visible results in the following matrix.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>¶1</td>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+<td>a2</td>
+<td>n2</td>
+<td>a3</td>
+</tr>
+<tr>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+<td>a2</td>
+<td>n2</td>
+</tr>
+<tr>
+<td>a2</td>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+</tr>
+<tr>
+<td>a1</td>
+<td>n1</td>
+<td>a2</td>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+</tr>
+<tr>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+<td>a2</td>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+</tr>
+<tr>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+<td>a2</td>
+</tr>
+<tr>
+<td>n1</td>
+<td>a2</td>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+<td>a1</td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Nothing has changed in the matrix. It's exactly the same matrix is exactly the same as before, it's just that the symbol instance counts are now visible where as before they were hidden.</p>
+<p>These symbol instance counts <em>aren't included</em> in the lexicographic sorting that happens.</p>
+</div>
+<p>For each symbol [a, b, n, ¶] in "banana¶", even though the position of symbol instances are different between the first and last columns of the matrix, the order in which those instances appear in are the same. For example, symbol ...</p>
+<ul>
+<li>"a" has its instances are ordered as [<span style="background-color: #f00; color: white; padding: 3px">a3</span>, <span style="background-color: #b00; color: white; padding: 3px">a2</span>, <span style="background-color: #800; color: white; padding: 3px">a1</span>] in both the first and last column.</li>
+<li>"n" has its instances are ordered as [<span style="background-color: #00f; color: white; padding: 3px">n2</span>, <span style="background-color: #00b; color: white; padding: 3px">n1</span>] in both the first and last column.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>¶1</td>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+<td>a2</td>
+<td>n2</td>
+<td><span style="background-color: #f00; color: white; padding: 3px">a3</span></td>
+</tr>
+<tr>
+<td><span style="background-color: #f00; color: white; padding: 3px">a3</span></td>
+<td>¶1</td>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+<td>a2</td>
+<td><span style="background-color: #00f; color: white; padding: 3px">n2</span></td>
+</tr>
+<tr>
+<td><span style="background-color: #b00; color: white; padding: 3px">a2</span></td>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+<td>a1</td>
+<td><span style="background-color: #00b; color: white; padding: 3px">n1</span></td>
+</tr>
+<tr>
+<td><span style="background-color: #800; color: white; padding: 3px">a1</span></td>
+<td>n1</td>
+<td>a2</td>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+</tr>
+<tr>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+<td>a2</td>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+</tr>
+<tr>
+<td><span style="background-color: #00f; color: white; padding: 3px">n2</span></td>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+<td><span style="background-color: #b00; color: white; padding: 3px">a2</span></td>
+</tr>
+<tr>
+<td><span style="background-color: #00b; color: white; padding: 3px">n1</span></td>
+<td>a2</td>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+<td><span style="background-color: #800; color: white; padding: 3px">a1</span></td>
+</tr>
+</tbody>
+</table>
+<p>The <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a> is a result of the lexicographic sorting that happens. In the example matrix above, isolating the matrix to those rows starting with "a" shows that the second column is also lexicographically sorted.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>▼</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span style="background-color: #f00; color: white; padding: 3px">a3</span></td>
+<td>¶1</td>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+<td>a2</td>
+<td>n2</td>
+</tr>
+<tr>
+<td><span style="background-color: #b00; color: white; padding: 3px">a2</span></td>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+</tr>
+<tr>
+<td><span style="background-color: #800; color: white; padding: 3px">a1</span></td>
+<td>n1</td>
+<td>a2</td>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+</tr>
+</tbody>
+</table>
+<p>In other words, cyclically rotating each row right by 1 moves each corresponding "a" to the end but doesn't change the lexicographic ordering of the rows.</p>
+<table>
+<thead>
+<tr>
+<th>▼</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>¶1</td>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+<td>a2</td>
+<td>n2</td>
+<td><span style="background-color: #f00; color: white; padding: 3px">a3</span></td>
+</tr>
+<tr>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+<td><span style="background-color: #b00; color: white; padding: 3px">a2</span></td>
+</tr>
+<tr>
+<td>n1</td>
+<td>a2</td>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+<td><span style="background-color: #800; color: white; padding: 3px">a1</span></td>
+</tr>
+</tbody>
+</table>
+<p>After the cyclic rotations above, the rows in the isolated matrix become different rows from the original matrix. Since the rows in the isolated matrix are still lexicographically sorted, they're ordered as they appear in that original matrix.</p>
+<table>
+<thead>
+<tr>
+<th>▼</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>¶1</td>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+<td>a2</td>
+<td>n2</td>
+<td><span style="background-color: #f00; color: white; padding: 3px">a3</span></td>
+</tr>
+<tr>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+<td>a2</td>
+<td>n2</td>
+</tr>
+<tr>
+<td>a2</td>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+</tr>
+<tr>
+<td>a1</td>
+<td>n1</td>
+<td>a2</td>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+</tr>
+<tr>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+<td>a2</td>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+</tr>
+<tr>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+<td>a1</td>
+<td>n1</td>
+<td><span style="background-color: #b00; color: white; padding: 3px">a2</span></td>
+</tr>
+<tr>
+<td>n1</td>
+<td>a2</td>
+<td>n2</td>
+<td>a3</td>
+<td>¶1</td>
+<td>b1</td>
+<td><span style="background-color: #800; color: white; padding: 3px">a1</span></td>
+</tr>
+</tbody>
+</table>
+<p>Given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, the original <a href="#BM_(sequence)%2Fi">sequence</a> can be pulled out by walking between those columns. The row containing the end marker ("¶") in the last column has the <a href="#BM_(sequence)%2Fi">sequence</a>'s first element in its first column.</p>
+<p><img src="svgbob_4f8d2f2c7de732cbc04a2073f5c1d96ab7cad1bc.svg" alt="Kroki diagram output"></p>
+<p>Likewise, given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, it's possible to quickly identify if and how many instances of some <a href="#BM_(substring)%2Fi">substring</a> exists in th original <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p><img src="svgbob_925edda6ed8f51facf9dda8af8736cd4e3939a09.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Notice that the first column of the matrix is just the last column but lexicographically sorted.</p>
+<p>When storing the first and last columns of the matrix, you technically only need to store just the elements of the last column. You can generate the first column by simply sorting the elements of the last column. For example, the elements in last column of the example above are "annb¶aa". To convert that back into the first and last columns of the matrix with symbol instance counts, the steps are as follows:</p>
+<ol>
+<li>
+<p>Last column: augment "annb¶aa" with symbol instance counts: [a1, n1, n2, b1, ¶1, a2, a3].</p>
+<p>In this case, the augmentation isn't with symbol counts from the original <a href="#BM_(sequence)%2Fi">sequence</a> ("banana¶") but from the <a href="#BM_(sequence)%2Fi">sequence</a> that makes up the last column ("annb¶aa").</p>
+</li>
+<li>
+<p>First column: Sorting the result of step 1, <em>taking the symbol instance counts into account</em>: [¶1, a1, a2, a3, b1, n1, n2].</p>
+<p>The sort is still a lexicographical sort but the symbol instance are included as well. A lower symbol instance count should be given precedence over a higher symbol instance count. For example, once sorted, "a2" should appear before "a3" but after "a1". This is done because the ordering of symbol occurrences need to be preserved between the first and last columns.</p>
+</li>
+</ol>
+<p>The end result of reconstructing from "annb¶aa" is the following first and last columns, ...</p>
+<p><img src="svgbob_ea099f6ec8f6995365f5fb7e267c8b89e0407bdf.svg" alt="Kroki diagram output"></p>
+<p>While the symbol instance counts are different, the mapping between symbol instances between the first and last columns are the same, meaning that you can still use it to search for <a href="#BM_(substring)%2Fi">substring</a>s in "banana¶"...</p>
+<p><img src="svgbob_2579476706b11330ac342da0aa7e18706e62e522.svg" alt="Kroki diagram output"></p>
+</div>
+<p><strong>WHY</strong>: Implementations of <a href="#BM_(BWT)%2F">BWT</a> can be deeply memory efficient and fast, rivaling those of <a href="#BM_(suffix%20array)%2Fi">suffix array</a>s. In addition, not only can <a href="#BM_(BWT)%2F">BWT</a> determine the number of times some <a href="#BM_(substring)%2Fi">substring</a> appears in a <a href="#BM_(sequence)%2Fi">sequence</a>, but with some extensions it can identify where found <a href="#BM_(substring)%2Fi">substring</a>s are located in the <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>These extensions are detailed in the subsections belows.</p>
+</div>
+<a name="H1_Standard%20Algorithm"></a><h4>Standard Algorithm</h4>
+<a name="H_Rank%20Checkpoints%20Algorithm"></a><h4>Rank Checkpoints Algorithm</h4>
+<a name="H_Partial%20Suffix%20Array%20Algorithm"></a><h4>Partial Suffix Array Algorithm</h4>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FSuffix%20Array)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Suffix Array</a></li>
+</ul>
+</div>
+<a name="H_Rank%20Checkpoints%20and%20Partial%20Suffix%20Array%20Algorithm"></a><h4>Rank Checkpoints and Partial Suffix Array Algorithm</h4>
 <p>TODO: CONTINUE HERE</p>
 <p>TODO: CONTINUE HERE</p>
 <p>TODO: CONTINUE HERE</p>
