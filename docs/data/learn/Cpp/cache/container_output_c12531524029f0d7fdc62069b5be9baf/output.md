@@ -2,8 +2,7 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Core Language/Classes/Functors_TOPIC
- * Core Language/Classes/Lambdas_TOPIC
+ * Core Language/Templates/Variadic_TOPIC
 
 </div>
 

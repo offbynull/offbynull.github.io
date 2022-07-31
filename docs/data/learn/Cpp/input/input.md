@@ -1895,77 +1895,6 @@ int add(int a, int b) {
 }
 ```
 
-### Coroutines
-
-`{bm} /(Core Language\/Functions\/Coroutines)_TOPIC/`
-
-```{prereq}
-Core Language/Classes_TOPIC
-```
-
-A coroutine that can suspend its own execution and have it be continued at a later time. Similar to async functions in Javascript, C++ coroutines can work with promise objects (objects that do work asynchronously). A function can be made into a coroutine by using any of the following: 
-
- * `co_await` - suspend execution waiting for a promise to finish.
- * `co_yield` - suspend execution and optionally return a value. 
- * `co_return` - complete execution and optionally return a value.
-
-The return value of a coroutine is a "promise type", a C++ class that has a specific structure and specific set of functionality that the compiler calls to determine and control the coroutine's state.
-
-```{note}
-This is deeply convoluted and requires a lot more digging and documentation, possibly in its own section instead of sub-section under the Function header.
-```
-
-```c++
-#include <iostream>
-#include <cstdlib>
-#include <coroutine>
-
-struct Resumable {
-    struct promise_type; // forward declaration
-    Resumable(std::coroutine_handle<promise_type> coro) : coro(coro) {}
-    ~Resumable() {
-        coro.destroy();
-    }
-    void destroy() { coro.destroy(); }
-    void resume() { coro.resume(); }
-private:
-    std::coroutine_handle<promise_type> coro;
-};
-
-struct Resumable::promise_type {
-    auto get_return_object() { return Resumable(std::coroutine_handle<Resumable::promise_type>::from_promise(*this)); }
-    auto initial_suspend() { return std::suspend_never(); }
-    auto final_suspend() noexcept { return std::suspend_never(); }
-    auto yield_value(int value) {
-        current_value = value;
-        return std::suspend_always{};
-    }
-    void return_void() { }
-    void unhandled_exception() { }
-    int current_value;
-};
-
-Resumable range(int start, int end) {
-    while (start < end) {
-        co_yield start;
-        std::cout << start << '\n';
-        start++;
-    }
-    co_return;
-}
-
-int main() {
-    auto x {range(0, 10)};
-    x.resume();  // prints 0
-    x.resume();  // prints 1
-    x.resume();  // prints 2
-}
-```
-
-```{note}
-It's said that the coroutine state is kept on the stack, resulting in C++ coroutines being a performance hog. Maybe it's possible to use a custom allocator to work around performance problems?
-```
-
 ## Enumerations
 
 `{bm} /(Core Language\/Enumerations)_TOPIC/`
@@ -3115,254 +3044,6 @@ Functors are useful because they allow for state (via fields) and parameterizati
 Unlike normal functions, functors cannot be assigned to function pointers. See section on function pointers.
 ```
 
-### Lambdas
-
-`{bm} /(Core Language\/Classes\/Lambdas)_TOPIC/`
-
-```{prereq}
-Core Language/Classes/Functors_TOPIC
-Core Language/Classes/Constant_TOPIC
-Core Language/Constant Expressions_TOPIC
-Core Language/Templates/Auto Syntax_TOPIC
-```
-
-Lambdas are unnamed functors (not functions) that are expressed in a succinct form. Lambdas in C++ work similarly to lambdas in other high-level languages. They capture copies of / references to objects from the outer scope such that they can be used for whatever processing the functor performs.
-
-For example, consider the following functor.
-
-```c++
-// define
-constexpr struct MyFunctor {
-    MyFunctor(int x) {
-        this->x = x;
-    };
-
-    constexpr int operator()(int a) const {
-        return a + x;
-    }
-private:
-    int x;
-};
-
-// instantiate
-MyFunction f1{ 5 };
-
-// invoke
-f1(42);
-```
-
-The functor above can be written much more succinctly as a lambda.
-
-```c++
-// define and instantiate
-auto f2 { [x=5] (int a) -> int { return a + x; } };
-
-// invoke
-f2(42);
-```
-
-The general syntax of a lambda is as follows: `[capture-list] (parameter-list) modifiers -> return-type { body }`. The subsections below detail this general syntax.
-
-```{note}
-Be aware that, by default, the function-call operator in the lambda version is `const` and will automatically be made into a `constexpr` if it satisfies all the requirements of `constexpr`. This is discussed more in the modifiers subsections.
-```
-
-#### Capture List
-
-`{bm} /(Core Language\/Classes\/Lambdas\/Capture List)_TOPIC/`
-
-```{prereq}
-Core Language/Classes/Moving_TOPIC
-```
-
-`[capture-list]` is a _required_ part of `[capture-list] (parameter-list) modifiers -> return-type { body }` that defines and sets member variables inside the functor. It's a comma separated list where each element is a list is a variable to capture as a member variable. 
-
-There are 3 different ways to capture member variables.
-
- * **Copy** a variable from the outer scope.
-    
-   To create a copy of an individual variable into the functor, put the variable's name in the capture list.
-
-   ```c++
-   int x {5};
-   int y {6};
-   // explicitly copy x and y from outer scope
-   auto f { [x, y] (int z) -> int { return x + y + z; } };
-   ```
-
-   One way to avoid listing out individual variable names is to put `=` as the first element of the capture list. When `=` is present, missing member variables will automatically get copied as member variables.
-
-   ```c++
-   int x {5};
-   int y {6};
-   // explicitly copy x and implicitly copy y from outer scope
-   auto f { [=, x] (int z) -> int { return x + y + z; } };
-   ```
-
-   If used within an enclosing class, the `this` pointer can be captured.
-
-   ```c++
-   auto f { [this] (int z) -> int { return z + this->x; } };   // capture this as a pointer
-   auto f { [*this] (int z) -> int { return z + this->x; } };  // capture a COPY OF *this and pass it in as a pointer
-   ```
-
-   ```{note}
-   It's mentioned that prior to C++20, automatic copy capturing (`[=]`) would pull in `this`. That feature has been deprecated.
-   ```
-
- * **Reference** a variable from the outer scope.
-
-   To create reference to an individual variable into the functor, put the variable's name in the capture list preceded by an ampersand (&).
-
-   ```c++
-   int x {5};
-   int y {6};
-   // explicitly reference x and y from outer scope
-   auto f { [&x, &y] (int z) -> int { return x + y + z; } };
-   ```
-
-   One way to avoid listing out individual variable names is to put `&` as the first element of the capture list. When `&` is present, missing member variables will automatically get referenced as member variables.
-
-   ```c++
-   int x {5};
-   int y {6};
-   // explicitly reference x and implicitly reference y from outer scope
-   auto f { [&, &x] (int z) -> int { return x + y + z; } };
-   ```
-
- * **Initialize** a variable using an expression.
-
-   When a variable name is followed by `=` and an expression, the expression is evaluated and captured.
-
-   ```c++
-   int x {5};
-   int y {6};
-   auto f { [mod_x=x/2, mod_y=y/2] (int z) -> int { return mod_x + mod_y + z; } };
-   ```
-
-   This is especially useful for capturing an object by moving it (as opposed to copying it or referencing it).
-
-   ```c++
-   auto f { [o=std::move(my_obj)] (int z) -> int { return o.do_something(z); } };
-   ```
-
-#### Parameter List
-
-`{bm} /(Core Language\/Classes\/Lambdas\/Parameter List)_TOPIC/`
-
-`(parameter-list)` is a _required_ part of `[capture-list] (parameter-list) modifiers -> return-type { body }` that defines the parameter list of the functor's function-call operator.
-
-```c++
-auto f1 { [] (int x, int y) -> int { return x + y; } };
-auto f2 { [] (int x, int y = 99) -> int { return x + y; } };  // default args
-auto f3 { [] (auto x, auto y) -> int { return static_cast<int>(x + y); } };  // templated params (compiler deduces types based on usage)
-```
-
-Lambda parameter lists are defined similarly to standard function parameter lists. It's common for a lambda's parameter list to use template parameters via `auto` as is done in `f3` of the example above. The reason for using `auto` is that the lambda can still work even if you don't know / can't predict the exact types of the arguments passed in (e.g. you know the arguments will be integral types, but you don't know exactly which exact integral types).
-
-```{note}
-`auto` is a placeholder for a template parameter, and as such type deduction rules come into play. If you aren't careful, you'll end up with strange or incorrect behaviour. For example, in certain cases the compiler may decide to create a local copy for an argument that gets passed in where you may be expecting a reference.
-```
-
-```{seealso}
-Core Language/Templates/Type Deduction_TOPIC
-```
-
-#### Return Type
-
-`{bm} /(Core Language\/Classes\/Lambdas\/Return Type)_TOPIC/`
-
-```{prereq}
-Core Language/Variables/Arrays_TOPIC
-Core Language/Variables/Pointers_TOPIC
-Core Language/Templates/Type Deduction_TOPIC
-```
-
-`return-type` is an _optional_ part of `[capture-list] (parameter-list) modifiers -> return-type { body }` that defines the return type of the functor's function-call operator. The syntax of using an arrow and defining the type after the parameter list is called the trailing return syntax.
-
-```c++
-auto f1 { [] (int a, int b) -> int { return a+b; } };
-auto f2 { [] (MyObject* v) -> const MyObject& { return v[5]; } };
-```
-
-```{seealso}
-Core Language/Templates/Type Deduction/Type Cloning Deduction_TOPIC (different use-case for trailing return type syntax)
-```
-
-When a lambda doesn't provide a return type, the return type is implicitly `auto`. The compiler uses standard template parameter type deduction rules to determine what the return type should be.
-
-```c++
-auto f3 { [] (int a, int b) { return a+b; } };  // return deduced to int
-auto f4 { [] (MyObject* v) { return v[5]; } };  // return deduced to MyObject
-```
-
-In `f4`, even though `v[5]` returns a `const MyObject &`, type deduction rules evaluate it to `const MyObject` (not a reference). That means `f4` returns a copy of the object at `v[5]` rather than a reference to the real thing. Type deduction rules such as the one here may end up causing subtle bugs if you aren't careful.
-
-Another option is to explicitly return `decltype(auto)`, which copies the exact type being returned.
-
-```c++
-auto f5 { [] (MyObject* v) -> decltype(auto) { return v[5]; } };  // return deduced to const MyObject&
-```
-
-```{note}
-When unsure, it's best to explicitly declare the return type or use `decltype(auto)`. 
-```
-
-#### Modifiers
-
-`{bm} /(Core Language\/Classes\/Lambdas\/Modifiers)_TOPIC/`
-
-```{prereq}
-Core Language/Variables/Arrays_TOPIC
-Core Language/Variables/Pointers_TOPIC
-Core Language/Templates/Type Deduction_TOPIC
-```
-
-`modifiers` is an _optional_ part of `[capture-list] (parameter-list) modifiers -> return-type { body }` that lists the modifiers of the functor's function-call operator. Except for the following special cases, modifiers work the same way that they do for normal functions.
-
- * The function-call operator is set to be a `constexpr` function if it meets the requirements of being a constant expression. You can force it to be a constant expression by adding `constexpr` as one of the modifiers.
-
-   ```c++
-   auto f1 { [] (int x, int y) constexpr -> int { return x + y; } };  // force as constant expression
-   ```
- 
- * The function-call operator is set to be a `const` function. You can force this off by adding `mutable` as one of the modifiers.
-
-   ```c++
-   auto f2 { [] (int x, int y) mutable -> int { return x + y; } };    // make non-const
-   ```
-
-#### Template Parameters
-
-`{bm} /(Core Language\/Classes\/Lambdas\/Template Parameters)_TOPIC/`
-
-```{prereq}
-Core Language/Templates_TOPIC
-```
-
-A lambda may have template parameters added by injecting template parameters in angle brackets between `[capture-list]` and `(parameter-list)` of the lambda declaration `[capture-list] (parameter-list) modifiers -> return-type { body }`.
-
-```c++
-auto f1 { [] <typename T>(T x, T y) -> T { return x + y; } };
-```
-
-This is useful in cases where you need to be more explicit with the types of parameters / return types (`auto` is too loose). The most obvious case is with containers, where you likely want the underlying container type listed.
-
-```c++
-// f2 and f3 will do the same thing when passed a std::vector, but f3 is much more explicit.
-auto f2 { [] (auto& v) -> const auto& { return v[7]; } };
-auto f3 { [] <typename T>(std::vector<T>& v) -> const T& { return v[7]; } };
-```
-
-```{note}
-Concept_TEMPLATEs may be used both with `auto` and with explicit template parameters (e.g. `T`). See the section on concept_TEMPLATEs to see how to they're applied in both cases.
-```
-
-```{seealso}
-Core Language/Templates/Concepts_TOPIC
-Library Functions/Containers_TOPIC
-```
-
 ### Friends
 
 `{bm} /(Core Language\/Classes\/Friends)_TOPIC/`
@@ -3511,6 +3192,254 @@ The standard C++ library makes use of user-defined literals in various places, b
 
 ```{seealso}
 Library Functions/Time/Durations_TOPIC
+```
+
+## Lambdas
+
+`{bm} /(Core Language\/Lambdas)_TOPIC/`
+
+```{prereq}
+Core Language/Classes/Functors_TOPIC
+Core Language/Classes/Constant_TOPIC
+Core Language/Constant Expressions_TOPIC
+Core Language/Templates/Auto Syntax_TOPIC
+```
+
+Lambdas are unnamed functors (not functions) that are expressed in a succinct form. Lambdas in C++ work similarly to lambdas in other high-level languages. They capture copies of / references to objects from the outer scope such that they can be used for whatever processing the functor performs.
+
+For example, consider the following functor.
+
+```c++
+// define
+constexpr struct MyFunctor {
+    MyFunctor(int x) {
+        this->x = x;
+    };
+
+    constexpr int operator()(int a) const {
+        return a + x;
+    }
+private:
+    int x;
+};
+
+// instantiate
+MyFunction f1{ 5 };
+
+// invoke
+f1(42);
+```
+
+The functor above can be written much more succinctly as a lambda.
+
+```c++
+// define and instantiate
+auto f2 { [x=5] (int a) -> int { return a + x; } };
+
+// invoke
+f2(42);
+```
+
+The general syntax of a lambda is as follows: `[capture-list] (parameter-list) modifiers -> return-type { body }`. The subsections below detail this general syntax.
+
+```{note}
+Be aware that, by default, the function-call operator in the lambda version is `const` and will automatically be made into a `constexpr` if it satisfies all the requirements of `constexpr`. This is discussed more in the modifiers subsections.
+```
+
+### Capture List
+
+`{bm} /(Core Language\/Lambdas\/Capture List)_TOPIC/`
+
+```{prereq}
+Core Language/Classes/Moving_TOPIC
+```
+
+`[capture-list]` is a _required_ part of `[capture-list] (parameter-list) modifiers -> return-type { body }` that defines and sets member variables inside the functor. It's a comma separated list where each element is a list is a variable to capture as a member variable. 
+
+There are 3 different ways to capture member variables.
+
+ * **Copy** a variable from the outer scope.
+    
+   To create a copy of an individual variable into the functor, put the variable's name in the capture list.
+
+   ```c++
+   int x {5};
+   int y {6};
+   // explicitly copy x and y from outer scope
+   auto f { [x, y] (int z) -> int { return x + y + z; } };
+   ```
+
+   One way to avoid listing out individual variable names is to put `=` as the first element of the capture list. When `=` is present, missing member variables will automatically get copied as member variables.
+
+   ```c++
+   int x {5};
+   int y {6};
+   // explicitly copy x and implicitly copy y from outer scope
+   auto f { [=, x] (int z) -> int { return x + y + z; } };
+   ```
+
+   If used within an enclosing class, the `this` pointer can be captured.
+
+   ```c++
+   auto f { [this] (int z) -> int { return z + this->x; } };   // capture this as a pointer
+   auto f { [*this] (int z) -> int { return z + this->x; } };  // capture a COPY OF *this and pass it in as a pointer
+   ```
+
+   ```{note}
+   It's mentioned that prior to C++20, automatic copy capturing (`[=]`) would pull in `this`. That feature has been deprecated.
+   ```
+
+ * **Reference** a variable from the outer scope.
+
+   To create reference to an individual variable into the functor, put the variable's name in the capture list preceded by an ampersand (&).
+
+   ```c++
+   int x {5};
+   int y {6};
+   // explicitly reference x and y from outer scope
+   auto f { [&x, &y] (int z) -> int { return x + y + z; } };
+   ```
+
+   One way to avoid listing out individual variable names is to put `&` as the first element of the capture list. When `&` is present, missing member variables will automatically get referenced as member variables.
+
+   ```c++
+   int x {5};
+   int y {6};
+   // explicitly reference x and implicitly reference y from outer scope
+   auto f { [&, &x] (int z) -> int { return x + y + z; } };
+   ```
+
+ * **Initialize** a variable using an expression.
+
+   When a variable name is followed by `=` and an expression, the expression is evaluated and captured.
+
+   ```c++
+   int x {5};
+   int y {6};
+   auto f { [mod_x=x/2, mod_y=y/2] (int z) -> int { return mod_x + mod_y + z; } };
+   ```
+
+   This is especially useful for capturing an object by moving it (as opposed to copying it or referencing it).
+
+   ```c++
+   auto f { [o=std::move(my_obj)] (int z) -> int { return o.do_something(z); } };
+   ```
+
+### Parameter List
+
+`{bm} /(Core Language\/Lambdas\/Parameter List)_TOPIC/`
+
+`(parameter-list)` is a _required_ part of `[capture-list] (parameter-list) modifiers -> return-type { body }` that defines the parameter list of the functor's function-call operator.
+
+```c++
+auto f1 { [] (int x, int y) -> int { return x + y; } };
+auto f2 { [] (int x, int y = 99) -> int { return x + y; } };  // default args
+auto f3 { [] (auto x, auto y) -> int { return static_cast<int>(x + y); } };  // templated params (compiler deduces types based on usage)
+```
+
+Lambda parameter lists are defined similarly to standard function parameter lists. It's common for a lambda's parameter list to use template parameters via `auto` as is done in `f3` of the example above. The reason for using `auto` is that the lambda can still work even if you don't know / can't predict the exact types of the arguments passed in (e.g. you know the arguments will be integral types, but you don't know exactly which exact integral types).
+
+```{note}
+`auto` is a placeholder for a template parameter, and as such type deduction rules come into play. If you aren't careful, you'll end up with strange or incorrect behaviour. For example, in certain cases the compiler may decide to create a local copy for an argument that gets passed in where you may be expecting a reference.
+```
+
+```{seealso}
+Core Language/Templates/Type Deduction_TOPIC
+```
+
+### Return Type
+
+`{bm} /(Core Language\/Return Type)_TOPIC/`
+
+```{prereq}
+Core Language/Variables/Arrays_TOPIC
+Core Language/Variables/Pointers_TOPIC
+Core Language/Templates/Type Deduction_TOPIC
+```
+
+`return-type` is an _optional_ part of `[capture-list] (parameter-list) modifiers -> return-type { body }` that defines the return type of the functor's function-call operator. The syntax of using an arrow and defining the type after the parameter list is called the trailing return syntax.
+
+```c++
+auto f1 { [] (int a, int b) -> int { return a+b; } };
+auto f2 { [] (MyObject* v) -> const MyObject& { return v[5]; } };
+```
+
+```{seealso}
+Core Language/Templates/Type Deduction/Type Cloning Deduction_TOPIC (different use-case for trailing return type syntax)
+```
+
+When a lambda doesn't provide a return type, the return type is implicitly `auto`. The compiler uses standard template parameter type deduction rules to determine what the return type should be.
+
+```c++
+auto f3 { [] (int a, int b) { return a+b; } };  // return deduced to int
+auto f4 { [] (MyObject* v) { return v[5]; } };  // return deduced to MyObject
+```
+
+In `f4`, even though `v[5]` returns a `const MyObject &`, type deduction rules evaluate it to `const MyObject` (not a reference). That means `f4` returns a copy of the object at `v[5]` rather than a reference to the real thing. Type deduction rules such as the one here may end up causing subtle bugs if you aren't careful.
+
+Another option is to explicitly return `decltype(auto)`, which copies the exact type being returned.
+
+```c++
+auto f5 { [] (MyObject* v) -> decltype(auto) { return v[5]; } };  // return deduced to const MyObject&
+```
+
+```{note}
+When unsure, it's best to explicitly declare the return type or use `decltype(auto)`. 
+```
+
+### Modifiers
+
+`{bm} /(Core Language\/Classes\/Lambdas\/Modifiers)_TOPIC/`
+
+```{prereq}
+Core Language/Variables/Arrays_TOPIC
+Core Language/Variables/Pointers_TOPIC
+Core Language/Templates/Type Deduction_TOPIC
+```
+
+`modifiers` is an _optional_ part of `[capture-list] (parameter-list) modifiers -> return-type { body }` that lists the modifiers of the functor's function-call operator. Except for the following special cases, modifiers work the same way that they do for normal functions.
+
+ * The function-call operator is set to be a `constexpr` function if it meets the requirements of being a constant expression. You can force it to be a constant expression by adding `constexpr` as one of the modifiers.
+
+   ```c++
+   auto f1 { [] (int x, int y) constexpr -> int { return x + y; } };  // force as constant expression
+   ```
+ 
+ * The function-call operator is set to be a `const` function. You can force this off by adding `mutable` as one of the modifiers.
+
+   ```c++
+   auto f2 { [] (int x, int y) mutable -> int { return x + y; } };    // make non-const
+   ```
+
+### Template Parameters
+
+`{bm} /(Core Language\/Classes\/Template Parameters)_TOPIC/`
+
+```{prereq}
+Core Language/Templates_TOPIC
+```
+
+A lambda may have template parameters added by injecting template parameters in angle brackets between `[capture-list]` and `(parameter-list)` of the lambda declaration `[capture-list] (parameter-list) modifiers -> return-type { body }`.
+
+```c++
+auto f1 { [] <typename T>(T x, T y) -> T { return x + y; } };
+```
+
+This is useful in cases where you need to be more explicit with the types of parameters / return types (`auto` is too loose). The most obvious case is with containers, where you likely want the underlying container type listed.
+
+```c++
+// f2 and f3 will do the same thing when passed a std::vector, but f3 is much more explicit.
+auto f2 { [] (auto& v) -> const auto& { return v[7]; } };
+auto f3 { [] <typename T>(std::vector<T>& v) -> const T& { return v[7]; } };
+```
+
+```{note}
+Concept_TEMPLATEs may be used both with `auto` and with explicit template parameters (e.g. `T`). See the section on concept_TEMPLATEs to see how to they're applied in both cases.
+```
+
+```{seealso}
+Core Language/Templates/Concepts_TOPIC
+Library Functions/Containers_TOPIC
 ```
 
 ## Templates
@@ -3802,7 +3731,7 @@ Core Language/Templates/Type Deduction/Type Cloning Deduction_TOPIC (`decltype(a
 
 ```{prereq}
 Core Language/Classes/Functors_TOPIC
-Core Language/Classes/Lambdas_TOPIC
+Core Language/Lambdas_TOPIC
 ```
 
 To automatically derive the type of a variable something to be passed in as a template parameter, use `decltype()`. This is useful in scenarios where it's difficult or impossible to determine the exact type for a template parameter (e.g. functions, functors, template parameters).
@@ -4411,12 +4340,476 @@ std::integral auto const f() {
 ````
 
 ```{note}
-Does this work with `declspec(auto)` as well?
+Does this work with `decltype(auto)` as well?
 ```
 
-```{sealso}
-Core Language/Templates/Type Deduction/Type Cloning Deduction_TOPIC (`declspec(auto)` description)
+```{seealso}
+Core Language/Templates/Type Deduction/Type Cloning Deduction_TOPIC (`decltype(auto)` description)
 ```
+
+#### Known Types
+
+`{bm} /(Core Language\/Templates\/Concepts\/Known Types)_TOPIC/`
+
+One of the most basic use-cases for concept_TEMPLATEs is to require that a type be one of a set of known types (e.g. require that the type be either `short`, `int`, or `long`). In the example below, a clever use of templates is used to test if the two types are equal, then a concept_TEMPLATE makes use of those templates to see if a type is contained in some larger set.
+
+```c++
+// templates
+template<typename T, typename U>
+struct is_same {
+    static constexpr bool value = false; 
+};
+
+template<typename T>
+struct is_same<T, T> { 
+   static constexpr bool value = true; 
+};
+
+
+// concept for a function whose first parameter's type is an integral type
+template<typename T>
+concept integral_check = is_same<T, short>::value || is_same<T, int>::value || is_same<T, long>::value;
+
+
+// usage
+template<integral_check T>
+long square(T num) {
+    return num * num;
+}
+
+int main() {
+    std::cout << square(2) << std::endl;
+    std::cout << square(2L) << std::endl;
+    return 0;
+}
+```
+
+```{note}
+In most cases, you shouldn't have to write out templates like `is_same<>` yourself. The C++ standard library provides the `type_traits` header library which contains `std::is_same<>` and several other type checks. The C++ standard library also provides a set of pre-built concept_TEMPLATEs that make use of check that a type has specific type traits. For example, `std::is_same<>` is exposed as the concept_TEMPLATE `std::same_as<>`.
+
+Likewise, the C++ standard library provides a more elaborate version of `integral_check<>` as `std::integral<>`.
+```
+
+#### Callable Types
+
+`{bm} /(Core Language\/Templates\/Concepts\/Callable Types)_TOPIC/`
+
+```{prereq}
+Core Language/Templates/Variadic_TOPIC
+Core Language/Templates/Concepts/Known Types_TOPIC
+```
+
+Concept_TEMPLATEs can be used to specify the requirements for a callable object:
+
+* How many parameters it takes in.
+* The types allowed for each parameter / the type traits required by each parameter type.
+* The types allowed for return / traits required by the return type.
+
+Up to C++20, the C++ standard library doesn't provide much functionality for verifying the requirements above. The subsections below make clever use of templates to design checks for these requirements from scratch.
+
+```{note}
+These sub-sections come from my question on [stackoverflow](https://stackoverflow.com/q/73198589/1196226). Everything was tested on g++12.1 using C++20 standard. Newer versions of C++ or the g++ compiler might have better stuff to handle these types of requirements.
+```
+
+##### Parameter Counts
+
+`{bm} /(Core Language\/Templates\/Concepts\/Callable Types\/Parameter Counts)_TOPIC/`
+
+```{prereq}
+Core Language/Templates/Variadic_TOPIC
+Core Language/Constant Expressions_TOPIC
+```
+
+To test a callable object's parameter count within a concept_TEMPLATE, templates can be used to extract the parameter count. In the example below, the concept_TEMPLATE checks that a callable object has exactly 1 parameter.
+
+```c++
+// template(s) to extract parameter count
+template <typename F>
+struct argCnt;
+
+template <typename R, typename ... As>
+struct argCnt<R(*)(As...)> { static constexpr size_t cnt = sizeof...(As); };  // needed for std::integral<>
+
+template <typename R, typename ... As>
+struct argCnt<R(As...)> { static constexpr size_t cnt = sizeof...(As); };  // needed for std::integral<>
+
+
+// concept for a callable object that has exactly 1 parameter
+template<typename Fn>
+concept MySpecialFunction = argCnt<Fn>::cnt == 1;
+
+
+// usage
+template<MySpecialFunction Fn>
+decltype(auto) call(Fn fn) {
+    return fn(2);
+}
+
+int square_int(int num) {
+    return num * num;
+}
+
+long square_long(long num) {
+    return num * num;
+}
+
+int main() {
+    std::cout << call(square_int) << std::endl;
+    std::cout << call(square_long) << std::endl;
+    return 0;
+}
+```
+
+```{note}
+Instead of using the templates show above, one other solution is to use [Boost's type traits library](https://www.boost.org/doc/libs/1_79_0/libs/type_traits/doc/html/boost_typetraits/reference/function_traits.html): `function_traits<my_func>::arity`.
+```
+
+##### Parameter Types
+
+`{bm} /(Core Language\/Templates\/Concepts\/Callable Types\/Parameter Types)_TOPIC/`
+
+```{prereq}
+Core Language/Templates/Variadic_TOPIC
+```
+
+To test a callable object's parameter type within a concept_TEMPLATE, templates can be used to extract the parameter type. In the example below, the concept_TEMPLATE checks that a callable object's first parameter has a type conforming to the concept_TEMPLATE `std::integral`.
+
+```c++
+// template(s) to extract parameter types
+template <std::size_t N, typename T0, typename ... Ts>
+struct typeN { using type = typename typeN<N-1U, Ts...>::type; };
+
+template <typename T0, typename ... Ts>
+struct typeN<0U, T0, Ts...> { using type = T0; };
+
+template <std::size_t, typename F>
+struct argN;
+
+template <std::size_t N, typename R, typename ... As>
+struct argN<N, R(*)(As...)> { using type = typename typeN<N, As...>::type; };  // needed for std::integral<>
+
+template <std::size_t N, typename R, typename ... As>
+struct argN<N, R(As...)>  { using type = typename typeN<N, As...>::type; };  // needed for std::is_integeral_v<>
+
+
+// concept for a function whose first parameter's type is an integral type
+template<typename Fn>
+concept MySpecialFunction = std::integral<typename argN<0U, Fn>::type>;
+
+
+// usage
+template<MySpecialFunction Fn>
+decltype(auto) call(Fn fn) {
+    return fn(2);
+}
+
+int square_int(int num) {
+    return num * num;
+}
+
+long square_long(long num) {
+    return num * num;
+}
+
+int main() {
+    std::cout << call(square_int) << std::endl;
+    std::cout << call(square_long) << std::endl;
+    return 0;
+}
+
+
+// type trait checks using static_assert() -- not necessary
+static_assert( std::is_integral_v<typename argN<0U, decltype(square_int)>::type> );
+static_assert( std::is_integral_v<typename argN<0U, decltype(square_long)>::type> );
+```
+
+```{note}
+Instead of using the templates show above, one other solution is to use [Boost's type traits library](https://www.boost.org/doc/libs/1_79_0/libs/type_traits/doc/html/boost_typetraits/reference/function_traits.html): `function_traits<my_func>::argN_type`
+```
+
+````{note}
+Cleverly using templates as shown above is the most robust way to check a parameter's type. But, if your requirements aren't overly complex, there may be simpler ways.
+
+**SCENARIO 1: Testing for a known concrete types**
+
+In this scenario, the requirement is that a callable object's parameter type be a concrete type that's known beforehand (e.g. `int`). The concept_TEMPLATE for the callable object itself can simply use a parameter list `requires` clause.
+
+```c++
+// concept for a function that takes in a single argument of type int
+template <typename Fn>
+concept MySpecialFunction = requires(Fn f, int t) {
+            { f(t) } -> std::same_as<int>;
+        };
+```
+
+**SCENARIO 2: Testing for a set of known concrete types**
+
+In this scenario, the requirement is that a callable object's parameter be one of a set of concrete types that's known beforehand (e.g. `int` or `long`). The concept_TEMPLATE for the callable object can be exploded out into several sub-concept_TEMPLATEs: Each sub-concept_TEMPLATE checks that the callable object's parameter type match a specific concrete type, then those sub-concept_TEMPLATEs combine to form the full concept_TEMPLATE.
+
+```c++
+// concept that combines the two sub-concepts: checks for a function has a single parameter of type int or long
+template<typename Fn>
+concept MySpecialFunction1 = requires(Fn f, int i) {   // sub-concept1: func that has a single parameter of type int
+    { f(i) } -> std::same_as<decltype(i)>;
+};
+
+template<typename Fn>
+concept MySpecialFunction2 = requires(Fn f, long l) {  // sub-concept2: func that has a single parameter of type long
+    { f(l) } -> std::same_as<decltype(l)>;
+};
+
+template<typename Fn>
+concept MySpecialFunction = MySpecialFunction1<Fn> || MySpecialFunction2<Fn>;  // final concept: func that has a single parameter of type int or long
+
+
+// usage
+template<MySpecialFunction Fn>
+decltype(auto) call(Fn f) {
+    return f(2);
+}
+
+int square_int(int num) {
+    return num * num;
+}
+
+long square_long(long num) {
+    return num * num;
+}
+
+int main() {
+    std::cout << call(square_int) << std::endl;
+    std::cout << call(square_long) << std::endl;
+    return 0;
+}
+```
+
+The problem with exploding out to sub-concept_TEMPLATEs is that the number of sub-concept_TEMPLATEs can get very large. For example, if the callable object should have 4 parameters and each of those parameters should be of type `int`, `long`, `short`, or `void*`, that's 256 different sub-concept_TEMPLATEs to list out.
+
+```c++
+// sub-concepts for function that takes in 4 params:
+// param1: int|long|short|void*
+// param2: int|long|short|void*
+// param2: int|long|short|void*
+// param3: int|long|short|void*
+//
+// 4^4=256 sub-concepts required, not really feasible to code something like this out
+template<typename Fn>
+concept MySpecialFunction1 = requires(Fn f, int p1, int p2, int p3, int p4) {
+    { f(p1, p2, p3, p4) } -> std::same_as<long>;
+};
+
+template<typename Fn>
+concept MySpecialFunction2 = requires(Fn f, int p1, int p2, int p3, long p4) {
+    { f(p1, p2, p3, p4) } -> std::same_as<long>;
+};
+
+template<typename Fn>
+concept MySpecialFunction3 = requires(Fn f, int p1, int p2, int p3, short p4) {
+    { f(p1, p2, p3, p4) } -> std::same_as<long>;
+};
+
+template<typename Fn>
+concept MySpecialFunction4 = requires(Fn f, int p1, int p2, int p3, void* p4) {
+    { f(p1, p2, p3, p4) } -> std::same_as<long>;
+};
+
+template<typename Fn>
+concept MySpecialFunction5 = requires(Fn f, int p1, int p2, long p3, int p4) {
+    { f(p1, p2, p3, p4) } -> std::same_as<long>;
+};
+
+template<typename Fn>
+concept MySpecialFunction6 = requires(Fn f, int p1, int p2, long p3, long p4) {
+    { f(p1, p2, p3, p4) } -> std::same_as<long>;
+};
+
+...
+
+template<typename Fn>
+concept MySpecialFunction256 = requires(Fn f, void* p1, void* p2, void* p3, void* p4) {
+    { f(p1, p2, p3, p4) } -> std::same_as<long>;
+};
+
+// combine sub-concepts together into final concept
+template<typename Fn>
+concept MySpecialFunction =
+    MySpecialFunction1<Fn>
+    || MySpecialFunction2<Fn>
+    || MySpecialFunction3<Fn>
+    || MySpecialFunction4<Fn>
+    || MySpecialFunction5<Fn>
+    || MySpecialFunction6<Fn>
+    || ...
+    || MySpecialFunction256<Fn>;
+
+
+
+// usage
+template<typename Fn>
+    requires MySpecialFunction<Fn>
+decltype(auto) call(Fn fn) {
+    return fn(1, 2, 3, 4);
+}
+
+long multiply(int num1, long num2, short num3, long num4) {
+    return num1 * num2 * num3 * num4;
+}
+
+int main() {
+    std::cout << call(multiply) << std::endl;
+    return 0;
+}
+```
+
+One potential workaround to the sub-concept_TEMPLATE explosion problem shown in the example above is to use a parameter list `requires` clause: Each of the 4 parameter types gets fed into the top-level concept_TEMPLATE as a template parameter and requirements are individually tested on each of those template parameters.
+
+```c++
+// function that takes in 4 params:
+// param1: int|long|short|void*
+// param2: int|long|short|void*
+// param2: int|long|short|void*
+// param3: int|long|short|void*
+template<typename Fn, typename P1, typename P2, typename P3, typename P4>
+concept MySpecialFunction =
+    (std::same_as<P1, int> || std::same_as<P1, long> || std::same_as<P1, short> || std::same_as<P1, void*>)
+    && (std::same_as<P2, int> || std::same_as<P2, long> || std::same_as<P2, short> || std::same_as<P2, void*>)
+    && (std::same_as<P3, int> || std::same_as<P3, long> || std::same_as<P3, short> || std::same_as<P3, void*>)
+    && (std::same_as<P4, int> || std::same_as<P4, long> || std::same_as<P4, short> || std::same_as<P4, void*>)
+    && requires(Fn f, P1 p1, P2 p2, P3 p3, P4 p4) {
+        { f(p1, p2, p3, p4) } -> std::same_as<long>;
+    };
+```
+
+Doing this removes the sub-concept_TEMPLATE explosion problem, but it introduces a new problem of the compiler losing the ability to infer template parameters from usage. In the example below, the concept_TEMPLATE for the callable object is concise, but usages of `call()` now need to explicitly specify what each template argument is because the C++ compiler is no longer able to infer them on its own.
+
+```c++
+// function that takes in 4 params:
+// param1: int|long|short|void*
+// param2: int|long|short|void*
+// param2: int|long|short|void*
+// param3: int|long|short|void*
+template<typename Fn, typename P1, typename P2, typename P3, typename P4>
+concept MySpecialFunction =
+    (std::same_as<P1, int> || std::same_as<P1, long> || std::same_as<P1, short> || std::same_as<P1, void*>)
+    && (std::same_as<P2, int> || std::same_as<P2, long> || std::same_as<P2, short> || std::same_as<P2, void*>)
+    && (std::same_as<P3, int> || std::same_as<P3, long> || std::same_as<P3, short> || std::same_as<P3, void*>)
+    && (std::same_as<P4, int> || std::same_as<P4, long> || std::same_as<P4, short> || std::same_as<P4, void*>)
+    && requires(Fn f, P1 p1, P2 p2, P3 p3, P4 p4) {
+        { f(p1, p2, p3, p4) } -> std::same_as<long>;
+    };
+
+
+// usage
+template<typename Fn, typename P1, typename P2, typename P3, typename P4>
+    requires MySpecialFunction<Fn, P1, P2, P3, P4>
+decltype(auto) call(Fn fn) {
+    return fn(1, 2, 3, 4);
+}
+
+long multiply(int num1, long num2, short num3, long num4) {
+    return num1 * num2 * num3 * num4;
+}
+
+int main() {
+    // std::cout << call(multiply) << std::endl; // <--- WON'T COMPILE because template parameters can't be inferred by the compiler
+    std::cout << call<decltype(multiply), int, long, short, long>(multiply) << std::endl; // <--- WILL COMPILE because template parameters explicitly listed,
+    return 0;
+}
+```
+````
+
+##### Return Types
+
+`{bm} /(Core Language\/Templates\/Concepts\/Callable Types\/Return Types)_TOPIC/`
+
+```{prereq}
+Core Language/Templates/Variadic_TOPIC
+Core Language/Templates/Concepts/Callable Types/Parameter Types_TOPIC
+```
+
+To test a callable object's return type within a concept_TEMPLATE, templates can be used to extract the type. In the example below, the concept_TEMPLATE checks that a callable object has a return type of integral.
+
+```c++
+// template(s) to extract return types
+template <typename F>
+struct returnType;
+
+template <typename R, typename ... As>
+struct returnType<R(*)(As...)> { using type = R; };
+
+template <typename R, typename ... As>
+struct returnType<R(As...)> { using type = R; };
+
+
+// concept for a function whose return type is an integral type
+template<typename Fn>
+concept MySpecialFunction =
+    std::integral<typename returnType<Fn>::type>;
+
+
+// usage
+template<MySpecialFunction Fn>
+decltype(auto) call(Fn fn) {
+    return fn(2);
+}
+
+int square_int(int num) {
+    return num * num;
+}
+
+long square_long(long num) {
+    return num * num;
+}
+
+int main() {
+    std::cout << call(square_int) << std::endl;
+    std::cout << call(square_long) << std::endl;
+    return 0;
+}
+```
+
+```{note}
+Instead of using the templates show above, one other solution is to use [Boost's type traits library](https://www.boost.org/doc/libs/1_79_0/libs/type_traits/doc/html/boost_typetraits/reference/function_traits.html): `function_traits<my_func>::result_type`
+
+Somewhat related as well from the C++ standard library: `std::result_of` / `std::invoke_result`.
+```
+
+````{note}
+Cleverly using templates as shown above is the most robust way to check a callable object's return type. But, if your requirements aren't overly complex, it may be feasible to use simpler checks such as those discussed in the parameter types section before this section. For example, if the scenario allows for it, a concept_TEMPLATE check can be reduced to just a set of parameter list `requires` clauses being logically or'd together.
+
+```c++
+// concept for a function whose return type is an integral type
+template<typename Fn>
+concept MySpecialFunction =
+    requires(Fn f, int i) {
+        { f(i) } -> std::same_as<int>;
+    }
+    || requires(Fn f, long l) {
+        { f(l) } -> std::same_as<long>;
+    };
+
+
+// usage
+template<MySpecialFunction Fn>
+decltype(auto) call(Fn fn) {
+    return fn(2);
+}
+
+int square_int(int num) {
+    return num * num;
+}
+
+long square_long(long num) {
+    return num * num;
+}
+
+int main() {
+    std::cout << call(square_int) << std::endl;
+    std::cout << call(square_long) << std::endl;
+    return 0;
+}
+```
+````
 
 ### Variadic
 
@@ -4582,6 +4975,78 @@ The rules for this are complex, but essentially in certain cases the compiler ca
 
 ```{note}
 For a full breakdown, see [here](https://stackoverflow.com/a/613132).
+```
+
+## Coroutines
+
+`{bm} /(Core Language\/Coroutines)_TOPIC/`
+
+```{prereq}
+Core Language/Functions_TOPIC
+Core Language/Classes_TOPIC
+```
+
+A coroutine that can suspend its own execution and have it be continued at a later time. Similar to async functions in Javascript, C++ coroutines can work with promise objects (objects that do work asynchronously). A function can be made into a coroutine by using any of the following: 
+
+ * `co_await` - suspend execution waiting for a promise to finish.
+ * `co_yield` - suspend execution and optionally return a value. 
+ * `co_return` - complete execution and optionally return a value.
+
+The return value of a coroutine is a "promise type", a C++ class that has a specific structure and specific set of functionality that the compiler calls to determine and control the coroutine's state.
+
+```{note}
+This is deeply convoluted and requires a lot more digging and documentation, possibly in its own section instead of sub-section under the Function header.
+```
+
+```c++
+#include <iostream>
+#include <cstdlib>
+#include <coroutine>
+
+struct Resumable {
+    struct promise_type; // forward declaration
+    Resumable(std::coroutine_handle<promise_type> coro) : coro(coro) {}
+    ~Resumable() {
+        coro.destroy();
+    }
+    void destroy() { coro.destroy(); }
+    void resume() { coro.resume(); }
+private:
+    std::coroutine_handle<promise_type> coro;
+};
+
+struct Resumable::promise_type {
+    auto get_return_object() { return Resumable(std::coroutine_handle<Resumable::promise_type>::from_promise(*this)); }
+    auto initial_suspend() { return std::suspend_never(); }
+    auto final_suspend() noexcept { return std::suspend_never(); }
+    auto yield_value(int value) {
+        current_value = value;
+        return std::suspend_always{};
+    }
+    void return_void() { }
+    void unhandled_exception() { }
+    int current_value;
+};
+
+Resumable range(int start, int end) {
+    while (start < end) {
+        co_yield start;
+        std::cout << start << '\n';
+        start++;
+    }
+    co_return;
+}
+
+int main() {
+    auto x {range(0, 10)};
+    x.resume();  // prints 0
+    x.resume();  // prints 1
+    x.resume();  // prints 2
+}
+```
+
+```{note}
+It's said that the coroutine state is kept on the heap, resulting in C++ coroutines being a performance hog. Maybe it's possible to use a custom allocator to work around performance problems?
 ```
 
 ## Unions
@@ -6341,7 +6806,7 @@ std::function<void(int)> f2 { PrintNum };
 ```{seealso}
 Core Language/Variables/Pointers/Function Pointer_TOPIC (refresher)
 Core Language/Classes/Functors_TOPIC (refresher)
-Core Language/Classes/Lambdas_TOPIC (refresher)
+Core Language/Lambdas_TOPIC (refresher)
 ```
 
 The typical use-case for `std::function` is to provide a function with a unified way to accept all function-like objects (e.g. functors and function pointers) as a parameter. The alternative would be to explicitly provide an overload for each function-like object type.
@@ -8188,7 +8653,7 @@ std::priority_queue<int, std::deque<int>, decltype(std::greater<int>)> q6 { std:
 ```
 
 ```{seealso}
-Core Language/Classes/Lambdas_TOPIC (lambda refresher)
+Core Language/Lambdas_TOPIC (lambda refresher)
 ```
 
 To add an item, use `push()`.
@@ -8922,7 +9387,7 @@ Library Functions/Strings/String_TOPIC
 Library Functions/Strings/Formatter_TOPIC
 ```
 
-The appropriate way to convert to string is `std::formatter`. For quick-and-dirty conversions of numeric built-in types to `std::string ` / `std::wstring`, use `std::to_string()` / `std::to_wstring()`. Other string types such as `std::u8string` aren't supported.
+The appropriate way to convert to string is `std::formatter`. For quick-and-dirty conversions of numeric built-in types to `std::string` / `std::wstring`, use `std::to_string()` / `std::to_wstring()`. Other string types such as `std::u8string` aren't supported.
 
 ```c++
 auto s { std::to_string(10) }; // int

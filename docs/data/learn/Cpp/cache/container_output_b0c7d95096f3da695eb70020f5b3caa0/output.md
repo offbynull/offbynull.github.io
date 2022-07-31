@@ -2,6 +2,6 @@
 
 <strong>⚠️NOTE️️️⚠️</strong>
 
-Does this work with `declspec(auto)` as well?
+Does this work with `decltype(auto)` as well?
 </div>
 

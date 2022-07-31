@@ -2,7 +2,7 @@
 
 <strong>🔍SEE ALSO🔍</strong>
 
- * Core Language/Classes/Lambdas_TOPIC (lambda refresher)
+ * Core Language/Lambdas_TOPIC (lambda refresher)
 
 </div>
 

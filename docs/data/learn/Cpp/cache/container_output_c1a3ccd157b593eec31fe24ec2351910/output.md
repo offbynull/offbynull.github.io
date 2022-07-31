@@ -4,7 +4,7 @@
 
  * Core Language/Variables/Pointers/Function Pointer_TOPIC (refresher)
  * Core Language/Classes/Functors_TOPIC (refresher)
- * Core Language/Classes/Lambdas_TOPIC (refresher)
+ * Core Language/Lambdas_TOPIC (refresher)
 
 </div>
 
