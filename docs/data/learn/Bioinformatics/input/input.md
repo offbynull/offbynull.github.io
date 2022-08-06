@@ -14423,9 +14423,9 @@ Other uses such as longest repeating substring, longest shared substring, shorte
 Algorithms/Single Nucleotide Polymorphism/Suffix Array_TOPIC
 ```
 
-**WHAT**: Burrows-wheeler transform (BWT) is a matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. It's used for efficiently determining the number of times some substring appears in a sequence, and with some extensions it can also determine the position of each occurrence of that substring.
+**WHAT**: Burrows-wheeler transform (BWT) is a matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. It's used for efficiently determining the number of times some substring appears in a sequence, and with some extensions it can determine their positions in the sequence as well.
 
-Similar to suffix arrays, the sequence must have an end marker where the end marker symbol comes first in the lexicographical sort order. For example, the BWT of the "banana¶" ("¶" is the end marker), first creates a matrix by stacking all possible cyclical rotations...
+Similar to suffix arrays, the sequence must have an end marker where the end marker symbol comes first in the lexicographical sort order. For example, the BWT of "banana¶" ("¶" is the end marker), first creates a matrix by stacking all possible cyclical rotations...
 
 |   |   |   |   |   |   |   |
 |---|---|---|---|---|---|---|
@@ -14448,8 +14448,16 @@ Similar to suffix arrays, the sequence must have an end marker where the end mar
 | b | a | n | a | n | a | ¶ |
 | n | a | ¶ | b | a | n | a |
 | n | a | n | a | ¶ | b | a |
-     
-BWT matrices have a special property called the first-last property: For each symbol, the order in which instances of that symbol appear in the first column of the matrix matches that of the last column in the matrix. For example, consider how the above matrix would look with symbol instance counts included. The symbols in "banana¶" are [a, b, n, ¶]. At index ...
+
+```{note}
+The terminology I used below is mildly confusing.
+
+ * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* [a, b, n, ¶]).
+ * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of "n").
+ * Symbol instance count: The occurrence part of a symbol instance (e.g. index 4 of "banana¶" is "n" and it *is occurrence number* / *has a symbol instance count of* 2).
+```
+
+BWT matrices have a special property called the first-last property. Consider how the above matrix would look with symbol instance counts included. The symbols in "banana¶" are [a, b, n, ¶]. At index ...
 
 0. the first "b" occurs: b1
 1. the first "a" occurs: a1
@@ -14459,7 +14467,7 @@ BWT matrices have a special property called the first-last property: For each sy
 5. the third "a" occurs: a3
 6. the first "¶" occurs: ¶1
 
-The sequence "banana¶" with symbol instance counts included is [b1, a1, n1, a2, n2, a3, ¶1]. Performing the same cyclic rotations and lexicographically sorting where these symbol instance counts are visible results in the following matrix.
+The sequence "banana¶" with symbol instance counts included is [b1, a1, n1, a2, n2, a3, ¶1]. Performing the same cyclic rotations and lexicographically sorting on this sequence results in the following matrix (symbol instance counts not included in sorting).
 
 |    |    |    |    |    |    |    |
 |----|----|----|----|----|----|----|
@@ -14472,15 +14480,13 @@ The sequence "banana¶" with symbol instance counts included is [b1, a1, n1, a2,
 | n1 | a2 | n2 | a3 | ¶1 | b1 | a1 |
 
 ```{note}
-Nothing has changed in the matrix. It's exactly the same matrix is exactly the same as before, it's just that the symbol instance counts are now visible where as before they were hidden.
-
-These symbol instance counts _aren't included_ in the lexicographic sorting that happens.
+It's the exact same matrix as before, it's just that the symbol instance counts are now visible where as before they were hidden. These symbol instance counts _aren't included_ in the lexicographic sorting that happens.
 ```
 
-For each symbol [a, b, n, ¶] in "banana¶", even though the position of symbol instances are different between the first and last columns of the matrix, the order in which those instances appear in are the same. For example, symbol ...
+For each symbol [a, b, n, ¶] in "banana¶", even though the position of each symbol instance is different between the first column of the matrix vs last columns of the matrix, the order in which those symbol instances appear in are the same. For example, symbol ...
 
- * "a" has its instances are ordered as [`{h}#f00 a3`, `{h}#b00 a2`, `{h}#800 a1`] in both the first and last column.
- * "n" has its instances are ordered as [`{h}#00f n2`, `{h}#00b n1`] in both the first and last column.
+ * "a" has its symbol instances ordered as [`{h}#f00 a3`, `{h}#b00 a2`, `{h}#800 a1`] in both the first and last column.
+ * "n" has its symbol instances ordered as [`{h}#00f n2`, `{h}#00b n1`] in both the first and last column.
 
 |              |    |    |    |    |    |              |
 |--------------|----|----|----|----|----|--------------|
@@ -14492,7 +14498,7 @@ For each symbol [a, b, n, ¶] in "banana¶", even though the position of symbol 
 | `{h}#00f n2` | a3 | ¶1 | b1 | a1 | n1 | `{h}#b00 a2` |
 | `{h}#00b n1` | a2 | n2 | a3 | ¶1 | b1 | `{h}#800 a1` |
 
-The first-last property is a result of the lexicographic sorting that happens. In the example matrix above, isolating the matrix to those rows starting with "a" shows that the second column is also lexicographically sorted.
+The phenomenon of consistent ordering between first and last columns of the matrix is essentially the first-last property: For each symbol in the sequence, the order of that symbol's instances in the first column of the matrix matches that of the last column in the matrix. This phenomenon happens due to the lexicographic sorting. In the example matrix above, isolating the matrix to those rows with "a" in the first column shows that the second column is also lexicographically sorted.
 
 |              |  ▼ |    |    |    |    |    |
 |--------------|----|----|----|----|----|----|
@@ -14500,7 +14506,7 @@ The first-last property is a result of the lexicographic sorting that happens. I
 | `{h}#b00 a2` | n2 | a3 | ¶1 | b1 | a1 | n1 |
 | `{h}#800 a1` | n1 | a2 | n2 | a3 | ¶1 | b1 |
 
-In other words, cyclically rotating each row right by 1 moves each corresponding "a" to the end but doesn't change the lexicographic ordering of the rows.
+In other words, cyclically rotating each row right by 1 moves each corresponding "a" to the end but the rows still remain lexicographically sorted.
 
 |  ▼ |    |    |    |    |    |              |
 |----|----|----|----|----|----|--------------|
@@ -14540,7 +14546,7 @@ Given just the first and last column of a BWT matrix, the original sequence can 
                                 ba                              bana                               banana
 ```
 
-Likewise, given just the first and last column of a BWT matrix, it's possible to quickly identify if and how many instances of some substring exists in th original sequence.
+Likewise, given just the first and last column of a BWT matrix, it's possible to quickly identify if and how many times some substring exists in the original sequence.
 
 ```{svgbob}
 "* search for substring nana"

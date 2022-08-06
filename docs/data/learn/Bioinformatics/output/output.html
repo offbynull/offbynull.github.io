@@ -19910,8 +19910,8 @@ xxa vehicle__¶
 <li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FSuffix%20Array)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Suffix Array</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">Burrows-wheeler transform</a> (<a href="#BM_(BWT)%2F">BWT</a>) is a matrix formed by combining all cyclic rotations of a <a href="#BM_(sequence)%2Fi">sequence</a> and sorting lexicographically. It's used for efficiently determining the number of times some <a href="#BM_(substring)%2Fi">substring</a> appears in a <a href="#BM_(sequence)%2Fi">sequence</a>, and with some extensions it can also determine the position of each occurrence of that <a href="#BM_(substring)%2Fi">substring</a>.</p>
-<p>Similar to <a href="#BM_(suffix%20array)%2Fi">suffix array</a>s, the <a href="#BM_(sequence)%2Fi">sequence</a> must have an end marker where the end marker symbol comes first in the lexicographical sort order. For example, the <a href="#BM_(BWT)%2F">BWT</a> of the "banana¶" ("¶" is the end marker), first creates a matrix by stacking all possible cyclical rotations...</p>
+<p><strong>WHAT</strong>: <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">Burrows-wheeler transform</a> (<a href="#BM_(BWT)%2F">BWT</a>) is a matrix formed by combining all cyclic rotations of a <a href="#BM_(sequence)%2Fi">sequence</a> and sorting lexicographically. It's used for efficiently determining the number of times some <a href="#BM_(substring)%2Fi">substring</a> appears in a <a href="#BM_(sequence)%2Fi">sequence</a>, and with some extensions it can determine their positions in the <a href="#BM_(sequence)%2Fi">sequence</a> as well.</p>
+<p>Similar to <a href="#BM_(suffix%20array)%2Fi">suffix array</a>s, the <a href="#BM_(sequence)%2Fi">sequence</a> must have an end marker where the end marker symbol comes first in the lexicographical sort order. For example, the <a href="#BM_(BWT)%2F">BWT</a> of "banana¶" ("¶" is the end marker), first creates a matrix by stacking all possible cyclical rotations...</p>
 <table>
 <thead>
 <tr>
@@ -20069,7 +20069,16 @@ xxa vehicle__¶
 </tr>
 </tbody>
 </table>
-<p><a href="#BM_(BWT)%2F">BWT</a> matrices have a special property called the <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a>: For each symbol, the order in which instances of that symbol appear in the first column of the matrix matches that of the last column in the matrix. For example, consider how the above matrix would look with symbol instance counts included. The symbols in "banana¶" are [a, b, n, ¶]. At index ...</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The terminology I used below is mildly confusing.</p>
+<ul>
+<li>Symbol: A unique element within the <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. "banana¶" is made up of the <em>unique elements</em> / <em>symbols</em> [a, b, n, ¶]).</li>
+<li>Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd <em>occurrence</em> / <em>symbol instance</em> of "n").</li>
+<li>Symbol instance count: The occurrence part of a symbol instance (e.g. index 4 of "banana¶" is "n" and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
+</ul>
+</div>
+<p><a href="#BM_(BWT)%2F">BWT</a> matrices have a special property called the <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a>. Consider how the above matrix would look with symbol instance counts included. The symbols in "banana¶" are [a, b, n, ¶]. At index ...</p>
 <ol start="0">
 <li>the first "b" occurs: b1</li>
 <li>the first "a" occurs: a1</li>
@@ -20079,7 +20088,7 @@ xxa vehicle__¶
 <li>the third "a" occurs: a3</li>
 <li>the first "¶" occurs: ¶1</li>
 </ol>
-<p>The <a href="#BM_(sequence)%2Fi">sequence</a> "banana¶" with symbol instance counts included is [b1, a1, n1, a2, n2, a3, ¶1]. Performing the same cyclic rotations and lexicographically sorting where these symbol instance counts are visible results in the following matrix.</p>
+<p>The <a href="#BM_(sequence)%2Fi">sequence</a> "banana¶" with symbol instance counts included is [b1, a1, n1, a2, n2, a3, ¶1]. Performing the same cyclic rotations and lexicographically sorting on this <a href="#BM_(sequence)%2Fi">sequence</a> results in the following matrix (symbol instance counts not included in sorting).</p>
 <table>
 <thead>
 <tr>
@@ -20160,13 +20169,12 @@ xxa vehicle__¶
 </table>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Nothing has changed in the matrix. It's exactly the same matrix is exactly the same as before, it's just that the symbol instance counts are now visible where as before they were hidden.</p>
-<p>These symbol instance counts <em>aren't included</em> in the lexicographic sorting that happens.</p>
+<p>It's the exact same matrix as before, it's just that the symbol instance counts are now visible where as before they were hidden. These symbol instance counts <em>aren't included</em> in the lexicographic sorting that happens.</p>
 </div>
-<p>For each symbol [a, b, n, ¶] in "banana¶", even though the position of symbol instances are different between the first and last columns of the matrix, the order in which those instances appear in are the same. For example, symbol ...</p>
+<p>For each symbol [a, b, n, ¶] in "banana¶", even though the position of each symbol instance is different between the first column of the matrix vs last columns of the matrix, the order in which those symbol instances appear in are the same. For example, symbol ...</p>
 <ul>
-<li>"a" has its instances are ordered as [<span style="background-color: #f00; color: white; padding: 3px">a3</span>, <span style="background-color: #b00; color: white; padding: 3px">a2</span>, <span style="background-color: #800; color: white; padding: 3px">a1</span>] in both the first and last column.</li>
-<li>"n" has its instances are ordered as [<span style="background-color: #00f; color: white; padding: 3px">n2</span>, <span style="background-color: #00b; color: white; padding: 3px">n1</span>] in both the first and last column.</li>
+<li>"a" has its symbol instances ordered as [<span style="background-color: #f00; color: white; padding: 3px">a3</span>, <span style="background-color: #b00; color: white; padding: 3px">a2</span>, <span style="background-color: #800; color: white; padding: 3px">a1</span>] in both the first and last column.</li>
+<li>"n" has its symbol instances ordered as [<span style="background-color: #00f; color: white; padding: 3px">n2</span>, <span style="background-color: #00b; color: white; padding: 3px">n1</span>] in both the first and last column.</li>
 </ul>
 <table>
 <thead>
@@ -20246,7 +20254,7 @@ xxa vehicle__¶
 </tr>
 </tbody>
 </table>
-<p>The <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a> is a result of the lexicographic sorting that happens. In the example matrix above, isolating the matrix to those rows starting with "a" shows that the second column is also lexicographically sorted.</p>
+<p>The phenomenon of consistent ordering between first and last columns of the matrix is essentially the <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a>: For each symbol in the <a href="#BM_(sequence)%2Fi">sequence</a>, the order of that symbol's instances in the first column of the matrix matches that of the last column in the matrix. This phenomenon happens due to the lexicographic sorting. In the example matrix above, isolating the matrix to those rows with "a" in the first column shows that the second column is also lexicographically sorted.</p>
 <table>
 <thead>
 <tr>
@@ -20289,7 +20297,7 @@ xxa vehicle__¶
 </tr>
 </tbody>
 </table>
-<p>In other words, cyclically rotating each row right by 1 moves each corresponding "a" to the end but doesn't change the lexicographic ordering of the rows.</p>
+<p>In other words, cyclically rotating each row right by 1 moves each corresponding "a" to the end but the rows still remain lexicographically sorted.</p>
 <table>
 <thead>
 <tr>
@@ -20413,7 +20421,7 @@ xxa vehicle__¶
 </table>
 <p>Given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, the original <a href="#BM_(sequence)%2Fi">sequence</a> can be pulled out by walking between those columns. The row containing the end marker ("¶") in the last column has the <a href="#BM_(sequence)%2Fi">sequence</a>'s first element in its first column.</p>
 <p><img src="svgbob_4f8d2f2c7de732cbc04a2073f5c1d96ab7cad1bc.svg" alt="Kroki diagram output"></p>
-<p>Likewise, given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, it's possible to quickly identify if and how many instances of some <a href="#BM_(substring)%2Fi">substring</a> exists in th original <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p>Likewise, given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, it's possible to quickly identify if and how many times some <a href="#BM_(substring)%2Fi">substring</a> exists in the original <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
 <p><img src="svgbob_925edda6ed8f51facf9dda8af8736cd4e3939a09.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
