@@ -14483,7 +14483,7 @@ The sequence "banana¶" with symbol instance counts included is [b1, a1, n1, a2,
 It's the exact same matrix as before, it's just that the symbol instance counts are now visible where as before they were hidden. These symbol instance counts _aren't included_ in the lexicographic sorting that happens.
 ```
 
-For each symbol [a, b, n, ¶] in "banana¶", even though the position of each symbol instance is different between the first column of the matrix vs last columns of the matrix, the order in which those symbol instances appear in are the same. For example, symbol ...
+For each symbol [a, b, n, ¶] in "banana¶", symbol instances are positioned differently between the first and last columns of the matrix (e.g. "a1" shows up in first column at row 4 vs row 7 for the last column). However, notice how each symbol's instances appear in the same order between those two columns. For example, symbol ...
 
  * "a" has its symbol instances ordered as [`{h}#f00 a3`, `{h}#b00 a2`, `{h}#800 a1`] in both the first and last column.
  * "n" has its symbol instances ordered as [`{h}#00f n2`, `{h}#00b n1`] in both the first and last column.
@@ -14498,7 +14498,7 @@ For each symbol [a, b, n, ¶] in "banana¶", even though the position of each sy
 | `{h}#00f n2` | a3 | ¶1 | b1 | a1 | n1 | `{h}#b00 a2` |
 | `{h}#00b n1` | a2 | n2 | a3 | ¶1 | b1 | `{h}#800 a1` |
 
-The phenomenon of consistent ordering between first and last columns of the matrix is essentially the first-last property: For each symbol in the sequence, the order of that symbol's instances in the first column of the matrix matches that of the last column in the matrix. This phenomenon happens due to the lexicographic sorting. In the example matrix above, isolating the matrix to those rows with "a" in the first column shows that the second column is also lexicographically sorted.
+The phenomenon of consistent ordering of a symbol's instances is the first-last property and it's a result of the lexicographic sorting that happens. In the example matrix above, isolating the matrix to those rows with "a" in the first column shows that the second column is also lexicographically sorted.
 
 |              |  ▼ |    |    |    |    |    |
 |--------------|----|----|----|----|----|----|
@@ -14526,14 +14526,29 @@ After the cyclic rotations above, the rows in the isolated matrix become differe
 | n2 | a3 | ¶1 | b1 | a1 | n1 | `{h}#b00 a2` |
 | n1 | a2 | n2 | a3 | ¶1 | b1 | `{h}#800 a1` |
 
-Given just the first and last column of a BWT matrix, the original sequence can be pulled out by walking between those columns. The row containing the end marker ("¶") in the last column has the sequence's first element in its first column.
+Given just the first and last column of a BWT matrix, the original sequence can be pulled out by hopping between those columns. Because the matrix is made up of all cyclic rotations of [b1, a1, n1, a2, n2, a3, ¶1], the row containing index i of [b1, a1, n1, a2, n2, a3, ¶1] in the last column is guaranteed to contain index i+1 in the first column (wrapping around if out of bounds). For example, when ...
+
+ * index 0 is in the last column (b1), index 1 is guaranteed to be in the first column (a1).
+ * index 1 is in the last column (a1), index 2 is guaranteed to be in the first column (n1).
+ * index 2 is in the last column (n1), index 3 is guaranteed to be in the first column (a2).
+ * ...
+ * index 6 is in the last column (¶1), index 0 is guaranteed to be in the first column (b1).
+
+Since it's known that the last index will always be the end marker (¶1), the end marker can be used to find the first symbol instance within the original sequence (b1). From there, the first symbol instance (b1) can be used to find the second symbol instance (a1). Then the second symbol instance (a1) can be used to find the third symbol instance (n1). The process continues until it reaches the end marker again (¶1), at which point the original sequence has been fully walked.
+
+ * last index must be ¶1: Find ¶1 in the last column and pull out the corresponding symbol instance in the first column: b1.
+ * index 0 must be b1: Find b1 in the last column and pull out the corresponding symbol instance in the first column: a1.
+ * index 1 must be a1: Find a1 in the last column and pull out the corresponding symbol instance in the first column: n1.
+ * ...
+ * index 5 must be a3: Find a3 in the last column and pull out the corresponding symbol instance in the first column: ¶1.
+
   
 ```{svgbob}
-              b                                ban                               banan
-.------------------------------.  .------------------------------.  .------------------------------.
-|                              |  |                              |  |                              |
-|  +--+--+           +--+--+   |  |  +--+--+           +--+--+   |  |  +--+--+           +--+--+   |        +--+--+
-|  |¶1|a3|           |¶1|a3|   |  |  |¶1|a3|           |¶1|a3|   |  |  |¶1|a3|           |¶1|a3|   |   *<-- |¶1|a3| <-.
+              b                                ban                               banan                              banana¶
+.------------------------------.  .------------------------------.  .------------------------------.     .-------------------------*
+|                              |  |                              |  |                              |     |
+|  +--+--+           +--+--+   |  |  +--+--+           +--+--+   |  |  +--+--+           +--+--+   |     |  +--+--+
+|  |¶1|a3|           |¶1|a3|   |  |  |¶1|a3|           |¶1|a3|   |  |  |¶1|a3|           |¶1|a3|   |     '- |¶1|a3| <-.
 |  |a3|n2|           |a3|n2|   |  |  |a3|n2|           |a3|n2|   |  |  |a3|n2|        .- |a3|n2| <-'        |a3|n2|   |
 |  |a2|n1|           |a2|n1|   |  |  |a2|n1|        .- |a2|n1| <-'  |  |a2|n1|        |  |a2|n1|            |a2|n1|   |
 |  |a1|b1|        .- |a1|b1| <-'  |  |a1|b1|        |  |a1|b1|      |  |a1|b1|        |  |a1|b1|            |a1|b1|   |
@@ -14546,16 +14561,20 @@ Given just the first and last column of a BWT matrix, the original sequence can 
                                 ba                              bana                               banana
 ```
 
-Likewise, given just the first and last column of a BWT matrix, it's possible to quickly identify if and how many times some substring exists in the original sequence.
+Similarly to pulling out the original sequence, given just the first and last column of a BWT matrix, it's possible to quickly identify if and how many times some substring exists in the original sequence. For example, to test if the sequence to see if it contains "nana"...
+
+ * find all rows where the last column has symbol "n" and the first column has symbol "a": [n2, a3] and [n1, a2].
+   * walk from a3 to see if "nana" could be fully extracted (FAIL: [n2, a3, ¶1])
+   * walk from a2 to see if "nana" could be fully extracted (PASS: [n2, a3, n2, a3])
 
 ```{svgbob}
 "* search for substring nana"
 
              "2 x na"                        "1 x nana"
-.------------------------------.  .------------------------->*
+.------------------------------.  .-------------------------*
 |                              |  |              
 |  +--+--+           +--+--+   |  |  +--+--+     
-|  |¶1|a3|      *<-- |¶1|a3| <-+  |  |¶1|a3|     
+|  |¶1|a3|       *-- |¶1|a3| <-+  |  |¶1|a3|     
 +- |a3|n2|           |a3|n2|   |  '- |a3|n2| <-. 
 '- |a2|n1|           |a2|n1|   |     |a2|n1|   | 
    |a1|b1|           |a1|b1|   |     |a1|b1|   | 
@@ -14569,17 +14588,50 @@ Likewise, given just the first and last column of a BWT matrix, it's possible to
 ```
 
 ````{note}
-Notice that the first column of the matrix is just the last column but lexicographically sorted.
+At this stage, the symbol instance counts serve no other purpose than mapping values of the last column to the first column. For example, instead of having symbol instance counts, you could just as well use a set of random unique shapes for each symbol's instances and the end result would be the same.
 
-When storing the first and last columns of the matrix, you technically only need to store just the elements of the last column. You can generate the first column by simply sorting the elements of the last column. For example, the elements in last column of the example above are "annb¶aa". To convert that back into the first and last columns of the matrix with symbol instance counts, the steps are as follows:
+```{svgbob}
+   SHAPES             ORIGINAL
+
+   +--+--+             +--+--+
+   |¶■|a▲|             |¶1|a3|
+   |a▲|n▲|             |a3|n2|
+   |a◆|n■|             |a2|n1|
+   |a■|b◆|      vs     |a1|b1|
+   |b◆|¶■|             |b1|¶1|
+   |n▲|a◆|             |n2|a2|
+   |n■|a■|             |n1|a1|
+   +--+--+             +--+--+
+
+
+"* search for substring nana using RECONSTRUCTED first and last column"
+
+             "2 x na"                        "1 x nana"
+.------------------------------.  .------------------------->*
+|                              |  |                           
+|  +--+--+           +--+--+   |  |  +--+--+    
+|  |¶■|a▲|      *<-- |¶■|a▲| <-+  |  |¶■|a▲|    
++- |a▲|n▲|           |a▲|n▲|   |  '- |a▲|n▲| <-.
+'- |a◆|n■|           |a◆|n■|   |     |a◆|n■|   |
+   |a■|b◆|           |a■|b◆|   |     |a■|b◆|   |
+   |b◆|¶■|           |b◆|¶■|   |     |b◆|¶■|   |
+   |n▲|a◆|        .- |n▲|a◆| <-'     |n▲|a◆|   |
+   |n■|a■|        |  |n■|a■|         |n■|a■|   |
+   +--+--+        |  +--+--+         +--+--+   |
+                  |                            |  
+                  '----------------------------'  
+                             "1 x nan"         
+```
+
+Given this observation, when serializing the first and last columns of the matrix, you technically only need to store the elements of the last column. The first column is just the last column but sorted. For example, the elements in last column of the example above are "annb¶aa". To convert that back into the first and last columns of the matrix with symbol instance counts, the steps are as follows:
 
 1. Last column: augment "annb¶aa" with symbol instance counts: [a1, n1, n2, b1, ¶1, a2, a3].
 
-   In this case, the augmentation isn't with symbol counts from the original sequence ("banana¶") but from the sequence that makes up the last column ("annb¶aa").
+   In this case, the augmentation isn't with symbol instance counts from the original sequence ("banana¶") but from the sequence that makes up the last column ("annb¶aa").
 
-2. First column: Sorting the result of step 1, _taking the symbol instance counts into account_: [¶1, a1, a2, a3, b1, n1, n2].
+2. First column: Sorting the result of step 1 _taking the symbol instance counts into account_: [¶1, a1, a2, a3, b1, n1, n2].
 
-   The sort is still a lexicographical sort but the symbol instance are included as well. A lower symbol instance count should be given precedence over a higher symbol instance count. For example, once sorted, "a2" should appear before "a3" but after "a1". This is done because the ordering of symbol occurrences need to be preserved between the first and last columns.
+   The sort is still a lexicographical sort but the symbol instance counts are included as well. A lower symbol instance count should be given precedence over a higher symbol instance count. For example, once sorted, "a2" should appear before "a3" but after "a1". This is done because the ordering of symbol occurrences need to be preserved between the first and last columns.
 
 The end result of reconstructing from "annb¶aa" is the following first and last columns, ...
 
@@ -14595,7 +14647,7 @@ The end result of reconstructing from "annb¶aa" is the following first and last
 +--+--+
 ```
 
-While the symbol instance counts are different, the mapping between symbol instances between the first and last columns are the same, meaning that you can still use it to search for substrings in "banana¶"...
+While the symbol instance counts are different from the original, the mapping of symbol instances between the first and last columns are the same, meaning that you can still use it to search for substrings in "banana¶". It's the mapping between the columns that's important. The actual symbol instance counts have no purpose other than mapping symbol instances between the two columns.
 
 ```{svgbob}
 RECONSTRUCTED          ORIGINAL
@@ -14631,13 +14683,172 @@ RECONSTRUCTED          ORIGINAL
 ```
 ````
 
-**WHY**: Implementations of BWT can be deeply memory efficient and fast, rivaling those of suffix arrays. In addition, not only can BWT determine the number of times some substring appears in a sequence, but with some extensions it can identify where found substrings are located in the sequence.
+**WHY**: Implementations of BWT can be deeply memory efficient and fast, rivaling those of suffix arrays. In addition, not only can BWT determine the number of times some substring appears in a sequence, but with some extensions it can identify where found substrings are located in the sequence. These extensions are detailed in the subsections belows.
 
-```{note}
-These extensions are detailed in the subsections belows.
-```
 
 #### Standard Algorithm
+
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Standard Algorithm)_TOPIC/`
+
+**ALGORITHM**:
+
+```{note}
+The core algorithm was described in the parent section. If you're confused about what is happening or why it's happening, go over the parent section and compare to the implementation here.
+```
+
+To build a BWT matrix, stack all cyclic rotations to form a matrix and lexicographically sort where the end marker symbol has top precedence. Only the first and last columns of the BWT matrix are needed for testing.
+
+Since the point here is to build out a BWT once and test against it many times (e.g. build a BWT of reference genome and test against many sequencer outputs), this implementation provides a pointers that directly map from last column to first column. That way, the BWT doesn't get scanned over during each hop of testing. It can directly move between last column to first column.
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
+python
+# MARKDOWN_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_BUILD\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Basic main_build
+{
+  sequence: banana¶,
+  end_marker: ¶
+}
+```
+
+
+
+
+TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
+
+TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
+
+TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
+
+TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
+
+TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
+
+TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
+
+TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
+
+TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
+
+TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
+
+TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
+
+TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
+
+
+
+#### Backsweep Algorithm
+
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Backsweep Algorithm)_TOPIC/`
+
+**ALGORITHM**:
+
+Testing for a substring requires walking that backwards and performing isolated scans of the BWT array. For example, searching for "bba" in "abbazabbabbu¶" starts by searching the entire BWT array for entries where `last_col="a"` (3rd letter of "bba"): `[a1, a2, a3, a4]`. Then, the whole BWT array is isolated such that the ...
+
+ * head of the BWT array is `min_first_col_idx([a1, a2, a3, a4])`: a1 is at index 1.
+ * tail of the BWT array is `max_first_col_idx([a1, a2, a3, a4])`: a4 is at index 4.
+
+```{svgbob}
+   "isolate to range where first_col [a1,a4]"
+      .-----------------------.   
+      |                       |   
+   +--+--+                    v   
+   |¶1|u1|                 +--+--+
+   |a1|z1|                 |a1|z1|
+   |a2|¶1|                 |a2|¶1|
+   |a3|b1|                 |a3|b1|
+   |a4|b2|                 |a4|b2|
+   |b1|b3|                 +--+--+
+   |b2|b4|                        
+   |b3|a1|                        
+   |b4|a2|                        
+   |b5|a3|                        
+   |b6|b5|                        
+   |u1|b6|                        
+   |z1|a4|                        
+   +--+--+                        
+```
+
+This isolated BWT array is then again searched for entries where where `last_col="b"` (2nd letter of "bba"): `[b1, b2]`. The BWT array's isolation is then reset such that the ...
+
+ * head of the BWT array is `min_first_col_idx([b1, b2])`: b1 is at index 5.
+ * tail of the BWT array is `max_first_col_idx([b1, b2])`: b2 is at index 6.
+
+```{svgbob}
+ "isolate to range where first_col [a1,a4]"
+      .-----------------------.   
+      |                       |   
+   +--+--+                    v   
+   |¶1|u1|                 +--+--+
+   |a1|z1|                 |a1|z1|
+   |a2|¶1|                 |a2|¶1|
+   |a3|b1|                 |a3|b1|
+   |a4|b2|                 |a4|b2|           +--+--+
+   |b1|b3|                 +--+--+           |b1|b3|
+   |b2|b4|                    |              |b2|b4|
+   |b3|a1|                    |              +--+--+
+   |b4|a2|                    |                 ^   
+   |b5|a3|                    |                 |   
+   |b6|b5|                    |                 |   
+   |u1|b6|                    |                 |
+   |z1|a4|                    |                 |
+   +--+--+                    |                 |   
+                              |                 |   
+                              '-----------------'
+                        "isolate to range where first_col [b1,b2]"
+```
+
+This isolated BWT array is then again searched for entries where where `last_col="b"` (1st letter of "bna"): `[b3, b4]`. The BWT array's isolation is then reset such that the ...
+
+ * head of the BWT array is `min_first_col_idx([b3, b4])`: b3 is at index 7.
+ * tail of the BWT array is `max_first_col_idx([b3, b4])`: b4 is at index 8.
+
+Now that all letters are consumed, the number of instances for "bba" should be `tail_index - head_index + 1`: `8 - 7 + 1 = 2`.
+
+```{svgbob}
+   "isolate to range where first_col [a1,a4]"  "isolate to range where first_col [b3,b4]"
+      .-----------------------.                 .-----------------------.
+      |                       |                 |                       |
+   +--+--+                    v                 |                       |
+   |¶1|u1|                 +--+--+              |                       |
+   |a1|z1|                 |a1|z1|              |                       |
+   |a2|¶1|                 |a2|¶1|              |                       |
+   |a3|b1|                 |a3|b1|              |                       |
+   |a4|b2|                 |a4|b2|           +--+--+                    |
+   |b1|b3|                 +--+--+           |b1|b3|                    v
+   |b2|b4|                    |              |b2|b4|                 +--+--+
+   |b3|a1|                    |              +--+--+                 |b3|a1|
+   |b4|a2|                    |                 ^                    |b4|a2|
+   |b5|a3|                    |                 |                    +--+--+
+   |b6|b5|                    |                 |               "(2 instances of bba)"
+   |u1|b6|                    |                 |
+   |z1|a4|                    |                 |
+   +--+--+                    |                 |   
+                              |                 |   
+                              '-----------------'
+                       "isolate to range where first_col [b1,b2]"
+```
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
+python
+# MARKDOWN_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_TEST\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Basic main_test
+{
+  sequence: banana¶,
+  test: ana,
+  end_marker: ¶
+}
+```
+
+#### Squashed First Column Algorithm
 
 #### Rank Checkpoints Algorithm
 

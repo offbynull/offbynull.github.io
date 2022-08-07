@@ -197,6 +197,7 @@
 <li><a href="#H_Burrows-Wheeler%20Transform">Burrows-Wheeler Transform</a></li>
 <ul>
 <li><a href="#H1_Standard%20Algorithm">Standard Algorithm</a></li>
+<li><a href="#H_Squashed%20First%20Column%20Algorithm">Squashed First Column Algorithm</a></li>
 <li><a href="#H_Rank%20Checkpoints%20Algorithm">Rank Checkpoints Algorithm</a></li>
 <li><a href="#H_Partial%20Suffix%20Array%20Algorithm">Partial Suffix Array Algorithm</a></li>
 <li><a href="#H_Rank%20Checkpoints%20and%20Partial%20Suffix%20Array%20Algorithm">Rank Checkpoints and Partial Suffix Array Algorithm</a></li>
@@ -18610,7 +18611,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_ba09fe514ef75b5df228460821f1e062.svg" alt="Dot diagram"></p>
+<p><img src="dot_ffe79cef5efa29b2b8ef3b9bfa5a8aed.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>Testing if a <a href="#BM_(trie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> requires walking the <a href="#BM_(trie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching the end-of-<a href="#BM_(sequence)%2Fi">sequence</a> marker.</p>
@@ -18661,7 +18662,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_aa3e748b8b94a867a770a36d6b761e30.svg" alt="Dot diagram"></p>
+<p><img src="dot_f9a5c6d1258db99770ad002a0a571e30.svg" alt="Dot diagram"></p>
 <p>Searching <code>How do you feel about apples?</code> with the trie revealed the following was found: {(22, apple)}</p>
 </div>
 <p></p>
@@ -18740,7 +18741,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_72810e8af106f5188a0c3fa1fe58d906.svg" alt="Dot diagram"></p>
+<p><img src="dot_b294a9c9ffc09787f22d6c283ced6919.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19009,7 +19010,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_cc269be44962b04228a1d3bdbfe234ba.svg" alt="Dot diagram"></p>
+<p><img src="dot_5329a8f4c1e5ca343b32ca97b95116f1.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19148,7 +19149,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_7fde12f399917a9744997e142fa22455.svg" alt="Dot diagram"></p>
+<p><img src="dot_74d2d883371827899a96339d864a7c5f.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>If a scan walks the <a href="#BM_(trie)%2Fi">trie</a> to "arat" and fails, the next scan position must contain "rat". Since the prefix "rat" exists in the <a href="#BM_(trie)%2Fi">trie</a>, a special edge connects "arat" to "rat" such that the scan for the next position can jump past "rat" in the <a href="#BM_(trie)%2Fi">trie</a> walk.</p>
@@ -19226,7 +19227,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_7e4adf05e1e6b2f4907e5d5dd1f4bb04.svg" alt="Dot diagram"></p>
+<p><img src="dot_e2e6daf1491611e5f700c592b1e4c3e7.svg" alt="Dot diagram"></p>
 <p>Searching <em>There were multiple narrations in the play</em> with the trie revealed the following was found: {(23, ration)}</p>
 </div>
 <p></p>
@@ -19305,7 +19306,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_d0e255d9bc632bbeab4fd1cb62a778be.svg" alt="Dot diagram"></p>
+<p><img src="dot_9bd3e85ce6a562c0d0f1d8ce3da0d8fe.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -20171,7 +20172,7 @@ xxa vehicle__¶
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>It's the exact same matrix as before, it's just that the symbol instance counts are now visible where as before they were hidden. These symbol instance counts <em>aren't included</em> in the lexicographic sorting that happens.</p>
 </div>
-<p>For each symbol [a, b, n, ¶] in "banana¶", even though the position of each symbol instance is different between the first column of the matrix vs last columns of the matrix, the order in which those symbol instances appear in are the same. For example, symbol ...</p>
+<p>For each symbol [a, b, n, ¶] in "banana¶", symbol instances are positioned differently between the first and last columns of the matrix (e.g. "a1" shows up in first column at row 4 vs row 7 for the last column). However, notice how each symbol's instances appear in the same order between those two columns. For example, symbol ...</p>
 <ul>
 <li>"a" has its symbol instances ordered as [<span style="background-color: #f00; color: white; padding: 3px">a3</span>, <span style="background-color: #b00; color: white; padding: 3px">a2</span>, <span style="background-color: #800; color: white; padding: 3px">a1</span>] in both the first and last column.</li>
 <li>"n" has its symbol instances ordered as [<span style="background-color: #00f; color: white; padding: 3px">n2</span>, <span style="background-color: #00b; color: white; padding: 3px">n1</span>] in both the first and last column.</li>
@@ -20254,7 +20255,7 @@ xxa vehicle__¶
 </tr>
 </tbody>
 </table>
-<p>The phenomenon of consistent ordering between first and last columns of the matrix is essentially the <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a>: For each symbol in the <a href="#BM_(sequence)%2Fi">sequence</a>, the order of that symbol's instances in the first column of the matrix matches that of the last column in the matrix. This phenomenon happens due to the lexicographic sorting. In the example matrix above, isolating the matrix to those rows with "a" in the first column shows that the second column is also lexicographically sorted.</p>
+<p>The phenomenon of consistent ordering of a symbol's instances is the <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a> and it's a result of the lexicographic sorting that happens. In the example matrix above, isolating the matrix to those rows with "a" in the first column shows that the second column is also lexicographically sorted.</p>
 <table>
 <thead>
 <tr>
@@ -20419,35 +20420,228 @@ xxa vehicle__¶
 </tr>
 </tbody>
 </table>
-<p>Given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, the original <a href="#BM_(sequence)%2Fi">sequence</a> can be pulled out by walking between those columns. The row containing the end marker ("¶") in the last column has the <a href="#BM_(sequence)%2Fi">sequence</a>'s first element in its first column.</p>
-<p><img src="svgbob_4f8d2f2c7de732cbc04a2073f5c1d96ab7cad1bc.svg" alt="Kroki diagram output"></p>
-<p>Likewise, given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, it's possible to quickly identify if and how many times some <a href="#BM_(substring)%2Fi">substring</a> exists in the original <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
-<p><img src="svgbob_925edda6ed8f51facf9dda8af8736cd4e3939a09.svg" alt="Kroki diagram output"></p>
+<p>Given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, the original <a href="#BM_(sequence)%2Fi">sequence</a> can be pulled out by hopping between those columns. Because the matrix is made up of all cyclic rotations of [b1, a1, n1, a2, n2, a3, ¶1], the row containing index i of [b1, a1, n1, a2, n2, a3, ¶1] in the last column is guaranteed to contain index i+1 in the first column (wrapping around if out of bounds). For example, when ...</p>
+<ul>
+<li>index 0 is in the last column (b1), index 1 is guaranteed to be in the first column (a1).</li>
+<li>index 1 is in the last column (a1), index 2 is guaranteed to be in the first column (n1).</li>
+<li>index 2 is in the last column (n1), index 3 is guaranteed to be in the first column (a2).</li>
+<li>...</li>
+<li>index 6 is in the last column (¶1), index 0 is guaranteed to be in the first column (b1).</li>
+</ul>
+<p>Since it's known that the last index will always be the end marker (¶1), the end marker can be used to find the first symbol instance within the original <a href="#BM_(sequence)%2Fi">sequence</a> (b1). From there, the first symbol instance (b1) can be used to find the second symbol instance (a1). Then the second symbol instance (a1) can be used to find the third symbol instance (n1). The process continues until it reaches the end marker again (¶1), at which point the original <a href="#BM_(sequence)%2Fi">sequence</a> has been fully walked.</p>
+<ul>
+<li>last index must be ¶1: Find ¶1 in the last column and pull out the corresponding symbol instance in the first column: b1.</li>
+<li>index 0 must be b1: Find b1 in the last column and pull out the corresponding symbol instance in the first column: a1.</li>
+<li>index 1 must be a1: Find a1 in the last column and pull out the corresponding symbol instance in the first column: n1.</li>
+<li>...</li>
+<li>index 5 must be a3: Find a3 in the last column and pull out the corresponding symbol instance in the first column: ¶1.</li>
+</ul>
+<p><img src="svgbob_b78049487dcb98179408376bbeece3981e5139d2.svg" alt="Kroki diagram output"></p>
+<p>Similarly to pulling out the original <a href="#BM_(sequence)%2Fi">sequence</a>, given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, it's possible to quickly identify if and how many times some <a href="#BM_(substring)%2Fi">substring</a> exists in the original <a href="#BM_(sequence)%2Fi">sequence</a>. For example, to test if the <a href="#BM_(sequence)%2Fi">sequence</a> to see if it contains "nana"...</p>
+<ul>
+<li>find all rows where the last column has symbol "n" and the first column has symbol "a": [n2, a3] and [n1, a2].
+<ul>
+<li>walk from a3 to see if "nana" could be fully extracted (FAIL: [n2, a3, ¶1])</li>
+<li>walk from a2 to see if "nana" could be fully extracted (PASS: [n2, a3, n2, a3])</li>
+</ul>
+</li>
+</ul>
+<p><img src="svgbob_0b3939e6604b69499fcf50fb70239e97440f4cf7.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Notice that the first column of the matrix is just the last column but lexicographically sorted.</p>
-<p>When storing the first and last columns of the matrix, you technically only need to store just the elements of the last column. You can generate the first column by simply sorting the elements of the last column. For example, the elements in last column of the example above are "annb¶aa". To convert that back into the first and last columns of the matrix with symbol instance counts, the steps are as follows:</p>
+<p>At this stage, the symbol instance counts serve no other purpose than mapping values of the last column to the first column. For example, instead of having symbol instance counts, you could just as well use a set of random unique shapes for each symbol's instances and the end result would be the same.</p>
+<p><img src="svgbob_fce7c956546effb07765fcb5b01408c984a41129.svg" alt="Kroki diagram output"></p>
+<p>Given this observation, when serializing the first and last columns of the matrix, you technically only need to store the elements of the last column. The first column is just the last column but sorted. For example, the elements in last column of the example above are "annb¶aa". To convert that back into the first and last columns of the matrix with symbol instance counts, the steps are as follows:</p>
 <ol>
 <li>
 <p>Last column: augment "annb¶aa" with symbol instance counts: [a1, n1, n2, b1, ¶1, a2, a3].</p>
-<p>In this case, the augmentation isn't with symbol counts from the original <a href="#BM_(sequence)%2Fi">sequence</a> ("banana¶") but from the <a href="#BM_(sequence)%2Fi">sequence</a> that makes up the last column ("annb¶aa").</p>
+<p>In this case, the augmentation isn't with symbol instance counts from the original <a href="#BM_(sequence)%2Fi">sequence</a> ("banana¶") but from the <a href="#BM_(sequence)%2Fi">sequence</a> that makes up the last column ("annb¶aa").</p>
 </li>
 <li>
-<p>First column: Sorting the result of step 1, <em>taking the symbol instance counts into account</em>: [¶1, a1, a2, a3, b1, n1, n2].</p>
-<p>The sort is still a lexicographical sort but the symbol instance are included as well. A lower symbol instance count should be given precedence over a higher symbol instance count. For example, once sorted, "a2" should appear before "a3" but after "a1". This is done because the ordering of symbol occurrences need to be preserved between the first and last columns.</p>
+<p>First column: Sorting the result of step 1 <em>taking the symbol instance counts into account</em>: [¶1, a1, a2, a3, b1, n1, n2].</p>
+<p>The sort is still a lexicographical sort but the symbol instance counts are included as well. A lower symbol instance count should be given precedence over a higher symbol instance count. For example, once sorted, "a2" should appear before "a3" but after "a1". This is done because the ordering of symbol occurrences need to be preserved between the first and last columns.</p>
 </li>
 </ol>
 <p>The end result of reconstructing from "annb¶aa" is the following first and last columns, ...</p>
 <p><img src="svgbob_ea099f6ec8f6995365f5fb7e267c8b89e0407bdf.svg" alt="Kroki diagram output"></p>
-<p>While the symbol instance counts are different, the mapping between symbol instances between the first and last columns are the same, meaning that you can still use it to search for <a href="#BM_(substring)%2Fi">substring</a>s in "banana¶"...</p>
+<p>While the symbol instance counts are different from the original, the mapping of symbol instances between the first and last columns are the same, meaning that you can still use it to search for <a href="#BM_(substring)%2Fi">substring</a>s in "banana¶". It's the mapping between the columns that's important. The actual symbol instance counts have no purpose other than mapping symbol instances between the two columns.</p>
 <p><img src="svgbob_2579476706b11330ac342da0aa7e18706e62e522.svg" alt="Kroki diagram output"></p>
 </div>
-<p><strong>WHY</strong>: Implementations of <a href="#BM_(BWT)%2F">BWT</a> can be deeply memory efficient and fast, rivaling those of <a href="#BM_(suffix%20array)%2Fi">suffix array</a>s. In addition, not only can <a href="#BM_(BWT)%2F">BWT</a> determine the number of times some <a href="#BM_(substring)%2Fi">substring</a> appears in a <a href="#BM_(sequence)%2Fi">sequence</a>, but with some extensions it can identify where found <a href="#BM_(substring)%2Fi">substring</a>s are located in the <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p><strong>WHY</strong>: Implementations of <a href="#BM_(BWT)%2F">BWT</a> can be deeply memory efficient and fast, rivaling those of <a href="#BM_(suffix%20array)%2Fi">suffix array</a>s. In addition, not only can <a href="#BM_(BWT)%2F">BWT</a> determine the number of times some <a href="#BM_(substring)%2Fi">substring</a> appears in a <a href="#BM_(sequence)%2Fi">sequence</a>, but with some extensions it can identify where found <a href="#BM_(substring)%2Fi">substring</a>s are located in the <a href="#BM_(sequence)%2Fi">sequence</a>. These extensions are detailed in the subsections belows.</p>
+<a name="H1_Standard%20Algorithm"></a><h4>Standard Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FStandard%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p><strong>ALGORITHM</strong>:</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>These extensions are detailed in the subsections belows.</p>
+<p>The core algorithm was described in the parent section. If you're confused about what is happening or why it's happening, go over the parent section and compare to the implementation here.</p>
 </div>
-<a name="H1_Standard%20Algorithm"></a><h4>Standard Algorithm</h4>
+<p>To build a <a href="#BM_(BWT)%2F">BWT</a> matrix, stack all cyclic rotations to form a matrix and lexicographically sort where the end marker symbol has top precedence. Only the first and last columns of the <a href="#BM_(BWT)%2F">BWT</a> matrix are needed for testing.</p>
+<p>Since the point here is to build out a <a href="#BM_(BWT)%2F">BWT</a> once and test against it many times (e.g. build a <a href="#BM_(BWT)%2F">BWT</a> of <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> and test against many <a href="#BM_(sequencer)%2Fi">sequencer</a> outputs), this implementation provides a pointers that directly map from last column to first column. That way, the <a href="#BM_(BWT)%2F">BWT</a> doesn't get scanned over during each hop of testing. It can directly move between last column to first column.</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 11 to 80):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">cmp</span>(<span class="hljs-params">a: <span class="hljs-built_in">str</span>, b: <span class="hljs-built_in">str</span>, end_marker: <span class="hljs-built_in">str</span></span>):
+    <span class="hljs-keyword">for</span> a_ch, b_ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(a, b):
+        <span class="hljs-keyword">if</span> a_ch == end_marker <span class="hljs-keyword">and</span> b_ch == end_marker:
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-keyword">if</span> a_ch == end_marker:
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> b_ch == end_marker:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> a_ch &lt; b_ch:
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> a_ch &gt; b_ch:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(a) &lt; <span class="hljs-built_in">len</span>(b):
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+    <span class="hljs-keyword">elif</span> <span class="hljs-built_in">len</span>(a) &gt; <span class="hljs-built_in">len</span>(b):
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+    <span class="hljs-keyword">raise</span> <span class="hljs-string">'???'</span>
+
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BWTRecord</span>:
+    __slots__ = [<span class="hljs-string">'first_ch'</span>, <span class="hljs-string">'first_ch_idx'</span>, <span class="hljs-string">'last_ch'</span>, <span class="hljs-string">'last_ch_idx'</span>, <span class="hljs-string">'last_to_first_idx'</span>]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, first_ch: <span class="hljs-built_in">str</span>, first_ch_idx: <span class="hljs-built_in">int</span>, last_ch: <span class="hljs-built_in">str</span>, last_ch_idx: <span class="hljs-built_in">int</span></span>):
+        self.first_ch = first_ch
+        self.first_ch_idx = first_ch_idx
+        self.last_ch = last_ch
+        self.last_ch_idx = last_ch_idx
+        self.last_to_first_idx = -<span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__str__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>((self.first_ch + <span class="hljs-built_in">str</span>(self.first_ch_idx), self.last_ch + <span class="hljs-built_in">str</span>(self.last_ch_idx), self.last_to_first_idx))
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__repr__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>(self)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_bwt</span>(<span class="hljs-params">
+        seq: <span class="hljs-built_in">str</span>,
+        end_marker: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">list</span>[BWTRecord]:
+    <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
+    <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[:-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> has end marker but not at the end'</span>
+    rotations_with_counts = <span class="hljs-built_in">zip</span>(
+        rotate_right(seq),
+        <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(seq))
+    )
+    rotations_with_counts_sorted = <span class="hljs-built_in">sorted</span>(
+        rotations_with_counts,
+        key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>], end_marker))
+    )
+    first_ch_counter = Counter()
+    last_ch_counter = Counter()
+    ret = []
+    <span class="hljs-keyword">for</span> i, (s, idx) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(rotations_with_counts_sorted):
+        first_ch = s[<span class="hljs-number">0</span>]
+        first_ch_counter[first_ch] += <span class="hljs-number">1</span>
+        first_ch_idx = first_ch_counter[first_ch]
+        last_ch = s[-<span class="hljs-number">1</span>]
+        last_ch_counter[last_ch] += <span class="hljs-number">1</span>
+        last_ch_idx = last_ch_counter[last_ch]
+        record = BWTRecord(first_ch, first_ch_idx, last_ch, last_ch_idx)
+        ret.append(record)
+    <span class="hljs-keyword">for</span> i, record_a <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
+        last = record_a.last_ch, record_a.last_ch_idx
+        <span class="hljs-keyword">for</span> j, record_b <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
+            first = record_b.first_ch, record_b.first_ch_idx
+            <span class="hljs-keyword">if</span> last == first:
+                record_a.last_to_first_idx = j
+                <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building BWT using the following settings...</p>
+<pre><code>{
+  sequence: banana¶,
+  end_marker: ¶
+}
+
+</code></pre>
+<p>The following first and last columns were produced ...</p>
+<ul>
+<li>First: ['¶1', 'a1', 'a2', 'a3', 'b1', 'n1', 'n2']</li>
+<li>Last: ['a1', 'n1', 'n2', 'b1', '¶1', 'a2', 'a3']</li>
+</ul>
+</div>
+<p></p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>Testing for a <a href="#BM_(substring)%2Fi">substring</a> requires walking that backwards and performing isolated scans of the <a href="#BM_(BWT)%2F">BWT</a> array. For example, searching for "bba" in "abbazabbabbu¶" starts by searching the entire <a href="#BM_(BWT)%2F">BWT</a> array for en<a href="#BM_(trie)%2Fi">trie</a>s where <code>last_col="a"</code> (3rd letter of "bba"): <code>[a1, a2, a3, a4]</code>. Then, the whole <a href="#BM_(BWT)%2F">BWT</a> array is isolated such that the ...</p>
+<ul>
+<li>head of the <a href="#BM_(BWT)%2F">BWT</a> array is <code>min_first_col_idx([a1, a2, a3, a4])</code>: a1 is at index 1.</li>
+<li>tail of the <a href="#BM_(BWT)%2F">BWT</a> array is <code>max_first_col_idx([a1, a2, a3, a4])</code>: a4 is at index 4.</li>
+</ul>
+<p><img src="svgbob_17684802092c8b6573a64ad6520ac97c9b764780.svg" alt="Kroki diagram output"></p>
+<p>This isolated <a href="#BM_(BWT)%2F">BWT</a> array is then again searched for en<a href="#BM_(trie)%2Fi">trie</a>s where where <code>last_col="b"</code> (2nd letter of "bba"): <code>[b1, b2]</code>. The <a href="#BM_(BWT)%2F">BWT</a> array's isolation is then reset such that the ...</p>
+<ul>
+<li>head of the <a href="#BM_(BWT)%2F">BWT</a> array is <code>min_first_col_idx([b1, b2])</code>: b1 is at index 5.</li>
+<li>tail of the <a href="#BM_(BWT)%2F">BWT</a> array is <code>max_first_col_idx([b1, b2])</code>: b2 is at index 6.</li>
+</ul>
+<p><img src="svgbob_f8345fe39ea1e9addd169122f400970f721de652.svg" alt="Kroki diagram output"></p>
+<p>This isolated <a href="#BM_(BWT)%2F">BWT</a> array is then again searched for en<a href="#BM_(trie)%2Fi">trie</a>s where where <code>last_col="b"</code> (1st letter of "bna"): <code>[b3, b4]</code>. The <a href="#BM_(BWT)%2F">BWT</a> array's isolation is then reset such that the ...</p>
+<ul>
+<li>head of the <a href="#BM_(BWT)%2F">BWT</a> array is <code>min_first_col_idx([b3, b4])</code>: b3 is at index 7.</li>
+<li>tail of the <a href="#BM_(BWT)%2F">BWT</a> array is <code>max_first_col_idx([b3, b4])</code>: b4 is at index 8.</li>
+</ul>
+<p>Now that all letters are consumed, the number of instances for "bba" should be <code>tail_index - head_index + 1</code>: <code>8 - 7 + 1 = 2</code>.</p>
+<p><img src="svgbob_85422b7f876d2cdb981538c6ddc3ec7c374e1002.svg" alt="Kroki diagram output"></p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 118 to 137):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">
+        bwt_array: <span class="hljs-built_in">list</span>[BWTRecord],
+        test: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">int</span>:
+    top = <span class="hljs-number">0</span>
+    bottom = <span class="hljs-built_in">len</span>(bwt_array) - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(test):
+        new_top = <span class="hljs-built_in">len</span>(bwt_array)
+        new_bottom = -<span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(top, bottom + <span class="hljs-number">1</span>):
+            record = bwt_array[i]
+            <span class="hljs-keyword">if</span> ch == record.last_ch:
+                new_top = <span class="hljs-built_in">min</span>(new_top, record.last_to_first_idx)
+                new_bottom = <span class="hljs-built_in">max</span>(new_bottom, record.last_to_first_idx)
+        <span class="hljs-keyword">if</span> new_bottom == -<span class="hljs-number">1</span> <span class="hljs-keyword">or</span> new_top == <span class="hljs-built_in">len</span>(bwt_array):  <span class="hljs-comment"># technically only need to check one of these conditions</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        top = new_top
+        bottom = new_bottom
+    <span class="hljs-keyword">return</span> (bottom - top) + <span class="hljs-number">1</span>
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building BWT using the following settings...</p>
+<pre><code>{
+  sequence: banana¶,
+  test: ana,
+  end_marker: ¶
+}
+
+</code></pre>
+<p>The following first and last columns were produced ...</p>
+<ul>
+<li>First: ['¶1', 'a1', 'a2', 'a3', 'b1', 'n1', 'n2']</li>
+<li>Last: ['a1', 'n1', 'n2', 'b1', '¶1', 'a2', 'a3']</li>
+</ul>
+<p><em>ana</em> found in <em>banana¶</em> at 2 times.</p>
+</div>
+<p></p>
+<a name="H_Squashed%20First%20Column%20Algorithm"></a><h4>Squashed First Column Algorithm</h4>
 <a name="H_Rank%20Checkpoints%20Algorithm"></a><h4>Rank Checkpoints Algorithm</h4>
 <a name="H_Partial%20Suffix%20Array%20Algorithm"></a><h4>Partial Suffix Array Algorithm</h4>
 <div style="margin:2em; background-color: #e0e0e0;">
