@@ -594,6 +594,10 @@ All other specifics are platform-dependent. Specifically, ...
  * endian-ness is undefined (e.g. big-endian vs little-endian).
  * encoding scheme of _signed_ types is two's complement (as of C++20), but underflow/overflow behaviour of _signed_ types is undefined (e.g. crash, stay at boundary, wrap back around, etc..).
 
+```{seealso}
+Library Functions/Numbers/Bit Manipulation_TOPIC (determine endian-ness of scalar types via `std::endian`)
+```
+
 Integer ranges, although platform-specific, are queryable in the climits header.
 
 | type                 | min           | max          |
@@ -630,11 +634,13 @@ Integer literals are targeted to specific integer types by their suffix.
 | `unsigned long long` | ULL            | `2ULL`  |
 
 ```{note}
-Notice that `int`, `short`, and `unsigned short` don't have explicit suffixes. If no suffix is present, it's an int (speculation). To get it to a short, the easiest way is to cast it: `(short) 2`.
+Notice that `int`, `short`, and `unsigned short` don't have explicit suffixes. If no suffix is present, it's an int (speculation). To get it to a short, the easiest way is to cast it: `static_cast<short>(2)`.
 ```
 
-```{note}
-See also `std::numeric_limits` in the limits header. This seems to also provide platform-specific definitions that are queryable via functions..
+```{seealso}
+Library Functions/Numbers/Numeric Type Information_TOPIC (determine min, max, and other properties of a numeric type)
+Core Language/Variables/Explicit Conversion_TOPIC (casting)
+Library Functions/Numbers/Numeric Type Casting_TOPIC (cast one numeric type to another)
 ```
 
 Integer types with standardized bit lengths are defined in the cstdlib header.
@@ -1458,7 +1464,7 @@ Named conversion functions are a set of (seemingly templated) functions to conve
    ```
 
 ```{seealso}
-Library Functions/Utility Wrappers/Any_TOPIC (`any_cast` for an "any" container)
+Library Functions/Wrappers/Any_TOPIC (`any_cast` for an "any" container)
 Library Functions/Time/Timestamps/Clocks_TOPIC (`clock_cast` for converting times between different types of clocks)
 Library Functions/Time/Durations_TOPIC (`duration_cast` for converting between different types of durations)
 ```
@@ -3201,7 +3207,7 @@ Library Functions/Time/Durations_TOPIC
 ```{prereq}
 Core Language/Classes/Functors_TOPIC
 Core Language/Classes/Constant_TOPIC
-Core Language/Constant Expressions_TOPIC
+Core Language/Compile-time Evaluation_TOPIC
 Core Language/Templates/Auto Syntax_TOPIC
 ```
 
@@ -4189,7 +4195,7 @@ Are constant expressions used to write these checks and transformations? Maybe.
 ```
 
 ```{seealso}
-Core Language/Constant Expressions_TOPIC
+Core Language/Compile-time Evaluation_TOPIC
 ```
 
 ### Concepts
@@ -4417,7 +4423,7 @@ These sub-sections come from my question on [stackoverflow](https://stackoverflo
 
 ```{prereq}
 Core Language/Templates/Variadic_TOPIC
-Core Language/Constant Expressions_TOPIC
+Core Language/Compile-time Evaluation_TOPIC
 ```
 
 To test a callable object's parameter count within a concept_TEMPLATE, templates can be used to extract the parameter count. In the example below, the concept_TEMPLATE checks that a callable object has exactly 1 parameter.
@@ -5049,6 +5055,61 @@ int main() {
 It's said that the coroutine state is kept on the heap, resulting in C++ coroutines being a performance hog. Maybe it's possible to use a custom allocator to work around performance problems?
 ```
 
+### Handler
+
+### Promise
+
+### Awaitable
+
+IN AWAITABLE::await_suspend() IS WHERE YOU LAUNCH SOME ASYNC OPERATION THAT EVENTUALLY CALLS h::resume OT CONTINUE THE COROUTINE
+
+```c++
+#include <coroutine>
+#include <iostream>
+#include <stdexcept>
+#include <thread>
+ 
+auto switch_to_new_thread(std::jthread& out) {
+  struct awaitable {
+    std::jthread* p_out;
+    bool await_ready() { return false; }
+    void await_suspend(std::coroutine_handle<> h) {
+      std::jthread& out = *p_out;
+      if (out.joinable())
+        throw std::runtime_error("Output jthread parameter not empty");
+      out = std::jthread([h] { h.resume(); });
+      // Potential undefined behavior: accessing potentially destroyed *this
+      // std::cout << "New thread ID: " << p_out->get_id() << '\n';
+      std::cout << "New thread ID: " << out.get_id() << '\n'; // this is OK
+    }
+    void await_resume() {}
+  };
+  return awaitable{&out};
+}
+ 
+struct task{
+  struct promise_type {
+    task get_return_object() { return {}; }
+    std::suspend_never initial_suspend() { return {}; }
+    std::suspend_never final_suspend() noexcept { return {}; }
+    void return_void() {}
+    void unhandled_exception() {}
+  };
+};
+ 
+task resuming_on_new_thread(std::jthread& out) {
+  std::cout << "Coroutine started on thread: " << std::this_thread::get_id() << '\n';
+  co_await switch_to_new_thread(out);
+  // awaiter destroyed here
+  std::cout << "Coroutine resumed on thread: " << std::this_thread::get_id() << '\n';
+}
+ 
+int main() {
+  std::jthread out;
+  resuming_on_new_thread(out);
+}
+```
+
 ## Unions
 
 `{bm} /(Core Language\/Unions)_TOPIC/`
@@ -5075,7 +5136,7 @@ int y = x.num_dbl;
 ```
 
 ```{seealso}
-Library Functions/Utility Wrappers/Variant_TOPIC (consider using this instead of unions)
+Library Functions/Wrappers/Variant_TOPIC (consider using this instead of unions)
 ```
 
 ## Namespaces
@@ -5288,6 +5349,11 @@ switch (x) {
 
 `{bm} /(Core Language\/Control Flow\/For Loop)_TOPIC/`
 
+```{prereq}
+/Core Language/Variables/Arrays_TOPIC
+/Core Language/Classes/Operator Overloading_TOPIC
+```
+
 For loops follow a similar structure to for loop in Java.
 
 ```c++
@@ -5296,13 +5362,88 @@ for (int i {0}; i < 10; i++)  {
 }
 ```
 
-Similarly, an analog to Java's for-each loop exists called range-based for loops. The only major difference is that an initializer statement is allowed before the range declaration.
+Similarly, an analog to Java's for-each loop exists called range-based for loops. The only major difference is that an initializer statement is allowed (optional) before the range declaration.
 
 ```c++
 for (int r {rand()}; int val : array)  {
     std::cout << (r + val) << ' ';
 }
 ```
+
+For-each loops, sometimes also called range-based for loops, are translated differently based on the type that's being looped over. Specifically, if the type being looped over is an ...
+
+ * array:
+
+   ```c++
+   // FOR-EACH LOOP
+   for (int val : array)  {
+       std::cout << val << ' ';
+   }
+   //
+   // TRANSLATION OF THE ABOVE LOOP AS A STANDARD FOR LOOP
+   //
+   {
+        auto && __range = array;
+        auto __begin = array;
+        auto __end = array + std::size(array);
+        for ( ; __begin != __end; ++__begin){
+            int val = *__begin;
+            std::cout << val << ' ';
+        }
+   }
+   ```
+
+ * an object that has the member functions `begin()` and `end()`:
+
+   ```c++
+   // FOR-EACH LOOP
+   for (int val : obj)  {
+       std::cout << (r + val) << ' ';
+   }
+   //
+   // TRANSLATION OF THE ABOVE LOOP AS A STANDARD FOR LOOP
+   //
+   {
+        auto && __range = obj;
+        auto __begin = obj.begin();
+        auto __end = obj.end();
+        for ( ; __begin != __end; ++__begin){
+            int val = *__begin;
+            std::cout << val << ' ';
+        }
+   }
+   ```
+
+   ```{seealso}
+   Library Functions/Iterators_TOPIC (iterators supply begin and end member functions)
+   Library Functions/Containers_TOPIC (containers are exposed as iterators)
+   ```
+
+ * an object for which the *free functions* `std::begin(T)` and `std::end(T)` have overloads for:
+
+   ```c++
+   // FOR-EACH LOOP
+   for (int val : obj)  {
+       std::cout << (r + val) << ' ';
+   }
+   //
+   // TRANSLATION OF THE ABOVE LOOP AS A STANDARD FOR LOOP
+   //
+   {
+        auto && __range = obj;
+        auto __begin = std::begin(obj);
+        auto __end = std::end(obj);
+        for ( ; __begin != __end; ++__begin){
+            int val = *__begin;
+            std::cout << val << ' ';
+        }
+   }
+   ```
+
+   ```{seealso}
+   Library Functions/Ranges_TOPIC (iterators supply begin and end member functions)
+   Library Functions/Containers_TOPIC (containers are exposed as ranges)
+   ```
 
 ### While Loop
 
@@ -5419,65 +5560,159 @@ Core Language/Functions/Common Attributes_TOPIC
 Core Language/Classes/Common Attributes_TOPIC
 ```
 
-## Constant Expressions
+## Compile-time Evaluation
 
-`{bm} /(Core Language\/Constant Expressions)_TOPIC/`
+`{bm} /(Core Language\/Compile-time Evaluation)_TOPIC/`
 
 ```{prereq}
 Core Language/Variables_TOPIC: Just enough to know how to define and use one.
 Core Language/Functions_TOPIC: Just enough to know how to define and use one.
 Core Language/Classes_TOPIC: Just enough to know how to define and use one.
+Core Language/Object Lifecycle_TOPIC
+Core Language/Control Flow/If Statement_TOPIC
 ```
 
-A constant expression is an expression that gets evaluated at compile-time, such that any invocation of it gets swapped out for the result computed at compile-time. It comes in two forms: variable and function.
-
-A constant expression variable requires using `constexpr` instead of `const`. The difference between a `const` variable and `constexpr` variable is that the former only guarantees the variable is unmodifiable. It doesn't actually guarantee that the expression within is evaluated at compile-time.
-
-```c++
-const int x {5 + 5};      // COULD BE evaluated at run-time or compile-time, but guaranteed to be unmodifiable
-constexpr int y {5 + 5};  // MUST BE evaluated at compile-time and guaranteed to be unmodifiable
-```
-
-Similarly, a constant expression function requires prefixing `constexpr` to a function. The entire compilation can be terminated at any point through the use of `static_assert`.
-
-```c++
-constexpr unsigned int fibonacci(unsigned int n) {
-    if (n == 0) {
-        return 0;
-    } else if (n == 1 || n == 2) {
-        return 1;
-    } else {
-        return fibonacci(n-1) + fibonacci(n-2);
-    }
-}
-
-int x {fibonacci(7)}; // at compile-time, fibonacci(7) is executed and its return value substituted into the initializer
-```
-
-Constant expression functions can be used as normal functions as long as the arguments being passed into them aren't known at compile-time. If the arguments are known at compile-time, the function gets invoked during compilation.
-
-````{note}
-An alternate version of constant expression functions, called immediate functions, have the restriction that they must produce a compile-time constant. An immediate function requires prefixing `consteval` to a function instead of `constexpr`.
-
-What's the point of this? According to [here](https://stackoverflow.com/a/53347377)...
-
-> constexpr functions may be evaluated at compile time or run time, and need not produce a constant in all cases.
-
-Here's an example from [here](https://github.com/AnthonyCalandra/modern-cpp-features)...
+Compile-time evaluations allow code to be executed at compile-time rather than run-time. For example, rather than hardcoding a magic number, a piece of code can run during compilation that calculates that magic number and automatically hardcodes it in behind the scenes. Calculating a magic number like results in cleaner and more understandable code because the developer can see how the magic number is derived and can even tweak the code that calculates it.
 
 ```c++
 consteval int sqr(int n) {
-  return n * n;
+    return n * n;
 }
-
-constexpr int r {sqr(100)}; // OK
-int x {100};
-int r2 {sqr(x)}; // ERROR: the value of 'x' is not usable in a constant expression
-                 // OK if `sqr` were a `constexpr` function
+int y { sqr(17) }; // compiles exactly the same as initializing y directly to 289
 ```
-````
 
-The restrictions on constant expressions are vast. At a high-level, a constant expression is only allowed inputs and outputs that are literal types:
+Compile-time evaluations are enabled through the following keywords: `consteval`, `constinit`, and `constexpr`. 
+
+ * `consteval` - A function with the `consteval` specifier is referred to as an immediate function. An immediate function's invocation always gets executed during compilation, where the result of that function is swapped in for its invocation in the compiled code. This is essentially the same as using a compile-time constant, but the compile-time constant is generated through code.
+
+   ```c++
+   consteval int sqr(int n) {
+       return n * n;
+   }
+   
+   int main() {
+       int x {sqr(7)}; // during compilation, sqr(7) is replaced with the result of sqr(7)
+       std::cout << x << std::endl;
+   }
+   ```
+
+   A `consteval` function's body and invocations must only reference other functions and variables that are available at compile-time (e.g. it can call another `consteval` function). Similarly, arguments being passed to it during invocation must be available at compile-time as well.
+
+   ```c++
+   consteval int sqr(int n) {
+       return n * n;
+   }
+   
+   int main() {
+       int divide_val { 2 };
+       int x {sqr(7 / divide_val)}; // ERROR: even though it looks like it should be, var 'divide_val' is not guaranteed to be known at compile-time
+       std::cout << x << std::endl;
+   }
+   ```
+ 
+ * `constinit` - A variable with the `constinit` specifier is one that has its initializer executed during compilation, where the result of that execution is swapped in for usages of the variable. It works similarly to `consteval` in that its initializer must only reference other functions and variables that are available at compile-time.
+
+   ```c++
+   constinit int x {5+4/3};
+
+   int main() {
+       std::cout << x << std::endl;
+       return 0;
+   }
+   ```
+
+   The difference between a `const` variable and `constinit` variable is that the former only guarantees the variable is unmodifiable. It doesn't actually guarantee that the expression within is evaluated at compile-time.
+
+   ```c++
+   constinit int x {5+4/3};
+
+   int main() {
+       std::cout << x << std::endl;
+       x = 77; // THIS IS OKAY because x is constinit but not const
+       std::cout << x << std::endl;
+       return 0;
+   }
+   ```
+
+   `constinit` can only be applied to variables with static storage duration.
+
+   ```{note}
+   It can also be applied to thread-local storage duration, if you know what that is.
+   ```
+
+ * `constexpr` - A function or variable with the `constexpr` specifier, referred to as constant expression, acts as if it were a `consteval` / `constinit` as long as it only references other objects (functions / variables) that are available at compile-time and takes in arguments that are available at compile-time. Otherwise, it acts as if it were a normal function, meaning nothing gets executed at compile-time and the code is compiled as-is.
+
+   ```c++
+   constexpr int x {5+4/3};
+   constexpr int sqr(int n) {
+       return n * n;
+   }
+   int sqr_runtime_only(int n) {
+       return n * n;
+   }
+   
+   int main() {
+       int z {sqr(7) + x};  // z's initializer executed and swapped with constant at compile-time
+       std::cout << z << std::endl;
+       int a {sqr_runtime_only(7) + x};  // a's initializer executed at run-time
+       std::cout << a << std::endl;
+   }
+   ```
+
+   The keyword `constexpr` may also be used within an if-else to conditionally compile code. When `constexpr` appears immediately after `if`, the conditional expression within is treated similarly to a `constexpr` variable's initializer. Assuming the conditional expression is evaluated at compile-time, the chosen if-else path is the only one that gets compiled. All other paths of the if-else skip compilation.
+
+   ```c++
+   if constexpr (y == sizeof(int)) {
+       // constant expression y is equivalent to the number of bytes for an int, so compile this block
+       ...
+   } else {
+       // constant expression y is NOT equivalent to the number of bytes for an int, so compile this block
+       ...
+   }
+   //
+   // What use is a constexpr if-else? Use-cases include ...
+   //
+   // * omitting parts of a program from compilation (e.g. demonstration software).
+   // * working around compiler-specific / platform-specific inconsistencies (e.g. only include code if `int`'s max value is above some threshold).
+   // * performing specific actions based on the types chosen for template parameters (e.g. include code path 1 if pointer, otherwise code path 2).
+   ```
+
+   ```{note}
+   It looks like C++23 may allow `consteval` for if-else as well.
+   ```
+
+   ````{note}
+   There's a special function in the C++ standard library called `std::is_constant_evaluated()` that you can use in a `constexpr` function to determine if / ensure that the code is being executed at compile-time or at run-time. This is useful if you want the code to do something different when evaluated at compile-time vs run-time (e.g. use a look-up table if evaluated at run-time vs do the full calculation if evaluated at compile-time).
+
+   Here's the example from the book...
+
+   ```c++
+   constexpr double power(double b, int x) {
+       if (std::is_constant_evaluated() && !(b == 0.0 && x < 0)) {       
+           if (x == 0)
+               return 1.0;
+           double r = 1.0, p = x > 0 ? b : 1.0 / b;
+           auto u = unsigned(x > 0 ? x : -x);
+           while (u != 0) {
+               if (u & 1) r *= p;
+               u /= 2;
+               p *= p;
+           }
+           return r;
+       } else {
+           return std::pow(b, double(x));
+       }
+   }
+   ```
+   
+   Technically, `std::is_constant_evaluated()` can be used anywhere. If you use it ...
+   
+    * in a `consteval`, it will always evaluate to true
+    * in a `constexpr`, it may evaluate to true or false depending on where it was called
+    * in a normal run-time evaluated function, it will always evaluate to false
+   ````
+
+The restrictions on `constinit` / `consteval` / `constexpr` are vast. At a high-level, the only allowed inputs and outputs are literal types:
 
  * **Scalar**: Floating point types, integral types, pointer types, enumeration types, `std::nullptr_t`, etc..
  * **Reference**
@@ -5485,26 +5720,10 @@ The restrictions on constant expressions are vast. At a high-level, a constant e
  * **Class**: Constructor must be a constant expression. Non-static field initializers using braced initialization, equals initialization, or brace-plus-equals initialization must use constant expressions. The destructor must be a trivial destructor (non-virtual, does nothing, and all base class destructors do nothing).
  * **Union**: Must have at least one non-static member that is a literal type.
 
+Also, Exceptions handling, `static` variables, and `thread_local` variables are not allowed.
+
 ```{note}
 The rules here are vast and complicated. The above might not be entirely correct, may be missing some conditions, or may not cover certain aspects. In the type_traits header, there's a function called `std::is_literal_type` that can be used to test if a type is a literal type.
-```
-
-There are several benefits to constant expressions. First, constant expressions help with reducing the use of hard coded numbers whose origins are obtuse, called magic numbers. A constant expression uses the computation to get to that obtuse magic number rather than the number itself, meaning it's easier to understand and requires less effort to tweak (via the parameters of the constant expression).
-
-Second, there exists a special type of compile-time if-else where the chosen path is the only one in which code is generated for. These compile-time if-elses, identified by the `constexpr` keyword immediately after the `if`, use constant expressions in their conditionals when deciding which path to choose. These are use-cases such as ...
-
- * omitting parts of a program from compilation (e.g. demonstration software).
- * working around compiler-specific / platform-specific inconsistencies (e.g. only include code if `int`'s max value is above some threshold).
- * performing specific actions based on the types chosen for template parameters (e.g. include code path 1 if pointer, otherwise code path 2).
-
-```c++
-if constexpr (y == sizeof(int)) {
-    // constant expression y is equivalent to the number of bytes for an int, so compile this block
-    ...
-} else {
-    // constant expression y is NOT equivalent to the number of bytes for an int, so compile this block
-    ...
-}
 ```
 
 ```{note}
@@ -5751,90 +5970,6 @@ See [here](http://zhaoyan.website/xinzhi/cpp/html/cppsu32.html) for what I used 
 ```{seealso}
 Core Language/Variables/Rvalue References_TOPIC
 Core Language/Classes/Moving_TOPIC
-```
-
-## Iterators
-
-`{bm} /(Core Language\/Iterators)_TOPIC/`
-
-```{prereq}
-Core Language/Classes/Operator Overloading_TOPIC
-```
-
-Iterators in C++ are similar to iterators in Java. In Java, objects that...
-
- * produce an iterator typically implement the `Iterable` interface (e.g. `ArrayList`)
- * are iterators must implement the `Iterator` interface.
-
-In C++, there is no requirement to extend from any base classes or interfaces. Instead, any type can act as an iterator so long as it supports as set of operators:
-
- * `!=` - test if the position of one iterator doesn't match the position of another iterator (e.g. `my_iterator != end_iterator`).
- * `++` - move to the next item (e.g. `my_iterator++`).
- * `*` (dereference) - access the next item (e.g. `int value {*my_iterator}`).
-
-```{note}
-Notice that the operators are more or less array / pointer behaviour. Given something like `int *` pointing to the beginning of an array, ...
-
- * incrementing it by 1 (`++`) moves it to the next element of the array via pointer arithmetic.
- * dereferencing it (`*`) provides the value at the array element it points to.
- * testing it using inequality (`!=`) is a way to check if it hasn't gone past the last array element.
-
-An iterator is basically a set of operators that walk elements in the same way as you would an array. A class can implement the operator overloads and behave the same way.
-```
-
-Similarly, any class can act as an iterable by implementing begin and end methods, commonly referred to as a range:
-
- * `begin()` - returns an iterator pointing to the first item.
- * `end()` - returns an iterator pointing to _past-the-end_ (just after the last element).
-
-```c++
-MyIterator it {collection.begin()};
-while (it != collection.end()) {
-    MyObject value {*it};
-    // do something with value here
-    ++iterator;
-}
-```
-
-C++ iterables and iterators can be used together in range-based for loops.
-
-```c++
-for (MyIterator it : collection) {
-    MyObject value {*it};
-    // do something with value here
-}
-```
-
-In total, 5 kinds of iterators are supported by C++. The kind of iterator described above is called an input iterator and it typically requires an equality operator overload (`operator ==()`) in addition to inequality. Input iterators are the closest thing to a standard Java `Iterator` -- read-only and forward-only. Other kinds of iterators require different operator overloads.
-
- * Input iterator, steps forward one element at a time and reads items of the container.
- * Output iterator, steps forward one element at a time and writes items of the container.
- * Forward iterator, combination of input iterator and output iterator.
- * Bidirectional iterator, forward iterator with the ability to move back.
- * Random access iterator, bidirectional iterator with the ability to jump to different positions.
-
-|                                                               | input | output | forward | bidirectional | random access |
-|---------------------------------------------------------------|-------|--------|---------|---------------|---------------|
-| `++it` and `it++` (move forward)                              |   ✓   |    ✓   |    ✓    |      ✓        |       ✓       |
-| `--it` and `it--` (move backward)                             |       |    ✓   |    ✓    |      ✓        |       ✓       |
-| `it1 == it2` and`it1 != it2` (test if at same position)       |   ✓   |    ✓   |    ✓    |      ✓        |       ✓       |
-| `it1 < it2` (test if before)                                  |       |        |         |               |       ✓       |
-| `it1 <= it2` (test if before or at)                           |       |        |         |               |       ✓       |
-| `it1 > it2` (test if after)                                   |       |        |         |               |       ✓       |
-| `it1 >= it2` (test if after or at)                            |       |        |         |               |       ✓       |
-| `x = *it` (dereference and get)                               |   ✓   |        |    ✓    |      ✓        |       ✓       |
-| `*it = x` (dereference and set)                               |       |    ✓   |    ✓    |      ✓        |       ✓       |
-| `it1 += n` and `it1 + n` (add integer)                        |       |        |         |               |       ✓       |
-| `it1 -= n` and `it1 - n` (subtract integer)                   |       |        |         |               |       ✓       |
-| `it2 - it1` (subtract iterators to get positional difference) |       |        |         |               |       ✓       |
-| `it1 + it2` (add iterators)                                   |       |        |         |               |               |
-
-```{note}
-Note that the adding of iterators is listed above but is not supported by any of the iterator types. It's there to make it explicit that adding together two iterators isn't a thing.
-```
-
-```{note}
-If you're dealing with the STL, there's also special iterator implementations that allow insertions rather than setting elements. See `insert_iterator`, `back_insert_iterator`, and `front_insert_iterator`.
 ```
 
 ## Modules
@@ -6107,6 +6242,10 @@ int x {5};
 ```
 
 The above doesn't matter unless you're trying to read raw contents of core types (e.g. for serializing classes to disk).
+
+```{note}
+This may not be the case anymore in C++20 because the C++ standard library has `std::endian`, which tells you the endian-ness of scalar types.
+```
 
 ```{note}
 I wasn't able to find a comprehensive list of what the C++ spec considers as unspecified behaviour.
@@ -6601,9 +6740,9 @@ Where as a shared pointer keeps a count of how many copies of itself are live (r
 The book mentions that this is useful in cases where the OS or framework requires some cleanup operation once the last instance of some type goes away (e.g. the old school Windows component object model).
 ```
 
-## Utility Wrappers
+## Wrappers
 
-`{bm} /(Library Functions\/Utility Wrappers)_TOPIC/`
+`{bm} /(Library Functions\/Wrappers)_TOPIC/`
 
 There are utility classes that wrap one or more other objects, such as optionals or tuples. They either provide some type of extra functionality or provide abstractions that make code easier to handle and reason about.
 
@@ -6611,7 +6750,7 @@ The subsections below document some common wrappers classes and their usages.
 
 ### Optional
 
-`{bm} /(Library Functions\/Utility Wrappers\/Optional)_TOPIC/`
+`{bm} /(Library Functions\/Wrappers\/Optional)_TOPIC/`
 
 An optional class is a wrapper that either holds on to an object or is empty (similar to Java or Python's optional class).
 
@@ -6647,7 +6786,7 @@ The typical usecase for tribool is for operations that take a long time to compl
 
 ### Tuple
 
-`{bm} /(Library Functions\/Utility Wrappers\/Tuple)_TOPIC/`
+`{bm} /(Library Functions\/Wrappers\/Tuple)_TOPIC/`
 
 A tuple class is a templated class that holds on to an arbitrary number of elements of arbitrary types. The number of elements and types of elements must be known at compile-time, and any code accessing those elements must know which element it's accessing at compile-time.
 
@@ -6700,7 +6839,7 @@ There's a helper function called `std::make_tuple()` / `std::make_pair()` which 
 
 ### Any
 
-`{bm} /(Library Functions\/Utility Wrappers\/Any)_TOPIC/`
+`{bm} /(Library Functions\/Wrappers\/Any)_TOPIC/`
 
 An any class is a wrapper that can hold on to an object of unknown type (a type that isn't known at compile-time).
 
@@ -6723,11 +6862,11 @@ Boost also provides a version of this wrapper, `boost::any`.
 
 ### Variant
 
-`{bm} /(Library Functions\/Utility Wrappers\/Variant)_TOPIC/`
+`{bm} /(Library Functions\/Wrappers\/Variant)_TOPIC/`
 
 ```{prereq}
-Library Functions/Utility Wrappers/Any
-Library Functions/Utility Wrappers/Tuple
+Library Functions/Wrappers/Any
+Library Functions/Wrappers/Tuple
 ```
 
 A variant class is a type-restricted form of the `std::any`. Where as with the `std::any` you can hold on to an object of any type, with `std::variant` you can hold on to an object of one of several predefined types.
@@ -6819,7 +6958,7 @@ void call_func_with_42(std::function<void(int)> func) {
 
 ### Reference Wrapper
 
-`{bm} /(Library Functions\/Utility Wrappers\/Reference Wrapper)_TOPIC/`
+`{bm} /(Library Functions\/Wrappers\/Reference Wrapper)_TOPIC/`
 
 ```{prereq}
 Library Functions/Containers
@@ -6925,6 +7064,7 @@ std::ordered_set<MyObject*, custom_less_functor_for> s { ... }
 
 ```{prereq}
 Library Functions/Allocators_TOPIC
+Library Functions/Iterators_TOPIC
 ```
 
 C++'s equivalent of Java collections are commonly referred to as containers. C++ containers come in 3 major types:
@@ -6959,7 +7099,6 @@ C++'s equivalent of Java collections are commonly referred to as containers. C++
 
 ```{seealso}
 Core Language/Control Flow/For Loop_TOPIC (for-each loop refresher)
-Core Language/Iterators_TOPIC (refresher)
 ```
 
 Containers support iterators via their `begin()` and `end()` functions. Looping over a container using a for-each loop calls those functions, but the order in which containers are iterated over depends on the container. For example ...
@@ -7033,7 +7172,7 @@ int b { my_arr2.back() };  // WARNING: undefined behaviour of len is 0
 ```
 
 ```{seealso}
-Library Functions/Utility Wrappers/Tuple_TOPIC (refresher on `std::get()`)
+Library Functions/Wrappers/Tuple_TOPIC (refresher on `std::get()`)
 ```
 
 To replace elements, use any of the same functions used for reading elements except `std::get()`. They return a reference, which means assigning something to them will assign into the container.
@@ -7176,8 +7315,8 @@ my_vec1.emplace_back(123);
 ```
 
 ```{seealso}
-Library Functions/Utility Wrappers/Any_TOPIC (also has an `emplace()` function)
-Library Functions/Utility Wrappers/Variant_TOPIC (also has an `emplace()` function)
+Library Functions/Wrappers/Any_TOPIC (also has an `emplace()` function)
+Library Functions/Wrappers/Variant_TOPIC (also has an `emplace()` function)
 ```
 
 To delete either a single element or a range of elements, use `erase()` and pass into it either an iterator at some position or an iterator range.
@@ -7632,8 +7771,8 @@ s1.emplace_hint(s1.begin(), 6);  // iterator should be near to where the value i
 ```
 
 ```{seealso}
-Library Functions/Utility Wrappers/Any_TOPIC (also has an `emplace()` function)
-Library Functions/Utility Wrappers/Variant_TOPIC (also has an `emplace()` function)
+Library Functions/Wrappers/Any_TOPIC (also has an `emplace()` function)
+Library Functions/Wrappers/Variant_TOPIC (also has an `emplace()` function)
 ```
 
 To delete an element at some specific iterator position, use either `extract()` or `erase()`. The difference is that `extract()` will return the element while `erase()` won't.
@@ -8124,8 +8263,8 @@ s1.emplace_hint(6, s1.begin());
 ```
 
 ```{seealso}
-Library Functions/Utility Wrappers/Any_TOPIC (also has an `emplace()` function)
-Library Functions/Utility Wrappers/Variant_TOPIC (also has an `emplace()` function)
+Library Functions/Wrappers/Any_TOPIC (also has an `emplace()` function)
+Library Functions/Wrappers/Variant_TOPIC (also has an `emplace()` function)
 ```
 
 To delete an element at some specific iterator position, use either `extract()` or `erase()`. The difference is that `extract()` will return the element while `erase()` won't.
@@ -8480,21 +8619,23 @@ There's also ..
  * `crbegin()` / `crend()` which is a mixture of the above two.
 ```
 
-## Container Adapters
+### Adapters
 
-`{bm} /(Library Functions\/Container Adapters)_TOPIC/`
+`{bm} /(Library Functions\/Containers\/Adapters)_TOPIC/`
 
 ```{prereq}
-Library Functions/Containers_TOPIC
+Library Functions/Containers\/Sequential_TOPIC
+Library Functions/Containers\/Ordered Associative_TOPIC
+Library Functions/Containers\/Unordered Associative_TOPIC
 ```
 
 Container adapters are light-weight wrappers around sequential containers that expose them in a simplified way that matches a common data structure. For example, an `std::vector` can be wrapped such that it's exposed as a queue. The caller of the queue doesn't have to know what type of sequential container is backing that queue.
 
 The type of sequential container usable by a container adaptor depends on the functions it has. For example, some container adaptors require both `front()` and `back()` functions to be supported by the sequential container type.
 
-### Stack
+#### Stack
 
-`{bm} /(Library Functions\/Container Adapters\/Stack)_TOPIC/`
+`{bm} /(Library Functions\/Containers\/Adapters\/Stack)_TOPIC/`
 
 `std::stack` wraps a sequential container as if it were a stack abstract data type: 
 
@@ -8553,9 +8694,9 @@ To get the size, use `size()`. Internally, this invokes the wrapped container fu
 auto is_empty { s3.size() == 0 };
 ```
 
-### Queue
+#### Queue
 
-`{bm} /(Library Functions\/Container Adapters\/Queue)_TOPIC/`
+`{bm} /(Library Functions\/Containers\/Adapters\/Queue)_TOPIC/`
 
 `std::queue` wraps a sequential container as if it were a queue abstract data type: 
 
@@ -8615,9 +8756,9 @@ To get the size, use `size()`. Internally, this invokes the wrapped container fu
 auto is_empty { q3.size() == 0 };
 ```
 
-### Priority Queue
+#### Priority Queue
 
-`{bm} /(Library Functions\/Container Adapters\/Priority Queue)_TOPIC/`
+`{bm} /(Library Functions\/Containers\/Adapters\/Priority Queue)_TOPIC/`
 
 `std::priority_queue` wraps a sequential container as if it were a priority queue abstract data type: Regardless of what order elements are added in, the only element that can be read / removed is the element with the highest priority (priority is defined by a comparator).
 
@@ -8685,13 +8826,142 @@ To get the size, use `size()`.
 auto is_empty { s3.size() == 0 };
 ```
 
-## Iterator Helpers
+## Iterators
 
-`{bm} /(Library Functions\/Iterator Helpers)_TOPIC/`
+`{bm} /(Library Functions\/Iterators)_TOPIC/`
 
-```{seealso}
-Core Language/Iterators_TOPIC (refresher)
+```{prereq}
+Core Language/Classes/Operator Overloading_TOPIC
 ```
+
+Iterators in C++ are similar to iterators in Java. In Java, objects that...
+
+ * produce an iterator typically implement the `Iterable` interface (e.g. `ArrayList`)
+ * are iterators must implement the `Iterator` interface.
+
+In C++, there is no requirement to extend from any base classes or interfaces. Instead, any type can act as an iterator so long as it supports as set of operators:
+
+ * `!=` - test if the position of one iterator doesn't match the position of another iterator (e.g. `my_iterator != end_iterator`).
+ * `++` - move to the next item (e.g. `my_iterator++`).
+ * `*` (dereference) - access the next item (e.g. `int value {*my_iterator}`).
+
+```{note}
+Notice that the operators are more or less array / pointer behaviour. Given something like `int *` pointing to the beginning of an array, ...
+
+ * incrementing it by 1 (`++`) moves it to the next element of the array via pointer arithmetic.
+ * dereferencing it (`*`) provides the value at the array element it points to.
+ * testing it using inequality (`!=`) is a way to check if it hasn't gone past the last array element.
+
+An iterator is basically a set of operators that walk elements in the same way as you would an array. A class can implement the operator overloads and behave the same way.
+```
+
+Similarly, any class can act as an iterable by implementing `begin()` and `end()` member functions:
+
+ * `begin()` - returns an iterator pointing to the first item.
+ * `end()` - returns an iterator pointing to _past-the-end_ (just after the last element).
+
+```c++
+MyIterator it {collection.begin()};
+while (it != collection.end()) {
+    MyObject value {*it};
+    // do something with value here
+    ++iterator;
+}
+```
+
+C++ iterables and iterators can be used together in range-based for loops.
+
+```c++
+for (MyIterator it : collection) {
+    MyObject value {*it};
+    // do something with value here
+}
+```
+
+In total, 5 kinds of iterators are supported by C++. The kind of iterator described above is called an input iterator and it typically requires an equality operator overload (`operator ==()`) in addition to inequality. Input iterators are the closest thing to a standard Java `Iterator` -- read-only and forward-only. Other kinds of iterators require different operator overloads.
+
+ * Input iterator, steps forward one element at a time and reads items of the container.
+ * Output iterator, steps forward one element at a time and writes items of the container.
+ * Forward iterator, combination of input iterator and output iterator.
+ * Bidirectional iterator, forward iterator with the ability to move back.
+ * Random access iterator, bidirectional iterator with the ability to jump to different positions.
+
+|                                                               | input | output | forward | bidirectional | random access |
+|---------------------------------------------------------------|-------|--------|---------|---------------|---------------|
+| `++it` and `it++` (move forward)                              |   ✓   |    ✓   |    ✓    |      ✓        |       ✓       |
+| `--it` and `it--` (move backward)                             |       |    ✓   |    ✓    |      ✓        |       ✓       |
+| `it1 == it2` and`it1 != it2` (test if at same position)       |   ✓   |    ✓   |    ✓    |      ✓        |       ✓       |
+| `it1 < it2` (test if before)                                  |       |        |         |               |       ✓       |
+| `it1 <= it2` (test if before or at)                           |       |        |         |               |       ✓       |
+| `it1 > it2` (test if after)                                   |       |        |         |               |       ✓       |
+| `it1 >= it2` (test if after or at)                            |       |        |         |               |       ✓       |
+| `x = *it` (dereference and get)                               |   ✓   |        |    ✓    |      ✓        |       ✓       |
+| `*it = x` (dereference and set)                               |       |    ✓   |    ✓    |      ✓        |       ✓       |
+| `it1 += n` and `it1 + n` (add integer)                        |       |        |         |               |       ✓       |
+| `it1 -= n` and `it1 - n` (subtract integer)                   |       |        |         |               |       ✓       |
+| `it2 - it1` (subtract iterators to get positional difference) |       |        |         |               |       ✓       |
+| `it1 + it2` (add iterators)                                   |       |        |         |               |               |
+
+```{note}
+Note that the adding of iterators is listed above but is not supported by any of the iterator types. It's there to make it explicit that adding together two iterators isn't a thing.
+```
+
+```{note}
+If you're dealing with the STL, there's also special iterator implementations that allow insertions rather than setting elements. See `insert_iterator`, `back_insert_iterator`, and `front_insert_iterator`.
+```
+
+### Concepts
+
+`{bm} /(Library Functions\/Iterator\/Concepts)_TOPIC/`
+
+Each of the following concept_TEMPLATEs map to a type of iterator.
+
+ * `std::input_iterator` enforces input iterator type traits.
+ * `std::output_iterator` enforces output iterator type traits.
+ * `std::forward_iterator` enforces forward iterator type traits.
+ * `std::bidirectional_iterator` enforces bidirectional iterator type traits.
+ * `std::random_access_iterator` enforces random access iterator type traits.
+ * `std::contiguous_iterator` enforces contiguous iterator type traits.
+
+The type traits of each iterator type were described in the parent section.
+
+|                                                               | input | output | forward | bidirectional | random access |
+|---------------------------------------------------------------|-------|--------|---------|---------------|---------------|
+| `++it` and `it++` (move forward)                              |   ✓   |    ✓   |    ✓    |      ✓        |       ✓       |
+| `--it` and `it--` (move backward)                             |       |    ✓   |    ✓    |      ✓        |       ✓       |
+| `it1 == it2` and`it1 != it2` (test if at same position)       |   ✓   |    ✓   |    ✓    |      ✓        |       ✓       |
+| `it1 < it2` (test if before)                                  |       |        |         |               |       ✓       |
+| `it1 <= it2` (test if before or at)                           |       |        |         |               |       ✓       |
+| `it1 > it2` (test if after)                                   |       |        |         |               |       ✓       |
+| `it1 >= it2` (test if after or at)                            |       |        |         |               |       ✓       |
+| `x = *it` (dereference and get)                               |   ✓   |        |    ✓    |      ✓        |       ✓       |
+| `*it = x` (dereference and set)                               |       |    ✓   |    ✓    |      ✓        |       ✓       |
+| `it1 += n` and `it1 + n` (add integer)                        |       |        |         |               |       ✓       |
+| `it1 -= n` and `it1 - n` (subtract integer)                   |       |        |         |               |       ✓       |
+| `it2 - it1` (subtract iterators to get positional difference) |       |        |         |               |       ✓       |
+| `it1 + it2` (add iterators)                                   |       |        |         |               |               |
+
+```c++
+void print_range(std::random_access_iterator auto &&it) {
+    std::cout << it[3] << std::endl;
+    std::cout << it[1] << std::endl;
+    std::cout << it[2] << std::endl;
+}
+```
+
+```{note}
+There are a handful of other iterator type traits that build on-top of each other to form a taxonomy of concept_TEMPLATEs for iterators. For example, at the bottom is ...
+
+ * `std::incrementable` / `std::weakly_incrementable` - enforces `it++` and `++it` type traits.
+ * `std::input_or_output_iterator` - enforces `*it` type traits and enforces `std::weakly_incrementable`.
+ * etc..
+
+I don't think these are useful enough to document.
+```
+
+### Helpers
+
+`{bm} /(Library Functions\/Iterators\/Helpers)_TOPIC/`
 
 When writing _generic_ code that makes use of iterators, directly using the iterator may lead to poor performance. For example, if you want an iterator to move up 100 spaces, you can't do `it += 100` because `it` may not be a random access iterator. The safest thing to do for generic code would be to perform `it++` 100 times, but that means you miss out any performance gains of doing `it += 100` if `it` were a random access iterator.
 
@@ -8732,19 +9002,15 @@ Several helper functions exist to help with examples like the one above. These h
     // underlying type -- as long as the types are assignable to each other, it'll work.
     ```
 
-## Iterator Adapters
+### Adapters
 
-`{bm} /(Library Functions\/Iterator Adapters)_TOPIC/`
-
-```{seealso}
-Core Language/Iterators_TOPIC (refresher)
-```
+`{bm} /(Library Functions\/Iterators\/Adapters)_TOPIC/`
 
 Iterator adapters are light-weight wrappers that either simplify operations or provide some functionality under the type traits of an iterator. For example, an iterator exists that can wrap a container as an iterator, where writes to that iterator will translate to inserts into the container.
 
-### Insert
+#### Insert
 
-`{bm} /(Library Functions\/Iterator Adapters\/Insert)_TOPIC/`
+`{bm} /(Library Functions\/Iterators\/Adapters\/Insert)_TOPIC/`
 
 ```{prereq}
 Library Functions/Containers_TOPIC
@@ -8796,9 +9062,9 @@ According to the book, these adapters ignore the increment operator because it i
 There are helper functions available for creating these. The function names are similar to the iterator adapter names: replace the `insert_iterator` part with `inserter` (e.g. `std::back_inserter()`).
 ```
 
-### Move
+#### Move
 
-`{bm} /(Library Functions\/Iterator Adapters\/Move)_TOPIC/`
+`{bm} /(Library Functions\/Iterators\/Adapters\/Move)_TOPIC/`
 
 ```{seealso}
 Core Language/Classes/Copying_TOPIC (refresher)
@@ -8823,9 +9089,9 @@ std::vector<MyMovableObject> container2(
 There is a helper function for creating this: `std::make_move_iterator()`.
 ```
 
-### Reverse
+#### Reverse
 
-`{bm} /(Library Functions\/Iterator Adapters\/Reverse)_TOPIC/`
+`{bm} /(Library Functions\/Iterators\/Adapters\/Reverse)_TOPIC/`
 
 An iterator adaptor that wraps another iterator but exposes it in reverse order -- last element to first element.
 
@@ -8853,6 +9119,399 @@ There is a helper function for creating this: `std::make_reverse_iterator()`.
 
 ```{note}
 Most collections expose `rbegin()` / `rend()` functions that automatically give back a reverse iterator.
+```
+
+## Ranges
+
+`{bm} /(Library Functions\/Ranges)_TOPIC/`
+
+```{prereq}
+Library Functions/Containers_TOPIC
+Library Functions/Wrappers/Tuple_TOPIC
+```
+
+The C++ standard library provides an functionality similar to Java streams, called ranges. Like Java streams, ranges enable functional programming in that a range can be fed into a chain of higher-level operations that manipulate the stream of elements within, lazily if possible.
+
+```c++
+// The code below prints the numbers 2 and 4. The Java streams equivalent is provided on the right-hand side.
+//
+//           C++                                           vs                 JAVA
+std::vector<int> v{ 0, 1, 2 };                                  // var v = ArrayList<Integer>();
+                                                                // v.add(0);
+                                                                // v.add(1);
+                                                                // v.add(2);
+                                                                //
+auto range {                                                    // var range =
+    v                                                           //          v.stream()
+    | std::views::transform([](int x) { return x * 2; })        //         .map(e -> e * 2)
+    | std::views::filter([](int x) { return x != 0; })          //         .filter(e -> e != 0);
+};                                                              //
+for (int e : range) {                                           // range.forEach(e -> { System.out.println(e); } );
+    std::cout << e << std::endl;                                //
+}                                                               //
+```
+
+As shown in the example above, ranges work similarly to Java streams. Operations are chained together using the pipe operator (|), where those operations are applied from left-to-right. 
+
+```{note}
+**WARNING**: Once `v` above gets destroyed (e.g. goes out of scope), `range` becomes invalid. `v` is _referenced_ by `range`, it isn't _copied_ / _moved_ into `range`. See the subsection on owning views to workaround this problem.
+```
+
+```{note}
+Unlike Java streams, the current implementation of ranges (C++20) are missing some major functionality:
+
+* type-erasures (e.g. `std::vector<int> {0, 1, 2} | std::views::transform([](int x) { return x * 2; })` and `std::vector<int> {0, 1, 2} | std::views::filter([](int x) { return x != 0; })` don't have the same type)
+* parallel algorithms (e.g. transform using multiple cores)
+* actions (e.g. missing things like `forEach()` in Java streams)
+```
+
+Any object that has a particular set of type traits is a range. Those type traits map closely to iterator type traits: A range must have implementation for `std::begin(R)` and `std::end(R)` functions, and usage patterns similar to that of the type of iterator it maps to:
+
+ * input range has usage patterns similar to input iterator.
+ * output range has usage patterns similar to output iterator.
+ * forward range has usage patterns similar to forward iterator.
+ * bidirectional range has usage patterns similar to bidirectional iterator.
+ * random access range has usage patterns similar to random access iterator.
+ * contiguous range has usage patterns similar to contiguous iterator.
+
+One major difference between iterators and ranges is that a range's `end()` function doesn't necessarily have to return the same type as its `begin()` function. It can instead return a sentinel type that marks the end of the range. If a range does return the same type for both `begin()` and `end()`, it's referred to as a common range. Containers in the C++ standard library are all of common ranges. However, once a container gets piped into an operation, it may end up not being a common range.
+
+```{note}
+See `std::views::common()` below. It wraps a view and makes it so that `begin()` and `end()` have a common return type.
+```
+
+| container                 | range type          |
+|---------------------------|---------------------|
+| `std::unordered_set`      | input range         |
+| `std::unordered_map`      | input range         |
+| `std::unordered_multiset` | input range         |
+| `std::unordered_multimap` | input range         |
+| `std::forward_list`       | input range         |
+| `std::set`                | output range        |
+| `std::map`                | output range        |
+| `std::multiset`           | output range        |
+| `std::multimap`           | output range        |
+| `std::list`               | output range        |
+| `std::deque`              | bidirectional range |
+| `std::array`              | contiguous range    |
+| `std::vector`             | contiguous range    |
+
+```{note}
+`std::string` and other types of string variants, while not containers, are contiguous ranges.
+```
+
+When an operation such as transformation or filtering is applied on a range, it's applied through a view. A view is a special type of range that typically doesn't own any data and typically isn't mutable / is state-less. As such, a view typically has constant-time copy, move, and assignment.
+
+| view                     | example                                                    | description                                                                 |
+|--------------------------|------------------------------------------------------------|-----------------------------------------------------------------------------|
+| `std::views::filter`     | `v \| std::views::filter([](int x) { return x != 0; }`     | keep elements that pass predicate                                           |
+| `std::views::transform`  | `v \| std::views::transform([](int x) { return x * 2; }`   | modify elements                                                             |
+| `std::views::take`       | `v \| std::views::take(5)`                                 | keep first n elements                                                       |
+| `std::views::take_while` | `v \| std::views::take_while([](int x) { return x != 0; }` | keep elements until predicate fails                                         |
+| `std::views::drop`       | `v \| std::views::drop(5)`                                 | skip first n elements                                                       |
+| `std::views::drop_while` | `v \| std::views::drop_while([](int x) { return x == 0; }` | skip elements until predicate fails                                         |
+| `std::views::join`       | `v \| std::views::join`                                    | flatten a range of ranges (2D) into a range (1D)                            |
+| `std::views::join_with`  | `v \| std::views::join_with(-1)`                           | flatten a range of ranges (2D) into a range (1D) with delimiters in between |
+| `std::views::split`      | `v \| std::views::split(-1)`                               | split a range into a range of ranges using a delimiter                      |
+| `std::views::lazy_split` | `v \| std::views::lazy_split(-1)`                          | split a range into a range of ranges using a delimiter (lazily)             |
+| `std::views::counted`    | `std::views::counted(v.begin(), 5)`                        | keep a sub-range of a range                                                 |
+| `std::views::common`     | `std::views::common(v)`                                    | convert to a common view (`being()` and `end()` have same type)             |
+| `std::views::reverse`    | `v \| std::views::reverse`                                 | reverse a view                                                              |
+| `std::views::elements`   | `v \| std::views::elements<1>`                             | transform tuples to their nth item                                          |
+| `std::views::keys`       | `v \| std::views::keys`                                    | transform pairs to their 1st item                                           |
+| `std::views::values`     | `v \| std::views::values`                                  | transform pairs to their 2nd item                                           |
+| `std::views::zip`        | `std::views::zip(v1, v2, v3)`                              | zip multiple ranges together (similar to Python's `zip()`)                  |
+
+In addition to performing operations on another range's elements, a view may originate elements itself.
+
+| view                  | example                              | description                            |
+|-----------------------|--------------------------------------|----------------------------------------|
+| `std::views::empty`   | `std::views::empty<int>`             | empty range of some type               |
+| `std::views::single`  | `std::views::single<int> { 5 }`      | range of a single element              |
+| `std::views::iota`    | `std::views::iota(1, 5)`             | range of incrementing values (bounded) |
+
+```{note}
+The tables above aren't exhaustive.
+```
+
+### Concepts
+
+`{bm} /(Library Functions\/Ranges\/Concepts)_TOPIC/`
+
+At it's core, a range must satisfy the concept_TEMPLATE `std::ranges::range`, which only asks that the type have an implementation for the functions `std::ranges::begin(R)` and `std::ranges::end(R)`. There are two concept_TEMPLATE specializations:
+
+ * `std::ranges::sized_range`: A range type that has an implementation for `std::ranges::size(R)`, which returns the number of elements within the range. 
+ * `std::ranges::borrowed_range`: A range type that provides a template specialization for `std::ranges::enable_borrowed_range<R>`, which signals that the range type guarantees that the iterators it returns aren't bound to the lifetime of the range. Borrowed ranges are commonly generate elements on-the-fly.
+ * `std::ranges::view`: A range type with constant-time copy/move/assignment operations and provides a template specialization for `std::enable_view<R>`, which signals that the range type is a view. Views are commonly used to transform elements from another range or generate elements on the fly.
+
+The following templates provide access to the types used by a range.
+
+ * `std::ranges::iterator_t<R>` - iterator type of range `R`
+ * `std::ranges::sentinel_t<R>` - sentinel type of range `R` (type returned by `std::ranges::end(R)`, which may be different from the type returned by `std::ranges::begin(R)`)
+ * `std::ranges::size_t<R>` - type of range `R`'s size type (type returned by `std::ranges::size(R)`, if implemented)
+ * `std::ranges::difference_t<R>` - type returned by differencing two iterator types of range `R` (resolves to `std::iter_difference_t<std::ranges::iterator)t<R>>`)
+ * `std::ranges::range_reference_t<R>` - type returned by _dereferencing an iterator_ of range `R` (type returned by `*(std::ranges::begin(R)`)
+ * `std::ranges::range_rvalue_reference_t<R>` - type returned by _dereferencing an iterator_ of range `R` but as an r-value reference (type returned by `std::move(*(std::ranges::begin(R))`)
+ * `std::ranges::range_value_t<R>` - type returned by _dereferencing an iterator_ of range `R` but with the reference, `const`, and `volatile` (e.g. if `std::ranges::range_reference_t<R>` is `const int&`, `std::ranges::range_value_t<R>` is `int`)
+
+```c++
+void print_range(std::ranges::range auto &&range) {
+    using ELEM_REF = std::ranges::range_reference_t<decltype(range)>;
+    for (ELEM_REF v : range) {
+        std::cout << v << std::endl;
+    }
+}
+```
+
+The following concept_TEMPLATEs detail the features supported by a range's iterator type. These concept_TEMPLATE loosely map to the concept_TEMPLATE for iterators.
+
+ * `std::ranges::input_range` maps to `std::input_iterator`
+ * `std::ranges::output_range` maps to `std::output_iterator`
+ * `std::ranges::forward_range` maps to `std::forward_iterator` 
+ * `std::ranges::bidirectional_range` maps to `std::bidirectional_iterator`
+ * `std::ranges::random_access_range` maps to `std::random_access_iterator`
+ * `std::ranges::contiguous_range` maps to `std::contiguous_iterator`
+
+```c++
+void print_range(std::ranges::random_access_range auto &&range) {
+    auto it { std::ranges::begin(range) };
+    std::cout << it[3] << std::endl;
+    std::cout << it[1] << std::endl;
+    std::cout << it[2] << std::endl;
+}
+```
+
+### Owning Views
+
+`{bm} /(Library Functions\/Ranges\/Owning Views)_TOPIC/`
+
+An owning view moves the range it's operating on into itself rather than reference that range. Doing this avoids the problem of a view referencing a destroyed range, which usually happens when a function returns a view but the range that view is referencing goes out of scope.
+
+```c++
+// This function is faulty because the returned view REFERENCES vec but
+// vec gets destroyed when the function exits. The view references a
+// destroyed object.
+auto faulty_code() {
+    std::vector<int> vec{ 1, 2, 3 };
+    return vec
+        | std::views::transform([](int i) { return i * 2; })
+        | std::views::filter([](int i) { return i != 0; });
+}
+```
+
+To create an owning view, use `std::move()` on the original range.
+
+```c++
+// By using std::move() on the range, the view becomes an owning view.
+auto good_code() {
+    std::vector<int> vec{ 1, 2, 3 };
+    return std::move(vec)
+        | std::views::transform([](int i) { return i * 2; })
+        | std::views::filter([](int i) { return i != 0; });
+}
+```
+
+```{note}
+This started to be supported in version 12 of g++.
+```
+
+### Type-erasure
+
+`{bm} /(Library Functions\/Ranges\/Type-erasure)_TOPIC/`
+
+A range's type depends on the type of the underlying container or generator (e.g. `std::ordered_set`), element type of the range (e.g. `int`), and the list of view manipulations applied to that range. Each change ends up changing the underlying type of the range.
+
+```c++
+std::vector<int> vec{ 1, 2, 3 };
+
+// THE CODE BELOW PRINTS "same!"
+// ----------------------------
+// decltype(v1) == decltype(v2) because both use the same underlying container type, element type,
+// and have the exact same list of views applied WITH the exact same functor object.
+auto functor { [](int i) { return i * 2; } };
+auto v1 { vec | std::views::transform(functor) };
+auto v2 { vec | std::views::transform(functor) };
+if constexpr (std::is_same_v<decltype(v1), decltype(v2)>) {
+    std::cout << "same!";
+} else {
+    std::cout << "NOT same!";
+}
+
+// THE CODE BELOW PRINTS "NOT same!"
+// ---------------------------------
+// decltype(v1) != decltype(v2) because although the two types use the same underlying container
+// type, element type, and have the exact same list of views applied, those views are DIFFERENT the
+// functor classes each are unique -- they're technically two different classes, each with its own
+//  unique type. Those unique types are included in the types of v3 and v4 somewhere in a depth of
+//  template parameter chains.
+auto v3 { vec | std::views::transform([](int i) { return i * 2; }) };
+auto v4 { vec | std::views::transform([](int i) { return i * 2; }) };
+if constexpr (std::is_same_v<decltype(v3), decltype(v4)>) {
+    std::cout << "same!";
+} else {
+    std::cout << "NOT same!";
+}
+```
+
+The lack of type erasures sometimes causes problems when doing certain types of view manipulations. For example, combining together two ranges with the same element type (flattening) via `std::views::join` isn't possible unless the types of those ranges are exactly the same.
+
+```c++
+std::ranges::empty_view<int> y{};
+std::ranges::single_view<int> x{5};
+std::vector combined{ x , y };  // x and y of different types, vector's type parameter can't be deduced
+auto joined { std::ranges::join_view(combined) };
+for (auto x : joined) {
+    std::cout << x << std::endl;
+}
+```
+
+To mitigate this, a third-party library called ranges-v3 provides `ranges::any_view<T>`. `ranges::any_view<T>` essentially "erases" the type of a range by wrapping it and unifying it to a specific type. The downside of this wrapping is that it has a performance impact as abstracting away the type information involves extra runtime code.
+
+```c++
+std::ranges::empty_view<int> y{};
+std::ranges::single_view<int> x{5};
+std::vector<ranges::any_view<int>> combined{
+    ranges::any_view<int> { x },
+    ranges::any_view<int> { y }
+};
+auto joined { std::ranges::join_view(combined) };
+for (auto x : joined) {
+    std::cout << x << std::endl;
+}
+```
+
+One important thing about `ranges::any_view<T>` is that it takes an optional second template parameter which defines the capabilities of the range its wrapping. By default, it's set to `category::input` which supports capabilities of an input range, but it also supports ...
+
+* `category::input` - satisfies `std::ranges::input_range` concept_TEMPLATE
+* `category::forward` - satisfies `std::ranges::forward_range` concept_TEMPLATE
+* `category::bidirectional` - satisfies `std::ranges::bidirectional_range` concept_TEMPLATE
+* `category::random_access` - satisfies `std::ranges::random_access_range` concept_TEMPLATE
+* `category::sized` - satisfies `std::ranges::sized_ranges` concept_TEMPLATE
+
+```{note}
+There's also `category::none` and `category::mask`, not exactly sure what these are for.
+```
+
+```c++
+std::ranges::empty_view<int> y{};
+std::ranges::single_view<int> x{5};
+std::vector<ranges::any_view<int, ranges::category::input>> combined{
+    ranges::any_view<int, ranges::category::input> { x },
+    ranges::any_view<int, ranges::category::input> { y }
+};
+auto joined { std::ranges::join_view(combined) };
+for (auto x : joined) {
+    std::cout << x << std::endl;
+}
+```
+
+Alternatively, in certain cases `std::span<T>` also abstracts away type information.
+
+```c++
+std::ranges::empty_view<int> y{};
+std::ranges::single_view<int> x{5};
+std::vector<std::span<int>> combined{
+    std::span<int> { x },
+    std::span<int> { y }
+};
+auto joined { std::ranges::join_view(combined) };
+for (auto x : joined) {
+    std::cout << x << std::endl;
+}
+```
+
+```{note}
+C++20 / C++23 has nothing in the standard library for this except for `std::span<T>`, and AFAIK type erasure isn't what it was intended for. You should use ranges-v3. Future versions of C++ might provide something.
+```
+
+### Custom Views
+
+`{bm} /(Library Functions\/Ranges\/Custom Views)_TOPIC/`
+
+To write a custom view, create a class that inherits from `std::ranges::view_interface` with a `begin()` function, and an `end()` function, and either a default constructor (if generating values) and / or a constructor that takes in a range (if manipulating values).
+
+```c++
+struct FakeGeneratingView : public std::ranges::view_interface<FakeGeneratingView> {
+    auto begin() const { return &(values[0]); }
+    auto end() const { return &(values[3]); }
+private:
+    int[3] values = { 0, 1, 2 };
+};
+
+
+// USE THE VIEW
+for (auto x : FakeGeneratingView{}) {
+    std::cout << x << std::endl;
+}
+```
+
+```{note}
+The above example class is feeding itself as a template parameter to `std::ranges::view_interface`. This is a common C++ idiom referred to as the curiously recurring template pattern (CRTP) which allows for feeding the derived class back into a templated base class. Something to do with compile-time polymorphism.
+```
+
+The following example is another custom view but this time it takes in an another range and manipulates its values and it supports the pipe operator.
+
+```c++
+template<std::ranges::input_range R> 
+    requires std::ranges::view<R>
+struct AddFiveView : public std::ranges::view_interface<AddFiveView<R>> {
+    AddFiveView() = delete;
+    constexpr AddFiveView(R&& r):
+        i(std::forward<R>(r)),
+        _begin(std::begin(i.range)),
+        _end(std::end(i.range)) {}
+    constexpr auto begin() const { return _begin; }
+    constexpr auto end() const { return _end; }
+private:
+    struct F : decltype([](auto x) { return x + 5; }) {};
+    using R_RES = std::ranges::transform_view<R, F>;
+    struct Internal {
+        Internal(R&& r) : range(std::forward<R>(r) | std::views::transform(F())) {}
+        R_RES range;
+    };
+    Internal i;  // what do I put as the template arg???
+    std::ranges::iterator_t<R_RES> _begin;
+    std::ranges::iterator_t<R_RES> _end; 
+};
+
+
+struct AddFiveViewAdaptorClosure {
+    constexpr AddFiveViewAdaptorClosure() {}
+
+    template <std::ranges::viewable_range R>
+    constexpr auto operator()(R&& r) const {
+        return AddFiveView<R>(std::forward<R>(r));
+    }
+} ;
+
+struct AddFiveViewAdaptor {
+    template<std::ranges::viewable_range R>
+    constexpr auto operator () (R && r) {
+        return AddFiveView(std::forward<R>(r)) ;
+    }
+
+    constexpr auto operator () () {
+        return AddFiveViewAdaptorClosure();
+    }   
+};
+
+template <std::ranges::viewable_range R>
+constexpr auto operator | (R&& r, AddFiveViewAdaptorClosure const & a) {
+    return a(std::forward<R>(r)) ;
+}
+
+namespace CustomViews {
+    AddFiveViewAdaptorClosure AddFiveView;
+}
+
+
+
+// USE THE VIEW VIA THE PIPE OPERATOR
+//   Note the use of std::views::all -- this is required for some reason (maybe it normalizes some missing pieces)
+std::vector<int> v{0,1,3};
+for (auto x : v | std::views::all | CustomViews::AddFiveView) {
+    std::cout << x << std::endl;
+}
 ```
 
 ## Time
@@ -9274,7 +9933,7 @@ auto tp { std::chrono::local_days { date } + time };  // or use sys_days for sys
 
 ## Numbers
 
-`{bm} /(Library FunctionsTime\/Numbers)_TOPIC/`
+`{bm} /(Library Functions\/Numbers)_TOPIC/`
 
 Both the C++ standard library and third-party libraries (e.g. Boost) provide several pieces of functionality that make working with numbers easier: Math constants and functions, random number generation, bounds-checked numeric type casting, etc..
 
@@ -9282,7 +9941,7 @@ The subsections below document some common number-related classes and their usag
 
 ### Random Numbers
 
-`{bm} /(Library FunctionsTime\/Numbers\/Random Numbers)_TOPIC/`
+`{bm} /(Library Functions\/Numbers\/Random Numbers)_TOPIC/`
 
 There are several options for random number generation. For ...
 
@@ -9320,7 +9979,7 @@ Are there friendly wrappers here? What if I want the random number generator to 
 
 ### Numeric Type Information
 
-`{bm} /(Library FunctionsTime\/Numbers\/Numeric Type Information)_TOPIC/`
+`{bm} /(Library Functions\/Numbers\/Numeric Type Information)_TOPIC/`
 
 Recall that C++'s numeric types are wishy-washy (e.g. there is no guarantee as to how large an `int` is, just that it must be greater than or equal to `short`). The `std::numeric_limits` class allows you to get compile-time information about a numeric type, such as signed-ness, min, max, etc..
 
@@ -9346,7 +10005,7 @@ Boost's Integer library also provides additional functionality for determining i
 
 ### Numeric Type Casting
 
-`{bm} /(Library FunctionsTime\/Numbers\/Numeric Type Casting)_TOPIC/`
+`{bm} /(Library Functions\/Numbers\/Numeric Type Casting)_TOPIC/`
 
 ```{seealso}
 (Core Language/Variables/Explicit Conversion/Named Conversions_TOPIC (refresher)
@@ -9380,7 +10039,7 @@ int z { boost::numeric_cast<int>(1.234) };  // same thing as the examples above
 
 ### Numeric String Conversion
 
-`{bm} /(Library FunctionsTime\/Numbers\/Numeric String Conversion)_TOPIC/`
+`{bm} /(Library Functions\/Numbers\/Numeric String Conversion)_TOPIC/`
 
 ```{prereq}
 Library Functions/Strings/String_TOPIC
@@ -9425,37 +10084,66 @@ There is no equivalent or overloads for string specializations like `std::u8stri
 
 ### Math
 
-`{bm} /(Library FunctionsTime\/Numbers\/Math)_TOPIC/`
+`{bm} /(Library Functions\/Numbers\/Math)_TOPIC/`
 
 Several common math functions are provided directly within the C++ standard library.
 
-| function(s)                                          | description                                                                                                         |
-|------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
-| `abs(x)`                                             | absolute value                                                                                                      |
-| `max(x) min(x)`                                      | minimum/maximum of two values                                                                                       |
-| `isfinite(x) isinf(x)`                               | check if finite / infinite (e.g. floating point infinite)                                                           |
-| `pow(x,y)`                                           | power of (x to the power of y)                                                                                      |
-| `sqrt(x)`                                            | square root                                                                                                         |
-| `cbrt(x)`                                            | cube root                                                                                                           |
-| `sin(x) cos(x) tan(x) asin(x) acos(x) atan(x)`       | trigonometry functions                                                                                              |
-| `sinh(x) cosh(x) tanh(x) asinh(x) acosh(x) atanh(x)` | hyperbolic functions                                                                                                |
-| `ceil(x) floor(x) round(x)`                          | rounding function                                                                                                   |
-| `div(x, y)`                                          | divides and gives both the quotient AND remainder                                                                   |
-| `fmod(x, y)`                                         | modulo for floating point                                                                                           |
-| `remainder(x, y)`                                    | signed remainder of x div y ([different from modulo for non-positive values](https://stackoverflow.com/a/13683709)) |
-| `log(x) log10(x) log2(x)`                            | logarithm functions                                                                                                 |
-
-Boost provides several math constants through `boost::math::double_constants`.
-
-| constant | description                  |
-|----------|------------------------------|
-| `pi`     | archimedes's constant        |
-| `e`      | euler's constant             |
-| `degree` | number of radians per degree |
-| `radian` | number of degrees per radian |
+| function(s)            | description                                                                                                         |
+|------------------------|---------------------------------------------------------------------------------------------------------------------|
+| `std::midpoint(a, b)`  | equivalent to `(a + (b-a)/2)`, which is the midpoint between two points                                             |
+| `std::lerp(a, b, t)`   | equivalent to `(a + t*(b-a))`, which is the linear interpolation between two points                                 |
+| `std::abs(x)`          | absolute value                                                                                                      |
+| `std::min(x)`          | minimum/maximum of two values                                                                                       |
+| `std::max(x)`          | minimum/maximum of two values                                                                                       |
+| `std::isfinite(x)`     | check if finite / infinite (e.g. floating point infinite)                                                           |
+| `std::isinf(x)`        | check if finite / infinite (e.g. floating point infinite)                                                           |
+| `std::pow(x,y)`        | power of (x to the power of y)                                                                                      |
+| `std::sqrt(x)`         | square root                                                                                                         |
+| `std::cbrt(x)`         | cube root                                                                                                           |
+| `std::sin(x)`          | trigonometry functions                                                                                              |
+| `std::cos(x)`          | trigonometry functions                                                                                              |
+| `std::tan(x)`          | trigonometry functions                                                                                              |
+| `std::asin(x)`         | trigonometry functions                                                                                              |
+| `std::acos(x)`         | trigonometry functions                                                                                              |
+| `std::sinh(x)`         | hyperbolic functions                                                                                                |
+| `std::cosh(x)`         | hyperbolic functions                                                                                                |
+| `std::tanh(x)`         | hyperbolic functions                                                                                                |
+| `std::asinh(x)`        | hyperbolic functions                                                                                                |
+| `std::acosh(x)`        | hyperbolic functions                                                                                                |
+| `std::atanh(x)`        | hyperbolic functions                                                                                                |
+| `std::ceil(x)`         | rounding function                                                                                                   |
+| `std::floor(x)`        | rounding function                                                                                                   |
+| `std::round(x)`        | rounding function                                                                                                   |
+| `std::div(x, y)`       | divides and gives both the quotient AND remainder                                                                   |
+| `std::fmod(x, y)`      | modulo for floating point                                                                                           |
+| `std::remainder(x, y)` | signed remainder of x div y ([different from modulo for non-positive values](https://stackoverflow.com/a/13683709)) |
+| `std::log(x)`          | logarithm functions                                                                                                 |
+| `std::log10(x)`        | logarithm functions                                                                                                 |
+| `std::log2(x)`         | logarithm functions                                                                                                 |
 
 ```{note}
-The functions / constants listed above the useful ones. There are more.
+Built-in functions like `std::midpoint()` are preferred over rolling it by hand because they properly formulate things to work around integer overflow issues.
+```
+
+The C++ standard library also provides several math constants.
+
+| constant               | description                  |
+|------------------------|------------------------------|
+| `std::numbers::pi`     | archimedes's constant        |
+| `std::numbers::e`      | euler's constant             |
+| `std::numbers::degree` | number of radians per degree |
+| `std::numbers::radian` | number of degrees per radian |
+
+```{note}
+The functions / constants listed above the useful ones. There are more. There are constants in `boost::math::double_constants` as well.
+```
+
+By default, the type of these constants are `double`. However, they can be re-targeted to either `float`, `double`, or `long double` via their templated `*_v` variants (e.g. `std::numbers::pi<long double>`).
+
+```c++
+std::cout << std::numbers::pi << std::endl;
+std::cout << std::numbers::pi_v<double> << std::endl;
+std::cout << std::numbers::pi_v<float> << std::endl;
 ```
 
 In addition, there's support for complex numbers via `std::complex`, which implements various common complex number operations via operator overloading and free functions.
@@ -9470,13 +10158,122 @@ auto aImaginary { std::imag(a)} ; // get imaginary part
 This seems like such a niche thing that I don't think it's worth fleshing it out.
 ```
 
+### Bit Manipulation
+
+`{bm} /(Library Functions\/Numbers\/Bit Manipulation)_TOPIC/`
+
+The C++ standard library provides several functions to aid with bit manipulation tasks.
+
+To determine the endian-ness of the platform (e.g. x86 is little-endian while ARM is big-endian), use `std::endian`.
+
+ * `std::endian::little` - constant for little-endian
+ * `std::endian::big` - constant for big-endian
+ * `std::endian::native` - the endian-ness of the current platform.
+
+```c++
+if constexpr (std::endian::native == std::endian::little) {
+    std::cout << "little" << std::endl;
+} else if constexpr (std::endian::native == std::endian::big) {
+    std::cout << "big" << std::endl;
+} else {
+    std::cout << "mixed (some types are little while others are big)" << std::endl;
+}
+```
+
+```{note}
+The book mentions that the `std::endian` system covers all possible edge cases, such as the case where some type are big-endian but others are little-endian (tested for in the example above). The other edge case it mentions is where all types are exactly 1 byte in size, in which case the platform has no endian-ness (`std::endian::little == std::endian::native == std::endian::big`).
+```
+
+The following bit-manipulation operations all require an unsigned integer type as input (e.g. `unsigned short`, `unsigned int`, etc..). The recommended way to cast to an unsigned integer is `std::bit_cast<DST_TYPE>(v)`, which is similar to a `reinterpret_cast` except it has certain benefits (e.g. can be used inside of `constexpr` / `consteval` / `constinit`).
+
+```{note}
+The following uses left-most/right-most bit instead of most-significant/least-significant bit .
+```
+
+ * `std::has_single_bit(v)` - Check if `v` only a single bit is 1 (`v` is power of 2).
+
+   ```c++
+   std::cout << (std::has_single_bit(2u) ? "yes" : "no") << std::endl;  // "yes"
+   std::cout << (std::has_single_bit(3u) ? "yes" : "no") << std::endl;  // "no"
+   ```
+
+ * `std::bit_floor(v)` - Return `v` with all bits set to 0 other than left-most 1. (get largest power of 2 that's <= `v`).
+
+   ```c++
+   std::cout << std::bit_floor(3u) << std::endl;  // "2"
+   std::cout << std::bit_floor(4u) << std::endl;  // "4"
+   ```
+
+ * `std::bit_ceil(v)` - Return `v` if `std::has_single_bit(v) == true`, otherwise return `std::bit_floor(v << 1)` (get smallest power of 2 that's >= `v`).
+
+   ```c++
+   std::cout << std::bit_ceil(3u) << std::endl;  // "4"
+   std::cout << std::bit_ceil(4u) << std::endl;  // "4"
+   ```
+
+ * `std::bit_width(v)` - Return minimum number of bits needed to store `v` (calculate `1+log2(v)`).
+
+   ```c++
+   std::cout << std::bit_width(3u) << std::endl;  // "2"
+   std::cout << std::bit_width(4u) << std::endl;  // "3"
+   ```
+
+ * `std::rotl(v, s)` - Return `v` rotated left by `s`.
+
+   ```c++
+   std::cout << std::rotl(3u, 1) << std::endl;  // "6"
+   std::cout << std::rotl(4u, 1) << std::endl;  // "8"
+   ```
+
+ * `std::rotr(v, s)` - Return `v` rotated right by `s`.
+
+   ```c++
+   std::cout << std::rotr(3u, 1) << std::endl;  // "2147483649"
+   std::cout << std::rotr(4u, 1) << std::endl;  // "2"
+   ```
+
+ * `std::countl_zero(v)` - Count number of consecutive 0s from the left-most position.
+
+   ```c++
+   std::cout << std::countl_zero(3u) << std::endl;  // "30"
+   std::cout << std::countl_zero(4u) << std::endl;  // "29"
+   ```
+
+ * `std::countl_one(v)` - Count number of consecutive 1s from the left-most position.
+
+   ```c++
+   std::cout << std::countl_one(3u) << std::endl;  // "0"
+   std::cout << std::countl_one(4u) << std::endl;  // "0"
+   ```
+
+ * `std::countr_zero(v)` - Count number of consecutive 0s from the right-most position.
+
+   ```c++
+   std::cout << std::countr_zero(3u) << std::endl;  // "0"
+   std::cout << std::countr_zero(4u) << std::endl;  // "2"
+   ```
+
+ * `std::countr_one(v)` - Count number of consecutive 1s from the right-most position.
+
+   ```c++
+   std::cout << std::countr_one(3u) << std::endl;  // "2"
+   std::cout << std::countr_one(4u) << std::endl;  // "0"
+   ```
+
+ * `std::popcount(v)` - Count the total number of 1s.
+
+   ```c++
+   std::cout << std::popcount(3u) << std::endl;  // "2"
+   std::cout << std::popcount(4u) << std::endl;  // "1"
+   ```
+
 ### Bitset
+
+`{bm} /(Library Functions\/Numbers\/Bitset)_TOPIC/`
 
 ```{prereq}
 Library Functions/Containers/Sequential/Array_TOPIC
 ```
-
-`{bm} /(Library Functions\/Numbers\/Bitset)_TOPIC/`
 
 `std::bitset` is a pseudo-container that wraps a fixed-size sequence of bits. It's similar to an `std::array<bool, N>` or `bool [N]`, but optimized for space and provides functions more appropriate for working with bits.
 
@@ -9582,6 +10379,43 @@ To get the size, use `size()`.
 
 ```c++
 int len { b1.size() };
+```
+
+### Safe Integer Comparison
+
+Comparing signed and unsigned integral types may lead to unexpected results. This happens because the C++ compiler performs an implicit cast to get the two operands of the comparison to have matching types. In the example below, `neg < pos` implicitly converts `neg` to `pos`'s type (`int` to `unsigned int`) so that the comparison operation can take place, meaning `neg`'s value of `-1` gets converted to `UINT_MAX`.
+
+```c++
+int neg { -1 };
+unsigned int pos { 1 };
+std::cout << (neg < pos ? "true" : "false") << std::endl;  // outputs "false"
+std::cout << static_cast<unsigned int>(neg) << std::endl;  // outputs "4294967295"
+```
+
+```{note}
+Why does it change to `UINT_MAX`? Because of twos complement number system used by integers. Out of scope to describe in this document.
+```
+
+```{seealso}
+Core Language/Variables/Core Types/Integral_TOPIC (refresher on `*_MIN`/`*_MAX` constants)
+```
+
+To provide proper comparisons between signed and unsigned types, the C++ standard library provides several functions:
+
+| Function                 | Operator |
+|--------------------------|----------|
+| `std::cmp_equal`         | `==`     |
+| `std::cmp_not_equal`     | `!=`     |
+| `std::cmp_less`          | `<`      |
+| `std::cmp_less_equal`    | `<=`     |
+| `std::cmp_greater`       | `>`      |
+| `std::cmp_greater_equal` | `>=`     |
+
+```c++
+int neg { -1 };
+unsigned int pos { 1 };
+std::cout << (neg < pos ? "true" : "false") << std::endl;                // outputs "false"
+std::cout << (std::cmp_less(neg, pos) ? "true" : "false") << std::endl;  // outputs "true"
 ```
 
 ## Strings
@@ -10363,399 +11197,101 @@ To handle IO errors, the standard stream mechanisms are available: `exceptions()
 std::cin.exceptions(std::istream::badbit | std::istream::failbit); // exception if bad/fail, but not good/eof
 ```
 
-## Ranges
+## Debug Utilities
 
-`{bm} /(Library Functions\/Ranges)_TOPIC/`
+`{bm} /(Library Functions\/Debug Utilities)_TOPIC/`
+
+The C++ standard library provides functionality to assist with debugging. The subsections below detail some of the most common ones.
+
+### Source Location
+
+`{bm} /(Library Functions\/Debug Utilities\/Source Location)_TOPIC/`
+
+The function `std::source_location::current()` determines where in the source code the program is executing. The function generates a `std::source_location` object which specifies which source file and where in that file the invocation took place. The `std::source_location` object provides the following member functions:
+
+ * `file_name()` returns which source file in which the invocation took place.
+ * `line()`  returns which source line in which the invocation took place.
+ * `column()` returns the index within the source line in which the invocation took place.
+ * `function()` returns the name of the function in which the invocation took place.
+
+```c++
+//
+// NOTE: log() works because the default for the location parameter is generated by the caller.
+//
+void log(std::string_view message, const std::source_location& location = std::source_location::current()) {
+    std::cout << location.file_name() << ':' << location.line() << ' ' << message;
+}
+ 
+int main() {
+    log("Hello world!");  // prints "info:main.cpp:19 Hello world!"
+    return 0;
+}
+```
+
+```{note}
+It seems like this is replacing standard C++ preprocessor macros like `__FILE__` and `__LINE__`.
+```
+
+### Object Address
+
+`{bm} /(Library Functions\/Debug Utilities\/Object Address)_TOPIC/`
 
 ```{prereq}
-Library Functions/Containers_TOPIC
-Library Functions/Utility Wrappers/Tuple_TOPIC
+Library Functions/Smart Pointers_TOPIC
 ```
 
-The C++ standard library provides an functionality similar to Java streams, called ranges. Like Java streams, ranges enable functional programming in that a range can be fed into a chain of higher-level operations that manipulate the stream of elements within, lazily if possible.
+In certain scenarios, it isn't easily possible to get access to the address of an object. The C++ standard library provides two functions that help with this.
+
+ * `std::addressof()` forcefully returns the address of an object. This is useful in cases where the object could have an operator overload for the address-of operator (&) that returns something other than the object's actual address.
+
+   ```c++
+   int x;
+   std::cout << std::addressof(x) << std::endl;  // prints "0x7ffc0504312c"
+   ```
+
+ * `std::to_address()` converts a pointer-like object (e.g. a raw pointer or a smart pointer) to a raw pointer. This is useful because it abstracts out accessing the address of an object, even if that object is wrapped in something like a smart pointer.
+
+   ```c++
+   int x { 5 };
+   int *xRawPtr { &x };
+   auto custom_deleter = [](int* x) { /* do nothing */ };
+   std::unique_ptr<int, decltype(custom_deleter)> xSmartPtr{ &x, custom_deleter };
+
+   std::cout << std::to_address(&x) << std::endl;         // prints "0x7ffc36e943b4"
+   std::cout << std::to_address(xRawPtr) << std::endl;    // prints "0x7ffc36e943b4"
+   std::cout << std::to_address(xSmartPtr) << std::endl;  // prints "0x7ffc36e943b4"
+   ```
+
+   ```{note}
+   See [here](https://stackoverflow.com/a/56494186) for discussion on specific use-cases.
+   ```
+
+### Compile-time Evaluation Test
+
+`{bm} /(Library Functions\/Debug Utilities\/Compile-time Evaluation Test)_TOPIC/`
+
+The function `std::is_constant_evaluated()` can be invoked inside of a `constexpr` function to determine whether it's being invoked at compile-time or run-time. One of the typical use-cases of `constexpr` functions is to increase performance by forcefully evaluating things at compile-time when possible. As such, when debugging performance issues, `std::is_constant_evaluated()` can be used to ensure that the correct path is being taken for an invocation.
+
+Here's the example from the book...
 
 ```c++
-// The code below prints the numbers 2 and 4. The Java streams equivalent is provided on the right-hand side.
-//
-//           C++                                           vs                 JAVA
-std::vector<int> v{ 0, 1, 2 };                                  // var v = ArrayList<Integer>();
-                                                                // v.add(0);
-                                                                // v.add(1);
-                                                                // v.add(2);
-                                                                //
-auto range {                                                    // var range =
-    v                                                           //          v.stream()
-    | std::views::transform([](int x) { return x * 2; })        //         .map(e -> e * 2)
-    | std::views::filter([](int x) { return x != 0; })          //         .filter(e -> e != 0);
-};                                                              //
-for (int e : range) {                                           // range.forEach(e -> { System.out.println(e); } );
-    std::cout << e << std::endl;                                //
-}                                                               //
-```
-
-As shown in the example above, ranges work similarly to Java streams. Operations are chained together using the pipe operator (|), where those operations are applied from left-to-right. 
-
-```{note}
-**WARNING**: Once `v` above gets destroyed (e.g. goes out of scope), `range` becomes invalid. `v` is _referenced_ by `range`, it isn't _copied_ / _moved_ into `range`. See the subsection on owning views to workaround this problem.
-```
-
-```{note}
-Unlike Java streams, the current implementation of ranges (C++20) are missing some major functionality:
-
-* type-erasures (e.g. `std::vector<int> {0, 1, 2} | std::views::transform([](int x) { return x * 2; })` and `std::vector<int> {0, 1, 2} | std::views::filter([](int x) { return x != 0; })` don't have the same type)
-* parallel algorithms (e.g. transform using multiple cores)
-* actions (e.g. missing things like `forEach()` in Java streams)
-```
-
-Any object that has a particular set of type traits is a range. Those type traits map closely to iterator type traits: A range must have implementation for `std::begin(R)` and `std::end(R)` functions, and usage patterns similar to that of the type of iterator it maps to:
-
- * input range has usage patterns similar to input iterator.
- * output range has usage patterns similar to output iterator.
- * forward range has usage patterns similar to forward iterator.
- * bidirectional range has usage patterns similar to bidirectional iterator.
- * random access range has usage patterns similar to random access iterator.
- * contiguous range has usage patterns similar to contiguous iterator.
-
-One major difference between iterators and ranges is that a range's `end()` function doesn't necessarily have to return the same type as its `begin()` function. It can instead return a sentinel type that marks the end of the range. If a range does return the same type for both `begin()` and `end()`, it's referred to as a common range. Containers in the C++ standard library are all of common ranges. However, once a container gets piped into an operation, it may end up not being a common range.
-
-```{note}
-See `std::views::common()` below. It wraps a view and makes it so that `begin()` and `end()` have a common return type.
-```
-
-| container                 | range type          |
-|---------------------------|---------------------|
-| `std::unordered_set`      | input range         |
-| `std::unordered_map`      | input range         |
-| `std::unordered_multiset` | input range         |
-| `std::unordered_multimap` | input range         |
-| `std::forward_list`       | input range         |
-| `std::set`                | output range        |
-| `std::map`                | output range        |
-| `std::multiset`           | output range        |
-| `std::multimap`           | output range        |
-| `std::list`               | output range        |
-| `std::deque`              | bidirectional range |
-| `std::array`              | contiguous range    |
-| `std::vector`             | contiguous range    |
-
-```{note}
-`std::string` and other types of string variants, while not containers, are contiguous ranges.
-```
-
-When an operation such as transformation or filtering is applied on a range, it's applied through a view. A view is a special type of range that typically doesn't own any data and typically isn't mutable / is state-less. As such, a view typically has constant-time copy, move, and assignment.
-
-| view                     | example                                                    | description                                                                 |
-|--------------------------|------------------------------------------------------------|-----------------------------------------------------------------------------|
-| `std::views::filter`     | `v \| std::views::filter([](int x) { return x != 0; }`     | keep elements that pass predicate                                           |
-| `std::views::transform`  | `v \| std::views::transform([](int x) { return x * 2; }`   | modify elements                                                             |
-| `std::views::take`       | `v \| std::views::take(5)`                                 | keep first n elements                                                       |
-| `std::views::take_while` | `v \| std::views::take_while([](int x) { return x != 0; }` | keep elements until predicate fails                                         |
-| `std::views::drop`       | `v \| std::views::drop(5)`                                 | skip first n elements                                                       |
-| `std::views::drop_while` | `v \| std::views::drop_while([](int x) { return x == 0; }` | skip elements until predicate fails                                         |
-| `std::views::join`       | `v \| std::views::join`                                    | flatten a range of ranges (2D) into a range (1D)                            |
-| `std::views::join_with`  | `v \| std::views::join_with(-1)`                           | flatten a range of ranges (2D) into a range (1D) with delimiters in between |
-| `std::views::split`      | `v \| std::views::split(-1)`                               | split a range into a range of ranges using a delimiter                      |
-| `std::views::lazy_split` | `v \| std::views::lazy_split(-1)`                          | split a range into a range of ranges using a delimiter (lazily)             |
-| `std::views::counted`    | `std::views::counted(v.begin(), 5)`                        | keep a sub-range of a range                                                 |
-| `std::views::common`     | `std::views::common(v)`                                    | convert to a common view (`being()` and `end()` have same type)             |
-| `std::views::reverse`    | `v \| std::views::reverse`                                 | reverse a view                                                              |
-| `std::views::elements`   | `v \| std::views::elements<1>`                             | transform tuples to their nth item                                          |
-| `std::views::keys`       | `v \| std::views::keys`                                    | transform pairs to their 1st item                                           |
-| `std::views::values`     | `v \| std::views::values`                                  | transform pairs to their 2nd item                                           |
-| `std::views::zip`        | `std::views::zip(v1, v2, v3)`                              | zip multiple ranges together (similar to Python's `zip()`)                  |
-
-In addition to performing operations on another range's elements, a view may originate elements itself.
-
-| view                  | example                              | description                            |
-|-----------------------|--------------------------------------|----------------------------------------|
-| `std::views::empty`   | `std::views::empty<int>`             | empty range of some type               |
-| `std::views::single`  | `std::views::single<int> { 5 }`      | range of a single element              |
-| `std::views::iota`    | `std::views::iota(1, 5)`             | range of incrementing values (bounded) |
-
-```{note}
-The tables above aren't exhaustive.
-```
-
-### Concepts
-
-`{bm} /(Library Functions\/Ranges\/Concepts)_TOPIC/`
-
-At it's core, a range must satisfy the concept_TEMPLATE `std::ranges::range`, which only asks that the type have an implementation for the functions `std::ranges::begin(R)` and `std::ranges::end(R)`. There are two concept_TEMPLATE specializations:
-
- * `std::ranges::sized_range`: A range type that has an implementation for `std::ranges::size(R)`, which returns the number of elements within the range. 
- * `std::ranges::borrowed_range`: A range type that provides a template specialization for `std::ranges::enable_borrowed_range<R>`, which signals that the range type guarantees that the iterators it returns aren't bound to the lifetime of the range. Borrowed ranges are commonly generate elements on-the-fly.
- * `std::ranges::view`: A range type with constant-time copy/move/assignment operations and provides a template specialization for `std::enable_view<R>`, which signals that the range type is a view. Views are commonly used to transform elements from another range or generate elements on the fly.
-
-The following templates provide access to the types used by a range.
-
- * `std::ranges::iterator_t<R>` - iterator type of range `R`
- * `std::ranges::sentinel_t<R>` - sentinel type of range `R` (type returned by `std::ranges::end(R)`, which may be different from the type returned by `std::ranges::begin(R)`)
- * `std::ranges::size_t<R>` - type of range `R`'s size type (type returned by `std::ranges::size(R)`, if implemented)
- * `std::ranges::difference_t<R>` - type returned by differencing two iterator types of range `R` (resolves to `std::iter_difference_t<std::ranges::iterator)t<R>>`)
- * `std::ranges::range_reference_t<R>` - type returned by _dereferencing an iterator_ of range `R` (type returned by `*(std::ranges::begin(R)`)
- * `std::ranges::range_rvalue_reference_t<R>` - type returned by _dereferencing an iterator_ of range `R` but as an r-value reference (type returned by `std::move(*(std::ranges::begin(R))`)
- * `std::ranges::range_value_t<R>` - type returned by _dereferencing an iterator_ of range `R` but with the reference, `const`, and `volatile` (e.g. if `std::ranges::range_reference_t<R>` is `const int&`, `std::ranges::range_value_t<R>` is `int`)
-
-```c++
-void print_range(std::ranges::range auto &&range) {
-    using ELEM_REF = std::ranges::range_reference_t<decltype(range)>;
-    for (ELEM_REF v : range) {
-        std::cout << v << std::endl;
-    }
+constexpr double power(double b, int x) {
+    static_assert std::is_constant_evaluated();
+    return std::pow(b, double(x));
 }
 ```
 
-The following concept_TEMPLATE detail the features supported by a range's iterator type. These concept_TEMPLATE loosely map to the concept_TEMPLATE for iterators.
-
- * `std::ranges::input_range` maps to `std::input_iterator`
- * `std::ranges::output_range` maps to `std::output_iterator`
- * `std::ranges::forward_range` maps to `std::forward_iterator` 
- * `std::ranges::bidirectional_range` maps to `std::bidirectional_iterator`
- * `std::ranges::random_access_range` maps to `std::random_access_iterator`
- * `std::ranges::contiguous_range` maps to `std::contiguous_iterator`
-
-```c++
-void print_range(std::ranges::random_access_range auto &&range) {
-    auto it { std::ranges::begin(range) };
-    std::cout << it[3] << std::endl;
-    std::cout << it[1] << std::endl;
-    std::cout << it[2] << std::endl;
-}
-```
-
-### Owning Views
-
-`{bm} /(Library Functions\/Ranges\/Owning Views)_TOPIC/`
-
-An owning view moves the range it's operating on into itself rather than reference that range. Doing this avoids the problem of a view referencing a destroyed range, which usually happens when a function returns a view but the range that view is referencing goes out of scope.
-
-```c++
-// This function is faulty because the returned view REFERENCES vec but
-// vec gets destroyed when the function exits. The view references a
-// destroyed object.
-auto faulty_code() {
-    std::vector<int> vec{ 1, 2, 3 };
-    return vec
-        | std::views::transform([](int i) { return i * 2; })
-        | std::views::filter([](int i) { return i != 0; });
-}
-```
-
-To create an owning view, use `std::move()` on the original range.
-
-```c++
-// By using std::move() on the range, the view becomes an owning view.
-auto good_code() {
-    std::vector<int> vec{ 1, 2, 3 };
-    return std::move(vec)
-        | std::views::transform([](int i) { return i * 2; })
-        | std::views::filter([](int i) { return i != 0; });
-}
+```{seealso}
+Core Language/Compile-time Evaluation_TOPIC (refresher)
 ```
 
 ```{note}
-This started to be supported in version 12 of g++.
+Technically, `std::is_constant_evaluated()` can be used anywhere. If you use it ...
+
+ * in a `consteval`, it will always evaluate to true
+ * in a `constexpr`, it may evaluate to true or false depending on where it was called
+ * in a normal run-time evaluated function, it will always evaluate to false
 ```
-
-### Type-erasure
-
-`{bm} /(Library Functions\/Ranges\/Type-erasure)_TOPIC/`
-
-A range's type depends on the type of the underlying container or generator (e.g. `std::ordered_set`), element type of the range (e.g. `int`), and the list of view manipulations applied to that range. Each change ends up changing the underlying type of the range.
-
-```c++
-std::vector<int> vec{ 1, 2, 3 };
-
-// THE CODE BELOW PRINTS "same!"
-// ----------------------------
-// decltype(v1) == decltype(v2) because both use the same underlying container type, element type,
-// and have the exact same list of views applied WITH the exact same functor object.
-auto functor { [](int i) { return i * 2; } };
-auto v1 { vec | std::views::transform(functor) };
-auto v2 { vec | std::views::transform(functor) };
-if constexpr (std::is_same_v<decltype(v1), decltype(v2)>) {
-    std::cout << "same!";
-} else {
-    std::cout << "NOT same!";
-}
-
-// THE CODE BELOW PRINTS "NOT same!"
-// ---------------------------------
-// decltype(v1) != decltype(v2) because although the two types use the same underlying container
-// type, element type, and have the exact same list of views applied, those views are DIFFERENT the
-// functor classes each are unique -- they're technically two different classes, each with its own
-//  unique type. Those unique types are included in the types of v3 and v4 somewhere in a depth of
-//  template parameter chains.
-auto v3 { vec | std::views::transform([](int i) { return i * 2; }) };
-auto v4 { vec | std::views::transform([](int i) { return i * 2; }) };
-if constexpr (std::is_same_v<decltype(v3), decltype(v4)>) {
-    std::cout << "same!";
-} else {
-    std::cout << "NOT same!";
-}
-```
-
-The lack of type erasures sometimes causes problems when doing certain types of view manipulations. For example, combining together two ranges with the same element type (flattening) via `std::views::join` isn't possible unless the types of those ranges are exactly the same.
-
-```c++
-std::ranges::empty_view<int> y{};
-std::ranges::single_view<int> x{5};
-std::vector combined{ x , y };  // x and y of different types, vector's type parameter can't be deduced
-auto joined { std::ranges::join_view(combined) };
-for (auto x : joined) {
-    std::cout << x << std::endl;
-}
-```
-
-To mitigate this, a third-party library called ranges-v3 provides `ranges::any_view<T>`. `ranges::any_view<T>` essentially "erases" the type of a range by wrapping it and unifying it to a specific type. The downside of this wrapping is that it has a performance impact as abstracting away the type information involves extra runtime code.
-
-```c++
-std::ranges::empty_view<int> y{};
-std::ranges::single_view<int> x{5};
-std::vector<ranges::any_view<int>> combined{
-    ranges::any_view<int> { x },
-    ranges::any_view<int> { y }
-};
-auto joined { std::ranges::join_view(combined) };
-for (auto x : joined) {
-    std::cout << x << std::endl;
-}
-```
-
-One important thing about `ranges::any_view<T>` is that it takes an optional second template parameter which defines the capabilities of the range its wrapping. By default, it's set to `category::input` which supports capabilities of an input range, but it also supports ...
-
-* `category::input` - satisfies `std::ranges::input_range` concept_TEMPLATE
-* `category::forward` - satisfies `std::ranges::forward_range` concept_TEMPLATE
-* `category::bidirectional` - satisfies `std::ranges::bidirectional_range` concept_TEMPLATE
-* `category::random_access` - satisfies `std::ranges::random_access_range` concept_TEMPLATE
-* `category::sized` - satisfies `std::ranges::sized_ranges` concept_TEMPLATE
-
-```{note}
-There's also `category::none` and `category::mask`, not exactly sure what these are for.
-```
-
-```c++
-std::ranges::empty_view<int> y{};
-std::ranges::single_view<int> x{5};
-std::vector<ranges::any_view<int, ranges::category::input>> combined{
-    ranges::any_view<int, ranges::category::input> { x },
-    ranges::any_view<int, ranges::category::input> { y }
-};
-auto joined { std::ranges::join_view(combined) };
-for (auto x : joined) {
-    std::cout << x << std::endl;
-}
-```
-
-Alternatively, in certain cases `std::span<T>` also abstracts away type information.
-
-```c++
-std::ranges::empty_view<int> y{};
-std::ranges::single_view<int> x{5};
-std::vector<std::span<int>> combined{
-    std::span<int> { x },
-    std::span<int> { y }
-};
-auto joined { std::ranges::join_view(combined) };
-for (auto x : joined) {
-    std::cout << x << std::endl;
-}
-```
-
-```{note}
-C++20 / C++23 has nothing in the standard library for this except for `std::span<T>`, and AFAIK type erasure isn't what it was intended for. You should use ranges-v3. Future versions of C++ might provide something.
-```
-
-### Custom Views
-
-`{bm} /(Library Functions\/Ranges\/Custom Views)_TOPIC/`
-
-To write a custom view, create a class that inherits from `std::ranges::view_interface` with a `begin()` function, and an `end()` function, and either a default constructor (if generating values) and / or a constructor that takes in a range (if manipulating values).
-
-```c++
-struct FakeGeneratingView : public std::ranges::view_interface<FakeGeneratingView> {
-    auto begin() const { return &(values[0]); }
-    auto end() const { return &(values[3]); }
-private:
-    int[3] values = { 0, 1, 2 };
-};
-
-
-// USE THE VIEW
-for (auto x : FakeGeneratingView{}) {
-    std::cout << x << std::endl;
-}
-```
-
-```{note}
-The above example class is feeding itself as a template parameter to `std::ranges::view_interface`. This is a common C++ idiom referred to as the curiously recurring template pattern (CRTP) which allows for feeding the derived class back into a templated base class. Something to do with compile-time polymorphism.
-```
-
-The following example is another custom view but this time it takes in an another range and manipulates its values and it supports the pipe operator.
-
-```c++
-template<std::ranges::input_range R> 
-    requires std::ranges::view<R>
-struct AddFiveView : public std::ranges::view_interface<AddFiveView<R>> {
-    AddFiveView() = delete;
-    constexpr AddFiveView(R&& r):
-        i(std::forward<R>(r)),
-        _begin(std::begin(i.range)),
-        _end(std::end(i.range)) {}
-    constexpr auto begin() const { return _begin; }
-    constexpr auto end() const { return _end; }
-private:
-    struct F : decltype([](auto x) { return x + 5; }) {};
-    using R_RES = std::ranges::transform_view<R, F>;
-    struct Internal {
-        Internal(R&& r) : range(std::forward<R>(r) | std::views::transform(F())) {}
-        R_RES range;
-    };
-    Internal i;  // what do I put as the template arg???
-    std::ranges::iterator_t<R_RES> _begin;
-    std::ranges::iterator_t<R_RES> _end; 
-};
-
-
-struct AddFiveViewAdaptorClosure {
-    constexpr AddFiveViewAdaptorClosure() {}
-
-    template <std::ranges::viewable_range R>
-    constexpr auto operator()(R&& r) const {
-        return AddFiveView<R>(std::forward<R>(r));
-    }
-} ;
-
-struct AddFiveViewAdaptor {
-    template<std::ranges::viewable_range R>
-    constexpr auto operator () (R && r) {
-        return AddFiveView(std::forward<R>(r)) ;
-    }
-
-    constexpr auto operator () () {
-        return AddFiveViewAdaptorClosure();
-    }   
-};
-
-template <std::ranges::viewable_range R>
-constexpr auto operator | (R&& r, AddFiveViewAdaptorClosure const & a) {
-    return a(std::forward<R>(r)) ;
-}
-
-namespace CustomViews {
-    AddFiveViewAdaptorClosure AddFiveView;
-}
-
-
-
-// USE THE VIEW VIA THE PIPE OPERATOR
-//   Note the use of std::views::all -- this is required for some reason (maybe it normalizes some missing pieces)
-std::vector<int> v{0,1,3};
-for (auto x : v | std::views::all | CustomViews::AddFiveView) {
-    std::cout << x << std::endl;
-}
-```
-
 
 # Terminology
 
