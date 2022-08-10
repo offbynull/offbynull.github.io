@@ -1034,6 +1034,40 @@ reclaimPolicy: Delete
 volumeBindingMode: WaitForFirstConsumer
 ```
 
+## Endpoints
+
+`{bm} /(Resources\/Endpoints)_TOPIC/i`
+
+Endpoints (plural) is a Kubernetes resource that simply holds a list of IP addresses and ports. It's used by higher-level Kubernetes resources to simplify routing. For example, an endpoints resource may direct to all the nodes that make up a sharded database server.
+
+Example manifest:
+
+```yaml
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: database
+subsets: 
+  - addresses:
+      - ip: 10.10.1.1
+      - ip: 10.10.1.2
+      - ip: 10.10.1.3
+    ports:
+      - port: 5432 
+        protocol: TCP  # TCP or UDP, default: TCP
+        name: pg
+  - addresses:
+      - ip: 10.13.4.101
+      - ip: 10.13.4.102
+      - ip: 10.13.4.103
+    ports:
+      - port: 12345
+        protocol: TCP  # TCP or UDP, default: TCP
+        name: pg2
+```
+
+The endpoint in the example YAML above points to [10.10.1.1:5432, 10.10.1.2:5432, 10.10.1.3:5432, 10.13.4.101:12345, 10.13.4.102:12345, 10.13.4.103:12345].
+
 ## Services
 
 `{bm} /(Resources\/Services)_TOPIC/i`
@@ -1079,10 +1113,17 @@ spec:
       targetPort: 9376
 ```
 
+```{note}
+Internally, an EndPoints object is used to track pods. When you create a service, Kubernetes automatically creates an accompanying EndPoints object that the service makes use of.
+```
+
 ### Routing
+
+`{bm} /(Resources\/Services\/Routing)_TOPIC/i`
 
 ```{prereq}
 Introduction/Labels_TOPIC
+Resources/Endpoints_TOPIC
 ```
 
 A service determines which pods it should route traffic to via the `spec.selector` manifest path. This manifest path contains key-value mappings, where these key-value mappings are labels that a pod needs before being considered for this service's traffic ...
@@ -1095,10 +1136,27 @@ spec:
     key3: value3
 ```
 
+Internally, the service creates and manages an endpoints object containing the IP and port for each pod captured by the selector. If no selectors are present, the service expects an endpoints object with the same name to exist, where that endpoints object contains the list of IP and port pairs that the service should route to.
+
+```yaml
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: database  # must be same name as the service
+subsets: 
+  - addresses:
+      - ip: 10.10.1.1
+      - ip: 10.10.1.2
+      - ip: 10.10.1.3
+    ports:
+      - port: 5432
+```
+
 ### Ports
 
 ```{prereq}
 Resources/Pods/Ports_TOPIC
+Resources/Services/Routing_TOPIC
 ```
 
 A service can listen on multiple ports, controlled via the `spec.ports` manifest path.
@@ -1166,6 +1224,10 @@ spec:
 ```
 
 ```{note}
+Does this work for manual endpoints as well? When a selector isn't used with a service, it looks for an endpoint object of the same name as the service to figure out where the service should route to. That endpoint object can have names associated with its ports as well.
+```
+
+```{note}
 A service decides which pods it routes to based key-value pairs in on `spec.selector`. What happens if the key-value pairs identify a set of pod instances where some of those instances don't have a port named `my-http-port`. For example, a service may be forwarding to two applications rather than a single application which just could be sharing the same set of key-value labels (pod instances are heterogenous).
 
 Maybe this isn't possible with Kubernetes?
@@ -1175,6 +1237,7 @@ Maybe this isn't possible with Kubernetes?
 
 ```{prereq}
 Resources/Pods/Probes_TOPIC
+Resources/Services/Routing_TOPIC
 ```
 
 The service periodically probes the status of each pod to determine if it can handle requests or not. Two types of probes are performed:
@@ -1197,7 +1260,7 @@ These probes are defined directly in the pod manifest.
 ```
 
 ```{note}
-Internally, an EndPoints object is used to track pods. When you create a service, Kubernetes automatically creates an accompanying EndPoints object that the service makes use of.
+Recall that, when a service has selectors assigned, Kubernetes internally maintains an EndPoints object that contains the addresses of ready and healthy pods. The addresses in this endpoints object is what the service routes to.
 ```
 
 ### Session Affinity
