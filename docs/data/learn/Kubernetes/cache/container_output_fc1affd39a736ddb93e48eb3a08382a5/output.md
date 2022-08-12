@@ -2,7 +2,7 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Resources/Pods/Probes_TOPIC
+ * Resources/Pods/Environment Variables_TOPIC
 
 </div>
 

@@ -2,7 +2,7 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Introduction/Labels_TOPIC
+ * Resources/Pods/Secrets_TOPIC
 
 </div>
 

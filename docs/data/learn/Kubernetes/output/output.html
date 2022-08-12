@@ -18,13 +18,22 @@
 <ul>
 <li><a href="#H1_Resources">Resources</a></li>
 <li><a href="#H_Ports">Ports</a></li>
+<li><a href="#H_Arguments">Arguments</a></li>
+<li><a href="#H_Environment%20Variables">Environment Variables</a></li>
 <li><a href="#H_Probes">Probes</a></li>
 <li><a href="#H_Volumes">Volumes</a></li>
 <li><a href="#H_Image%20Pull%20Policy">Image Pull Policy</a></li>
 <li><a href="#H_Restart%20Policy">Restart Policy</a></li>
 <li><a href="#H1_Configuration">Configuration</a></li>
 <li><a href="#H_Secrets">Secrets</a></li>
+<li><a href="#H_Service%20Discovery">Service Discovery</a></li>
+<ul>
+<li><a href="#H1_Environment%20Variables">Environment Variables</a></li>
+<li><a href="#H_DNS">DNS</a></li>
 </ul>
+</ul>
+<li><a href="#H_Configuration%20Maps">Configuration Maps</a></li>
+<li><a href="#H1_Secrets">Secrets</a></li>
 <li><a href="#H_Nodes">Nodes</a></li>
 <li><a href="#H1_Volumes">Volumes</a></li>
 <ul>
@@ -34,13 +43,28 @@
 <li><a href="#H_Types">Types</a></li>
 <li><a href="#H_Storage%20Classes">Storage Classes</a></li>
 </ul>
+<li><a href="#H_Endpoints">Endpoints</a></li>
 <li><a href="#H_Services">Services</a></li>
 <ul>
 <li><a href="#H_Routing">Routing</a></li>
 <li><a href="#H1_Ports">Ports</a></li>
 <li><a href="#H_Health">Health</a></li>
+<li><a href="#H_Headless">Headless</a></li>
+<li><a href="#H_Session%20Affinity">Session Affinity</a></li>
 <li><a href="#H_Exposure">Exposure</a></li>
+<ul>
+<li><a href="#H_Local">Local</a></li>
+<li><a href="#H_Node%20Port">Node Port</a></li>
+<li><a href="#H_Load%20Balancer">Load Balancer</a></li>
 </ul>
+</ul>
+<li><a href="#H_Ingress">Ingress</a></li>
+<ul>
+<li><a href="#H_Hosts">Hosts</a></li>
+<li><a href="#H_Path%20Type">Path Type</a></li>
+<li><a href="#H_TLS%20Traffic">TLS Traffic</a></li>
+</ul>
+<li><a href="#H_Namespace">Namespace</a></li>
 <li><a href="#H_Replica%20Sets">Replica Sets</a></li>
 <ul>
 <li><a href="#H_Replication">Replication</a></li>
@@ -57,7 +81,6 @@
 <li><a href="#H_Daemon%20Set">Daemon Set</a></li>
 <li><a href="#H1_Daemon%20Sets">Daemon Sets</a></li>
 <li><a href="#H_Job">Job</a></li>
-<li><a href="#H_Configuration%20Map">Configuration Map</a></li>
 <li><a href="#H_Autoscaling">Autoscaling</a></li>
 <ul>
 <li><a href="#H_Horizontal%20Pod%20Autoscaling">Horizontal Pod Autoscaling</a></li>
@@ -71,6 +94,7 @@
 <li><a href="#H_Proxy">Proxy</a></li>
 <li><a href="#H_Debug">Debug</a></li>
 </ul>
+<li><a href="#H_Amazon">Amazon</a></li>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
 </div>
@@ -293,7 +317,7 @@ kubectl delete -f obj.yaml
         <span class="hljs-attr">timeoutSeconds:</span> <span class="hljs-number">1</span>
         <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">10</span>
         <span class="hljs-attr">failureThreshold:</span> <span class="hljs-number">3</span>
-      <span class="hljs-attr">livenessProbe:</span>
+      <span class="hljs-attr">readinessProbe:</span>
         <span class="hljs-attr">httpGet:</span>
           <span class="hljs-attr">path:</span> <span class="hljs-string">/ready</span>
           <span class="hljs-attr">port:</span> <span class="hljs-number">8080</span>
@@ -361,6 +385,46 @@ kubectl delete -f obj.yaml
     <span class="hljs-string">...</span>
 </code></pre>
 <p>The example above exposes port 8080 to the rest of the cluster (not the outside world). Even with the port exposed, other entities on the cluster don't have a built-in way to discover the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>'s IP / host or the fact that it has this specific port open. For that, <a href="#BM_(service)%2Fi">service</a>s are required (see <a href="#BM_(Resources%5C%2FServices)_TOPIC%2Fi">Resources/Services</a>).</p>
+<a name="H_Arguments"></a><h3>Arguments</h3>
+<p><a name="BM_(Resources%5C%2FPods%2FArguments)_TOPIC%2F"></a><strong></strong></p>
+<p>The <a href="#BM_(container)%2Fi">container</a> <a href="#BM_(image)%2Fi">image</a>'s default entrypoint (process that gets started) can be updated via the <code>spec.containers[].command[]</code> manifest path. Likewise, the default command line arguments that hte <a href="#BM_(container)%2Fi">container</a> <a href="#BM_(image)%2Fi">image</a> starts with can be updated via <code>spec.containers[].args[]</code>.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">image:</span> <span class="hljs-string">gcr.io/my_company/my_pod:v1</span>
+      <span class="hljs-attr">command:</span> [<span class="hljs-string">/opt/app/my-app</span>]
+      <span class="hljs-attr">args:</span> [<span class="hljs-string">--no-logging</span>, <span class="hljs-string">--dry-run</span>]
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The Dockerfile used to create the <a href="#BM_(image)%2Fi">image</a> had an <code>ENTRYPOINT</code> and a <code>CMD</code>. <code>command</code> essentially overrides the Dockerfile <code>ENTRYPOINT</code> and <code>args</code> overrides the Dockerfile's <code>CMD</code>.</p>
+</div>
+<a name="H_Environment%20Variables"></a><h3>Environment Variables</h3>
+<p><a name="BM_(Resources%5C%2FPods%2FEnvironment%20Variables)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Resources%5C%2FPods%2FEnvironment%20Variables)_TOPIC%2F">Resources/Pods/Environment Variables</a></li>
+</ul>
+</div>
+<p>Environment variables can be hardcoded via the <code>spec.containers[].env[]</code> manifest path.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">image:</span> <span class="hljs-string">gcr.io/my_company/my_pod:v1</span>
+      <span class="hljs-attr">env:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">LOG_LEVEL</span>
+          <span class="hljs-attr">value:</span> <span class="hljs-string">"OFF"</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">DRY_RUN</span>
+          <span class="hljs-attr">value:</span> <span class="hljs-string">"true"</span>
+</code></pre>
+<p>Once defined, an environment variables value can be used in other parts of the manifest using the syntax <code>$(VAR_NAME)</code>. For example, an environment variable's value may be placed directly within an argument.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">image:</span> <span class="hljs-string">gcr.io/my_company/my_pod:v1</span>
+      <span class="hljs-attr">env:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">LOG_LEVEL</span>
+          <span class="hljs-attr">value:</span> <span class="hljs-string">"OFF"</span>
+      <span class="hljs-attr">args:</span> [<span class="hljs-string">--logging_telemetry=$(LOG_LEVEL)</span>]
+</code></pre>
 <a name="H_Probes"></a><h3>Probes</h3>
 <p><a name="BM_(Resources%5C%2FPods%2FProbes)_TOPIC%2F"></a><strong></strong></p>
 <p>Probes are a way for <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> to check the state of a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (e.g. alive, ready, started, etc..). The <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> exposes some interfaces to determine state. <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> periodically pings those interfaces to determine what actions to take (e.g. restarting a downed <a href="#BM_(service)%2Fi">service</a>.</p>
@@ -376,7 +440,7 @@ kubectl delete -f obj.yaml
         <span class="hljs-attr">timeoutSeconds:</span> <span class="hljs-number">1</span>
         <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">10</span>
         <span class="hljs-attr">failureThreshold:</span> <span class="hljs-number">3</span>
-      <span class="hljs-attr">livenessProbe:</span>
+      <span class="hljs-attr">readinessProbe:</span>
         <span class="hljs-attr">httpGet:</span>
           <span class="hljs-attr">path:</span> <span class="hljs-string">/ready</span>
           <span class="hljs-attr">port:</span> <span class="hljs-number">8080</span>
@@ -388,10 +452,10 @@ kubectl delete -f obj.yaml
 </code></pre>
 <p>Different types of probes exists. A ...</p>
 <ul>
-<li><a href="#BM_(liveness%20probe)%2Fi">liveness probe</a> is something that <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> pings to check if a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> is alive and responsive. If the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> fails to respond to such checks, <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> deems it dead and restarts it.</li>
-<li><a href="#BM_(readiness%20probe)%2Fi">readiness probe</a> is something that <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> pings to check if the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> is ready to process requests. When a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> initially comes online, before routing requests to it <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> waits for its <a href="#BM_(readiness%20probe)%2Fi">readiness probe</a> to respond successfully.</li>
+<li><a href="#BM_(liveness%20probe)%2Fi">liveness probe</a> is something that <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> pings to check if a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> is alive and responsive. If a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> fails its liveness check, <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> deems it dead and restarts it.</li>
+<li><a href="#BM_(readiness%20probe)%2Fi">readiness probe</a> is something that <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> pings to check if the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> is able to process requests. If a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> fails its readiness check, <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> will stop routing requests to it until a readiness subsequent check passes.</li>
 </ul>
-<p>In the example above, each of the probes check a HTTP server within the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> at port 8080 but at different paths. Other types of probes exist as well (e.g. <code>tcpSocket</code> instead of <code>httpGet</code>). The field ...</p>
+<p>In the example above, each of the probes check a HTTP server within the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> at port 8080 but at different paths. The field ...</p>
 <ul>
 <li><code>initialDelaySeconds</code> is the number of seconds to wait before performing the first probe.</li>
 <li><code>timeoutSeconds</code> is the number of seconds to wait before timing out.</li>
@@ -399,6 +463,20 @@ kubectl delete -f obj.yaml
 <li><code>failureThreshold</code> is the maximum number of successive failure before <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> considers the probe failed.</li>
 <li><code>successThreshold</code> is the maximum number of successive successes before <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> considers the probe passed.</li>
 </ul>
+<p>There are types of probes other than <code>httpGet</code>. A probe of type <code>tcpSocket</code> will simply test to see if a <code>tcpSocket</code> is empty and a probe of type <code>exec</code> will run a command on the <a href="#BM_(container)%2Fi">container</a> and fail if it gets a non-zero exit code.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">...</span>
+      <span class="hljs-attr">readinessProbe:</span>
+        <span class="hljs-attr">exec:</span>
+          <span class="hljs-attr">command:</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">cat</span>
+          <span class="hljs-bullet">-</span> <span class="hljs-string">/tmp/some_file_here</span>
+        <span class="hljs-attr">initialDelaySeconds:</span> <span class="hljs-number">5</span>
+        <span class="hljs-attr">timeoutSeconds:</span> <span class="hljs-number">1</span>
+        <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">10</span>
+        <span class="hljs-attr">failureThreshold:</span> <span class="hljs-number">3</span>
+</code></pre>
 <a name="H_Volumes"></a><h3>Volumes</h3>
 <p><a name="BM_(Resources%5C%2FPods%2FVolumes)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -465,8 +543,8 @@ kubectl delete -f obj.yaml
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
+<li><a href="#BM_(Resources%5C%2FConfiguration%20Maps)_TOPIC%2F">Resources/Configuration Maps</a></li>
 <li><a href="#BM_(Resources%5C%2FPods%2FVolumes)_TOPIC%2F">Resources/Pods/Volumes</a></li>
-<li><a href="#BM_(Configuration%20Map)_TOPIC%2F">Configuration Map</a></li>
 </ul>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -506,8 +584,8 @@ kubectl delete -f obj.yaml
 <pre class="hljs"><code><span class="hljs-attr">name:</span> <span class="hljs-string">ENV_VAR_NAME</span>
 <span class="hljs-attr">valueFrom:</span>
   <span class="hljs-attr">configMapKeyRef:</span>
-  <span class="hljs-attr">name:</span> <span class="hljs-string">my-config</span>
-  <span class="hljs-attr">key:</span> <span class="hljs-string">CONFIG_MAP_KEY_HERE</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">my-config</span>
+    <span class="hljs-attr">key:</span> <span class="hljs-string">CONFIG_MAP_KEY_HERE</span>
 </code></pre>
 </li>
 <li>
@@ -528,6 +606,26 @@ kubectl delete -f obj.yaml
 </code></pre>
 </li>
 </ul>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
+<p>TODO: start from 7.4.4</p>
 <a name="H_Secrets"></a><h3>Secrets</h3>
 <p><a name="BM_(Pods%5C%2FSecrets)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -557,6 +655,97 @@ kubectl delete -f obj.yaml
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Why not use <a href="#BM_(ConfigMap)%2Fi">ConfigMap</a>s for secrets? Apparently there's some extra work going on to make sure this secrets volume is secure / transient.</p>
 </div>
+<a name="H_Service%20Discovery"></a><h3>Service Discovery</h3>
+<p><a name="BM_(Pods%5C%2FService%20Discovery)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Resources%5C%2FServices)_TOPIC%2Fi">Resources/Services</a></li>
+</ul>
+</div>
+<p>For a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> to be able to communicate with other <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> in the cluster, it needs to be able to discover the IPs of those other <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> / <a href="#BM_(service)%2Fi">service</a>s first. The mechanism for this is <a href="#BM_(service)%2Fi">service</a>s, and there's two ways in which a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can discover <a href="#BM_(service)%2Fi">service</a>s in the cluster: environment variables and DNS.</p>
+<p>These <a href="#BM_(service)%2Fi">service</a> discovery mechanisms are details in the subsections below.</p>
+<a name="H1_Environment%20Variables"></a><h4>Environment Variables</h4>
+<p><a name="BM_(Pods%5C%2FService%20Discovery%2FEnvironment%20Variables)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Resources%5C%2FPods%2FEnvironment%20Variables)_TOPIC%2F">Resources/Pods/Environment Variables</a></li>
+</ul>
+</div>
+<p>When a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> launches, all IP and port combinations for <a href="#BM_(service)%2Fi">service</a>s within the same <a href="#BM_(namespace)%2Fi">namespace</a> are stored as environment variables which the <a href="#BM_(container)%2Fi">container</a>(s) within the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can query. A <a href="#BM_(service)%2Fi">service</a>'s  The environment variable names are in the format <code>{SVCNAME}_SERVICE_HOST</code> / <code>{SVCNAME}_SERVICE_PORT</code>, where <code>{SVCNAME}</code> is the <a href="#BM_(service)%2Fi">service</a> converted to uppercase and dashes swapped with underscores. For example, two <a href="#BM_(service)%2Fi">service</a>s <code>service-a</code> and <code>service-b</code> as environment variables:</p>
+<pre><code>SERVICE_A_SERVICE_HOST=10.111.240.1
+SERVICE_A_SERVICE_PORT=443
+SERVICE_B_SERVICE_HOST=10.111.249.153
+SERVICE_B_SERVICE_PORT=80
+</code></pre>
+<p>If a <a href="#BM_(service)%2Fi">service</a> exposes multiple ports, only the first port goes in <code>{SVCNAME}_SERVICE_PORT</code>. When multiple ports are present, additional environment variables get created in the format  <code>{SVCNAME}_SERVICE_PORT_{PORTNAME}</code>, where <code>{PORTNAME}</code> is the name of <a href="#BM_(service)%2Fi">service</a>'s port modified the same way that <code>{SVCNAME}</code> is. For example, the <a href="#BM_(service)%2Fi">service</a> <code>service-c</code> exposes two ports named <code>web-1</code> and <code>metrics-1</code>:</p>
+<pre><code>SERVICE_A_SERVICE_HOST=10.111.240.1
+SERVICE_A_SERVICE_PORT=443
+SERVICE_A_SERVICE_PORT_WEB_1=443
+SERVICE_A_SERVICE_PORT_METRICS_1=8080
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Looking at the k8s code, it looks like for a <a href="#BM_(service)%2Fi">service</a> port needs to be named for it as an environment variable. <a href="#BM_(service)%2Fi">Service</a> ports that don't have a name won't show up as environment variables. See <a href="https://github.com/kubernetes/kubernetes/blob/master/pkg/kubelet/envvars/envvars.go#L51-L55">here</a>.</p>
+</div>
+<p>Aside from the only listing <a href="#BM_(service)%2Fi">service</a>s within the same <a href="#BM_(namespace)%2Fi">namespace</a> and potential naming conflicts that happen during name normalization (uppercase-ing and dash to underscore -- e.g. <code>My-name</code> and <code>my_namE</code> both end up as <code>MY_NAME</code>), another problem with using environment variables for <a href="#BM_(service)%2Fi">service</a> discovery is that the <a href="#BM_(service)%2Fi">service</a>s required by a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> need to be active before the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> starts. The reason for this is that environment variables can only be set prior to the launch of a <a href="#BM_(container)%2Fi">container</a> process. If a process launches and a <a href="#BM_(service)%2Fi">service</a> comes up afterwards, that process's environment variables won't include that <a href="#BM_(service)%2Fi">service</a>'s host and port.</p>
+<a name="H_DNS"></a><h4>DNS</h4>
+<p><a name="BM_(Pods%5C%2FService%20Discovery%2FDNS)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(resource)%2Fi">Resource</a>s/<a href="#BM_(Pods%5C%2FService%20Discovery%2FDNS)_TOPIC%2F">Pods/Service Discovery/DNS</a></li>
+</ul>
+</div>
+<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> provides a DNS server which is used for <a href="#BM_(service)%2Fi">service</a> discovery. Each <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> in the cluster is automatically configured to use this DNS server and simply has to query it for a <a href="#BM_(service)%2Fi">service</a>'s name. If the queried <a href="#BM_(service)%2Fi">service</a> is present in the cluster, the DNS server will return the stable IP for the <a href="#BM_(service)%2Fi">service</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The DNS server runs as an internal <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> application called 'coredns<code>or</code><a href="#BM_(core-dns%7Ckube-dns%7CKubernetes%20DNS%7CKubernetes's%20DNS)%2Fi">kube-dns</a><code>. This is usually in the </code><a href="#BM_(kube-system)%2Fi">kube-system</a>` <a href="#BM_(namespace)%2Fi">namespace</a>. Recall that the IP of a <a href="#BM_(service)%2Fi">service</a> is stable for the entire lifetime of the <a href="#BM_(service)%2Fi">service</a>, meaning that <a href="#BM_(service)%2Fi">service</a> restarts and DNS caching by the application and / or OS isn't an issue here.</p>
+</div>
+<p>The general domain query format is <code>{SVCNAME}.{NAMESPACE}.svc.{CLUSTERDOMAIN}</code>, where ...</p>
+<ul>
+<li><code>{SVCNAME}</code> is the name of the <a href="#BM_(service)%2Fi">service</a>.</li>
+<li><code>{NAMESPACE}</code> is the name of the <a href="#BM_(namespace)%2Fi">namespace</a> that <code>{SVCNAME}</code> is in.</li>
+<li><code>{CLUSTERDOMAIN}</code> is the cluster domain suffix of the cluster that <code>{SVCNAME}</code> and <code>{NAMESPACE}</code> are in.</li>
+</ul>
+<p>For example, to query for the IP of <a href="#BM_(service)%2Fi">service</a> <code>serviceA</code> in <a href="#BM_(namespace)%2Fi">namespace</a> <code>ns1</code> within a cluster with the domain name suffix <code>cluster.local</code>, the domain name to query is <code>serviceA.ns1.svc.cluster.local</code>. Alternatively, if the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> doing the querying is ...</p>
+<ul>
+<li>within the same cluster, the cluster domain suffix can be omitted: <code>serviceA.ns1</code>.</li>
+<li>within the same cluster and <a href="#BM_(namespace)%2Fi">namespace</a>, both the <a href="#BM_(namespace)%2Fi">namespace</a> and the cluster domain suffix can be omitted: <code>serviceA</code>.</li>
+</ul>
+<p>Compared to environment variable <a href="#BM_(service)%2Fi">service</a> discovery, using DNS to discover <a href="#BM_(service)%2Fi">service</a>s won't include information about ports.</p>
+<a name="H_Configuration%20Maps"></a><h2>Configuration Maps</h2>
+<p><a name="BM_(Resources%5C%2FConfiguration%20Maps)_TOPIC%2F"></a><strong></strong></p>
+<p>A Configuration map is a type of <a href="#BM_(resource)%2Fi">resource</a> comprised of key-value pairs intended to configure the main application of a <a href="#BM_(container)%2Fi">container</a> (or many <a href="#BM_(container)%2Fi">container</a>s). By decoupling configurations from the <a href="#BM_(container)%2Fi">container</a>s themselves, the same configuration map (or parts of it) could be used to configure multiple <a href="#BM_(container)%2Fi">container</a>s within <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Do <strong>NOT</strong> use this for storing secrets such as tokens, certificates, or passwords. See <a href="#BM_(Resources%5C%2FSecrets)_TOPIC%2F">Resources/Secrets</a> instead.</p>
+</div>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">ConfigMap</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-config</span>
+<span class="hljs-attr">data:</span>
+  <span class="hljs-attr">param1:</span> <span class="hljs-string">another-value</span>
+  <span class="hljs-attr">param2:</span> <span class="hljs-string">extra-value</span>
+  <span class="hljs-attr">my-config.ini:</span> <span class="hljs-string">|
+    # This is a sample config file that I might use to configure an application
+    key1 = value1
+    ket1 = value2
+</span></code></pre>
+<p>The key-value pairs of a Configuration map <a href="#BM_(resource)%2Fi">resource</a> typically get exposed to a <a href="#BM_(container)%2Fi">container</a> either as environment variables, files, or command-line arguments. Keys are limited to certain characters: alphabet, numbers, dashes, underscores, and dots.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>These are also typically created via command-line: <code>kubectl create configmap my-config --from-file=my-config.ini=myconfig.init --from-literal=param1=another-value --from-literal=param2=extra-value</code></p>
+<p>The option <code>--from-file</code> can also point to a directory, in which case an entry will get created for each file in the directory provided that the filenames don't have any disalowed characters.</p>
+</div>
+<a name="H1_Secrets"></a><h2>Secrets</h2>
+<p><a name="BM_(Resources%5C%2FSecrets)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>These are also typically created via command-line: <code>kubectl create secret generic my-tls-cert --from-file=a.crt --from-file=a.key</code></p>
+</div>
 <a name="H_Nodes"></a><h2>Nodes</h2>
 <p><a name="BM_(Resources%5C%2FNodes)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -584,7 +773,7 @@ kubectl delete -f obj.yaml
 <p>In the example above, there are 4 volumes in total but only 3 of those volumes are claimed. podA latches on to claim1 and claim2 while podB latches on to claim3 and claim2 (both <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can access the volume claimed in claim2).</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p><a href="#BM_(persistent%20volume)%2Fi">Persistent volume</a>s themselves aren't are cluster-level <a href="#BM_(resource)%2Fi">resource</a>s while <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a>s are <a href="#BM_(namespace)%2Fi">namespace</a>-level <a href="#BM_(resource)%2Fi">resource</a>s. All volumes are available for claims regardless of the <a href="#BM_(namespace)%2Fi">namespace</a> that claim is in. Maybe you can limit which volumes can be claimed by using <a href="#BM_(label)%2Fi">label</a>s / <a href="#BM_(label%20selector)%2Fi">label selector</a>s?</p>
+<p><a href="#BM_(persistent%20volume)%2Fi">Persistent volume</a>s themselves are cluster-level <a href="#BM_(resource)%2Fi">resource</a>s while <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a>s are <a href="#BM_(namespace)%2Fi">namespace</a>-level <a href="#BM_(resource)%2Fi">resource</a>s. All volumes are available for claims regardless of the <a href="#BM_(namespace)%2Fi">namespace</a> that claim is in. Maybe you can limit which volumes can be claimed by using <a href="#BM_(label)%2Fi">label</a>s / <a href="#BM_(label%20selector)%2Fi">label selector</a>s?</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -804,15 +993,35 @@ microk8s-hostpath (default)   microk8s.io/hostpath   Delete          WaitForFirs
 <span class="hljs-attr">reclaimPolicy:</span> <span class="hljs-string">Delete</span>
 <span class="hljs-attr">volumeBindingMode:</span> <span class="hljs-string">WaitForFirstConsumer</span>
 </code></pre>
+<a name="H_Endpoints"></a><h2>Endpoints</h2>
+<p><a name="BM_(Resources%5C%2FEndpoints)_TOPIC%2Fi"></a><strong></strong></p>
+<p><a href="#BM_(endpoints)%2Fi">Endpoints</a> (plural) is a <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(resource)%2Fi">resource</a> that simply holds a list of IP addresses and ports. It's used by higher-level <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(resource)%2Fi">resource</a>s to simplify routing. For example, an <a href="#BM_(endpoints)%2Fi">endpoints</a> <a href="#BM_(resource)%2Fi">resource</a> may direct to all the <a href="#BM_(node)%2Fi">node</a>s that make up a sharded database server.</p>
+<p>Example manifest:</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Endpoints</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">database</span>
+<span class="hljs-attr">subsets:</span> 
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">addresses:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">ip:</span> <span class="hljs-number">10.10</span><span class="hljs-number">.1</span><span class="hljs-number">.1</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">ip:</span> <span class="hljs-number">10.10</span><span class="hljs-number">.1</span><span class="hljs-number">.2</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">ip:</span> <span class="hljs-number">10.10</span><span class="hljs-number">.1</span><span class="hljs-number">.3</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">port:</span> <span class="hljs-number">5432</span> 
+        <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>  <span class="hljs-comment"># TCP or UDP, default: TCP</span>
+        <span class="hljs-attr">name:</span> <span class="hljs-string">pg</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">addresses:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">ip:</span> <span class="hljs-number">10.13</span><span class="hljs-number">.4</span><span class="hljs-number">.101</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">ip:</span> <span class="hljs-number">10.13</span><span class="hljs-number">.4</span><span class="hljs-number">.102</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">ip:</span> <span class="hljs-number">10.13</span><span class="hljs-number">.4</span><span class="hljs-number">.103</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">port:</span> <span class="hljs-number">12345</span>
+        <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>  <span class="hljs-comment"># TCP or UDP, default: TCP</span>
+        <span class="hljs-attr">name:</span> <span class="hljs-string">pg2</span>
+</code></pre>
+<p>The <a href="#BM_(endpoints)%2Fi">endpoints</a> in the example YAML above points to [10.10.1.1:5432, 10.10.1.2:5432, 10.10.1.3:5432, 10.13.4.101:12345, 10.13.4.102:12345, 10.13.4.103:12345].</p>
 <a name="H_Services"></a><h2>Services</h2>
 <p><a name="BM_(Resources%5C%2FServices)_TOPIC%2Fi"></a><strong></strong></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Resources%5C%2FPods)_TOPIC%2Fi">Resources/Pods</a></li>
-<li><a href="#BM_(Resources%5C%2FNodes)_TOPIC%2Fi">Resources/Nodes</a></li>
-</ul>
-</div>
 <p><a href="#BM_(service)%2Fi">Service</a>s are a discovery and load balancing mechanism. A <a href="#BM_(service)%2Fi">service</a> exposes a set of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> under a single fixed unified hostname and IP, routing traffic to that set by load balancing incoming requests across the set. Any external application would need to use a <a href="#BM_(service)%2Fi">service</a>'s hostname because the IP / host of the single <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> instances aren't fixed, exposed, or known. That is, <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> are transient and aren't guaranteed to always reside on the same <a href="#BM_(node)%2Fi">node</a>. As they shutdown, come up, restart, move between <a href="#BM_(node)%2Fi">node</a>s, etc.., there's no implicit mechanism that requestors can use to route their requests accordingly.</p>
 <p>A <a href="#BM_(service)%2Fi">service</a> fixes this my internally tracking such changes and providing a single unified point of access.</p>
 <p><img src="svgbob_9fcafa853ed3eccdae11b6e4d860f6208b276d0e.svg" alt="Kroki diagram output"></p>
@@ -834,45 +1043,139 @@ microk8s-hostpath (default)   microk8s.io/hostpath   Delete          WaitForFirs
   <span class="hljs-attr">selector:</span>
     <span class="hljs-attr">app:</span> <span class="hljs-string">MyApp</span>
   <span class="hljs-attr">ports:</span>
-    <span class="hljs-bullet">-</span> <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">webapp-port</span>
+      <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>
       <span class="hljs-attr">port:</span> <span class="hljs-number">80</span>
       <span class="hljs-attr">targetPort:</span> <span class="hljs-number">9376</span>
 </code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Internally, an <a href="#BM_(endpoints)%2Fi">EndPoints</a> object is used to track <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>. When you create a <a href="#BM_(service)%2Fi">service</a>, <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> automatically creates an accompanying <a href="#BM_(endpoints)%2Fi">EndPoints</a> object that the <a href="#BM_(service)%2Fi">service</a> makes use of.</p>
+</div>
 <a name="H_Routing"></a><h3>Routing</h3>
+<p><a name="BM_(Resources%5C%2FServices%2FRouting)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Introduction%5C%2FLabels)_TOPIC%2Fi">Introduction/Labels</a></li>
+<li><a href="#BM_(Resources%5C%2FEndpoints)_TOPIC%2Fi">Resources/Endpoints</a></li>
 </ul>
 </div>
-<p>A <a href="#BM_(service)%2Fi">service</a> determines which <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> it should route traffic to via the <code>spec/selector</code> manifest path. This manifest path contains key-value mappings, where these key-value mappings are <a href="#BM_(label)%2Fi">label</a>s that a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> needs before being considered for this <a href="#BM_(service)%2Fi">service</a>'s traffic ...</p>
+<p>A <a href="#BM_(service)%2Fi">service</a> determines which <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> it should route traffic to via the <code>spec.selector</code> manifest path. This manifest path contains key-value mappings, where these key-value mappings are <a href="#BM_(label)%2Fi">label</a>s that a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> needs before being considered for this <a href="#BM_(service)%2Fi">service</a>'s traffic ...</p>
 <pre class="hljs"><code><span class="hljs-attr">spec:</span>
   <span class="hljs-attr">selector:</span>
     <span class="hljs-attr">key1:</span> <span class="hljs-string">value1</span>
     <span class="hljs-attr">key2:</span> <span class="hljs-string">value2</span>
     <span class="hljs-attr">key3:</span> <span class="hljs-string">value3</span>
 </code></pre>
+<p>Internally, the <a href="#BM_(service)%2Fi">service</a> creates and manages an <a href="#BM_(endpoints)%2Fi">endpoints</a> object containing the IP and port for each <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> captured by the selector. If no selectors are present, the <a href="#BM_(service)%2Fi">service</a> expects an <a href="#BM_(endpoints)%2Fi">endpoints</a> object with the same name to exist, where that <a href="#BM_(endpoints)%2Fi">endpoints</a> object contains the list of IP and port pairs that the <a href="#BM_(service)%2Fi">service</a> should route to.</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Endpoints</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">database</span>  <span class="hljs-comment"># must be same name as the service</span>
+<span class="hljs-attr">subsets:</span> 
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">addresses:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">ip:</span> <span class="hljs-number">10.10</span><span class="hljs-number">.1</span><span class="hljs-number">.1</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">ip:</span> <span class="hljs-number">10.10</span><span class="hljs-number">.1</span><span class="hljs-number">.2</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">ip:</span> <span class="hljs-number">10.10</span><span class="hljs-number">.1</span><span class="hljs-number">.3</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">port:</span> <span class="hljs-number">5432</span>
+</code></pre>
+<p>If no selectors are present but <code>spec.type</code> is set to <code>ExternalName</code>, the <a href="#BM_(service)%2Fi">service</a> will route to the host specified in <code>spec.externalName</code>. This is useful for situations where you want to hide the destination, such as an external API that you also want to mock for development / testing.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">type:</span> <span class="hljs-string">ExternalName</span>
+  <span class="hljs-attr">externalName:</span> <span class="hljs-string">api.externalcompany.com</span>
+  <span class="hljs-attr">ports:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">api-port</span>
+      <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>
+      <span class="hljs-attr">port:</span> <span class="hljs-number">8080</span>
+      <span class="hljs-attr">targetPort:</span> <span class="hljs-number">5000</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>If not set, <code>spec.type</code> defaults to <code>ClusterIP</code>. That's the type used when selectors are used to create an <a href="#BM_(endpoints)%2Fi">endpoints</a> / a custom <a href="#BM_(endpoints)%2Fi">endpoints</a> is used.</p>
+</div>
 <a name="H1_Ports"></a><h3>Ports</h3>
+<p><a name="BM_(Resources%5C%2FServices%2FPorts)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Resources%5C%2FPods%2FPorts)_TOPIC%2F">Resources/Pods/Ports</a></li>
+<li><a href="#BM_(Resources%5C%2FServices%2FRouting)_TOPIC%2Fi">Resources/Services/Routing</a></li>
 </ul>
 </div>
-<p>Requests are load balanced across the determined set of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> using ports defined via the <code>spec/ports</code> manifest path.</p>
+<p>A <a href="#BM_(service)%2Fi">service</a> can listen on multiple ports, controlled via the <code>spec.ports</code> manifest path.</p>
 <pre class="hljs"><code><span class="hljs-attr">spec:</span>
   <span class="hljs-attr">ports:</span>
-    <span class="hljs-bullet">-</span> <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">webapp-port</span>
+      <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>
       <span class="hljs-attr">port:</span> <span class="hljs-number">80</span>
       <span class="hljs-attr">targetPort:</span> <span class="hljs-number">9376</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">api-port</span>
+      <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>
+      <span class="hljs-attr">port:</span> <span class="hljs-number">8080</span>
+      <span class="hljs-attr">targetPort:</span> <span class="hljs-number">1111</span>
     <span class="hljs-string">...</span>
 </code></pre>
-<p><code>port</code> defines the port that the <a href="#BM_(service)%2Fi">service</a> listens on, while <code>targetPort</code> is the port requests are forwarded to on the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>. If <code>targetPort</code> is omitted, the value of <code>port</code> is assigned to it automatically.</p>
+<ul>
+<li><code>name</code> is a friendly name to identify the port (optional)</li>
+<li><code>protocol</code> is either <code>TCP</code> or <code>UDP</code> (defaults to <code>TCP</code>).</li>
+<li><code>port</code> is the port that the <a href="#BM_(service)%2Fi">service</a> listens on.</li>
+<li><code>targetPort</code> is the port that requests are forwarded to on the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>  (defaults to value set for <code>port</code>).</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Not having a name makes it more difficult for <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> to discover a <a href="#BM_(service)%2Fi">service</a>. Discussed further in the <a href="#BM_(service)%2Fi">service</a> discovery section.</p>
+</div>
+<p>The example above forwards requests on two ports. Requests on port ...</p>
+<ul>
+<li>80 of the <a href="#BM_(service)%2Fi">service</a> get forwarded to port 9376 of a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> assigned to that <a href="#BM_(service)%2Fi">service</a>.</li>
+<li>8080 of the <a href="#BM_(service)%2Fi">service</a> get forwarded to port 1111 of a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> assigned to that <a href="#BM_(service)%2Fi">service</a>.</li>
+</ul>
+<p>Ports may also reference the names of ports in a <a href="#BM_(pod%20manifest)%2Fi">pod manifest</a>. For example, imagine the <a href="#BM_(pod%20manifest)%2Fi">pod manifest</a> for a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> assigned to a <a href="#BM_(service)%2Fi">service</a> provides names for its ports.</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my_pod</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">...</span>
+      <span class="hljs-attr">ports:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">containerPort:</span> <span class="hljs-number">8080</span>
+          <span class="hljs-attr">name:</span> <span class="hljs-string">my-http-port</span>
+          <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>
+      <span class="hljs-string">...</span>
+</code></pre>
+<p>In the <a href="#BM_(service)%2Fi">service</a> for that targets this <a href="#BM_(pod%20manifest)%2Fi">pod manifest</a>, you can use <code>my_http_port</code> as a <code>targetPort</code>.</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Service</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-service</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">selector:</span>
+    <span class="hljs-attr">app:</span> <span class="hljs-string">MyApp</span>
+  <span class="hljs-attr">ports:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">webapp-port</span>
+      <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>
+      <span class="hljs-attr">port:</span> <span class="hljs-number">80</span>
+      <span class="hljs-attr">targetPort:</span> <span class="hljs-string">my-http-port</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Does this work for manual <a href="#BM_(endpoints)%2Fi">endpoints</a> as well? When a selector isn't used with a <a href="#BM_(service)%2Fi">service</a>, it looks for an <a href="#BM_(endpoints)%2Fi">endpoints</a> object of the same name as the <a href="#BM_(service)%2Fi">service</a> to figure out where the <a href="#BM_(service)%2Fi">service</a> should route to. That <a href="#BM_(endpoints)%2Fi">endpoints</a> object can have names associated with its ports as well.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>A <a href="#BM_(service)%2Fi">service</a> decides which <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> it routes to based key-value pairs in on <code>spec.selector</code>. What happens if the key-value pairs identify a set of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> instances where some of those instances don't have a port named <code>my-http-port</code>. For example, a <a href="#BM_(service)%2Fi">service</a> may be forwarding to two applications rather than a single application which just could be sharing the same set of key-value <a href="#BM_(label)%2Fi">label</a>s (<a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> instances are heterogenous).</p>
+<p>Maybe this isn't possible with <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>?</p>
+</div>
 <a name="H_Health"></a><h3>Health</h3>
+<p><a name="BM_(Resources%5C%2FServices%2FHealth)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Resources%5C%2FPods%2FProbes)_TOPIC%2F">Resources/Pods/Probes</a></li>
+<li><a href="#BM_(Resources%5C%2FServices%2FRouting)_TOPIC%2Fi">Resources/Services/Routing</a></li>
 </ul>
 </div>
 <p>The <a href="#BM_(service)%2Fi">service</a> periodically probes the status of each <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> to determine if it can handle requests or not. Two types of probes are performed:</p>
@@ -884,11 +1187,58 @@ microk8s-hostpath (default)   microk8s.io/hostpath   Delete          WaitForFirs
 <p><img src="svgbob_4db118f49983e7aa72c7b4a50af69abf5161819b.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Internally, an <a href="#BM_(endpoints)%2Fi">EndPoints</a> object is used to track <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>. When you create a <a href="#BM_(service)%2Fi">service</a>, <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> automatically creates an accompanying <a href="#BM_(endpoints)%2Fi">EndPoints</a> object that the <a href="#BM_(service)%2Fi">service</a> makes use of.</p>
+<p>Recall that, when a <a href="#BM_(service)%2Fi">service</a> has selectors assigned, <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> internally maintains an <a href="#BM_(endpoints)%2Fi">EndPoints</a> object that contains the addresses of ready and healthy <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>. The addresses in this <a href="#BM_(endpoints)%2Fi">endpoints</a> object is what the <a href="#BM_(service)%2Fi">service</a> routes to.</p>
+</div>
+<a name="H_Headless"></a><h3>Headless</h3>
+<p><a name="BM_(Resources%5C%2FServices%2FHeadless)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Resources%5C%2FServices%2FRouting)_TOPIC%2Fi">Resources/Services/Routing</a></li>
+<li><a href="#BM_(Resources%5C%2FServices%2FHealth)_TOPIC%2Fi">Resources/Services/Health</a></li>
+</ul>
+</div>
+<p>A <a href="#BM_(service)%2Fi">service</a> that's headless is one which there is no load balancer forwarding requests to <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> / <a href="#BM_(endpoints)%2Fi">endpoints</a>. Instead, the domain for the <a href="#BM_(service)%2Fi">service</a> will resolve a list of ready IPs for the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (or <a href="#BM_(endpoints)%2Fi">endpoints</a>) that the <a href="#BM_(service)%2Fi">service</a> is for.</p>
+<p>To create a headless <a href="#BM_(service)%2Fi">service</a>, set <code>spec.clusterIP</code> manifest path to <code>None</code>.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">clusterIP:</span> <span class="hljs-string">None</span>
+</code></pre>
+<p>Generally, headless <a href="#BM_(service)%2Fi">service</a>s shouldn't be used because DNS queries are typically cached by the operating system. If the IPs that a <a href="#BM_(service)%2Fi">service</a> forwards to change, apps that have recently queried the <a href="#BM_(service)%2Fi">service</a>'s DNS will continue to use the old (cached) set of IPs until the operating system purges its DNS cache.</p>
+<a name="H_Session%20Affinity"></a><h3>Session Affinity</h3>
+<p><a name="BM_(Resources%5C%2FServices%2FSession%20Affinity)_TOPIC%2Fi"></a><strong></strong></p>
+<p>How a <a href="#BM_(service)%2Fi">service</a> decides to forward incoming requests to the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> instances assigned to it is controlled via <code>spec.sessionAffinity</code> manifest path. Assigning a value of ...</p>
+<ul>
+<li><code>None</code> forwards each request to a randomly selected <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> instance (default behaviour).</li>
+<li><code>ClientIP</code> forwards each request originating from the same IP to the same <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> instance.</li>
+</ul>
+<p>When using <code>ClientIP</code>, you may also provide a maximum session "sticky time" via the manifest path <code>spec.sessionAffinityConfig.clientIP.timeoutSeconds</code>. By default, this value is set to 108300 (around 3 hours).</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">sessionAffinity:</span> <span class="hljs-string">ClientIP</span>
+  <span class="hljs-attr">sessionAffinityConfig:</span>
+    <span class="hljs-attr">clientIP:</span>
+      <span class="hljs-attr">timeoutSeconds:</span> <span class="hljs-number">10000</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>When using <code>ClientIP</code>? What happens when the <a href="#BM_(service)%2Fi">service</a> runs out memory to track client IPs? LRU algorithm to decide which to keep / discard?</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The book mentions that because <a href="#BM_(service)%2Fi">service</a>s work on the TCP/UDP level and not at HTTP/HTTPS level, forwarding requests by tracking session cookies isn't a thing.</p>
 </div>
 <a name="H_Exposure"></a><h3>Exposure</h3>
-<p>The <a href="#BM_(service)%2Fi">service</a> type defines where and how a <a href="#BM_(service)%2Fi">service</a> gets exposed, controlled via the <code>spec.type</code> manifest pth. For example, a <a href="#BM_(service)%2Fi">service</a> may only be accessible within the cluster, to specific parts of the cluster, to an external network, to the Internet, etc...</p>
-<p><a href="#BM_(service)%2Fi">Service</a>s of type <code>ClusterIP</code> are only accessible from within the cluster. The hostname for a <code>ClusterIP</code> <a href="#BM_(service)%2Fi">service</a> is broken down as follows: NAME.<a href="#BM_(namespace)%2Fi">NAMESPACE</a>.svc.CLUSTER</p>
+<p><a name="BM_(Resources%5C%2FServices%2FExposure)_TOPIC%2Fi"></a><strong></strong></p>
+<p>The <a href="#BM_(service)%2Fi">service</a> type defines where and how a <a href="#BM_(service)%2Fi">service</a> gets exposed, controlled via the <code>spec.type</code> manifest path. For example, a <a href="#BM_(service)%2Fi">service</a> may only be accessible within the cluster, to specific parts of the cluster, to an external network, or to the public Internet.</p>
+<p>If not specified, the <code>spec.type</code> of a <a href="#BM_(resource)%2Fi">resource</a> is <code>ClusterIP</code>, meaning that it's exposed only locally within the cluster.</p>
+<a name="H_Local"></a><h4>Local</h4>
+<p><a name="BM_(Resources%5C%2FServices%2FExposure%2FLocal)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Resources%5C%2FServices%2FRouting)_TOPIC%2Fi">Resources/Services/Routing</a></li>
+</ul>
+</div>
+<p><a href="#BM_(service)%2Fi">Service</a>s of type <code>ClusterIP</code> / <code>ExternalName</code> are only accessible from within the cluster. The hostname of such <a href="#BM_(service)%2Fi">service</a>s are broken down as follows: NAME.<a href="#BM_(namespace)%2Fi">NAMESPACE</a>.svc.CLUSTER</p>
 <ul>
 <li><em>NAME</em> is the name of the <a href="#BM_(service)%2Fi">service</a>.</li>
 <li><em><a href="#BM_(namespace)%2Fi">NAMESPACE</a></em> is the <a href="#BM_(namespace)%2Fi">namespace</a> the <a href="#BM_(service)%2Fi">service</a> is in (defaults to <code>default</code>).</li>
@@ -901,7 +1251,7 @@ microk8s-hostpath (default)   microk8s.io/hostpath   Delete          WaitForFirs
 <li>the same cluster but not the same <a href="#BM_(namespace)%2Fi">namespace</a>, hostname NAME.<a href="#BM_(namespace)%2Fi">NAMESPACE</a> is sufficient.</li>
 <li>different clusters, the full hostname NAME.<a href="#BM_(namespace)%2Fi">NAMESPACE</a>.svc.CLUSTER is required.</li>
 </ul>
-<p>The IP for a <code>ClusterIP</code> <a href="#BM_(service)%2Fi">service</a> is stable as well, just like the hostname.</p>
+<p>The IP for a <code>ClusterIP</code> / <code>ExternalName</code> <a href="#BM_(service)%2Fi">service</a> is stable as well, just like the hostname.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Internally, a <code>ClusterIP</code> <a href="#BM_(service)%2Fi">service</a> uses <a href="#BM_(kube-proxy%7CKubernetes%20proxy%7CKubernetes's%20proxy)%2Fi">kube-proxy</a> to route requests to relevant <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (<a href="#BM_(endpoints)%2Fi">EndPoints</a>).</p>
@@ -909,6 +1259,8 @@ microk8s-hostpath (default)   microk8s.io/hostpath   Delete          WaitForFirs
 <pre class="hljs"><code><span class="hljs-attr">spec:</span>
   <span class="hljs-attr">type:</span> <span class="hljs-string">ClusterIP</span>
 </code></pre>
+<a name="H_Node%20Port"></a><h4>Node Port</h4>
+<p><a name="BM_(Resources%5C%2FServices%2FExposure%2FNode%20Port)_TOPIC%2Fi"></a><strong></strong></p>
 <p><a href="#BM_(service)%2Fi">Service</a>s of type <code>NodePort</code> are accessible from outside the cluster. Every <a href="#BM_(worker%20node)%2Fi">worker node</a> opens a port (either user-defined or assigned by the system) that routes requests to the <a href="#BM_(service)%2Fi">service</a>. Since <a href="#BM_(node)%2Fi">node</a>s are transient, there is no single point of access to the <a href="#BM_(service)%2Fi">service</a>.</p>
 <p>When <code>NodePort</code> is used as the type, the manifest path <code>spec.ports[].nodePort</code> defines the port on the <a href="#BM_(worker%20node)%2Fi">worker node</a> to open.</p>
 <pre class="hljs"><code><span class="hljs-attr">spec:</span>
@@ -920,7 +1272,9 @@ microk8s-hostpath (default)   microk8s.io/hostpath   Delete          WaitForFirs
       <span class="hljs-attr">nodePort:</span> <span class="hljs-number">8080</span>
     <span class="hljs-string">...</span>
 </code></pre>
-<p><a href="#BM_(service)%2Fi">Service</a>s of type <code>LoadBalancer</code> are accessible from outside the cluster. When the <code>LoadBalancer</code> type is used, the cloud provider running the cluster assigning their version of a load balancer to route external HTTP requests to the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(ingress)%2Fi">Ingress</a> component. <a href="#BM_(ingress)%2Fi">Ingress</a> then determines what <a href="#BM_(service)%2Fi">service</a> that request should be routed to based on details within the HTTP parameters (e.g. Host).</p>
+<a name="H_Load%20Balancer"></a><h4>Load Balancer</h4>
+<p><a name="BM_(Resources%5C%2FServices%2FExposure%2FLoad%20Balancer)_TOPIC%2Fi"></a><strong></strong></p>
+<p><a href="#BM_(service)%2Fi">Service</a>s of type <code>LoadBalancer</code> are accessible from outside the cluster. When the <code>LoadBalancer</code> type is used, the cloud provider running the cluster assigns their version of a load balancer to route external HTTP requests to the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(ingress)%2Fi">Ingress</a> component. <a href="#BM_(ingress)%2Fi">Ingress</a> then determines what <a href="#BM_(service)%2Fi">service</a> that request should be routed to based on details within the HTTP parameters (e.g. Host).</p>
 <p>There is no built-in <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> implementation of <a href="#BM_(ingress)%2Fi">Ingress</a>. <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> provides the interface but someone must provide the implementation, called an <a href="#BM_(ingress)%2Fi">Ingress</a> controller, for the functionality to be there. The reason for this is that load balancers come in multiple forms: software load balancers, cloud provider load balancers, and hardware load balancers. When used directly, each has a unique way it needs to be configured, but the <a href="#BM_(ingress)%2Fi">Ingress</a> implementation abstracts that out.</p>
 <pre class="hljs"><code><span class="hljs-attr">spec:</span>
   <span class="hljs-attr">type:</span> <span class="hljs-string">LoadBalancer</span>
@@ -945,6 +1299,186 @@ microk8s-hostpath (default)   microk8s.io/hostpath   Delete          WaitForFirs
     <span class="hljs-attr">ingress:</span>
       <span class="hljs-attr">ip:</span> <span class="hljs-number">192.0</span><span class="hljs-number">.5</span><span class="hljs-number">.6</span>
 </code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can also use <code>kubectl</code> to get a list of <a href="#BM_(service)%2Fi">service</a>s and it'll also list out the public IP.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The book says that a load balancer type is a special case of <a href="#BM_(node)%2Fi">node</a> port type.</p>
+</div>
+<a name="H_Ingress"></a><h2>Ingress</h2>
+<p><a name="BM_(Resources%5C%2FIngress)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Resources%5C%2FServices)_TOPIC%2Fi">Resources/Services</a></li>
+</ul>
+</div>
+<p>Similar to a <a href="#BM_(service)%2Fi">service</a> of type <code>LoadBalancer</code>, An <a href="#BM_(ingress)%2Fi">Ingress</a> object is a load balancer with a publicly exposed IP. However, rather than load balancing at the TCP/UDP level, an <a href="#BM_(ingress)%2Fi">Ingress</a> object acts as a load balancing HTTP proxy server. An HTTP request coming into an <a href="#BM_(ingress)%2Fi">Ingress</a> object gets routed to one of many existing <a href="#BM_(service)%2Fi">service</a>s based on host and path HTTP headers. This is useful because the cluster can expose several <a href="#BM_(service)%2Fi">service</a>s under a single public IP address.</p>
+<p><img src="svgbob_c46d77a103ab5604a9b3449315c51ef9e97a8f5d.svg" alt="Kroki diagram output"></p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">networking.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Ingress</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-ingress</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">rules:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">host:</span> <span class="hljs-string">stats.myhost.com</span>
+    <span class="hljs-attr">http:</span>
+      <span class="hljs-attr">paths:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">path:</span> <span class="hljs-string">/graphana</span>
+        <span class="hljs-attr">pathType:</span> <span class="hljs-string">Prefix</span>
+        <span class="hljs-attr">backend:</span>
+          <span class="hljs-attr">service:</span>
+            <span class="hljs-attr">name:</span> <span class="hljs-string">graphana-service</span>
+            <span class="hljs-attr">port:</span>
+              <span class="hljs-attr">number:</span> <span class="hljs-number">80</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">host:</span> <span class="hljs-string">api.myhost.com</span>
+    <span class="hljs-attr">http:</span>
+      <span class="hljs-attr">paths:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">path:</span> <span class="hljs-string">/v2</span>
+        <span class="hljs-attr">pathType:</span> <span class="hljs-string">Prefix</span>
+        <span class="hljs-attr">backend:</span>
+          <span class="hljs-attr">service:</span>
+            <span class="hljs-attr">name:</span> <span class="hljs-string">api-service-v2</span>
+            <span class="hljs-attr">port:</span>
+              <span class="hljs-attr">number:</span> <span class="hljs-number">80</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">path:</span> <span class="hljs-string">/v1</span>
+        <span class="hljs-attr">pathType:</span> <span class="hljs-string">Prefix</span>
+        <span class="hljs-attr">backend:</span>
+          <span class="hljs-attr">service:</span>
+            <span class="hljs-attr">name:</span> <span class="hljs-string">api-service-v1</span>
+            <span class="hljs-attr">port:</span>
+              <span class="hljs-attr">number:</span> <span class="hljs-number">80</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">path:</span> <span class="hljs-string">/</span>
+        <span class="hljs-attr">pathType:</span> <span class="hljs-string">Prefix</span>
+        <span class="hljs-attr">backend:</span>
+          <span class="hljs-attr">service:</span>
+            <span class="hljs-attr">name:</span> <span class="hljs-string">api-service-v2</span>
+            <span class="hljs-attr">port:</span>
+              <span class="hljs-attr">number:</span> <span class="hljs-number">80</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>According to the book, most if not all implementations of <a href="#BM_(ingress)%2Fi">Ingress</a> simply query the <a href="#BM_(service)%2Fi">service</a> for its <a href="#BM_(endpoints)%2Fi">endpoints</a> and directly load balance across them vs forwarding the request through that <a href="#BM_(service)%2Fi">service</a>. Note that the port in the example above is still the port that the <em><a href="#BM_(service)%2Fi">service</a></em> is listening on, not the port of the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> is listening on.</p>
+</div>
+<a name="H_Hosts"></a><h3>Hosts</h3>
+<p><a name="BM_(Resources%5C%2FIngress%2FHosts)_TOPIC%2Fi"></a><strong></strong></p>
+<p>The host in each rule can be either an exact host or it could contain wildcards (e.g. <code>*.api.myhost.com</code>). Each name in the host (split by dot) intended for a wildcard should explicitly have an asterisk in its place. The portion the asterisk is in must exist and it only covers that name. For example, the rule below will match <code>ONE.api.myhost.com</code>, but not <code>TWO.THREE.api.myhost.com</code> or <code>api.myhost.com</code>.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">rules:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">host:</span> <span class="hljs-string">"*.api.myhost.com"</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">path:</span> <span class="hljs-string">/v2</span>
+      <span class="hljs-attr">pathType:</span> <span class="hljs-string">Prefix</span>
+      <span class="hljs-attr">backend:</span>
+        <span class="hljs-attr">service:</span>
+          <span class="hljs-attr">name:</span> <span class="hljs-string">api-service-v2</span>
+          <span class="hljs-attr">port:</span>
+            <span class="hljs-attr">number:</span> <span class="hljs-number">80</span>
+</code></pre>
+<a name="H_Path%20Type"></a><h3>Path Type</h3>
+<p>Each rule entry should have a path type associated with it. It can be set to any of the following values:</p>
+<ul>
+<li><code>Exact</code> - Matches the URL path exactly (case sensitive).</li>
+<li><code>Prefix</code> - Matches the URL path prefix (case sensitive).</li>
+<li><code>ImplementationSpecific</code> - Based on the class of the <a href="#BM_(ingress)%2Fi">Ingress</a> <a href="#BM_(resource)%2Fi">resource</a>.</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">rules:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">host:</span> <span class="hljs-string">api.myhost.com</span>
+    <span class="hljs-attr">http:</span>
+      <span class="hljs-attr">paths:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">path:</span> <span class="hljs-string">/my/prefix/path</span>
+        <span class="hljs-attr">pathType:</span> <span class="hljs-string">Prefix</span>
+        <span class="hljs-attr">backend:</span>
+          <span class="hljs-attr">service:</span>
+            <span class="hljs-attr">name:</span> <span class="hljs-string">api-service-v2</span>
+            <span class="hljs-attr">port:</span>
+              <span class="hljs-attr">number:</span> <span class="hljs-number">80</span>
+</code></pre>
+<p>The most common path type is <code>Prefix</code>. A type of <code>Prefix</code> splits the path using <code>/</code> and matches the rule if the incoming request's path starts with the same path elements as the rule's path. Trailing slashes are ignored (e.g. <code>/p1/p2/p3/</code> and <code>/p1/p2/p3</code> are equivalent).</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>What about <code>ImplementationSpecific</code>? There are different types of <a href="#BM_(ingress)%2Fi">Ingress</a> controllers, each of which has its own configuration options. An <a href="#BM_(ingress)%2Fi">Ingress</a> class is something you can put into your <a href="#BM_(ingress)%2Fi">Ingress</a> <a href="#BM_(resource)%2Fi">resource</a> that contains "configuration including the name of the controller that should implement the class." It seems like an advanced topic and I don't know enough to write about it. Probably not something you have to pat attention to if you're doing basic cloud stuff.</p>
+</div>
+<a name="H_TLS%20Traffic"></a><h3>TLS Traffic</h3>
+<p><a name="BM_(Resources%5C%2FIngress%2FTLS%20Traffic)_TOPIC%2Fi"></a><strong></strong></p>
+<p><a name="BM_(Ingress%5C%2FTLS%20Traffic)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(resource)%2Fi">Resource</a>s/<a href="#BM_(Pods%5C%2FSecrets)_TOPIC%2F">Pods/Secrets</a></li>
+</ul>
+</div>
+<p>Assuming you have a TLS certificate and key files for the host configured on the <a href="#BM_(ingress)%2Fi">Ingress</a> <a href="#BM_(resource)%2Fi">resource</a>, you can add those into <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> as a secret and configure the <a href="#BM_(ingress)%2Fi">Ingress</a> <a href="#BM_(resource)%2Fi">resource</a> to make use of it.</p>
+<pre class="hljs"><code><span class="hljs-comment"># openssl genrsa -out tls.key 2048</span>
+<span class="hljs-comment"># openssl req -new -x509 -key tls.key -out tls.cert -days 360 -subj /CN=api.myhost.com</span>
+<span class="hljs-comment"># kubectl create secret tls my-api-tls --cert=tls.crt --key=tls.key</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Secret</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-api-tls</span>
+<span class="hljs-attr">type:</span> <span class="hljs-string">kubernetes.io/tls</span>
+<span class="hljs-attr">data:</span>
+  <span class="hljs-attr">tls.crt:</span> <span class="hljs-string">base64</span> <span class="hljs-string">encoded</span> <span class="hljs-string">cert</span>
+  <span class="hljs-attr">tls.key:</span> <span class="hljs-string">base64</span> <span class="hljs-string">encoded</span> <span class="hljs-string">key</span>
+</code></pre>
+<p>For each certificate secret intended to be used by the <a href="#BM_(ingress)%2Fi">Ingress</a> <a href="#BM_(resource)%2Fi">resource</a>, there should be an array entry under the <code>spec.tls[]</code> manifest path. The certificate secret name must be placed under <code>secretName</code> and the domain(s) supported by that certificate must be listed under <code>hosts</code>. Hosts must match hosts explicitly listed un the <a href="#BM_(ingress)%2Fi">Ingress</a> <a href="#BM_(resource)%2Fi">resource</a>'s rules.</p>
+<pre class="hljs"><code><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">tls:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">hosts:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">api.myhost.com</span>
+      <span class="hljs-attr">secretName:</span> <span class="hljs-string">my-api-tls</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">hosts:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">stats.myhost.com</span>
+      <span class="hljs-attr">secretName:</span> <span class="hljs-string">my-stats-tls</span>
+</code></pre>
+<p>Once an encrypted request comes in to the <a href="#BM_(ingress)%2Fi">Ingress</a> controller, it's decrypted. That decrypted request then gets forwarded to the <a href="#BM_(service)%2Fi">service</a> it was intended for.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>From the k8s website:</p>
+<blockquote>
+<p>You need to make sure the TLS secret you created came from a certificate that contains a Common Name (CN), also known as a Fully Qualified Domain Name (FQDN) for https-example.foo.com.</p>
+</blockquote>
+<blockquote>
+<p>Keep in mind that TLS will not work on the default rule because the certificates would have to be issued for all the possible sub-domains. Therefore, hosts in the tls section need to explicitly match the host in the rules section.</p>
+</blockquote>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The book mentions that <code>CertificateSigningRequest</code> is a special type of <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(resource)%2Fi">resource</a> that will sign certificates for you, if it was set up. You can issue requests via <code>kubectl certificate approve csr_name</code> and it'll either automate it somehow or a human will process it? Not sure exactly what's going on here.</p>
+</div>
+<a name="H_Namespace"></a><h2>Namespace</h2>
+<p><a name="BM_(Resources%5C%2FNamespace)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A <a href="#BM_(namespace)%2Fi">namespace</a> is a <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(resource)%2Fi">resource</a> used to avoid <a href="#BM_(resource)%2Fi">resource</a> naming conflicts. For example, it's typical for a <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> cluster to be split up into development, testing, and production <a href="#BM_(namespace)%2Fi">namespace</a>s. Each <a href="#BM_(namespace)%2Fi">namespace</a> can have <a href="#BM_(resource)%2Fi">resource</a>s with the same names as those in the other two <a href="#BM_(namespace)%2Fi">namespace</a>s.</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Namespace</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">production</span>
+</code></pre>
+<p><a href="#BM_(namespace)%2Fi">Namespace</a>s are cluster-level <a href="#BM_(resource)%2Fi">resource</a>s. This is contrary to most other <a href="#BM_(resource)%2Fi">resource</a> types in <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>, which are <a href="#BM_(namespace)%2Fi">namespace</a>-level <a href="#BM_(resource)%2Fi">resource</a>s, meaning that a <a href="#BM_(namespace)%2Fi">namespace</a> can be used to disambiguate <a href="#BM_(resource)%2Fi">resource</a>s of that type with the same name...</p>
+<pre class="hljs"><code><span class="hljs-comment"># These are namespace-level resources</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">mypod</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">testing</span>  <span class="hljs-comment"># put into the testing namespace</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">mypod</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">my_image:v2_alpha5</span>
+<span class="hljs-meta">---</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">mypod</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">production</span>  <span class="hljs-comment"># put into the production namespace</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">mypod</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">my_image:v1</span>
+</code></pre>
+<p>If a <a href="#BM_(namespace)%2Fi">namespace</a>-level <a href="#BM_(resource)%2Fi">resource</a> doesn't set a <a href="#BM_(namespace)%2Fi">namespace</a>, the <a href="#BM_(namespace)%2Fi">namespace</a> defaults to <code>default</code>.</p>
 <a name="H_Replica%20Sets"></a><h2>Replica Sets</h2>
 <p><a name="BM_(Resources%5C%2FReplica%20Sets)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -1136,20 +1670,6 @@ microk8s-hostpath (default)   microk8s.io/hostpath   Delete          WaitForFirs
 <p>TODO: don't set restartPolicy to never, because what happens is that the internal component responsible for restarts won't restart it and as such the <a href="#BM_(job)%2Fi">job</a> will see it hasn't restarted and restart it itself. this causes a lot of junk in the cluster.</p>
 <p>TODO: <a href="#BM_(liveness%20probe)%2Fi">liveness probe</a>s can be used to detect if the a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> is dead in a <a href="#BM_(job)%2Fi">job</a> as well</p>
 <p>TODO: use Cron<a href="#BM_(job)%2Fi">Job</a> type to have it be scheduled by time</p>
-<a name="H_Configuration%20Map"></a><h1>Configuration Map</h1>
-<p><a name="BM_(Configuration%20Map)_TOPIC%2F"></a><strong></strong></p>
-<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
-<span class="hljs-attr">kind:</span> <span class="hljs-string">ConfigMap</span>
-<span class="hljs-attr">metadata:</span>
-  <span class="hljs-attr">name:</span> <span class="hljs-string">my-config</span>
-<span class="hljs-attr">data:</span>
-  <span class="hljs-attr">param1:</span> <span class="hljs-string">another-value</span>
-  <span class="hljs-attr">param2:</span> <span class="hljs-string">extra-value</span>
-  <span class="hljs-attr">my-config.ini:</span> <span class="hljs-string">|
-    # This is a sample config file that I might use to configure an application
-    key1 = value1
-    ket1 = value2
-</span></code></pre>
 <a name="H_Autoscaling"></a><h1>Autoscaling</h1>
 <a name="H_Horizontal%20Pod%20Autoscaling"></a><h2>Horizontal Pod Autoscaling</h2>
 <p>TODO: TALK ABOUT HORIZONTAL AUTOSCALING + yaml</p>
@@ -1307,6 +1827,20 @@ microk8s-hostpath (default)   microk8s.io/hostpath   Delete          WaitForFirs
 <li><code>kubectl top nodes</code> - view <a href="#BM_(node)%2Fi">node</a> <a href="#BM_(resource)%2Fi">resource</a> usages.</li>
 <li><code>kubectl top pods</code> - view <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> <a href="#BM_(resource)%2Fi">resource</a> usages.</li>
 </ul>
+<a name="H_Amazon"></a><h1>Amazon</h1>
+<p>The managed <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(service)%2Fi">service</a> on Amazon Web <a href="#BM_(service)%2Fi">Service</a>s (AWS) is called Elastic <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(service)%2Fi">Service</a> (EKS). The quickest way to get an EKS instance running on AWS is to use the third-party <code>eksctl</code> tool, which uses AWS's CloudFormation <a href="#BM_(service)%2Fi">service</a> to set up all required networking, VMs, roles, etc.. to get EKS up and running. Assuming you're working in AWS region <code>us-east-2</code> and you want your cluster to be called <code>my-cluster</code>, the command to create a new cluster is ...</p>
+<pre><code>eksctl create cluster --name my-cluster --region us-east-2 --fargate
+
+eksctl create cluster --name my-cluster --region us-east-2 --fargate
+
+
+
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Original guide can be found <a href="https://docs.aws.amazon.com/eks/latest/userguide/eks-ug.pdf#getting-started-eksctl">here</a></p>
+</div>
+<p>https://aws-controllers-k8s.github.io/community/docs/tutorials/rds-example/</p>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>

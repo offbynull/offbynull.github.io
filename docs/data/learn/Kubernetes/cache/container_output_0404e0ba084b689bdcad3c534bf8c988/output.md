@@ -2,8 +2,7 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Resources/Pods_TOPIC
- * Resources/Nodes_TOPIC
+ * Resources/Services/Routing_TOPIC
 
 </div>
 

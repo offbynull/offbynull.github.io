@@ -2,7 +2,8 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Resources/Pods/Ports_TOPIC
+ * Resources/Pods/Probes_TOPIC
+ * Resources/Services/Routing_TOPIC
 
 </div>
 

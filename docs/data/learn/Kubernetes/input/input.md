@@ -298,7 +298,7 @@ spec:
         timeoutSeconds: 1
         periodSeconds: 10
         failureThreshold: 3
-      livenessProbe:
+      readinessProbe:
         httpGet:
           path: /ready
           port: 8080
@@ -374,6 +374,57 @@ spec:
 
 The example above exposes port 8080 to the rest of the cluster (not the outside world). Even with the port exposed, other entities on the cluster don't have a built-in way to discover the pod's IP / host or the fact that it has this specific port open. For that, services are required (see Resources/Services_TOPIC).
 
+### Arguments
+
+`{bm} /(Resources\/Pods\/Arguments)_TOPIC/`
+
+The container image's default entrypoint (process that gets started) can be updated via the `spec.containers[].command[]` manifest path. Likewise, the default command line arguments that hte container image starts with can be updated via `spec.containers[].args[]`.
+
+```yaml
+spec:
+  containers:
+    - image: gcr.io/my_company/my_pod:v1
+      command: [/opt/app/my-app]
+      args: [--no-logging, --dry-run]
+```
+
+```{note}
+The Dockerfile used to create the image had an `ENTRYPOINT` and a `CMD`. `command` essentially overrides the Dockerfile `ENTRYPOINT` and `args` overrides the Dockerfile's `CMD`.
+```
+
+### Environment Variables
+
+`{bm} /(Resources\/Pods\/Environment Variables)_TOPIC/`
+
+```{prereq}
+Resources/Pods/Environment Variables_TOPIC
+```
+
+Environment variables can be hardcoded via the `spec.containers[].env[]` manifest path.
+
+```yaml
+spec:
+  containers:
+    - image: gcr.io/my_company/my_pod:v1
+      env:
+        - name: LOG_LEVEL
+          value: "OFF"
+        - name: DRY_RUN
+          value: "true"
+```
+
+Once defined, an environment variables value can be used in other parts of the manifest using the syntax `$(VAR_NAME)`. For example, an environment variable's value may be placed directly within an argument.
+
+```yaml
+spec:
+  containers:
+    - image: gcr.io/my_company/my_pod:v1
+      env:
+        - name: LOG_LEVEL
+          value: "OFF"
+      args: [--logging_telemetry=$(LOG_LEVEL)]
+```
+
 ### Probes
 
 `{bm} /(Resources\/Pods\/Probes)_TOPIC/`
@@ -394,7 +445,7 @@ spec:
         timeoutSeconds: 1
         periodSeconds: 10
         failureThreshold: 3
-      livenessProbe:
+      readinessProbe:
         httpGet:
           path: /ready
           port: 8080
@@ -407,16 +458,33 @@ spec:
 
 Different types of probes exists. A ...
 
- * liveness probe is something that Kubernetes pings to check if a pod is alive and responsive. If the pod fails to respond to such checks, Kubernetes deems it dead and restarts it.
- * readiness probe is something that Kubernetes pings to check if the pod is ready to process requests. When a pod initially comes online, before routing requests to it Kubernetes waits for its readiness probe to respond successfully.
+ * liveness probe is something that Kubernetes pings to check if a pod is alive and responsive. If a pod fails its liveness check, Kubernetes deems it dead and restarts it.
+ * readiness probe is something that Kubernetes pings to check if the pod is able to process requests. If a pod fails its readiness check, Kubernetes will stop routing requests to it until a readiness subsequent check passes.
 
-In the example above, each of the probes check a HTTP server within the pod at port 8080 but at different paths. Other types of probes exist as well (e.g. `tcpSocket` instead of `httpGet`). The field ...
+In the example above, each of the probes check a HTTP server within the pod at port 8080 but at different paths. The field ...
 
  * `initialDelaySeconds` is the number of seconds to wait before performing the first probe.
  * `timeoutSeconds` is the number of seconds to wait before timing out.
  * `periodSeconds` is the number of seconds to wait before performing a probe.
  * `failureThreshold` is the maximum number of successive failure before Kubernetes considers the probe failed.
  * `successThreshold` is the maximum number of successive successes before Kubernetes considers the probe passed.
+ 
+There are types of probes other than `httpGet`. A probe of type `tcpSocket` will simply test to see if a `tcpSocket` is empty and a probe of type `exec` will run a command on the container and fail if it gets a non-zero exit code.
+
+```yaml
+spec:
+  containers:
+    - ...
+      readinessProbe:
+        exec:
+          command:
+          - cat
+          - /tmp/some_file_here
+        initialDelaySeconds: 5
+        timeoutSeconds: 1
+        periodSeconds: 10
+        failureThreshold: 3
+```
 
 ### Volumes
 
@@ -503,8 +571,8 @@ The top one is typically used when running servers that should always be up (e.g
 `{bm} /(Resources\/Pods\/Configuration)_TOPIC/`
 
 ```{prereq}
+Resources/Configuration Maps_TOPIC
 Resources/Pods/Volumes_TOPIC
-Configuration Map_TOPIC
 ```
 
 ```{note}
@@ -548,8 +616,8 @@ To set a ...
    name: ENV_VAR_NAME
    valueFrom:
      configMapKeyRef:
-     name: my-config
-     key: CONFIG_MAP_KEY_HERE
+       name: my-config
+       key: CONFIG_MAP_KEY_HERE
    ```
 
  * command-line argument to a ConfigMap key, first set ito an environment variable, then set the argument to that environment variable by setting in `spec.containers[].command[]` using `${ENV_VAR_NAME}`.
@@ -568,6 +636,46 @@ To set a ...
          configMap:
            name: CONFIG_MAP_KEY_HERE
    ```
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
+
+TODO: start from 7.4.4
 
 ### Secrets
 
@@ -612,10 +720,17 @@ Why not use ConfigMaps for secrets? Apparently there's some extra work going on 
 Resources/Services_TOPIC
 ```
 
+For a pod to be able to communicate with other pods in the cluster, it needs to be able to discover the IPs of those other pods / services first. The mechanism for this is services, and there's two ways in which a pod can discover services in the cluster: environment variables and DNS.
+
+These service discovery mechanisms are details in the subsections below.
 
 #### Environment Variables
 
 `{bm} /(Pods\/Service Discovery\/Environment Variables)_TOPIC/`
+
+```{prereq}
+Resources/Pods/Environment Variables_TOPIC
+```
 
 When a pod launches, all IP and port combinations for services within the same namespace are stored as environment variables which the container(s) within the pod can query. A service's  The environment variable names are in the format `{SVCNAME}_SERVICE_HOST` / `{SVCNAME}_SERVICE_PORT`, where `{SVCNAME}` is the service converted to uppercase and dashes swapped with underscores. For example, two services `service-a` and `service-b` as environment variables:
 
@@ -667,6 +782,47 @@ For example, to query for the IP of service `serviceA` in namespace `ns1` within
  * within the same cluster and namespace, both the namespace and the cluster domain suffix can be omitted: `serviceA`.
 
 Compared to environment variable service discovery, using DNS to discover services won't include information about ports.
+
+## Configuration Maps
+
+`{bm} /(Resources\/Configuration Maps)_TOPIC/`
+
+A Configuration map is a type of resource comprised of key-value pairs intended to configure the main application of a container (or many containers). By decoupling configurations from the containers themselves, the same configuration map (or parts of it) could be used to configure multiple containers within Kubernetes.
+
+```{note}
+Do **NOT** use this for storing secrets such as tokens, certificates, or passwords. See Resources/Secrets_TOPIC instead.
+```
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config
+data:
+  param1: another-value
+  param2: extra-value
+  my-config.ini: |
+    # This is a sample config file that I might use to configure an application
+    key1 = value1
+    ket1 = value2
+```
+
+The key-value pairs of a Configuration map resource typically get exposed to a container either as environment variables, files, or command-line arguments. Keys are limited to certain characters: alphabet, numbers, dashes, underscores, and dots.
+
+```{note}
+These are also typically created via command-line: `kubectl create configmap my-config --from-file=my-config.ini=myconfig.init --from-literal=param1=another-value --from-literal=param2=extra-value`
+
+The option `--from-file` can also point to a directory, in which case an entry will get created for each file in the directory provided that the filenames don't have any disalowed characters.
+```
+
+## Secrets
+
+`{bm} /(Resources\/Secrets)_TOPIC/`
+
+```{note}
+These are also typically created via command-line: `kubectl create secret generic my-tls-cert --from-file=a.crt --from-file=a.key`
+```
+
 
 ## Nodes
 
@@ -755,7 +911,7 @@ The idea is that a persistent volume itself is just a floating block of disk spa
 In the example above, there are 4 volumes in total but only 3 of those volumes are claimed. podA latches on to claim1 and claim2 while podB latches on to claim3 and claim2 (both pods can access the volume claimed in claim2).
 
 ```{note}
-Persistent volumes themselves aren't are cluster-level resources while persistent volume claims are namespace-level resources. All volumes are available for claims regardless of the namespace that claim is in. Maybe you can limit which volumes can be claimed by using labels / label selectors?
+Persistent volumes themselves are cluster-level resources while persistent volume claims are namespace-level resources. All volumes are available for claims regardless of the namespace that claim is in. Maybe you can limit which volumes can be claimed by using labels / label selectors?
 ```
 
 ```{note}
@@ -1066,7 +1222,7 @@ subsets:
         name: pg2
 ```
 
-The endpoint in the example YAML above points to [10.10.1.1:5432, 10.10.1.2:5432, 10.10.1.3:5432, 10.13.4.101:12345, 10.13.4.102:12345, 10.13.4.103:12345].
+The endpoints in the example YAML above points to [10.10.1.1:5432, 10.10.1.2:5432, 10.10.1.3:5432, 10.13.4.101:12345, 10.13.4.102:12345, 10.13.4.103:12345].
 
 ## Services
 
@@ -1152,7 +1308,26 @@ subsets:
       - port: 5432
 ```
 
+If no selectors are present but `spec.type` is set to `ExternalName`, the service will route to the host specified in `spec.externalName`. This is useful for situations where you want to hide the destination, such as an external API that you also want to mock for development / testing.
+
+```yaml
+spec:
+  type: ExternalName
+  externalName: api.externalcompany.com
+  ports:
+    - name: api-port
+      protocol: TCP
+      port: 8080
+      targetPort: 5000
+```
+
+```{note}
+If not set, `spec.type` defaults to `ClusterIP`. That's the type used when selectors are used to create an endpoints / a custom endpoints is used.
+```
+
 ### Ports
+
+`{bm} /(Resources\/Services\/Ports)_TOPIC/i`
 
 ```{prereq}
 Resources/Pods/Ports_TOPIC
@@ -1224,7 +1399,7 @@ spec:
 ```
 
 ```{note}
-Does this work for manual endpoints as well? When a selector isn't used with a service, it looks for an endpoint object of the same name as the service to figure out where the service should route to. That endpoint object can have names associated with its ports as well.
+Does this work for manual endpoints as well? When a selector isn't used with a service, it looks for an endpoints object of the same name as the service to figure out where the service should route to. That endpoints object can have names associated with its ports as well.
 ```
 
 ```{note}
@@ -1234,6 +1409,8 @@ Maybe this isn't possible with Kubernetes?
 ```
 
 ### Health
+
+`{bm} /(Resources\/Services\/Health)_TOPIC/i`
 
 ```{prereq}
 Resources/Pods/Probes_TOPIC
@@ -1263,7 +1440,29 @@ These probes are defined directly in the pod manifest.
 Recall that, when a service has selectors assigned, Kubernetes internally maintains an EndPoints object that contains the addresses of ready and healthy pods. The addresses in this endpoints object is what the service routes to.
 ```
 
+### Headless
+
+`{bm} /(Resources\/Services\/Headless)_TOPIC/i`
+
+```{prereq}
+Resources/Services/Routing_TOPIC
+Resources/Services/Health_TOPIC
+```
+
+A service that's headless is one which there is no load balancer forwarding requests to pods / endpoints. Instead, the domain for the service will resolve a list of ready IPs for the pods (or endpoints) that the service is for. 
+
+To create a headless service, set `spec.clusterIP` manifest path to `None`.
+
+```yaml
+spec:
+  clusterIP: None
+```
+
+Generally, headless services shouldn't be used because DNS queries are typically cached by the operating system. If the IPs that a service forwards to change, apps that have recently queried the service's DNS will continue to use the old (cached) set of IPs until the operating system purges its DNS cache.
+
 ### Session Affinity
+
+`{bm} /(Resources\/Services\/Session Affinity)_TOPIC/i`
 
 How a service decides to forward incoming requests to the pod instances assigned to it is controlled via `spec.sessionAffinity` manifest path. Assigning a value of ...
 
@@ -1281,7 +1480,7 @@ spec:
 ```
 
 ```{note}
-When using `ClientIP`? What happens when the service runs out memory to track IPs? LRU algorithm to decide which to keep / discard?
+When using `ClientIP`? What happens when the service runs out memory to track client IPs? LRU algorithm to decide which to keep / discard?
 ```
 
 ```{note}
@@ -1290,9 +1489,21 @@ The book mentions that because services work on the TCP/UDP level and not at HTT
 
 ### Exposure
 
-The service type defines where and how a service gets exposed, controlled via the `spec.type` manifest path. For example, a service may only be accessible within the cluster, to specific parts of the cluster, to an external network, to the Internet, etc...
+`{bm} /(Resources\/Services\/Exposure)_TOPIC/i`
 
-Services of type `ClusterIP` are only accessible from within the cluster. The hostname for a `ClusterIP` service is broken down as follows: NAME.NAMESPACE.svc.CLUSTER
+The service type defines where and how a service gets exposed, controlled via the `spec.type` manifest path. For example, a service may only be accessible within the cluster, to specific parts of the cluster, to an external network, or to the public Internet.
+
+If not specified, the `spec.type` of a resource is `ClusterIP`, meaning that it's exposed only locally within the cluster.
+
+#### Local
+
+`{bm} /(Resources\/Services\/Exposure\/Local)_TOPIC/i`
+
+```{prereq}
+Resources/Services/Routing_TOPIC
+```
+
+Services of type `ClusterIP` / `ExternalName` are only accessible from within the cluster. The hostname of such services are broken down as follows: NAME.NAMESPACE.svc.CLUSTER
 
  * *NAME* is the name of the service.
  * *NAMESPACE* is the namespace the service is in (defaults to `default`).
@@ -1305,7 +1516,7 @@ Depending on what level you're working in, a hostname may be shortened. For exam
  * the same cluster but not the same namespace, hostname NAME.NAMESPACE is sufficient.
  * different clusters, the full hostname NAME.NAMESPACE.svc.CLUSTER is required.
 
-The IP for a `ClusterIP` service is stable as well, just like the hostname.
+The IP for a `ClusterIP` / `ExternalName` service is stable as well, just like the hostname.
 
 ```{note}
 Internally, a `ClusterIP` service uses kube-proxy to route requests to relevant pods (EndPoints).
@@ -1315,6 +1526,10 @@ Internally, a `ClusterIP` service uses kube-proxy to route requests to relevant 
 spec:
   type: ClusterIP
 ```
+
+#### Node Port
+
+`{bm} /(Resources\/Services\/Exposure\/Node Port)_TOPIC/i`
 
 Services of type `NodePort` are accessible from outside the cluster. Every worker node opens a port (either user-defined or assigned by the system) that routes requests to the service. Since nodes are transient, there is no single point of access to the service.
 
@@ -1331,7 +1546,11 @@ spec:
     ...
 ```
 
-Services of type `LoadBalancer` are accessible from outside the cluster. When the `LoadBalancer` type is used, the cloud provider running the cluster assigning their version of a load balancer to route external HTTP requests to the Kubernetes Ingress component. Ingress then determines what service that request should be routed to based on details within the HTTP parameters (e.g. Host).
+#### Load Balancer
+
+`{bm} /(Resources\/Services\/Exposure\/Load Balancer)_TOPIC/i`
+
+Services of type `LoadBalancer` are accessible from outside the cluster. When the `LoadBalancer` type is used, the cloud provider running the cluster assigns their version of a load balancer to route external HTTP requests to the Kubernetes Ingress component. Ingress then determines what service that request should be routed to based on details within the HTTP parameters (e.g. Host).
 
 There is no built-in Kubernetes implementation of Ingress. Kubernetes provides the interface but someone must provide the implementation, called an Ingress controller, for the functionality to be there. The reason for this is that load balancers come in multiple forms: software load balancers, cloud provider load balancers, and hardware load balancers. When used directly, each has a unique way it needs to be configured, but the Ingress implementation abstracts that out.
 
@@ -1363,39 +1582,233 @@ status:
       ip: 192.0.5.6
 ```
 
-### Custom Endpoints
+```{note}
+You can also use `kubectl` to get a list of services and it'll also list out the public IP.
+```
 
-FILL ME IN -- FROM SECTION 5.2.1
+```{note}
+The book says that a load balancer type is a special case of node port type.
+```
 
-FILL ME IN -- FROM SECTION 5.2.1
+## Ingress
 
-FILL ME IN -- FROM SECTION 5.2.1
+`{bm} /(Resources\/Ingress)_TOPIC/i`
 
-FILL ME IN -- FROM SECTION 5.2.1
+```{prereq}
+Resources/Services_TOPIC
+```
 
-FILL ME IN -- FROM SECTION 5.2.1
+Similar to a service of type `LoadBalancer`, An Ingress object is a load balancer with a publicly exposed IP. However, rather than load balancing at the TCP/UDP level, an Ingress object acts as a load balancing HTTP proxy server. An HTTP request coming into an Ingress object gets routed to one of many existing services based on host and path HTTP headers. This is useful because the cluster can expose several services under a single public IP address.
 
-FILL ME IN -- FROM SECTION 5.2.1
+```{svgbob}
+                                                                           +---------------------------------+
+                                stats.myhost.com/graphana   .---------.    | .-----. .-----. .-----. .-----. |
+                              .---------------------------->| Service |--->| | Pod | | Pod | | Pod | | Pod | |
+                              |                             '---------'    | '-----' '-----' '-----' '-----' |
+                              |                                            +---------------------------------+
+                              |
+                              |                                            +---------------------------------+
+                              | api.myhost.com/v1           .---------.    | .-----. .-----. .-----. .-----. |
+                              +---------------------------->| Service |--->| | Pod | | Pod | | Pod | | Pod | |
+                              |                             '---------'    | '-----' '-----' '-----' '-----' |
+.---------.    .---------.    |                                            +---------------------------------+
+| Request |--->| Ingress |----+
+'---------'    '---------'    |                                            +---------------------------------+
+                              | api.myhost.com              .---------.    | .-----. .-----. .-----. .-----. |
+                              +---------------------------->| Service |--->| | Pod | | Pod | | Pod | | Pod | |
+                              |                             '---------'    | '-----' '-----' '-----' '-----' |
+                              |                                 ^          +---------------------------------+
+                              | api.myhost.com/v2               |
+                              '---------------------------------'
+```
 
-FILL ME IN -- FROM SECTION 5.2.1
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  rules:
+  - host: stats.myhost.com
+    http:
+      paths:
+      - path: /graphana
+        pathType: Prefix
+        backend:
+          service:
+            name: graphana-service
+            port:
+              number: 80
+  - host: api.myhost.com
+    http:
+      paths:
+      - path: /v2
+        pathType: Prefix
+        backend:
+          service:
+            name: api-service-v2
+            port:
+              number: 80
+      - path: /v1
+        pathType: Prefix
+        backend:
+          service:
+            name: api-service-v1
+            port:
+              number: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: api-service-v2
+            port:
+              number: 80
+```
 
-FILL ME IN -- FROM SECTION 5.2.1
+```{note}
+According to the book, most if not all implementations of Ingress simply query the service for its endpoints and directly load balance across them vs forwarding the request through that service. Note that the port in the example above is still the port that the *service* is listening on, not the port of the pod is listening on.
+```
 
-FILL ME IN -- FROM SECTION 5.2.1
+### Hosts
 
-FILL ME IN -- FROM SECTION 5.2.1
+`{bm} /(Resources\/Ingress\/Hosts)_TOPIC/i`
 
-FILL ME IN -- FROM SECTION 5.2.1
+The host in each rule can be either an exact host or it could contain wildcards (e.g. `*.api.myhost.com`). Each name in the host (split by dot) intended for a wildcard should explicitly have an asterisk in its place. The portion the asterisk is in must exist and it only covers that name. For example, the rule below will match `ONE.api.myhost.com`, but not `TWO.THREE.api.myhost.com` or `api.myhost.com`.
 
-FILL ME IN -- FROM SECTION 5.2.1
+```yaml
+spec:
+  rules:
+  - host: "*.api.myhost.com"
+    - path: /v2
+      pathType: Prefix
+      backend:
+        service:
+          name: api-service-v2
+          port:
+            number: 80
+```
 
-FILL ME IN -- FROM SECTION 5.2.1
+### Path Type
 
-FILL ME IN -- FROM SECTION 5.2.1
+Each rule entry should have a path type associated with it. It can be set to any of the following values:
 
-FILL ME IN -- FROM SECTION 5.2.1
+ * `Exact` - Matches the URL path exactly (case sensitive).
+ * `Prefix` - Matches the URL path prefix (case sensitive).
+ * `ImplementationSpecific` - Based on the class of the Ingress resource.
 
-FILL ME IN -- FROM SECTION 5.2.1
+```yaml
+spec:
+  rules:
+  - host: api.myhost.com
+    http:
+      paths:
+      - path: /my/prefix/path
+        pathType: Prefix
+        backend:
+          service:
+            name: api-service-v2
+            port:
+              number: 80
+```
+
+The most common path type is `Prefix`. A type of `Prefix` splits the path using `/` and matches the rule if the incoming request's path starts with the same path elements as the rule's path. Trailing slashes are ignored (e.g. `/p1/p2/p3/` and `/p1/p2/p3` are equivalent).
+
+```{note}
+What about `ImplementationSpecific`? There are different types of Ingress controllers, each of which has its own configuration options. An Ingress class is something you can put into your Ingress resource that contains "configuration including the name of the controller that should implement the class." It seems like an advanced topic and I don't know enough to write about it. Probably not something you have to pat attention to if you're doing basic cloud stuff.
+```
+
+### TLS Traffic
+
+`{bm} /(Resources\/Ingress\/TLS Traffic)_TOPIC/i`
+
+`{bm} /(Ingress\/TLS Traffic)_TOPIC/i`
+
+```{prereq}
+Resources/Pods/Secrets_TOPIC
+```
+
+Assuming you have a TLS certificate and key files for the host configured on the Ingress resource, you can add those into Kubernetes as a secret and configure the Ingress resource to make use of it.
+
+```yaml
+# openssl genrsa -out tls.key 2048
+# openssl req -new -x509 -key tls.key -out tls.cert -days 360 -subj /CN=api.myhost.com
+# kubectl create secret tls my-api-tls --cert=tls.crt --key=tls.key
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-api-tls
+type: kubernetes.io/tls
+data:
+  tls.crt: base64 encoded cert
+  tls.key: base64 encoded key
+```
+
+For each certificate secret intended to be used by the Ingress resource, there should be an array entry under the `spec.tls[]` manifest path. The certificate secret name must be placed under `secretName` and the domain(s) supported by that certificate must be listed under `hosts`. Hosts must match hosts explicitly listed un the Ingress resource's rules.
+
+```yaml
+spec:
+  tls:
+    - hosts:
+        - api.myhost.com
+      secretName: my-api-tls
+    - hosts:
+        - stats.myhost.com
+      secretName: my-stats-tls
+```
+
+Once an encrypted request comes in to the Ingress controller, it's decrypted. That decrypted request then gets forwarded to the service it was intended for.
+
+```{note}
+From the k8s website: 
+
+> You need to make sure the TLS secret you created came from a certificate that contains a Common Name (CN), also known as a Fully Qualified Domain Name (FQDN) for https-example.foo.com.
+
+> Keep in mind that TLS will not work on the default rule because the certificates would have to be issued for all the possible sub-domains. Therefore, hosts in the tls section need to explicitly match the host in the rules section.
+```
+
+```{note}
+The book mentions that `CertificateSigningRequest` is a special type of Kubernetes resource that will sign certificates for you, if it was set up. You can issue requests via `kubectl certificate approve csr_name` and it'll either automate it somehow or a human will process it? Not sure exactly what's going on here.
+```
+
+## Namespace
+
+`{bm} /(Resources\/Namespace)_TOPIC/i`
+
+A namespace is a Kubernetes resource used to avoid resource naming conflicts. For example, it's typical for a Kubernetes cluster to be split up into development, testing, and production namespaces. Each namespace can have resources with the same names as those in the other two namespaces.
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: production
+```
+
+Namespaces are cluster-level resources. This is contrary to most other resource types in Kubernetes, which are namespace-level resources, meaning that a namespace can be used to disambiguate resources of that type with the same name...
+
+```yaml
+# These are namespace-level resources
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod
+  namespace: testing  # put into the testing namespace
+spec:
+  containers:
+  - name: mypod
+    image: my_image:v2_alpha5
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod
+  namespace: production  # put into the production namespace
+spec:
+  containers:
+  - name: mypod
+    image: my_image:v1
+```
+
+If a namespace-level resource doesn't set a namespace, the namespace defaults to `default`.
 
 ## Replica Sets
 
@@ -1638,24 +2051,6 @@ TODO: don't set restartPolicy to never, because what happens is that the interna
 TODO: liveness probes can be used to detect if the a pod is dead in a job as well
 
 TODO: use CronJob type to have it be scheduled by time
-
-# Configuration Map
-
-`{bm} /(Configuration Map)_TOPIC/`
-
-```yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: my-config
-data:
-  param1: another-value
-  param2: extra-value
-  my-config.ini: |
-    # This is a sample config file that I might use to configure an application
-    key1 = value1
-    ket1 = value2
-```
 
 # Autoscaling
 
