@@ -1,14 +1,6 @@
-import functools
-from collections import Counter
-from sys import stdin
-from typing import Any
+`{bm-disable-all}`[ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py](ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py) (lines 12 to 271):`{bm-enable-all}`
 
-import yaml
-
-from helpers.Utils import rotate_right
-
-
-# MARKDOWN_BUILD
+```python
 def cmp(a: str, b: str, end_marker: str):
     for a_ch, b_ch in zip(a, b):
         if a_ch == end_marker and b_ch == end_marker:
@@ -269,47 +261,4 @@ def find(
         if rec.last_ch == test[0] and walk_find(bwt_array, test, i):
             found += 1
     return found
-# MARKDOWN_TEST
-
-
-def main_test():
-    print("<div style=\"border:1px solid black;\">", end="\n\n")
-    print("`{bm-disable-all}`", end="\n\n")
-    try:
-        data_raw = ''.join(stdin.readlines())
-        data: dict = yaml.safe_load(data_raw)
-        test = data['test']
-        seq = data['sequence']
-        end_marker = data['end_marker']
-        print(f'Building BWT using the following settings...')
-        print()
-        print('```')
-        print(data_raw)
-        print('```')
-        print()
-        bwt_records = to_bwt(seq, end_marker)
-        print()
-        print(f'The following first and last columns were produced ...')
-        print()
-        print(f' * First: {[r.first_ch + str(r.first_ch_idx) for r in bwt_records]}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_idx) for r in bwt_records]}')
-        print()
-        found_cnt = find(bwt_records, test)
-        print()
-        print(f'*{test}* found in *{seq}* at {found_cnt} times.')
-    finally:
-        print("</div>", end="\n\n")
-        print("`{bm-enable-all}`", end="\n\n")
-
-
-
-
-
-
-
-
-
-
-
-if __name__ == '__main__':
-    main_deserialize()
+```

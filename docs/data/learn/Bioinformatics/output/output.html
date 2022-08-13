@@ -197,6 +197,7 @@
 <li><a href="#H_Burrows-Wheeler%20Transform">Burrows-Wheeler Transform</a></li>
 <ul>
 <li><a href="#H1_Standard%20Algorithm">Standard Algorithm</a></li>
+<li><a href="#H_Backsweep%20Algorithm">Backsweep Algorithm</a></li>
 <li><a href="#H_Squashed%20First%20Column%20Algorithm">Squashed First Column Algorithm</a></li>
 <li><a href="#H_Rank%20Checkpoints%20Algorithm">Rank Checkpoints Algorithm</a></li>
 <li><a href="#H_Partial%20Suffix%20Array%20Algorithm">Partial Suffix Array Algorithm</a></li>
@@ -18611,7 +18612,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_ffe79cef5efa29b2b8ef3b9bfa5a8aed.svg" alt="Dot diagram"></p>
+<p><img src="dot_5449d34a417734c16d0a602a48345a93.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>Testing if a <a href="#BM_(trie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> requires walking the <a href="#BM_(trie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching the end-of-<a href="#BM_(sequence)%2Fi">sequence</a> marker.</p>
@@ -18662,7 +18663,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_f9a5c6d1258db99770ad002a0a571e30.svg" alt="Dot diagram"></p>
+<p><img src="dot_aa3e748b8b94a867a770a36d6b761e30.svg" alt="Dot diagram"></p>
 <p>Searching <code>How do you feel about apples?</code> with the trie revealed the following was found: {(22, apple)}</p>
 </div>
 <p></p>
@@ -18741,7 +18742,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_b294a9c9ffc09787f22d6c283ced6919.svg" alt="Dot diagram"></p>
+<p><img src="dot_e013e8981bb4975c12d743675f8f42da.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19010,7 +19011,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_5329a8f4c1e5ca343b32ca97b95116f1.svg" alt="Dot diagram"></p>
+<p><img src="dot_5d5470eda0d662d2b99d33e5b9471645.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19149,7 +19150,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_74d2d883371827899a96339d864a7c5f.svg" alt="Dot diagram"></p>
+<p><img src="dot_b0a2530751730c9a546385f1b2de1434.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>If a scan walks the <a href="#BM_(trie)%2Fi">trie</a> to "arat" and fails, the next scan position must contain "rat". Since the prefix "rat" exists in the <a href="#BM_(trie)%2Fi">trie</a>, a special edge connects "arat" to "rat" such that the scan for the next position can jump past "rat" in the <a href="#BM_(trie)%2Fi">trie</a> walk.</p>
@@ -19227,7 +19228,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_e2e6daf1491611e5f700c592b1e4c3e7.svg" alt="Dot diagram"></p>
+<p><img src="dot_7e4adf05e1e6b2f4907e5d5dd1f4bb04.svg" alt="Dot diagram"></p>
 <p>Searching <em>There were multiple narrations in the play</em> with the trie revealed the following was found: {(23, ration)}</p>
 </div>
 <p></p>
@@ -19306,7 +19307,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_9bd3e85ce6a562c0d0f1d8ce3da0d8fe.svg" alt="Dot diagram"></p>
+<p><img src="dot_08933f8f52b28413e0dc08d3c10fa7ef.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -20420,37 +20421,42 @@ xxa vehicle__¶
 </tr>
 </tbody>
 </table>
-<p>Given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, the original <a href="#BM_(sequence)%2Fi">sequence</a> can be pulled out by hopping between those columns. Because the matrix is made up of all cyclic rotations of [b1, a1, n1, a2, n2, a3, ¶1], the row containing index i of [b1, a1, n1, a2, n2, a3, ¶1] in the last column is guaranteed to contain index i+1 in the first column (wrapping around if out of bounds). For example, when ...</p>
+<p>Given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, the original <a href="#BM_(sequence)%2Fi">sequence</a> can be pulled out by hopping between those columns. Because the matrix is made up of all cyclic rotations of [b1, a1, n1, a2, n2, a3, ¶1], the row containing index i of [b1, a1, n1, a2, n2, a3, ¶1] in the first column is guaranteed to contain index i-1 in the last column (wrapping around if out of bounds). For example, when ...</p>
 <ul>
-<li>index 0 is in the last column (b1), index 1 is guaranteed to be in the first column (a1).</li>
-<li>index 1 is in the last column (a1), index 2 is guaranteed to be in the first column (n1).</li>
-<li>index 2 is in the last column (n1), index 3 is guaranteed to be in the first column (a2).</li>
+<li>index 6 is in the first column (¶1), index 5 is guaranteed to be in the last column (a3).</li>
+<li>index 5 is in the first column (a3), index 4 is guaranteed to be in the last column (n2).</li>
+<li>index 4 is in the first column (n2), index 3 is guaranteed to be in the last column (a2).</li>
 <li>...</li>
-<li>index 6 is in the last column (¶1), index 0 is guaranteed to be in the first column (b1).</li>
+<li>index 1 is in the last column (a1), index 0 is guaranteed to be in the first column (b1).</li>
 </ul>
-<p>Since it's known that the last index will always be the end marker (¶1), the end marker can be used to find the first symbol instance within the original <a href="#BM_(sequence)%2Fi">sequence</a> (b1). From there, the first symbol instance (b1) can be used to find the second symbol instance (a1). Then the second symbol instance (a1) can be used to find the third symbol instance (n1). The process continues until it reaches the end marker again (¶1), at which point the original <a href="#BM_(sequence)%2Fi">sequence</a> has been fully walked.</p>
+<p>Since it's known that ...</p>
+<ol>
+<li>index n-1 (last index) of the original <a href="#BM_(sequence)%2Fi">sequence</a> always contains the end marker (¶1)</li>
+<li>the row containing the end marker (¶1) in its first column always gets sorted to the top row of the <a href="#BM_(BWT)%2F">BWT</a> matrix</li>
+</ol>
+<p>..., the first row's last column is guaranteed to contain index n-2 (a3). From there, since index n-2 is now known (a3), it can be found in the first column and that found row's last column is guaranteed to contain index n-3 (n2). From there, since index n-3 is now known (a2), it can be found in the first column and that found row's last column is guaranteed to contain index n-4 (a2). The process continues until the end marker is reached (¶1), at which point the original <a href="#BM_(sequence)%2Fi">sequence</a> has been fully walked.</p>
 <ul>
-<li>last index must be ¶1: Find ¶1 in the last column and pull out the corresponding symbol instance in the first column: b1.</li>
-<li>index 0 must be b1: Find b1 in the last column and pull out the corresponding symbol instance in the first column: a1.</li>
-<li>index 1 must be a1: Find a1 in the last column and pull out the corresponding symbol instance in the first column: n1.</li>
+<li>last index must be ¶1: Find ¶1 in the first column and pull out the corresponding symbol instance in the last column: 31.</li>
+<li>index 0 must be b1: Find b1 in the first column and pull out the corresponding symbol instance in the last column: a1.</li>
+<li>index 1 must be a1: Find a1 in the first column and pull out the corresponding symbol instance in the last column: n1.</li>
 <li>...</li>
-<li>index 5 must be a3: Find a3 in the last column and pull out the corresponding symbol instance in the first column: ¶1.</li>
+<li>index 5 must be a3: Find a3 in the first column and pull out the corresponding symbol instance in the last column: ¶1.</li>
 </ul>
-<p><img src="svgbob_b78049487dcb98179408376bbeece3981e5139d2.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_57e0f1bae5a018cfdeaca8f0bd21352d8d510b91.svg" alt="Kroki diagram output"></p>
 <p>Similarly to pulling out the original <a href="#BM_(sequence)%2Fi">sequence</a>, given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, it's possible to quickly identify if and how many times some <a href="#BM_(substring)%2Fi">substring</a> exists in the original <a href="#BM_(sequence)%2Fi">sequence</a>. For example, to test if the <a href="#BM_(sequence)%2Fi">sequence</a> to see if it contains "nana"...</p>
 <ul>
-<li>find all rows where the last column has symbol "n" and the first column has symbol "a": [n2, a3] and [n1, a2].
+<li>find all rows where the last column has symbol "a" and the first column has symbol "n": [a3, n2] and [a2, n1].
 <ul>
-<li>walk from a3 to see if "nana" could be fully extracted (FAIL: [n2, a3, ¶1])</li>
-<li>walk from a2 to see if "nana" could be fully extracted (PASS: [n2, a3, n2, a3])</li>
+<li>walk backwards from [a3, n2] to see if "nana" could be fully extracted: a3 to n2 to a2 to n1: [n1, a2, n3, a3] (PASSED)</li>
+<li>walk backwards from [a2, n1] to see if "nana" could be fully extracted: a2 to n1 to a1 to b1: [b1, a1, n1, a2] (FAILED)</li>
 </ul>
 </li>
 </ul>
-<p><img src="svgbob_0b3939e6604b69499fcf50fb70239e97440f4cf7.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_6daab13e146d8f4524d3b6d51eeebfa62689062a.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>At this stage, the symbol instance counts serve no other purpose than mapping values of the last column to the first column. For example, instead of having symbol instance counts, you could just as well use a set of random unique shapes for each symbol's instances and the end result would be the same.</p>
-<p><img src="svgbob_fce7c956546effb07765fcb5b01408c984a41129.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_b91aa207c92045a1353d67b440121aa7da9a3c54.svg" alt="Kroki diagram output"></p>
 <p>Given this observation, when serializing the first and last columns of the matrix, you technically only need to store the elements of the last column. The first column is just the last column but sorted. For example, the elements in last column of the example above are "annb¶aa". To convert that back into the first and last columns of the matrix with symbol instance counts, the steps are as follows:</p>
 <ol>
 <li>
@@ -20465,9 +20471,9 @@ xxa vehicle__¶
 <p>The end result of reconstructing from "annb¶aa" is the following first and last columns, ...</p>
 <p><img src="svgbob_ea099f6ec8f6995365f5fb7e267c8b89e0407bdf.svg" alt="Kroki diagram output"></p>
 <p>While the symbol instance counts are different from the original, the mapping of symbol instances between the first and last columns are the same, meaning that you can still use it to search for <a href="#BM_(substring)%2Fi">substring</a>s in "banana¶". It's the mapping between the columns that's important. The actual symbol instance counts have no purpose other than mapping symbol instances between the two columns.</p>
-<p><img src="svgbob_2579476706b11330ac342da0aa7e18706e62e522.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_87b61ce361967e18836cac65b2b78671f105c1a2.svg" alt="Kroki diagram output"></p>
 </div>
-<p><strong>WHY</strong>: Implementations of <a href="#BM_(BWT)%2F">BWT</a> can be deeply memory efficient and fast, rivaling those of <a href="#BM_(suffix%20array)%2Fi">suffix array</a>s. In addition, not only can <a href="#BM_(BWT)%2F">BWT</a> determine the number of times some <a href="#BM_(substring)%2Fi">substring</a> appears in a <a href="#BM_(sequence)%2Fi">sequence</a>, but with some extensions it can identify where found <a href="#BM_(substring)%2Fi">substring</a>s are located in the <a href="#BM_(sequence)%2Fi">sequence</a>. These extensions are detailed in the subsections belows.</p>
+<p><strong>WHY</strong>: Not only can <a href="#BM_(BWT)%2F">BWT</a> determine the number of times some <a href="#BM_(substring)%2Fi">substring</a> appears in a <a href="#BM_(sequence)%2Fi">sequence</a>, but with some extensions it can identify where found <a href="#BM_(substring)%2Fi">substring</a>s are located in the <a href="#BM_(sequence)%2Fi">sequence</a>. These extensions are detailed in the subsections belows. In addition, unlike most other algorithms for <a href="#BM_(SNP)%2F">SNP</a>s (e.g. <a href="#BM_(suffix%20array)%2Fi">suffix array</a>s), certain implementations of <a href="#BM_(BWT)%2F">BWT</a> have tunable parameters that can be used to balance memory efficiency vs computational efficiency.</p>
 <a name="H1_Standard%20Algorithm"></a><h4>Standard Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FStandard%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
@@ -20477,7 +20483,7 @@ xxa vehicle__¶
 </div>
 <p>To build a <a href="#BM_(BWT)%2F">BWT</a> matrix, stack all cyclic rotations to form a matrix and lexicographically sort where the end marker symbol has top precedence. Only the first and last columns of the <a href="#BM_(BWT)%2F">BWT</a> matrix are needed for testing.</p>
 <p>Since the point here is to build out a <a href="#BM_(BWT)%2F">BWT</a> once and test against it many times (e.g. build a <a href="#BM_(BWT)%2F">BWT</a> of <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> and test against many <a href="#BM_(sequencer)%2Fi">sequencer</a> outputs), this implementation provides a pointers that directly map from last column to first column. That way, the <a href="#BM_(BWT)%2F">BWT</a> doesn't get scanned over during each hop of testing. It can directly move between last column to first column.</p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 11 to 80):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 12 to 81):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">cmp</span>(<span class="hljs-params">a: <span class="hljs-built_in">str</span>, b: <span class="hljs-built_in">str</span>, end_marker: <span class="hljs-built_in">str</span></span>):
     <span class="hljs-keyword">for</span> a_ch, b_ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(a, b):
         <span class="hljs-keyword">if</span> a_ch == end_marker <span class="hljs-keyword">and</span> b_ch == end_marker:
@@ -20565,24 +20571,521 @@ xxa vehicle__¶
 </ul>
 </div>
 <p></p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
-<p>TODO: SEE IF THE NORMAL WAY YOU SEARCHED IN THE PARENT SECTION IS VALID, IF SO, CODE IT UP AND MAKE THAT THE STANDARD ALGORITHM. THEN, SEE IF YOU CAN DO A SQUASHED FIRST COLUMN VERSION OF THAT. THEN, MAKE THIS IS THE "backsweep" TESTING ALGORITHM AND MENTION THAT WHILE IT SEEMS INEFFICIENT IT FORMS THE BASIS FOR MUCH MORE EFFICIENT VERSIONS OF THE ALGORITHM.</p>
+<p>To pull the original <a href="#BM_(sequence)%2Fi">sequence</a> out of the first and last columns of a <a href="#BM_(BWT)%2F">BWT</a> matrix, start from the first row (first row has end-marker is in the first column) and walk backwards, matching the last column to first column. Once the walk reaches the end marker again, the entire <a href="#BM_(sequence)%2Fi">sequence</a> has been walked.</p>
+<p><img src="svgbob_57e0f1bae5a018cfdeaca8f0bd21352d8d510b91.svg" alt="Kroki diagram output"></p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 12 to 214):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">cmp</span>(<span class="hljs-params">a: <span class="hljs-built_in">str</span>, b: <span class="hljs-built_in">str</span>, end_marker: <span class="hljs-built_in">str</span></span>):
+    <span class="hljs-keyword">for</span> a_ch, b_ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(a, b):
+        <span class="hljs-keyword">if</span> a_ch == end_marker <span class="hljs-keyword">and</span> b_ch == end_marker:
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-keyword">if</span> a_ch == end_marker:
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> b_ch == end_marker:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> a_ch &lt; b_ch:
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> a_ch &gt; b_ch:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(a) &lt; <span class="hljs-built_in">len</span>(b):
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+    <span class="hljs-keyword">elif</span> <span class="hljs-built_in">len</span>(a) &gt; <span class="hljs-built_in">len</span>(b):
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+    <span class="hljs-keyword">raise</span> <span class="hljs-string">'???'</span>
+
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BWTRecord</span>:
+    __slots__ = [<span class="hljs-string">'first_ch'</span>, <span class="hljs-string">'first_ch_idx'</span>, <span class="hljs-string">'last_ch'</span>, <span class="hljs-string">'last_ch_idx'</span>, <span class="hljs-string">'last_to_first_idx'</span>]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, first_ch: <span class="hljs-built_in">str</span>, first_ch_idx: <span class="hljs-built_in">int</span>, last_ch: <span class="hljs-built_in">str</span>, last_ch_idx: <span class="hljs-built_in">int</span></span>):
+        self.first_ch = first_ch
+        self.first_ch_idx = first_ch_idx
+        self.last_ch = last_ch
+        self.last_ch_idx = last_ch_idx
+        self.last_to_first_idx = -<span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__str__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>((self.first_ch + <span class="hljs-built_in">str</span>(self.first_ch_idx), self.last_ch + <span class="hljs-built_in">str</span>(self.last_ch_idx), self.last_to_first_idx))
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__repr__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>(self)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_bwt</span>(<span class="hljs-params">
+        seq: <span class="hljs-built_in">str</span>,
+        end_marker: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">list</span>[BWTRecord]:
+    <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
+    <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[:-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> has end marker but not at the end'</span>
+    rotations_with_counts = <span class="hljs-built_in">zip</span>(
+        rotate_right(seq),
+        <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(seq))
+    )
+    rotations_with_counts_sorted = <span class="hljs-built_in">sorted</span>(
+        rotations_with_counts,
+        key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>], end_marker))
+    )
+    first_ch_counter = Counter()
+    last_ch_counter = Counter()
+    ret = []
+    <span class="hljs-keyword">for</span> i, (s, idx) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(rotations_with_counts_sorted):
+        first_ch = s[<span class="hljs-number">0</span>]
+        first_ch_counter[first_ch] += <span class="hljs-number">1</span>
+        first_ch_idx = first_ch_counter[first_ch]
+        last_ch = s[-<span class="hljs-number">1</span>]
+        last_ch_counter[last_ch] += <span class="hljs-number">1</span>
+        last_ch_idx = last_ch_counter[last_ch]
+        record = BWTRecord(first_ch, first_ch_idx, last_ch, last_ch_idx)
+        ret.append(record)
+    <span class="hljs-keyword">for</span> i, record_a <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
+        last = record_a.last_ch, record_a.last_ch_idx
+        <span class="hljs-keyword">for</span> j, record_b <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
+            first = record_b.first_ch, record_b.first_ch_idx
+            <span class="hljs-keyword">if</span> last == first:
+                record_a.last_to_first_idx = j
+                <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">return</span> ret
+<span class="hljs-comment"># MARKDOWN_BUILD</span>
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main_build</span>():
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"&lt;div style=\"border:1px solid black;\"&gt;"</span>, end=<span class="hljs-string">"\n\n"</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"`{bm-disable-all}`"</span>, end=<span class="hljs-string">"\n\n"</span>)
+    <span class="hljs-keyword">try</span>:
+        data_raw = <span class="hljs-string">''</span>.join(stdin.readlines())
+        data: <span class="hljs-built_in">dict</span> = yaml.safe_load(data_raw)
+        seq = data[<span class="hljs-string">'sequence'</span>]
+        end_marker = data[<span class="hljs-string">'end_marker'</span>]
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f'Building BWT using the following settings...'</span>)
+        <span class="hljs-built_in">print</span>()
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">'```'</span>)
+        <span class="hljs-built_in">print</span>(data_raw)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">'```'</span>)
+        <span class="hljs-built_in">print</span>()
+        bwt_records = to_bwt(seq, end_marker)
+        <span class="hljs-built_in">print</span>()
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f'The following first and last columns were produced ...'</span>)
+        <span class="hljs-built_in">print</span>()
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f' * First: <span class="hljs-subst">{[r.first_ch + <span class="hljs-built_in">str</span>(r.first_ch_idx) <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> bwt_records]}</span>'</span>)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f' * Last: <span class="hljs-subst">{[r.last_ch + <span class="hljs-built_in">str</span>(r.last_ch_idx) <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> bwt_records]}</span>'</span>)
+    <span class="hljs-keyword">finally</span>:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">"&lt;/div&gt;"</span>, end=<span class="hljs-string">"\n\n"</span>)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">"`{bm-enable-all}`"</span>, end=<span class="hljs-string">"\n\n"</span>)
+
+
+
+
+
+
+
+
+<span class="hljs-comment"># MARKDOWN_DESERIALIZE</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">cmp_instances</span>(<span class="hljs-params">a: <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>], b: <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>], end_marker: <span class="hljs-built_in">str</span></span>):
+    <span class="hljs-comment"># compare symbol</span>
+    x = cmp(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>], end_marker)
+    <span class="hljs-keyword">if</span> x != <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> x
+    <span class="hljs-comment"># compare symbol instance count</span>
+    <span class="hljs-keyword">if</span> a[<span class="hljs-number">1</span>] &lt; b[<span class="hljs-number">1</span>]:
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+    <span class="hljs-keyword">elif</span> a[<span class="hljs-number">1</span>] &gt; b[<span class="hljs-number">1</span>]:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_bwt_from_last_sequence</span>(<span class="hljs-params">
+        last_seq: <span class="hljs-built_in">str</span>,
+        end_marker: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">list</span>[BWTRecord]:
+    ret = []
+    last_col = [(last_ch, last_ch_idx + <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> last_ch_idx, last_ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(last_seq)]
+    first_col = <span class="hljs-built_in">sorted</span>(last_col, key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp(a, b, end_marker)))
+    <span class="hljs-keyword">for</span> (first_ch, first_ch_idx), (last_ch, last_ch_idx) <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(first_col, last_col):
+        record = BWTRecord(first_ch, first_ch_idx, last_ch, last_ch_idx)
+        ret.append(record)
+    <span class="hljs-keyword">for</span> i, record_a <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
+        last = record_a.last_ch, record_a.last_ch_idx
+        <span class="hljs-keyword">for</span> j, record_b <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
+            first = record_b.first_ch, record_b.first_ch_idx
+            <span class="hljs-keyword">if</span> last == first:
+                record_a.last_to_first_idx = j
+                <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">return</span> ret
+<span class="hljs-comment"># MARKDOWN_DESERIALIZE</span>
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main_deserialize</span>():
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"&lt;div style=\"border:1px solid black;\"&gt;"</span>, end=<span class="hljs-string">"\n\n"</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"`{bm-disable-all}`"</span>, end=<span class="hljs-string">"\n\n"</span>)
+    <span class="hljs-keyword">try</span>:
+        data_raw = <span class="hljs-string">''</span>.join(stdin.readlines())
+        data: <span class="hljs-built_in">dict</span> = yaml.safe_load(data_raw)
+        last_seq = data[<span class="hljs-string">'last_seq'</span>]
+        end_marker = data[<span class="hljs-string">'end_marker'</span>]
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f'Deserializing BWT using the following settings...'</span>)
+        <span class="hljs-built_in">print</span>()
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">'```'</span>)
+        <span class="hljs-built_in">print</span>(data_raw)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">'```'</span>)
+        <span class="hljs-built_in">print</span>()
+        bwt_records = to_bwt_from_last_sequence(last_seq, end_marker)
+        <span class="hljs-built_in">print</span>()
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f'The following first and last columns were produced ...'</span>)
+        <span class="hljs-built_in">print</span>()
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f' * First: <span class="hljs-subst">{[r.first_ch + <span class="hljs-built_in">str</span>(r.first_ch_idx) <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> bwt_records]}</span>'</span>)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f' * Last: <span class="hljs-subst">{[r.last_ch + <span class="hljs-built_in">str</span>(r.last_ch_idx) <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> bwt_records]}</span>'</span>)
+        <span class="hljs-built_in">print</span>()
+        seq = walk(bwt_records)
+        <span class="hljs-built_in">print</span>()
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f'The original sequence reconstructed from the BWT array: *<span class="hljs-subst">{seq}</span>*.'</span>)
+    <span class="hljs-keyword">finally</span>:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">"&lt;/div&gt;"</span>, end=<span class="hljs-string">"\n\n"</span>)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">"`{bm-enable-all}`"</span>, end=<span class="hljs-string">"\n\n"</span>)
+
+
+
+
+
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_bwt_from_first_last_cols</span>(<span class="hljs-params">
+        first_col: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">list</span>[<span class="hljs-type">Any</span>]],
+        last_col: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">list</span>[<span class="hljs-type">Any</span>]]
+</span>) -&gt; <span class="hljs-built_in">list</span>[BWTRecord]:
+    ret = []
+    <span class="hljs-keyword">for</span> first, last <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(first_col, last_col):
+        record = BWTRecord(first[<span class="hljs-number">0</span>], first[<span class="hljs-number">1</span>], last[<span class="hljs-number">0</span>], last[<span class="hljs-number">1</span>])
+        ret.append(record)
+    <span class="hljs-keyword">for</span> i, record_a <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
+        last = record_a.last_ch, record_a.last_ch_idx
+        <span class="hljs-keyword">for</span> j, record_b <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
+            first = record_b.first_ch, record_b.first_ch_idx
+            <span class="hljs-keyword">if</span> last == first:
+                record_a.last_to_first_idx = j
+                <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">return</span> ret
+
+
+<span class="hljs-comment"># MARKDOWN_WALK</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">walk</span>(<span class="hljs-params">bwt_array: <span class="hljs-built_in">list</span>[BWTRecord]</span>) -&gt; <span class="hljs-built_in">str</span>:
+    ret = <span class="hljs-string">''</span>
+    row = <span class="hljs-number">0</span>  <span class="hljs-comment"># first idx of bwt_array always has first_ch == end_marker because of the lexicographical sorting</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        ret += bwt_array[row].last_ch
+        row = bwt_array[row].last_to_first_idx
+        <span class="hljs-keyword">if</span> row == <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">break</span>
+    ret = ret[::-<span class="hljs-number">1</span>]  <span class="hljs-comment"># reverse ret</span>
+    ret = ret[<span class="hljs-number">1</span>:] + ret[<span class="hljs-number">0</span>]  <span class="hljs-comment"># ret has end_marker at beginning, rotate it to end</span>
+    <span class="hljs-keyword">return</span> ret
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building BWT using the following settings...</p>
+<pre><code>{
+  first_col: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]],
+  last_col: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
+}
+
+</code></pre>
+<p>The original sequence was <em>banana¶</em>.</p>
+</div>
+<p></p>
+<p>To count how many times the original <a href="#BM_(sequence)%2Fi">sequence</a> contains a <a href="#BM_(substring)%2Fi">substring</a>, the process is similar to the original <a href="#BM_(sequence)%2Fi">sequence</a> extraction above. Start by finding rows where the first column contains index n-1 of the string and the last column contains index n-2, then walk each found column backwards to see if it matches the <a href="#BM_(substring)%2Fi">substring</a>.</p>
+<p><img src="svgbob_6daab13e146d8f4524d3b6d51eeebfa62689062a.svg" alt="Kroki diagram output"></p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 12 to 271):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">cmp</span>(<span class="hljs-params">a: <span class="hljs-built_in">str</span>, b: <span class="hljs-built_in">str</span>, end_marker: <span class="hljs-built_in">str</span></span>):
+    <span class="hljs-keyword">for</span> a_ch, b_ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(a, b):
+        <span class="hljs-keyword">if</span> a_ch == end_marker <span class="hljs-keyword">and</span> b_ch == end_marker:
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-keyword">if</span> a_ch == end_marker:
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> b_ch == end_marker:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> a_ch &lt; b_ch:
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> a_ch &gt; b_ch:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(a) &lt; <span class="hljs-built_in">len</span>(b):
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+    <span class="hljs-keyword">elif</span> <span class="hljs-built_in">len</span>(a) &gt; <span class="hljs-built_in">len</span>(b):
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+    <span class="hljs-keyword">raise</span> <span class="hljs-string">'???'</span>
+
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BWTRecord</span>:
+    __slots__ = [<span class="hljs-string">'first_ch'</span>, <span class="hljs-string">'first_ch_idx'</span>, <span class="hljs-string">'last_ch'</span>, <span class="hljs-string">'last_ch_idx'</span>, <span class="hljs-string">'last_to_first_idx'</span>]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, first_ch: <span class="hljs-built_in">str</span>, first_ch_idx: <span class="hljs-built_in">int</span>, last_ch: <span class="hljs-built_in">str</span>, last_ch_idx: <span class="hljs-built_in">int</span></span>):
+        self.first_ch = first_ch
+        self.first_ch_idx = first_ch_idx
+        self.last_ch = last_ch
+        self.last_ch_idx = last_ch_idx
+        self.last_to_first_idx = -<span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__str__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>((self.first_ch + <span class="hljs-built_in">str</span>(self.first_ch_idx), self.last_ch + <span class="hljs-built_in">str</span>(self.last_ch_idx), self.last_to_first_idx))
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__repr__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>(self)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_bwt</span>(<span class="hljs-params">
+        seq: <span class="hljs-built_in">str</span>,
+        end_marker: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">list</span>[BWTRecord]:
+    <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
+    <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[:-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> has end marker but not at the end'</span>
+    rotations_with_counts = <span class="hljs-built_in">zip</span>(
+        rotate_right(seq),
+        <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(seq))
+    )
+    rotations_with_counts_sorted = <span class="hljs-built_in">sorted</span>(
+        rotations_with_counts,
+        key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>], end_marker))
+    )
+    first_ch_counter = Counter()
+    last_ch_counter = Counter()
+    ret = []
+    <span class="hljs-keyword">for</span> i, (s, idx) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(rotations_with_counts_sorted):
+        first_ch = s[<span class="hljs-number">0</span>]
+        first_ch_counter[first_ch] += <span class="hljs-number">1</span>
+        first_ch_idx = first_ch_counter[first_ch]
+        last_ch = s[-<span class="hljs-number">1</span>]
+        last_ch_counter[last_ch] += <span class="hljs-number">1</span>
+        last_ch_idx = last_ch_counter[last_ch]
+        record = BWTRecord(first_ch, first_ch_idx, last_ch, last_ch_idx)
+        ret.append(record)
+    <span class="hljs-keyword">for</span> i, record_a <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
+        last = record_a.last_ch, record_a.last_ch_idx
+        <span class="hljs-keyword">for</span> j, record_b <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
+            first = record_b.first_ch, record_b.first_ch_idx
+            <span class="hljs-keyword">if</span> last == first:
+                record_a.last_to_first_idx = j
+                <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">return</span> ret
+<span class="hljs-comment"># MARKDOWN_BUILD</span>
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main_build</span>():
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"&lt;div style=\"border:1px solid black;\"&gt;"</span>, end=<span class="hljs-string">"\n\n"</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"`{bm-disable-all}`"</span>, end=<span class="hljs-string">"\n\n"</span>)
+    <span class="hljs-keyword">try</span>:
+        data_raw = <span class="hljs-string">''</span>.join(stdin.readlines())
+        data: <span class="hljs-built_in">dict</span> = yaml.safe_load(data_raw)
+        seq = data[<span class="hljs-string">'sequence'</span>]
+        end_marker = data[<span class="hljs-string">'end_marker'</span>]
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f'Building BWT using the following settings...'</span>)
+        <span class="hljs-built_in">print</span>()
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">'```'</span>)
+        <span class="hljs-built_in">print</span>(data_raw)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">'```'</span>)
+        <span class="hljs-built_in">print</span>()
+        bwt_records = to_bwt(seq, end_marker)
+        <span class="hljs-built_in">print</span>()
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f'The following first and last columns were produced ...'</span>)
+        <span class="hljs-built_in">print</span>()
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f' * First: <span class="hljs-subst">{[r.first_ch + <span class="hljs-built_in">str</span>(r.first_ch_idx) <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> bwt_records]}</span>'</span>)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f' * Last: <span class="hljs-subst">{[r.last_ch + <span class="hljs-built_in">str</span>(r.last_ch_idx) <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> bwt_records]}</span>'</span>)
+    <span class="hljs-keyword">finally</span>:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">"&lt;/div&gt;"</span>, end=<span class="hljs-string">"\n\n"</span>)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">"`{bm-enable-all}`"</span>, end=<span class="hljs-string">"\n\n"</span>)
+
+
+
+
+
+
+
+
+<span class="hljs-comment"># MARKDOWN_DESERIALIZE</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">cmp_instances</span>(<span class="hljs-params">a: <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>], b: <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>], end_marker: <span class="hljs-built_in">str</span></span>):
+    <span class="hljs-comment"># compare symbol</span>
+    x = cmp(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>], end_marker)
+    <span class="hljs-keyword">if</span> x != <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> x
+    <span class="hljs-comment"># compare symbol instance count</span>
+    <span class="hljs-keyword">if</span> a[<span class="hljs-number">1</span>] &lt; b[<span class="hljs-number">1</span>]:
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+    <span class="hljs-keyword">elif</span> a[<span class="hljs-number">1</span>] &gt; b[<span class="hljs-number">1</span>]:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_bwt_from_last_sequence</span>(<span class="hljs-params">
+        last_seq: <span class="hljs-built_in">str</span>,
+        end_marker: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">list</span>[BWTRecord]:
+    ret = []
+    last_col = [(last_ch, last_ch_idx + <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> last_ch_idx, last_ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(last_seq)]
+    first_col = <span class="hljs-built_in">sorted</span>(last_col, key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp(a, b, end_marker)))
+    <span class="hljs-keyword">for</span> (first_ch, first_ch_idx), (last_ch, last_ch_idx) <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(first_col, last_col):
+        record = BWTRecord(first_ch, first_ch_idx, last_ch, last_ch_idx)
+        ret.append(record)
+    <span class="hljs-keyword">for</span> i, record_a <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
+        last = record_a.last_ch, record_a.last_ch_idx
+        <span class="hljs-keyword">for</span> j, record_b <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
+            first = record_b.first_ch, record_b.first_ch_idx
+            <span class="hljs-keyword">if</span> last == first:
+                record_a.last_to_first_idx = j
+                <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">return</span> ret
+<span class="hljs-comment"># MARKDOWN_DESERIALIZE</span>
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main_deserialize</span>():
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"&lt;div style=\"border:1px solid black;\"&gt;"</span>, end=<span class="hljs-string">"\n\n"</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"`{bm-disable-all}`"</span>, end=<span class="hljs-string">"\n\n"</span>)
+    <span class="hljs-keyword">try</span>:
+        data_raw = <span class="hljs-string">''</span>.join(stdin.readlines())
+        data: <span class="hljs-built_in">dict</span> = yaml.safe_load(data_raw)
+        last_seq = data[<span class="hljs-string">'last_seq'</span>]
+        end_marker = data[<span class="hljs-string">'end_marker'</span>]
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f'Deserializing BWT using the following settings...'</span>)
+        <span class="hljs-built_in">print</span>()
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">'```'</span>)
+        <span class="hljs-built_in">print</span>(data_raw)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">'```'</span>)
+        <span class="hljs-built_in">print</span>()
+        bwt_records = to_bwt_from_last_sequence(last_seq, end_marker)
+        <span class="hljs-built_in">print</span>()
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f'The following first and last columns were produced ...'</span>)
+        <span class="hljs-built_in">print</span>()
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f' * First: <span class="hljs-subst">{[r.first_ch + <span class="hljs-built_in">str</span>(r.first_ch_idx) <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> bwt_records]}</span>'</span>)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f' * Last: <span class="hljs-subst">{[r.last_ch + <span class="hljs-built_in">str</span>(r.last_ch_idx) <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> bwt_records]}</span>'</span>)
+        <span class="hljs-built_in">print</span>()
+        seq = walk(bwt_records)
+        <span class="hljs-built_in">print</span>()
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f'The original sequence reconstructed from the BWT array: *<span class="hljs-subst">{seq}</span>*.'</span>)
+    <span class="hljs-keyword">finally</span>:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">"&lt;/div&gt;"</span>, end=<span class="hljs-string">"\n\n"</span>)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">"`{bm-enable-all}`"</span>, end=<span class="hljs-string">"\n\n"</span>)
+
+
+
+
+
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_bwt_from_first_last_cols</span>(<span class="hljs-params">
+        first_col: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">list</span>[<span class="hljs-type">Any</span>]],
+        last_col: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">list</span>[<span class="hljs-type">Any</span>]]
+</span>) -&gt; <span class="hljs-built_in">list</span>[BWTRecord]:
+    ret = []
+    <span class="hljs-keyword">for</span> first, last <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(first_col, last_col):
+        record = BWTRecord(first[<span class="hljs-number">0</span>], first[<span class="hljs-number">1</span>], last[<span class="hljs-number">0</span>], last[<span class="hljs-number">1</span>])
+        ret.append(record)
+    <span class="hljs-keyword">for</span> i, record_a <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
+        last = record_a.last_ch, record_a.last_ch_idx
+        <span class="hljs-keyword">for</span> j, record_b <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
+            first = record_b.first_ch, record_b.first_ch_idx
+            <span class="hljs-keyword">if</span> last == first:
+                record_a.last_to_first_idx = j
+                <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">return</span> ret
+
+
+<span class="hljs-comment"># MARKDOWN_WALK</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">walk</span>(<span class="hljs-params">bwt_array: <span class="hljs-built_in">list</span>[BWTRecord]</span>) -&gt; <span class="hljs-built_in">str</span>:
+    ret = <span class="hljs-string">''</span>
+    row = <span class="hljs-number">0</span>  <span class="hljs-comment"># first idx of bwt_array always has first_ch == end_marker because of the lexicographical sorting</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        ret += bwt_array[row].last_ch
+        row = bwt_array[row].last_to_first_idx
+        <span class="hljs-keyword">if</span> row == <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">break</span>
+    ret = ret[::-<span class="hljs-number">1</span>]  <span class="hljs-comment"># reverse ret</span>
+    ret = ret[<span class="hljs-number">1</span>:] + ret[<span class="hljs-number">0</span>]  <span class="hljs-comment"># ret has end_marker at beginning, rotate it to end</span>
+    <span class="hljs-keyword">return</span> ret
+<span class="hljs-comment"># MARKDOWN_WALK</span>
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main_walk</span>():
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"&lt;div style=\"border:1px solid black;\"&gt;"</span>, end=<span class="hljs-string">"\n\n"</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"`{bm-disable-all}`"</span>, end=<span class="hljs-string">"\n\n"</span>)
+    <span class="hljs-keyword">try</span>:
+        data_raw = <span class="hljs-string">''</span>.join(stdin.readlines())
+        data: <span class="hljs-built_in">dict</span> = yaml.safe_load(data_raw)
+        first_col = data[<span class="hljs-string">'first_col'</span>]
+        last_col = data[<span class="hljs-string">'last_col'</span>]
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f'Building BWT using the following settings...'</span>)
+        <span class="hljs-built_in">print</span>()
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">'```'</span>)
+        <span class="hljs-built_in">print</span>(data_raw)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">'```'</span>)
+        <span class="hljs-built_in">print</span>()
+        bwt_records = to_bwt_from_first_last_cols(first_col, last_col)
+        seq = walk(bwt_records)
+        <span class="hljs-built_in">print</span>()
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">f'The original sequence was *<span class="hljs-subst">{seq}</span>*.'</span>)
+    <span class="hljs-keyword">finally</span>:
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">"&lt;/div&gt;"</span>, end=<span class="hljs-string">"\n\n"</span>)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">"`{bm-enable-all}`"</span>, end=<span class="hljs-string">"\n\n"</span>)
+
+
+
+
+
+
+
+
+<span class="hljs-comment"># MARKDOWN_TEST</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">walk_find</span>(<span class="hljs-params">
+        bwt_array: <span class="hljs-built_in">list</span>[BWTRecord],
+        test: <span class="hljs-built_in">str</span>,
+        start_row: <span class="hljs-built_in">int</span>
+</span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-keyword">if</span> bwt_array[start_row].last_ch != test[<span class="hljs-number">0</span>]:
+        <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'First character must match start row\'s last column value'</span>)
+    row = start_row
+    <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> test:
+        <span class="hljs-keyword">if</span> bwt_array[row].last_ch != ch:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        row = bwt_array[row].last_to_first_idx
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">
+        bwt_array: <span class="hljs-built_in">list</span>[BWTRecord],
+        test: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">int</span>:
+    found = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i, rec <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(bwt_array):
+        <span class="hljs-keyword">if</span> rec.last_ch == test[<span class="hljs-number">0</span>] <span class="hljs-keyword">and</span> walk_find(bwt_array, test, i):
+            found += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> found
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building BWT using the following settings...</p>
+<pre><code>{
+  test: nana,
+  sequence: banana¶,
+  end_marker: ¶
+}
+
+</code></pre>
+<p>The following first and last columns were produced ...</p>
+<ul>
+<li>First: ['¶1', 'a1', 'a2', 'a3', 'b1', 'n1', 'n2']</li>
+<li>Last: ['a1', 'n1', 'n2', 'b1', '¶1', 'a2', 'a3']</li>
+</ul>
+<p><em>nana</em> found in <em>banana¶</em> at 1 times.</p>
+</div>
+<p></p>
+<p>TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)</p>
+<p>TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)</p>
+<p>TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)</p>
+<p>TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)</p>
+<p>TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)</p>
+<p>TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)</p>
+<p>TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)</p>
+<p>TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)</p>
+<p>TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)</p>
+<p>TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)</p>
+<p>TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)</p>
+<a name="H_Backsweep%20Algorithm"></a><h4>Backsweep Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FBacksweep%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<p><strong>ALGORITHM</strong>:</p>
 <p>Testing for a <a href="#BM_(substring)%2Fi">substring</a> requires walking that backwards and performing isolated scans of the <a href="#BM_(BWT)%2F">BWT</a> array. For example, searching for "bba" in "abbazabbabbu¶" starts by searching the entire <a href="#BM_(BWT)%2F">BWT</a> array for en<a href="#BM_(trie)%2Fi">trie</a>s where <code>last_col="a"</code> (3rd letter of "bba"): <code>[a1, a2, a3, a4]</code>. Then, the whole <a href="#BM_(BWT)%2F">BWT</a> array is isolated such that the ...</p>
 <ul>
 <li>head of the <a href="#BM_(BWT)%2F">BWT</a> array is <code>min_first_col_idx([a1, a2, a3, a4])</code>: a1 is at index 1.</li>
@@ -20602,26 +21105,31 @@ xxa vehicle__¶
 </ul>
 <p>Now that all letters are consumed, the number of instances for "bba" should be <code>tail_index - head_index + 1</code>: <code>8 - 7 + 1 = 2</code>.</p>
 <p><img src="svgbob_85422b7f876d2cdb981538c6ddc3ec7c374e1002.svg" alt="Kroki diagram output"></p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 118 to 137):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 248 to 272):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk_find</span>(<span class="hljs-params">
+        bwt_array: <span class="hljs-built_in">list</span>[BWTRecord],
+        test: <span class="hljs-built_in">str</span>,
+        start_row: <span class="hljs-built_in">int</span>
+</span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-keyword">if</span> bwt_array[start_row].last_ch != test[<span class="hljs-number">0</span>]:
+        <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'First character must match start row\'s last column value'</span>)
+    row = start_row
+    <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> test:
+        <span class="hljs-keyword">if</span> bwt_array[row].last_ch != ch:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        row = bwt_array[row].last_to_first_idx
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">
         bwt_array: <span class="hljs-built_in">list</span>[BWTRecord],
         test: <span class="hljs-built_in">str</span>
 </span>) -&gt; <span class="hljs-built_in">int</span>:
-    top = <span class="hljs-number">0</span>
-    bottom = <span class="hljs-built_in">len</span>(bwt_array) - <span class="hljs-number">1</span>
-    <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(test):
-        new_top = <span class="hljs-built_in">len</span>(bwt_array)
-        new_bottom = -<span class="hljs-number">1</span>
-        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(top, bottom + <span class="hljs-number">1</span>):
-            record = bwt_array[i]
-            <span class="hljs-keyword">if</span> ch == record.last_ch:
-                new_top = <span class="hljs-built_in">min</span>(new_top, record.last_to_first_idx)
-                new_bottom = <span class="hljs-built_in">max</span>(new_bottom, record.last_to_first_idx)
-        <span class="hljs-keyword">if</span> new_bottom == -<span class="hljs-number">1</span> <span class="hljs-keyword">or</span> new_top == <span class="hljs-built_in">len</span>(bwt_array):  <span class="hljs-comment"># technically only need to check one of these conditions</span>
-            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
-        top = new_top
-        bottom = new_bottom
-    <span class="hljs-keyword">return</span> (bottom - top) + <span class="hljs-number">1</span>
+    found = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i, rec <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(bwt_array):
+        <span class="hljs-keyword">if</span> rec.last_ch == test[<span class="hljs-number">0</span>] <span class="hljs-keyword">and</span> walk_find(bwt_array, test, i):
+            found += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> found
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>

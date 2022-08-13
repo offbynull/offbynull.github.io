@@ -14526,65 +14526,58 @@ After the cyclic rotations above, the rows in the isolated matrix become differe
 | n2 | a3 | ¶1 | b1 | a1 | n1 | `{h}#b00 a2` |
 | n1 | a2 | n2 | a3 | ¶1 | b1 | `{h}#800 a1` |
 
-Given just the first and last column of a BWT matrix, the original sequence can be pulled out by hopping between those columns. Because the matrix is made up of all cyclic rotations of [b1, a1, n1, a2, n2, a3, ¶1], the row containing index i of [b1, a1, n1, a2, n2, a3, ¶1] in the last column is guaranteed to contain index i+1 in the first column (wrapping around if out of bounds). For example, when ...
+Given just the first and last column of a BWT matrix, the original sequence can be pulled out by hopping between those columns. Because the matrix is made up of all cyclic rotations of [b1, a1, n1, a2, n2, a3, ¶1], the row containing index i of [b1, a1, n1, a2, n2, a3, ¶1] in the first column is guaranteed to contain index i-1 in the last column (wrapping around if out of bounds). For example, when ...
 
- * index 0 is in the last column (b1), index 1 is guaranteed to be in the first column (a1).
- * index 1 is in the last column (a1), index 2 is guaranteed to be in the first column (n1).
- * index 2 is in the last column (n1), index 3 is guaranteed to be in the first column (a2).
+ * index 6 is in the first column (¶1), index 5 is guaranteed to be in the last column (a3).
+ * index 5 is in the first column (a3), index 4 is guaranteed to be in the last column (n2).
+ * index 4 is in the first column (n2), index 3 is guaranteed to be in the last column (a2).
  * ...
- * index 6 is in the last column (¶1), index 0 is guaranteed to be in the first column (b1).
+ * index 1 is in the last column (a1), index 0 is guaranteed to be in the first column (b1).
 
-Since it's known that the last index will always be the end marker (¶1), the end marker can be used to find the first symbol instance within the original sequence (b1). From there, the first symbol instance (b1) can be used to find the second symbol instance (a1). Then the second symbol instance (a1) can be used to find the third symbol instance (n1). The process continues until it reaches the end marker again (¶1), at which point the original sequence has been fully walked.
+Since it's known that ...
 
- * last index must be ¶1: Find ¶1 in the last column and pull out the corresponding symbol instance in the first column: b1.
- * index 0 must be b1: Find b1 in the last column and pull out the corresponding symbol instance in the first column: a1.
- * index 1 must be a1: Find a1 in the last column and pull out the corresponding symbol instance in the first column: n1.
+ 1. index n-1 (last index) of the original sequence always contains the end marker (¶1)
+ 2. the row containing the end marker (¶1) in its first column always gets sorted to the top row of the BWT matrix
+ 
+..., the first row's last column is guaranteed to contain index n-2 (a3). From there, since index n-2 is now known (a3), it can be found in the first column and that found row's last column is guaranteed to contain index n-3 (n2). From there, since index n-3 is now known (a2), it can be found in the first column and that found row's last column is guaranteed to contain index n-4 (a2). The process continues until the end marker is reached (¶1), at which point the original sequence has been fully walked.
+
+ * last index must be ¶1: Find ¶1 in the first column and pull out the corresponding symbol instance in the last column: 31.
+ * index 0 must be b1: Find b1 in the first column and pull out the corresponding symbol instance in the last column: a1.
+ * index 1 must be a1: Find a1 in the first column and pull out the corresponding symbol instance in the last column: n1.
  * ...
- * index 5 must be a3: Find a3 in the last column and pull out the corresponding symbol instance in the first column: ¶1.
+ * index 5 must be a3: Find a3 in the first column and pull out the corresponding symbol instance in the last column: ¶1.
 
   
 ```{svgbob}
-              b                                ban                               banan                              banana¶
-.------------------------------.  .------------------------------.  .------------------------------.     .-------------------------*
-|                              |  |                              |  |                              |     |
-|  +--+--+           +--+--+   |  |  +--+--+           +--+--+   |  |  +--+--+           +--+--+   |     |  +--+--+
-|  |¶1|a3|           |¶1|a3|   |  |  |¶1|a3|           |¶1|a3|   |  |  |¶1|a3|           |¶1|a3|   |     '- |¶1|a3| <-.
-|  |a3|n2|           |a3|n2|   |  |  |a3|n2|           |a3|n2|   |  |  |a3|n2|        .- |a3|n2| <-'        |a3|n2|   |
-|  |a2|n1|           |a2|n1|   |  |  |a2|n1|        .- |a2|n1| <-'  |  |a2|n1|        |  |a2|n1|            |a2|n1|   |
-|  |a1|b1|        .- |a1|b1| <-'  |  |a1|b1|        |  |a1|b1|      |  |a1|b1|        |  |a1|b1|            |a1|b1|   |
-'- |b1|¶1|        |  |b1|¶1|      |  |b1|¶1|        |  |b1|¶1|      |  |b1|¶1|        |  |b1|¶1|            |b1|¶1|   |
-   |n2|a2|        |  |n2|a2|      |  |n2|a2|        |  |n2|a2|      '- |n2|a2| <-.    |  |n2|a2|            |n2|a2|   |
-   |n1|a1|        |  |n1|a1|      '- |n1|a1| <-.    |  |n1|a1|         |n1|a1|   |    |  |n1|a1|            |n1|a1|   |
-   +--+--+        |  +--+--+         +--+--+   |    |  +--+--+         +--+--+   |    |  +--+--+            +--+--+   |
-                  |                            |    |                            |    |                               |
-                  '----------------------------'    '----------------------------'    '-------------------------------'
-                                ba                              bana                               banana
++--+--+      a    +--+--+           +--+--+           +--+--+           +--+--+           +--+--+           +--+--+
+|¶1|a3|-------.   |¶1|a3|     na    |¶1|a3|           |¶1|a3|           |¶1|a3|           |¶1|a3|           |¶1|a3| 
+|a3|n2|       '-> |a3|n2|-------.   |a3|n2|           |a3|n2|   nana    |a3|n2|           |a3|n2|           |a3|n2| 
+|a2|n1|           |a2|n1|       |   |a2|n1|       .-> |a2|n1|-------.   |a2|n1|           |a2|n1| banana    |a2|n1| 
+|a1|b1|           |a1|b1|       |   |a1|b1|       |   |a1|b1|       |   |a1|b1|       .-> |a1|b1|-------.   |a1|b1| 
+|b1|¶1|           |b1|¶1|       |   |b1|¶1|       |   |b1|¶1|       |   |b1|¶1|       |   |b1|¶1|       '-> |b1|¶1|
+|n2|a2|           |n2|a2|       '-> |n2|a2|-------'   |n2|a2|       |   |n2|a2|       |   |n2|a2|           |n2|a2|
+|n1|a1|           |n1|a1|           |n1|a1|    ana    |n1|a1|       '-> |n1|a1|-------'   |n1|a1|           |n1|a1|
++--+--+           +--+--+           +--+--+           +--+--+           +--+--+  anana    +--+--+           +--+--+
 ```
 
 Similarly to pulling out the original sequence, given just the first and last column of a BWT matrix, it's possible to quickly identify if and how many times some substring exists in the original sequence. For example, to test if the sequence to see if it contains "nana"...
 
- * find all rows where the last column has symbol "n" and the first column has symbol "a": [n2, a3] and [n1, a2].
-   * walk from a3 to see if "nana" could be fully extracted (FAIL: [n2, a3, ¶1])
-   * walk from a2 to see if "nana" could be fully extracted (PASS: [n2, a3, n2, a3])
+ * find all rows where the last column has symbol "a" and the first column has symbol "n": [a3, n2] and [a2, n1].
+   * walk backwards from [a3, n2] to see if "nana" could be fully extracted: a3 to n2 to a2 to n1: [n1, a2, n3, a3] (PASSED)
+   * walk backwards from [a2, n1] to see if "nana" could be fully extracted: a2 to n1 to a1 to b1: [b1, a1, n1, a2] (FAILED)
 
 ```{svgbob}
 "* search for substring nana"
 
-             "2 x na"                        "1 x nana"
-.------------------------------.  .-------------------------*
-|                              |  |              
-|  +--+--+           +--+--+   |  |  +--+--+     
-|  |¶1|a3|       *-- |¶1|a3| <-+  |  |¶1|a3|     
-+- |a3|n2|           |a3|n2|   |  '- |a3|n2| <-. 
-'- |a2|n1|           |a2|n1|   |     |a2|n1|   | 
-   |a1|b1|           |a1|b1|   |     |a1|b1|   | 
-   |b1|¶1|           |b1|¶1|   |     |b1|¶1|   | 
-   |n2|a2|        .- |n2|a2| <-'     |n2|a2|   | 
-   |n1|a1|        |  |n1|a1|         |n1|a1|   | 
-   +--+--+        |  +--+--+         +--+--+   | 
-                  |                            |  
-                  '----------------------------'  
-                             "1 x nan"         
++--+--+           +--+--+           +--+--+           +--+--+
+|¶1|a3|     na    |¶1|a3|           |¶1|a3|           |¶1|a3|
+|a3|n2|-------.   |a3|n2|           |a3|n2|   nana    |a3|n2|
+|a2|n1|-----. |   |a2|n1|     .---> |a2|n1|-------.   |a2|n1|
+|a1|b1|     | |   |a1|b1|     | .-> |a1|b1|       |   |a1|b1|
+|b1|¶1|     | |   |b1|¶1|     | |   |b1|¶1|       |   |b1|¶1|
+|n2|a2|     | '-> |n2|a2|-----' |   |n2|a2|       |   |n2|a2|
+|n1|a1|     '---> |n1|a1|-------'   |n1|a1|       '-> |n1|a1|
++--+--+           +--+--+    ana    +--+--+           +--+--+
 ```
 
 ````{note}
@@ -14606,21 +14599,15 @@ At this stage, the symbol instance counts serve no other purpose than mapping va
 
 "* search for substring nana using RECONSTRUCTED first and last column"
 
-             "2 x na"                        "1 x nana"
-.------------------------------.  .------------------------->*
-|                              |  |                           
-|  +--+--+           +--+--+   |  |  +--+--+    
-|  |¶■|a▲|      *<-- |¶■|a▲| <-+  |  |¶■|a▲|    
-+- |a▲|n▲|           |a▲|n▲|   |  '- |a▲|n▲| <-.
-'- |a◆|n■|           |a◆|n■|   |     |a◆|n■|   |
-   |a■|b◆|           |a■|b◆|   |     |a■|b◆|   |
-   |b◆|¶■|           |b◆|¶■|   |     |b◆|¶■|   |
-   |n▲|a◆|        .- |n▲|a◆| <-'     |n▲|a◆|   |
-   |n■|a■|        |  |n■|a■|         |n■|a■|   |
-   +--+--+        |  +--+--+         +--+--+   |
-                  |                            |  
-                  '----------------------------'  
-                             "1 x nan"         
++--+--+           +--+--+           +--+--+           +--+--+
+|¶■|a▲|     na    |¶■|a▲|           |¶■|a▲|           |¶■|a▲|
+|a▲|n▲|-------.   |a▲|n▲|           |a▲|n▲|   nana    |a▲|n▲|
+|a◆|n■|-----. |   |a◆|n■|     .---> |a◆|n■|-------.   |a◆|n■|
+|a■|b◆|     | |   |a■|b◆|     | .-> |a■|b◆|       |   |a■|b◆|
+|b◆|¶■|     | |   |b◆|¶■|     | |   |b◆|¶■|       |   |b◆|¶■|
+|n▲|a◆|     | '-> |n▲|a◆|-----' |   |n▲|a◆|       |   |n▲|a◆|
+|n■|a■|     '---> |n■|a■|-------'   |n■|a■|       '-> |n■|a■|
++--+--+           +--+--+    ana    +--+--+           +--+--+
 ```
 
 Given this observation, when serializing the first and last columns of the matrix, you technically only need to store the elements of the last column. The first column is just the last column but sorted. For example, the elements in last column of the example above are "annb¶aa". To convert that back into the first and last columns of the matrix with symbol instance counts, the steps are as follows:
@@ -14665,26 +14652,19 @@ RECONSTRUCTED          ORIGINAL
 
 "* search for substring nana using RECONSTRUCTED first and last column"
 
-             "2 x na"                        "1 x nana"
-.------------------------------.  .------------------------->*
-|                              |  |                           
-|  +--+--+           +--+--+   |  |  +--+--+    
-|  |¶1|a1|      *<-- |¶1|a1| <-+  |  |¶1|a1|    
-+- |a1|n1|           |a1|n1|   |  '- |a1|n1| <-.
-'- |a2|n2|           |a2|n2|   |     |a2|n2|   |
-   |a3|b1|           |a3|b1|   |     |a3|b1|   |
-   |b1|¶1|           |b1|¶1|   |     |b1|¶1|   |
-   |n1|a2|        .- |n1|a2| <-'     |n1|a2|   |
-   |n2|a3|        |  |n2|a3|         |n2|a3|   |
-   +--+--+        |  +--+--+         +--+--+   |
-                  |                            |  
-                  '----------------------------'  
-                             "1 x nan"         
++--+--+           +--+--+           +--+--+           +--+--+
+|¶1|a1|     na    |¶1|a1|           |¶1|a1|           |¶1|a1|
+|a1|n1|-------.   |a1|n1|           |a1|n1|   nana    |a1|n1|
+|a2|n2|-----. |   |a2|n2|     .---> |a2|n2|-------.   |a2|n2|
+|a3|b1|     | |   |a3|b1|     | .-> |a3|b1|       |   |a3|b1|
+|b1|¶1|     | |   |b1|¶1|     | |   |b1|¶1|       |   |b1|¶1|
+|n1|a2|     | '-> |n1|a2|-----' |   |n1|a2|       |   |n1|a2|
+|n2|a3|     '---> |n2|a3|-------'   |n2|a3|       '-> |n2|a3|
++--+--+           +--+--+    ana    +--+--+           +--+--+
 ```
 ````
 
-**WHY**: Implementations of BWT can be deeply memory efficient and fast, rivaling those of suffix arrays. In addition, not only can BWT determine the number of times some substring appears in a sequence, but with some extensions it can identify where found substrings are located in the sequence. These extensions are detailed in the subsections belows.
-
+**WHY**: Not only can BWT determine the number of times some substring appears in a sequence, but with some extensions it can identify where found substrings are located in the sequence. These extensions are detailed in the subsections belows. In addition, unlike most other algorithms for SNPs (e.g. suffix arrays), certain implementations of BWT have tunable parameters that can be used to balance memory efficiency vs computational efficiency. 
 
 #### Standard Algorithm
 
@@ -14714,6 +14694,64 @@ sequence_search.BurrowsWheelerTransform_Basic main_build
 }
 ```
 
+To pull the original sequence out of the first and last columns of a BWT matrix, start from the first row (first row has end-marker is in the first column) and walk backwards, matching the last column to first column. Once the walk reaches the end marker again, the entire sequence has been walked.
+
+```{svgbob}
++--+--+      a    +--+--+           +--+--+           +--+--+           +--+--+           +--+--+           +--+--+
+|¶1|a3|-------.   |¶1|a3|     na    |¶1|a3|           |¶1|a3|           |¶1|a3|           |¶1|a3|           |¶1|a3| 
+|a3|n2|       '-> |a3|n2|-------.   |a3|n2|           |a3|n2|   nana    |a3|n2|           |a3|n2|           |a3|n2| 
+|a2|n1|           |a2|n1|       |   |a2|n1|       .-> |a2|n1|-------.   |a2|n1|           |a2|n1| banana    |a2|n1| 
+|a1|b1|           |a1|b1|       |   |a1|b1|       |   |a1|b1|       |   |a1|b1|       .-> |a1|b1|-------.   |a1|b1| 
+|b1|¶1|           |b1|¶1|       |   |b1|¶1|       |   |b1|¶1|       |   |b1|¶1|       |   |b1|¶1|       '-> |b1|¶1|
+|n2|a2|           |n2|a2|       '-> |n2|a2|-------'   |n2|a2|       |   |n2|a2|       |   |n2|a2|           |n2|a2|
+|n1|a1|           |n1|a1|           |n1|a1|    ana    |n1|a1|       '-> |n1|a1|-------'   |n1|a1|           |n1|a1|
++--+--+           +--+--+           +--+--+           +--+--+           +--+--+  anana    +--+--+           +--+--+
+```
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
+python
+# MARKDOWN_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_WALK\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Basic main_walk
+{
+  first_col: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]],
+  last_col: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
+}
+```
+
+To count how many times the original sequence contains a substring, the process is similar to the original sequence extraction above. Start by finding rows where the first column contains index n-1 of the string and the last column contains index n-2, then walk each found column backwards to see if it matches the substring.
+
+```{svgbob}
+"* search for substring nana"
+
++--+--+           +--+--+           +--+--+           +--+--+
+|¶1|a3|     na    |¶1|a3|           |¶1|a3|           |¶1|a3|
+|a3|n2|-------.   |a3|n2|           |a3|n2|   nana    |a3|n2|
+|a2|n1|-----. |   |a2|n1|     .---> |a2|n1|-------.   |a2|n1|
+|a1|b1|     | |   |a1|b1|     | .-> |a1|b1|       |   |a1|b1|
+|b1|¶1|     | |   |b1|¶1|     | |   |b1|¶1|       |   |b1|¶1|
+|n2|a2|     | '-> |n2|a2|-----' |   |n2|a2|       |   |n2|a2|
+|n1|a1|     '---> |n1|a1|-------'   |n1|a1|       '-> |n1|a1|
++--+--+           +--+--+    ana    +--+--+           +--+--+
+```
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
+python
+# MARKDOWN_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_TEST\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Basic main_test
+{
+  test: nana,
+  sequence: banana¶,
+  end_marker: ¶
+}
+```
 
 
 
