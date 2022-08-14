@@ -14423,7 +14423,57 @@ Other uses such as longest repeating substring, longest shared substring, shorte
 Algorithms/Single Nucleotide Polymorphism/Suffix Array_TOPIC
 ```
 
-**WHAT**: Burrows-wheeler transform (BWT) is a matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. It's used for efficiently determining the number of times some substring appears in a sequence, and with some extensions it can determine their positions in the sequence as well.
+**WHAT**: Burrows-wheeler transform (BWT) is a matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. Similar to suffix arrays, the sequence must have an end marker where the end marker symbol comes first in the lexicographical sort order. For example, the BWT of "banana¶" ("¶" is the end marker), first creates a matrix by stacking all possible cyclical rotations...
+
+|   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+| b | a | n | a | n | a | ¶ |
+| ¶ | b | a | n | a | n | a |
+| a | ¶ | b | a | n | a | n |
+| n | a | ¶ | b | a | n | a |
+| a | n | a | ¶ | b | a | n |
+| n | a | n | a | ¶ | b | a |
+| a | n | a | n | a | ¶ | b |
+
+, then lexicographically sorting the rows of the matrix ...
+
+|   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+| ¶ | b | a | n | a | n | a |
+| a | ¶ | b | a | n | a | n |
+| a | n | a | ¶ | b | a | n |
+| a | n | a | n | a | ¶ | b |
+| b | a | n | a | n | a | ¶ |
+| n | a | ¶ | b | a | n | a |
+| n | a | n | a | ¶ | b | a |
+
+**WHY**: BWT matrices have a special property called the first-last property that makes them suitable for quickly determining if and how many times a substring exists in the original sequence. In addition, certain extensions to BWT make it so that the algorithm ...
+
+ * can identify where found substrings are located in the original sequence. 
+ * become tunable such that memory efficiency vs computational efficiency can be balanced_NORM.
+
+The standard algorithm along with these algorithmic extensions are all detailed in the subsections below.
+
+```{note}
+The first-last property is explained in detail in the in the subsection that describes the standard algorithm.
+
+BWT matrices have historically been used by data compression algorithms to ...
+
+ * find runs of similar substrings in the sequence (e.g. "ana" appears twice in "banana¶")
+ * transform the sequence into a more compressible version of itself (e.g. last colum of BWT matrix above is "annb¶aa", which has more characters repeating one after the other compared to "banana¶", and is convertible back to "banana¶").
+
+How "annb¶aa" is convertible back to "banana¶" is discussed further in the subsection that describes the standard algorithm. Specifically, the section on serialization / deserialization.
+
+More information is also available in the [Wikipedia article](https://en.wikipedia.org/wiki/Burrows%E2%80%93Wheeler_transform).
+```
+
+#### Standard Algorithm
+
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Standard Algorithm)_TOPIC/`
+
+**ALGORITHM**:
+
+Burrows-wheeler transform (BWT) is a matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. It's used for efficiently determining the number of times some substring appears in a sequence, and with some extensions it can determine their positions in the sequence as well.
 
 Similar to suffix arrays, the sequence must have an end marker where the end marker symbol comes first in the lexicographical sort order. For example, the BWT of "banana¶" ("¶" is the end marker), first creates a matrix by stacking all possible cyclical rotations...
 
@@ -14526,6 +14576,26 @@ After the cyclic rotations above, the rows in the isolated matrix become differe
 | n2 | a3 | ¶1 | b1 | a1 | n1 | `{h}#b00 a2` |
 | n1 | a2 | n2 | a3 | ¶1 | b1 | `{h}#800 a1` |
 
+Only the first and last columns of the BWT matrix are required for pattern matching, meaning the columns in the middle can be discarded. Since the point is to build out a BWT matrix once and test against it many times (e.g. build a BWT of reference genome and test against many sequencer outputs), this implementation provides pointers that directly map symbol instances from last column to first column. That way, testing for a substring (described in next section) doesn't need to scan over the BWT multiple times.
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
+python
+# MARKDOWN_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_BUILD\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Basic main_build
+{
+  sequence: banana¶,
+  end_marker: ¶
+}
+```
+
+```{note}
+Further down in this section, there's a slightly more optimal way of building BWT first and last columns. The reason that it's not up here is that some of the text below builds the foundations for that slightly more optimal way.
+```
+
 Given just the first and last column of a BWT matrix, the original sequence can be pulled out by hopping between those columns. Because the matrix is made up of all cyclic rotations of [b1, a1, n1, a2, n2, a3, ¶1], the row containing index i of [b1, a1, n1, a2, n2, a3, ¶1] in the first column is guaranteed to contain index i-1 in the last column (wrapping around if out of bounds). For example, when ...
 
  * index 6 is in the first column (¶1), index 5 is guaranteed to be in the last column (a3).
@@ -14546,7 +14616,6 @@ Since it's known that ...
  * index 1 must be a1: Find a1 in the first column and pull out the corresponding symbol instance in the last column: n1.
  * ...
  * index 5 must be a3: Find a3 in the first column and pull out the corresponding symbol instance in the last column: ¶1.
-
   
 ```{svgbob}
 +--+--+      a    +--+--+           +--+--+           +--+--+           +--+--+           +--+--+           +--+--+
@@ -14558,6 +14627,20 @@ Since it's known that ...
 |n2|a2|           |n2|a2|       '-> |n2|a2|-------'   |n2|a2|       |   |n2|a2|       |   |n2|a2|           |n2|a2|
 |n1|a1|           |n1|a1|           |n1|a1|    ana    |n1|a1|       '-> |n1|a1|-------'   |n1|a1|           |n1|a1|
 +--+--+           +--+--+           +--+--+           +--+--+           +--+--+  anana    +--+--+           +--+--+
+```
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
+python
+# MARKDOWN_WALK\s*\n([\s\S]+)\n\s*# MARKDOWN_WALK\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Basic main_walk
+{
+  first_col: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]],
+  last_col: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
+}
 ```
 
 Similarly to pulling out the original sequence, given just the first and last column of a BWT matrix, it's possible to quickly identify if and how many times some substring exists in the original sequence. For example, to test if the sequence to see if it contains "nana"...
@@ -14580,7 +14663,21 @@ Similarly to pulling out the original sequence, given just the first and last co
 +--+--+           +--+--+    ana    +--+--+           +--+--+
 ```
 
-````{note}
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
+python
+# MARKDOWN_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_TEST\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Basic main_test
+{
+  test: nana,
+  sequence: banana¶,
+  end_marker: ¶
+}
+```
+
 At this stage, the symbol instance counts serve no other purpose than mapping values of the last column to the first column. For example, instead of having symbol instance counts, you could just as well use a set of random unique shapes for each symbol's instances and the end result would be the same.
 
 ```{svgbob}
@@ -14610,7 +14707,7 @@ At this stage, the symbol instance counts serve no other purpose than mapping va
 +--+--+           +--+--+    ana    +--+--+           +--+--+
 ```
 
-Given this observation, when serializing the first and last columns of the matrix, you technically only need to store the elements of the last column. The first column is just the last column but sorted. For example, the elements in last column of the example above are "annb¶aa". To convert that back into the first and last columns of the matrix with symbol instance counts, the steps are as follows:
+Given this observation, when serializing the first and last columns of the matrix, you technically only need to store the symbols from the last column. The first column is just the last column but sorted. For example, the symbols in last column of the example above are "annb¶aa". To convert that back into the first and last columns of the matrix with symbol instance counts, the steps are as follows:
 
 1. Last column: augment "annb¶aa" with symbol instance counts: [a1, n1, n2, b1, ¶1, a2, a3].
 
@@ -14662,128 +14759,141 @@ RECONSTRUCTED          ORIGINAL
 |n2|a3|     '---> |n2|a3|-------'   |n2|a3|       '-> |n2|a3|
 +--+--+           +--+--+    ana    +--+--+           +--+--+
 ```
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
+python
+# MARKDOWN_DESERIALIZE\s*\n([\s\S]+)\n\s*# MARKDOWN_DESERIALIZE\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Basic main_deserialize
+{
+  last_seq: annb¶aa,
+  end_marker: ¶
+}
+```
+
+The deserialization process described above also helps with computing the first and last BWT matrix columns from the original sequence (e.g. "banana¶" instead of "annb¶aa") by making it slightly more efficient.
+
+ reconstructing make more memory efficient the algorithm to convert creating the first and last BWT matrix columns can be used as a slightly more memory efficient way to build out the first and last BWT matrix columns from the original sequence. Keeping the original sequence as-is (do not annotate with symbol instance counts), stack its rotations and sort them to form a BWT matrix (without symbol instance counts). For example, the original sequence "banana¶" forms the following BWT matrix.
+
+|   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+| ¶ | b | a | n | a | n | a |
+| a | ¶ | b | a | n | a | n |
+| a | n | a | ¶ | b | a | n |
+| a | n | a | n | a | ¶ | b |
+| b | a | n | a | n | a | ¶ |
+| n | a | ¶ | b | a | n | a |
+| n | a | n | a | ¶ | b | a |
+
+Then, extract the last column ("annb¶aa") and feed it into the deserialization process. The deserialization process will annotate that last column with symbol instance counts, then sort it to create the first column (with symbol instance counts).
+
+|    |    |
+|----|----|
+| ¶1 | a1 |
+| a1 | n1 |
+| a2 | n2 |
+| a3 | b1 |
+| b1 | ¶1 |
+| n1 | a2 |
+| n2 | a3 |
+
+Since the original sequence isn't being annotated with symbol instance counts (as was done in the original BWT creation algorithm discussed at the beginning of this section), those symbol instance counts are omitted from the rotation stacking and sorting, meaning it saves some memory. However, the deserialization process is doing an extra sort to derive the first column, meaning some extra work is being performed.
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
+python
+# MARKDOWN_OPTIMIZED_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_OPTIMIZED_BUILD\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Basic main_optimized_build
+{
+  sequence: banana¶,
+  end_marker: ¶
+}
+```
+
+The first and last BWT matrix columns in the example above have a special property that makes the deserialization's extra sort step unnecessary: For each symbol [a, b, n, ¶] in "banana¶", notice how, in both columns, each symbol's instances appear ordered by symbol instance count. For example, symbol ...
+
+ * "a" has its symbol instances ordered as [`{h}#f00 a1`, `{h}#b00 a2`, `{h}#800 a3`] in both the first and last column (1 comes first, then 2, then 3).
+ * "n" has its symbol instances ordered as [`{h}#00f n1`, `{h}#00b n2`] in both the first and last column  (1 comes first, then 2).
+
+|              |              |
+|--------------|--------------|
+|          ¶1  | `{h}#f00 a1` |
+| `{h}#f00 a1` | `{h}#00f n1` |
+| `{h}#b00 a2` | `{h}#00b n2` |
+| `{h}#800 a3` |          b1  |
+|          b1  |          ¶1  |
+| `{h}#00f n1` | `{h}#b00 a2` |
+| `{h}#00b n2` | `{h}#800 a3` |
+
+This happens because the deserialization's extra sort step uses both the symbol and symbol instance count as the sort key (e.g. if both symbols are "a", the symbol instance counts are used to break ties). Since it's known that ...
+
+ 1. first column's sequence is "¶aaabnn"
+ 2. last column's sequence is "annb¶aa"
+ 3. regardless of column, symbol instance counts for each symbol are ordered by their appearance in the column (top-down)
+
+..., you can add symbol instance counts directly to the first column the same way the deserialization process adds them to the last column. The resulting first column will end up being exactly the same as if the first column were generated by the deserialization's sort step.
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
+python
+# MARKDOWN_OPTIMIZED2_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_OPTIMIZED2_BUILD\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Basic main_optimized2_build
+{
+  sequence: banana¶,
+  end_marker: ¶
+}
+```
+
+````{note}
+At this stage, it might be worth trying to squash the first column. For example, all "a" symbol instances in the first column are ordered one after another, so you don't need to explicitly list them out. You just need to make sure you adjust how you're doing last-to-first pointer mapping to account for the first column being squashed.
+
+```{svgbob}
+ORIGINAL      SQUASHED   
+
+ +--+--+       +--+--+
+ |¶1|a3|       |¶ |a1|
+ |a3|n2|       |a |n1|
+ |a2|n1|       |  |n2|
+ |a1|b1|       |  |b1|
+ |b1|¶1|       |b |¶1|
+ |n2|a2|       |n |a2|
+ |n1|a1|       |  |a3|
+ +--+--+       +--+--+
+```
 ````
-
-**WHY**: Not only can BWT determine the number of times some substring appears in a sequence, but with some extensions it can identify where found substrings are located in the sequence. These extensions are detailed in the subsections belows. In addition, unlike most other algorithms for SNPs (e.g. suffix arrays), certain implementations of BWT have tunable parameters that can be used to balance memory efficiency vs computational efficiency. 
-
-#### Standard Algorithm
-
-`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Standard Algorithm)_TOPIC/`
-
-**ALGORITHM**:
-
-```{note}
-The core algorithm was described in the parent section. If you're confused about what is happening or why it's happening, go over the parent section and compare to the implementation here.
-```
-
-To build a BWT matrix, stack all cyclic rotations to form a matrix and lexicographically sort where the end marker symbol has top precedence. Only the first and last columns of the BWT matrix are needed for testing.
-
-Since the point here is to build out a BWT once and test against it many times (e.g. build a BWT of reference genome and test against many sequencer outputs), this implementation provides a pointers that directly map from last column to first column. That way, the BWT doesn't get scanned over during each hop of testing. It can directly move between last column to first column.
-
-```{output}
-ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
-python
-# MARKDOWN_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_BUILD\s*[\n$]
-```
-
-```{ch9}
-sequence_search.BurrowsWheelerTransform_Basic main_build
-{
-  sequence: banana¶,
-  end_marker: ¶
-}
-```
-
-To pull the original sequence out of the first and last columns of a BWT matrix, start from the first row (first row has end-marker is in the first column) and walk backwards, matching the last column to first column. Once the walk reaches the end marker again, the entire sequence has been walked.
-
-```{svgbob}
-+--+--+      a    +--+--+           +--+--+           +--+--+           +--+--+           +--+--+           +--+--+
-|¶1|a3|-------.   |¶1|a3|     na    |¶1|a3|           |¶1|a3|           |¶1|a3|           |¶1|a3|           |¶1|a3| 
-|a3|n2|       '-> |a3|n2|-------.   |a3|n2|           |a3|n2|   nana    |a3|n2|           |a3|n2|           |a3|n2| 
-|a2|n1|           |a2|n1|       |   |a2|n1|       .-> |a2|n1|-------.   |a2|n1|           |a2|n1| banana    |a2|n1| 
-|a1|b1|           |a1|b1|       |   |a1|b1|       |   |a1|b1|       |   |a1|b1|       .-> |a1|b1|-------.   |a1|b1| 
-|b1|¶1|           |b1|¶1|       |   |b1|¶1|       |   |b1|¶1|       |   |b1|¶1|       |   |b1|¶1|       '-> |b1|¶1|
-|n2|a2|           |n2|a2|       '-> |n2|a2|-------'   |n2|a2|       |   |n2|a2|       |   |n2|a2|           |n2|a2|
-|n1|a1|           |n1|a1|           |n1|a1|    ana    |n1|a1|       '-> |n1|a1|-------'   |n1|a1|           |n1|a1|
-+--+--+           +--+--+           +--+--+           +--+--+           +--+--+  anana    +--+--+           +--+--+
-```
-
-```{output}
-ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
-python
-# MARKDOWN_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_WALK\s*[\n$]
-```
-
-```{ch9}
-sequence_search.BurrowsWheelerTransform_Basic main_walk
-{
-  first_col: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]],
-  last_col: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
-}
-```
-
-To count how many times the original sequence contains a substring, the process is similar to the original sequence extraction above. Start by finding rows where the first column contains index n-1 of the string and the last column contains index n-2, then walk each found column backwards to see if it matches the substring.
-
-```{svgbob}
-"* search for substring nana"
-
-+--+--+           +--+--+           +--+--+           +--+--+
-|¶1|a3|     na    |¶1|a3|           |¶1|a3|           |¶1|a3|
-|a3|n2|-------.   |a3|n2|           |a3|n2|   nana    |a3|n2|
-|a2|n1|-----. |   |a2|n1|     .---> |a2|n1|-------.   |a2|n1|
-|a1|b1|     | |   |a1|b1|     | .-> |a1|b1|       |   |a1|b1|
-|b1|¶1|     | |   |b1|¶1|     | |   |b1|¶1|       |   |b1|¶1|
-|n2|a2|     | '-> |n2|a2|-----' |   |n2|a2|       |   |n2|a2|
-|n1|a1|     '---> |n1|a1|-------'   |n1|a1|       '-> |n1|a1|
-+--+--+           +--+--+    ana    +--+--+           +--+--+
-```
-
-```{output}
-ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
-python
-# MARKDOWN_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_TEST\s*[\n$]
-```
-
-```{ch9}
-sequence_search.BurrowsWheelerTransform_Basic main_test
-{
-  test: nana,
-  sequence: banana¶,
-  end_marker: ¶
-}
-```
-
-
-
-TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
-
-TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
-
-TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
-
-TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
-
-TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
-
-TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
-
-TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
-
-TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
-
-TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
-
-TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
-
-TODO: THE DOCUMENTATION BELOW IS ACTUALLY FOR THE BACKSWEEP TEST VERSION. MOVE IT TO A BACKSWEEP SECTION (CODE IS ALREADY THERE). THEN, MOVE THE PARENT TEXT INTO THIS SECTION, SPLICE IN THE CODE WITH THE TEXT, AND WRITE SIMPLER TEXT FOR THE PARENT VERSION. ALSO, WRITE CODE FOR A NEW "SQUASHED FIRST COLUMN" VERSION THAT WORKS OFF OF THIS NEW BASIC VERSION OF THE CODE (find function is a lot simpler, so maybe it can be easily massaged into using a squashed version of the first col)
-
-
 
 #### Backsweep Algorithm
 
 `{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Backsweep Algorithm)_TOPIC/`
 
 **ALGORITHM**:
+
+TODO: FIX THE TEXT HERE
+
+TODO: FIX THE TEXT HERE
+
+TODO: FIX THE TEXT HERE
+
+TODO: FIX THE TEXT HERE
+
+TODO: FIX THE TEXT HERE
+
+TODO: FIX THE TEXT HERE
+
+TODO: FIX THE TEXT HERE
+
+TODO: FIX THE TEXT HERE
+
+TODO: FIX THE TEXT HERE
 
 Testing for a substring requires walking that backwards and performing isolated scans of the BWT array. For example, searching for "bba" in "abbazabbabbu¶" starts by searching the entire BWT array for entries where `last_col="a"` (3rd letter of "bba"): `[a1, a2, a3, a4]`. Then, the whole BWT array is isolated such that the ...
 

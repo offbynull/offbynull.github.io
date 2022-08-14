@@ -1,4 +1,5 @@
 import functools
+from bisect import bisect_left, bisect_right
 from collections import Counter
 from sys import stdin
 from typing import Any
@@ -9,8 +10,10 @@ from helpers.Utils import rotate_right
 
 
 # MARKDOWN_BUILD
-def cmp(a: str, b: str, end_marker: str):
-    for a_ch, b_ch in zip(a, b):
+def cmp(a: list[tuple[str, int]], b: list[tuple[str, int]], end_marker: str):
+    if len(a) != len(b):
+        raise '???'
+    for (a_ch, _), (b_ch, _) in zip(a, b):
         if a_ch == end_marker and b_ch == end_marker:
             continue
         if a_ch == end_marker:
@@ -21,11 +24,7 @@ def cmp(a: str, b: str, end_marker: str):
             return -1
         if a_ch > b_ch:
             return 1
-    if len(a) < len(b):
-        return 1
-    elif len(a) > len(b):
-        return -1
-    raise '???'
+    return 0
 
 
 class BWTRecord:
@@ -51,26 +50,26 @@ def to_bwt(
 ) -> list[BWTRecord]:
     assert end_marker == seq[-1], f'{seq} missing end marker'
     assert end_marker not in seq[:-1], f'{seq} has end marker but not at the end'
-    rotations_with_counts = zip(
-        rotate_right(seq),
-        range(len(seq))
+    # Create matrix
+    seq_with_counts = []
+    seq_ch_counter = Counter()
+    for ch in seq:
+        seq_ch_counter[ch] += 1
+        ch_cnt = seq_ch_counter[ch]
+        seq_with_counts.append((ch, ch_cnt))
+    seq_with_counts_rotations = rotate_right(seq_with_counts)
+    seq_with_counts_rotations_sorted = sorted(
+        seq_with_counts_rotations,
+        key=functools.cmp_to_key(lambda a, b: cmp(a, b, end_marker))
     )
-    rotations_with_counts_sorted = sorted(
-        rotations_with_counts,
-        key=functools.cmp_to_key(lambda a, b: cmp(a[0], b[0], end_marker))
-    )
-    first_ch_counter = Counter()
-    last_ch_counter = Counter()
+    # Pull out first and last columns
     ret = []
-    for i, (s, idx) in enumerate(rotations_with_counts_sorted):
-        first_ch = s[0]
-        first_ch_counter[first_ch] += 1
-        first_ch_idx = first_ch_counter[first_ch]
-        last_ch = s[-1]
-        last_ch_counter[last_ch] += 1
-        last_ch_idx = last_ch_counter[last_ch]
+    for i, s in enumerate(seq_with_counts_rotations_sorted):
+        first_ch, first_ch_idx = s[0]
+        last_ch, last_ch_idx = s[-1]
         record = BWTRecord(first_ch, first_ch_idx, last_ch, last_ch_idx)
         ret.append(record)
+    # Populate record last-to-first pointers
     for i, record_a in enumerate(ret):
         last = record_a.last_ch, record_a.last_ch_idx
         for j, record_b in enumerate(ret):
@@ -112,69 +111,6 @@ def main_build():
 
 
 
-
-# MARKDOWN_DESERIALIZE
-def cmp_instances(a: tuple[str, int], b: tuple[str, int], end_marker: str):
-    # compare symbol
-    x = cmp(a[0], b[0], end_marker)
-    if x != 0:
-        return x
-    # compare symbol instance count
-    if a[1] < b[1]:
-        return -1
-    elif a[1] > b[1]:
-        return 1
-    return 0
-
-
-def to_bwt_from_last_sequence(
-        last_seq: str,
-        end_marker: str
-) -> list[BWTRecord]:
-    ret = []
-    last_col = [(last_ch, last_ch_idx + 1) for last_ch_idx, last_ch in enumerate(last_seq)]
-    first_col = sorted(last_col, key=functools.cmp_to_key(lambda a, b: cmp(a, b, end_marker)))
-    for (first_ch, first_ch_idx), (last_ch, last_ch_idx) in zip(first_col, last_col):
-        record = BWTRecord(first_ch, first_ch_idx, last_ch, last_ch_idx)
-        ret.append(record)
-    for i, record_a in enumerate(ret):
-        last = record_a.last_ch, record_a.last_ch_idx
-        for j, record_b in enumerate(ret):
-            first = record_b.first_ch, record_b.first_ch_idx
-            if last == first:
-                record_a.last_to_first_idx = j
-                break
-    return ret
-# MARKDOWN_DESERIALIZE
-
-
-def main_deserialize():
-    print("<div style=\"border:1px solid black;\">", end="\n\n")
-    print("`{bm-disable-all}`", end="\n\n")
-    try:
-        data_raw = ''.join(stdin.readlines())
-        data: dict = yaml.safe_load(data_raw)
-        last_seq = data['last_seq']
-        end_marker = data['end_marker']
-        print(f'Deserializing BWT using the following settings...')
-        print()
-        print('```')
-        print(data_raw)
-        print('```')
-        print()
-        bwt_records = to_bwt_from_last_sequence(last_seq, end_marker)
-        print()
-        print(f'The following first and last columns were produced ...')
-        print()
-        print(f' * First: {[r.first_ch + str(r.first_ch_idx) for r in bwt_records]}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_idx) for r in bwt_records]}')
-        print()
-        seq = walk(bwt_records)
-        print()
-        print(f'The original sequence reconstructed from the BWT array: *{seq}*.')
-    finally:
-        print("</div>", end="\n\n")
-        print("`{bm-enable-all}`", end="\n\n")
 
 
 
@@ -244,16 +180,20 @@ def main_walk():
 
 
 
+
+
+
+
+
+
 # MARKDOWN_TEST
 def walk_find(
         bwt_array: list[BWTRecord],
         test: str,
         start_row: int
 ) -> bool:
-    if bwt_array[start_row].last_ch != test[0]:
-        raise ValueError('First character must match start row\'s last column value')
     row = start_row
-    for ch in test:
+    for ch in reversed(test[:-1]):
         if bwt_array[row].last_ch != ch:
             return False
         row = bwt_array[row].last_to_first_idx
@@ -266,9 +206,42 @@ def find(
 ) -> int:
     found = 0
     for i, rec in enumerate(bwt_array):
-        if rec.last_ch == test[0] and walk_find(bwt_array, test, i):
-            found += 1
+        if rec.first_ch == test[-1]:
+            if len(test) == 1 or (rec.last_ch == test[-2] and walk_find(bwt_array, test, i)):
+                found += 1
     return found
+    # The code above is the obvious way to do this. However, since the first column is always sorted by character, the
+    # entire array doesn't need to be scanned. Instead, you can binary search to the first and last index with
+    # rec.first_ch == test[-1] and just consider those indices.
+    #
+    # The problem with doing this is that bisect_left/bisect_right has a requirement where the binary array being
+    # searched must contain the same type as the element being searched for. Even with a custom sorting "key" to try to
+    # map between the types on comparison, it won't allow it. Otherwise, the code below would probably work fine...
+    #
+    # end_marker = bwt_array[0].first_ch  # bwt_array[0] always has first_ch == end_marker because of lexicographic sort
+    # found = 0
+    # # Binary search the bwt_array for the left-most (top) entry with first_ch in its
+    # bwt_top = bisect_left(
+    #     bwt_array,
+    #     test[-1],
+    #     key=functools.cmp_to_key(lambda a, b: cmp(a.first_ch[0], b.first_ch[0], end_marker)))
+    # if bwt_top == len(test):
+    #     return 0  # not found
+    # # Binary search the bwt_array for the right-most (bottom) entry with first_ch in its
+    # bwt_bottom = bisect_right(
+    #     bwt_array,
+    #     test[-1],
+    #     lo=bwt_top,
+    #     key=functools.cmp_to_key(lambda a, b: cmp(a.first_ch[0], b.first_ch[0], end_marker)))
+    # # If you're only searching for a single character, stop here.
+    # if len(test) == 1:
+    #     return bwt_bottom - bwt_top + 1
+    # # Otherwise, scan only between those indices
+    # for i in range(bwt_top, bwt_bottom + 1):
+    #     rec = bwt_array[i]
+    #     if rec.last_ch == test[-2] and walk_find(bwt_array, test, i):
+    #         found += 1
+    # return found
 # MARKDOWN_TEST
 
 
@@ -311,5 +284,248 @@ def main_test():
 
 
 
+
+
+
+
+
+
+
+
+
+# MARKDOWN_DESERIALIZE
+def cmp_char_only(a: str, b: str, end_marker: str):
+    if len(a) != len(b):
+        raise '???'
+    for a_ch, b_ch in zip(a, b):
+        if a_ch == end_marker and b_ch == end_marker:
+            continue
+        if a_ch == end_marker:
+            return -1
+        if b_ch == end_marker:
+            return 1
+        if a_ch < b_ch:
+            return -1
+        if a_ch > b_ch:
+            return 1
+    return 0
+
+
+def cmp_char_and_instance(a: tuple[str, int], b: tuple[str, int], end_marker: str):
+    # compare symbol
+    x = cmp_char_only(a[0], b[0], end_marker)
+    if x != 0:
+        return x
+    # compare symbol instance count
+    if a[1] < b[1]:
+        return -1
+    elif a[1] > b[1]:
+        return 1
+    return 0
+
+
+def to_bwt_from_last_sequence(
+        last_col_seq: str,
+        end_marker: str
+) -> list[BWTRecord]:
+    # Create first and last columns
+    ret = []
+    last_ch_counter = Counter()
+    last_col = []
+    for last_ch in last_col_seq:
+        last_ch_counter[last_ch] += 1
+        last_ch_count = last_ch_counter[last_ch]
+        last_col.append((last_ch, last_ch_count))
+    first_col = sorted(last_col, key=functools.cmp_to_key(lambda a, b: cmp_char_and_instance(a, b, end_marker)))
+    for (first_ch, first_ch_idx), (last_ch, last_ch_idx) in zip(first_col, last_col):
+        record = BWTRecord(first_ch, first_ch_idx, last_ch, last_ch_idx)
+        ret.append(record)
+    # Populate record last-to-first pointers
+    for i, record_a in enumerate(ret):
+        last = record_a.last_ch, record_a.last_ch_idx
+        for j, record_b in enumerate(ret):
+            first = record_b.first_ch, record_b.first_ch_idx
+            if last == first:
+                record_a.last_to_first_idx = j
+                break
+    return ret
+# MARKDOWN_DESERIALIZE
+
+
+def main_deserialize():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        data_raw = ''.join(stdin.readlines())
+        data: dict = yaml.safe_load(data_raw)
+        last_seq = data['last_seq']
+        end_marker = data['end_marker']
+        print(f'Deserializing BWT using the following settings...')
+        print()
+        print('```')
+        print(data_raw)
+        print('```')
+        print()
+        bwt_records = to_bwt_from_last_sequence(last_seq, end_marker)
+        print()
+        print(f'The following first and last columns were produced ...')
+        print()
+        print(f' * First: {[r.first_ch + str(r.first_ch_idx) for r in bwt_records]}')
+        print(f' * Last: {[r.last_ch + str(r.last_ch_idx) for r in bwt_records]}')
+        print()
+        seq = walk(bwt_records)
+        print()
+        print(f'The original sequence reconstructed from the BWT array: *{seq}*.')
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# MARKDOWN_OPTIMIZED_BUILD
+def to_bwt_optimized(
+        seq: str,
+        end_marker: str
+) -> list[BWTRecord]:
+    assert end_marker == seq[-1], f'{seq} missing end marker'
+    assert end_marker not in seq[:-1], f'{seq} has end marker but not at the end'
+    seq_rotations = rotate_right(seq)
+    seq_rotations_sorted = sorted(
+        seq_rotations,
+        key=functools.cmp_to_key(lambda a, b: cmp_char_only(a[0], b[0], end_marker))
+    )
+    last_col_seq = ''.join(row[-1] for row in seq_rotations_sorted)
+    return to_bwt_from_last_sequence(last_col_seq, end_marker)
+# MARKDOWN_OPTIMIZED_BUILD
+
+
+def main_optimized_build():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        data_raw = ''.join(stdin.readlines())
+        data: dict = yaml.safe_load(data_raw)
+        seq = data['sequence']
+        end_marker = data['end_marker']
+        print(f'Building BWT using the following settings...')
+        print()
+        print('```')
+        print(data_raw)
+        print('```')
+        print()
+        bwt_records = to_bwt_optimized(seq, end_marker)
+        print()
+        print(f'The following first and last columns were produced ...')
+        print()
+        print(f' * First: {[r.first_ch + str(r.first_ch_idx) for r in bwt_records]}')
+        print(f' * Last: {[r.last_ch + str(r.last_ch_idx) for r in bwt_records]}')
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# MARKDOWN_OPTIMIZED2_BUILD
+def to_bwt_optimized2(
+        seq: str,
+        end_marker: str
+) -> list[BWTRecord]:
+    assert end_marker == seq[-1], f'{seq} missing end marker'
+    assert end_marker not in seq[:-1], f'{seq} has end marker but not at the end'
+    # Create first and last columns
+    seq_rotations = rotate_right(seq)
+    seq_rotations_sorted = sorted(
+        seq_rotations,
+        key=functools.cmp_to_key(lambda a, b: cmp_char_only(a[0], b[0], end_marker))
+    )
+    first_ch_counter = Counter()
+    last_ch_counter = Counter()
+    ret = []
+    for i, s in enumerate(seq_rotations_sorted):
+        first_ch = s[0]
+        first_ch_counter[first_ch] += 1
+        first_ch_idx = first_ch_counter[first_ch]
+        last_ch = s[-1]
+        last_ch_counter[last_ch] += 1
+        last_ch_idx = last_ch_counter[last_ch]
+        record = BWTRecord(first_ch, first_ch_idx, last_ch, last_ch_idx)
+        ret.append(record)
+    # Populate record last-to-first pointers
+    for i, record_a in enumerate(ret):
+        last = record_a.last_ch, record_a.last_ch_idx
+        for j, record_b in enumerate(ret):
+            first = record_b.first_ch, record_b.first_ch_idx
+            if last == first:
+                record_a.last_to_first_idx = j
+                break
+    return ret
+# MARKDOWN_OPTIMIZED2_BUILD
+
+
+def main_optimized2_build():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        data_raw = ''.join(stdin.readlines())
+        data: dict = yaml.safe_load(data_raw)
+        seq = data['sequence']
+        end_marker = data['end_marker']
+        print(f'Building BWT using the following settings...')
+        print()
+        print('```')
+        print(data_raw)
+        print('```')
+        print()
+        bwt_records = to_bwt_optimized2(seq, end_marker)
+        print()
+        print(f'The following first and last columns were produced ...')
+        print()
+        print(f' * First: {[r.first_ch + str(r.first_ch_idx) for r in bwt_records]}')
+        print(f' * Last: {[r.last_ch + str(r.last_ch_idx) for r in bwt_records]}')
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
-    main_deserialize()
+    main_optimized2_build()
