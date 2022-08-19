@@ -2848,6 +2848,10 @@ There are three types of ordering supported by the spaceship operator:
 
    * Comparing circles by their radius. A circle with a radius of 5 is the same as another circle with a radius of 5.
 
+   ```{note}
+   Strong ordering is sometimes also referred to as total ordering.
+   ```
+
  * `std::weak_ordering` - equality (==) means that one object substitution isn't guaranteed (they may not be the same even though they're equivalent).
 
    Possible values:
@@ -4353,9 +4357,70 @@ Does this work with `decltype(auto)` as well?
 Core Language/Templates/Type Deduction/Type Cloning Deduction_TOPIC (`decltype(auto)` description)
 ```
 
-#### Known Types
+#### Ordered Type Concept
 
-`{bm} /(Core Language\/Templates\/Concepts\/Known Types)_TOPIC/`
+`{bm} /(Core Language\/Templates\/Concepts\/Ordered Type Concept)_TOPIC/`
+
+A type that can be compared typically overrides the 6 common relational operators: equals, not equals, less than, less than or equals, greater than, and greater than or equals to. The example concept_TEMPLATE below provides a concept that ensures the type provides all of these relational operators.
+
+```c++
+template <typename T>
+concept Ordering =
+    requires(T a, T b) {
+        { a == b } -> std::convertible_to<bool>;
+        { a != b } -> std::convertible_to<bool>;
+        { a <= b } -> std::convertible_to<bool>;
+        { a < b } -> std::convertible_to<bool>;
+        { a > b } -> std::convertible_to<bool>;
+        { a >= b } -> std::convertible_to<bool>;
+    };
+```
+
+```{note}
+You typically won't have to write this out by hand. The C++ standard library has the concepts `std::three_way_comparable` and `std::three_way_comparable_with`. The former makes sure that a type allows relational comparisons against the same type (same as the example above) while the former allows relational comparisons against different types (e.g. comparing an `int` against a `long`).
+
+Both concepts are related to the spaceship operator.
+```
+
+```{seealso}
+Core Language/Classes/Three-way Comparison Overloading_TOPIC (spaceship operator)
+```
+
+#### Regular Type Concept
+
+`{bm} /(Core Language\/Templates\/Concepts\/Regular Type Concept)_TOPIC/`
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+#### Semiregular Type Concept
+
+`{bm} /(Core Language\/Templates\/Concepts\/Semiregular Type Concept)_TOPIC/`
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+#### Union Type Concept
+
+`{bm} /(Core Language\/Templates\/Concepts\/Union Type Concept)_TOPIC/`
 
 One of the most basic use-cases for concept_TEMPLATEs is to require that a type be one of a set of known types (e.g. require that the type be either `short`, `int`, or `long`). In the example below, a clever use of templates is used to test if the two types are equal, then a concept_TEMPLATE makes use of those templates to see if a type is contained in some larger set.
 
@@ -4396,9 +4461,9 @@ In most cases, you shouldn't have to write out templates like `is_same<>` yourse
 Likewise, the C++ standard library provides a more elaborate version of `integral_check<>` as `std::integral<>`.
 ```
 
-#### Callable Types
+#### Callable Type Concept
 
-`{bm} /(Core Language\/Templates\/Concepts\/Callable Types)_TOPIC/`
+`{bm} /(Core Language\/Templates\/Concepts\/Callable Type Concept)_TOPIC/`
 
 ```{prereq}
 Core Language/Templates/Variadic_TOPIC
@@ -11197,6 +11262,49 @@ To handle IO errors, the standard stream mechanisms are available: `exceptions()
 std::cin.exceptions(std::istream::badbit | std::istream::failbit); // exception if bad/fail, but not good/eof
 ```
 
+## Span
+
+`{bm} /(Library Functions\/Span)_TOPIC/`
+
+```{prereq}
+Library Functions/Strings/String_TOPIC
+Library Functions/Strings/String View_TOPIC
+Library functions/Ranges_TOPIC
+Library functions/Containers_TOPIC
+```
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
 ## Debug Utilities
 
 `{bm} /(Library Functions\/Debug Utilities)_TOPIC/`
@@ -12029,7 +12137,7 @@ Technically, `std::is_constant_evaluated()` can be used anywhere. If you use it 
    }
    ```
 
- * `{bm} three-way comparison operator/(three-way comparison operator|3-way comparison operator|spaceship operator)/i` - Given two objects `a` and `b`, the three-way comparison operator determines if `a < b`, `a == b`, or `a > b`.
+ * `{bm} three-way comparison operator/(three way comparison operator|3-way comparison operator|spaceship operator)/i` - Given two objects `a` and `b`, the three-way comparison operator determines if `a < b`, `a == b`, or `a > b`.
  
    The symbol for the operator is an equal-sign sandwiched between angle brackets: `a <=> b`. This operator is sometimes called the spaceship operator because it's said that the symbol for the operator looks like a spaceship.
 
