@@ -1,9 +1,8 @@
 import functools
-from bisect import bisect_left
 from collections import Counter
 
 from helpers.Utils import rotate_right
-from sequence_search.SearchUtils import StringView
+from sequence_search.BurrowsWheelerTransform_Deserialization import cmp_char_only
 
 
 def cmp(a: str, b: str, end_marker: str):
@@ -45,19 +44,17 @@ def to_bwt_and_first_occurrences(
 ) -> tuple[list[BWTRecord], dict[str, int]]:
     assert end_marker == seq[-1], f'{seq} missing end marker'
     assert end_marker not in seq[:-1], f'{seq} has end marker but not at the end'
-    rotations_with_counts = zip(
-        rotate_right(seq),
-        range(len(seq))
-    )
-    rotations_with_counts_sorted = sorted(
-        rotations_with_counts,
-        key=functools.cmp_to_key(lambda a, b: cmp(a[0], b[0], end_marker))
+    # Create first and last columns
+    seq_rotations = rotate_right(seq)
+    seq_rotations_sorted = sorted(
+        seq_rotations,
+        key=functools.cmp_to_key(lambda a, b: cmp_char_only(a, b, end_marker))
     )
     last_first_ch = None
     last_ch_counter = Counter()
     bwt_array = []
     bwt_first_occurrence_map = {}
-    for i, (s, idx) in enumerate(rotations_with_counts_sorted):
+    for i, s in enumerate(seq_rotations_sorted):
         first_ch = s[0]
         last_ch = s[-1]
         last_ch_counter[last_ch] += 1

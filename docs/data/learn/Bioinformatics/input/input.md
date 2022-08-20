@@ -13603,14 +13603,14 @@ Studies commonly attempt to associate SNPs with diseases. By comparing SNPs betw
                              '- C -' "(20% in heart attack population / 80% in healthy population)"
 ```
 
-The SNPs an individual organism has are identified through a process called read mapping. Read mapping attempts to align the individual organism's sequenced DNA segments (e.g. read_SEQs, read-pairs, contigs) to an idealized genome for the population that organism belongs to (e.g. species, race, etc..), called a reference genome. The result of the alignment should have few indels and but a fair amount of mismatches, where those mismatches identify that organism's SNPs.
+The SNPs an individual organism has are identified through a process called read mapping. Read mapping attempts to align the individual organism's sequenced DNA segments (e.g. read_SEQs, read-pairs, contigs) to an idealized genome for the population that organism belongs to (e.g. species, race, etc..), called a reference genome. The result of the alignment should have few indels and a fair amount of mismatches, where those mismatches identify that organism's SNPs.
 
 ```{note}
 Where might indels come from? The Pevzner book mentions that ...
 
 1. even across individuals within the same population, some parts of a genome may be highly variable (e.g. major histocompatibility complex, a region of human DNA linked to the immune system), meaning indels for those areas may be natural.
 2. even across individuals within the same population, genome rearrangements may be normal, meaning that large indel regions may show up when an individual is aligned against its reference genome (reference genome captures just a single genome rearrangement variation -- efforts are being made to work around this, see pan-genome).
-3. a reference genome may be incomplete due the limitations of sequencing technology (e.g. multiple large contigs instead of the whole genome), meaning that a correct mapping may not exist for a specific part of the individual organism's sequenced DNA, meaning it ends up mapping to the wrong part of the reference genome and producing indels.
+3. a reference genome may be incomplete due to the limitations of sequencing technology (e.g. multiple large contigs instead of the whole genome), meaning that a correct mapping may not exist for a specific part of the individual organism's sequenced DNA, meaning it ends up mapping to the wrong part of the reference genome and producing indels.
 ```
 
 Since read mapping for SNP identification focuses on identifying mismatches and not indels, traditional sequence alignment algorithms aren't required. More efficient substring matching algorithms can be used instead. Specifically, if you have a sequence that you're trying to map and you know it can tolerate d mismatches at most, any substring matching algorithm will work. For example, finding GCCGTTTT with at most 1 mismatch simply requires dividing GCCGTTTT into two halves and searching for each half in the larger reference genome. Since GCCGTTTT can only contain a single mismatch, that mismatch has to be either in the 1st half (GCCG) or the 2nd half (TTTT), not both.
@@ -13740,7 +13740,7 @@ T h e   r a t i n g   o f   t h e   m o v i e   w a s   g o o d
 
 When there's a set of sequences S = {rating, ration, rattle} to search for, the straightforward approach requires that the larger sequence be scanned over multiple times (3 times, once per sequence in S).
 
-Tries are a more efficient way to search for a set of sequences. Rather than scanning over the larger sequence 3 times, a trie combines the sequences in S together such that the larger sequence is only scanned over once. At each position of the larger sequence, the starting elements at that position are tested against the all sequences in S by walking the trie. This is more efficient than searching for each sequence in S individually because, in a trie, shared prefixes across S's sequences are collapsed. The element comparisons for those shared prefixes only happens once.
+Tries are a more efficient way to search for a set of sequences. Rather than scanning over the larger sequence 3 times, a trie combines the sequences in S together such that the larger sequence is only scanned over once. At each position of the larger sequence, the starting elements at that position are tested against the all sequences in S by walking the trie. This is more efficient than searching for each sequence in S individually because, in a trie, shared prefixes across S's sequences are collapsed. The element comparisons for those shared prefixes only happen once.
 
 ```{svgbob}
 * "Searching for {rating, ration, rattle}. The highlighted scan position"
@@ -13847,7 +13847,7 @@ This algorithm is a common optimization that builds tries such that trains of no
             '-->*-->*-->*-->*-->*                                  '------------------>*
 ```
 
-At a high-level, the algorithm for building an edge merged trie is more-or-less the same as building a standard trie. Add sequences to the trie one at a time, forking where deviations occur. However, in this case forking happens by breaking an existing edge in two.
+At a high-level, the algorithm for building an edge merged trie is more-or-less the same as building a standard trie. Add sequences to the trie one at a time, forking where deviations occur. However, in this case, forking happens by breaking an existing edge in two.
 
 ```{svgbob}
 * "Add ration"
@@ -14455,7 +14455,7 @@ Algorithms/Single Nucleotide Polymorphism/Suffix Array_TOPIC
 The standard algorithm along with these algorithmic extensions are all detailed in the subsections below.
 
 ```{note}
-The first-last property is explained in detail in the in the subsection that describes the standard algorithm.
+The first-last property is explained in detail in the subsection that describes the standard algorithm.
 
 BWT matrices have historically been used by data compression algorithms to ...
 
@@ -14475,7 +14475,7 @@ More information is also available in the [Wikipedia article](https://en.wikiped
 
 Burrows-wheeler transform (BWT) is a matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. It's used for efficiently determining the number of times some substring appears in a sequence, and with some extensions it can determine their positions in the sequence as well.
 
-Similar to suffix arrays, the sequence must have an end marker where the end marker symbol comes first in the lexicographical sort order. For example, the BWT of "banana¶" ("¶" is the end marker), first creates a matrix by stacking all possible cyclical rotations...
+Similar to suffix arrays, the sequence must have an end marker, where the end marker symbol comes first in the lexicographical sort order. For example, the BWT of "banana¶" ("¶" is the end marker), first creates a matrix by stacking all possible cyclical rotations...
 
 |   |   |   |   |   |   |   |
 |---|---|---|---|---|---|---|
@@ -14530,7 +14530,7 @@ The sequence "banana¶" with symbol instance counts included is [b1, a1, n1, a2,
 | n1 | a2 | n2 | a3 | ¶1 | b1 | a1 |
 
 ```{note}
-It's the exact same matrix as before, it's just that the symbol instance counts are now visible where as before they were hidden. These symbol instance counts _aren't included_ in the lexicographic sorting that happens.
+It's the exact same matrix as before, it's just that the symbol instance counts are now visible whereas before they were hidden. These symbol instance counts _aren't included_ in the lexicographic sorting that happens.
 ```
 
 For each symbol [a, b, n, ¶] in "banana¶", symbol instances are positioned differently between the first and last columns of the matrix (e.g. "a1" shows up in first column at row 4 vs row 7 for the last column). However, notice how each symbol's instances appear in the same order between those two columns. For example, symbol ...
@@ -14556,7 +14556,7 @@ The phenomenon of consistent ordering of a symbol's instances is the first-last 
 | `{h}#b00 a2` | n2 | a3 | ¶1 | b1 | a1 | n1 |
 | `{h}#800 a1` | n1 | a2 | n2 | a3 | ¶1 | b1 |
 
-In other words, cyclically rotating each row right by 1 moves each corresponding "a" to the end but the rows still remain lexicographically sorted.
+In other words, cyclically rotating each row right by 1 moves each corresponding "a" to the end, but the rows still remain lexicographically sorted.
 
 |  ▼ |    |    |    |    |    |              |
 |----|----|----|----|----|----|--------------|
@@ -14678,23 +14678,50 @@ sequence_search.BurrowsWheelerTransform_Basic main_test
 }
 ```
 
-At this stage, the symbol instance counts serve no other purpose than mapping values of the last column to the first column. For example, instead of having symbol instance counts, you could just as well use a set of random unique shapes for each symbol's instances and the end result would be the same.
+#### Deserialization Algorithm
+
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Deserialization Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Standard Algorithm_TOPIC
+```
+
+**ALGORITHM**:
+
+```{note}
+This algorithm focuses on a different way of constructing the first and last column of a BWT matrix. While it seems useless, it's fundamental for building up some of the more elaborate modifications to the BWT algorithm (discussed in later sections).
+```
+
+When testing for a substring in the standard algorithm, the symbol instance counts serve no other purpose than mapping values of the BWT matrix's last and first columns. For example, instead of having symbol instance counts, you could just as well use a set of random unique shapes for each symbol's instances and the end result would be the same.
 
 ```{svgbob}
-   SHAPES             ORIGINAL
+   ORIGINAL                SHAPES 
+                                               
+   +--+--+                 +--+--+
+   |¶1|a3|                 |¶■|a▲|
+   |a3|n2|                 |a▲|n▲|
+   |a2|n1|                 |a◆|n■|
+   |a1|b1|        vs       |a■|b◆|
+   |b1|¶1|                 |b◆|¶■|
+   |n2|a2|                 |n▲|a◆|
+   |n1|a1|                 |n■|a■|
+   +--+--+                 +--+--+
 
-   +--+--+             +--+--+
-   |¶■|a▲|             |¶1|a3|
-   |a▲|n▲|             |a3|n2|
-   |a◆|n■|             |a2|n1|
-   |a■|b◆|      vs     |a1|b1|
-   |b◆|¶■|             |b1|¶1|
-   |n▲|a◆|             |n2|a2|
-   |n■|a■|             |n1|a1|
-   +--+--+             +--+--+
 
 
-"* search for substring nana using RECONSTRUCTED first and last column"
+"* search for substring nana using ORIGINAL first and last column"
+
++--+--+           +--+--+           +--+--+           +--+--+
+|¶1|a3|     na    |¶1|a3|           |¶1|a3|           |¶1|a3|
+|a3|n2|-------.   |a3|n2|           |a3|n2|   nana    |a3|n2|
+|a2|n1|-----. |   |a2|n1|     .---> |a2|n1|-------.   |a2|n1|
+|a1|b1|     | |   |a1|b1|     | .-> |a1|b1|       |   |a1|b1|
+|b1|¶1|     | |   |b1|¶1|     | |   |b1|¶1|       |   |b1|¶1|
+|n2|a2|     | '-> |n2|a2|-----' |   |n2|a2|       |   |n2|a2|
+|n1|a1|     '---> |n1|a1|-------'   |n1|a1|       '-> |n1|a1|
++--+--+           +--+--+    ana    +--+--+           +--+--+
+
+"* search for substring nana using SHAPES first and last column"
 
 +--+--+           +--+--+           +--+--+           +--+--+
 |¶■|a▲|     na    |¶■|a▲|           |¶■|a▲|           |¶■|a▲|
@@ -14707,7 +14734,7 @@ At this stage, the symbol instance counts serve no other purpose than mapping va
 +--+--+           +--+--+    ana    +--+--+           +--+--+
 ```
 
-Given this observation, when serializing the first and last columns of the matrix, you technically only need to store the symbols from the last column. The first column is just the last column but sorted. For example, the symbols in last column of the example above are "annb¶aa". To convert that back into the first and last columns of the matrix with symbol instance counts, the steps are as follows:
+Given this observation, when serializing the first and last columns of the matrix, you technically only need to store the symbols from the last column. The first column is just the last column, but sorted. For example, the symbols in last column of the example above are "annb¶aa". To convert that back into the first and last columns of the matrix with symbol instance counts, the steps are as follows:
 
 1. Last column: augment "annb¶aa" with symbol instance counts: [a1, n1, n2, b1, ¶1, a2, a3].
 
@@ -14734,20 +14761,21 @@ The end result of reconstructing from "annb¶aa" is the following first and last
 While the symbol instance counts are different from the original, the mapping of symbol instances between the first and last columns are the same, meaning that you can still use it to search for substrings in "banana¶". It's the mapping between the columns that's important. The actual symbol instance counts have no purpose other than mapping symbol instances between the two columns.
 
 ```{svgbob}
-RECONSTRUCTED          ORIGINAL
+   ORIGINAL                 SHAPES                 DESERIALIZED  
+                                                    
+   +--+--+                  +--+--+                  +--+--+
+   |¶1|a3|                  |¶■|a▲|                  |¶1|a1|
+   |a3|n2|                  |a▲|n▲|                  |a1|n1|
+   |a2|n1|                  |a◆|n■|                  |a2|n2|
+   |a1|b1|         vs       |a■|b◆|         vs       |a3|b1|
+   |b1|¶1|                  |b◆|¶■|                  |b1|¶1|
+   |n2|a2|                  |n▲|a◆|                  |n1|a2|
+   |n1|a1|                  |n■|a■|                  |n2|a3|
+   +--+--+                  +--+--+                  +--+--+
 
-   +--+--+             +--+--+
-   |¶1|a1|             |¶1|a3|
-   |a1|n1|             |a3|n2|
-   |a2|n2|             |a2|n1|
-   |a3|b1|      vs     |a1|b1|
-   |b1|¶1|             |b1|¶1|
-   |n1|a2|             |n2|a2|
-   |n2|a3|             |n1|a1|
-   +--+--+             +--+--+
 
 
-"* search for substring nana using RECONSTRUCTED first and last column"
+"* search for substring nana using DESERIALIZED first and last column"
 
 +--+--+           +--+--+           +--+--+           +--+--+
 |¶1|a1|     na    |¶1|a1|           |¶1|a1|           |¶1|a1|
@@ -14761,22 +14789,20 @@ RECONSTRUCTED          ORIGINAL
 ```
 
 ```{output}
-ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py
 python
 # MARKDOWN_DESERIALIZE\s*\n([\s\S]+)\n\s*# MARKDOWN_DESERIALIZE\s*[\n$]
 ```
 
 ```{ch9}
-sequence_search.BurrowsWheelerTransform_Basic main_deserialize
+sequence_search.BurrowsWheelerTransform_Deserialization main_deserialize
 {
   last_seq: annb¶aa,
   end_marker: ¶
 }
 ```
 
-The deserialization process described above also helps with computing the first and last BWT matrix columns from the original sequence (e.g. "banana¶" instead of "annb¶aa") by making it slightly more efficient.
-
- reconstructing make more memory efficient the algorithm to convert creating the first and last BWT matrix columns can be used as a slightly more memory efficient way to build out the first and last BWT matrix columns from the original sequence. Keeping the original sequence as-is (do not annotate with symbol instance counts), stack its rotations and sort them to form a BWT matrix (without symbol instance counts). For example, the original sequence "banana¶" forms the following BWT matrix.
+The deserialization process described above also helps with computing the first and last BWT matrix columns from the original sequence (e.g. "banana¶" instead of "annb¶aa") by making the entire process slightly more memory efficient. Keeping the original sequence as-is (do not annotate with symbol instance counts), stack its rotations and sort them to form a BWT matrix (without symbol instance counts). For example, the original sequence "banana¶" forms the following BWT matrix.
 
 |   |   |   |   |   |   |   |
 |---|---|---|---|---|---|---|
@@ -14803,13 +14829,13 @@ Then, extract the last column ("annb¶aa") and feed it into the deserialization 
 Since the original sequence isn't being annotated with symbol instance counts (as was done in the original BWT creation algorithm discussed at the beginning of this section), those symbol instance counts are omitted from the rotation stacking and sorting, meaning it saves some memory. However, the deserialization process is doing an extra sort to derive the first column, meaning some extra work is being performed.
 
 ```{output}
-ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py
 python
 # MARKDOWN_OPTIMIZED_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_OPTIMIZED_BUILD\s*[\n$]
 ```
 
 ```{ch9}
-sequence_search.BurrowsWheelerTransform_Basic main_optimized_build
+sequence_search.BurrowsWheelerTransform_Deserialization main_optimized_build
 {
   sequence: banana¶,
   end_marker: ¶
@@ -14840,13 +14866,13 @@ This happens because the deserialization's extra sort step uses both the symbol 
 ..., you can add symbol instance counts directly to the first column the same way the deserialization process adds them to the last column. The resulting first column will end up being exactly the same as if the first column were generated by the deserialization's sort step.
 
 ```{output}
-ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py
 python
 # MARKDOWN_OPTIMIZED2_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_OPTIMIZED2_BUILD\s*[\n$]
 ```
 
 ```{ch9}
-sequence_search.BurrowsWheelerTransform_Basic main_optimized2_build
+sequence_search.BurrowsWheelerTransform_Deserialization main_optimized2_build
 {
   sequence: banana¶,
   end_marker: ¶
@@ -14857,16 +14883,16 @@ sequence_search.BurrowsWheelerTransform_Basic main_optimized2_build
 At this stage, it might be worth trying to squash the first column. For example, all "a" symbol instances in the first column are ordered one after another, so you don't need to explicitly list them out. You just need to make sure you adjust how you're doing last-to-first pointer mapping to account for the first column being squashed.
 
 ```{svgbob}
-ORIGINAL      SQUASHED   
+UNSQUASHED     SQUASHED   
 
  +--+--+       +--+--+
- |¶1|a3|       |¶ |a1|
- |a3|n2|       |a |n1|
- |a2|n1|       |  |n2|
- |a1|b1|       |  |b1|
+ |¶1|a1|       |¶ |a1|
+ |a1|n1|       |a |n1|
+ |a2|n2|       |  |n2|
+ |a3|b1|       |  |b1|
  |b1|¶1|       |b |¶1|
- |n2|a2|       |n |a2|
- |n1|a1|       |  |a3|
+ |n1|a2|       |n |a2|
+ |n2|a3|       |  |a3|
  +--+--+       +--+--+
 ```
 ````
@@ -14875,128 +14901,169 @@ ORIGINAL      SQUASHED
 
 `{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Backsweep Algorithm)_TOPIC/`
 
+```{prereq}
+Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Deserialization Algorithm_TOPIC
+```
+
 **ALGORITHM**:
 
-TODO: FIX THE TEXT HERE
+```{note}
+This algorithm focuses on a different way of testing the first and last column of a BWT matrix for a substring. While it seems useless, it's fundamental for building up some of the more elaborate modifications to the BWT algorithm (discussed in later sections).
 
-TODO: FIX THE TEXT HERE
-
-TODO: FIX THE TEXT HERE
-
-TODO: FIX THE TEXT HERE
-
-TODO: FIX THE TEXT HERE
-
-TODO: FIX THE TEXT HERE
-
-TODO: FIX THE TEXT HERE
-
-TODO: FIX THE TEXT HERE
-
-TODO: FIX THE TEXT HERE
-
-Testing for a substring requires walking that backwards and performing isolated scans of the BWT array. For example, searching for "bba" in "abbazabbabbu¶" starts by searching the entire BWT array for entries where `last_col="a"` (3rd letter of "bba"): `[a1, a2, a3, a4]`. Then, the whole BWT array is isolated such that the ...
-
- * head of the BWT array is `min_first_col_idx([a1, a2, a3, a4])`: a1 is at index 1.
- * tail of the BWT array is `max_first_col_idx([a1, a2, a3, a4])`: a4 is at index 4.
-
-```{svgbob}
-   "isolate to range where first_col [a1,a4]"
-      .-----------------------.   
-      |                       |   
-   +--+--+                    v   
-   |¶1|u1|                 +--+--+
-   |a1|z1|                 |a1|z1|
-   |a2|¶1|                 |a2|¶1|
-   |a3|b1|                 |a3|b1|
-   |a4|b2|                 |a4|b2|
-   |b1|b3|                 +--+--+
-   |b2|b4|                        
-   |b3|a1|                        
-   |b4|a2|                        
-   |b5|a3|                        
-   |b6|b5|                        
-   |u1|b6|                        
-   |z1|a4|                        
-   +--+--+                        
+This algorithm specifically requires that the first and last columns of a BWT matrix were generated using the deserialization algorithm, because that algorithm has some special properties with how symbol instances get numbered.
 ```
 
-This isolated BWT array is then again searched for entries where where `last_col="b"` (2nd letter of "bba"): `[b1, b2]`. The BWT array's isolation is then reset such that the ...
+The backsweep algorithm is a different way of testing for a substring using the first and last columns of a BWT matrix. In the deserialization algorithm section, the final method of constructing the first and last columns of a BWT matrix had a distinct property: The first column was sorted by both symbol and symbol instance count. For example, given the first and last columns of the BWT matrix for "banana¶", the "a" symbol instances will appear in the first column as [`{h}#f00 a1`, `{h}#b00 a2`, `{h}#800 a3`].
 
- * head of the BWT array is `min_first_col_idx([b1, b2])`: b1 is at index 5.
- * tail of the BWT array is `max_first_col_idx([b1, b2])`: b2 is at index 6.
+|              |              |
+|--------------|--------------|
+|          ¶1  | `{h}#f00 a1` |
+| `{h}#f00 a1` |          n1  |
+| `{h}#b00 a2` |          n2  |
+| `{h}#800 a3` |          b1  |
+|          b1  |          ¶1  |
+|          n1  | `{h}#b00 a2` |
+|          n2  | `{h}#800 a3` |
 
-```{svgbob}
- "isolate to range where first_col [a1,a4]"
-      .-----------------------.   
-      |                       |   
-   +--+--+                    v   
-   |¶1|u1|                 +--+--+
-   |a1|z1|                 |a1|z1|
-   |a2|¶1|                 |a2|¶1|
-   |a3|b1|                 |a3|b1|
-   |a4|b2|                 |a4|b2|           +--+--+
-   |b1|b3|                 +--+--+           |b1|b3|
-   |b2|b4|                    |              |b2|b4|
-   |b3|a1|                    |              +--+--+
-   |b4|a2|                    |                 ^   
-   |b5|a3|                    |                 |   
-   |b6|b5|                    |                 |   
-   |u1|b6|                    |                 |
-   |z1|a4|                    |                 |
-   +--+--+                    |                 |   
-                              |                 |   
-                              '-----------------'
-                        "isolate to range where first_col [b1,b2]"
+```{note}
+Recall the property of the last column of the BWT matrix as well: For each symbol, that symbol's instances may be scattered around but are sorted if you only consider them by themselves. For example, `{h}#f00 "a1"` appears before `{h}#b00 "a2"` but there are a bunch of other values in between.
+
+This is an important point to understanding why this algorithm works, explained in a note further below.
 ```
 
-This isolated BWT array is then again searched for entries where where `last_col="b"` (1st letter of "bna"): `[b3, b4]`. The BWT array's isolation is then reset such that the ...
+The backsweep algorithm exploits the above sorted first column property to test for a substring by performing isolated scans of the BWT table. For each element of the test string, it scans a range within the BWT table, where that scan defines the range to scan for the next element. For example, searching for "bba" in "abbazabbabbu¶" starts by searching the entire BWT table for rows where `last_col="a"` (3rd letter of "bba"): `[a1, a2, a3, a4]`. Then, the whole BWT table is isolated such that the ...
 
- * head of the BWT array is `min_first_col_idx([b3, b4])`: b3 is at index 7.
- * tail of the BWT array is `max_first_col_idx([b3, b4])`: b4 is at index 8.
-
-Now that all letters are consumed, the number of instances for "bba" should be `tail_index - head_index + 1`: `8 - 7 + 1 = 2`.
+ * head of the BWT table is `min_first_col_idx([a1, a2, a3, a4])`: a1 is at index 1.
+ * tail of the BWT table is `max_first_col_idx([a1, a2, a3, a4])`: a4 is at index 4.
 
 ```{svgbob}
-   "isolate to range where first_col [a1,a4]"  "isolate to range where first_col [b3,b4]"
-      .-----------------------.                 .-----------------------.
-      |                       |                 |                       |
-   +--+--+                    v                 |                       |
-   |¶1|u1|                 +--+--+              |                       |
-   |a1|z1|                 |a1|z1|              |                       |
-   |a2|¶1|                 |a2|¶1|              |                       |
-   |a3|b1|                 |a3|b1|              |                       |
-   |a4|b2|                 |a4|b2|           +--+--+                    |
-   |b1|b3|                 +--+--+           |b1|b3|                    v
-   |b2|b4|                    |              |b2|b4|                 +--+--+
-   |b3|a1|                    |              +--+--+                 |b3|a1|
-   |b4|a2|                    |                 ^                    |b4|a2|
-   |b5|a3|                    |                 |                    +--+--+
-   |b6|b5|                    |                 |               "(2 instances of bba)"
-   |u1|b6|                    |                 |
-   |z1|a4|                    |                 |
-   +--+--+                    |                 |   
-                              |                 |   
-                              '-----------------'
-                       "isolate to range where first_col [b1,b2]"
+"isolate to range where first_col a1-a4"
+   .-----------------------.   
+   |                       |   
++--+--+                    v   
+|¶1|u1|                 +--+--+
+|a1|z1|                 |a1|z1|
+|a2|¶1|                 |a2|¶1|
+|a3|b1|                 |a3|b1|
+|a4|b2|                 |a4|b2|
+|b1|b3|                 +--+--+
+|b2|b4|                        
+|b3|a1|                        
+|b4|a2|                        
+|b5|a3|                        
+|b6|b5|                        
+|u1|b6|                        
+|z1|a4|                        
++--+--+                        
+```
+
+Essentially, the above operation isolated the BWT table to all substrings of size 2 in the original sequence that end in "a". This isolated BWT table is then again searched for rows where `last_col="b"` (2nd letter of "bba"): `[b1, b2]`. The BWT table's isolation is then reset such that the ...
+
+ * head of the BWT table is `min_first_col_idx([b1, b2])`: b1 is at index 5.
+ * tail of the BWT table is `max_first_col_idx([b1, b2])`: b2 is at index 6.
+
+```{svgbob}
+"isolate to range where first_col a1-a4"
+     .-----------------------.   
+     |                       |   
+  +--+--+                    v   
+  |¶1|u1|                 +--+--+
+  |a1|z1|                 |a1|z1|
+  |a2|¶1|                 |a2|¶1|
+  |a3|b1|                 |a3|b1|
+  |a4|b2|                 |a4|b2|           +--+--+
+  |b1|b3|                 +--+--+           |b1|b3|
+  |b2|b4|                    |              |b2|b4|
+  |b3|a1|                    |              +--+--+
+  |b4|a2|                    |                 ^   
+  |b5|a3|                    |                 |   
+  |b6|b5|                    |                 |   
+  |u1|b6|                    |                 |
+  |z1|a4|                    |                 |
+  +--+--+                    |                 |   
+                             |                 |   
+                             '-----------------'
+                       "isolate to range where first_col b1-b2"
+```
+
+The above operation isolated the BWT table further to all substrings of size 3 in the original sequence that end in "ba". This isolated BWT table is then again searched for rows where `last_col="b"` (1st letter of "bba"): `[b3, b4]`. The BWT table's isolation is then reset such that the ...
+
+ * head of the BWT table is `min_first_col_idx([b3, b4])`: b3 is at index 7.
+ * tail of the BWT table is `max_first_col_idx([b3, b4])`: b4 is at index 8.
+
+Now that all letters of the test string "bba" are consumed, the number of instances for "bba" should be `tail_index - head_index + 1`: `8 - 7 + 1 = 2`. Since there are two rows in the isolated BWT table at this point, there are two instances of "bba".
+
+```{svgbob}
+"isolate to range where first_col a1-a4"    "isolate to range where first_col b3-b4"
+   .-----------------------.                 .-----------------------.
+   |                       |                 |                       |
++--+--+                    v                 |                       |
+|¶1|u1|                 +--+--+              |                       |
+|a1|z1|                 |a1|z1|              |                       |
+|a2|¶1|                 |a2|¶1|              |                       |
+|a3|b1|                 |a3|b1|              |                       |
+|a4|b2|                 |a4|b2|           +--+--+                    |
+|b1|b3|                 +--+--+           |b1|b3|                    v
+|b2|b4|                    |              |b2|b4|                 +--+--+
+|b3|a1|                    |              +--+--+                 |b3|a1|
+|b4|a2|                    |                 ^                    |b4|a2|
+|b5|a3|                    |                 |                    +--+--+
+|b6|b5|                    |                 |               "(2 instances of bba)"
+|u1|b6|                    |                 |
+|z1|a4|                    |                 |
++--+--+                    |                 |   
+                           |                 |   
+                           '-----------------'
+                    "isolate to range where first_col b1-b2"
+```
+
+```{note}
+What's actually going on here that makes this work? Recall that the ...
+
+* first column is sorted by symbol and symbol instance count (e.g. [¶1, a1, a2, a3, a4, b1, b2, ...]).
+* last column guarantees that, for each symbol, that symbol's instances may be scattered around but are sorted if you only consider them by themselves (e.g. "b5" appears after "b4", but there are a bunch of other values in between them).
+
+Knowing this, consider the 2nd range isolation step. When the first column is between "a1" and "a4", the range is limited to those 4 rows. Those 4 rows are then searched to see which has a last column with symbol "b". Of the "b" symbol instances found, ...
+
+* the one with the min symbol instance count will be above the other "b" symbol instances.
+* the one with the max symbol instance count will be below the other "b" symbol instances.
+* the ones between them will have incrementing symbol instance by order of appearance.
+
+For those 4 rows, the last column has "b1" in row 3 and "b2" in row 4, so the next range was isolated between first column being between "b1" and "b2". All rows in this next range are guaranteed to be for substrings that end with "a".
+
+The point being that the "b" symbol instance counts aren't scattered / random, instead they're guaranteed to _increment by one_ as they appear down the last column. That's why isolating the next range between `min_symbol_instance_count("b")` and `max_symbol_instance_count("b")` works. Those "b" symbol instance counts, when you search for them in the first column, are guaranteed to be contiguous rows in the BWT table.
+
+For example, imagine what would happen if the last column were ...
+
+ * [b2, b3, b4, b5] - the rows where `first_col=[b2,b3,b4,b5]` are contiguous rows.
+ * [b2, ?, b3, b4] - the rows where `first_col=[b2,b3,b4]` are contiguous rows.
+ * [b3, ?, ?, b4] - the rows where `first_col=[b3,b4]` are contiguous rows.
+ * [?, b3, ?, b4] - the rows where `first_col=[b3,b4]` are contiguous rows.
+ * [b2, ?, ?, b3] - the rows where `first_col=[b2,b3]` are contiguous rows.
+ * [?, b2, ?, ?] - the rows where `first_col=[b2]` are contiguous rows.
+
+In contrast, the following last column scenarios will never happen ...
+
+ * [b3, ?, ?, b2] - top-most "b" symbol instance doesn't have the min symbol instance count of all "b"s.
+ * [b2, ?, ?, b2] - same "b" symbol instance will never appear twice.
+ * [b5, b4, ?, b3] - "b" symbol instances must increment as they go top to bottom, not decrement.
+ * [b4, b5, ?, b3] - "b" symbol instances must increment as they go top to bottom, not scatter.
 ```
 
 ```{output}
-ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
+ch9_code/src/sequence_search/BurrowsWheelerTransform_BacksweepTest.py
 python
 # MARKDOWN_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_TEST\s*[\n$]
 ```
 
 ```{ch9}
-sequence_search.BurrowsWheelerTransform_Basic main_test
+sequence_search.BurrowsWheelerTransform_BacksweepTest main_test
 {
-  sequence: banana¶,
-  test: ana,
+  sequence: abbazabbabbu¶,
+  test: bba,
   end_marker: ¶
 }
 ```
-
-#### Squashed First Column Algorithm
 
 #### Rank Checkpoints Algorithm
 
