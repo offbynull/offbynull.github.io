@@ -103,11 +103,13 @@
 <li><a href="#H_Deduction%20Rules">Deduction Rules</a></li>
 <li><a href="#H_Type%20Cloning%20Deduction">Type Cloning Deduction</a></li>
 </ul>
-<li><a href="#H_Type%20Traits">Type Traits</a></li>
 <li><a href="#H_Concepts">Concepts</a></li>
 <ul>
-<li><a href="#H_Known%20Types">Known Types</a></li>
-<li><a href="#H_Callable%20Types">Callable Types</a></li>
+<li><a href="#H_Ordered%20Type%20Concept">Ordered Type Concept</a></li>
+<li><a href="#H_Semi-regular%20Type%20Concept">Semi-regular Type Concept</a></li>
+<li><a href="#H_Regular%20Type%20Concept">Regular Type Concept</a></li>
+<li><a href="#H_Union%20Type%20Concept">Union Type Concept</a></li>
+<li><a href="#H_Callable%20Type%20Concept">Callable Type Concept</a></li>
 <ul>
 <li><a href="#H_Parameter%20Counts">Parameter Counts</a></li>
 <li><a href="#H_Parameter%20Types">Parameter Types</a></li>
@@ -117,6 +119,11 @@
 <li><a href="#H1_Variadic">Variadic</a></li>
 <li><a href="#H_Specialization">Specialization</a></li>
 <li><a href="#H_Type%20Aliasing">Type Aliasing</a></li>
+<li><a href="#H_Callable%20Type%20Unpacking">Callable Type Unpacking</a></li>
+<ul>
+<li><a href="#H1_Functions">Functions</a></li>
+<li><a href="#H1_Functors">Functors</a></li>
+</ul>
 </ul>
 <li><a href="#H_Coroutines">Coroutines</a></li>
 <ul>
@@ -157,6 +164,7 @@
 </ul>
 <li><a href="#H_Library%20Functions">Library Functions</a></li>
 <ul>
+<li><a href="#H_Type%20Traits">Type Traits</a></li>
 <li><a href="#H_Allocators">Allocators</a></li>
 <li><a href="#H_Smart%20Pointers">Smart Pointers</a></li>
 <ul>
@@ -173,6 +181,7 @@
 <li><a href="#H_Any">Any</a></li>
 <li><a href="#H_Variant">Variant</a></li>
 <li><a href="#H_Function">Function</a></li>
+<li><a href="#H_Bind">Bind</a></li>
 <li><a href="#H_Reference%20Wrapper">Reference Wrapper</a></li>
 </ul>
 <li><a href="#H_Containers">Containers</a></li>
@@ -257,6 +266,7 @@
 <li><a href="#H_File">File</a></li>
 <li><a href="#H_Global">Global</a></li>
 </ul>
+<li><a href="#H_Span">Span</a></li>
 <li><a href="#H_Debug%20Utilities">Debug Utilities</a></li>
 <ul>
 <li><a href="#H_Source%20Location">Source Location</a></li>
@@ -802,7 +812,7 @@ hello world
 <tr>
 <td>Three-way Comparison     (<code>&lt;=&gt;</code>)</td>
 <td><code>5 &lt;=&gt; 7</code></td>
-<td>Returns a special ordering type, not boolean (discussed in <a href="#BM_(three-way%20comparison%20operator%7C3-way%20comparison%20operator%7Cspaceship%20operator)%2Fi">spaceship operator</a> section).</td>
+<td>Returns a special ordering type, not boolean (discussed in <a href="#BM_(three%20way%20comparison%20operator%7C3-way%20comparison%20operator%7Cspaceship%20operator)%2Fi">spaceship operator</a> section).</td>
 </tr>
 </tbody>
 </table>
@@ -2730,7 +2740,7 @@ X::<span class="hljs-built_in">double_it</span>();  <span class="hljs-comment">/
 </div>
 <p><a href="#BM_(class%7C%5Cbstruct)%2Fi">Class</a>es that don't have any <a href="#BM_(constructor)%2Fi">constructor</a>s declared get an implicit <a href="#BM_%5Cb(zero-arg%7Cno-arg)%5Cb%2Fi">zero-arg</a> <a href="#BM_(constructor)%2Fi">constructor</a> that zeros out the memory of that <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> (speculation). If the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is a <a href="#BM_(POD)%2F">POD</a>, a <a href="#BM_(brace%20initialization%7Cbraced%20initialization%7Cuniform%20initialization)%2Fi">braced initialization</a> that is ...</p>
 <ul>
-<li>empty will zero out the memory for all <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s, (implicit default <a href="#BM_(constructor)%2Fi">constructor</a>).</li>
+<li>empty will zero out the memory for all <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s, (implicit <a href="#BM_(default%20constructor)%2Fi">default constructor</a>).</li>
 <li>non-empty will set the individual <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a>s, in the order they're declared in.</li>
 </ul>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyStruct</span> {
@@ -2974,7 +2984,7 @@ MyStruct c { std::<span class="hljs-built_in">move</span>(a) };  <span class="hl
 <li><a href="#BM_(Core%20Language%5C%2FClasses%2FConstruction)_TOPIC%2F">Core Language/Classes/Construction</a></li>
 </ul>
 </div>
-<p>The <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> may automatically generate default implementations for some <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>s (e.g. default <a href="#BM_(constructor)%2Fi">constructor</a>), called <a href="#BM_(special%20member%20function)%2Fi">special member function</a>s. However, under certain conditions, it may choose to omit generating them. If the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> chooses to not generate a default implementation where one was expected, it's possible to force the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> to generate that function by explicitly declaring it but replacing the function body <code>= default</code>.</p>
+<p>The <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> may automatically generate default implementations for some <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>s (e.g. <a href="#BM_(default%20constructor)%2Fi">default constructor</a>), called <a href="#BM_(special%20member%20function)%2Fi">special member function</a>s. However, under certain conditions, it may choose to omit generating them. If the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> chooses to not generate a default implementation where one was expected, it's possible to force the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> to generate that function by explicitly declaring it but replacing the function body <code>= default</code>.</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyClass</span> {
     <span class="hljs-built_in">MyStruct</span>() = <span class="hljs-keyword">default</span>;        <span class="hljs-comment">// forcefully generate default constructor</span>
 }
@@ -2991,7 +3001,7 @@ MyStruct c { std::<span class="hljs-built_in">move</span>(a) };  <span class="hl
 <li><a href="#BM_(Core%20Language%5C%2FClasses%2FConstruction)_TOPIC%2F">Core Language/Classes/Construction</a></li>
 </ul>
 </div>
-<p>The <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> may automatically generate default implementations for some <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>s (e.g. default <a href="#BM_(constructor)%2Fi">constructor</a>), called <a href="#BM_(special%20member%20function)%2Fi">special member function</a>s. There are two ways to turn off these automatically generated <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>s. The first way is to declare the function but make it privately scoped so that nothing outside can access it.</p>
+<p>The <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> may automatically generate default implementations for some <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>s (e.g. <a href="#BM_(default%20constructor)%2Fi">default constructor</a>), called <a href="#BM_(special%20member%20function)%2Fi">special member function</a>s. There are two ways to turn off these automatically generated <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>s. The first way is to declare the function but make it privately scoped so that nothing outside can access it.</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyClass</span> {
     ...
 <span class="hljs-keyword">private</span>:
@@ -3203,7 +3213,7 @@ MyClass &amp; <span class="hljs-keyword">operator</span>+=(MyClass &amp;rhs, <sp
 <li><a href="#BM_(Core%20Language%5C%2FClasses%2FOperator%20Overloading)_TOPIC%2F">Core Language/Classes/Operator Overloading</a></li>
 </ul>
 </div>
-<p>The <a href="#BM_(three-way%20comparison%20operator%7C3-way%20comparison%20operator%7Cspaceship%20operator)%2Fi">three-way comparison operator</a>, also called the <a href="#BM_(three-way%20comparison%20operator%7C3-way%20comparison%20operator%7Cspaceship%20operator)%2Fi">spaceship operator</a>, is a more terse way of providing comparison operators for a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>. Typically, if a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is sortable and comparable, it should provide <a href="#BM_(operator%20overload%7Coverloaded%20operator)%2Fi">operator overload</a>s for the typical comparison operators:</p>
+<p>The three-way comparison operator, also called the <a href="#BM_(three%20way%20comparison%20operator%7C3-way%20comparison%20operator%7Cspaceship%20operator)%2Fi">spaceship operator</a>, is a more terse way of providing comparison operators for a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>. Typically, if a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is sortable and comparable, it should provide <a href="#BM_(operator%20overload%7Coverloaded%20operator)%2Fi">operator overload</a>s for the typical comparison operators:</p>
 <ul>
 <li>equality (==)</li>
 <li>inequality (!=)</li>
@@ -3212,7 +3222,7 @@ MyClass &amp; <span class="hljs-keyword">operator</span>+=(MyClass &amp;rhs, <sp
 <li>greater-than (&gt;)</li>
 <li>greater-than or equal (&gt;=)</li>
 </ul>
-<p>The <a href="#BM_(three-way%20comparison%20operator%7C3-way%20comparison%20operator%7Cspaceship%20operator)%2Fi">three-way comparison operator</a> bundles <em>at least</em> the last four of those (potentially all of them) into a single operator, where the symbol for that operator is an equal-sign sandwiched between angle brackets (&lt;=&gt;).</p>
+<p>The three-way comparison operator bundles <em>at least</em> the last four of those (potentially all of them) into a single operator, where the symbol for that operator is an equal-sign sandwiched between angle brackets (&lt;=&gt;).</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyClass</span> {
     <span class="hljs-type">int</span> hour;
     <span class="hljs-type">int</span> minute;
@@ -3244,7 +3254,7 @@ std::cout &lt;&lt; <span class="hljs-string">"&lt;= via spaceship operator: "</s
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Not sure why but when the above <a href="#BM_(operator%20overload%7Coverloaded%20operator)%2Fi">operator overload</a> is a <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a> (instead of a <a href="#BM_(free%20function%7Cnon-member%20function)%2Fi">free function</a>) the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> starts producing a bunch of warnings.</p>
 </div>
-<p>Note that the above is comparing each <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">member variable</a> in the order it's declared. The default <a href="#BM_(operator%20overload%7Coverloaded%20operator)%2Fi">operator overload</a> implementation of the <a href="#BM_(three-way%20comparison%20operator%7C3-way%20comparison%20operator%7Cspaceship%20operator)%2Fi">spaceship operator</a> will do exactly the same thing. Had the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> inherited from some other <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, the default implementation would first compare the parent <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es (left-right order -- C++ has multiple inheritance) before comparing the <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">member variable</a>s in the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> itself.</p>
+<p>Note that the above is comparing each <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">member variable</a> in the order it's declared. The default <a href="#BM_(operator%20overload%7Coverloaded%20operator)%2Fi">operator overload</a> implementation of the <a href="#BM_(three%20way%20comparison%20operator%7C3-way%20comparison%20operator%7Cspaceship%20operator)%2Fi">spaceship operator</a> will do exactly the same thing. Had the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> inherited from some other <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, the default implementation would first compare the parent <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es (left-right order -- C++ has multiple inheritance) before comparing the <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">member variable</a>s in the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> itself.</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyClass</span> {
     <span class="hljs-type">int</span> hour;
     <span class="hljs-type">int</span> minute;
@@ -3256,7 +3266,7 @@ std::cout &lt;&lt; <span class="hljs-string">"&lt;= via spaceship operator: "</s
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>See <a href="https://stackoverflow.com/a/58780946">here</a> for reasoning.</p>
 </div>
-<p>There are three types of ordering supported by the <a href="#BM_(three-way%20comparison%20operator%7C3-way%20comparison%20operator%7Cspaceship%20operator)%2Fi">spaceship operator</a>:</p>
+<p>There are three types of ordering supported by the <a href="#BM_(three%20way%20comparison%20operator%7C3-way%20comparison%20operator%7Cspaceship%20operator)%2Fi">spaceship operator</a>:</p>
 <ul>
 <li>
 <p><code>std::strong_ordering</code> - equality (==) means that one <a href="#BM_(object%7Cinstance)%2Fi">object</a> may be substituted for the other (they are the same).</p>
@@ -3270,6 +3280,10 @@ std::cout &lt;&lt; <span class="hljs-string">"&lt;= via spaceship operator: "</s
 <ul>
 <li>Comparing circles by their radius. A circle with a radius of 5 is the same as another circle with a radius of 5.</li>
 </ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Strong ordering is sometimes also referred to as total ordering.</p>
+</div>
 </li>
 <li>
 <p><code>std::weak_ordering</code> - equality (==) means that one <a href="#BM_(object%7Cinstance)%2Fi">object</a> substitution isn't guaranteed (they may not be the same even though they're equivalent).</p>
@@ -3341,7 +3355,7 @@ MyClass cls {};
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The book recommends not preferring explicit over implicit because implicit is a source for confusion.</p>
+<p>The book recommends preferring explicit over implicit because implicit is a source for confusion.</p>
 <p>Do these still qualify as <a href="#BM_(operator%20overload%7Coverloaded%20operator)%2Fi">operator overload</a>s? Return types should be there.</p>
 </div>
 <a name="H_Const%20%2F%20Volatile%20Overloading"></a><h3>Const / Volatile Overloading</h3>
@@ -3675,6 +3689,12 @@ MyFunction f1{ <span class="hljs-number">5</span> };
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Be aware that, by default, the <a href="#BM_(function%5B%5Cs%5C-%5Dcall%20operator)%2Fi">function-call operator</a> in the <a href="#BM_(lambda)%2Fi">lambda</a> version is <code>const</code> and will automatically be made into a <code>constexpr</code> if it satisfies all the requirements of <code>constexpr</code>. This is discussed more in the <a href="#BM_(specifier%7Cmodifier)%2Fi">modifier</a>s subsections.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FWrappers%2FBind)_TOPIC%2F">Library Functions/Wrappers/Bind</a></li>
+</ul>
 </div>
 <a name="H_Capture%20List"></a><h3>Capture List</h3>
 <p><a name="BM_(Core%20Language%5C%2FLambdas%2FCapture%20List)_TOPIC%2F"></a><strong></strong></p>
@@ -4500,82 +4520,22 @@ T&amp; <span class="hljs-title">test</span><span class="hljs-params">(F * f_ptr,
 }
 </code></pre>
 </div>
-<a name="H_Type%20Traits"></a><h3>Type Traits</h3>
-<p><a name="BM_(Core%20Language%5C%2FTemplates%2FType%20Traits)_TOPIC%2F"></a><strong></strong></p>
-<p>The C++ standard library includes a set of <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es that detects the traits of a type at <a href="#BM_(compile-time)%2Fi">compile-time</a>. This is useful in cases where <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s need to be restricted.</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
-T <span class="hljs-title">test</span><span class="hljs-params">(T t)</span> </span>{
-    <span class="hljs-built_in">static_assert</span>(std::is_integral&lt;T&gt;::value, <span class="hljs-string">"Must be integral"</span>);
-    <span class="hljs-keyword">return</span> t + <span class="hljs-number">1</span>;
-}
-
-<span class="hljs-built_in">test</span>(<span class="hljs-number">4</span>);     <span class="hljs-comment">// OK</span>
-<span class="hljs-built_in">test</span>(<span class="hljs-number">4ULL</span>);  <span class="hljs-comment">// OK</span>
-<span class="hljs-built_in">test</span>(<span class="hljs-number">4.09</span>);  <span class="hljs-comment">// FAIL -- 4.09 is a floating point number, not an integral number</span>
-</code></pre>
-<p>The <code>value</code> <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> is <code>true</code> / <code>false</code> depending on if the type passes the check. A shortcut in later versions of C++ is to append <code>_v</code> to the name of the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> performing the check rather than explicitly querying the <code>value</code> <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> (e.g. <code>std::is_integral&lt;T&gt;::value</code> vs <code>std::is_integral_v&lt;T&gt;</code>).</p>
-<p>List of useful checks:</p>
-<ul>
-<li><code>std::is_signed</code> - ensures a type is signed.</li>
-<li><code>std::is_unsigned</code> - ensures a type is unsigned.</li>
-<li><code>std::is_integral</code> - ensures a type is an integer (e.g. <code>short int</code>, <code>int</code>, <code>unsigned long long int</code>, etc..)</li>
-<li><code>std::is_pod</code> - ensures a type is a <a href="#BM_(POD)%2F">POD</a>.</li>
-<li><code>std::is_fundamental</code> - ensures a type is a <a href="#BM_(fundamental%20type%7Cbuilt-in%20type)%2Fi">fundamental type</a>.</li>
-<li><code>std::is_abstract</code> - ensures a type is an abstract <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> (has at least one <a href="#BM_(pure%5B%5C-%5Cs%5Dvirtual%20method%7Cpure%5B%5C-%5Cs%5Dvirtual%20function)%2Fi">pure virtual function</a>).</li>
-<li><code>std::is_copy_constructible</code> - ensures type has a <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a>.</li>
-<li><code>std::is_copy_assignable</code> - ensures type has <a href="#BM_(copy%20assignment)%2Fi">copy assignment</a>.</li>
-<li><code>std::is_move_constructible</code> - ensures type has a <a href="#BM_(move%20constructor)%2Fi">move constructor</a>.</li>
-<li><code>std::is_nothrow_move_constructible</code> - ensures type has a <a href="#BM_(move%20constructor)%2Fi">move constructor</a> that never throws an <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a> (<code>noexcept</code>).</li>
-<li><code>std::is_move_assignable</code> - ensures type has <a href="#BM_(move%20assignment)%2Fi">move assignment</a>.</li>
-</ul>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>🔍SEE ALSO🔍</strong></p>
-<ul>
-<li><a href="#BM_(Core%20Language%5C%2FVariables%2FAliasing)_TOPIC%2F">Core Language/Variables/Aliasing</a> (refresher)</li>
-</ul>
-</div>
-<p>Type traits may also be manipulated at <a href="#BM_(compile-time)%2Fi">compile-time</a> via a set of <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es.</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
-<span class="hljs-keyword">auto</span> <span class="hljs-title">test</span><span class="hljs-params">(T t)</span> </span>{
-    <span class="hljs-keyword">using</span> R = std::make_unsigned&lt;T&gt;::type;  <span class="hljs-comment">// R is same type as T but unsigned (if it already isn't)</span>
-    R x { t + <span class="hljs-number">1</span> };
-    <span class="hljs-keyword">return</span> x;
-}
-</code></pre>
-<p>The <code>type</code> <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> contains the name type. A shortcut in later versions of C++ is to append <code>_t</code> to the name of the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> doing the manipulation rather than explicitly querying the <code>type</code> <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> (e.g. <code>std::make_unsigned&lt;T&gt;::type</code> vs <code>std::make_unsigned_t&lt;T&gt;</code>).</p>
-<p>List of useful conversions:</p>
-<ul>
-<li><code>std::remove_cv</code> - remove <code>const</code> and / or <code>volatile</code>.</li>
-<li><code>std::remove_const</code> - remove <code>const</code>.</li>
-<li><code>std::remove_volatile</code> - remove <code>volatile</code>.</li>
-<li><code>std::remove_pointer</code> - make into non-<a href="#BM_(pointer)%2Fi">pointer</a> type (removes a <code>*</code> from the type).</li>
-<li><code>std::remove_reference</code> - make into non-<a href="#BM_(reference)%2Fi">reference</a> type.</li>
-<li><code>std::add_cv</code> - add <code>const</code> and / or <code>volatile</code>.</li>
-<li><code>std::add_const</code> - add <code>const</code>.</li>
-<li><code>std::add_volatile</code> - add <code>volatile</code>.</li>
-<li><code>std::add_pointer</code> - make into <a href="#BM_(pointer)%2Fi">pointer</a> type (adds a <code>*</code> to the type).</li>
-<li><code>std::add_lvalue_reference</code> - make into a <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">lvalue</a> <a href="#BM_(reference)%2Fi">reference</a> type.</li>
-<li><code>std::add_rvalue_reference</code> - make into a <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a> type.</li>
-<li><code>std::make_signed</code> - make into an equivalent version of the same type that's signed.</li>
-<li><code>std::make_unsigned</code> - make into an equivalent version of the same type that's unsigned.</li>
-</ul>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Are <a href="#BM_(constant%20expression)%2Fi">constant expression</a>s used to write these checks and transformations? Maybe.</p>
-</div>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>🔍SEE ALSO🔍</strong></p>
-<ul>
-<li><a href="#BM_(Core%20Language%5C%2FCompile-time%20Evaluation)_TOPIC%2F">Core Language/Compile-time Evaluation</a></li>
-</ul>
-</div>
 <a name="H_Concepts"></a><h3>Concepts</h3>
 <p><a name="BM_(Core%20Language%5C%2FTemplates%2FConcepts)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FType%20Traits)_TOPIC%2F">Core Language/Templates/Type Traits</a></li>
 <li><a href="#BM_(Core%20Language%5C%2FTemplates%2FAuto%20Syntax)_TOPIC%2F">Core Language/Templates/Auto Syntax</a></li>
+</ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This section makes use of the type traits library in the C++ standard libraries. Type traits are <a href="#BM_(template)%2Fi">template</a>s that provide information about types (e.g if a type is signed or unsigned, if it has a <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a>, etc...). The link below jumps to that section. It's safe to read at this point as it doesn't require any background knowledge other than how to make use of <a href="#BM_(template)%2Fi">template</a>s, which is something you should already be aware of at this point.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FType%20Traits)_TOPIC%2F">Library Functions/Type Traits</a></li>
 </ul>
 </div>
 <p>In certain cases, a set of types substituted in for a <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s won't produce working code.</p>
@@ -4587,7 +4547,7 @@ T <span class="hljs-title">test</span><span class="hljs-params">(T t)</span> </s
 </code></pre>
 <p>In the example above, <code>Y</code> and <code>Z</code> need to be types that support the plus operator (+) on each other (e.g. <code>int</code> and <code>short</code>) and the result must be of type <code>X</code> (or convertible to <code>X</code>). If types substituted for <code>X</code>, <code>Y</code>, and <code>Z</code> don't satisfy those conditions, the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> gives back cryptic compilation errors.</p>
 <p><a href="#BM_(concept)_TEMPLATE%2Fi">Concept</a>s may be used within a <a href="#BM_(template)%2Fi">template</a> to produce more straightforward compilation errors for bad type substitutions: A <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> is a predicate, evaluated at <a href="#BM_(compile-time)%2Fi">compile-time</a> (not <a href="#BM_(runtime)%2Fi">runtime</a>), that ensures a set of substituted types support specific type traits (e.g. supports plus operator, has a specific <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>, has a <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a>, etc..). The <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> gives back easier to understand compilation errors when the predicate fails.</p>
-<p><a href="#BM_(concept)_TEMPLATE%2Fi">Concept</a>s themselves are <a href="#BM_(template)%2Fi">template</a>s where the <code>concept</code> keyword is used followed by its name and a <a href="#BM_(compile-time)%2Fi">compile-time</a> evaluated expression that returns a <code>bool</code>. For example, the <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> below uses the type traits library to ensure that <code>T</code> is both has a default <a href="#BM_(constructor)%2Fi">constructor</a> and a <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a>.</p>
+<p><a href="#BM_(concept)_TEMPLATE%2Fi">Concept</a>s themselves are <a href="#BM_(template)%2Fi">template</a>s where the <code>concept</code> keyword is used followed by its name and a <a href="#BM_(compile-time)%2Fi">compile-time</a> evaluated expression that returns a <code>bool</code>. For example, the <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> below uses the type traits library to ensure that <code>T</code> is both has a <a href="#BM_(default%20constructor)%2Fi">default constructor</a> and a <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a>.</p>
 <pre class="hljs"><code><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
 <span class="hljs-keyword">concept</span> DefaultAndCopy = std::is_default_constructible&lt;T&gt;::value &amp;&amp; std::is_copy_constructible&lt;T&gt;::value;
 </code></pre>
@@ -4695,8 +4655,93 @@ TR <span class="hljs-title">perform</span><span class="hljs-params">(T1 t1, T2 t
 <li><a href="#BM_(Core%20Language%5C%2FTemplates%2FType%20Deduction%2FType%20Cloning%20Deduction)_TOPIC%2F">Core Language/Templates/Type Deduction/Type Cloning Deduction</a> (<code>decltype(auto)</code> description)</li>
 </ul>
 </div>
-<a name="H_Known%20Types"></a><h4>Known Types</h4>
-<p><a name="BM_(Core%20Language%5C%2FTemplates%2FConcepts%2FKnown%20Types)_TOPIC%2F"></a><strong></strong></p>
+<a name="H_Ordered%20Type%20Concept"></a><h4>Ordered Type Concept</h4>
+<p><a name="BM_(Core%20Language%5C%2FTemplates%2FConcepts%2FOrdered%20Type%20Concept)_TOPIC%2F"></a><strong></strong></p>
+<p>An ordered type is a type that can be compared typically overrides the 6 common relational operators: equals, not equals, less than, less than or equals, greater than, and greater than or equals to. The example <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> below provides a <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> that ensures the type provides all of these relational operators.</p>
+<pre class="hljs"><code><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-keyword">concept</span> Ordering =
+    <span class="hljs-built_in">requires</span>(T a, T b) {
+        { a == b } -&gt; std::convertible_to&lt;<span class="hljs-type">bool</span>&gt;;
+        { a != b } -&gt; std::convertible_to&lt;<span class="hljs-type">bool</span>&gt;;
+        { a &lt;= b } -&gt; std::convertible_to&lt;<span class="hljs-type">bool</span>&gt;;
+        { a &lt; b } -&gt; std::convertible_to&lt;<span class="hljs-type">bool</span>&gt;;
+        { a &gt; b } -&gt; std::convertible_to&lt;<span class="hljs-type">bool</span>&gt;;
+        { a &gt;= b } -&gt; std::convertible_to&lt;<span class="hljs-type">bool</span>&gt;;
+    };
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You typically won't have to write this out by hand. The C++ standard library has the <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>s <code>std::three_way_comparable</code> and <code>std::three_way_comparable_with</code>. The former makes sure that a type allows relational comparisons against the same type (same as the example above) while the former allows relational comparisons against different types (e.g. comparing an <code>int</code> against a <code>long</code>).</p>
+<p>Both <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>s are related to the <a href="#BM_(three%20way%20comparison%20operator%7C3-way%20comparison%20operator%7Cspaceship%20operator)%2Fi">spaceship operator</a>.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FClasses%2FThree-way%20Comparison%20Overloading)_TOPIC%2F">Core Language/Classes/Three-way Comparison Overloading</a> (<a href="#BM_(three%20way%20comparison%20operator%7C3-way%20comparison%20operator%7Cspaceship%20operator)%2Fi">spaceship operator</a>)</li>
+</ul>
+</div>
+<a name="H_Semi-regular%20Type%20Concept"></a><h4>Semi-regular Type Concept</h4>
+<p><a name="BM_(Core%20Language%5C%2FTemplates%2FConcepts%2FSemi-regular%20Type%20Concept)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FClasses%2FConstruction)_TOPIC%2F">Core Language/Classes/Construction</a></li>
+<li><a href="#BM_(Core%20Language%5C%2FClasses%2FCopying)_TOPIC%2F">Core Language/Classes/Copying</a></li>
+<li><a href="#BM_(Core%20Language%5C%2FClasses%2FMoving)_TOPIC%2F">Core Language/Classes/Moving</a></li>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FSpecialization)_TOPIC%2F">Core Language/Templates/Specialization</a></li>
+</ul>
+</div>
+<p>A semi-regular type is a common idea in C++, commonly referred to in documentation on C++ and the C++ standard library. A type is considered semi-regular type if it has a ...</p>
+<ul>
+<li><a href="#BM_(default%20constructor)%2Fi">default constructor</a></li>
+<li><a href="#BM_(copy%20constructor)%2Fi">copy constructor</a></li>
+<li><a href="#BM_(move%20constructor)%2Fi">move constructor</a></li>
+<li><a href="#BM_(copy%20assignment)%2Fi">copy assignment</a> <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a></li>
+<li><a href="#BM_(move%20assignment)%2Fi">move assignment</a> <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a></li>
+<li><a href="#BM_(destructor)%2Fi">destructor</a></li>
+<li><a href="#BM_(template%20specialization)%2Fi">template specialization</a> / <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a> for <code>std::swap(T, T)</code> (is a swappable type)</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-keyword">concept</span> SemiRegular =
+    std::is_default_constructible&lt;T&gt;::value &amp;&amp;
+    std::is_copy_constructible&lt;T&gt;::value &amp;&amp;
+    std::is_copy_assignable&lt;T&gt;::value &amp;&amp;
+    std::is_move_constructible&lt;T&gt;::value &amp;&amp;
+    std::is_move_assignable&lt;T&gt;::value &amp;&amp;
+    std::is_destructible&lt;T&gt;::value &amp;&amp;
+    std::is_swappable&lt;T&gt;::value;
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This type is built out using functionality provided by the type traits library. Even then, you don't need to use this as the C++ standard library already provides the <code>std::semiregular</code> <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>.</p>
+</div>
+<a name="H_Regular%20Type%20Concept"></a><h4>Regular Type Concept</h4>
+<p><a name="BM_(Core%20Language%5C%2FTemplates%2FConcepts%2FRegular%20Type%20Concept)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FConcepts%2FSemi-regular%20Type%20Concept)_TOPIC%2F">Core Language/Templates/Concepts/Semi-regular Type Concept</a></li>
+</ul>
+</div>
+<p>A regular type is a common idea in C++, commonly referred to in documentation on C++ and the C++ standard library. A type is considered regular type if it supports all the traits of a semi-regular type and it supports both the equality operator (==) and inequality operator (!=).</p>
+<pre class="hljs"><code><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-keyword">concept</span> Regular =
+    SemiRegular&lt;T&gt; &amp;&amp;
+    <span class="hljs-built_in">requires</span>(T a, T b) {
+        { a == b } -&gt; std::convertible_to&lt;<span class="hljs-type">bool</span>&gt;;
+        { a != b } -&gt; std::convertible_to&lt;<span class="hljs-type">bool</span>&gt;;
+    };
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You don't need to use this as the C++ standard library already provides the <code>std::regular</code> <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The book and online documentation claims that regular types should behave similarly <a href="#BM_(fundamental%20type%7Cbuilt-in%20type)%2Fi">built-in type</a>s like <code>int</code>.</p>
+</div>
+<a name="H_Union%20Type%20Concept"></a><h4>Union Type Concept</h4>
+<p><a name="BM_(Core%20Language%5C%2FTemplates%2FConcepts%2FUnion%20Type%20Concept)_TOPIC%2F"></a><strong></strong></p>
 <p>One of the most basic use-cases for <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>s is to require that a type be one of a set of known types (e.g. require that the type be either <code>short</code>, <code>int</code>, or <code>long</code>). In the example below, a clever use of <a href="#BM_(template)%2Fi">template</a>s is used to test if the two types are equal, then a <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> makes use of those <a href="#BM_(template)%2Fi">template</a>s to see if a type is contained in some larger set.</p>
 <pre class="hljs"><code><span class="hljs-comment">// templates</span>
 <span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-keyword">typename</span> U&gt;
@@ -4732,16 +4777,16 @@ TR <span class="hljs-title">perform</span><span class="hljs-params">(T1 t1, T2 t
 <p>In most cases, you shouldn't have to write out <a href="#BM_(template)%2Fi">template</a>s like <code>is_same&lt;&gt;</code> yourself. The C++ standard library provides the <code>type_traits</code> header library which contains <code>std::is_same&lt;&gt;</code> and several other type checks. The C++ standard library also provides a set of pre-built <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>s that make use of check that a type has specific type traits. For example, <code>std::is_same&lt;&gt;</code> is exposed as the <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> <code>std::same_as&lt;&gt;</code>.</p>
 <p>Likewise, the C++ standard library provides a more elaborate version of <code>integral_check&lt;&gt;</code> as <code>std::integral&lt;&gt;</code>.</p>
 </div>
-<a name="H_Callable%20Types"></a><h4>Callable Types</h4>
-<p><a name="BM_(Core%20Language%5C%2FTemplates%2FConcepts%2FCallable%20Types)_TOPIC%2F"></a><strong></strong></p>
+<a name="H_Callable%20Type%20Concept"></a><h4>Callable Type Concept</h4>
+<p><a name="BM_(Core%20Language%5C%2FTemplates%2FConcepts%2FCallable%20Type%20Concept)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Core%20Language%5C%2FTemplates%2FVariadic)_TOPIC%2F">Core Language/Templates/Variadic</a></li>
-<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FConcepts%2FKnown%20Types)_TOPIC%2F">Core Language/Templates/Concepts/Known Types</a></li>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FConcepts%2FUnion%20Type%20Concept)_TOPIC%2F">Core Language/Templates/Concepts/Union Type Concept</a></li>
 </ul>
 </div>
-<p><a href="#BM_(concept)_TEMPLATE%2Fi">Concept</a>s can be used to specify the requirements for a <a href="#BM_(callable%20object)%2Fi">callable object</a>:</p>
+<p><a href="#BM_(concept)_TEMPLATE%2Fi">Concept</a>s can be used to specify the requirements for a <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">callable object</a>:</p>
 <ul>
 <li>How many parameters it takes in.</li>
 <li>The types allowed for each parameter / the type traits required by each parameter type.</li>
@@ -4761,7 +4806,7 @@ TR <span class="hljs-title">perform</span><span class="hljs-params">(T1 t1, T2 t
 <li><a href="#BM_(Core%20Language%5C%2FCompile-time%20Evaluation)_TOPIC%2F">Core Language/Compile-time Evaluation</a></li>
 </ul>
 </div>
-<p>To test a <a href="#BM_(callable%20object)%2Fi">callable object</a>'s parameter count within a <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>, <a href="#BM_(template)%2Fi">template</a>s can be used to extract the parameter count. In the example below, the <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> checks that a <a href="#BM_(callable%20object)%2Fi">callable object</a> has exactly 1 parameter.</p>
+<p>To test a <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">callable object</a>'s parameter count within a <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>, <a href="#BM_(template)%2Fi">template</a>s can be used to extract the parameter count. In the example below, the <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> checks that a <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">callable object</a> has exactly 1 parameter.</p>
 <pre class="hljs"><code><span class="hljs-comment">// template(s) to extract parameter count</span>
 <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> F&gt;
 <span class="hljs-keyword">struct</span> <span class="hljs-title class_">argCnt</span>;
@@ -4810,7 +4855,7 @@ TR <span class="hljs-title">perform</span><span class="hljs-params">(T1 t1, T2 t
 <li><a href="#BM_(Core%20Language%5C%2FTemplates%2FVariadic)_TOPIC%2F">Core Language/Templates/Variadic</a></li>
 </ul>
 </div>
-<p>To test a <a href="#BM_(callable%20object)%2Fi">callable object</a>'s parameter type within a <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>, <a href="#BM_(template)%2Fi">template</a>s can be used to extract the parameter type. In the example below, the <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> checks that a <a href="#BM_(callable%20object)%2Fi">callable object</a>'s first parameter has a type conforming to the <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> <code>std::integral</code>.</p>
+<p>To test a <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">callable object</a>'s parameter type within a <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>, <a href="#BM_(template)%2Fi">template</a>s can be used to extract the parameter type. In the example below, the <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> checks that a <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">callable object</a>'s first parameter has a type conforming to the <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> <code>std::integral</code>.</p>
 <pre class="hljs"><code><span class="hljs-comment">// template(s) to extract parameter types</span>
 <span class="hljs-keyword">template</span> &lt;std::<span class="hljs-type">size_t</span> N, <span class="hljs-keyword">typename</span> T0, <span class="hljs-keyword">typename</span> ... Ts&gt;
 <span class="hljs-keyword">struct</span> <span class="hljs-title class_">typeN</span> { <span class="hljs-keyword">using</span> type = <span class="hljs-keyword">typename</span> typeN&lt;N<span class="hljs-number">-1U</span>, Ts...&gt;::type; };
@@ -4866,7 +4911,7 @@ TR <span class="hljs-title">perform</span><span class="hljs-params">(T1 t1, T2 t
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Cleverly using <a href="#BM_(template)%2Fi">template</a>s as shown above is the most robust way to check a parameter's type. But, if your requirements aren't overly complex, there may be simpler ways.</p>
 <p><strong>SCENARIO 1: Testing for a known concrete types</strong></p>
-<p>In this scenario, the requirement is that a <a href="#BM_(callable%20object)%2Fi">callable object</a>'s parameter type be a concrete type that's known beforehand (e.g. <code>int</code>). The <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> for the <a href="#BM_(callable%20object)%2Fi">callable object</a> itself can simply use a parameter list <code>requires</code> clause.</p>
+<p>In this scenario, the requirement is that a <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">callable object</a>'s parameter type be a concrete type that's known beforehand (e.g. <code>int</code>). The <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> for the <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">callable object</a> itself can simply use a parameter list <code>requires</code> clause.</p>
 <pre class="hljs"><code><span class="hljs-comment">// concept for a function that takes in a single argument of type int</span>
 <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Fn&gt;
 <span class="hljs-keyword">concept</span> MySpecialFunction = <span class="hljs-built_in">requires</span>(Fn f, <span class="hljs-type">int</span> t) {
@@ -4874,7 +4919,7 @@ TR <span class="hljs-title">perform</span><span class="hljs-params">(T1 t1, T2 t
         };
 </code></pre>
 <p><strong>SCENARIO 2: Testing for a set of known concrete types</strong></p>
-<p>In this scenario, the requirement is that a <a href="#BM_(callable%20object)%2Fi">callable object</a>'s parameter be one of a set of concrete types that's known beforehand (e.g. <code>int</code> or <code>long</code>). The <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> for the <a href="#BM_(callable%20object)%2Fi">callable object</a> can be exploded out into several sub-<a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>s: Each sub-<a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> checks that the <a href="#BM_(callable%20object)%2Fi">callable object</a>'s parameter type match a specific concrete type, then those sub-<a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>s combine to form the full <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>.</p>
+<p>In this scenario, the requirement is that a <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">callable object</a>'s parameter be one of a set of concrete types that's known beforehand (e.g. <code>int</code> or <code>long</code>). The <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> for the <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">callable object</a> can be exploded out into several sub-<a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>s: Each sub-<a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> checks that the <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">callable object</a>'s parameter type match a specific concrete type, then those sub-<a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>s combine to form the full <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>.</p>
 <pre class="hljs"><code><span class="hljs-comment">// concept that combines the two sub-concepts: checks for a function has a single parameter of type int or long</span>
 <span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> Fn&gt;
 <span class="hljs-keyword">concept</span> MySpecialFunction1 = <span class="hljs-built_in">requires</span>(Fn f, <span class="hljs-type">int</span> i) {   <span class="hljs-comment">// sub-concept1: func that has a single parameter of type int</span>
@@ -4910,7 +4955,7 @@ TR <span class="hljs-title">perform</span><span class="hljs-params">(T1 t1, T2 t
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }
 </code></pre>
-<p>The problem with exploding out to sub-<a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>s is that the number of sub-<a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>s can get very large. For example, if the <a href="#BM_(callable%20object)%2Fi">callable object</a> should have 4 parameters and each of those parameters should be of type <code>int</code>, <code>long</code>, <code>short</code>, or <code>void*</code>, that's 256 different sub-<a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>s to list out.</p>
+<p>The problem with exploding out to sub-<a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>s is that the number of sub-<a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>s can get very large. For example, if the <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">callable object</a> should have 4 parameters and each of those parameters should be of type <code>int</code>, <code>long</code>, <code>short</code>, or <code>void*</code>, that's 256 different sub-<a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>s to list out.</p>
 <pre class="hljs"><code><span class="hljs-comment">// sub-concepts for function that takes in 4 params:</span>
 <span class="hljs-comment">// param1: int|long|short|void*</span>
 <span class="hljs-comment">// param2: int|long|short|void*</span>
@@ -5001,7 +5046,7 @@ TR <span class="hljs-title">perform</span><span class="hljs-params">(T1 t1, T2 t
         { <span class="hljs-built_in">f</span>(p1, p2, p3, p4) } -&gt; std::same_as&lt;<span class="hljs-type">long</span>&gt;;
     };
 </code></pre>
-<p>Doing this removes the sub-<a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> explosion problem, but it introduces a new problem of the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> losing the ability to infer <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s from usage. In the example below, the <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> for the <a href="#BM_(callable%20object)%2Fi">callable object</a> is concise, but usages of <code>call()</code> now need to explicitly specify what each <a href="#BM_(template)%2Fi">template</a> argument is because the C++ <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> is no longer able to infer them on its own.</p>
+<p>Doing this removes the sub-<a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> explosion problem, but it introduces a new problem of the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> losing the ability to infer <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s from usage. In the example below, the <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> for the <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">callable object</a> is concise, but usages of <code>call()</code> now need to explicitly specify what each <a href="#BM_(template)%2Fi">template</a> argument is because the C++ <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> is no longer able to infer them on its own.</p>
 <pre class="hljs"><code><span class="hljs-comment">// function that takes in 4 params:</span>
 <span class="hljs-comment">// param1: int|long|short|void*</span>
 <span class="hljs-comment">// param2: int|long|short|void*</span>
@@ -5045,7 +5090,7 @@ TR <span class="hljs-title">perform</span><span class="hljs-params">(T1 t1, T2 t
 <li><a href="#BM_(Core%20Language%5C%2FTemplates%2FConcepts%2FCallable%20Types%2FParameter%20Types)_TOPIC%2F">Core Language/Templates/Concepts/Callable Types/Parameter Types</a></li>
 </ul>
 </div>
-<p>To test a <a href="#BM_(callable%20object)%2Fi">callable object</a>'s return type within a <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>, <a href="#BM_(template)%2Fi">template</a>s can be used to extract the type. In the example below, the <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> checks that a <a href="#BM_(callable%20object)%2Fi">callable object</a> has a return type of integral.</p>
+<p>To test a <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">callable object</a>'s return type within a <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a>, <a href="#BM_(template)%2Fi">template</a>s can be used to extract the type. In the example below, the <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> checks that a <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">callable object</a> has a return type of integral.</p>
 <pre class="hljs"><code><span class="hljs-comment">// template(s) to extract return types</span>
 <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> F&gt;
 <span class="hljs-keyword">struct</span> <span class="hljs-title class_">returnType</span>;
@@ -5090,7 +5135,7 @@ TR <span class="hljs-title">perform</span><span class="hljs-params">(T1 t1, T2 t
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Cleverly using <a href="#BM_(template)%2Fi">template</a>s as shown above is the most robust way to check a <a href="#BM_(callable%20object)%2Fi">callable object</a>'s return type. But, if your requirements aren't overly complex, it may be feasible to use simpler checks such as those discussed in the parameter types section before this section. For example, if the scenario allows for it, a <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> check can be reduced to just a set of parameter list <code>requires</code> clauses being logically or'd together.</p>
+<p>Cleverly using <a href="#BM_(template)%2Fi">template</a>s as shown above is the most robust way to check a <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">callable object</a>'s return type. But, if your requirements aren't overly complex, it may be feasible to use simpler checks such as those discussed in the parameter types section before this section. For example, if the scenario allows for it, a <a href="#BM_(concept)_TEMPLATE%2Fi">concept</a> check can be reduced to just a set of parameter list <code>requires</code> clauses being logically or'd together.</p>
 <pre class="hljs"><code><span class="hljs-comment">// concept for a function whose return type is an integral type</span>
 <span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> Fn&gt;
 <span class="hljs-keyword">concept</span> MySpecialFunction =
@@ -5125,8 +5170,8 @@ TR <span class="hljs-title">perform</span><span class="hljs-params">(T1 t1, T2 t
 </div>
 <a name="H1_Variadic"></a><h3>Variadic</h3>
 <p><a name="BM_(Core%20Language%5C%2FTemplates%2FVariadic)_TOPIC%2F"></a><strong></strong></p>
-<p>A <a href="#BM_(variadic%7Cvararg)%2Fi">variadic</a> function is one that takes in a variable number of arguments, sometimes called <a href="#BM_(variadic%7Cvararg)%2Fi">vararg</a>s in other languages. A <a href="#BM_(template)%2Fi">template</a> can be made <a href="#BM_(variadic%7Cvararg)%2Fi">variadic</a> by placing a final <a href="#BM_(template%20parameter)%2Fi">template parameter</a> with <code>...</code> preceding the name, where this <a href="#BM_(template%20parameter)%2Fi">template parameter</a> is referred to as <a href="#BM_(parameter%20pack)%2Fi">parameter pack</a>.</p>
-<p>One common use-case for <a href="#BM_(parameter%20pack)%2Fi">parameter pack</a>s is invoking functions where the parameter list isn't known before hand.</p>
+<p>A <a href="#BM_(variadic%7Cvararg)%2Fi">variadic</a> function is one that takes in a variable number of arguments, sometimes called <a href="#BM_(variadic%7Cvararg)%2Fi">vararg</a>s in other languages. A <a href="#BM_(template)%2Fi">template</a> can be made <a href="#BM_(variadic%7Cvararg)%2Fi">variadic</a> by placing a final <a href="#BM_(template%20parameter)%2Fi">template parameter</a> with <code>...</code> preceding the name, where this <a href="#BM_(template%20parameter)%2Fi">template parameter</a> is referred to as <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">parameter pack</a>.</p>
+<p>One common use-case for <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">parameter pack</a>s is invoking functions where the parameter list isn't known before hand.</p>
 <pre class="hljs"><code><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> X, <span class="hljs-keyword">typename</span>... R&gt;
 <span class="hljs-function">X <span class="hljs-title">create</span><span class="hljs-params">(R... args)</span> </span>{
     <span class="hljs-keyword">return</span> X {args...};
@@ -5150,8 +5195,8 @@ T <span class="hljs-title">sum</span><span class="hljs-params">(<span class="hlj
     <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(first) + <span class="hljs-built_in">sum</span>(rest...);
 }
 </code></pre>
-<p>Alternatively, rather than using recursion to exhaustively apply a binary operator, a <a href="#BM_(fold%20expression)%2Fi">fold expression</a> may be applied to the <a href="#BM_(parameter%20pack)%2Fi">parameter pack</a>. A <a href="#BM_(fold%20expression)%2Fi">fold expression</a> applies a binary operator to the contents of a <a href="#BM_(parameter%20pack)%2Fi">parameter pack</a> and returns the final result.</p>
-<p>The syntax for <a href="#BM_(fold%20expression)%2Fi">fold expression</a>s is <code>...</code> and the <a href="#BM_(parameter%20pack)%2Fi">parameter pack</a>'s name sandwiched in between the operator, all encapsulated within a pair of brackets. Which side of the operator the <code>...</code> appears at defines if the <a href="#BM_(fold%20expression)%2Fi">fold expression</a> will be left <a href="#BM_(associativity%7Cassociative)%2Fi">associative</a> or right <a href="#BM_(associativity%7Cassociative)%2Fi">associative</a>.</p>
+<p>Alternatively, rather than using recursion to exhaustively apply a binary operator, a <a href="#BM_(fold%20expression)%2Fi">fold expression</a> may be applied to the <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">parameter pack</a>. A <a href="#BM_(fold%20expression)%2Fi">fold expression</a> applies a binary operator to the contents of a <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">parameter pack</a> and returns the final result.</p>
+<p>The syntax for <a href="#BM_(fold%20expression)%2Fi">fold expression</a>s is <code>...</code> and the <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">parameter pack</a>'s name sandwiched in between the operator, all encapsulated within a pair of brackets. Which side of the operator the <code>...</code> appears at defines if the <a href="#BM_(fold%20expression)%2Fi">fold expression</a> will be left <a href="#BM_(associativity%7Cassociative)%2Fi">associative</a> or right <a href="#BM_(associativity%7Cassociative)%2Fi">associative</a>.</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span>... R&gt;
 T <span class="hljs-title">test</span><span class="hljs-params">(R... args)</span> </span>{
     R l_ass_res = (... - args);  <span class="hljs-comment">// ((((a-b)-c)-d)-...)</span>
@@ -5163,13 +5208,13 @@ T <span class="hljs-title">test</span><span class="hljs-params">(R... args)</spa
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Just a heads up that, depending on the operator, <a href="#BM_(associativity%7Cassociative)%2Fi">associativity</a> matters. For example <code>((5-4)-3)</code> is not equal to <code>(5-(4-3))</code>.</p>
 </div>
-<p>To get the size of a <a href="#BM_(parameter%20pack)%2Fi">parameter pack</a>, add <code>...</code> after the <code>sizeof</code> operator.</p>
+<p>To get the size of a <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">parameter pack</a>, add <code>...</code> after the <code>sizeof</code> operator.</p>
 <pre class="hljs"><code><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> X, <span class="hljs-keyword">typename</span>... R&gt;
 <span class="hljs-function"><span class="hljs-type">size_t</span> <span class="hljs-title">calculate_size</span><span class="hljs-params">(R... args)</span> </span>{
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">sizeof</span>...(args);
 }
 </code></pre>
-<p><a href="#BM_(parameter%20pack)%2Fi">Parameter pack</a>s are used internally within C++'s implementation of analogues to Python's tuples and zip: <code>std::pair</code>, <code>std::tuple</code>, and <code>std::zip</code>.</p>
+<p><a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">Parameter pack</a>s are used internally within C++'s implementation of analogues to Python's tuples and zip: <code>std::pair</code>, <code>std::tuple</code>, and <code>std::zip</code>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Examples adapted from <a href="https://crascit.com/2015/03/21/practical-uses-for-variadic-templates/">here</a>.</p>
@@ -5249,6 +5294,378 @@ Vector&lt;Option, <span class="hljs-type">int</span>&gt; v { <span class="hljs-n
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>For a full breakdown, see <a href="https://stackoverflow.com/a/613132">here</a>.</p>
+</div>
+<a name="H_Callable%20Type%20Unpacking"></a><h3>Callable Type Unpacking</h3>
+<p><a name="BM_(Core%20Language%5C%2FTemplates%2FCallable%20Type%20Unpacking)_TOPIC%2F"></a><strong></strong></p>
+<p>A callable (function, <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>, <a href="#BM_(lambda)%2Fi">lambda</a>)'s type encompasses multiple other types. For example, the following function's type is <code>int(long, short)</code> ...</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">my_func</span><span class="hljs-params">(<span class="hljs-type">long</span> lval, <span class="hljs-type">short</span> sval)</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-number">5</span>;
+}
+</code></pre>
+<p>But that type is composed of 3 other types:</p>
+<ul>
+<li><code>int</code>, which is the return type.</li>
+<li><code>long</code>, which is the first parameter type.</li>
+<li><code>short</code>, which is the second parameter type.</li>
+</ul>
+<p>The subsections below describe how to unpack a callable's type such that you can extract out the types it's composed of. Each callable type has a slightly different way of unpacking types.</p>
+<a name="H1_Functions"></a><h4>Functions</h4>
+<p><a name="BM_(Core%20Language%5C%2FTemplates%2FCallable%20Type%20Unpacking%2FFunctions)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FType%20Cloning)_TOPIC%2F">Core Language/Templates/Type Cloning</a></li>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FSpecialization)_TOPIC%2F">Core Language/Templates/Specialization</a></li>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FVariadic)_TOPIC%2F">Core Language/Templates/Variadic</a></li>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FType%20Aliasing)_TOPIC%2F">Core Language/Templates/Type Aliasing</a></li>
+<li><a href="#BM_(Core%20Language%5C%2FClasses%2FFunctors)_TOPIC%2F">Core Language/Classes/Functors</a></li>
+<li><a href="#BM_(Core%20Language%5C%2FLambdas)_TOPIC%2F">Core Language/Lambdas</a></li>
+</ul>
+</div>
+<p>A <a href="#BM_(template)%2Fi">template</a> can be used to unpack / extract the types that make up a function's declaration. The process works by first creating a <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> with a single <a href="#BM_(template%20parameter)%2Fi">template parameter</a> that's left unimplemented.</p>
+<pre class="hljs"><code><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> Fn&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">func_types</span>;  <span class="hljs-comment">// unimplemented</span>
+</code></pre>
+<p>When a function type is passed <code>func_types&lt;Fn&gt;</code>'s <a href="#BM_(template%20parameter)%2Fi">template parameter</a>, the C++ <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> expects a <a href="#BM_(template%20specialization)%2Fi">template specialization</a> with <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s for the return type and parameter types. This <a href="#BM_(template%20specialization)%2Fi">template specialization</a> provides an implementation for the unimplemented <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>, where that implementation is simply a set of <a href="#BM_(type%20alias)%2Fi">type alias</a>es to hold on to the return and parameter types.</p>
+<pre class="hljs"><code><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> R, <span class="hljs-keyword">typename</span> P1, <span class="hljs-keyword">typename</span> P2&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">func_types</span>&lt;<span class="hljs-built_in">R</span>(P1, P2)&gt; {
+    <span class="hljs-keyword">using</span> <span class="hljs-type">return_t</span> = R;
+    <span class="hljs-keyword">using</span> <span class="hljs-type">param1_t</span> = P1;
+    <span class="hljs-keyword">using</span> <span class="hljs-type">param2_t</span> = P2;
+};
+</code></pre>
+<p>When <code>func_types&lt;Fn&gt;</code> is used, <code>Fn</code> needs to be a <em>function type declaration</em>. That function type declaration is typically extracted from an existing function using <code>decltype()</code>.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">my_func</span><span class="hljs-params">(<span class="hljs-type">long</span> lval, <span class="hljs-type">short</span> sval)</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-number">5</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">using</span> types = func_types&lt;<span class="hljs-keyword">decltype</span>(my_func)&gt;;
+    std::cout &lt;&lt; (std::is_same&lt;types::<span class="hljs-type">return_t</span>, <span class="hljs-type">int</span>&gt;::value ? <span class="hljs-string">"true"</span> : <span class="hljs-string">"false"</span>) &lt;&lt; std::endl;   <span class="hljs-comment">// prints "true"</span>
+    std::cout &lt;&lt; (std::is_same&lt;types::<span class="hljs-type">param1_t</span>, <span class="hljs-type">long</span>&gt;::value ? <span class="hljs-string">"true"</span> : <span class="hljs-string">"false"</span>) &lt;&lt; std::endl;  <span class="hljs-comment">// prints "true"</span>
+    std::cout &lt;&lt; (std::is_same&lt;types::<span class="hljs-type">param2_t</span>, <span class="hljs-type">short</span>&gt;::value ? <span class="hljs-string">"true"</span> : <span class="hljs-string">"false"</span>) &lt;&lt; std::endl; <span class="hljs-comment">// prints "true"</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>The <code>func_types</code> <a href="#BM_(template%20specialization)%2Fi">template specialization</a> is specifically for a two parameter function, where the <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> has the function's types nested within as the <a href="#BM_(type%20alias)%2Fi">type alias</a>es. It won't work for 0 parameter functions, or 1 parameter functions, or 3 parameter functions, or etc... A <a href="#BM_(template%20specialization)%2Fi">template specialization</a> will be needed for each of those.</p>
+<p>To support a function with an arbitrary number of parameters, a <a href="#BM_(template)%2Fi">template</a> is needed that uses a <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">template parameter pack</a> to represent an arbitrary list of types and recursion to hone in on a specific index within that list.</p>
+<pre class="hljs"><code><span class="hljs-keyword">template</span> &lt;std::<span class="hljs-type">size_t</span> N, <span class="hljs-keyword">typename</span> T0, <span class="hljs-keyword">typename</span> ... Ts&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">recurse_to_type</span> {
+    <span class="hljs-keyword">using</span> type = <span class="hljs-keyword">typename</span> recurse_to_type&lt;N<span class="hljs-number">-1u</span>, Ts...&gt;::type;
+};
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T0, <span class="hljs-keyword">typename</span> ... Ts&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">recurse_to_type</span>&lt;<span class="hljs-number">0u</span>, T0, Ts...&gt; {  <span class="hljs-comment">// template specialization for when N=0</span>
+    <span class="hljs-keyword">using</span> type = T0;
+};
+</code></pre>
+<p><code>recurse_to_type&lt;N, T0, Ts&gt;</code> takes in an index <code>N</code>, a starting type <code>T0</code>, and a <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">parameter pack</a> of remaining types <code>Ts</code>. It recursively pulls the first type out <code>Ts</code> (first type in <code>Ts</code> becomes <code>T0</code> in next recursion) and subtracts <code>N</code> by 1 until it reaches 0, at which point the <a href="#BM_(template%20specialization)%2Fi">template specialization</a> <code>recurse_to_type&lt;0, T0, Ts&gt;</code> sets that first type <code>T0</code> into the <a href="#BM_(type%20alias)%2Fi">type alias</a>.</p>
+<p>Pulling out an arbitrary parameter type simply involves using <code>recurse_to_type</code> with the list of parameters (represented as a <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">template parameter pack</a>) and the desired <code>N</code>.</p>
+<pre class="hljs"><code><span class="hljs-keyword">template</span> &lt;std::<span class="hljs-type">size_t</span> N, <span class="hljs-keyword">typename</span> Fn&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">param_type</span>;
+
+<span class="hljs-keyword">template</span> &lt;std::<span class="hljs-type">size_t</span> N, <span class="hljs-keyword">typename</span> R, <span class="hljs-keyword">typename</span> ... Ps&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">param_type</span>&lt;N, <span class="hljs-built_in">R</span>(Ps...)&gt; {
+    <span class="hljs-keyword">using</span> type = <span class="hljs-keyword">typename</span> recurse_to_type&lt;N, Ps...&gt;::type;
+};
+</code></pre>
+<p>Pulling out the total number of parameters can be done by passing the <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">parameter pack</a> to the <code>sizeof</code> operator.</p>
+<pre class="hljs"><code><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Fn&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">param_cnt</span>;
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> R, <span class="hljs-keyword">typename</span> ... Ps&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">param_cnt</span>&lt;<span class="hljs-built_in">R</span>(Ps...)&gt; {
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">const</span> std::<span class="hljs-type">size_t</span> cnt { <span class="hljs-keyword">sizeof</span>...(Ps) };  <span class="hljs-comment">// probably should be constexpr</span>
+};
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FCompile-time%20Evaluation)_TOPIC%2F">Core Language/Compile-time Evaluation</a> (describes <code>constexpr</code>)</li>
+</ul>
+</div>
+<p>Pulling out a return type is done similarly, but there's no recursion involved as it's always a single type.</p>
+<pre class="hljs"><code><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Fn&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">ret_type</span>;
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> R, <span class="hljs-keyword">typename</span> ... Ps&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">ret_type</span>&lt;<span class="hljs-built_in">R</span>(Ps...)&gt; {
+    <span class="hljs-keyword">using</span> type = R;
+};
+</code></pre>
+<p>Usage is straight forward for <code>ret_type</code> and <code>param_count</code>. When <code>param_type&lt;N&gt;</code> is used, it needs to target a specific parameter by its index.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">my_func</span><span class="hljs-params">(<span class="hljs-type">long</span> lval, <span class="hljs-type">short</span> sval)</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-number">5</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">using</span> r = ret_type&lt;<span class="hljs-keyword">decltype</span>(my_func)&gt;::type;
+    <span class="hljs-keyword">using</span> p0 = param_type&lt;<span class="hljs-number">0</span>, <span class="hljs-keyword">decltype</span>(my_func)&gt;::type;
+    <span class="hljs-keyword">using</span> p1 = param_type&lt;<span class="hljs-number">1</span>, <span class="hljs-keyword">decltype</span>(my_func)&gt;::type;
+    std::cout &lt;&lt; (std::is_same&lt;r, <span class="hljs-type">int</span>&gt;::value ? <span class="hljs-string">"true"</span> : <span class="hljs-string">"false"</span>) &lt;&lt; std::endl;    <span class="hljs-comment">// prints "true"</span>
+    std::cout &lt;&lt; (std::is_same&lt;p0, <span class="hljs-type">long</span>&gt;::value ? <span class="hljs-string">"true"</span> : <span class="hljs-string">"false"</span>) &lt;&lt; std::endl;  <span class="hljs-comment">// prints "true"</span>
+    std::cout &lt;&lt; (std::is_same&lt;p1, <span class="hljs-type">short</span>&gt;::value ? <span class="hljs-string">"true"</span> : <span class="hljs-string">"false"</span>) &lt;&lt; std::endl; <span class="hljs-comment">// prints "true"</span>
+    std::cout &lt;&lt; param_cnt&lt;<span class="hljs-keyword">decltype</span>(my_func)&gt;::cnt &lt;&lt; std::endl;                   <span class="hljs-comment">// prints "2"</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's a much simpler way to do all of this if you're already familiar with <code>std::tuple</code> from the C++ standard library, documented <a href="https://stackoverflow.com/a/24948381">here</a>. Basically, wrap the parameter types within a <code>std::tuple</code>'s type, and then use <code>std::tuple</code>'s type access functions to pull out individual types within that tuple type / number of types nested in that tuple type.</p>
+<pre class="hljs"><code><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> Fn&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">func_types</span>; <span class="hljs-comment">// unimplemented</span>
+
+<span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> R, <span class="hljs-keyword">typename</span>... Ps&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">func_types</span>&lt;<span class="hljs-built_in">R</span>(Ps...)&gt; {
+    <span class="hljs-keyword">using</span> <span class="hljs-type">ret_t</span> = R;
+    <span class="hljs-keyword">using</span> <span class="hljs-type">params_as_tuple_t</span> = std::tuple&lt;Ps...&gt;;
+
+    <span class="hljs-keyword">template</span>&lt;std::<span class="hljs-type">size_t</span> N&gt;
+    <span class="hljs-keyword">using</span> <span class="hljs-type">param_t</span> = std::tuple_element&lt;N, <span class="hljs-type">params_as_tuple_t</span>&gt;::type;
+
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">constexpr</span> std::<span class="hljs-type">size_t</span> param_cnt { std::tuple_size&lt;<span class="hljs-type">params_as_tuple_t</span>&gt;{} };
+};
+
+
+
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">my_func</span><span class="hljs-params">(<span class="hljs-type">long</span> lval, <span class="hljs-type">short</span> sval)</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-number">5</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">using</span> types = func_types&lt;<span class="hljs-keyword">decltype</span>(my_func)&gt;;
+    std::cout &lt;&lt; (std::is_same&lt;types::<span class="hljs-type">ret_t</span>, <span class="hljs-type">int</span>&gt;::value ? <span class="hljs-string">"true"</span> : <span class="hljs-string">"false"</span>) &lt;&lt; std::endl;         <span class="hljs-comment">// prints "true"</span>
+    std::cout &lt;&lt; (std::is_same&lt;types::<span class="hljs-type">param_t</span>&lt;<span class="hljs-number">0u</span>&gt;, <span class="hljs-type">long</span>&gt;::value ? <span class="hljs-string">"true"</span> : <span class="hljs-string">"false"</span>) &lt;&lt; std::endl;  <span class="hljs-comment">// prints "true"</span>
+    std::cout &lt;&lt; (std::is_same&lt;types::<span class="hljs-type">param_t</span>&lt;<span class="hljs-number">1u</span>&gt;, <span class="hljs-type">short</span>&gt;::value ? <span class="hljs-string">"true"</span> : <span class="hljs-string">"false"</span>) &lt;&lt; std::endl; <span class="hljs-comment">// prints "true"</span>
+    std::cout &lt;&lt; types::param_cnt;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>There's also <a href="https://www.boost.org/doc/libs/1_79_0/libs/type_traits/doc/html/boost_typetraits/reference/function_traits.html">Boost's type traits library</a>, which provides a simple <code>function_traits&lt;&gt;</code> <a href="#BM_(template)%2Fi">template</a> that pulls out all the types and other type related information within a function: <code>function_traits&lt;my_func&gt;::result_type</code>, <code>function_traits&lt;my_func&gt;::argN_type</code>, <code>function_traits&lt;my_func&gt;::arity</code>, etc...</p>
+</div>
+<a name="H1_Functors"></a><h4>Functors</h4>
+<p><a name="BM_(Core%20Language%5C%2FTemplates%2FCallable%20Type%20Unpacking%2FFunctors)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FCallable%20Type%20Unpacking%2FFunctions)_TOPIC%2F">Core Language/Templates/Callable Type Unpacking/Functions</a></li>
+<li><a href="#BM_(Core%20Language%5C%2FTemplates%2FAuto%20Syntax)_TOPIC%2F">Core Language/Templates/Auto Syntax</a></li>
+<li><a href="#BM_(Core%20Language%5C%2FCompile-time%20Evaluation)_TOPIC%2F">Core Language/Compile-time Evaluation</a></li>
+</ul>
+</div>
+<p>Type extraction for <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>s is similar to type extraction for <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>s. The main difference is that, with <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>s, the type extraction is being performed on the <a href="#BM_(function%5B%5Cs%5C-%5Dcall%20operator)%2Fi">function call operator</a>  of the <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>. As such, ...</p>
+<ol>
+<li>
+<p>the <a href="#BM_(template%20specialization)%2Fi">template specialization</a> for a <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a> has to take in an extra type that maps to the actual <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a> <a href="#BM_(object%7Cinstance)%2Fi">object</a>.</p>
+<pre class="hljs"><code><span class="hljs-comment">// for function</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> R, <span class="hljs-keyword">typename</span> ... Ps&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">my_struct</span>&lt;<span class="hljs-built_in">R</span>(Ps...)&gt; { <span class="hljs-comment">/* fill me in  */</span> };
+
+<span class="hljs-comment">// for functor's function call operator</span>
+<span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> O, <span class="hljs-keyword">typename</span> R, <span class="hljs-keyword">typename</span>... Ps&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">my_struct</span>&lt;<span class="hljs-built_in">R</span> (O::*)(Ps...)&gt; { <span class="hljs-comment">/* fill me in */</span>  };
+</code></pre>
+<p>In the example above, the <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a> takes in the extra <a href="#BM_(template%20parameter)%2Fi">template parameter</a> <code>O</code> and the <a href="#BM_(template%20parameter)%2Fi">template parameter</a> breakdown is <code>R (O::*)(Ps...)</code>, which essentially is mapping <code>O</code> to the type of the <code>this</code> <a href="#BM_(pointer)%2Fi">pointer</a> with the <a href="#BM_(pointer)%2Fi">pointer</a>.</p>
+</li>
+<li>
+<p>the type being passed to the <a href="#BM_(template%20parameter)%2Fi">template parameter</a> needs to be the type of the <a href="#BM_(function%5B%5Cs%5C-%5Dcall%20operator)%2Fi">function call operator</a>.</p>
+<pre class="hljs"><code><span class="hljs-comment">// for function</span>
+<span class="hljs-keyword">using</span> types = my_type&lt;<span class="hljs-keyword">decltype</span>(my_func)&gt;;
+
+<span class="hljs-comment">// for functor</span>
+<span class="hljs-keyword">using</span> types = my_type&lt;<span class="hljs-keyword">decltype</span>(&amp;my_functor::<span class="hljs-built_in">operator</span>())&gt;;
+</code></pre>
+<p>In the example above, the <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a> version is passing the type of that <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>'s <a href="#BM_(function%5B%5Cs%5C-%5Dcall%20operator)%2Fi">function call operator</a>: <code>decltype(&amp;my_functor::operator())</code>.</p>
+</li>
+</ol>
+<p>The following code adapts the code to extract arbitrary parameters from the previous section to work with <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>s as well.</p>
+<pre class="hljs"><code><span class="hljs-comment">//</span>
+<span class="hljs-comment">// recurse_to_type remains the same as it did before</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-keyword">template</span> &lt;std::<span class="hljs-type">size_t</span> N, <span class="hljs-keyword">typename</span> T0, <span class="hljs-keyword">typename</span> ... Ts&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">recurse_to_type</span> {
+    <span class="hljs-keyword">using</span> type = <span class="hljs-keyword">typename</span> recurse_to_type&lt;N<span class="hljs-number">-1u</span>, Ts...&gt;::type;
+};
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T0, <span class="hljs-keyword">typename</span> ... Ts&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">recurse_to_type</span>&lt;<span class="hljs-number">0u</span>, T0, Ts...&gt; {  <span class="hljs-comment">// template specialization for when N=0</span>
+    <span class="hljs-keyword">using</span> type = T0;
+};
+
+
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// param_type now has a template specialization for functors</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-keyword">template</span> &lt;std::<span class="hljs-type">size_t</span> N, <span class="hljs-keyword">typename</span> Fn&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">param_type</span>;
+
+<span class="hljs-keyword">template</span> &lt;std::<span class="hljs-type">size_t</span> N, <span class="hljs-keyword">typename</span> R, <span class="hljs-keyword">typename</span> ... Ps&gt; <span class="hljs-comment">// for function</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">param_type</span>&lt;N, <span class="hljs-built_in">R</span>(Ps...)&gt; {
+    <span class="hljs-keyword">using</span> type = <span class="hljs-keyword">typename</span> recurse_to_type&lt;N, Ps...&gt;::type;
+};
+
+<span class="hljs-keyword">template</span> &lt;std::<span class="hljs-type">size_t</span> N, <span class="hljs-keyword">typename</span> O, <span class="hljs-keyword">typename</span> R, <span class="hljs-keyword">typename</span>... Ps&gt; <span class="hljs-comment">// for functor</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">param_type</span>&lt;N, <span class="hljs-built_in">R</span> (O::*)(Ps...)&gt; {
+    <span class="hljs-keyword">using</span> type = <span class="hljs-keyword">typename</span> recurse_to_type&lt;N, Ps...&gt;::type;
+};
+
+
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// param_cnt now has a template specialization for functors</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Fn&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">param_cnt</span>;
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> R, <span class="hljs-keyword">typename</span> ... Ps&gt; <span class="hljs-comment">// for function</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">param_cnt</span>&lt;<span class="hljs-built_in">R</span>(Ps...)&gt; {
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">const</span> <span class="hljs-comment">/*constexpr*/</span> std::<span class="hljs-type">size_t</span> cnt { <span class="hljs-keyword">sizeof</span>...(Ps) };
+};
+
+<span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> O, <span class="hljs-keyword">typename</span> R, <span class="hljs-keyword">typename</span>... Ps&gt; <span class="hljs-comment">// for functor</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">param_cnt</span>&lt;<span class="hljs-built_in">R</span> (O::*)(Ps...)&gt; {
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">const</span> <span class="hljs-comment">/*constexpr*/</span> std::<span class="hljs-type">size_t</span> cnt { <span class="hljs-keyword">sizeof</span>...(Ps) };
+};
+
+
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// ret_type now has a template specialization for functors</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Fn&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">ret_type</span>;
+
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> R, <span class="hljs-keyword">typename</span> ... Ps&gt; <span class="hljs-comment">// for function</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">ret_type</span>&lt;<span class="hljs-built_in">R</span>(Ps...)&gt; {
+    <span class="hljs-keyword">using</span> type = R;
+};
+
+<span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> O, <span class="hljs-keyword">typename</span> R, <span class="hljs-keyword">typename</span>... Ps&gt; <span class="hljs-comment">// for functor</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">ret_type</span>&lt;<span class="hljs-built_in">R</span> (O::*)(Ps...)&gt; {
+    <span class="hljs-keyword">using</span> type = R;
+};
+
+
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// usage</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">my_functor</span> {
+    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span> <span class="hljs-params">(<span class="hljs-type">long</span> lval, <span class="hljs-type">short</span> sval)</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-number">5</span>;
+    }
+};
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">using</span> functor_func_call_type = <span class="hljs-keyword">decltype</span>(&amp;my_functor::<span class="hljs-built_in">operator</span>());
+    <span class="hljs-keyword">using</span> r = ret_type&lt;functor_func_call_type&gt;::type;
+    <span class="hljs-keyword">using</span> p0 = param_type&lt;<span class="hljs-number">0</span>, functor_func_call_type&gt;::type;
+    <span class="hljs-keyword">using</span> p1 = param_type&lt;<span class="hljs-number">1</span>, functor_func_call_type&gt;::type;
+    std::cout &lt;&lt; (std::is_same&lt;r, <span class="hljs-type">int</span>&gt;::value ? <span class="hljs-string">"true"</span> : <span class="hljs-string">"false"</span>) &lt;&lt; std::endl;    <span class="hljs-comment">// prints "true"</span>
+    std::cout &lt;&lt; (std::is_same&lt;p0, <span class="hljs-type">long</span>&gt;::value ? <span class="hljs-string">"true"</span> : <span class="hljs-string">"false"</span>) &lt;&lt; std::endl;  <span class="hljs-comment">// prints "true"</span>
+    std::cout &lt;&lt; (std::is_same&lt;p1, <span class="hljs-type">short</span>&gt;::value ? <span class="hljs-string">"true"</span> : <span class="hljs-string">"false"</span>) &lt;&lt; std::endl; <span class="hljs-comment">// prints "true"</span>
+    std::cout &lt;&lt; param_cnt&lt;functor_func_call_type&gt;::cnt &lt;&lt; std::endl;                   <span class="hljs-comment">// prints "2"</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p><a href="#BM_(compile-time)%2Fi">Compile-time</a> expressions can be used to unify the usage of the <a href="#BM_(template%20specialization)%2Fi">template specialization</a>s such that you can pass in a function type or <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a> type as the <a href="#BM_(template%20parameter)%2Fi">template parameter</a> (as opposed to passing in the type of the <a href="#BM_(function%5B%5Cs%5C-%5Dcall%20operator)%2Fi">function call operator</a>). A phony function can be used to encompass a <a href="#BM_(compile-time)%2Fi">compile-time</a> expression which picks the appropriate <a href="#BM_(template%20specialization)%2Fi">template specialization</a> based on the type traits of the <a href="#BM_(template%20parameter)%2Fi">template parameter</a> passed in.</p>
+<pre class="hljs"><code><span class="hljs-comment">// this is specifically targeting the ret_type&lt;&gt; template created above, you'd</span>
+<span class="hljs-comment">// have one of these functions for param_type&lt;&gt; and param_cnt&lt;&gt; as well.</span>
+<span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">unified_ret_type</span> {
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">auto</span> _fake() {
+        <span class="hljs-function"><span class="hljs-keyword">if</span> <span class="hljs-title">constexpr</span> <span class="hljs-params">(!std::is_function&lt;T&gt;::value)</span> </span>{
+            <span class="hljs-keyword">return</span> ret_type&lt;<span class="hljs-keyword">decltype</span>(&amp;T::<span class="hljs-built_in">operator</span>())&gt; {};
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">return</span> ret_type&lt;T&gt; {};
+        }
+    }
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">using</span> type = <span class="hljs-keyword">decltype</span>(unified_ret_type&lt;T&gt;::_fake())::type;
+};
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This code above makes use of the type traits library in the C++ standard libraries. Type traits are <a href="#BM_(template)%2Fi">template</a>s that provide information about types (e.g if a type is signed or unsigned, if it has a <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a>, etc...). The link below jumps to that section. It's safe to read at this point as it doesn't require any background knowledge other than how to make use of <a href="#BM_(template)%2Fi">template</a>s, which is something you should already be aware of at this point.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FType%20Traits)_TOPIC%2F">Library Functions/Type Traits</a></li>
+</ul>
+</div>
+<p>Then, you simply need to use <code>decltype()</code> to determine what return type an invocation of the above function would return.</p>
+<pre class="hljs"><code><span class="hljs-keyword">using</span> r = <span class="hljs-keyword">decltype</span>(<span class="hljs-built_in">dummy_function</span>&lt;my_functor&gt;())::type;        <span class="hljs-comment">// pass in my_functor type</span>
+<span class="hljs-keyword">using</span> r = <span class="hljs-keyword">decltype</span>(<span class="hljs-built_in">dummy_function</span>&lt;<span class="hljs-keyword">decltype</span>(my_func)&gt;())::type; <span class="hljs-comment">// pass in my_func's type</span>
+<span class="hljs-comment">// RECALL: my_func is an actual function, it's put in decltype() to pull out it's type</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The following adapts the <code>std::tuple</code> approach documented <a href="https://stackoverflow.com/a/24948381">here</a> to work with <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>s as well as functions.</p>
+<pre class="hljs"><code><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> Fn&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">func_types</span>; <span class="hljs-comment">// unimplemented</span>
+
+<span class="hljs-comment">// template specialization for functions</span>
+<span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> R, <span class="hljs-keyword">typename</span>... Ps&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">func_types</span>&lt;<span class="hljs-built_in">R</span>(Ps...)&gt; {
+    <span class="hljs-keyword">using</span> <span class="hljs-type">ret_t</span> = R;
+    <span class="hljs-keyword">using</span> <span class="hljs-type">params_as_tuple_t</span> = std::tuple&lt;Ps...&gt;;
+
+    <span class="hljs-keyword">template</span>&lt;std::<span class="hljs-type">size_t</span> N&gt;
+    <span class="hljs-keyword">using</span> <span class="hljs-type">param_t</span> = std::tuple_element&lt;N, <span class="hljs-type">params_as_tuple_t</span>&gt;::type;
+
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> std::<span class="hljs-type">size_t</span> param_cnt { std::tuple_size&lt;<span class="hljs-type">params_as_tuple_t</span>&gt;{} };
+};
+
+<span class="hljs-comment">// template specialization for functors</span>
+<span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> TObj, <span class="hljs-keyword">typename</span> R, <span class="hljs-keyword">typename</span>... Ps&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">func_types</span>&lt;<span class="hljs-built_in">R</span> (TObj::*)(Ps...)&gt; {
+    <span class="hljs-keyword">using</span> <span class="hljs-type">ret_t</span> = R;
+    <span class="hljs-keyword">using</span> <span class="hljs-type">params_as_tuple_t</span> = std::tuple&lt;Ps...&gt;;
+
+    <span class="hljs-keyword">template</span>&lt;std::<span class="hljs-type">size_t</span> N&gt;
+    <span class="hljs-keyword">using</span> <span class="hljs-type">param_t</span> = std::tuple_element&lt;N, <span class="hljs-type">params_as_tuple_t</span>&gt;::type;
+
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> std::<span class="hljs-type">size_t</span> param_cnt { std::tuple_size&lt;<span class="hljs-type">params_as_tuple_t</span>&gt;{} };
+};
+
+<span class="hljs-comment">// unify template specializations</span>
+<span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">unified_func_types</span> {
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">auto</span> _fake() {
+        <span class="hljs-function"><span class="hljs-keyword">if</span> <span class="hljs-title">constexpr</span> <span class="hljs-params">(!std::is_function&lt;T&gt;::value)</span> </span>{
+            <span class="hljs-keyword">return</span> func_types&lt;<span class="hljs-keyword">decltype</span>(&amp;T::<span class="hljs-built_in">operator</span>())&gt; {};
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">return</span> func_types&lt;T&gt; {};
+        }
+    }
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">using</span> types = <span class="hljs-keyword">decltype</span>(unified_func_types&lt;T&gt;::_fake());
+};
+
+
+
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">my_func</span><span class="hljs-params">(<span class="hljs-type">long</span> lval, <span class="hljs-type">short</span> sval)</span> </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-number">5</span>;
+}
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">my_functor</span> {
+    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span> <span class="hljs-params">(<span class="hljs-type">long</span> lval, <span class="hljs-type">short</span> sval)</span> </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-number">5</span>;
+    }
+};
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// using types = unified_func_types&lt;decltype(my_func)&gt;::types;</span>
+    <span class="hljs-keyword">using</span> types = unified_func_types&lt;my_functor&gt;::types;
+    std::cout &lt;&lt; (std::is_same&lt;types::<span class="hljs-type">ret_t</span>, <span class="hljs-type">int</span>&gt;::value ? <span class="hljs-string">"true"</span> : <span class="hljs-string">"false"</span>) &lt;&lt; std::endl;         <span class="hljs-comment">// prints "true"</span>
+    std::cout &lt;&lt; (std::is_same&lt;types::<span class="hljs-type">param_t</span>&lt;<span class="hljs-number">0u</span>&gt;, <span class="hljs-type">long</span>&gt;::value ? <span class="hljs-string">"true"</span> : <span class="hljs-string">"false"</span>) &lt;&lt; std::endl;  <span class="hljs-comment">// prints "true"</span>
+    std::cout &lt;&lt; (std::is_same&lt;types::<span class="hljs-type">param_t</span>&lt;<span class="hljs-number">1u</span>&gt;, <span class="hljs-type">short</span>&gt;::value ? <span class="hljs-string">"true"</span> : <span class="hljs-string">"false"</span>) &lt;&lt; std::endl; <span class="hljs-comment">// prints "true"</span>
+    std::cout &lt;&lt; types::param_cnt;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
 </div>
 <a name="H_Coroutines"></a><h2>Coroutines</h2>
 <p><a name="BM_(Core%20Language%5C%2FCoroutines)_TOPIC%2F"></a><strong></strong></p>
@@ -6427,6 +6844,75 @@ std:cout &lt;&lt; x; <span class="hljs-comment">// what's in x? </span>
 <li><a href="https://github.com/facebook/folly">Folly</a> (Facebook)</li>
 </ul>
 <p>The subsections below detail important functionality across the many C++ libraries in existence. If the functionality being documented is for a third party library, it'll be signalled in some way (e.g. <a href="#BM_(namespace)%2Fi">namespace</a> / header files / comments used in sample code will make it apparent).</p>
+<a name="H_Type%20Traits"></a><h2>Type Traits</h2>
+<p><a name="BM_(Library%20Functions%5C%2FType%20Traits)_TOPIC%2F"></a><strong></strong></p>
+<p>The C++ standard library includes a set of <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es that detects the traits of a type at <a href="#BM_(compile-time)%2Fi">compile-time</a>. This is useful in cases where <a href="#BM_(template%20parameter)%2Fi">template parameter</a>s need to be restricted.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+T <span class="hljs-title">test</span><span class="hljs-params">(T t)</span> </span>{
+    <span class="hljs-built_in">static_assert</span>(std::is_integral&lt;T&gt;::value, <span class="hljs-string">"Must be integral"</span>);
+    <span class="hljs-keyword">return</span> t + <span class="hljs-number">1</span>;
+}
+
+<span class="hljs-built_in">test</span>(<span class="hljs-number">4</span>);     <span class="hljs-comment">// OK</span>
+<span class="hljs-built_in">test</span>(<span class="hljs-number">4ULL</span>);  <span class="hljs-comment">// OK</span>
+<span class="hljs-built_in">test</span>(<span class="hljs-number">4.09</span>);  <span class="hljs-comment">// FAIL -- 4.09 is a floating point number, not an integral number</span>
+</code></pre>
+<p>The <code>value</code> <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> is <code>true</code> / <code>false</code> depending on if the type passes the check. A shortcut in later versions of C++ is to append <code>_v</code> to the name of the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> performing the check rather than explicitly querying the <code>value</code> <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> (e.g. <code>std::is_integral&lt;T&gt;::value</code> vs <code>std::is_integral_v&lt;T&gt;</code>).</p>
+<p>List of useful checks:</p>
+<ul>
+<li><code>std::is_signed</code> - ensures a type is signed.</li>
+<li><code>std::is_unsigned</code> - ensures a type is unsigned.</li>
+<li><code>std::is_integral</code> - ensures a type is an integer (e.g. <code>short int</code>, <code>int</code>, <code>unsigned long long int</code>, etc..)</li>
+<li><code>std::is_pod</code> - ensures a type is a <a href="#BM_(POD)%2F">POD</a>.</li>
+<li><code>std::is_fundamental</code> - ensures a type is a <a href="#BM_(fundamental%20type%7Cbuilt-in%20type)%2Fi">fundamental type</a>.</li>
+<li><code>std::is_abstract</code> - ensures a type is an abstract <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> (has at least one <a href="#BM_(pure%5B%5C-%5Cs%5Dvirtual%20method%7Cpure%5B%5C-%5Cs%5Dvirtual%20function)%2Fi">pure virtual function</a>).</li>
+<li><code>std::is_copy_constructible</code> - ensures type has a <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a>.</li>
+<li><code>std::is_copy_assignable</code> - ensures type has <a href="#BM_(copy%20assignment)%2Fi">copy assignment</a>.</li>
+<li><code>std::is_move_constructible</code> - ensures type has a <a href="#BM_(move%20constructor)%2Fi">move constructor</a>.</li>
+<li><code>std::is_nothrow_move_constructible</code> - ensures type has a <a href="#BM_(move%20constructor)%2Fi">move constructor</a> that never throws an <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a> (<code>noexcept</code>).</li>
+<li><code>std::is_move_assignable</code> - ensures type has <a href="#BM_(move%20assignment)%2Fi">move assignment</a>.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FVariables%2FAliasing)_TOPIC%2F">Core Language/Variables/Aliasing</a> (refresher)</li>
+</ul>
+</div>
+<p>Type traits may also be manipulated at <a href="#BM_(compile-time)%2Fi">compile-time</a> via a set of <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;
+<span class="hljs-keyword">auto</span> <span class="hljs-title">test</span><span class="hljs-params">(T t)</span> </span>{
+    <span class="hljs-keyword">using</span> R = std::make_unsigned&lt;T&gt;::type;  <span class="hljs-comment">// R is same type as T but unsigned (if it already isn't)</span>
+    R x { t + <span class="hljs-number">1</span> };
+    <span class="hljs-keyword">return</span> x;
+}
+</code></pre>
+<p>The <code>type</code> <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> contains the name type. A shortcut in later versions of C++ is to append <code>_t</code> to the name of the <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> doing the manipulation rather than explicitly querying the <code>type</code> <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">field</a> (e.g. <code>std::make_unsigned&lt;T&gt;::type</code> vs <code>std::make_unsigned_t&lt;T&gt;</code>).</p>
+<p>List of useful conversions:</p>
+<ul>
+<li><code>std::remove_cv</code> - remove <code>const</code> and / or <code>volatile</code>.</li>
+<li><code>std::remove_const</code> - remove <code>const</code>.</li>
+<li><code>std::remove_volatile</code> - remove <code>volatile</code>.</li>
+<li><code>std::remove_pointer</code> - make into non-<a href="#BM_(pointer)%2Fi">pointer</a> type (removes a <code>*</code> from the type).</li>
+<li><code>std::remove_reference</code> - make into non-<a href="#BM_(reference)%2Fi">reference</a> type.</li>
+<li><code>std::add_cv</code> - add <code>const</code> and / or <code>volatile</code>.</li>
+<li><code>std::add_const</code> - add <code>const</code>.</li>
+<li><code>std::add_volatile</code> - add <code>volatile</code>.</li>
+<li><code>std::add_pointer</code> - make into <a href="#BM_(pointer)%2Fi">pointer</a> type (adds a <code>*</code> to the type).</li>
+<li><code>std::add_lvalue_reference</code> - make into a <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">lvalue</a> <a href="#BM_(reference)%2Fi">reference</a> type.</li>
+<li><code>std::add_rvalue_reference</code> - make into a <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a> type.</li>
+<li><code>std::make_signed</code> - make into an equivalent version of the same type that's signed.</li>
+<li><code>std::make_unsigned</code> - make into an equivalent version of the same type that's unsigned.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Are <a href="#BM_(constant%20expression)%2Fi">constant expression</a>s used to write these checks and transformations? Maybe.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Core%20Language%5C%2FCompile-time%20Evaluation)_TOPIC%2F">Core Language/Compile-time Evaluation</a></li>
+</ul>
+</div>
 <a name="H_Allocators"></a><h2>Allocators</h2>
 <p><a name="BM_(Library%20Functions%5C%2FAllocators)_TOPIC%2F"></a><strong></strong></p>
 <p>Allocators allow for customizing how <a href="#BM_(object%7Cinstance)%2Fi">object</a>s are <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a>d and <a href="#BM_(deallocation%7Cdeallocate)%2Fi">deallocate</a>d. Some library APIs allow you to provide a custom allocator rather than using the typical <code>new</code>/<code>new[]</code> and <code>delete</code>/<code>delete[]</code> operators. In certain scenarios where performance is important (e.g. gaming, simulations, high-frequency trading, etc..), custom allocators are often used. A custom allocator could increase performance by ...</p>
@@ -6438,7 +6924,7 @@ std:cout &lt;&lt; x; <span class="hljs-comment">// what's in x? </span>
 <p>By default, libraries that support custom allocators will default to <code>std::allocator</code>, which just wraps the <code>new</code>/<code>new[]</code> and <code>delete</code>/<code>delete[]</code> operators.</p>
 <p>To implement a custom allocator, you need to create a <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> with a single <a href="#BM_(template%20parameter)%2Fi">template parameter</a> representing the type being <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a>d / <a href="#BM_(deallocation%7Cdeallocate)%2Fi">deallocate</a>d. The <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> must have the following traits...</p>
 <ol>
-<li>a default <a href="#BM_(constructor)%2Fi">constructor</a>.</li>
+<li>a <a href="#BM_(default%20constructor)%2Fi">default constructor</a>.</li>
 <li>a <a href="#BM_(constructor)%2Fi">constructor</a> to "rebind" another allocator (copy).</li>
 <li>a nested <a href="#BM_(type%20alias)%2Fi">type alias</a> <code>value_type</code> corresponding to the <a href="#BM_(template%20parameter)%2Fi">template parameter</a>.</li>
 <li>an <a href="#BM_(allocation%7Callocate)%2Fi">allocate</a> <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">method</a>.</li>
@@ -6556,7 +7042,7 @@ std::unique_ptr&lt;<span class="hljs-type">int</span>[]&gt; ptr { <span class="h
 std::unique_ptr&lt;<span class="hljs-type">int</span>&gt; ptr { <span class="hljs-keyword">new</span> <span class="hljs-type">int</span> {<span class="hljs-number">5</span>} };
 std::unique_ptr&lt;<span class="hljs-type">int</span>&gt; ptr = std::<span class="hljs-built_in">make_unique</span>&lt;<span class="hljs-type">int</span>&gt;(<span class="hljs-number">5</span>);  <span class="hljs-comment">// make_unique automatically calls new</span>
 </code></pre>
-<p>Unique <a href="#BM_(pointer)%2Fi">pointer</a>s don't support custom allocators: You pass the <a href="#BM_(pointer)%2Fi">pointer</a> you want to track directly into the <a href="#BM_(constructor)%2Fi">constructor</a> or create it via <code>std::make_unique()</code>. But, unique <a href="#BM_(pointer)%2Fi">pointer</a>s do support taking in a function-like <a href="#BM_(object%7Cinstance)%2Fi">object</a> (e.g. function, <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>, <a href="#BM_(lambda)%2Fi">lambda</a>) to invoke instead of using <code>delete</code> / <code>delete[]</code> on the tracked <a href="#BM_(pointer)%2Fi">pointer</a>. This is useful in cases where the <a href="#BM_(pointer)%2Fi">pointer</a> is being tracked ...</p>
+<p>Unique <a href="#BM_(pointer)%2Fi">pointer</a>s don't support custom allocators: You pass the <a href="#BM_(pointer)%2Fi">pointer</a> you want to track directly into the <a href="#BM_(constructor)%2Fi">constructor</a> or create it via <code>std::make_unique()</code>. But, unique <a href="#BM_(pointer)%2Fi">pointer</a>s do support taking in a <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">function-like object</a> (e.g. function, <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>, <a href="#BM_(lambda)%2Fi">lambda</a>) to invoke instead of using <code>delete</code> / <code>delete[]</code> on the tracked <a href="#BM_(pointer)%2Fi">pointer</a>. This is useful in cases where the <a href="#BM_(pointer)%2Fi">pointer</a> is being tracked ...</p>
 <ul>
 <li>wasn't created using <code>new</code> / <code>new[]</code> (e.g. <code>FILE *</code> created using <code>fopen()</code>).</li>
 <li>needs to have deletion logged (e.g. print out whenever the <a href="#BM_(object%7Cinstance)%2Fi">object</a> is deleted).</li>
@@ -6714,7 +7200,7 @@ boost::intrusive_ptr&lt;<span class="hljs-type">int</span>&gt; a { <span class="
 <p>The subsections below document some common wrappers <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es and their usages.</p>
 <a name="H_Optional"></a><h3>Optional</h3>
 <p><a name="BM_(Library%20Functions%5C%2FWrappers%2FOptional)_TOPIC%2F"></a><strong></strong></p>
-<p>An optional <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is a wrapper that either holds on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> or is empty (similar to Java or Python's optional <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>).</p>
+<p><code>std::optional</code> is a wrapper that either holds on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> or is empty (similar to Java or Python's optional <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>).</p>
 <pre class="hljs"><code><span class="hljs-function">std::optional&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">take</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
     <span class="hljs-keyword">if</span> (x &lt; <span class="hljs-number">0</span>) {
         <span class="hljs-keyword">return</span> std::<span class="hljs-literal">nullopt</span>;  <span class="hljs-comment">// nullopt = empty optional</span>
@@ -6742,7 +7228,7 @@ boost::intrusive_ptr&lt;<span class="hljs-type">int</span>&gt; a { <span class="
 <p>The typical usecase for tribool is for operations that take a long time to complete. A tribool may be set as indeterminate while the operation is running, then be set to true (success) or false (failure) once the operation completes.</p>
 <a name="H_Tuple"></a><h3>Tuple</h3>
 <p><a name="BM_(Library%20Functions%5C%2FWrappers%2FTuple)_TOPIC%2F"></a><strong></strong></p>
-<p>A tuple <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is a <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that holds on to an arbitrary number of elements of arbitrary types. The number of elements and types of elements must be known at <a href="#BM_(compile-time)%2Fi">compile-time</a>, and any code accessing those elements must know which element it's accessing at <a href="#BM_(compile-time)%2Fi">compile-time</a>.</p>
+<p><code>std::tuple</code> is a <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that holds on to an arbitrary number of elements of arbitrary types. The number of elements and types of elements must be known at <a href="#BM_(compile-time)%2Fi">compile-time</a>, and any code accessing those elements must know which element it's accessing at <a href="#BM_(compile-time)%2Fi">compile-time</a>.</p>
 <pre class="hljs"><code>std::tuple&lt;<span class="hljs-type">int</span>, <span class="hljs-type">long</span>, MyClass&gt; my_tuple{ <span class="hljs-number">1</span>, <span class="hljs-number">500L</span>, MyClass{} };
 <span class="hljs-keyword">auto</span>&amp; x { std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-number">0</span>&gt;(my_tuple) };
 <span class="hljs-keyword">auto</span>&amp; y { std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-number">1</span>&gt;(my_tuple) };
@@ -6780,7 +7266,7 @@ boost::compressed_pair&lt;<span class="hljs-type">int</span>, EmptyClass&gt; cp 
 </div>
 <a name="H_Any"></a><h3>Any</h3>
 <p><a name="BM_(Library%20Functions%5C%2FWrappers%2FAny)_TOPIC%2F"></a><strong></strong></p>
-<p>An any <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is a wrapper that can hold on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of unknown type (a type that isn't known at <a href="#BM_(compile-time)%2Fi">compile-time</a>).</p>
+<p><code>std::any</code> is a wrapper that can hold on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of unknown type (a type that isn't known at <a href="#BM_(compile-time)%2Fi">compile-time</a>).</p>
 <pre class="hljs"><code>std::any wrapper {};
 wrapper.emplace&lt;MyClass&gt; { arg1, arg2 };
 <span class="hljs-keyword">auto</span> v1 = std::<span class="hljs-built_in">any_cast</span>&lt;MyClass&gt;(wrapper); <span class="hljs-comment">// ok</span>
@@ -6802,7 +7288,7 @@ wrapper.emplace&lt;MyClass&gt; { arg1, arg2 };
 <li>Library Functions/Wrappers/Tuple</li>
 </ul>
 </div>
-<p>A variant <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is a type-restricted form of the <code>std::any</code>. Where as with the <code>std::any</code> you can hold on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of any type, with <code>std::variant</code> you can hold on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of one of several predefined types.</p>
+<p><code>std::variant</code> is a type-restricted form of the <code>std::any</code>. Where as with the <code>std::any</code> you can hold on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of any type, with <code>std::variant</code> you can hold on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of one of several predefined types.</p>
 <pre class="hljs"><code>std::variant&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>, MyClass&gt; wrapper {};  <span class="hljs-comment">// may hold on to either int, float, or MyClass</span>
 wrapper.emplace&lt;MyClass&gt; { arg1, arg2 };
 <span class="hljs-keyword">auto</span> v1 = std::<span class="hljs-built_in">get</span>&lt;MyClass&gt;(wrapper);     <span class="hljs-comment">// ok</span>
@@ -6813,7 +7299,7 @@ wrapper.emplace&lt;MyClass&gt; { arg1, arg2 };
 </code></pre>
 <p>To determine which of the allowed types is currently held, use <code>index()</code>.</p>
 <p>To access data, use <code>std::get()</code> where the <a href="#BM_(template%20parameter)%2Fi">template parameter</a> argument is the type you're interested in (similar to how data access is done in <code>std::tuple</code>). If the variant isn't holding an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of the type trying to be extracted, <code>std::get()</code> will throw <code>std::bad_variant_exception</code>. To avoid an <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>, use <code>std::get_if()</code> -- it will return <code>nullptr</code> rather than throw an <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>.</p>
-<p>Unlike <code>std::any</code>, <code>std::variant</code> cannot be left unset (it must hold on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a>). Initially, it creates and holds on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of the first type in its allowed types list. That means the first type in its allowed types list must be constructible with empty initializer arguments (e.g. default <a href="#BM_(constructor)%2Fi">constructor</a>). In the example above, the first allowed type is <code>int</code>, meaning that the variant starts off by holding on to an <code>int</code> created using an empty initializer (will have value of 0).</p>
+<p>Unlike <code>std::any</code>, <code>std::variant</code> cannot be left unset (it must hold on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a>). Initially, it creates and holds on to an <a href="#BM_(object%7Cinstance)%2Fi">object</a> of the first type in its allowed types list. That means the first type in its allowed types list must be constructible with empty initializer arguments (e.g. <a href="#BM_(default%20constructor)%2Fi">default constructor</a>). In the example above, the first allowed type is <code>int</code>, meaning that the variant starts off by holding on to an <code>int</code> created using an empty initializer (will have value of 0).</p>
 <p>The easiest way to work around this problem is to set the first type to <code>std::monostate</code>. This allows your variant to be unset. Trying to call <code>std::get()</code> on an unset variant throws <code>std::bad_variant_access</code>.</p>
 <pre class="hljs"><code>std::variant&lt;std::monostate, <span class="hljs-type">int</span>, <span class="hljs-type">float</span>, MyClass&gt; wrapper {};  <span class="hljs-comment">// may hold on to nothing, int, float, or MyClass</span>
 <span class="hljs-keyword">auto</span> which_type = wrapper.<span class="hljs-built_in">index</span>();     <span class="hljs-comment">// returns 0</span>
@@ -6843,15 +7329,14 @@ std::<span class="hljs-built_in">visit</span>(
 </ul>
 </div>
 <a name="H_Function"></a><h3>Function</h3>
-<p>A function <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> is a standardized wrapper for function-like <a href="#BM_(object%7Cinstance)%2Fi">object</a>s.</p>
-<pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print_num</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span>
-</span>{
+<p><a name="BM_(Library%20Functions%5C%2FWrappers%2FFunction)_TOPIC%2F"></a><strong></strong></p>
+<p><code>std::function</code> is a standardized wrapper for <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">function-like object</a>s.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print_num</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span></span>{
     std::cout &lt;&lt; i &lt;&lt; <span class="hljs-string">'\n'</span>;
 }
  
 <span class="hljs-keyword">struct</span> <span class="hljs-title class_">PrintNum</span> {
-    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span> <span class="hljs-keyword">const</span>
-    </span>{
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span> <span class="hljs-keyword">const</span> </span>{
         std::cout &lt;&lt; i &lt;&lt; <span class="hljs-string">'\n'</span>;
     }
 };
@@ -6868,11 +7353,57 @@ std::function&lt;<span class="hljs-type">void</span>(<span class="hljs-type">int
 <li><a href="#BM_(Core%20Language%5C%2FLambdas)_TOPIC%2F">Core Language/Lambdas</a> (refresher)</li>
 </ul>
 </div>
-<p>The typical use-case for <code>std::function</code> is to provide a function with a unified way to accept all function-like <a href="#BM_(object%7Cinstance)%2Fi">object</a>s (e.g. <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>s and <a href="#BM_(function%20pointer)%2Fi">function pointer</a>s) as a parameter. The alternative would be to explicitly provide an <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a> for each function-like <a href="#BM_(object%7Cinstance)%2Fi">object</a> type.</p>
+<p>The typical use-case for <code>std::function</code> is to provide a function with a unified way to accept all <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">function-like object</a>s (e.g. <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>s and <a href="#BM_(function%20pointer)%2Fi">function pointer</a>s) as a parameter. The alternative would be to explicitly provide an <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a> for each <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">function-like object</a> type.</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">call_func_with_42</span><span class="hljs-params">(std::function&lt;<span class="hljs-type">void</span>(<span class="hljs-type">int</span>)&gt; func)</span> </span>{
     <span class="hljs-built_in">func</span>(<span class="hljs-number">42</span>);
 }
 </code></pre>
+<a name="H_Bind"></a><h3>Bind</h3>
+<p><a name="BM_(Library%20Functions%5C%2FWrappers%2FBind)_TOPIC%2F"></a><strong></strong></p>
+<p><code>std::bind()</code> takes in a <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">function-like object</a> and hardcodes some of its parameters via a new proxy <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">add_numbers</span><span class="hljs-params">(<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j, <span class="hljs-type">bool</span> print)</span> </span>{
+    <span class="hljs-type">int</span> res { i + j };
+    <span class="hljs-keyword">if</span> (print) {
+        std::cout &lt;&lt; (i + j) &lt;&lt; <span class="hljs-string">'\n'</span>;
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+
+
+<span class="hljs-keyword">auto</span> add_to_47 = std::<span class="hljs-built_in">bind</span>(
+    add_numbers,
+    std::placeholders::_1,
+    <span class="hljs-number">47</span>,
+    std::placeholders::_2
+);                  <span class="hljs-comment">// add_to_47() proxies add_numbers(), but hardcodes its 2nd param to 47.</span>
+<span class="hljs-built_in">add_to_47</span>(<span class="hljs-number">3</span>, <span class="hljs-literal">true</span>); <span class="hljs-comment">// prints "50"</span>
+</code></pre>
+<p>The first parameter of <code>std::bind()</code> is the <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">function-like object</a> to proxy, while subsequent parameters define parameter mappings. Specifically, if the argument for a subsequent parameter is ...</p>
+<ul>
+<li><code>std::placeholders::_N</code>, the proxy <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>'s <code>N</code>th parameter is forwarded to the original <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">function-like object</a>'s parameter at that position (e.g. the 2nd parameter of <code>add_to_47()</code> is mapped to the 3rd parameter of <code>add_numbers()</code>).</li>
+<li>something else, that argument is directly passed through to the original <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">function-like object</a>'s parameter at that position (e.g. <code>47</code> is mapped to the 2rd parameter of <code>add_numbers()</code>).</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Testing on godbolt, the proxy <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a> generated by <code>std::bind</code> requires <em>at least</em> as many parameters as the maximum placeholde<a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">r value</a>. So for example, if you only used <code>std::placeholders::_1</code> and <code>std::placeholders::_5</code>, the proxy <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a> still requires that you supply something for 2nd, 3rd, and 4th parameters of the proxy <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a> even though they aren't mapped to anything. You can also supply arguments for a 6th, 7th, 8th, 9th, ... parameter, even though they aren't mapped using <code>std::placeholder</code>s, and it'll be fine. You just can't supply less than 5.</p>
+</div>
+<p>For situations where all hardcoded parameters are at the front (contiguous), <code>std::bind_front()</code> is a more terse alternative. The first parameter of <code>std::bind_front()</code> is the <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">function-like object</a> to proxy, while subsequent parameters list out the hardcoded mappings for parameters 1, 2, 3, etc.. All remaining parameters will implicitly become <code>std::placeholder::_N</code>s that auto-increment from 1.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">add_numbers</span><span class="hljs-params">(<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j, <span class="hljs-type">bool</span> print)</span> </span>{
+    <span class="hljs-type">int</span> res { i + j };
+    <span class="hljs-keyword">if</span> (print) {
+        std::cout &lt;&lt; (i + j) &lt;&lt; <span class="hljs-string">'\n'</span>;
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+
+
+<span class="hljs-keyword">auto</span> add_to_47 = std::<span class="hljs-built_in">bind_front</span>(add_numbers, <span class="hljs-number">47</span>); <span class="hljs-comment">// add_to_47() proxies add_numbers(), but hardcodes its 1st param to 47.</span>
+<span class="hljs-built_in">add_to_47</span>(<span class="hljs-number">3</span>, <span class="hljs-literal">true</span>); <span class="hljs-comment">// prints "50"</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Why not just use a <a href="#BM_(lambda)%2Fi">lambda</a> instead of <code>std::bind()</code> / <code>std::bind_front()</code>? Probably because this is more terse. With a <a href="#BM_(lambda)%2Fi">lambda</a>, you likely will need <code>auto &amp;&amp;</code> for each parameter, <code>decltype(auto)</code> for the return, and <code>std::forward</code>s for each argument being pushed into the original <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">function-like object</a>.</p>
+</div>
 <a name="H_Reference%20Wrapper"></a><h3>Reference Wrapper</h3>
 <p><a name="BM_(Library%20Functions%5C%2FWrappers%2FReference%20Wrapper)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -6887,7 +7418,7 @@ std::function&lt;<span class="hljs-type">void</span>(<span class="hljs-type">int
 <li><a href="#BM_(Core%20Language%5C%2FVariables%2FRvalue%20References)_TOPIC%2F">Core Language/Variables/Rvalue References</a> (refresher)</li>
 </ul>
 </div>
-<p>A <a href="#BM_(reference)%2Fi">reference</a> wrapper is a wrapper that holds a <a href="#BM_(reference)%2Fi">reference</a> to an <a href="#BM_(object%7Cinstance)%2Fi">object</a>. This is important because, in C++, you can't have a <a href="#BM_(reference)%2Fi">reference</a> to a <a href="#BM_(reference)%2Fi">reference</a> like you can have a <a href="#BM_(pointer)%2Fi">pointer</a> to a <a href="#BM_(pointer)%2Fi">pointer</a>. <a href="#BM_(reference)%2Fi">Reference</a>s, from a usage perspective, are treated as if they're the direct <a href="#BM_(object%7Cinstance)%2Fi">object</a> themselves.</p>
+<p><code>std::reference_wrapper</code> is a wrapper that holds a <a href="#BM_(reference)%2Fi">reference</a> to an <a href="#BM_(object%7Cinstance)%2Fi">object</a>. This is important because, in C++, you can't have a <a href="#BM_(reference)%2Fi">reference</a> to a <a href="#BM_(reference)%2Fi">reference</a> like you can have a <a href="#BM_(pointer)%2Fi">pointer</a> to a <a href="#BM_(pointer)%2Fi">pointer</a>. <a href="#BM_(reference)%2Fi">Reference</a>s, from a usage perspective, are treated as if they're the direct <a href="#BM_(object%7Cinstance)%2Fi">object</a> themselves.</p>
 <pre class="hljs"><code><span class="hljs-type">int</span> ** x { ... };                                             <span class="hljs-comment">// OK:  x is a pointer to a pointer to a n integer</span>
 <span class="hljs-type">int</span> &amp;&amp; y { ... };                                             <span class="hljs-comment">// BAD: y is an rvalue reference, NOT a reference to a reference</span>
 std::reference_wrapper&lt;std::reference_wrapper&lt;<span class="hljs-type">int</span>&gt;&gt; z{ ... }; <span class="hljs-comment">// OK:  z is a reference wrapper to a reference wrapper</span>
@@ -7230,7 +7761,7 @@ my_vec1.<span class="hljs-built_in">emplace_back</span>(<span class="hljs-number
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p><code>emplace()</code> / <code>emplace_back()</code> don't copy or move because you pass in initialization arguments directly into the functions. Internally, they use <a href="#BM_(template%20parameter)%2Fi">template parameter</a> packs to forward arguments for <a href="#BM_(object%7Cinstance)%2Fi">object</a> creation (e.g. <a href="#BM_(constructor)%2Fi">constructor</a> arguments, initializer list, etc..).</p>
+<p><code>emplace()</code> / <code>emplace_back()</code> don't copy or move because you pass in initialization arguments directly into the functions. Internally, they use <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">template parameter pack</a>s to forward arguments for <a href="#BM_(object%7Cinstance)%2Fi">object</a> creation (e.g. <a href="#BM_(constructor)%2Fi">constructor</a> arguments, initializer list, etc..).</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
@@ -7357,7 +7888,7 @@ d1.<span class="hljs-built_in">emplace_front</span>(<span class="hljs-number">12
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Recall that "emplace" functions don't copy or move. They're <a href="#BM_(template)%2Fi">template</a>d functions. You pass in <a href="#BM_(object%20initialization)%2Fi">object initialization</a> arguments directly into the functions and it uses a <a href="#BM_(template%20parameter)%2Fi">template parameter</a> pack to forward those arguments for <a href="#BM_(object%7Cinstance)%2Fi">object</a> creation directly within the function (e.g. <a href="#BM_(constructor)%2Fi">constructor</a> arguments, initializer list, etc..).</p>
+<p>Recall that "emplace" functions don't copy or move. They're <a href="#BM_(template)%2Fi">template</a>d functions. You pass in <a href="#BM_(object%20initialization)%2Fi">object initialization</a> arguments directly into the functions and it uses a <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">template parameter pack</a> to forward those arguments for <a href="#BM_(object%7Cinstance)%2Fi">object</a> creation directly within the function (e.g. <a href="#BM_(constructor)%2Fi">constructor</a> arguments, initializer list, etc..).</p>
 </div>
 <p>To delete elements, the same delete functions for <code>std::vector</code> are available here in addition to ...</p>
 <ul>
@@ -7466,7 +7997,7 @@ l1.<span class="hljs-built_in">emplace_front</span>(<span class="hljs-number">12
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Recall that "emplace" functions don't copy or move. They're <a href="#BM_(template)%2Fi">template</a>d functions. You pass in <a href="#BM_(object%20initialization)%2Fi">object initialization</a> arguments directly into the functions and it uses a <a href="#BM_(template%20parameter)%2Fi">template parameter</a> pack to forward those arguments for <a href="#BM_(object%7Cinstance)%2Fi">object</a> creation directly within the function (e.g. <a href="#BM_(constructor)%2Fi">constructor</a> arguments, initializer list, etc..).</p>
+<p>Recall that "emplace" functions don't copy or move. They're <a href="#BM_(template)%2Fi">template</a>d functions. You pass in <a href="#BM_(object%20initialization)%2Fi">object initialization</a> arguments directly into the functions and it uses a <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">template parameter pack</a> to forward those arguments for <a href="#BM_(object%7Cinstance)%2Fi">object</a> creation directly within the function (e.g. <a href="#BM_(constructor)%2Fi">constructor</a> arguments, initializer list, etc..).</p>
 </div>
 <p>To delete elements, the same delete functions for <code>std::deque</code> are available here.</p>
 <pre class="hljs"><code><span class="hljs-comment">// DELETE at idx</span>
@@ -7576,7 +8107,7 @@ s1.<span class="hljs-built_in">emplace_hint</span>(s1.<span class="hljs-built_in
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p><code>emplace()</code> / <code>emplace_hint()</code> don't copy or move because you pass in initialization arguments directly into the functions. Internally, they use <a href="#BM_(template%20parameter)%2Fi">template parameter</a> packs to forward arguments for <a href="#BM_(object%7Cinstance)%2Fi">object</a> creation (e.g. <a href="#BM_(constructor)%2Fi">constructor</a> arguments, initializer list, etc..).</p>
+<p><code>emplace()</code> / <code>emplace_hint()</code> don't copy or move because you pass in initialization arguments directly into the functions. Internally, they use <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">template parameter pack</a>s to forward arguments for <a href="#BM_(object%7Cinstance)%2Fi">object</a> creation (e.g. <a href="#BM_(constructor)%2Fi">constructor</a> arguments, initializer list, etc..).</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
@@ -7750,7 +8281,7 @@ std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</
 <ul>
 <li><code>insert()</code> either copies or moves into the container (depending on if the <a href="#BM_(reference)%2Fi">reference</a> passed in is an <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>).</li>
 <li><code>emplace()</code> adds an element <em>by creating it directly</em> (no copying / moving).</li>
-<li><code>try_emplace()</code> like <code>emplace()</code> but has special move semantics (does not move <a href="#BM_(template%20parameter)%2Fi">template parameter</a> pack <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">rvalue</a> arguments if insertion doesn't happen -- see docs for more info).</li>
+<li><code>try_emplace()</code> like <code>emplace()</code> but has special move semantics (does not move <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">template parameter pack</a> <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">rvalue</a> arguments if insertion doesn't happen -- see docs for more info).</li>
 <li><code>emplace_hint()</code> like <code>emplace()</code> but also takes in an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> primed to some position as a hint.</li>
 </ul>
 <pre class="hljs"><code><span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> Each func returns a bool (true for insertion, false for already exists) + an iterator to the key-value pair (existing one if not added)</span>
@@ -7940,7 +8471,7 @@ std::<span class="hljs-type">size_t</span> hash2 { std::hash&lt;<span class="hlj
 </span></code></pre>
 <p>To create a <code>std::unordered_set</code> with a custom hash function, that custom hash function can be implemented in one of two ways:</p>
 <ul>
-<li>a function-like <a href="#BM_(object%7Cinstance)%2Fi">object</a> that takes a single parameter of element type and returns the hash code as a <code>size_t</code>.</li>
+<li>a <a href="#BM_(function-like%20object%7Ccallable%20object)%2Fi">function-like object</a> that takes a single parameter of element type and returns the hash code as a <code>size_t</code>.</li>
 <li>a <a href="#BM_(template%20specialization)%2Fi">template specialization</a> <code>std::hash&lt;T&gt;</code> for the element type (assuming one wasn't already supplied by the C++ standard library).</li>
 </ul>
 <pre class="hljs"><code><span class="hljs-comment">// function-like object</span>
@@ -7986,7 +8517,7 @@ s1.<span class="hljs-built_in">emplace_hint</span>(<span class="hljs-number">6</
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p><code>emplace()</code> / <code>emplace_hint()</code> don't copy or move because you pass in initialization arguments directly into the functions. Internally, they use <a href="#BM_(template%20parameter)%2Fi">template parameter</a> packs to forward arguments for <a href="#BM_(object%7Cinstance)%2Fi">object</a> creation (e.g. <a href="#BM_(constructor)%2Fi">constructor</a> arguments, initializer list, etc..).</p>
+<p><code>emplace()</code> / <code>emplace_hint()</code> don't copy or move because you pass in initialization arguments directly into the functions. Internally, they use <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">template parameter pack</a>s to forward arguments for <a href="#BM_(object%7Cinstance)%2Fi">object</a> creation (e.g. <a href="#BM_(constructor)%2Fi">constructor</a> arguments, initializer list, etc..).</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
@@ -8156,7 +8687,7 @@ std::pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</
 <ul>
 <li><code>insert()</code> either copies or moves into the container (depending on if the <a href="#BM_(reference)%2Fi">reference</a> passed in is an <a href="#BM_(rvalue%20reference)%2Fi">rvalue reference</a>).</li>
 <li><code>emplace()</code> adds an element <em>by creating it directly</em> (no copying / moving).</li>
-<li><code>try_emplace()</code> like <code>emplace()</code> but has special move semantics (does not move <a href="#BM_(template%20parameter)%2Fi">template parameter</a> pack <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">rvalue</a> arguments if insertion doesn't happen -- see docs for more info).</li>
+<li><code>try_emplace()</code> like <code>emplace()</code> but has special move semantics (does not move <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">template parameter pack</a> <a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">rvalue</a> arguments if insertion doesn't happen -- see docs for more info).</li>
 <li><code>emplace_hint()</code> like <code>emplace()</code> but also takes in an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> primed to some position as a hint.</li>
 </ul>
 <pre class="hljs"><code><span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> Each func returns a bool (true for insertion, false for already exists) + an iterator to the key-value pair (existing one if not added)</span>
@@ -9274,7 +9805,7 @@ std::vector&lt;<span class="hljs-type">int</span>&gt; v{ <span class="hljs-numbe
 <p>The lack of type erasures sometimes causes problems when doing certain types of view manipulations. For example, combining together two ranges with the same element type (flattening) via <code>std::views::join</code> isn't possible unless the types of those ranges are exactly the same.</p>
 <pre class="hljs"><code>std::ranges::empty_view&lt;<span class="hljs-type">int</span>&gt; y{};
 std::ranges::single_view&lt;<span class="hljs-type">int</span>&gt; x{<span class="hljs-number">5</span>};
-std::vector combined{ x , y };  <span class="hljs-comment">// x and y of different types, vector's type parameter can't be deduced</span>
+std::vector combined{ x , y };  <span class="hljs-comment">// x and y of different types, vector's template parameter can't be deduced</span>
 <span class="hljs-keyword">auto</span> joined { std::ranges::<span class="hljs-built_in">join_view</span>(combined) };
 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> x : joined) {
     std::cout &lt;&lt; x &lt;&lt; std::endl;
@@ -9333,7 +9864,7 @@ std::vector&lt;std::span&lt;<span class="hljs-type">int</span>&gt;&gt; combined{
 </div>
 <a name="H_Custom%20Views"></a><h3>Custom Views</h3>
 <p><a name="BM_(Library%20Functions%5C%2FRanges%2FCustom%20Views)_TOPIC%2F"></a><strong></strong></p>
-<p>To write a custom view, create a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that inherits from <code>std::ranges::view_interface</code> with a <code>begin()</code> function, and an <code>end()</code> function, and either a default <a href="#BM_(constructor)%2Fi">constructor</a> (if generating values) and / or a <a href="#BM_(constructor)%2Fi">constructor</a> that takes in a range (if manipulating values).</p>
+<p>To write a custom view, create a <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that inherits from <code>std::ranges::view_interface</code> with a <code>begin()</code> function, and an <code>end()</code> function, and either a <a href="#BM_(default%20constructor)%2Fi">default constructor</a> (if generating values) and / or a <a href="#BM_(constructor)%2Fi">constructor</a> that takes in a range (if manipulating values).</p>
 <pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">FakeGeneratingView</span> : <span class="hljs-keyword">public</span> std::ranges::view_interface&lt;FakeGeneratingView&gt; {
     <span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">begin</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>{ <span class="hljs-keyword">return</span> &amp;(values[<span class="hljs-number">0</span>]); }
     <span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">end</span><span class="hljs-params">()</span> <span class="hljs-keyword">const</span> </span>{ <span class="hljs-keyword">return</span> &amp;(values[<span class="hljs-number">3</span>]); }
@@ -11236,6 +11767,33 @@ std::cin &gt;&gt; x &gt;&gt; y;
 <p>To handle IO errors, the standard stream mechanisms are available: <code>exceptions()</code> to throw <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>s or explicitly check flags (e.g. invoke <code>good()</code>).</p>
 <pre class="hljs"><code>std::cin.<span class="hljs-built_in">exceptions</span>(std::istream::badbit | std::istream::failbit); <span class="hljs-comment">// exception if bad/fail, but not good/eof</span>
 </code></pre>
+<a name="H_Span"></a><h2>Span</h2>
+<p><a name="BM_(Library%20Functions%5C%2FSpan)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FStrings%2FString)_TOPIC%2F">Library Functions/Strings/String</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FStrings%2FString%20View)_TOPIC%2F">Library Functions/Strings/String View</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FRanges)_TOPIC%2F">Library Functions/Ranges</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers)_TOPIC%2F">Library Functions/Containers</a></li>
+</ul>
+</div>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
+<p>TODO: fill me in</p>
 <a name="H_Debug%20Utilities"></a><h2>Debug Utilities</h2>
 <p><a name="BM_(Library%20Functions%5C%2FDebug%20Utilities)_TOPIC%2F"></a><strong></strong></p>
 <p>The C++ standard library provides functionality to assist with debugging. The subsections below detail some of the most common ones.</p>
@@ -11457,6 +12015,9 @@ MyEnum x {MyEnum::OptionC};
 };
 </code></pre>
 <p>See also: <a href="#BM_(virtual%20destructor)%2Fi">virtual destructor</a>.</p>
+</li>
+<li>
+<p><a name="BM_(default%20constructor)%2Fi"></a><strong>default constructor</strong> - A <a href="#BM_(constructor)%2Fi">constructor</a> that has in no parameters.</p>
 </li>
 <li>
 <p><a name="BM_(pointer)%2Fi"></a><strong>pointer</strong> - A data type used to point to a different piece of memory (e.g. <code>int yPtr { &amp;y }</code>).</p>
@@ -11742,7 +12303,7 @@ T1 <span class="hljs-title">add_and_multiply</span><span class="hljs-params">(T1
 <p><a name="BM_%5Cb(zero-arg%7Cno-arg)%5Cb%2Fi"></a><strong>zero-arg</strong> - Short for zero argument. A function with zero parameters.</p>
 </li>
 <li>
-<p><a name="BM_(parameter%20pack)%2Fi"></a><strong>parameter pack</strong> - In the context of <a href="#BM_(template)%2Fi">template</a>s, a <a href="#BM_(parameter%20pack)%2Fi">parameter pack</a> is a single <a href="#BM_(template%20parameter)%2Fi">template parameter</a> declaration that can take in zero or more substitutions (<a href="#BM_(variadic%7Cvararg)%2Fi">variadic</a>).</p>
+<p><a name="BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi"></a><strong>parameter pack</strong> - In the context of <a href="#BM_(template)%2Fi">template</a>s, a <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">parameter pack</a> is a single <a href="#BM_(template%20parameter)%2Fi">template parameter</a> declaration that can take in zero or more substitutions (<a href="#BM_(variadic%7Cvararg)%2Fi">variadic</a>).</p>
 <pre class="hljs"><code><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> X, <span class="hljs-keyword">typename</span>... R&gt;
 <span class="hljs-function">X <span class="hljs-title">create</span><span class="hljs-params">(R... args)</span> </span>{
     <span class="hljs-keyword">return</span> X {args...};
@@ -11907,7 +12468,7 @@ can move forward as well as backward.</li>
 <p><a href="#BM_(specifier%7Cmodifier)%2Fi">Modifier</a>s are also sometimes referred to as <a href="#BM_(specifier%7Cmodifier)%2Fi">specifier</a>s.</p>
 </li>
 <li>
-<p><a name="BM_(fold%20expression)%2Fi"></a><strong>fold expression</strong> - Exhaustively applies a binary operator to the contents of a <a href="#BM_(parameter%20pack)%2Fi">parameter pack</a> and returns the final result.</p>
+<p><a name="BM_(fold%20expression)%2Fi"></a><strong>fold expression</strong> - Exhaustively applies a binary operator to the contents of a <a href="#BM_(parameter%20pack%7Ctemplate%20parameter%20pack)%2Fi">parameter pack</a> and returns the final result.</p>
 <pre class="hljs"><code><span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span>... R&gt;
 T <span class="hljs-title">test</span><span class="hljs-params">(R... args)</span> </span>{
     R l_ass_res {... - args};  <span class="hljs-comment">// ((((a-b)-c)-d)-...)</span>
@@ -11979,7 +12540,7 @@ T <span class="hljs-title">test</span><span class="hljs-params">(R... args)</spa
 </code></pre>
 </li>
 <li>
-<p><a name="BM_(callable%20object)%2Fi"></a><strong>callable object</strong> - An <a href="#BM_(object%7Cinstance)%2Fi">object</a> that can be invoked: a function, <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>, or <a href="#BM_(lambda)%2Fi">lambda</a>.</p>
+<p><a name="BM_(function-like%20object%7Ccallable%20object)%2Fi"></a><strong>callable object</strong> - An <a href="#BM_(object%7Cinstance)%2Fi">object</a> that can be invoked: a function, <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>, or <a href="#BM_(lambda)%2Fi">lambda</a>.</p>
 </li>
 <li>
 <p><a name="BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi"></a><strong>function overload</strong> - A function that has the same name as another function within the same scope.</p>
@@ -12036,8 +12597,8 @@ T <span class="hljs-title">test</span><span class="hljs-params">(R... args)</spa
 </code></pre>
 </li>
 <li>
-<p><a name="BM_(three-way%20comparison%20operator%7C3-way%20comparison%20operator%7Cspaceship%20operator)%2Fi"></a><strong>three-way comparison operator</strong> - Given two <a href="#BM_(object%7Cinstance)%2Fi">object</a>s <code>a</code> and <code>b</code>, the <a href="#BM_(three-way%20comparison%20operator%7C3-way%20comparison%20operator%7Cspaceship%20operator)%2Fi">three-way comparison operator</a> determines if <code>a &lt; b</code>, <code>a == b</code>, or <code>a &gt; b</code>.</p>
-<p>The symbol for the operator is an equal-sign sandwiched between angle brackets: <code>a &lt;=&gt; b</code>. This operator is sometimes called the <a href="#BM_(three-way%20comparison%20operator%7C3-way%20comparison%20operator%7Cspaceship%20operator)%2Fi">spaceship operator</a> because it's said that the symbol for the operator looks like a spaceship.</p>
+<p><a name="BM_(three%20way%20comparison%20operator%7C3-way%20comparison%20operator%7Cspaceship%20operator)%2Fi"></a><strong>three-way comparison operator</strong> - Given two <a href="#BM_(object%7Cinstance)%2Fi">object</a>s <code>a</code> and <code>b</code>, the three-way comparison operator determines if <code>a &lt; b</code>, <code>a == b</code>, or <code>a &gt; b</code>.</p>
+<p>The symbol for the operator is an equal-sign sandwiched between angle brackets: <code>a &lt;=&gt; b</code>. This operator is sometimes called the <a href="#BM_(three%20way%20comparison%20operator%7C3-way%20comparison%20operator%7Cspaceship%20operator)%2Fi">spaceship operator</a> because it's said that the symbol for the operator looks like a spaceship.</p>
 </li>
 <li>
 <p><a name="BM_(smart%20pointer)%2Fi"></a><strong>smart pointer</strong> - A <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that wraps a <a href="#BM_(pointer)%2Fi">pointer</a> to a dynamically <a href="#BM_(object%7Cinstance)%2Fi">object</a>. The <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> provides some level of automated <a href="#BM_(pointer)%2Fi">pointer</a> management / memory management through the use of move semantics, <a href="#BM_(copy%20semantics)%2Fi">copy semantics</a>, and <a href="#BM_(RAII%7CCADRe)%2F">RAII</a>.</p>
@@ -12073,7 +12634,7 @@ T <span class="hljs-title">test</span><span class="hljs-params">(R... args)</spa
 </code></pre>
 </li>
 <li>
-<p><a name="BM_(special%20member%20function)%2Fi"></a><strong>special member function</strong> - A <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a> which, if invoked but not explicitly implemented, the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> will automatically generate a default implementation for. Each of the following is considered a <a href="#BM_(special%20member%20function)%2Fi">special member function</a>: default <a href="#BM_(constructor)%2Fi">constructor</a>, <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a>, <a href="#BM_(move%20constructor)%2Fi">move constructor</a>, <a href="#BM_(copy%20assignment)%2Fi">copy assignment</a> operator, <a href="#BM_(move%20assignment)%2Fi">move assignment</a> operator, and <a href="#BM_(destructor)%2Fi">destructor</a>.</p>
+<p><a name="BM_(special%20member%20function)%2Fi"></a><strong>special member function</strong> - A <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a> which, if invoked but not explicitly implemented, the <a href="#BM_(compiler%7Cobject%20file%7Cobject%20code)%2Fi">compiler</a> will automatically generate a default implementation for. Each of the following is considered a <a href="#BM_(special%20member%20function)%2Fi">special member function</a>: <a href="#BM_(default%20constructor)%2Fi">default constructor</a>, <a href="#BM_(copy%20constructor)%2Fi">copy constructor</a>, <a href="#BM_(move%20constructor)%2Fi">move constructor</a>, <a href="#BM_(copy%20assignment)%2Fi">copy assignment</a> operator, <a href="#BM_(move%20assignment)%2Fi">move assignment</a> operator, and <a href="#BM_(destructor)%2Fi">destructor</a>.</p>
 </li>
 </ul>
 <p>

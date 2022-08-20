@@ -2,8 +2,7 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Core Language/Templates/Variadic_TOPIC
- * Core Language/Templates/Concepts/Known Types_TOPIC
+ * Core Language/Templates/Auto Syntax_TOPIC
 
 </div>
 

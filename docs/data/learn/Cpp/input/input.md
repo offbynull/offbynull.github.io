@@ -2928,7 +2928,7 @@ int x {static_cast<int>(cls)};  // static_cast required to trigger operator over
 ```
 
 ```{note}
-The book recommends not preferring explicit over implicit because implicit is a source for confusion.
+The book recommends preferring explicit over implicit because implicit is a source for confusion.
 
 Do these still qualify as operator overloads? Return types should be there.
 ```
@@ -3254,6 +3254,10 @@ The general syntax of a lambda is as follows: `[capture-list] (parameter-list) m
 
 ```{note}
 Be aware that, by default, the function-call operator in the lambda version is `const` and will automatically be made into a `constexpr` if it satisfies all the requirements of `constexpr`. This is discussed more in the modifiers subsections.
+```
+
+```{seealso}
+Library Functions/Wrappers/Bind_TOPIC
 ```
 
 ### Capture List
@@ -4127,88 +4131,20 @@ decltype(x + 5) f1(T x) { // THIS WON'T WORK: x used in decltype() before it's e
 ```
 ````
 
-### Type Traits
-
-`{bm} /(Core Language\/Templates\/Type Traits)_TOPIC/`
-
-The C++ standard library includes a set of templated classes that detects the traits of a type at compile-time. This is useful in cases where template parameters need to be restricted.
-
-```c++
-template<typename T>
-T test(T t) {
-    static_assert(std::is_integral<T>::value, "Must be integral");
-    return t + 1;
-}
-
-test(4);     // OK
-test(4ULL);  // OK
-test(4.09);  // FAIL -- 4.09 is a floating point number, not an integral number
-```
-
-The `value` field is `true` / `false` depending on if the type passes the check. A shortcut in later versions of C++ is to append `_v` to the name of the class performing the check rather than explicitly querying the `value` field (e.g. `std::is_integral<T>::value` vs `std::is_integral_v<T>`).
-
-List of useful checks:
-
- * `std::is_signed` - ensures a type is signed.
- * `std::is_unsigned` - ensures a type is unsigned.
- * `std::is_integral` - ensures a type is an integer (e.g. `short int`, `int`, `unsigned long long int`, etc..)
- * `std::is_pod` - ensures a type is a POD.
- * `std::is_fundamental` - ensures a type is a fundamental type.
- * `std::is_abstract` - ensures a type is an abstract class (has at least one pure virtual function).
- * `std::is_copy_constructible` - ensures type has a copy constructor.
- * `std::is_copy_assignable` - ensures type has copy assignment.
- * `std::is_move_constructible` - ensures type has a move constructor.
- * `std::is_nothrow_move_constructible` - ensures type has a move constructor that never throws an exception (`noexcept`).
- * `std::is_move_assignable` - ensures type has move assignment.
-
-```{seealso}
-Core Language/Variables/Aliasing_TOPIC (refresher)
-```
-
-Type traits may also be manipulated at compile-time via a set of templated classes.
-
-```c++
-template<typename T>
-auto test(T t) {
-    using R = std::make_unsigned<T>::type;  // R is same type as T but unsigned (if it already isn't)
-    R x { t + 1 };
-    return x;
-}
-```
-
-The `type` field contains the name type. A shortcut in later versions of C++ is to append `_t` to the name of the class doing the manipulation rather than explicitly querying the `type` field (e.g. `std::make_unsigned<T>::type` vs `std::make_unsigned_t<T>`).
-
-List of useful conversions:
-
- * `std::remove_cv` - remove `const` and / or `volatile`.
- * `std::remove_const` - remove `const`.
- * `std::remove_volatile` - remove `volatile`.
- * `std::remove_pointer` - make into non-pointer type (removes a `*` from the type).
- * `std::remove_reference` - make into non-reference type.
- * `std::add_cv` - add `const` and / or `volatile`.
- * `std::add_const` - add `const`.
- * `std::add_volatile` - add `volatile`.
- * `std::add_pointer` - make into pointer type (adds a `*` to the type).
- * `std::add_lvalue_reference` - make into a lvalue reference type.
- * `std::add_rvalue_reference` - make into a rvalue reference type.
- * `std::make_signed` - make into an equivalent version of the same type that's signed.
- * `std::make_unsigned` - make into an equivalent version of the same type that's unsigned.
-
-```{note}
-Are constant expressions used to write these checks and transformations? Maybe.
-```
-
-```{seealso}
-Core Language/Compile-time Evaluation_TOPIC
-```
-
 ### Concepts
 
 `{bm} /(Core Language\/Templates\/Concepts)_TOPIC/`
 
 ```{prereq}
-Core Language/Templates/Type Traits_TOPIC
 Core Language/Templates/Auto Syntax_TOPIC
+```
+
+```{note}
+This section makes use of the type traits library in the C++ standard libraries. Type traits are templates that provide information about types (e.g if a type is signed or unsigned, if it has a copy constructor, etc...). The link below jumps to that section. It's safe to read at this point as it doesn't require any background knowledge other than how to make use of templates, which is something you should already be aware of at this point.
+```
+
+```{seealso}
+Library Functions/Type Traits_TOPIC
 ```
 
 In certain cases, a set of types substituted in for a template parameters won't produce working code.
@@ -4361,10 +4297,10 @@ Core Language/Templates/Type Deduction/Type Cloning Deduction_TOPIC (`decltype(a
 
 `{bm} /(Core Language\/Templates\/Concepts\/Ordered Type Concept)_TOPIC/`
 
-A type that can be compared typically overrides the 6 common relational operators: equals, not equals, less than, less than or equals, greater than, and greater than or equals to. The example concept_TEMPLATE below provides a concept that ensures the type provides all of these relational operators.
+An ordered type is a type that can be compared typically overrides the 6 common relational operators: equals, not equals, less than, less than or equals, greater than, and greater than or equals to. The example concept_TEMPLATE below provides a concept_TEMPLATE that ensures the type provides all of these relational operators.
 
 ```c++
-template <typename T>
+template<typename T>
 concept Ordering =
     requires(T a, T b) {
         { a == b } -> std::convertible_to<bool>;
@@ -4377,46 +4313,79 @@ concept Ordering =
 ```
 
 ```{note}
-You typically won't have to write this out by hand. The C++ standard library has the concepts `std::three_way_comparable` and `std::three_way_comparable_with`. The former makes sure that a type allows relational comparisons against the same type (same as the example above) while the former allows relational comparisons against different types (e.g. comparing an `int` against a `long`).
+You typically won't have to write this out by hand. The C++ standard library has the concept_TEMPLATEs `std::three_way_comparable` and `std::three_way_comparable_with`. The former makes sure that a type allows relational comparisons against the same type (same as the example above) while the former allows relational comparisons against different types (e.g. comparing an `int` against a `long`).
 
-Both concepts are related to the spaceship operator.
+Both concept_TEMPLATEs are related to the spaceship operator.
 ```
 
 ```{seealso}
 Core Language/Classes/Three-way Comparison Overloading_TOPIC (spaceship operator)
 ```
 
+#### Semi-regular Type Concept
+
+`{bm} /(Core Language\/Templates\/Concepts\/Semi-regular Type Concept)_TOPIC/`
+
+```{prereq}
+Core Language/Classes/Construction_TOPIC
+Core Language/Classes/Copying_TOPIC
+Core Language/Classes/Moving_TOPIC
+Core Language/Templates/Specialization_TOPIC
+```
+
+A semi-regular type is a common idea in C++, commonly referred to in documentation on C++ and the C++ standard library. A type is considered semi-regular type if it has a ...
+
+ * default constructor
+ * copy constructor
+ * move constructor
+ * copy assignment overload
+ * move assignment overload
+ * destructor
+ * template specialization / overload for `std::swap(T, T)` (is a swappable type)
+
+```c++
+template<typename T>
+concept SemiRegular =
+    std::is_default_constructible<T>::value &&
+    std::is_copy_constructible<T>::value &&
+    std::is_copy_assignable<T>::value &&
+    std::is_move_constructible<T>::value &&
+    std::is_move_assignable<T>::value &&
+    std::is_destructible<T>::value &&
+    std::is_swappable<T>::value;
+```
+
+```{note}
+This type is built out using functionality provided by the type traits library. Even then, you don't need to use this as the C++ standard library already provides the `std::semiregular` concept_TEMPLATE.
+```
+
 #### Regular Type Concept
 
 `{bm} /(Core Language\/Templates\/Concepts\/Regular Type Concept)_TOPIC/`
 
-TODO: fill me in
+```{prereq}
+Core Language/Templates/Concepts/Semi-regular Type Concept_TOPIC
+```
 
-TODO: fill me in
+A regular type is a common idea in C++, commonly referred to in documentation on C++ and the C++ standard library. A type is considered regular type if it supports all the traits of a semi-regular type and it supports both the equality operator (==) and inequality operator (!=).
 
-TODO: fill me in
+```c++
+template<typename T>
+concept Regular =
+    SemiRegular<T> &&
+    requires(T a, T b) {
+        { a == b } -> std::convertible_to<bool>;
+        { a != b } -> std::convertible_to<bool>;
+    };
+```
 
-TODO: fill me in
+```{note}
+You don't need to use this as the C++ standard library already provides the `std::regular` concept_TEMPLATE.
+```
 
-TODO: fill me in
-
-TODO: fill me in
-
-#### Semiregular Type Concept
-
-`{bm} /(Core Language\/Templates\/Concepts\/Semiregular Type Concept)_TOPIC/`
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
+```{note}
+The book and online documentation claims that regular types should behave similarly built-in types like `int`.
+```
 
 #### Union Type Concept
 
@@ -4467,7 +4436,7 @@ Likewise, the C++ standard library provides a more elaborate version of `integra
 
 ```{prereq}
 Core Language/Templates/Variadic_TOPIC
-Core Language/Templates/Concepts/Known Types_TOPIC
+Core Language/Templates/Concepts/Union Type Concept_TOPIC
 ```
 
 Concept_TEMPLATEs can be used to specify the requirements for a callable object:
@@ -5047,6 +5016,425 @@ The rules for this are complex, but essentially in certain cases the compiler ca
 ```{note}
 For a full breakdown, see [here](https://stackoverflow.com/a/613132).
 ```
+
+### Callable Type Unpacking
+
+`{bm} /(Core Language\/Templates\/Callable Type Unpacking)_TOPIC/`
+
+A callable (function, functor, lambda)'s type encompasses multiple other types. For example, the following function's type is `int(long, short)` ...
+
+```c++
+int my_func(long lval, short sval) {
+    return 5;
+}
+```
+
+But that type is composed of 3 other types:
+
+ * `int`, which is the return type.
+ * `long`, which is the first parameter type.
+ * `short`, which is the second parameter type.
+
+The subsections below describe how to unpack a callable's type such that you can extract out the types it's composed of. Each callable type has a slightly different way of unpacking types.
+
+#### Functions
+
+`{bm} /(Core Language\/Templates\/Callable Type Unpacking\/Functions)_TOPIC/`
+
+```{prereq}
+Core Language/Templates/Type Cloning_TOPIC
+Core Language/Templates/Specialization_TOPIC
+Core Language/Templates/Variadic_TOPIC
+Core Language/Templates/Type Aliasing_TOPIC
+Core Language/Classes/Functors_TOPIC
+Core Language/Lambdas_TOPIC
+```
+
+A template can be used to unpack / extract the types that make up a function's declaration. The process works by first creating a templated class with a single template parameter that's left unimplemented.
+
+```c++
+template<typename Fn>
+struct func_types;  // unimplemented
+```
+
+When a function type is passed `func_types<Fn>`'s template parameter, the C++ compiler expects a template specialization with template parameters for the return type and parameter types. This template specialization provides an implementation for the unimplemented class, where that implementation is simply a set of type aliases to hold on to the return and parameter types.
+
+```c++
+template<typename R, typename P1, typename P2>
+struct func_types<R(P1, P2)> {
+    using return_t = R;
+    using param1_t = P1;
+    using param2_t = P2;
+};
+```
+
+When `func_types<Fn>` is used, `Fn` needs to be a *function type declaration*. That function type declaration is typically extracted from an existing function using `decltype()`.
+
+```c++
+int my_func(long lval, short sval) {
+    return 5;
+}
+
+int main() {
+    using types = func_types<decltype(my_func)>;
+    std::cout << (std::is_same<types::return_t, int>::value ? "true" : "false") << std::endl;   // prints "true"
+    std::cout << (std::is_same<types::param1_t, long>::value ? "true" : "false") << std::endl;  // prints "true"
+    std::cout << (std::is_same<types::param2_t, short>::value ? "true" : "false") << std::endl; // prints "true"
+    return 0;
+}
+```
+
+The `func_types` template specialization is specifically for a two parameter function, where the templated class has the function's types nested within as the type aliases. It won't work for 0 parameter functions, or 1 parameter functions, or 3 parameter functions, or etc... A template specialization will be needed for each of those.
+
+To support a function with an arbitrary number of parameters, a template is needed that uses a template parameter pack to represent an arbitrary list of types and recursion to hone in on a specific index within that list.
+
+```c++
+template <std::size_t N, typename T0, typename ... Ts>
+struct recurse_to_type {
+    using type = typename recurse_to_type<N-1u, Ts...>::type;
+};
+
+template <typename T0, typename ... Ts>
+struct recurse_to_type<0u, T0, Ts...> {  // template specialization for when N=0
+    using type = T0;
+};
+```
+
+`recurse_to_type<N, T0, Ts>` takes in an index `N`, a starting type `T0`, and a parameter pack of remaining types `Ts`. It recursively pulls the first type out `Ts` (first type in `Ts` becomes `T0` in next recursion) and subtracts `N` by 1 until it reaches 0, at which point the template specialization `recurse_to_type<0, T0, Ts>` sets that first type `T0` into the type alias.
+
+Pulling out an arbitrary parameter type simply involves using `recurse_to_type` with the list of parameters (represented as a template parameter pack) and the desired `N`.
+
+```c++
+template <std::size_t N, typename Fn>
+struct param_type;
+
+template <std::size_t N, typename R, typename ... Ps>
+struct param_type<N, R(Ps...)> {
+    using type = typename recurse_to_type<N, Ps...>::type;
+};
+```
+
+Pulling out the total number of parameters can be done by passing the parameter pack to the `sizeof` operator.
+
+```c++
+template <typename Fn>
+struct param_cnt;
+
+template <typename R, typename ... Ps>
+struct param_cnt<R(Ps...)> {
+    static const std::size_t cnt { sizeof...(Ps) };  // probably should be constexpr
+};
+```
+
+```{seealso}
+Core Language/Compile-time Evaluation_TOPIC (describes `constexpr`)
+```
+
+Pulling out a return type is done similarly, but there's no recursion involved as it's always a single type.
+
+```c++
+template <typename Fn>
+struct ret_type;
+
+template <typename R, typename ... Ps>
+struct ret_type<R(Ps...)> {
+    using type = R;
+};
+```
+
+Usage is straight forward for `ret_type` and `param_count`. When `param_type<N>` is used, it needs to target a specific parameter by its index.
+
+```c++
+int my_func(long lval, short sval) {
+    return 5;
+}
+
+int main() {
+    using r = ret_type<decltype(my_func)>::type;
+    using p0 = param_type<0, decltype(my_func)>::type;
+    using p1 = param_type<1, decltype(my_func)>::type;
+    std::cout << (std::is_same<r, int>::value ? "true" : "false") << std::endl;    // prints "true"
+    std::cout << (std::is_same<p0, long>::value ? "true" : "false") << std::endl;  // prints "true"
+    std::cout << (std::is_same<p1, short>::value ? "true" : "false") << std::endl; // prints "true"
+    std::cout << param_cnt<decltype(my_func)>::cnt << std::endl;                   // prints "2"
+    return 0;
+}
+```
+
+
+````{note}
+There's a much simpler way to do all of this if you're already familiar with `std::tuple` from the C++ standard library, documented [here](https://stackoverflow.com/a/24948381). Basically, wrap the parameter types within a `std::tuple`'s type, and then use `std::tuple`'s type access functions to pull out individual types within that tuple type / number of types nested in that tuple type.
+
+```c++
+template<typename Fn>
+struct func_types; // unimplemented
+
+template<typename R, typename... Ps>
+struct func_types<R(Ps...)> {
+    using ret_t = R;
+    using params_as_tuple_t = std::tuple<Ps...>;
+
+    template<std::size_t N>
+    using param_t = std::tuple_element<N, params_as_tuple_t>::type;
+
+    static const constexpr std::size_t param_cnt { std::tuple_size<params_as_tuple_t>{} };
+};
+
+
+
+
+int my_func(long lval, short sval) {
+    return 5;
+}
+
+int main() {
+    using types = func_types<decltype(my_func)>;
+    std::cout << (std::is_same<types::ret_t, int>::value ? "true" : "false") << std::endl;         // prints "true"
+    std::cout << (std::is_same<types::param_t<0u>, long>::value ? "true" : "false") << std::endl;  // prints "true"
+    std::cout << (std::is_same<types::param_t<1u>, short>::value ? "true" : "false") << std::endl; // prints "true"
+    std::cout << types::param_cnt;
+    return 0;
+}
+```
+
+There's also [Boost's type traits library](https://www.boost.org/doc/libs/1_79_0/libs/type_traits/doc/html/boost_typetraits/reference/function_traits.html), which provides a simple `function_traits<>` template that pulls out all the types and other type related information within a function: `function_traits<my_func>::result_type`, `function_traits<my_func>::argN_type`, `function_traits<my_func>::arity`, etc...
+````
+
+#### Functors
+
+`{bm} /(Core Language\/Templates\/Callable Type Unpacking\/Functors)_TOPIC/`
+
+```{prereq}
+Core Language/Templates/Callable Type Unpacking/Functions_TOPIC
+Core Language/Templates/Auto Syntax_TOPIC
+Core Language/Compile-time Evaluation_TOPIC
+```
+
+Type extraction for functors is similar to type extraction for functors. The main difference is that, with functors, the type extraction is being performed on the function call operator  of the functor. As such, ...
+
+1. the template specialization for a functor has to take in an extra type that maps to the actual functor object.
+
+   ```c++
+   // for function
+   template <typename R, typename ... Ps>
+   struct my_struct<R(Ps...)> { /* fill me in  */ };
+   
+   // for functor's function call operator
+   template<typename O, typename R, typename... Ps>
+   struct my_struct<R (O::*)(Ps...)> { /* fill me in */  };
+   ```
+
+   In the example above, the functor takes in the extra template parameter `O` and the template parameter breakdown is `R (O::*)(Ps...)`, which essentially is mapping `O` to the type of the `this` pointer with the pointer.
+
+2. the type being passed to the template parameter needs to be the type of the function call operator.
+
+   ```c++
+   // for function
+   using types = my_type<decltype(my_func)>;
+
+   // for functor
+   using types = my_type<decltype(&my_functor::operator())>;
+   ```
+
+   In the example above, the functor version is passing the type of that functor's function call operator: `decltype(&my_functor::operator())`.
+
+The following code adapts the code to extract arbitrary parameters from the previous section to work with functors as well.
+
+```c++
+//
+// recurse_to_type remains the same as it did before
+//
+template <std::size_t N, typename T0, typename ... Ts>
+struct recurse_to_type {
+    using type = typename recurse_to_type<N-1u, Ts...>::type;
+};
+
+template <typename T0, typename ... Ts>
+struct recurse_to_type<0u, T0, Ts...> {  // template specialization for when N=0
+    using type = T0;
+};
+
+
+//
+// param_type now has a template specialization for functors
+//
+template <std::size_t N, typename Fn>
+struct param_type;
+
+template <std::size_t N, typename R, typename ... Ps> // for function
+struct param_type<N, R(Ps...)> {
+    using type = typename recurse_to_type<N, Ps...>::type;
+};
+
+template <std::size_t N, typename O, typename R, typename... Ps> // for functor
+struct param_type<N, R (O::*)(Ps...)> {
+    using type = typename recurse_to_type<N, Ps...>::type;
+};
+
+
+//
+// param_cnt now has a template specialization for functors
+//
+template <typename Fn>
+struct param_cnt;
+
+template <typename R, typename ... Ps> // for function
+struct param_cnt<R(Ps...)> {
+    static const /*constexpr*/ std::size_t cnt { sizeof...(Ps) };
+};
+
+template<typename O, typename R, typename... Ps> // for functor
+struct param_cnt<R (O::*)(Ps...)> {
+    static const /*constexpr*/ std::size_t cnt { sizeof...(Ps) };
+};
+
+
+//
+// ret_type now has a template specialization for functors
+//
+template <typename Fn>
+struct ret_type;
+
+template <typename R, typename ... Ps> // for function
+struct ret_type<R(Ps...)> {
+    using type = R;
+};
+
+template<typename O, typename R, typename... Ps> // for functor
+struct ret_type<R (O::*)(Ps...)> {
+    using type = R;
+};
+
+
+//
+// usage
+//
+struct my_functor {
+    int operator() (long lval, short sval) {
+        return 5;
+    }
+};
+
+int main() {
+    using functor_func_call_type = decltype(&my_functor::operator());
+    using r = ret_type<functor_func_call_type>::type;
+    using p0 = param_type<0, functor_func_call_type>::type;
+    using p1 = param_type<1, functor_func_call_type>::type;
+    std::cout << (std::is_same<r, int>::value ? "true" : "false") << std::endl;    // prints "true"
+    std::cout << (std::is_same<p0, long>::value ? "true" : "false") << std::endl;  // prints "true"
+    std::cout << (std::is_same<p1, short>::value ? "true" : "false") << std::endl; // prints "true"
+    std::cout << param_cnt<functor_func_call_type>::cnt << std::endl;                   // prints "2"
+    return 0;
+}
+```
+
+Compile-time expressions can be used to unify the usage of the template specializations such that you can pass in a function type or functor type as the template parameter (as opposed to passing in the type of the function call operator). A phony function can be used to encompass a compile-time expression which picks the appropriate template specialization based on the type traits of the template parameter passed in.
+
+```c++
+// this is specifically targeting the ret_type<> template created above, you'd
+// have one of these functions for param_type<> and param_cnt<> as well.
+template<typename T>
+struct unified_ret_type {
+private:
+    static auto _fake() {
+        if constexpr (!std::is_function<T>::value) {
+            return ret_type<decltype(&T::operator())> {};
+        } else {
+            return ret_type<T> {};
+        }
+    }
+public:
+    using type = decltype(unified_ret_type<T>::_fake())::type;
+};
+```
+
+```{note}
+This code above makes use of the type traits library in the C++ standard libraries. Type traits are templates that provide information about types (e.g if a type is signed or unsigned, if it has a copy constructor, etc...). The link below jumps to that section. It's safe to read at this point as it doesn't require any background knowledge other than how to make use of templates, which is something you should already be aware of at this point.
+```
+
+```{seealso}
+Library Functions/Type Traits_TOPIC
+```
+
+Then, you simply need to use `decltype()` to determine what return type an invocation of the above function would return.
+
+```c++
+using r = decltype(dummy_function<my_functor>())::type;        // pass in my_functor type
+using r = decltype(dummy_function<decltype(my_func)>())::type; // pass in my_func's type
+// RECALL: my_func is an actual function, it's put in decltype() to pull out it's type
+```
+
+
+````{note}
+The following adapts the `std::tuple` approach documented [here](https://stackoverflow.com/a/24948381) to work with functors as well as functions.
+
+```c++
+template<typename Fn>
+struct func_types; // unimplemented
+
+// template specialization for functions
+template<typename R, typename... Ps>
+struct func_types<R(Ps...)> {
+    using ret_t = R;
+    using params_as_tuple_t = std::tuple<Ps...>;
+
+    template<std::size_t N>
+    using param_t = std::tuple_element<N, params_as_tuple_t>::type;
+
+    static constexpr std::size_t param_cnt { std::tuple_size<params_as_tuple_t>{} };
+};
+
+// template specialization for functors
+template<typename TObj, typename R, typename... Ps>
+struct func_types<R (TObj::*)(Ps...)> {
+    using ret_t = R;
+    using params_as_tuple_t = std::tuple<Ps...>;
+
+    template<std::size_t N>
+    using param_t = std::tuple_element<N, params_as_tuple_t>::type;
+
+    static constexpr std::size_t param_cnt { std::tuple_size<params_as_tuple_t>{} };
+};
+
+// unify template specializations
+template<typename T>
+struct unified_func_types {
+private:
+    static auto _fake() {
+        if constexpr (!std::is_function<T>::value) {
+            return func_types<decltype(&T::operator())> {};
+        } else {
+            return func_types<T> {};
+        }
+    }
+public:
+    using types = decltype(unified_func_types<T>::_fake());
+};
+
+
+
+
+int my_func(long lval, short sval) {
+    return 5;
+}
+
+struct my_functor {
+    int operator() (long lval, short sval) {
+        return 5;
+    }
+};
+
+int main() {
+    // using types = unified_func_types<decltype(my_func)>::types;
+    using types = unified_func_types<my_functor>::types;
+    std::cout << (std::is_same<types::ret_t, int>::value ? "true" : "false") << std::endl;         // prints "true"
+    std::cout << (std::is_same<types::param_t<0u>, long>::value ? "true" : "false") << std::endl;  // prints "true"
+    std::cout << (std::is_same<types::param_t<1u>, short>::value ? "true" : "false") << std::endl; // prints "true"
+    std::cout << types::param_cnt;
+    return 0;
+}
+```
+````
 
 ## Coroutines
 
@@ -6460,6 +6848,81 @@ Common third-party C++ libraries:
 
 The subsections below detail important functionality across the many C++ libraries in existence. If the functionality being documented is for a third party library, it'll be signalled in some way (e.g. namespace / header files / comments used in sample code will make it apparent).
 
+## Type Traits
+
+`{bm} /(Library Functions\/Type Traits)_TOPIC/`
+
+The C++ standard library includes a set of templated classes that detects the traits of a type at compile-time. This is useful in cases where template parameters need to be restricted.
+
+```c++
+template<typename T>
+T test(T t) {
+    static_assert(std::is_integral<T>::value, "Must be integral");
+    return t + 1;
+}
+
+test(4);     // OK
+test(4ULL);  // OK
+test(4.09);  // FAIL -- 4.09 is a floating point number, not an integral number
+```
+
+The `value` field is `true` / `false` depending on if the type passes the check. A shortcut in later versions of C++ is to append `_v` to the name of the class performing the check rather than explicitly querying the `value` field (e.g. `std::is_integral<T>::value` vs `std::is_integral_v<T>`).
+
+List of useful checks:
+
+ * `std::is_signed` - ensures a type is signed.
+ * `std::is_unsigned` - ensures a type is unsigned.
+ * `std::is_integral` - ensures a type is an integer (e.g. `short int`, `int`, `unsigned long long int`, etc..)
+ * `std::is_pod` - ensures a type is a POD.
+ * `std::is_fundamental` - ensures a type is a fundamental type.
+ * `std::is_abstract` - ensures a type is an abstract class (has at least one pure virtual function).
+ * `std::is_copy_constructible` - ensures type has a copy constructor.
+ * `std::is_copy_assignable` - ensures type has copy assignment.
+ * `std::is_move_constructible` - ensures type has a move constructor.
+ * `std::is_nothrow_move_constructible` - ensures type has a move constructor that never throws an exception (`noexcept`).
+ * `std::is_move_assignable` - ensures type has move assignment.
+
+```{seealso}
+Core Language/Variables/Aliasing_TOPIC (refresher)
+```
+
+Type traits may also be manipulated at compile-time via a set of templated classes.
+
+```c++
+template<typename T>
+auto test(T t) {
+    using R = std::make_unsigned<T>::type;  // R is same type as T but unsigned (if it already isn't)
+    R x { t + 1 };
+    return x;
+}
+```
+
+The `type` field contains the name type. A shortcut in later versions of C++ is to append `_t` to the name of the class doing the manipulation rather than explicitly querying the `type` field (e.g. `std::make_unsigned<T>::type` vs `std::make_unsigned_t<T>`).
+
+List of useful conversions:
+
+ * `std::remove_cv` - remove `const` and / or `volatile`.
+ * `std::remove_const` - remove `const`.
+ * `std::remove_volatile` - remove `volatile`.
+ * `std::remove_pointer` - make into non-pointer type (removes a `*` from the type).
+ * `std::remove_reference` - make into non-reference type.
+ * `std::add_cv` - add `const` and / or `volatile`.
+ * `std::add_const` - add `const`.
+ * `std::add_volatile` - add `volatile`.
+ * `std::add_pointer` - make into pointer type (adds a `*` to the type).
+ * `std::add_lvalue_reference` - make into a lvalue reference type.
+ * `std::add_rvalue_reference` - make into a rvalue reference type.
+ * `std::make_signed` - make into an equivalent version of the same type that's signed.
+ * `std::make_unsigned` - make into an equivalent version of the same type that's unsigned.
+
+```{note}
+Are constant expressions used to write these checks and transformations? Maybe.
+```
+
+```{seealso}
+Core Language/Compile-time Evaluation_TOPIC
+```
+
 ## Allocators
 
 `{bm} /(Library Functions\/Allocators)_TOPIC/`
@@ -6817,7 +7280,7 @@ The subsections below document some common wrappers classes and their usages.
 
 `{bm} /(Library Functions\/Wrappers\/Optional)_TOPIC/`
 
-An optional class is a wrapper that either holds on to an object or is empty (similar to Java or Python's optional class).
+`std::optional` is a wrapper that either holds on to an object or is empty (similar to Java or Python's optional class).
 
 ```c++
 std::optional<int> take(int x) {
@@ -6853,7 +7316,7 @@ The typical usecase for tribool is for operations that take a long time to compl
 
 `{bm} /(Library Functions\/Wrappers\/Tuple)_TOPIC/`
 
-A tuple class is a templated class that holds on to an arbitrary number of elements of arbitrary types. The number of elements and types of elements must be known at compile-time, and any code accessing those elements must know which element it's accessing at compile-time.
+`std::tuple` is a templated class that holds on to an arbitrary number of elements of arbitrary types. The number of elements and types of elements must be known at compile-time, and any code accessing those elements must know which element it's accessing at compile-time.
 
 ```c++
 std::tuple<int, long, MyClass> my_tuple{ 1, 500L, MyClass{} };
@@ -6906,7 +7369,7 @@ There's a helper function called `std::make_tuple()` / `std::make_pair()` which 
 
 `{bm} /(Library Functions\/Wrappers\/Any)_TOPIC/`
 
-An any class is a wrapper that can hold on to an object of unknown type (a type that isn't known at compile-time).
+`std::any` is a wrapper that can hold on to an object of unknown type (a type that isn't known at compile-time).
 
 ```c++
 std::any wrapper {};
@@ -6934,7 +7397,7 @@ Library Functions/Wrappers/Any
 Library Functions/Wrappers/Tuple
 ```
 
-A variant class is a type-restricted form of the `std::any`. Where as with the `std::any` you can hold on to an object of any type, with `std::variant` you can hold on to an object of one of several predefined types.
+`std::variant` is a type-restricted form of the `std::any`. Where as with the `std::any` you can hold on to an object of any type, with `std::variant` you can hold on to an object of one of several predefined types.
 
 ```c++
 std::variant<int, float, MyClass> wrapper {};  // may hold on to either int, float, or MyClass
@@ -6987,17 +7450,17 @@ Core Language/Unions_TOPIC (variants are similar to unions but type-safe)
 
 ### Function
 
-A function class is a standardized wrapper for function-like objects.
+`{bm} /(Library Functions\/Wrappers\/Function)_TOPIC/`
+
+`std::function` is a standardized wrapper for function-like objects.
 
 ```c++
-void print_num(int i)
-{
+void print_num(int i){
     std::cout << i << '\n';
 }
  
 struct PrintNum {
-    void operator()(int i) const
-    {
+    void operator()(int i) const {
         std::cout << i << '\n';
     }
 };
@@ -7021,6 +7484,60 @@ void call_func_with_42(std::function<void(int)> func) {
 }
 ```
 
+### Bind
+
+`{bm} /(Library Functions\/Wrappers\/Bind)_TOPIC/`
+
+`std::bind()` takes in a function-like object and hardcodes some of its parameters via a new proxy functor.
+
+```c++
+int add_numbers(int i, int j, bool print) {
+    int res { i + j };
+    if (print) {
+        std::cout << (i + j) << '\n';
+    }
+    return res;
+}
+
+
+auto add_to_47 = std::bind(
+    add_numbers,
+    std::placeholders::_1,
+    47,
+    std::placeholders::_2
+);                  // add_to_47() proxies add_numbers(), but hardcodes its 2nd param to 47.
+add_to_47(3, true); // prints "50"
+```
+
+The first parameter of `std::bind()` is the function-like object to proxy, while subsequent parameters define parameter mappings. Specifically, if the argument for a subsequent parameter is ...
+
+ * `std::placeholders::_N`, the proxy functor's `N`th parameter is forwarded to the original function-like object's parameter at that position (e.g. the 2nd parameter of `add_to_47()` is mapped to the 3rd parameter of `add_numbers()`).
+ * something else, that argument is directly passed through to the original function-like object's parameter at that position (e.g. `47` is mapped to the 2rd parameter of `add_numbers()`).
+
+```{note}
+Testing on godbolt, the proxy functor generated by `std::bind` requires *at least* as many parameters as the maximum placeholder value. So for example, if you only used `std::placeholders::_1` and `std::placeholders::_5`, the proxy functor still requires that you supply something for 2nd, 3rd, and 4th parameters of the proxy functor even though they aren't mapped to anything. You can also supply arguments for a 6th, 7th, 8th, 9th, ... parameter, even though they aren't mapped using `std::placeholder`s, and it'll be fine. You just can't supply less than 5.
+```
+
+For situations where all hardcoded parameters are at the front (contiguous), `std::bind_front()` is a more terse alternative. The first parameter of `std::bind_front()` is the function-like object to proxy, while subsequent parameters list out the hardcoded mappings for parameters 1, 2, 3, etc.. All remaining parameters will implicitly become `std::placeholder::_N`s that auto-increment from 1.
+
+```c++
+int add_numbers(int i, int j, bool print) {
+    int res { i + j };
+    if (print) {
+        std::cout << (i + j) << '\n';
+    }
+    return res;
+}
+
+
+auto add_to_47 = std::bind_front(add_numbers, 47); // add_to_47() proxies add_numbers(), but hardcodes its 1st param to 47.
+add_to_47(3, true); // prints "50"
+```
+
+```{note}
+Why not just use a lambda instead of `std::bind()` / `std::bind_front()`? Probably because this is more terse. With a lambda, you likely will need `auto &&` for each parameter, `decltype(auto)` for the return, and `std::forward`s for each argument being pushed into the original function-like object.
+```
+
 ### Reference Wrapper
 
 `{bm} /(Library Functions\/Wrappers\/Reference Wrapper)_TOPIC/`
@@ -7033,7 +7550,7 @@ Library Functions/Containers
 Core Language/Variables/Rvalue References_TOPIC (refresher)
 ```
 
-A reference wrapper is a wrapper that holds a reference to an object. This is important because, in C++, you can't have a reference to a reference like you can have a pointer to a pointer. References, from a usage perspective, are treated as if they're the direct object themselves.
+`std::reference_wrapper` is a wrapper that holds a reference to an object. This is important because, in C++, you can't have a reference to a reference like you can have a pointer to a pointer. References, from a usage perspective, are treated as if they're the direct object themselves.
 
 ```c++
 int ** x { ... };                                             // OK:  x is a pointer to a pointer to a n integer
@@ -9423,7 +9940,7 @@ The lack of type erasures sometimes causes problems when doing certain types of 
 ```c++
 std::ranges::empty_view<int> y{};
 std::ranges::single_view<int> x{5};
-std::vector combined{ x , y };  // x and y of different types, vector's type parameter can't be deduced
+std::vector combined{ x , y };  // x and y of different types, vector's template parameter can't be deduced
 auto joined { std::ranges::join_view(combined) };
 for (auto x : joined) {
     std::cout << x << std::endl;
@@ -11269,8 +11786,8 @@ std::cin.exceptions(std::istream::badbit | std::istream::failbit); // exception 
 ```{prereq}
 Library Functions/Strings/String_TOPIC
 Library Functions/Strings/String View_TOPIC
-Library functions/Ranges_TOPIC
-Library functions/Containers_TOPIC
+Library Functions/Ranges_TOPIC
+Library Functions/Containers_TOPIC
 ```
 
 TODO: fill me in
@@ -11538,6 +12055,8 @@ Technically, `std::is_constant_evaluated()` can be used anywhere. If you use it 
     ```
 
     See also: virtual destructor.
+
+ * `{bm} default constructor` - A constructor that has in no parameters.
 
  * `{bm} pointer` - A data type used to point to a different piece of memory (e.g. `int yPtr { &y }`).
 
@@ -11821,7 +12340,7 @@ Technically, `std::is_constant_evaluated()` can be used anywhere. If you use it 
 
  * `{bm} zero-arg/\b(zero-arg|no-arg)\b/i` - Short for zero argument. A function with zero parameters.
 
- * `{bm} parameter pack` - In the context of templates, a parameter pack is a single template parameter declaration that can take in zero or more substitutions (variadic).
+ * `{bm} parameter pack/(parameter pack|template parameter pack)/i` - In the context of templates, a parameter pack is a single template parameter declaration that can take in zero or more substitutions (variadic).
 
    ```c++
    template <typename X, typename... R>
@@ -12075,7 +12594,7 @@ Technically, `std::is_constant_evaluated()` can be used anywhere. If you use it 
    auto f = [new_x=x/2, &y] (int z) -> int { return new_x + y + z; };
    ```
 
- * `{bm} callable object` - An object that can be invoked: a function, functor, or lambda.
+ * `{bm} callable object/(function-like object|callable object)/i` - An object that can be invoked: a function, functor, or lambda.
 
  * `{bm} function overload/(function overload|overloaded function|overload)/i` - A function that has the same name as another function within the same scope.
 
@@ -12172,7 +12691,7 @@ Technically, `std::is_constant_evaluated()` can be used anywhere. If you use it 
    }
    ```
 
-* `{bm} special member function` - A member function which, if invoked but not explicitly implemented, the compiler will automatically generate a default implementation for. Each of the following is considered a special member function: default constructor, copy constructor, move constructor, copy assignment operator, move assignment operator, and destructor.
+ * `{bm} special member function` - A member function which, if invoked but not explicitly implemented, the compiler will automatically generate a default implementation for. Each of the following is considered a special member function: default constructor, copy constructor, move constructor, copy assignment operator, move assignment operator, and destructor.
 
 `{bm-ignore} (classification)/i`
 `{bm-ignore} (structure)/i`

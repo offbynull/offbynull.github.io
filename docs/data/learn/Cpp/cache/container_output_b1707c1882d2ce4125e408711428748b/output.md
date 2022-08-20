@@ -2,8 +2,7 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Core Language/Templates/Type Traits_TOPIC
- * Core Language/Templates/Auto Syntax_TOPIC
+ * Core Language/Templates/Concepts/Semi-regular Type Concept_TOPIC
 
 </div>
 
