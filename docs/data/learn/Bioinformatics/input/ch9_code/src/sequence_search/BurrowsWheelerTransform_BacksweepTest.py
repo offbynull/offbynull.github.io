@@ -3,12 +3,10 @@ from sys import stdin
 import yaml
 
 from sequence_search.BurrowsWheelerTransform_Basic import BWTRecord
-
-
-# MARKDOWN_TEST
 from sequence_search.BurrowsWheelerTransform_Deserialization import to_bwt_optimized2
 
 
+# MARKDOWN_TEST
 def find(
         bwt_array: list[BWTRecord],
         test: str

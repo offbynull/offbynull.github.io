@@ -14908,12 +14908,12 @@ Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Deserializat
 **ALGORITHM**:
 
 ```{note}
-This algorithm focuses on a different way of testing the first and last column of a BWT matrix for a substring. While it seems useless, it's fundamental for building up some of the more elaborate modifications to the BWT algorithm (discussed in later sections).
+This algorithm focuses on a different way of testing the first and last column of a BWT matrix for a substring. It specifically requires that the first and last columns of a BWT matrix were generated using the deserialization algorithm, because that algorithm has some special properties with how symbol instances get numbered (sorted / ordered).
 
-This algorithm specifically requires that the first and last columns of a BWT matrix were generated using the deserialization algorithm, because that algorithm has some special properties with how symbol instances get numbered.
+Ultimately, it seems to be testing in a similar way as before but it doesn't try to test each potential substring instance by drilling down. Instead, it limits the span / range of options at each step to values that it knows are correct. In a way, it should be a faster way to test because of the memory layouts and principle of locality (e.g. subsequent memory access to a location that's closer to the original memory access is faster vs a location that's farther, due to caching and stuff like that).
 ```
 
-The backsweep algorithm is a different way of testing for a substring using the first and last columns of a BWT matrix. In the deserialization algorithm section, the final method of constructing the first and last columns of a BWT matrix had a distinct property: The first column was sorted by both symbol and symbol instance count. For example, given the first and last columns of the BWT matrix for "banana¶", the "a" symbol instances will appear in the first column as [`{h}#f00 a1`, `{h}#b00 a2`, `{h}#800 a3`].
+The backsweep algorithm is a different way of testing for a substring using the first and last columns of a BWT matrix. In the deserialization algorithm section, the final method of constructing the first and last columns of a BWT matrix had a distinct property: The first column was sorted by both symbol and symbol instance count. For example, given the first and last columns of the BWT matrix for "banana¶", the "a" symbol instances will appear contiguously in the first column as [`{h}#f00 a1`, `{h}#b00 a2`, `{h}#800 a3`].
 
 |              |              |
 |--------------|--------------|
@@ -15065,15 +15065,212 @@ sequence_search.BurrowsWheelerTransform_BacksweepTest main_test
 }
 ```
 
-#### Rank Checkpoints Algorithm
+#### Collapsed First Algorithm
+
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Collapsed First Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Deserialization Algorithm_TOPIC
+Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Backsweep Algorithm_TOPIC
+```
+
+The deserialization algorithm discussed earlier generates a first column with certain distinct properties:
+
+1. The first column is sorted by both symbol and symbol instance count.
+2. The symbol instance counts for some symbol starts from 1 and increments by 1.
+
+For example, given the first and last columns of the BWT matrix for "banana¶", the "a" symbol instances will appear contiguously in the first column as [`{h}#f00 a1`, `{h}#b00 a2`, `{h}#800 a3`].
+
+| idx |     first    |     last     | last_to_first |
+|-----|--------------|--------------|---------------|
+|  0  |          ¶1  | `{h}#f00 a1` |       1       |
+|  1  | `{h}#f00 a1` |          n1  |       5       |
+|  2  | `{h}#b00 a2` |          n2  |       6       |
+|  3  | `{h}#800 a3` |          b1  |       4       |
+|  4  |          b1  |          ¶1  |       0       |
+|  5  |          n1  | `{h}#b00 a2` |       2       |
+|  6  |          n2  | `{h}#800 a3` |       3       |
+
+```{note}
+The column `idx` is just the index within the table.
+
+The column `last_to_first` wasn't discussed in the prerequisites but it was in their code. It simply maps the `last` value at a specific index to its index within `first`. For example, "a3" is contained at index ...
+
+* index 6 for `last`
+* index 3 for `first`
+
+So, at index 6 (where `last=a3`), the `last_to_first` value points to index 3 (where `first=a3`). Recall that `last_to_first` is just there to allow for quickly testing for a substring, which goes in reverse from the last column to the first column.
+```
+
+The collapsed first algorithm uses a more memory efficient data structure to represent the same information as the table above. Because of the properties of `first` mentioned in the beginning of this section, this data structure is able to squash `first` such that only the index of each symbol's initial occurrence within `first` is retained: `first_occurrence_map`.
+
+| idx | last | last_to_first | -------- | first_occurrence_map |
+|-----|------|---------------|----------|----------------------|
+|  0  |  a1  |       1       |          |          ¶=0         |
+|  1  |  n1  |       5       |          |          a=1         |
+|  2  |  n2  |       6       |          |          b=4         |
+|  3  |  b1  |       4       |          |          n=5         |
+|  4  |  ¶1  |       0       |          |                      |
+|  5  |  a2  |       2       |          |                      |
+|  6  |  a3  |       3       |          |                      |
+
+For example, because symbol instances of "n" started at index 5 of `first` in the original table, the squashed version has `first_occurrence_map['n'] = 5`.
+
+```{note}
+The gap in the table above is acting a delimiter. It splits the list (`idx`, `last`, `last_to_first`) from the dictionary / map `first_occurrence_map`. They're separate entities.
+```
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_SquashedFirst.py
+python
+# MARKDOWN_BUILD_TABLE_AND_SQUASHED_FIRST\s*\n([\s\S]+)\n\s*# MARKDOWN_BUILD_TABLE_AND_SQUASHED_FIRST\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_SquashedFirst main_table_and_squashed_first
+{
+  sequence: banana¶,
+  end_marker: ¶
+}
+```
+
+Given just `first_occurrence_map`, finding the index where some symbol instance should be in `first` is computed as `(first_occurrence_map[inst.symbol] + inst.count) - 1`. For example, `first_occurrence_map['a'] = 1` states that index 1 within `first` is where symbol instances for "a" start. Since the properties discussed at the beginning of this section guarantee that all "a" symbol instances in `first` ...
+
+* appear one after the other (contiguous),
+* start with a symbol instance count of 1,
+* increment their symbol instance count by 1 as they go down (sorted),
+
+..., finding the index where some "a" symbol instance should be in `first` is done by simply adding that symbol instance's count to `first_occurrence_map['a']` and subtracting 1:
+
+```python 
+# index where first=a1
+(first_occurrence_map['a'] + 1) - 1 = (1 + 1) - 1 = 1
+
+# index where first=a2
+(first_occurrence_map['a'] + 2) - 1 = (1 + 2) - 1 = 2
+
+# index where first=a3
+(first_occurrence_map['a'] + 3) - 1 = (1 + 3) - 1 = 3
+```
+
+This is effectively an on the fly calculation of `last_to_first`: For any symbol instance in `last`, feeding that symbol instance to the algorithm above computes its index within `first`. As such, `last_to_first` is not necessary in the collapsed first algorithm's data structure. This gives huge memory savings because both `last_to_first` is gone and `first` is collapsed to `first_occurrence_map`.
+
+| idx | last | -------- | first_occurrence_map |
+|-----|------|----------|----------------------|
+|  0  |  a1  |          |          ¶=0         |
+|  1  |  n1  |          |          a=1         |
+|  2  |  n2  |          |          b=4         |
+|  3  |  b1  |          |          n=5         |
+|  4  |  ¶1  |          |                      |
+|  5  |  a2  |          |                      |
+|  6  |  a3  |          |                      |
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_SquashedFirst.py
+python
+# MARKDOWN_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_TEST\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_SquashedFirst main_test
+{
+  sequence: banana¶,
+  end_marker: ¶,
+  test: ana
+}
+```
+
+#### Checkpointed Ranks Algorithm
+
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Checkpointed Ranks Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Collapsed First Algorithm_TOPIC
+```
+
+TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.
+
+TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.
+
+TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.
+
+TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.
+
+TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.
+
+TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.
+
+TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.
+
+TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear. in the first paragraph specifically, mention that the algorithm exploits the last column sorted/ordered property to further increase memory savings
+
+
+The ranks algorithm modifies the collapsed first algorithm's data structure by removing symbol instance counts from `last` and instead replacing them with ranks: A tally of how many times each symbol was encountered just before reaching the current index.
+
+| idx | last | -------- | first_occurrence_map | -------- | idx |     last_tallies     |
+|-----|------|----------|----------------------|----------|-----|----------------------|
+|  0  |  a   |          |          ¶=0         |          |  0  | {¶=0, a=1, b=0, n=0} |
+|  1  |  n   |          |          a=1         |          |  1  | {¶=0, a=1, b=0, n=1} |
+|  2  |  n   |          |          b=4         |          |  2  | {¶=0, a=1, b=0, n=2} |
+|  3  |  b   |          |          n=5         |          |  3  | {¶=0, a=1, b=1, n=2} |
+|  4  |  ¶   |          |                      |          |  4  | {¶=1, a=1, b=1, n=2} |
+|  5  |  a   |          |                      |          |  5  | {¶=1, a=2, b=1, n=2} |
+|  6  |  a   |          |                      |          |  6  | {¶=1, a=3, b=1, n=2} |
+
+```{note}
+The gaps in the table above are acting as delimiters. It splits the list (`idx`, `last`, `last_to_first`) from the dictionary / map `first_occurrence_map` from the list (`idx`, `last_tallies`). They're 3 separate entities.
+```
+
+At any index, the symbol in `last` can determine its symbol instance count by simply querying for that symbol at the same index at `last_tallies`. For example, to get the symbol instance count of at index 2 where `last=n`: `last_tallies[2]['n']`.
+
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+
+While this actually increases memory usage compared to the collapsed first algorithm, it allows for a concept known as checkpointing: Instead of retaining `last_tallies` in its entirety, it's possibly to only retain every `n`th row. For example, retaining every 3rd `last_tallies` value in the example table above would result in the following.
+
+| idx | last | -------- | first_occurrence_map | -------- | idx |     last_tallies     |
+|-----|------|----------|----------------------|----------|-----|----------------------|
+|  0  |  a   |          |          ¶=0         |          |  0  | {¶=0, a=1, b=0, n=0} |
+|  1  |  n   |          |          a=1         |          |  1  |                      |
+|  2  |  n   |          |          b=4         |          |  2  |                      |
+|  3  |  b   |          |          n=5         |          |  3  | {¶=0, a=1, b=1, n=2} |
+|  4  |  ¶   |          |                      |          |  4  |                      |
+|  5  |  a   |          |                      |          |  5  |                      |
+|  6  |  a   |          |                      |          |  6  | {¶=1, a=3, b=1, n=2} |
+
+To determine the value of `last_tallies` at some index without a tally, simply tally `last` symbols upwards from that index until reaching an index where `last_tallies` has a value, then add the tallies together. For example, to compute `last_tallies` for index 5...
+
+1. add symbol in `last` at index 5 to the tally: {a=1},
+2. add symbol in `last` at index 4 to the tally: {¶=1, a=1},
+3. add `last_tallies` at index 3 to the tally calculated in the steps above: {¶=1, a=1} + {¶=0, a=1, b=1, n=2} = {¶=1, a=2, b=1, n=2}.
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+Testing for a substirng works just as before with the exception that the symbol instance count for some index in `last` needs to be calculated via `last_tallies`. The idea is to make the `last_tallies` gaps wide enough to provide memory savings compared to keeping the symbol instance counts in `last`, but at the same time short enough that the time to compute the missing gap values is still negligible. For example, since there are only 4 possible symbols with a DNA sequence (A, C, G, and T), the gaps in `last_tallies` don't have to get too wide before seeing memory savings over keeping symbol instance counts in `last`.
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
+
+TODO: ADD CODE HERE
 
 #### Partial Suffix Array Algorithm
 
 ```{prereq}
+Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Standard Algorithm_TOPIC
 Algorithms/Single Nucleotide Polymorphism/Suffix Array_TOPIC
 ```
 
-#### Rank Checkpoints and Partial Suffix Array Algorithm
+#### Partial Suffix Array and Checkpointed Ranks Algorithm
 
 TODO: CONTINUE HERE
 

@@ -199,9 +199,10 @@
 <li><a href="#H1_Standard%20Algorithm">Standard Algorithm</a></li>
 <li><a href="#H_Deserialization%20Algorithm">Deserialization Algorithm</a></li>
 <li><a href="#H_Backsweep%20Algorithm">Backsweep Algorithm</a></li>
-<li><a href="#H_Rank%20Checkpoints%20Algorithm">Rank Checkpoints Algorithm</a></li>
+<li><a href="#H_Collapsed%20First%20Algorithm">Collapsed First Algorithm</a></li>
+<li><a href="#H_Checkpointed%20Ranks%20Algorithm">Checkpointed Ranks Algorithm</a></li>
 <li><a href="#H_Partial%20Suffix%20Array%20Algorithm">Partial Suffix Array Algorithm</a></li>
-<li><a href="#H_Rank%20Checkpoints%20and%20Partial%20Suffix%20Array%20Algorithm">Rank Checkpoints and Partial Suffix Array Algorithm</a></li>
+<li><a href="#H_Partial%20Suffix%20Array%20and%20Checkpointed%20Ranks%20Algorithm">Partial Suffix Array and Checkpointed Ranks Algorithm</a></li>
 </ul>
 <li><a href="#H_BLAST">BLAST</a></li>
 </ul>
@@ -18612,7 +18613,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_f9a5c6d1258db99770ad002a0a571e30.svg" alt="Dot diagram"></p>
+<p><img src="dot_0b6cc891a84d7c1b1673facbdf9c95ed.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>Testing if a <a href="#BM_(trie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> requires walking the <a href="#BM_(trie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching the end-of-<a href="#BM_(sequence)%2Fi">sequence</a> marker.</p>
@@ -18742,7 +18743,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_49cb00fef699d227f80a4fb67d4cc671.svg" alt="Dot diagram"></p>
+<p><img src="dot_e48bbf0ddff55c1e3ea452f61a79a94f.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19011,7 +19012,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_27b6ad11c815f37bd6d98ba36102d5f7.svg" alt="Dot diagram"></p>
+<p><img src="dot_096ae62378a77e32d7bc0ba51f26c033.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19150,7 +19151,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_e2e6daf1491611e5f700c592b1e4c3e7.svg" alt="Dot diagram"></p>
+<p><img src="dot_7fde12f399917a9744997e142fa22455.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>If a scan walks the <a href="#BM_(trie)%2Fi">trie</a> to "arat" and fails, the next scan position must contain "rat". Since the prefix "rat" exists in the <a href="#BM_(trie)%2Fi">trie</a>, a special edge connects "arat" to "rat" such that the scan for the next position can jump past "rat" in the <a href="#BM_(trie)%2Fi">trie</a> walk.</p>
@@ -19228,7 +19229,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_409a5483456423f21085c64f61716b82.svg" alt="Dot diagram"></p>
+<p><img src="dot_7fde12f399917a9744997e142fa22455.svg" alt="Dot diagram"></p>
 <p>Searching <em>There were multiple narrations in the play</em> with the trie revealed the following was found: {(23, ration)}</p>
 </div>
 <p></p>
@@ -19307,7 +19308,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_f6bdca424984b825320a1d0892e5ee1c.svg" alt="Dot diagram"></p>
+<p><img src="dot_82ee817a6f0ee45ebc7865ffd98e7cf7.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -20831,6 +20832,10 @@ xxa vehicle__¶
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This algorithm focuses on a different way of constructing the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix. While it seems useless, it's fundamental for building up some of the more elaborate modifications to the <a href="#BM_(BWT)%2F">BWT</a> algorithm (discussed in later sections).</p>
+</div>
 <p>When testing for a <a href="#BM_(substring)%2Fi">substring</a> in the standard algorithm, the symbol instance counts serve no other purpose than mapping values of the <a href="#BM_(BWT)%2F">BWT</a> matrix's last and first columns. For example, instead of having symbol instance counts, you could just as well use a set of random unique shapes for each symbol's instances and the end result would be the same.</p>
 <p><img src="svgbob_8e26e1188e250a5e55df0ff38eadd5858ce3b6c3.svg" alt="Kroki diagram output"></p>
 <p>Given this observation, when serializing the first and last columns of the matrix, you technically only need to store the symbols from the last column. The first column is just the last column, but sorted. For example, the symbols in last column of the example above are "annb¶aa". To convert that back into the first and last columns of the matrix with symbol instance counts, the steps are as follows:</p>
@@ -21192,9 +21197,10 @@ xxa vehicle__¶
 <p><strong>ALGORITHM</strong>:</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>This section may seem useless, but it's the foundation for sections further down.</p>
+<p>This algorithm focuses on a different way of testing the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix for a <a href="#BM_(substring)%2Fi">substring</a>. It specifically requires that the first and last columns of a <a href="#BM_(BWT)%2F">BWT</a> matrix were generated using the deserialization algorithm, because that algorithm has some special properties with how symbol instances get numbered (sorted / ordered).</p>
+<p>Ultimately, it seems to be testing in a similar way as before but it doesn't try to test each potential <a href="#BM_(substring)%2Fi">substring</a> instance by drilling down. Instead, it limits the span / range of options at each step to values that it knows are correct. In a way, it should be a faster way to test because of the memory layouts and principle of locality (e.g. subsequent memory access to a location that's closer to the original memory access is faster vs a location that's farther, due to caching and stuff like that).</p>
 </div>
-<p>The backsweep algorithm is a different way of testing for a <a href="#BM_(substring)%2Fi">substring</a> using the first and last columns of a <a href="#BM_(BWT)%2F">BWT</a> matrix. In the deserialization algorithm section, the final method of constructing the first and last columns of a <a href="#BM_(BWT)%2F">BWT</a> matrix had a distinct property: The first column was sorted by both symbol and symbol instance count. For example, given the first and last columns of the <a href="#BM_(BWT)%2F">BWT</a> matrix for "banana¶", the "a" symbol instances will appear in the first column as [<span style="background-color: #f00; color: white; padding: 3px">a1</span>, <span style="background-color: #b00; color: white; padding: 3px">a2</span>, <span style="background-color: #800; color: white; padding: 3px">a3</span>].</p>
+<p>The backsweep algorithm is a different way of testing for a <a href="#BM_(substring)%2Fi">substring</a> using the first and last columns of a <a href="#BM_(BWT)%2F">BWT</a> matrix. In the deserialization algorithm section, the final method of constructing the first and last columns of a <a href="#BM_(BWT)%2F">BWT</a> matrix had a distinct property: The first column was sorted by both symbol and symbol instance count. For example, given the first and last columns of the <a href="#BM_(BWT)%2F">BWT</a> matrix for "banana¶", the "a" symbol instances will appear contiguously in the first column as [<span style="background-color: #f00; color: white; padding: 3px">a1</span>, <span style="background-color: #b00; color: white; padding: 3px">a2</span>, <span style="background-color: #800; color: white; padding: 3px">a3</span>].</p>
 <table>
 <thead>
 <tr>
@@ -21289,11 +21295,8 @@ xxa vehicle__¶
 <li>[b4, b5, ?, b3] - "b" symbol instances must increment as they go top to bottom, not scatter.</li>
 </ul>
 </div>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_BacksweepTest.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_BacksweepTest.py</a> (lines 9 to 31):</p>
-<pre class="hljs"><code><span class="hljs-keyword">from</span> sequence_search.BurrowsWheelerTransform_Deserialization <span class="hljs-keyword">import</span> to_bwt_optimized2
-
-
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_BacksweepTest.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_BacksweepTest.py</a> (lines 10 to 29):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">
         bwt_array: <span class="hljs-built_in">list</span>[BWTRecord],
         test: <span class="hljs-built_in">str</span>
 </span>) -&gt; <span class="hljs-built_in">int</span>:
@@ -21331,15 +21334,530 @@ xxa vehicle__¶
 <p><em>bba</em> found in <em>abbazabbabbu¶</em> 2 times.</p>
 </div>
 <p></p>
-<a name="H_Rank%20Checkpoints%20Algorithm"></a><h4>Rank Checkpoints Algorithm</h4>
+<a name="H_Collapsed%20First%20Algorithm"></a><h4>Collapsed First Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FCollapsed%20First%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FDeserialization%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Deserialization Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FBacksweep%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Backsweep Algorithm</a></li>
+</ul>
+</div>
+<p>The deserialization algorithm discussed earlier generates a first column with certain distinct properties:</p>
+<ol>
+<li>The first column is sorted by both symbol and symbol instance count.</li>
+<li>The symbol instance counts for some symbol starts from 1 and increments by 1.</li>
+</ol>
+<p>For example, given the first and last columns of the <a href="#BM_(BWT)%2F">BWT</a> matrix for "banana¶", the "a" symbol instances will appear contiguously in the first column as [<span style="background-color: #f00; color: white; padding: 3px">a1</span>, <span style="background-color: #b00; color: white; padding: 3px">a2</span>, <span style="background-color: #800; color: white; padding: 3px">a3</span>].</p>
+<table>
+<thead>
+<tr>
+<th>idx</th>
+<th>first</th>
+<th>last</th>
+<th>last_to_first</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>¶1</td>
+<td><span style="background-color: #f00; color: white; padding: 3px">a1</span></td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td><span style="background-color: #f00; color: white; padding: 3px">a1</span></td>
+<td>n1</td>
+<td>5</td>
+</tr>
+<tr>
+<td>2</td>
+<td><span style="background-color: #b00; color: white; padding: 3px">a2</span></td>
+<td>n2</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td><span style="background-color: #800; color: white; padding: 3px">a3</span></td>
+<td>b1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>4</td>
+<td>b1</td>
+<td>¶1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>n1</td>
+<td><span style="background-color: #b00; color: white; padding: 3px">a2</span></td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>n2</td>
+<td><span style="background-color: #800; color: white; padding: 3px">a3</span></td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The column <code>idx</code> is just the index within the table.</p>
+<p>The column <code>last_to_first</code> wasn't discussed in the prerequisites but it was in their code. It simply maps the <code>last</code> value at a specific index to its index within <code>first</code>. For example, "a3" is contained at index ...</p>
+<ul>
+<li>index 6 for <code>last</code></li>
+<li>index 3 for <code>first</code></li>
+</ul>
+<p>So, at index 6 (where <code>last=a3</code>), the <code>last_to_first</code> value points to index 3 (where <code>first=a3</code>). Recall that <code>last_to_first</code> is just there to allow for quickly testing for a <a href="#BM_(substring)%2Fi">substring</a>, which goes in reverse from the last column to the first column.</p>
+</div>
+<p>The collapsed first algorithm uses a more memory efficient data structure to represent the same information as the table above. Because of the properties of <code>first</code> mentioned in the beginning of this section, this data structure is able to squash <code>first</code> such that only the index of each symbol's initial occurrence within <code>first</code> is retained: <code>first_occurrence_map</code>.</p>
+<table>
+<thead>
+<tr>
+<th>idx</th>
+<th>last</th>
+<th>last_to_first</th>
+<th>--------</th>
+<th>first_occurrence_map</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a1</td>
+<td>1</td>
+<td></td>
+<td>¶=0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>n1</td>
+<td>5</td>
+<td></td>
+<td>a=1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>n2</td>
+<td>6</td>
+<td></td>
+<td>b=4</td>
+</tr>
+<tr>
+<td>3</td>
+<td>b1</td>
+<td>4</td>
+<td></td>
+<td>n=5</td>
+</tr>
+<tr>
+<td>4</td>
+<td>¶1</td>
+<td>0</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>a2</td>
+<td>2</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>a3</td>
+<td>3</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>For example, because symbol instances of "n" started at index 5 of <code>first</code> in the original table, the squashed version has <code>first_occurrence_map['n'] = 5</code>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The gap in the table above is acting a delimiter. It splits the list (<code>idx</code>, <code>last</code>, <code>last_to_first</code>) from the dictionary / map <code>first_occurrence_map</code>. They're separate entities.</p>
+</div>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_SquashedFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_SquashedFirst.py</a> (lines 14 to 54):</p>
+<pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">BWTRecord</span>:
+    __slots__ = [<span class="hljs-string">'last_ch'</span>, <span class="hljs-string">'last_ch_idx'</span>]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, last_ch: <span class="hljs-built_in">str</span>, last_ch_idx: <span class="hljs-built_in">int</span></span>):
+        self.last_ch = last_ch
+        self.last_ch_idx = last_ch_idx
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__str__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-string">f'<span class="hljs-subst">{self.last_ch}</span><span class="hljs-subst">{self.last_ch_idx}</span>'</span>
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__repr__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>(self)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_bwt_and_first_occurrences</span>(<span class="hljs-params">
+        seq: <span class="hljs-built_in">str</span>,
+        end_marker: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">list</span>[BWTRecord], <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]]:
+    <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
+    <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[:-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> has end marker but not at the end'</span>
+    seq_rotations = rotate_right(seq)
+    seq_rotations_sorted = <span class="hljs-built_in">sorted</span>(
+        seq_rotations,
+        key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp_char_only(a, b, end_marker))
+    )
+    prev_first_ch = <span class="hljs-literal">None</span>
+    last_ch_counter = Counter()
+    bwt_array = []
+    bwt_first_occurrence_map = {}
+    <span class="hljs-keyword">for</span> i, s <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(seq_rotations_sorted):
+        first_ch = s[<span class="hljs-number">0</span>]
+        last_ch = s[-<span class="hljs-number">1</span>]
+        last_ch_counter[last_ch] += <span class="hljs-number">1</span>
+        last_ch_idx = last_ch_counter[last_ch]
+        bwt_record = BWTRecord(last_ch, last_ch_idx)
+        bwt_array.append(bwt_record)
+        <span class="hljs-keyword">if</span> first_ch != prev_first_ch:
+            bwt_first_occurrence_map[first_ch] = i
+            prev_first_ch = first_ch
+    <span class="hljs-keyword">return</span> bwt_array, bwt_first_occurrence_map
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building BWT using the following settings...</p>
+<pre><code>{
+  sequence: banana¶,
+  end_marker: ¶
+}
+
+</code></pre>
+<p>The following last column and squashed first mapping were produced ...</p>
+<ul>
+<li>First (squashed): {'¶': 0, 'a': 1, 'b': 4, 'n': 5}</li>
+<li>Last: ['a1', 'n1', 'n2', 'b1', '¶1', 'a2', 'a3']</li>
+</ul>
+</div>
+<p></p>
+<p>Given just <code>first_occurrence_map</code>, finding the index where some symbol instance should be in <code>first</code> is computed as <code>(first_occurrence_map[inst.symbol] + inst.count) - 1</code>. For example, <code>first_occurrence_map['a'] = 1</code> states that index 1 within <code>first</code> is where symbol instances for "a" start. Since the properties discussed at the beginning of this section guarantee that all "a" symbol instances in <code>first</code> ...</p>
+<ul>
+<li>appear one after the other (contiguous),</li>
+<li>start with a symbol instance count of 1,</li>
+<li>increment their symbol instance count by 1 as they go down (sorted),</li>
+</ul>
+<p>..., finding the index where some "a" symbol instance should be in <code>first</code> is done by simply adding that symbol instance's count to <code>first_occurrence_map['a']</code> and subtracting 1:</p>
+<pre class="hljs"><code><span class="hljs-comment"># index where first=a1</span>
+(first_occurrence_map[<span class="hljs-string">'a'</span>] + <span class="hljs-number">1</span>) - <span class="hljs-number">1</span> = (<span class="hljs-number">1</span> + <span class="hljs-number">1</span>) - <span class="hljs-number">1</span> = <span class="hljs-number">1</span>
+
+<span class="hljs-comment"># index where first=a2</span>
+(first_occurrence_map[<span class="hljs-string">'a'</span>] + <span class="hljs-number">2</span>) - <span class="hljs-number">1</span> = (<span class="hljs-number">1</span> + <span class="hljs-number">2</span>) - <span class="hljs-number">1</span> = <span class="hljs-number">2</span>
+
+<span class="hljs-comment"># index where first=a3</span>
+(first_occurrence_map[<span class="hljs-string">'a'</span>] + <span class="hljs-number">3</span>) - <span class="hljs-number">1</span> = (<span class="hljs-number">1</span> + <span class="hljs-number">3</span>) - <span class="hljs-number">1</span> = <span class="hljs-number">3</span>
+</code></pre>
+<p>This is effectively an on the fly calculation of <code>last_to_first</code>: For any symbol instance in <code>last</code>, feeding that symbol instance to the algorithm above computes its index within <code>first</code>. As such, <code>last_to_first</code> is not necessary in the collapsed first algorithm's data structure. This gives huge memory savings because both <code>last_to_first</code> is gone and <code>first</code> is collapsed to <code>first_occurrence_map</code>.</p>
+<table>
+<thead>
+<tr>
+<th>idx</th>
+<th>last</th>
+<th>--------</th>
+<th>first_occurrence_map</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a1</td>
+<td></td>
+<td>¶=0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>n1</td>
+<td></td>
+<td>a=1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>n2</td>
+<td></td>
+<td>b=4</td>
+</tr>
+<tr>
+<td>3</td>
+<td>b1</td>
+<td></td>
+<td>n=5</td>
+</tr>
+<tr>
+<td>4</td>
+<td>¶1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>a2</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>a3</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_SquashedFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_SquashedFirst.py</a> (lines 140 to 164):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">
+        bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
+        bwt_first_occurrence_map: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>],
+        test: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">int</span>:
+    top = <span class="hljs-number">0</span>
+    bottom = <span class="hljs-built_in">len</span>(bwt_records) - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(test):
+        new_top = <span class="hljs-built_in">len</span>(bwt_records)
+        new_bottom = -<span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(top, bottom + <span class="hljs-number">1</span>):
+            record = bwt_records[i]
+            <span class="hljs-keyword">if</span> ch == record.last_ch:
+                last_to_first_idx = to_first_index(
+                    bwt_first_occurrence_map,
+                    (record.last_ch, record.last_ch_idx)
+                )
+                new_top = <span class="hljs-built_in">min</span>(new_top, last_to_first_idx)
+                new_bottom = <span class="hljs-built_in">max</span>(new_bottom, last_to_first_idx)
+        <span class="hljs-keyword">if</span> new_bottom == -<span class="hljs-number">1</span> <span class="hljs-keyword">or</span> new_top == <span class="hljs-built_in">len</span>(bwt_records):  <span class="hljs-comment"># technically only need to check one of these conditions</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        top = new_top
+        bottom = new_bottom
+    <span class="hljs-keyword">return</span> (bottom - top) + <span class="hljs-number">1</span>
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building BWT using the following settings...</p>
+<pre><code>{
+  sequence: banana¶,
+  end_marker: ¶,
+  test: ana
+}
+
+</code></pre>
+<p>The following first and last columns were produced ...</p>
+<ul>
+<li>First (squashed): {'¶': 0, 'a': 1, 'b': 4, 'n': 5}</li>
+<li>Last: ['a1', 'n1', 'n2', 'b1', '¶1', 'a2', 'a3']</li>
+</ul>
+<p><em>ana</em> found in <em>banana¶</em> 2 times.</p>
+</div>
+<p></p>
+<a name="H_Checkpointed%20Ranks%20Algorithm"></a><h4>Checkpointed Ranks Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FCheckpointed%20Ranks%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FCollapsed%20First%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Collapsed First Algorithm</a></li>
+</ul>
+</div>
+<p>TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.</p>
+<p>TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.</p>
+<p>TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.</p>
+<p>TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.</p>
+<p>TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.</p>
+<p>TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.</p>
+<p>TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.</p>
+<p>TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear. in the first paragraph specifically, mention that the algorithm exploits the last column sorted/ordered property to further increase memory savings</p>
+<p>The ranks algorithm modifies the collapsed first algorithm's data structure by removing symbol instance counts from <code>last</code> and instead replacing them with ranks: A tally of how many times each symbol was encountered just before reaching the current index.</p>
+<table>
+<thead>
+<tr>
+<th>idx</th>
+<th>last</th>
+<th>--------</th>
+<th>first_occurrence_map</th>
+<th>--------</th>
+<th>idx</th>
+<th>last_tallies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td></td>
+<td>¶=0</td>
+<td></td>
+<td>0</td>
+<td>{¶=0, a=1, b=0, n=0}</td>
+</tr>
+<tr>
+<td>1</td>
+<td>n</td>
+<td></td>
+<td>a=1</td>
+<td></td>
+<td>1</td>
+<td>{¶=0, a=1, b=0, n=1}</td>
+</tr>
+<tr>
+<td>2</td>
+<td>n</td>
+<td></td>
+<td>b=4</td>
+<td></td>
+<td>2</td>
+<td>{¶=0, a=1, b=0, n=2}</td>
+</tr>
+<tr>
+<td>3</td>
+<td>b</td>
+<td></td>
+<td>n=5</td>
+<td></td>
+<td>3</td>
+<td>{¶=0, a=1, b=1, n=2}</td>
+</tr>
+<tr>
+<td>4</td>
+<td>¶</td>
+<td></td>
+<td></td>
+<td></td>
+<td>4</td>
+<td>{¶=1, a=1, b=1, n=2}</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td></td>
+<td></td>
+<td></td>
+<td>5</td>
+<td>{¶=1, a=2, b=1, n=2}</td>
+</tr>
+<tr>
+<td>6</td>
+<td>a</td>
+<td></td>
+<td></td>
+<td></td>
+<td>6</td>
+<td>{¶=1, a=3, b=1, n=2}</td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The gaps in the table above are acting as delimiters. It splits the list (<code>idx</code>, <code>last</code>, <code>last_to_first</code>) from the dictionary / map <code>first_occurrence_map</code> from the list (<code>idx</code>, <code>last_tallies</code>). They're 3 separate entities.</p>
+</div>
+<p>At any index, the symbol in <code>last</code> can determine its symbol instance count by simply querying for that symbol at the same index at <code>last_tallies</code>. For example, to get the symbol instance count of at index 2 where <code>last=n</code>: <code>last_tallies[2]['n']</code>.</p>
+<p>TODO: ADD CODE HERE</p>
+<p>TODO: ADD CODE HERE</p>
+<p>TODO: ADD CODE HERE</p>
+<p>While this actually increases memory usage compared to the collapsed first algorithm, it allows for a concept known as checkpointing: Instead of retaining <code>last_tallies</code> in its entirety, it's possibly to only retain every <code>n</code>th row. For example, retaining every 3rd <code>last_tallies</code> value in the example table above would result in the following.</p>
+<table>
+<thead>
+<tr>
+<th>idx</th>
+<th>last</th>
+<th>--------</th>
+<th>first_occurrence_map</th>
+<th>--------</th>
+<th>idx</th>
+<th>last_tallies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td></td>
+<td>¶=0</td>
+<td></td>
+<td>0</td>
+<td>{¶=0, a=1, b=0, n=0}</td>
+</tr>
+<tr>
+<td>1</td>
+<td>n</td>
+<td></td>
+<td>a=1</td>
+<td></td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>n</td>
+<td></td>
+<td>b=4</td>
+<td></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>b</td>
+<td></td>
+<td>n=5</td>
+<td></td>
+<td>3</td>
+<td>{¶=0, a=1, b=1, n=2}</td>
+</tr>
+<tr>
+<td>4</td>
+<td>¶</td>
+<td></td>
+<td></td>
+<td></td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td></td>
+<td></td>
+<td></td>
+<td>5</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>a</td>
+<td></td>
+<td></td>
+<td></td>
+<td>6</td>
+<td>{¶=1, a=3, b=1, n=2}</td>
+</tr>
+</tbody>
+</table>
+<p>To determine the value of <code>last_tallies</code> at some index without a tally, simply tally <code>last</code> symbols upwards from that index until reaching an index where <code>last_tallies</code> has a value, then add the tallies together. For example, to compute <code>last_tallies</code> for index 5...</p>
+<ol>
+<li>add symbol in <code>last</code> at index 5 to the tally: {a=1},</li>
+<li>add symbol in <code>last</code> at index 4 to the tally: {¶=1, a=1},</li>
+<li>add <code>last_tallies</code> at index 3 to the tally calculated in the steps above: {¶=1, a=1} + {¶=0, a=1, b=1, n=2} = {¶=1, a=2, b=1, n=2}.</li>
+</ol>
+<p>TODO: ADD CODE HERE</p>
+<p>TODO: ADD CODE HERE</p>
+<p>TODO: ADD CODE HERE</p>
+<p>Testing for a substirng works just as before with the exception that the symbol instance count for some index in <code>last</code> needs to be calculated via <code>last_tallies</code>. The idea is to make the <code>last_tallies</code> gaps wide enough to provide memory savings compared to keeping the symbol instance counts in <code>last</code>, but at the same time short enough that the time to compute the missing gap values is still negligible. For example, since there are only 4 possible symbols with a DNA <a href="#BM_(sequence)%2Fi">sequence</a> (A, C, G, and T), the gaps in <code>last_tallies</code> don't have to get too wide before seeing memory savings over keeping symbol instance counts in <code>last</code>.</p>
+<p>TODO: ADD CODE HERE</p>
+<p>TODO: ADD CODE HERE</p>
+<p>TODO: ADD CODE HERE</p>
 <a name="H_Partial%20Suffix%20Array%20Algorithm"></a><h4>Partial Suffix Array Algorithm</h4>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
+<li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FStandard%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Standard Algorithm</a></li>
 <li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FSuffix%20Array)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Suffix Array</a></li>
 </ul>
 </div>
-<a name="H_Rank%20Checkpoints%20and%20Partial%20Suffix%20Array%20Algorithm"></a><h4>Rank Checkpoints and Partial Suffix Array Algorithm</h4>
+<a name="H_Partial%20Suffix%20Array%20and%20Checkpointed%20Ranks%20Algorithm"></a><h4>Partial Suffix Array and Checkpointed Ranks Algorithm</h4>
 <p>TODO: CONTINUE HERE</p>
 <p>TODO: CONTINUE HERE</p>
 <p>TODO: CONTINUE HERE</p>
