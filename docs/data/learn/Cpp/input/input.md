@@ -500,7 +500,7 @@ x = obj['column name', 100]
 `{bm} /(Core Language\/Variables)_TOPIC/`
 
 ```{prereq}
-Core Language/Operators_TOPIC: Just basic ones like comparison and arithmetic.
+Core Language/Operators_TOPIC (Just basic ones like comparison and arithmetic)
 ```
 
 C++ variable declarations have the following form: `modifiers type name initializer`.
@@ -542,7 +542,7 @@ In C++, variables that are fields (assigned to a class) are called member variab
 `{bm} /(Core Language\/Variables\/Core Types)_TOPIC/`
 
 ```{prereq}
-Core Language/Operators_TOPIC (just the basics like comparison and arithmetic)
+Core Language/Operators_TOPIC (Just the basics like comparison and arithmetic)
 ```
 
 The following sections list out core C++ types and their analogs. These include numeric types, character types, and string types.
@@ -595,7 +595,7 @@ All other specifics are platform-dependent. Specifically, ...
  * encoding scheme of _signed_ types is two's complement (as of C++20), but underflow/overflow behaviour of _signed_ types is undefined (e.g. crash, stay at boundary, wrap back around, etc..).
 
 ```{seealso}
-Library Functions/Numbers/Bit Manipulation_TOPIC (determine endian-ness of scalar types via `std::endian`)
+Library Functions/Numbers/Bit Manipulation_TOPIC (Determine endian-ness of scalar types via `std::endian`)
 ```
 
 Integer ranges, although platform-specific, are queryable in the climits header.
@@ -638,9 +638,9 @@ Notice that `int`, `short`, and `unsigned short` don't have explicit suffixes. I
 ```
 
 ```{seealso}
-Library Functions/Numbers/Numeric Type Information_TOPIC (determine min, max, and other properties of a numeric type)
-Core Language/Variables/Explicit Conversion_TOPIC (casting)
-Library Functions/Numbers/Numeric Type Casting_TOPIC (cast one numeric type to another)
+Library Functions/Numbers/Numeric Type Information_TOPIC (Determine min, max, and other properties of a numeric type)
+Core Language/Variables/Explicit Conversion_TOPIC (Casting)
+Library Functions/Numbers/Numeric Type Casting_TOPIC (Cast one numeric type to another)
 ```
 
 Integer types with standardized bit lengths are defined in the cstdlib header.
@@ -745,7 +745,7 @@ The floating point evaluation behaviour is queryable via `FLT_EVAL_METHOD`, wher
  * 0 means evaluate just to the range and precision of the type.
  * 1 means evaluate float and double as double, and long double as long double.
  * 2 means evaluate all as long double
- * negative value other than -1 means platform-specific behavior.
+ * negative value other than -1 means platform-specific behaviour.
 
 ```{note}
 Unsure about the last point. How's the last point any different than -1?
@@ -820,16 +820,16 @@ These delimiter characters are characters that aren't encountered in the content
 
 ```{prereq}
 Core Language/Variables/Core Types_TOPIC
-Core Language/Variables/Pointers_TOPIC: Just the main section, not any of the subsections.
+Core Language/Variables/Pointers_TOPIC (Just the main section, not any of the subsections)
 ```
 
 C++ allows for the creation of arrays of constant length (size of the array must be known at compile-time). Elements of an array are guaranteed to be contiguous in memory (speculation).
 
 * `int x[100]` - Creates an array of 100 ints where those 100 ints are junk values (data previously at that memory location is not zeroed out).
 * `int x[] { 5, 5, 5 }` - Creates an array of 3 ints where each of those ints have been initialized to 5 (braced initialization).
-* `int x[] = { 5, 5, 5 }` - Equivalent to above (assignment does not do any extra work).
+* `int x[] = { 5, 5, 5 }` - Same as above (assignment does not do any extra work).
 * `int x[3] {}` - Creates an array of 3 ints where each of those ints are 0 (memory zeroed out -- braced initialization).
-* `int x[3] = {}` - Equivalent to above (assignment does not do any extra work).
+* `int x[3] = {}` - Same as above (assignment does not do any extra work).
 * `int x[n]` - Disallowed by C++ if n isn't a constant. These types of arrays are allowed in C (called variable length arrays / VLA), but not in C++ because C++ has collection classes that allow for sizes not known at compile-time.
 
 Accessing arrays is done similarly to how it is in most other languages, by subscripting (e.g. `x[0] = 5`). The only difference is that array access isn't bounds-checked and array length information isn't automatically maintained at run-time. For example, if an array has 100 elements, C++ won't stop you from trying to access element 250 -- out-of-bounds array access is undefined behaviour.
@@ -972,8 +972,8 @@ This is similar to array access via the subscript operator. In fact, both arrays
 ```c++
 int x[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 int *y {x};
-*(y+1) = 99;  // equivalent to x[1] = 99
-x[2] = 101;   // equivalent to *(y+2) = 101;
+*(y+1) = 99;  // same as x[1] = 99
+x[2] = 101;   // same as *(y+2) = 101;
 ```
 
 ```{note}
@@ -1009,7 +1009,7 @@ If you have a `void *` and you want to do raw memory manipulation at that addres
 `{bm} /(Core Language\/Variables\/Pointers\/Function Pointer)_TOPIC/`
 
 ```{prereq}
-Core Language/Functions_TOPIC: Just enough to know what a function is / how to define one.
+Core Language/Functions_TOPIC (Just enough to know what a function is / how to define one)
 ```
 
 A pointer to a function means the type being pointed to is a function with some specific structure. All functions have a type associated with them, defined by their return type, parameter type, and owning class if the function is a method.
@@ -1049,7 +1049,7 @@ func_ptr { &MyClass::multiply }; // point to:  int MyClass::multiply(int, int)
 (x.*func_ptr)(2, 3);             // provide x as the MyClass instance when invoking
 ```
 
-Unlike normal functions, functors cannot be assigned to raw function pointers. A functor's equivalent of a function pointer is a pointer to the function-call operator overload (method).
+Unlike normal functions, functors cannot be assigned to raw function pointers. A functor's version of a function pointer is a pointer to the function-call operator overload (method).
 
 ```c++
 int (MyFunctor::*func_ptr)(int, int) {};  // unset pointer to a function of structure  int (int, int)  in or inherited from MyClass
@@ -1178,7 +1178,7 @@ Core Language/Variables/Pointers_TOPIC
   * `sizeof char` is guaranteed to be 1.
   * `sizeof (char &)` is guaranteed to be 1.
   * `sizeof (char *)` is platform dependent, typically either 4 or 8.
-  * `char * x { "hi" }; sizeof x` is equivalent to `sizeof (char *)` (see above).
+  * `char * x { "hi" }; sizeof x` is same as `sizeof (char *)` (see above).
 
 * an expression such as a structure/class literal, array literal, or string literal, it'll return the number of bytes needed to hold it. For example, ...
 
@@ -1192,7 +1192,7 @@ In other words, `sizeof` returns the size of things known at compile-time. If a 
 In certain cases, the compiler may add padding to objects (e.g. byte boundary alignments or performance reasons), meaning that the size returned by `sizeof` for an object shouldn't be used to make inferences about the characteristics of that object. For example, a `long double` may get reported as being 16 bytes, but that doesn't necessarily mean that a `long double` is a 128-bit quad floating point. It could be that only 12 of those bytes are used to represent the floating point number while the remainder is just padding for alignment reasons. 
 
 ```{note}
-As shown in the examples above, the `sizeof` a C++ reference is equivalent to the raw size. For example, `sizeof char == sizeof (char &)`.
+As shown in the examples above, the `sizeof` a C++ reference is the same as the raw size. For example, `sizeof char == sizeof (char &)`.
 ```
 
 ```{note}
@@ -1220,13 +1220,13 @@ The `using` keyword is used to give synonyms to types. Other than having a new n
 ```c++
 using IntegerButWithNewName = int;
 int x {42};
-IntegerButWithNewName y {42};    // equivalent to:  int y {42};
-IntegerButWithNewName z {x + y}; // equivalent to:  int z {x + y};
+IntegerButWithNewName y {42};    // same as:  int y {42};
+IntegerButWithNewName z {x + y}; // same as:  int z {x + y};
 
 int func(float x);
 int func(short x);
 int func(int x);
-int func(IntegerButWithNewName x);  // NOT ALLOWED -- this overload is equivalent to the overload above
+int func(IntegerButWithNewName x);  // NOT ALLOWED -- this overload is same as the overload above
 ```
 
 ````{note}
@@ -1278,10 +1278,10 @@ The simplest way to interpret `const`-ness of a type is to read it from right-to
 "int const * * const: An unmodifiable pointer to a pointer to an unmodifiable int" 
 ```
 
-One caveat to the above is that a type beginning with `const` is equivalent to the first part of that type having `const` applied on it.
+One caveat to the above is that a type beginning with `const` is the same as the first part of that type having `const` applied on it.
 
 ```c++
-const int x {5};  // equivalent to int const x {5}
+const int x {5};  // same as int const x {5}
 ```
 
 All of the examples above were for fundamental types. Appending a `const` on a class type works exactly the same way: None of its fields are modifiable ever, even by its own methods.
@@ -1486,9 +1486,9 @@ The problem with C-style casting is that it doesn't provide the same safety mech
 `{bm} /(Core Language\/Object Lifecycle)_TOPIC/`
 
 ```{prereq}
-Core Language/Variables_TOPIC: Just enough to know how to define and use one.
-Core Language/Functions_TOPIC: Just enough to know how to define and use one.
-Core Language/Classes_TOPIC: Just enough to know how to define and use one.
+Core Language/Variables_TOPIC (Just enough to know how to define and use one)
+Core Language/Functions_TOPIC (Just enough to know how to define and use one)
+Core Language/Classes_TOPIC (Just enough to know how to define and use one)
 ```
 
 In C++, an object is a region of memory that has a type and a value (e.g. a class instance, an integer, a pointer to an integer, etc..). Contrary to other more high-level languages (e.g. Java), C++ objects aren't exclusive to classes (e.g. a boolean is an object).
@@ -1642,7 +1642,7 @@ The `new` and `delete` operators may also be overridden globally rather than per
 `{bm} /(Core Language\/Functions)_TOPIC/`
 
 ```{prereq}
-Core Language/Variables_TOPIC: Just enough to know how to define and use one.
+Core Language/Variables_TOPIC (Just enough to know how to define and use one)
 ```
 
 C++ function declarations and definitions have the following form: `prefix-modifiers return-type name(parameters) suffix-modifiers`
@@ -1972,8 +1972,8 @@ You should prefer `enum class`.
 `{bm} /(Core Language\/Classes)_TOPIC/`
 
 ```{prereq}
-Core Language/Variables_TOPIC: Just enough to know how to define and use one.
-Core Language/Functions_TOPIC: Just enough to know how to define and use one.
+Core Language/Variables_TOPIC (Just enough to know how to define and use one)
+Core Language/Functions_TOPIC (Just enough to know how to define and use one)
 ```
 
 C++ classes are declared using either the `struct` keyword or `class` keyword. When ...
@@ -2035,13 +2035,13 @@ class MyStruct {
 
     public:
     f1(int count) {
-        this->count = count;  // equivalent to (*this).count = count
+        this->count = count;  // same as (*this).count = count
         flag = false;
     }
 
     f2(int count, bool flag) {
-        this->count = count;  // equivalent to (*this).count = count
-        this->flag = flag;    // equivalent to (*this).flag = flag
+        this->count = count;  // same as (*this).count = count
+        this->flag = flag;    // same as (*this).flag = flag
     }
 }
 ```
@@ -2198,7 +2198,7 @@ class MyStruct {
 The above constructors are using the member-of-pointer operator (->) to access the `this` pointer. Non-static methods of a class have access to an implicit pointer called `this`, which allows for accessing that instance's members. The member-of-pointer operator allows for dereferencing a pointer and accessing a member on the result in a more concise form.
 
 ```c++
-this->count = 0;  // equivalent to (*this).member = 0
+this->count = 0;  // same as (*this).member = 0
 ```
 
 If a class offers constructors, the least error-prone way to invoke it is to use braced initialization: `MyStruct x { 5, true }`. The reason is that C++ has so many object initialization foot-guns that, while simpler methods may work (e.g. `MyStruct x(5, true)`), those methods may end up being interpreted by the compiler as something else that's entirely different (e.g. function declaration).
@@ -2500,7 +2500,7 @@ struct MyClass {
 ```
 
 ```{note}
-Reasons why a compiler may decide to skip generating a function: it doesn't think it's needed, it doesn't think the behavior will be correct, ...?
+Reasons why a compiler may decide to skip generating a function: it doesn't think it's needed, it doesn't think the behaviour will be correct, ...?
 ```
 
 ### Deleted Implementations
@@ -2683,6 +2683,7 @@ See inheritance section for a more thorough explanation.
 
 ```{prereq}
 Core Language/Classes/This Pointer_TOPIC
+Core Language/Classes/Default Implementations_TOPIC
 Core Language/Operators_TOPIC
 ```
 
@@ -2760,6 +2761,15 @@ MyClass operator+(MyClass lhs, MyClass rhs) {
 }
 ```
 
+Certain operators can have `default` implementations in which the compiler generates the body of the function. In simple cases, the `default` implementation is good enough.
+
+```c++
+struct MyClass {
+    ...
+    bool operator==(const MyDouble&) const = default; 
+};
+```
+
 ```{note}
 See [here](https://gist.github.com/beached/38a4ae52fcadfab68cb6de05403fa393) for a list of operators and their signatures (still incomplete).
 
@@ -2774,120 +2784,165 @@ There's also the option to create operators that allow for implicit type casting
 Core Language/Classes/Operator Overloading_TOPIC
 ```
 
-The three-way comparison operator, also called the spaceship operator, is a more terse way of providing comparison operators for a class. Typically, if a class is sortable and comparable, it should provide operator overloads for the typical comparison operators:
+```{note}
+The book claims that, when overloading / using the three-way comparison operator, you need to include the compare header from the C++ standard library: `#include <compare>`. I didn't find this to be the case when I used G++12.
+```
 
- * equality (==)
- * inequality (!=)
+The three-way comparison operator (\<=>), also called the spaceship operator, is a streamlined way of providing ordering comparison operators for a class. Typically, if a class is orderable / sortable, it should provide operator overloads for the following operators:
+
  * less-than (<)
  * less-than or equal (<=)
  * greater-than (>)
  * greater-than or equal (>=)
 
-The three-way comparison operator bundles _at least_ the last four of those (potentially all of them) into a single operator, where the symbol for that operator is an equal-sign sandwiched between angle brackets (\<=\>).
-
-```c++
-struct MyClass {
-    int hour;
-    int minute;
-};
-
-std::strong_ordering operator<=>(MyClass& lhs, MyClass& rhs) const {
-    if (lhs.hour < rhs.hour) {
-        return std::strong_ordering::less;
-    } else if (lhs.hour > rhs.hour) {
-        return std::strong_ordering::greater;
-    } else {
-        if (lhs.minute < rhs.minute) {
-            return std::strong_ordering::less;
-        } else if (lhs.minute > rhs.minute) {
-            return std::strong_ordering::greater;
-        } else {
-            return std::strong_ordering::equal;
-        }
-    }
-}
-
-// Test
-MyClass lunch_time {12, 00};
-MyClass sleep_time {22, 00};
-std::cout << "<= via spaceship operator: " << (lunch_time <= sleep_time) << "\n";
-// You can also call the spaceship operator directly:   std::strong_ordering res {lunch_time <=> sleep_time}
-```
+The three-way comparison operator provides all 4 of the above operators through a single operator overload, and may additionally provide equality (==) and inequality (!=) operators in certain conditions.
 
 ```{note}
-Not sure why but when the above operator overload is a member function (instead of a free function) the compiler starts producing a bunch of warnings.
+Those conditions (and the reasons for why this) is are explained explained further on in this section.
 ```
 
-Note that the above is comparing each member variable in the order it's declared. The default operator overload implementation of the spaceship operator will do exactly the same thing. Had the class inherited from some other class, the default implementation would first compare the parent classes (left-right order -- C++ has multiple inheritance) before comparing the member variables in the class itself.
+Rather than just returning a `boolean`, the three-way comparison operator's return type breaks-down comparisons into 3 categories based on the idea of equality and equivalence:
 
-```c++
-struct MyClass {
-    int hour;
-    int minute;
-    std::strong_ordering operator<=>(MyClass& rhs) const = default;
-};
-```
+ * Strong ordering (`std::strong_ordering`) - `A == B` means that the `A` and `B` are indistinguishable. One may be substituted for the other without any side-effects.
 
-In addition, a default operator overload implementation provides both equality (==) and inequality (!=) support. The operator overload implementation in the first example does not support either -- their operator overloads need to be added manually.
-
-```{note}
-See [here](https://stackoverflow.com/a/58780946) for reasoning.
-```
-
-There are three types of ordering supported by the spaceship operator:
-
- * `std::strong_ordering` - equality (==) means that one object may be substituted for the other (they are the same).
-
-   Possible values:
-
-   * `std::strong_ordering::less` for less-than
-   * `std::strong_ordering::greater` for greater-than
-   * `std::strong_ordering::equal` for equality
-
-   Examples:
-
-   * Comparing circles by their radius. A circle with a radius of 5 is the same as another circle with a radius of 5.
-
-   ```{note}
    Strong ordering is sometimes also referred to as total ordering.
+
+   ```c++
+   std::strong_ordering::less       // a < b
+   std::strong_ordering::equal      // a == b
+   std::strong_ordering::equivalent // same as equal
+   std::strong_ordering::greater    // a > b
    ```
 
- * `std::weak_ordering` - equality (==) means that one object substitution isn't guaranteed (they may not be the same even though they're equivalent).
+   ```c++
+   struct Time {
+       int hour;
+       int minute;
 
-   Possible values:
+       std::strong_ordering operator<=>(const Time& rhs) const {
+           if (hour < rhs.hour) {
+               return std::strong_ordering::less;
+           } else if (hour > rhs.hour) {
+               return std::strong_ordering::greater;
+           } else {
+               if (minute < rhs.minute) {
+                   return std::strong_ordering::less;
+               } else if (minute > rhs.minute) {
+                   return std::strong_ordering::greater;
+               } else {
+                   return std::strong_ordering::equal;
+               }
+           }
+       }
 
-   * `std::weak_ordering::less` for less-than
-   * `std::weak_ordering::greater` for greater-than
-   * `std::weak_ordering::equivalent` for equivalence (note that this is NOT equality -- it's equivalence)
+       bool operator==(const Time& other) const = default;
+   };
+   ```
 
-   Examples:
+ * Weak ordering (`std::weak_ordering`) - `A == B` means that the `A` and `B` aren't guaranteed to be indistinguishable. They are equivalent but not equal (one can't be substituted for the other). For example, the strings `"hello world"` and `"HELLO WORLD"` are equivalent if you ignore case, but one can't necessarily be substituted for the other.
 
-   * Comparing rectangles by their area: A rectangle that's 1-by-15 has the same area as a rectangle that's 5-by-3, but those rectangles are not the same.
-   * Comparing strings while ignoring case: The string `"hello world"` is equivalent to `"HELLO WORLD"`, but the two strings aren't the same.
+   ```c++
+   std::weak_ordering::less         // a < b
+   std::weak_ordering::equivalent   // a is equivalent to b (this is NOT equality, it's equivalence)
+   std::weak_ordering::greater      // a > b
+   ```
 
- * `std::partial_ordering` -- same as `std::weak_ordering`, but with the addition that objects may not be comparable at all.
+   ```c++
+   struct Rectangle {
+       int length;
+       int width;
+       
+       std::weak_ordering operator<=>(const Rectangle& rhs) const {
+           int lhs_area { length * width };
+           int rhs_area { rhs.length * rhs.width };
+           if (lhs_area < rhs_area) {
+               return std::weak_ordering::less;
+           } else if (lhs_area > rhs_area) {
+               return std::weak_ordering::greater;
+           } else {
+               return std::weak_ordering::equivalent;
+           }
+       }
+       
+       bool operator==(const Rectangle& other) const = default;
+   };
+   ```
 
-   Possible values:
+ * Partial ordering (`std::partial_ordering`) -- same as `std::weak_ordering`, but with the caveat that objects may not be comparable at all. For example, the floating point number `5.5` is not comparable at all to `NaN`: `5.5 == NaN`, `5.5 < NaN`, and `5.5 > NaN` are all false.
 
-   * `std::partial_ordering::less` for less-than
-   * `std::partial_ordering::greater` for greater-than
-   * `std::partial_ordering::equivalent` for equivalence (Note that this is NOT equality -- it's equivalence)
-   * `std::partial_ordering::unordered` the objects weren't comparable
+   ```c++
+   std::partial_ordering::less        // a < b
+   std::partial_ordering::equivalent  // a is equivalent to b (this is NOT equality, it's equivalence)
+   std::partial_ordering::greater     // a > b
+   std::partial_ordering::unordered   // a was not comparable to b
+   ```
 
-   Examples:
-   
-   * Comparing floating point numbers: The number `3.5` is not comparable at all to `NaN` (not a number).
+   ```c++
+   struct FloatRectangle {
+       float length;
+       float width;
 
-The return type defined for the operator overload provides context to the user as to how the objects are comparable.
+       std::partial_ordering operator<=>(const FloatRectangle& rhs) const {
+           float lhs_area { length * width };
+           float rhs_area { rhs.length * rhs.width };
+           if (lhs_area < rhs_area) {
+               return std::partial_ordering::less;
+           } else if (lhs_area > rhs_area) {
+               return std::partial_ordering::greater;
+           } else if (lhs_area == rhs_area) {  // if both sides are nan, this still evaluates to false
+               return std::partial_ordering::equivalent;
+           } else {
+               return std::partial_ordering::unordered;
+           }
+       }
 
-```{note}
-Source of ordering types is [here](https://news.ycombinator.com/item?id=20551212).
+       bool operator==(const FloatRectangle& other) const = default;
+   };
+   ```
 
-[Here](https://news.ycombinator.com/item?id=20550165) talks about the importance of choosing the right ordering type.
+All of the examples above provide a default implementation for the equality operator (==). That's because, when the three-way comparison operator overload has a non-default implementation, it doesn't provide support for the equality and inequality operators. The user has to provide those operator overloads.
 
-The rectangle example was lifted from [here](https://blog.tartanllama.xyz/spaceship-operator/).
+However, when the three-way overload has a default implementation, the equality and inequality operators are automatically provided. A default three-way overload implementation first compares parent classes (left to right, in order they were declared -- C++ has multiple inheritance), then compares each member variable (in order they were declared).
+
+```c++
+struct Time {
+    int hour;
+    int minute;
+    std::strong_ordering operator<=>(const Time& rhs) const = default;
+};
 ```
 
+```{note}
+See [here](https://stackoverflow.com/a/58780946) for reasoning on why equality and inequality are missing for a non-default implementation.
+```
+
+```{note}
+If you know what `constexpr` and `noexcept` are, the book is saying that compiler generated three-way comparison operators implicitly have this set.
+```
+
+```{note}
+If you know what the `auto` keyword does:
+
+For default implementations, sometimes people set the return type as `auto`. This is because the default implementation's ordering type is only going to be as "weak" as its weakest parent class / member variable, and you don't know the weakness of everything beforehand.
+
+So for example, if your class has a bunch of member variables with `std::strong_ordering` and a single float member variable (`std::partial_ordering`), the return type of the spaceship operator will be `std::partial_ordering`.
+```
+
+````{note}
+You can use the three-way comparison operator directly in code if you want ...
+
+```c++
+if ((a <=> b) == std::strong_ordering::equal) {
+    // do something
+} else {
+    // do something else
+}
+```
+````
+
+```{seealso}
+Core Language/Templates/Concepts/Ordered Type Concept_TOPIC
+```
 
 ### Conversion Overloading
 
@@ -3123,7 +3178,7 @@ private:
 ```
 
 ````{note}
-This is how C++ provides its equivalent of Java's `Object.toString()`. For each class that you want to be able to print as a string, you implement a templated friend function of the left-shift operator overload (<<) that targets the class `ostream`, making it usable in something like `std::cout`.
+This is how C++ provides its version of Java's `Object.toString()`. For each class that you want to be able to print as a string, you implement a templated friend function of the left-shift operator overload (<<) that targets the class `ostream`, making it usable in something like `std::cout`.
 
 ```c++
 ostream& operator<<(ostream &os, const MyClass &obj) {
@@ -3379,7 +3434,7 @@ auto f2 { [] (MyObject* v) -> const MyObject& { return v[5]; } };
 ```
 
 ```{seealso}
-Core Language/Templates/Type Deduction/Type Cloning Deduction_TOPIC (different use-case for trailing return type syntax)
+Core Language/Templates/Type Deduction/Type Cloning Deduction_TOPIC (Different use-case for trailing return type syntax)
 ```
 
 When a lambda doesn't provide a return type, the return type is implicitly `auto`. The compiler uses standard template parameter type deduction rules to determine what the return type should be.
@@ -3461,8 +3516,8 @@ Library Functions/Containers_TOPIC
 `{bm} /(Core Language\/Templates)_TOPIC/`
 
 ```{prereq}
-Core Language/Functions_TOPIC: Just enough to know how to define and use one.
-Core Language/Classes_TOPIC: Just enough to know how to define and use one.
+Core Language/Functions_TOPIC (Just enough to know how to define and use one)
+Core Language/Classes_TOPIC (Just enough to know how to define and use one)
 ```
 
 Templates are loosely similar to generics in other high-level languages such as Java. A template defines a class or function where some of the types and code are unknown, called template parameters. Each template parameter in a template either maps to a ...
@@ -3805,8 +3860,8 @@ bool test(T x) {
     return x % 2 == 0;
 }
 
-test(5);     // equivalent to test<int>(5)
-test(5ULL);  // equivalent to test<unsigned long long>(5ULL)
+test(5);     // same as test<int>(5)
+test(5ULL);  // same as test<unsigned long long>(5ULL)
 ```
 
 The following subsections detail type deduction rules for templates as well as edge cases and workarounds.
@@ -4140,7 +4195,7 @@ Core Language/Templates/Auto Syntax_TOPIC
 ```
 
 ```{note}
-This section makes use of the type traits library in the C++ standard libraries. Type traits are templates that provide information about types (e.g if a type is signed or unsigned, if it has a copy constructor, etc...). The link below jumps to that section. It's safe to read at this point as it doesn't require any background knowledge other than how to make use of templates, which is something you should already be aware of at this point.
+This section makes use of the type traits library in the C++ standard libraries. Type traits are templates that provide information about types (e.g if a type is signed or unsigned, if it has a copy constructor, etc...). The link below jumps to that section. At this point, it's safe to read the type traits section because it doesn't require any background knowledge other than how to make use of templates, which is something you should already be aware of at this point.
 ```
 
 ```{seealso}
@@ -4319,7 +4374,7 @@ Both concept_TEMPLATEs are related to the spaceship operator.
 ```
 
 ```{seealso}
-Core Language/Classes/Three-way Comparison Overloading_TOPIC (spaceship operator)
+Core Language/Classes/Three-way Comparison Overloading_TOPIC (Spaceship operator)
 ```
 
 #### Semi-regular Type Concept
@@ -4437,6 +4492,7 @@ Likewise, the C++ standard library provides a more elaborate version of `integra
 ```{prereq}
 Core Language/Templates/Variadic_TOPIC
 Core Language/Templates/Concepts/Union Type Concept_TOPIC
+Core Language/Templates/Callable Type Unpacking_TOPIC
 ```
 
 Concept_TEMPLATEs can be used to specify the requirements for a callable object:
@@ -4460,7 +4516,7 @@ Core Language/Templates/Variadic_TOPIC
 Core Language/Compile-time Evaluation_TOPIC
 ```
 
-To test a callable object's parameter count within a concept_TEMPLATE, templates can be used to extract the parameter count. In the example below, the concept_TEMPLATE checks that a callable object has exactly 1 parameter.
+To test a callable's parameter count within a concept_TEMPLATE, templates can be used to extract the parameter count. In the example below, the concept_TEMPLATE checks that a callable has exactly 1 parameter.
 
 ```c++
 // template(s) to extract parameter count
@@ -4474,7 +4530,7 @@ template <typename R, typename ... As>
 struct argCnt<R(As...)> { static constexpr size_t cnt = sizeof...(As); };  // needed for std::integral<>
 
 
-// concept for a callable object that has exactly 1 parameter
+// concept for a callable that has exactly 1 parameter
 template<typename Fn>
 concept MySpecialFunction = argCnt<Fn>::cnt == 1;
 
@@ -4500,10 +4556,6 @@ int main() {
 }
 ```
 
-```{note}
-Instead of using the templates show above, one other solution is to use [Boost's type traits library](https://www.boost.org/doc/libs/1_79_0/libs/type_traits/doc/html/boost_typetraits/reference/function_traits.html): `function_traits<my_func>::arity`.
-```
-
 ##### Parameter Types
 
 `{bm} /(Core Language\/Templates\/Concepts\/Callable Types\/Parameter Types)_TOPIC/`
@@ -4512,7 +4564,7 @@ Instead of using the templates show above, one other solution is to use [Boost's
 Core Language/Templates/Variadic_TOPIC
 ```
 
-To test a callable object's parameter type within a concept_TEMPLATE, templates can be used to extract the parameter type. In the example below, the concept_TEMPLATE checks that a callable object's first parameter has a type conforming to the concept_TEMPLATE `std::integral`.
+To test a callable's parameter type within a concept_TEMPLATE, templates can be used to extract the parameter type. In the example below, the concept_TEMPLATE checks that a callable's first parameter has a type conforming to the concept_TEMPLATE `std::integral`.
 
 ```c++
 // template(s) to extract parameter types
@@ -4572,7 +4624,7 @@ Cleverly using templates as shown above is the most robust way to check a parame
 
 **SCENARIO 1: Testing for a known concrete types**
 
-In this scenario, the requirement is that a callable object's parameter type be a concrete type that's known beforehand (e.g. `int`). The concept_TEMPLATE for the callable object itself can simply use a parameter list `requires` clause.
+In this scenario, the requirement is that a callable's parameter type be a concrete type that's known beforehand (e.g. `int`). The concept_TEMPLATE for the callable itself can simply use a parameter list `requires` clause.
 
 ```c++
 // concept for a function that takes in a single argument of type int
@@ -4584,7 +4636,7 @@ concept MySpecialFunction = requires(Fn f, int t) {
 
 **SCENARIO 2: Testing for a set of known concrete types**
 
-In this scenario, the requirement is that a callable object's parameter be one of a set of concrete types that's known beforehand (e.g. `int` or `long`). The concept_TEMPLATE for the callable object can be exploded out into several sub-concept_TEMPLATEs: Each sub-concept_TEMPLATE checks that the callable object's parameter type match a specific concrete type, then those sub-concept_TEMPLATEs combine to form the full concept_TEMPLATE.
+In this scenario, the requirement is that a callable's parameter be one of a set of concrete types that's known beforehand (e.g. `int` or `long`). The concept_TEMPLATE for the callable can be exploded out into several sub-concept_TEMPLATEs: Each sub-concept_TEMPLATE checks that the callable's parameter type match a specific concrete type, then those sub-concept_TEMPLATEs combine to form the full concept_TEMPLATE.
 
 ```c++
 // concept that combines the two sub-concepts: checks for a function has a single parameter of type int or long
@@ -4623,7 +4675,7 @@ int main() {
 }
 ```
 
-The problem with exploding out to sub-concept_TEMPLATEs is that the number of sub-concept_TEMPLATEs can get very large. For example, if the callable object should have 4 parameters and each of those parameters should be of type `int`, `long`, `short`, or `void*`, that's 256 different sub-concept_TEMPLATEs to list out.
+The problem with exploding out to sub-concept_TEMPLATEs is that the number of sub-concept_TEMPLATEs can get very large. For example, if the callable should have 4 parameters and each of those parameters should be of type `int`, `long`, `short`, or `void*`, that's 256 different sub-concept_TEMPLATEs to list out.
 
 ```c++
 // sub-concepts for function that takes in 4 params:
@@ -4720,7 +4772,7 @@ concept MySpecialFunction =
     };
 ```
 
-Doing this removes the sub-concept_TEMPLATE explosion problem, but it introduces a new problem of the compiler losing the ability to infer template parameters from usage. In the example below, the concept_TEMPLATE for the callable object is concise, but usages of `call()` now need to explicitly specify what each template argument is because the C++ compiler is no longer able to infer them on its own.
+Doing this removes the sub-concept_TEMPLATE explosion problem, but it introduces a new problem of the compiler losing the ability to infer template parameters from usage. In the example below, the concept_TEMPLATE for the callable is concise, but usages of `call()` now need to explicitly specify what each template argument is because the C++ compiler is no longer able to infer them on its own.
 
 ```c++
 // function that takes in 4 params:
@@ -4767,7 +4819,7 @@ Core Language/Templates/Variadic_TOPIC
 Core Language/Templates/Concepts/Callable Types/Parameter Types_TOPIC
 ```
 
-To test a callable object's return type within a concept_TEMPLATE, templates can be used to extract the type. In the example below, the concept_TEMPLATE checks that a callable object has a return type of integral.
+To test a callable's return type within a concept_TEMPLATE, templates can be used to extract the type. In the example below, the concept_TEMPLATE checks that a callable has a return type of integral.
 
 ```c++
 // template(s) to extract return types
@@ -4815,7 +4867,7 @@ Somewhat related as well from the C++ standard library: `std::result_of` / `std:
 ```
 
 ````{note}
-Cleverly using templates as shown above is the most robust way to check a callable object's return type. But, if your requirements aren't overly complex, it may be feasible to use simpler checks such as those discussed in the parameter types section before this section. For example, if the scenario allows for it, a concept_TEMPLATE check can be reduced to just a set of parameter list `requires` clauses being logically or'd together.
+Cleverly using templates as shown above is the most robust way to check a callable's return type. But, if your requirements aren't overly complex, it may be feasible to use simpler checks such as those discussed in the parameter types section before this section. For example, if the scenario allows for it, a concept_TEMPLATE check can be reduced to just a set of parameter list `requires` clauses being logically or'd together.
 
 ```c++
 // concept for a function whose return type is an integral type
@@ -5021,7 +5073,7 @@ For a full breakdown, see [here](https://stackoverflow.com/a/613132).
 
 `{bm} /(Core Language\/Templates\/Callable Type Unpacking)_TOPIC/`
 
-A callable (function, functor, lambda)'s type encompasses multiple other types. For example, the following function's type is `int(long, short)` ...
+A callable's (e.g. function, functor, lambda) type encompasses multiple other types. For example, the following function's type is `int(long, short)` ...
 
 ```c++
 int my_func(long lval, short sval) {
@@ -5029,7 +5081,7 @@ int my_func(long lval, short sval) {
 }
 ```
 
-But that type is composed of 3 other types:
+But, that type is composed of 3 other types:
 
  * `int`, which is the return type.
  * `long`, which is the first parameter type.
@@ -5046,18 +5098,16 @@ Core Language/Templates/Type Cloning_TOPIC
 Core Language/Templates/Specialization_TOPIC
 Core Language/Templates/Variadic_TOPIC
 Core Language/Templates/Type Aliasing_TOPIC
-Core Language/Classes/Functors_TOPIC
-Core Language/Lambdas_TOPIC
 ```
 
-A template can be used to unpack / extract the types that make up a function's declaration. The process works by first creating a templated class with a single template parameter that's left unimplemented.
+A template can be used to unpack / extract the types that make up a function's declaration. The process works by first creating an unimplemented templated class with a single template parameter.
 
 ```c++
 template<typename Fn>
 struct func_types;  // unimplemented
 ```
 
-When a function type is passed `func_types<Fn>`'s template parameter, the C++ compiler expects a template specialization with template parameters for the return type and parameter types. This template specialization provides an implementation for the unimplemented class, where that implementation is simply a set of type aliases to hold on to the return and parameter types.
+When a function type gets passed into `func_types<Fn>`'s template parameter, the C++ compiler looks for a template specialization that more closely matches that function type. The example below is for a function type with two parameters: `R(P1, P2)`, where `R`, `P1`, and `P2` are template parameters. It provides an implementation for the templated class that simply assigns `R`, `P1`, and `P2` to type aliases nested within. Any function type with two parameters will match it (e.g. `int(long, short)`, `void*(char, bool)`, etc...).
 
 ```c++
 template<typename R, typename P1, typename P2>
@@ -5068,7 +5118,7 @@ struct func_types<R(P1, P2)> {
 };
 ```
 
-When `func_types<Fn>` is used, `Fn` needs to be a *function type declaration*. That function type declaration is typically extracted from an existing function using `decltype()`.
+To use the `func_types<Fn>` example above, either set `Fn` to a function type or extract the type of an existing function using `decltype()`.
 
 ```c++
 int my_func(long lval, short sval) {
@@ -5076,7 +5126,7 @@ int my_func(long lval, short sval) {
 }
 
 int main() {
-    using types = func_types<decltype(my_func)>;
+    using types = func_types<decltype(my_func)>;  // equiv to func_types<int(long, short)>
     std::cout << (std::is_same<types::return_t, int>::value ? "true" : "false") << std::endl;   // prints "true"
     std::cout << (std::is_same<types::param1_t, long>::value ? "true" : "false") << std::endl;  // prints "true"
     std::cout << (std::is_same<types::param2_t, short>::value ? "true" : "false") << std::endl; // prints "true"
@@ -5084,9 +5134,9 @@ int main() {
 }
 ```
 
-The `func_types` template specialization is specifically for a two parameter function, where the templated class has the function's types nested within as the type aliases. It won't work for 0 parameter functions, or 1 parameter functions, or 3 parameter functions, or etc... A template specialization will be needed for each of those.
+The `func_types<>` example above is specifically for a two parameter function types. It won't work for 0 parameter function types, or 1 parameter function types, or 3 parameter function types, or etc... A template specialization will be needed for each of those.
 
-To support a function with an arbitrary number of parameters, a template is needed that uses a template parameter pack to represent an arbitrary list of types and recursion to hone in on a specific index within that list.
+To support an arbitrary number of parameters, you need to use a template parameter pack to represent an arbitrary list of types and recursion to hone in on a specific index within that list.
 
 ```c++
 template <std::size_t N, typename T0, typename ... Ts>
@@ -5102,7 +5152,7 @@ struct recurse_to_type<0u, T0, Ts...> {  // template specialization for when N=0
 
 `recurse_to_type<N, T0, Ts>` takes in an index `N`, a starting type `T0`, and a parameter pack of remaining types `Ts`. It recursively pulls the first type out `Ts` (first type in `Ts` becomes `T0` in next recursion) and subtracts `N` by 1 until it reaches 0, at which point the template specialization `recurse_to_type<0, T0, Ts>` sets that first type `T0` into the type alias.
 
-Pulling out an arbitrary parameter type simply involves using `recurse_to_type` with the list of parameters (represented as a template parameter pack) and the desired `N`.
+Given a function type, pulling out the type of one of its parameters simply involves using `recurse_to_type` with the list of parameters (represented as a template parameter pack) and the index of that parameter `N`.
 
 ```c++
 template <std::size_t N, typename Fn>
@@ -5114,7 +5164,7 @@ struct param_type<N, R(Ps...)> {
 };
 ```
 
-Pulling out the total number of parameters can be done by passing the parameter pack to the `sizeof` operator.
+Pulling out the total number of parameters is done by passing the parameter pack to the `sizeof` operator.
 
 ```c++
 template <typename Fn>
@@ -5127,10 +5177,10 @@ struct param_cnt<R(Ps...)> {
 ```
 
 ```{seealso}
-Core Language/Compile-time Evaluation_TOPIC (describes `constexpr`)
+Core Language/Compile-time Evaluation_TOPIC (Describes `constexpr`)
 ```
 
-Pulling out a return type is done similarly, but there's no recursion involved as it's always a single type.
+Pulling out a return type is done by simply referring to the template parameter holding it.
 
 ```c++
 template <typename Fn>
@@ -5142,7 +5192,7 @@ struct ret_type<R(Ps...)> {
 };
 ```
 
-Usage is straight forward for `ret_type` and `param_count`. When `param_type<N>` is used, it needs to target a specific parameter by its index.
+Use the templates above similarly to the initial two parameter function type example.
 
 ```c++
 int my_func(long lval, short sval) {
@@ -5207,12 +5257,13 @@ There's also [Boost's type traits library](https://www.boost.org/doc/libs/1_79_0
 ```{prereq}
 Core Language/Templates/Callable Type Unpacking/Functions_TOPIC
 Core Language/Templates/Auto Syntax_TOPIC
+Core Language/Lambdas_TOPIC (Just enough to know the basics)
 Core Language/Compile-time Evaluation_TOPIC
 ```
 
-Type extraction for functors is similar to type extraction for functors. The main difference is that, with functors, the type extraction is being performed on the function call operator  of the functor. As such, ...
+Type extraction for functors is similar to type extraction for functions. The main difference is that, with functors, the type extraction is being performed on the function call operator of the functor. As such, ...
 
-1. the template specialization for a functor has to take in an extra type that maps to the actual functor object.
+1. the template specialization for a functor has to take in an extra template parameter that maps to the functor's type (class type).
 
    ```c++
    // for function
@@ -5224,83 +5275,60 @@ Type extraction for functors is similar to type extraction for functors. The mai
    struct my_struct<R (O::*)(Ps...)> { /* fill me in */  };
    ```
 
-   In the example above, the functor takes in the extra template parameter `O` and the template parameter breakdown is `R (O::*)(Ps...)`, which essentially is mapping `O` to the type of the `this` pointer with the pointer.
+   In the example above, the functor takes in the extra template parameter `O` and the template parameter breakdown is `R (O::*)(Ps...)`, which is mapping `O` to the type of the functor.
 
-2. the type being passed to the template parameter needs to be the type of the function call operator.
+2. the type being passed to the template parameter needs to be the type of the function call operator, not the functor.
 
    ```c++
    // for function
-   using types = my_type<decltype(my_func)>;
+   using types = my_struct<decltype(my_func)>;
 
    // for functor
-   using types = my_type<decltype(&my_functor::operator())>;
+   using types = my_struct<decltype(&my_functor::operator())>;
    ```
 
-   In the example above, the functor version is passing the type of that functor's function call operator: `decltype(&my_functor::operator())`.
+   In the example above, the template parameter isn't the type of the functor but the type of its function call operator: `decltype(&my_functor::operator())`.
 
-The following code adapts the code to extract arbitrary parameters from the previous section to work with functors as well.
+The following is an adaptation of the type code presented in the previous function unpacking section. The template specialization's template parameters have been modified to work with functors instead of functions (`R(O::*)(Ps...)` vs `R(Ps...)`).
 
 ```c++
-//
-// recurse_to_type remains the same as it did before
-//
+// recurse_to_type is the same for functors as it was for functions
 template <std::size_t N, typename T0, typename ... Ts>
 struct recurse_to_type {
     using type = typename recurse_to_type<N-1u, Ts...>::type;
 };
 
 template <typename T0, typename ... Ts>
-struct recurse_to_type<0u, T0, Ts...> {  // template specialization for when N=0
+struct recurse_to_type<0u, T0, Ts...> {
     using type = T0;
 };
 
 
-//
-// param_type now has a template specialization for functors
-//
+// param_type but with template specialization for functors
 template <std::size_t N, typename Fn>
 struct param_type;
 
-template <std::size_t N, typename R, typename ... Ps> // for function
-struct param_type<N, R(Ps...)> {
-    using type = typename recurse_to_type<N, Ps...>::type;
-};
-
-template <std::size_t N, typename O, typename R, typename... Ps> // for functor
+template <std::size_t N, typename O, typename R, typename... Ps>
 struct param_type<N, R (O::*)(Ps...)> {
     using type = typename recurse_to_type<N, Ps...>::type;
 };
 
 
-//
-// param_cnt now has a template specialization for functors
-//
+// param_cnt but with template specialization for functors
 template <typename Fn>
 struct param_cnt;
 
-template <typename R, typename ... Ps> // for function
-struct param_cnt<R(Ps...)> {
-    static const /*constexpr*/ std::size_t cnt { sizeof...(Ps) };
-};
-
-template<typename O, typename R, typename... Ps> // for functor
+template<typename O, typename R, typename... Ps>
 struct param_cnt<R (O::*)(Ps...)> {
     static const /*constexpr*/ std::size_t cnt { sizeof...(Ps) };
 };
 
 
-//
-// ret_type now has a template specialization for functors
-//
+// ret_type but with template specialization for functors
 template <typename Fn>
 struct ret_type;
 
-template <typename R, typename ... Ps> // for function
-struct ret_type<R(Ps...)> {
-    using type = R;
-};
-
-template<typename O, typename R, typename... Ps> // for functor
+template<typename O, typename R, typename... Ps>
 struct ret_type<R (O::*)(Ps...)> {
     using type = R;
 };
@@ -5323,12 +5351,172 @@ int main() {
     std::cout << (std::is_same<r, int>::value ? "true" : "false") << std::endl;    // prints "true"
     std::cout << (std::is_same<p0, long>::value ? "true" : "false") << std::endl;  // prints "true"
     std::cout << (std::is_same<p1, short>::value ? "true" : "false") << std::endl; // prints "true"
-    std::cout << param_cnt<functor_func_call_type>::cnt << std::endl;                   // prints "2"
+    std::cout << param_cnt<functor_func_call_type>::cnt << std::endl;              // prints "2"
     return 0;
 }
 ```
 
-Compile-time expressions can be used to unify the usage of the template specializations such that you can pass in a function type or functor type as the template parameter (as opposed to passing in the type of the function call operator). A phony function can be used to encompass a compile-time expression which picks the appropriate template specialization based on the type traits of the template parameter passed in.
+The problem with the modifications above is that they only work if a functor's function call operator isn't `const` or `volatile`.
+
+```c++
+// RECALL: lambdas are essentially shorthand for functors.
+[](long l, short s) -> int { return 5; };                                   // FAIL: lambda's function call operator is const by default
+[](long l, short s) mutable -> int { return 5; };                           // OKAY: a mutable lambda's function call operator isn't const
+struct f { int operator() (long l, short s) { return 5; } };                // OKAY: function call operator isn't const or volatile
+struct f { int operator() (long l, short s) const  { return 5; } };         // FAIL: function call operator is const
+struct f { int operator() (long l, short s) volatile { return 5; } };       // FAIL: function call operator is volatile
+struct f { int operator() (long l, short s) const volatile{ return 5; } };  // FAIL: function call operator is const & volatile
+```
+
+To support the failing cases shown above, even more template specializations are needed. For example, adding `const` and `volatile` support to `ret_type`'s template specializations yields a total of 4 template specializations.
+
+```c++
+template <typename Fn>
+struct ret_type;
+
+template<typename O, typename R, typename... Ps> // for functor whose function call operator is not const and not volatile
+struct ret_type<R (O::*)(Ps...)> {
+    using type = R;
+};
+
+template<typename O, typename R, typename... Ps> // for functor whose function call operator is const but not volatile
+struct ret_type<R (O::*)(Ps...) const> {
+    using type = R;
+};
+
+template<typename O, typename R, typename... Ps> // for functor whose function call operator is volatile not not const
+struct ret_type<R (O::*)(Ps...) volatile> {
+    using type = R;
+};
+
+template<typename O, typename R, typename... Ps> // for functor whose function call operator is both const and volatile
+struct ret_type<R (O::*)(Ps...) const volatile> {
+    using type = R;
+};
+```
+
+````{note}
+If you're aware of the type traits library, you might be tempted to use `std::remove_cv<T>::type`. That won't actually remove the `const` / `volatile` off of a function. See [here](https://stackoverflow.com/a/38768590). The most you can do is build your own version of `std::remove_cv` for this usecase, as is done in the link. The full version of what's in the link is below.
+
+```c++
+template<typename T>
+struct remove_cv_seq;
+
+template<typename O, typename R, typename... Ps>
+struct remove_cv_seq<R (O::*)(Ps...) const> {
+    using type = R (O::*)(Ps...);
+};
+
+template<typename O, typename R, typename... Ps>
+struct remove_cv_seq<R (O::*)(Ps...) volatile> {
+    using type = R (O::*)(Ps...);
+};
+
+template<typename O, typename R, typename... Ps>
+struct remove_cv_seq<R (O::*)(Ps...) const volatile> {
+    using type = R (O::*)(Ps...);
+};
+
+template<typename O, typename R, typename... Ps>
+struct remove_cv_seq<R (O::*)(Ps...)> {
+    using type = R (O::*)(Ps...);
+};
+```
+
+I think these are only required for functors and lambdas, not free functions. It doesn't make sense for a free function to be `const` or `volatile?
+````
+
+````{note}
+The following adapts the `std::tuple` approach documented [here](https://stackoverflow.com/a/24948381) to work with functors as well as functions.
+
+```c++
+template<typename Fn>
+struct func_types; // unimplemented
+
+// template specialization for functors
+template<typename O, typename R, typename... Ps>
+struct func_types<R (O::*)(Ps...)> {
+    using ret_t = R;
+    using params_as_tuple_t = std::tuple<Ps...>;
+
+    template<std::size_t N>
+    using param_t = std::tuple_element<N, params_as_tuple_t>::type;
+
+    static constexpr std::size_t param_cnt { std::tuple_size<params_as_tuple_t>{} };
+};
+
+
+
+// manipulators to remove cv-type off functor's function call operator
+template<typename T>
+struct remove_cv_seq;
+
+template<typename O, typename R, typename... Ps>
+struct remove_cv_seq<R (O::*)(Ps...) const> {
+    using type = R (O::*)(Ps...);
+};
+
+template<typename O, typename R, typename... Ps>
+struct remove_cv_seq<R (O::*)(Ps...) volatile> {
+    using type = R (O::*)(Ps...);
+};
+
+template<typename O, typename R, typename... Ps>
+struct remove_cv_seq<R (O::*)(Ps...) const volatile> {
+    using type = R (O::*)(Ps...);
+};
+
+template<typename O, typename R, typename... Ps>
+struct remove_cv_seq<R (O::*)(Ps...)> {
+    using type = R (O::*)(Ps...);
+};
+
+
+
+
+
+struct my_functor {
+    int operator() (long lval, short sval) const volatile {
+        return 5;
+    }
+};
+
+int main() {
+    using functor_call_op_t = decltype(&my_functor::operator());
+    using functor_call_op_t_without_cv = remove_cv_seq<functor_call_op_t>::type;
+    using types = func_types<functor_call_op_t_without_cv>;
+    std::cout << (std::is_same<types::ret_t, int>::value ? "true" : "false") << std::endl;         // prints "true"
+    std::cout << (std::is_same<types::param_t<0u>, long>::value ? "true" : "false") << std::endl;  // prints "true"
+    std::cout << (std::is_same<types::param_t<1u>, short>::value ? "true" : "false") << std::endl; // prints "true"
+    std::cout << types::param_cnt;
+    return 0;
+}
+```
+````
+
+#### Unified
+
+`{bm} /(Core Language\/Templates\/Callable Type Unpacking\/Unified)_TOPIC/`
+
+```{prereq}
+Core Language/Templates/Callable Type Unpacking/Functions_TOPIC
+Core Language/Templates/Callable Type Unpacking/Functors_TOPIC
+```
+
+```{note}
+This text below makes use of the type traits library in the C++ standard libraries. Type traits are templates that provide information about types (e.g if a type is signed or unsigned, if it has a copy constructor, etc...) and manipulate types. The link below jumps to that section. At this point, it's safe to read the type traits section because it doesn't require any background knowledge other than how to make use of templates, which is something you should already be aware of at this point.
+```
+
+```{seealso}
+Library Functions/Type Traits_TOPIC
+```
+
+Compile-time expressions can unify the usage of the template specializations discussed in the previous sections (unpacking functions and functors). The example function below picks the appropriate template specialization based on the type traits of the template parameter passed in. If the type is a ...
+
+ * functor, it pulls out the type of that functor's function call operator and uses it as the template parameter for the templated class it returns.
+ * function, it uses it as the template parameter for the templated class it returns.
+
+The functions never actually gets invoked. Its sole purpose is to encapsulate and run compile-time expressions to determine type information.
 
 ```c++
 // this is specifically targeting the ret_type<> template created above, you'd
@@ -5348,19 +5536,11 @@ public:
 };
 ```
 
-```{note}
-This code above makes use of the type traits library in the C++ standard libraries. Type traits are templates that provide information about types (e.g if a type is signed or unsigned, if it has a copy constructor, etc...). The link below jumps to that section. It's safe to read at this point as it doesn't require any background knowledge other than how to make use of templates, which is something you should already be aware of at this point.
-```
-
-```{seealso}
-Library Functions/Type Traits_TOPIC
-```
-
-Then, you simply need to use `decltype()` to determine what return type an invocation of the above function would return.
+You can directly pass in a function type or a functor type directly into `unified_ret_type<T>`'s template parameter. If a functor type is passed in, `unified_ret_type<T>` makes sure to forward its function call operator type.
 
 ```c++
-using r = decltype(dummy_function<my_functor>())::type;        // pass in my_functor type
-using r = decltype(dummy_function<decltype(my_func)>())::type; // pass in my_func's type
+using r = unified_func_types<my_functor>()::type;        // pass in functor type
+using r = unified_func_types<decltype(my_func)>()::type; // pass in function type
 // RECALL: my_func is an actual function, it's put in decltype() to pull out it's type
 ```
 
@@ -5369,6 +5549,56 @@ using r = decltype(dummy_function<decltype(my_func)>())::type; // pass in my_fun
 The following adapts the `std::tuple` approach documented [here](https://stackoverflow.com/a/24948381) to work with functors as well as functions.
 
 ```c++
+// manipulators to remove cv-type off functor's function call operator AND free functions
+//  don't know if any of this is even valid for free functions
+template<typename T>
+struct remove_cv_seq;
+
+template<typename R, typename... Ps>
+struct remove_cv_seq<R (Ps...) const> {
+    using type = R (Ps...);
+};
+
+template<typename R, typename... Ps>
+struct remove_cv_seq<R (Ps...) volatile> {
+    using type = R (Ps...);
+};
+
+template<typename R, typename... Ps>
+struct remove_cv_seq<R (Ps...) const volatile> {
+    using type = R (Ps...);
+};
+
+template<typename R, typename... Ps>
+struct remove_cv_seq<R (Ps...)> {
+    using type = R (Ps...);
+};
+
+template<typename O, typename R, typename... Ps>
+struct remove_cv_seq<R (O::*)(Ps...) const> {
+    using type = R (O::*)(Ps...);
+};
+
+template<typename O, typename R, typename... Ps>
+struct remove_cv_seq<R (O::*)(Ps...) volatile> {
+    using type = R (O::*)(Ps...);
+};
+
+template<typename O, typename R, typename... Ps>
+struct remove_cv_seq<R (O::*)(Ps...) const volatile> {
+    using type = R (O::*)(Ps...);
+};
+
+template<typename O, typename R, typename... Ps>
+struct remove_cv_seq<R (O::*)(Ps...)> {
+    using type = R (O::*)(Ps...);
+};
+
+
+
+
+// function type breakers
+//
 template<typename Fn>
 struct func_types; // unimplemented
 
@@ -5385,8 +5615,8 @@ struct func_types<R(Ps...)> {
 };
 
 // template specialization for functors
-template<typename TObj, typename R, typename... Ps>
-struct func_types<R (TObj::*)(Ps...)> {
+template<typename O, typename R, typename... Ps>
+struct func_types<R (O::*)(Ps...)> {
     using ret_t = R;
     using params_as_tuple_t = std::tuple<Ps...>;
 
@@ -5402,14 +5632,19 @@ struct unified_func_types {
 private:
     static auto _fake() {
         if constexpr (!std::is_function<T>::value) {
-            return func_types<decltype(&T::operator())> {};
+            using functor_call_op_t = decltype(&T::operator());
+            using functor_call_op_t_without_cv = remove_cv_seq<functor_call_op_t>::type;
+            return func_types<functor_call_op_t_without_cv> {};
         } else {
-            return func_types<T> {};
+            using function_without_cv = remove_cv_seq<T>::type;
+            return func_types<function_without_cv> {};
         }
     }
 public:
     using types = decltype(unified_func_types<T>::_fake());
 };
+
+
 
 
 
@@ -5531,7 +5766,7 @@ auto switch_to_new_thread(std::jthread& out) {
       if (out.joinable())
         throw std::runtime_error("Output jthread parameter not empty");
       out = std::jthread([h] { h.resume(); });
-      // Potential undefined behavior: accessing potentially destroyed *this
+      // Potential undefined behaviour: accessing potentially destroyed *this
       // std::cout << "New thread ID: " << p_out->get_id() << '\n';
       std::cout << "New thread ID: " << out.get_id() << '\n'; // this is OK
     }
@@ -5589,7 +5824,7 @@ int y = x.num_dbl;
 ```
 
 ```{seealso}
-Library Functions/Wrappers/Variant_TOPIC (consider using this instead of unions)
+Library Functions/Wrappers/Variant_TOPIC (Consider using this instead of unions)
 ```
 
 ## Namespaces
@@ -5597,7 +5832,7 @@ Library Functions/Wrappers/Variant_TOPIC (consider using this instead of unions)
 `{bm} /(Core Language\/Namespaces)_TOPIC/`
 
 ```{prereq}
-Core Language/Classes_TOPIC: Just enough to know how to define and use one.
+Core Language/Classes_TOPIC (Just enough to know how to define and use one)
 ```
 
 Namespaces are C++'s way of organizing code into a logical hierarchy / avoiding naming conflicts, similar to packages in Java or Python. Unlike packages, namespaces don't use the filesystem to define their logical hierarchy. Instead, the hierarchy is specified directly in code using `namespace` blocks.
@@ -5742,7 +5977,7 @@ C++ flow control structures are similar to those in other high-level languages (
 ```{note}
 An important caveat about loops in C++ from [cppreference.com](https://en.cppreference.com/w/cpp/language/while):
 
-> As part of the C++ forward progress guarantee, the behavior is undefined if a loop that has no observable behavior (does not make calls to I/O functions, access volatile objects, or perform atomic or synchronization operations) does not terminate. Compilers are permitted to remove such loops. 
+> As part of the C++ forward progress guarantee, the behaviour is undefined if a loop that has no observable behaviour (does not make calls to I/O functions, access volatile objects, or perform atomic or synchronization operations) does not terminate. Compilers are permitted to remove such loops. 
 ```
 
 ### If Statement
@@ -5868,8 +6103,8 @@ For-each loops, sometimes also called range-based for loops, are translated diff
    ```
 
    ```{seealso}
-   Library Functions/Iterators_TOPIC (iterators supply begin and end member functions)
-   Library Functions/Containers_TOPIC (containers are exposed as iterators)
+   Library Functions/Iterators_TOPIC (Iterators supply begin and end member functions)
+   Library Functions/Containers_TOPIC (Containers are exposed as iterators)
    ```
 
  * an object for which the *free functions* `std::begin(T)` and `std::end(T)` have overloads for:
@@ -5894,8 +6129,8 @@ For-each loops, sometimes also called range-based for loops, are translated diff
    ```
 
    ```{seealso}
-   Library Functions/Ranges_TOPIC (iterators supply begin and end member functions)
-   Library Functions/Containers_TOPIC (containers are exposed as ranges)
+   Library Functions/Ranges_TOPIC (Iterators supply begin and end member functions)
+   Library Functions/Containers_TOPIC (Containers are exposed as ranges)
    ```
 
 ### While Loop
@@ -5982,9 +6217,9 @@ I read something online saying you shouldn't use both `[[likely]]` and `[[unlike
 `{bm} /(Core Language\/Attributes)_TOPIC/`
 
 ```{prereq}
-Core Language/Variables_TOPIC: Just enough to know how to define and use one.
-Core Language/Functions_TOPIC: Just enough to know how to define and use one.
-Core Language/Classes_TOPIC: Just enough to know how to define and use one.
+Core Language/Variables_TOPIC (Just enough to know how to define and use one)
+Core Language/Functions_TOPIC (Just enough to know how to define and use one)
+Core Language/Classes_TOPIC (Just enough to know how to define and use one)
 ```
 
 C++ attributes are similar to annotations in Java, providing information to the user / compiler about the code that it's applied to. Unlike Java, C++ compilers are free to pick and choose which attributes they support and how they support them. There is no guarantee what action a compiler will take, if any, when it sees an attribute (e.g. compiler warnings).
@@ -6018,12 +6253,22 @@ Core Language/Classes/Common Attributes_TOPIC
 `{bm} /(Core Language\/Compile-time Evaluation)_TOPIC/`
 
 ```{prereq}
-Core Language/Variables_TOPIC: Just enough to know how to define and use one.
-Core Language/Functions_TOPIC: Just enough to know how to define and use one.
-Core Language/Classes_TOPIC: Just enough to know how to define and use one.
-Core Language/Object Lifecycle_TOPIC
-Core Language/Control Flow/If Statement_TOPIC
+Core Language/Variables_TOPIC (Just enough to know how to define and use one)
+Core Language/Functions_TOPIC (Just enough to know how to define and use one)
+Core Language/Classes_TOPIC (Just enough to know how to define and use one)
 ```
+
+Compile-time evaluations allow code to be executed at compile-time rather than run-time. For example, compile-time code could be used to compute a constant used by your code, to test features of the compiler / platform (e.g. endian-ness, bytes in an `int`, etc..), or to test type traits (e.g. does it support the `+` operator).
+
+The subsections below detail the various mechanisms for writing compile-time code and their restrictions.
+
+### Constant Expressions
+
+```{prereq}
+Core Language/Object Lifecycle_TOPIC
+```
+
+`{bm} /(Core Language\/Compile-time Evaluation\/Constant Expressions)_TOPIC/`
 
 Compile-time evaluations allow code to be executed at compile-time rather than run-time. For example, rather than hardcoding a magic number, a piece of code can run during compilation that calculates that magic number and automatically hardcodes it in behind the scenes. Calculating a magic number like results in cleaner and more understandable code because the developer can see how the magic number is derived and can even tweak the code that calculates it.
 
@@ -6112,28 +6357,6 @@ Compile-time evaluations are enabled through the following keywords: `consteval`
    }
    ```
 
-   The keyword `constexpr` may also be used within an if-else to conditionally compile code. When `constexpr` appears immediately after `if`, the conditional expression within is treated similarly to a `constexpr` variable's initializer. Assuming the conditional expression is evaluated at compile-time, the chosen if-else path is the only one that gets compiled. All other paths of the if-else skip compilation.
-
-   ```c++
-   if constexpr (y == sizeof(int)) {
-       // constant expression y is equivalent to the number of bytes for an int, so compile this block
-       ...
-   } else {
-       // constant expression y is NOT equivalent to the number of bytes for an int, so compile this block
-       ...
-   }
-   //
-   // What use is a constexpr if-else? Use-cases include ...
-   //
-   // * omitting parts of a program from compilation (e.g. demonstration software).
-   // * working around compiler-specific / platform-specific inconsistencies (e.g. only include code if `int`'s max value is above some threshold).
-   // * performing specific actions based on the types chosen for template parameters (e.g. include code path 1 if pointer, otherwise code path 2).
-   ```
-
-   ```{note}
-   It looks like C++23 may allow `consteval` for if-else as well.
-   ```
-
    ````{note}
    There's a special function in the C++ standard library called `std::is_constant_evaluated()` that you can use in a `constexpr` function to determine if / ensure that the code is being executed at compile-time or at run-time. This is useful if you want the code to do something different when evaluated at compile-time vs run-time (e.g. use a look-up table if evaluated at run-time vs do the full calculation if evaluated at compile-time).
 
@@ -6173,7 +6396,7 @@ The restrictions on `constinit` / `consteval` / `constexpr` are vast. At a high-
  * **Class**: Constructor must be a constant expression. Non-static field initializers using braced initialization, equals initialization, or brace-plus-equals initialization must use constant expressions. The destructor must be a trivial destructor (non-virtual, does nothing, and all base class destructors do nothing).
  * **Union**: Must have at least one non-static member that is a literal type.
 
-Also, Exceptions handling, `static` variables, and `thread_local` variables are not allowed.
+Also, exceptions handling, `static` variables, and `thread_local` variables are not allowed.
 
 ```{note}
 The rules here are vast and complicated. The above might not be entirely correct, may be missing some conditions, or may not cover certain aspects. In the type_traits header, there's a function called `std::is_literal_type` that can be used to test if a type is a literal type.
@@ -6185,8 +6408,58 @@ Type information is queryable at compile-time through the type_traits. Informati
 Those are what you would commonly use in `if constexpr` blocks. They help with building portable software.
 ```
 
+### Conditionals
+
+`{bm} /(Core Language\/Compile-time Evaluation\/Conditionals)_TOPIC/`
+
+```{prereq}
+Core Language/Compile-time Evaluation/Constant Expressions_TOPIC
+Core Language/Control Flow/If Statement_TOPIC
+Core Language/Variables/Size_TOPIC (To better understand example code)
+```
+
+The keyword `constexpr` may also be used within an if-else to conditionally compile code. When `constexpr` appears immediately after `if`, the conditional expression within is treated similarly to a `constexpr` variable's initializer. Assuming the conditional expression is evaluated at compile-time, the chosen if-else path is the only one that gets compiled. All other paths of the if-else skip compilation.
+
+```c++
+if constexpr (y == sizeof(int)) {
+    // constant expression y is same as the number of bytes for an int, so compile this block
+    ...
+} else if constexpr (y == sizeof(long)) {
+    // constant expression y is same as the number of bytes for an long, so compile this block
+    ...
+} else {
+    // constant expression y is NOT same as the number of bytes for an int or long, so compile this block
+    ...
+}
+//
+// What use is a constexpr if-else? Use-cases include ...
+//
+// * omitting parts of a program from compilation (e.g. demonstration software).
+// * working around compiler-specific / platform-specific inconsistencies (e.g. only include code if `int`'s max value is above some threshold).
+// * performing specific actions based on the types chosen for template parameters (e.g. include code path 1 if pointer, otherwise code path 2).
+```
+
 ```{note}
-All of this seems to replace the need for C preprocessor macros `#define` / `#ifdef` / etc...
+This seems to replace the need for C preprocessor macros `#define` / `#ifdef` / etc...
+```
+
+```{note}
+It looks like C++23 may allow `consteval` for if-else as well.
+```
+
+### Static Assertions
+
+`{bm} /(Core Language\/Compile-time Evaluation\/Static Assertions)_TOPIC/`
+
+```{prereq}
+Core Language/Compile-time Evaluation/Constant Expressions_TOPIC
+Core Language/Compile-time Evaluation/Conditionals_TOPIC
+```
+
+`static_assert` is used to perform some compile-time test that results in a `boolean` and error if it evaluates to `false`, optionally with a message.
+
+```c++
+static_assert(sizeof(int) == 4, "STOPPING COMPILATION: This code was written with the assumption that an int is 4 bytes");
 ```
 
 ## Exceptions
@@ -6194,7 +6467,7 @@ All of this seems to replace the need for C preprocessor macros `#define` / `#if
 `{bm} /(Core Language\/Exceptions)_TOPIC/`
 
 ```{prereq}
-Core Language/Functions_TOPIC: Just enough to know how to define and use one.
+Core Language/Functions_TOPIC (Just enough to know how to define and use one)
 ```
 
 C++ exceptions work similarly to exceptions in other languages, except that there is no `finally` block. The idea behind this is that resources should be bound to an object's lifetime (destructor). As the call stack unwinds and the automatic objects that each function owns are destroyed, the destructors of those objects should be cleaning up any resources that would have been cleaned up by the `finally` block. This concept_NORM is referred to as resource acquisition is initialization (RAII).
@@ -6282,10 +6555,10 @@ try {
 `{bm} /(Core Language\/Structured Binding)_TOPIC/`
 
 ```{prereq}
-Core Language/Variables_TOPIC: Just enough to know how to define and use one.
+Core Language/Variables_TOPIC (Just enough to know how to define and use one)
 Core Language/Variables/References_TOPIC
-Core Language/Functions_TOPIC: Just enough to know how to define and use one.
-Core Language/Classes_TOPIC: Just enough to know how to define and use one.
+Core Language/Functions_TOPIC (Just enough to know how to define and use one)
+Core Language/Classes_TOPIC (Just enough to know how to define and use one)
 ```
 
 Structured binding declaration is a C++ language feature similar to Python's unpacking of lists and tuples. Given an array or a class, the values contained within are unpackable to individual variables.
@@ -6838,7 +7111,7 @@ I wasn't able to find a comprehensive list of what the C++ spec considers as und
 Core Language_TOPIC
 ```
 
-By default, C++ comes packages with the C++ standard library. You can think of this as C++'s equivalent of core Java packages: collection classes in `java.util`, thread classes in `java.util.concurrent`, IO classes in `java.io`, etc... In addition, several third-party C++ libraries exist that provide commonly needed functionality. You can think of these are as C++'s equivalent to common Java libraries: Guava, Apache Commons, etc...
+By default, C++ comes packages with the C++ standard library. You can think of this as C++'s version of core Java packages: collection classes in `java.util`, thread classes in `java.util.concurrent`, IO classes in `java.io`, etc... In addition, several third-party C++ libraries exist that provide commonly needed functionality. You can think of these are as C++'s version of common Java libraries: Guava, Apache Commons, etc...
 
 Common third-party C++ libraries:
 
@@ -6883,7 +7156,7 @@ List of useful checks:
  * `std::is_move_assignable` - ensures type has move assignment.
 
 ```{seealso}
-Core Language/Variables/Aliasing_TOPIC (refresher)
+Core Language/Variables/Aliasing_TOPIC (Refresher)
 ```
 
 Type traits may also be manipulated at compile-time via a set of templated classes.
@@ -6998,8 +7271,8 @@ Library Functions/Allocators_TOPIC
 ```
 
 ```{seealso}
-Core Language/Classes/Moving_TOPIC (refresher)
-Core Language/Classes/Copying_TOPIC (refresher)
+Core Language/Classes/Moving_TOPIC (Refresher)
+Core Language/Classes/Copying_TOPIC (Refresher)
 ```
 
 Smart pointers are classes that wrap pointers to dynamically objects. These wrappers provide some level of automated pointer management / memory management through the use of move semantics, copy semantics, and RAII. 
@@ -7300,7 +7573,7 @@ Other strategies for reporting failure are throwing an error and returning an er
 In addition to the optional provided by the C++ standard library, Boost provides its own version of optional `boost::optional` as well as provides an optional-like boolean type called tribool: `boost::logic::tribool`. A tribool has a third state in addition to true and false, called indeterminate. Boolean operations where one of the operands is a boolean value and the other is indeterminate will always result in false (tribools convert to booleans via implicit conversion).
 
 ```{seealso}
-Core Language/Classes/Conversion Overloading_TOPIC (refresher -- tribool class implements implicit conversion semantics)
+Core Language/Classes/Conversion Overloading_TOPIC (Refresher -- tribool class implements implicit conversion semantics)
 ```
 
 ```c++
@@ -7445,7 +7718,7 @@ std::visit(
 Boost also provides a version of this wrapper, `boost::variant`.
 
 ```{seealso}
-Core Language/Unions_TOPIC (variants are similar to unions but type-safe)
+Core Language/Unions_TOPIC (Variants are similar to unions but type-safe)
 ```
 
 ### Function
@@ -7471,9 +7744,9 @@ std::function<void(int)> f2 { PrintNum };
 ```
 
 ```{seealso}
-Core Language/Variables/Pointers/Function Pointer_TOPIC (refresher)
-Core Language/Classes/Functors_TOPIC (refresher)
-Core Language/Lambdas_TOPIC (refresher)
+Core Language/Variables/Pointers/Function Pointer_TOPIC (Refresher)
+Core Language/Classes/Functors_TOPIC (Refresher)
+Core Language/Lambdas_TOPIC (Refresher)
 ```
 
 The typical use-case for `std::function` is to provide a function with a unified way to accept all function-like objects (e.g. functors and function pointers) as a parameter. The alternative would be to explicitly provide an overload for each function-like object type.
@@ -7547,7 +7820,7 @@ Library Functions/Containers
 ```
 
 ```{seealso}
-Core Language/Variables/Rvalue References_TOPIC (refresher)
+Core Language/Variables/Rvalue References_TOPIC (Refresher)
 ```
 
 `std::reference_wrapper` is a wrapper that holds a reference to an object. This is important because, in C++, you can't have a reference to a reference like you can have a pointer to a pointer. References, from a usage perspective, are treated as if they're the direct object themselves.
@@ -7649,7 +7922,7 @@ Library Functions/Allocators_TOPIC
 Library Functions/Iterators_TOPIC
 ```
 
-C++'s equivalent of Java collections are commonly referred to as containers. C++ containers come in 3 major types:
+C++'s verson of Java collections are commonly referred to as containers. C++ containers come in 3 major types:
 
  * Sequence containers - Objects organized in a sequence, where they're (at least) accessible from one end to the other.
    
@@ -7680,7 +7953,7 @@ C++'s equivalent of Java collections are commonly referred to as containers. C++
    | `std::unordered_multimap` | `ArrayListValuedHashMap` (Apache Commons Collections) |
 
 ```{seealso}
-Core Language/Control Flow/For Loop_TOPIC (for-each loop refresher)
+Core Language/Control Flow/For Loop_TOPIC (Range-base for loop refresher)
 ```
 
 Containers support iterators via their `begin()` and `end()` functions. Looping over a container using a for-each loop calls those functions, but the order in which containers are iterated over depends on the container. For example ...
@@ -7754,7 +8027,7 @@ int b { my_arr2.back() };  // WARNING: undefined behaviour of len is 0
 ```
 
 ```{seealso}
-Library Functions/Wrappers/Tuple_TOPIC (refresher on `std::get()`)
+Library Functions/Wrappers/Tuple_TOPIC (Refresher on `std::get()`)
 ```
 
 To replace elements, use any of the same functions used for reading elements except `std::get()`. They return a reference, which means assigning something to them will assign into the container.
@@ -7783,7 +8056,7 @@ To gain access to the underlying array being wrapped, use `data()`.
 
 ```c++
 int * backing_arr = my_arr2.data();
-// NOTE: each below are equivalent to the above, but the one above should be preferred
+// NOTE: each below are the same as the above, but the one above should be preferred
 //       because the ones below will have undefined behaviour if array length is 0.
 int * backing_arr = &my_arr2[0];
 int * backing_arr = &my_arr2.at(0);
@@ -7831,7 +8104,7 @@ std::vector<int> my_vec1 { 5, 5, 5, 5, 5, 5, 5, 5 };
 To create an `std::vector` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must use parenthesis.
 
 ```c++
-std::vector<int> my_vec2 (8, 5); // equivalent to initializing to above (8 copies of 5)
+std::vector<int> my_vec2 (8, 5); // same as initializing to above (8 copies of 5)
 std::vector<int> my_vec3 (c)  // copy another container
 std::vector<int> my_vec4 (c.begin(), c.begin() + 10)  // copy first 10 elems from another container
 ```
@@ -7897,8 +8170,8 @@ my_vec1.emplace_back(123);
 ```
 
 ```{seealso}
-Library Functions/Wrappers/Any_TOPIC (also has an `emplace()` function)
-Library Functions/Wrappers/Variant_TOPIC (also has an `emplace()` function)
+Library Functions/Wrappers/Any_TOPIC (Also has an `emplace()` function)
+Library Functions/Wrappers/Variant_TOPIC (Also has an `emplace()` function)
 ```
 
 To delete either a single element or a range of elements, use `erase()` and pass into it either an iterator at some position or an iterator range.
@@ -7963,7 +8236,7 @@ To gain access to the underlying array being wrapped, use `data()`.
 
 ```c++
 int * backing_arr = my_vec1.data();
-// NOTE: each below are equivalent to the above, but the one above should be preferred
+// NOTE: each below are same as the above, but the one above should be preferred
 //       because the ones below will have undefined behaviour if array length is 0.
 int * backing_arr = &my_vec1[0];
 int * backing_arr = &my_vec1.at(0);
@@ -8012,7 +8285,7 @@ std::deque<int> d1 { 5, 5, 5, 5, 5, 5, 5, 5 };
 To create an `std::deque` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must use parenthesis.
 
 ```c++
-std::deque<int> d2 (8, 5); // equivalent to initializing to above (8 copies of 5)
+std::deque<int> d2 (8, 5); // same as initializing to above (8 copies of 5)
 std::deque<int> d3 (c)  // copy another container
 std::deque<int> d4 (c.begin(), c.begin() + 10)  // copy first 10 elems from another container
 ```
@@ -8148,7 +8421,7 @@ std::list<int> l1 { 5, 5, 5, 5, 5, 5, 5, 5 };
 To create a `std::list` without priming it directly to a sequence of values, you can't use braced initialization or brace-plus-equals initialization. You must use parenthesis.
 
 ```c++
-std::list<int> l2 (8, 5); // equivalent to initializing to above (8 copies of 5)
+std::list<int> l2 (8, 5); // same as initializing to above (8 copies of 5)
 std::list<int> l3 (c)  // copy another container
 std::list<int> l4 (c.begin(), c.begin() + 10)  // copy first 10 elems from another container
 ```
@@ -8353,8 +8626,8 @@ s1.emplace_hint(s1.begin(), 6);  // iterator should be near to where the value i
 ```
 
 ```{seealso}
-Library Functions/Wrappers/Any_TOPIC (also has an `emplace()` function)
-Library Functions/Wrappers/Variant_TOPIC (also has an `emplace()` function)
+Library Functions/Wrappers/Any_TOPIC (Also has an `emplace()` function)
+Library Functions/Wrappers/Variant_TOPIC (Also has an `emplace()` function)
 ```
 
 To delete an element at some specific iterator position, use either `extract()` or `erase()`. The difference is that `extract()` will return the element while `erase()` won't.
@@ -8845,8 +9118,8 @@ s1.emplace_hint(6, s1.begin());
 ```
 
 ```{seealso}
-Library Functions/Wrappers/Any_TOPIC (also has an `emplace()` function)
-Library Functions/Wrappers/Variant_TOPIC (also has an `emplace()` function)
+Library Functions/Wrappers/Any_TOPIC (Also has an `emplace()` function)
+Library Functions/Wrappers/Variant_TOPIC (Also has an `emplace()` function)
 ```
 
 To delete an element at some specific iterator position, use either `extract()` or `erase()`. The difference is that `extract()` will return the element while `erase()` won't.
@@ -9239,12 +9512,12 @@ std::deque<int> c2 { 5, 5, 5, 5, 5, 5, 5, 5 };
 std::stack<int, decltype(c2)> s2 { std::move(c2) };
 // create into brand new
 std::stack<int, std::list<int>> s3 {};
-std::queue<int> q4 {};  // equivalent to using std::deque<int> as the backing type
+std::queue<int> q4 {};  // same as using std::deque<int> as the backing type
 ```
 
 ```{seealso}
-Core Language/Variables/Rvalue References_TOPIC (refresher on rvalue references)
-Core Language/Templates/Type Cloning_TOPIC (refresher on decltype)
+Core Language/Variables/Rvalue References_TOPIC (Refresher on rvalue references)
+Core Language/Templates/Type Cloning_TOPIC (Refresher on decltype)
 ```
 
 To add an item, use `push()`. Internally, this invokes the wrapped container's `push_back()` function.
@@ -9300,12 +9573,12 @@ std::deque<int> c2 { 5, 5, 5, 5, 5, 5, 5, 5 };
 std::queue<int, decltype(c2)> q2 { std::move(c2) };
 // create into brand new
 std::queue<int, std::list<int>> q3 {};
-std::queue<int> q4 {};  // equivalent to using std::deque<int> as the backing type
+std::queue<int> q4 {};  // same as using std::deque<int> as the backing type
 ```
 
 ```{seealso}
-Core Language/Variables/Rvalue References_TOPIC (refresher on rvalue references)
-Core Language/Templates/Type Cloning_TOPIC (refresher on decltype)
+Core Language/Variables/Rvalue References_TOPIC (Refresher on rvalue references)
+Core Language/Templates/Type Cloning_TOPIC (Refresher on decltype)
 ```
 
 To add an item, use `push()`. Internally, this invokes the wrapped container's `push_back()` function.
@@ -9359,12 +9632,12 @@ std::deque<int> c2 { 5, 5, 5, 5, 5, 5, 5, 5 };
 std::priority_queue<int, decltype(c2)> q2 { std::move(c2) };
 // create into brand new
 std::priority_queue<int, std::list<int>> q3 {};
-std::priority_queue<int> q4 {};  // equivalent to using std::vector<int> as the backing type
+std::priority_queue<int> q4 {};  // same as using std::vector<int> as the backing type
 ```
 
 ```{seealso}
-Core Language/Variables/Rvalue References_TOPIC (refresher on rvalue references)
-Core Language/Templates/Type Cloning_TOPIC (refresher on decltype)
+Core Language/Variables/Rvalue References_TOPIC (Refresher on rvalue references)
+Core Language/Templates/Type Cloning_TOPIC (Refresher on decltype)
 ```
 
 In the above examples the default comparator of `std::less` is used, which uses the less than operator (<) to compare two objects for priority. To define a custom comparator, pass in that comparator's type as the 3rd template parameter argument and pass it into the constructor.
@@ -9376,7 +9649,7 @@ std::priority_queue<int, std::deque<int>, decltype(std::greater<int>)> q6 { std:
 ```
 
 ```{seealso}
-Core Language/Lambdas_TOPIC (lambda refresher)
+Core Language/Lambdas_TOPIC (Lambda refresher)
 ```
 
 To add an item, use `push()`.
@@ -9649,8 +9922,8 @@ There are helper functions available for creating these. The function names are 
 `{bm} /(Library Functions\/Iterators\/Adapters\/Move)_TOPIC/`
 
 ```{seealso}
-Core Language/Classes/Copying_TOPIC (refresher)
-Core Language/Classes/Moving_TOPIC (refresher)
+Core Language/Classes/Copying_TOPIC (Refresher)
+Core Language/Classes/Moving_TOPIC (Refresher)
 ```
 
 An iterator adaptor that wraps another iterator but modifies the dereferencing operator such that it returns an rvalue -- it forcefully moves the element. The typical use case for this is moving items from one container to another (as opposed to copying).
@@ -10096,6 +10369,146 @@ for (auto x : v | std::views::all | CustomViews::AddFiveView) {
 }
 ```
 
+## Span
+
+`{bm} /(Library Functions\/Span)_TOPIC/`
+
+```{prereq}
+Library Functions/Strings/String_TOPIC
+Library Functions/Strings/String View_TOPIC
+Library Functions/Ranges_TOPIC
+Library Functions/Containers_TOPIC
+```
+
+A span is a the generic version of string view. Where `std::string_view` provides a view into a part of some other string, `std::span` provides a view into a part of some other sequence of objects. That sequence can be almost anything as long as matches the concept_TEMPLATE `std::ranges::contiguous_range`, which requires that the sequence must be contiguous in memory. For common containers, that means ...
+
+ * `std::string` / `std::vector` / `std::array` / C-style arrays (e.g. `int arr[3] {1,2,3}`) will work because they represent their elements contiguously in memory.
+ * `std::list` / `std::deque` won't work because they don't represent their elements contiguously in memory.
+
+`std::span` comes in two flavours: static extent and dynamic extent. Creating either flavour of `std::span` from a contiguous sequence is fairly straight forward:
+
+ * Static extent - The size of the span has to be known at compile-time, similar to `std::array`.
+
+   A static extent span needs 2 template parameters: type of elements it holds and the number of elements the it holds.
+
+   ```c++
+   std::vector<int> v{1, 2, 3, 4, 5};
+
+   std::span<int, 5> ss1 {v};  // OKAY: starting at index 0 of v for length of 5
+   std::span<int, 3> ss2 {v};  // UNDEFINED BEHAVIOUR: span's length (3) doesn't match v's length (5)
+   std::span<int, 8> ss3 {v};  // UNDEFINED BEHAVIOUR: span's length (8) doesn't match v's length (5)
+
+   std::span<int, 5> ss5 {std::begin(v), std::end(v)};     // OKAY: span of length 5, starting at index 0 of v
+   std::span<int, 3> ss6 {std::begin(v) + 2, std::end(v)}; // OKAY: span of length 3, starting at index 2 of v
+   std::span<int, 3> ss7 {std::begin(v), std::end(v)};     // UNDEFINED BEHAVIOUR: span's length (3) doesn't match v's length (5)
+
+   std::span<int, 5> ss10 {std::begin(v), 5};     // OKAY: span of length 5, starting at index 0 of v
+   std::span<int, 3> ss11 {std::begin(v) + 2, 3}; // OKAY: span of length 3, starting at index 2 of v
+   std::span<int, 3> ss12 {std::begin(v), 5};     // UNDEFINED BEHAVIOUR: span's length (3) doesn't match v's length (5)
+   std::span<int, 8> ss13 {std::begin(v), 5};     // UNDEFINED BEHAVIOUR: span's length (8) doesn't match v's length (5)
+   ```
+
+   ```{note}
+   The book says that a static extent span's size can't be 0 and if it is you'll get a compile-time error. When I try this in G++12, I don't get an error and `size()` appropriately reports 0. Also, the documentation [here](https://en.cppreference.com/w/cpp/container/span) says nothing about this.
+   ```
+
+ * Dynamic extent - The size size of the span doesn't have to be known at compile-time.
+
+   A dynamic extent span needs only 1 template parameters: The type of elements the span holds goes in the first parameter.
+
+   ```c++
+   std::vector<int> v{1, 2, 3, 4, 5};
+
+   std::span<int> ds1 {v};                              // OKAY: starting at index 0 of v for length of 5
+   std::span<int> ds2 {std::begin(v), std::end(v)};     // OKAY: span of length 5, starting at index 0 of v
+   std::span<int> ds3 {std::begin(v) + 2, std::end(v)}; // OKAY: span of length 3, starting at index 2 of v
+   std::span<int> ds4 {std::begin(v), 5};               // OKAY: span of length 5, starting at index 0 of v
+   std::span<int> ds5 {std::begin(v) + 2, 3};           // OKAY: span of length 3, starting at index 2 of v
+   ```
+
+```{note}
+This warning is from the book, and seems important:
+
+> When you change the size of the underlying contiguous range, the contiguous range may be reallocated, and the std::span refers to stale data. Only a std::span with dynamic extent can have a resizable underlying contiguous range and can, therefore, be a victim of this subtle issue.
+
+I think what this is saying is that, a `std::span` may be holding on to the actual pointer to the data of the contiguous range, not the contiguous range object itself. A contiguous range has `data()` function that gives you a pointer to the data and if that's what the `std::span` implementation is using, that pointer and the data within it changes on modification. That's why you may end up with a `std::span` that points to stale data?
+
+A resizable contiguous range (e.g. `std::vector`) requires a dynamic extent `std::span`, but that dynamic extent `std::span` won't update if that contiguous range resizes / reallocates its data to another piece of contiguous memory.
+```
+
+Copying a `std::span` has similar rules to creating a `std::span` from a contiguous sequence. Copying or converting a ...
+
+ * static extent `std::span` to another static extent `std::span` is okay as long as the sizes are the same.
+
+   ```c++
+   std::vector<int> v{1, 2, 3, 4, 5};
+   std::span<int, 5> ss1 {v};
+   std::span<int, 5> ss2 {ss1}; // OKAY: copied ss1
+   std::span<int, 8> ss3 {ss2}; // COMPILER ERROR: ss3's length (8) doesn't match ss2's length (5)
+   ```
+
+ * dynamic extent `std::span` to another static extent `std::span` is okay as long as the sizes are the same.
+
+   ```c++
+   std::vector<int> v{1, 2, 3, 4, 5};
+   std::span<int> ds1 {v};
+   std::span<int, 6> ss2 {ds1}; // UNDEFINED BEHAVIOUR: ss2's length (6) doesn't match ds1's length (5)
+   ```
+
+ * static extent `std::span` to another dynamic extent `std::span` is okay.
+
+   ```c++
+   std::vector<int> v{1, 2, 3, 4, 5};
+   std::span<int, 5> ss1 {v};
+   std::span<int> ds2 {ss1};    // OKAY: copied ss1
+   ```
+
+To pull out a contiguous region of an `std::span` as another `std::span`, use `subspan()`. First parameter is the offset and the second parameter is the count.
+
+```c++
+std::vector<int> v{1, 2, 3, 4, 5};
+std::span<int> ds1 {v};
+std::span<int> ds2 {ds1.subspan(1,3)};
+```
+
+If the destination is a static extent `std::span`, be careful that it's sized appropriately (undefined behaviour if it isn't). One option may be to use `auto` for the destination. Another option is to use a variant of `subspan()` that takes in compile-time arguments as template parameters, thereby ensuring the destination type is correct.
+
+```c++
+std::vector<int> v{1, 2, 3, 4, 5};
+std::span<int, 5> ss1 {v};
+std::span<int, 7> ss2 {ss1.subspan(1,3)};   // UNDEFINED BEHAVIOUR: size is 7 but only subspan's size is 3
+std::span<int, 3> ss3 {ss1.subspan<1,3>()}; // OKAY: templated version ensures destination is correct size
+auto ss4 {ss1.subspan(1,3)};                // OKAY
+```
+
+Accessing elements and iterating over a `std::span` is very similar to `std::vector`. Most of the basic functions are the same.
+
+```c++
+// DATA ACCESS
+int v1 { s[20] };
+int v2 { std::get<20>(my_arr2) };
+int v3 { s.front() };  // WARNING: undefined behaviour of len is 0
+int v4 { s.back() };   // WARNING: undefined behaviour of len is 0
+
+// SIZE
+int len { s.size() };
+bool is_empty { s.empty() }; // checks if size() is 0
+
+// UNDERLYING DATA ACCESS
+auto ptr { s.data() };  // get pointer to the underlying contiguous sequence, similar to std::vector.data()
+
+// RANGE-BASED FOR LOOP
+for (auto& e : s) {
+    // do something here ...
+}
+
+// ITERATORS
+auto it = s.begin();    // iterator start
+auto itEnd = s.end();   // iterator end
+auto rIt = s.rbegin();  // reverse iterator start
+auto rItEnd s.rend();   // reverse iterator end
+```
+
 ## Time
 
 `{bm} /(Library Functions\/Time)_TOPIC/`
@@ -10229,11 +10642,11 @@ Boost has a similar set of clocks: `boost::chrono::system_clock`, `boost::chrono
 
 ```{prereq}
 Library Functions/Time/Timestamps/Clocks_TOPIC
-Library Functions/Time/Date and Time_TOPIC
+Library Functions/Time/Calendar Dates_TOPIC
 ```
 
 ```{note}
-Timezone functionality doesn't seem to be implemented as of clang or GCC as of yet, meaning the code below that uses timezones fails to compile.
+Timezone functionality doesn't seem to be implemented as of clang or G++ as of yet, meaning the code below that uses timezones fails to compile.
 ```
 
 To convert a time point from the system clock to a date and time representation, use `std::chrono::floor()` to cut out the relevant durations before using them to create the date and time objects...
@@ -10280,7 +10693,7 @@ Library Functions/Time/Timestamps/Clocks_TOPIC
 ```
 
 ```{seealso}
-Core Language/Classes/User-defined Literals_TOPIC (variants are similar to unions but type-safe)
+Core Language/Classes/User-defined Literals_TOPIC (Variants are similar to unions but type-safe)
 ```
 
 A duration is a class that represents some amount of time.
@@ -10344,9 +10757,9 @@ auto z { std::chrono::duration_cast<std::chrono::hours>(3599s) };
 auto zTicks { z.count() }; // zTicks will be 0 (ROUNDS DOWN TO 0 -- not enough seconds for 1 hour)
 ```
 
-### Date and Time
+### Calendar Dates
 
-`{bm} /(Library Functions\/Time\/Date and Time)_TOPIC/`
+`{bm} /(Library Functions\/Time\/Calendar Dates)_TOPIC/`
 
 ```{prereq}
 Library Functions/Time/Timestamps/Clocks_TOPIC
@@ -10381,6 +10794,11 @@ std::chrono::year y { 2022 };
 std::chrono::month m { 1 };
 std::chrono::day d { 27 };
 std::chrono::year_month_day today { y, m, d };
+
+auto y { today.year() };
+auto m { today.month() };
+auto d { today.day() };
+auto wd { today.weekday() };
 ```
 
 Adding or subtracting a duration to a calendar object adjusts it accordingly.
@@ -10390,6 +10808,22 @@ std::chrono::year_month_day today { y, m, d };
 
 using namespace std::literals::chrono_literals;
 today += 5d;  // add 5 days to today
+```
+
+Calendar objects can be tested to see if they're valid or invalid (e.g. 32nd day of a month is not valid).
+
+```c++
+std::chrono::day day31 { 31 };
+day31.ok(); // returns true
+
+std::chrono::day day32 { day31 + std::chrono::days(1) };
+day32.ok(); // returns false
+
+std::chrono::year y { 2022 };
+std::chrono::month m { 1 };
+std::chrono::day d { 32 };
+std::chrono::year_month_day today { y, m, d };
+today.ok(); // returns false
 ```
 
 If the calendar class captures a full date (e.g. `year_month_day`, `year_month_weekday`, etc..), it's convertible to a time point via `std::chrono::local_days` / `std::chrono::sys_days`.
@@ -10479,7 +10913,7 @@ auto hour_of_day_24 { std::chrono::make_12(hour_of_day_12, pm) }; // back to 24-
 ```
 
 ```{note}
-Timezone functionality doesn't seem to be implemented as of clang or GCC as of yet, meaning the code below fails to compile. It does seem to be implemented in MSVC though.
+Timezone functionality doesn't seem to be implemented as of clang or G++ as of yet, meaning the code below fails to compile. It does seem to be implemented in MSVC though.
 ```
 
 Timezones are accessible through a timezone database.
@@ -10498,7 +10932,7 @@ You can apply a timezone to a time point, then convert it to the appropriate dat
 auto tp { std::chrono::system_clock::now() };
 auto ztp { std::chrono::zoned_time {local_tz, tp}.get_local_time() };
 auto ztp_rounded { std::chrono::floor<days>(ztp) };
-std::chrono::year_month_day ymd { tp_rounded };
+std::chrono::year_month_day ymd { ztp_rounded };
 std::chrono::hh_mm_ss time { std::chrono::floor<milliseconds>(ztp - ztp_rounded) };
 ```
 
@@ -10510,8 +10944,231 @@ using namespace std::literals::chrono_literals;
 std::chrono::year_month_day date { January / 27d / 2022y };
 std::chrono::hh_mm_ss time { 8h + 30m + 45s };
 
-auto tp { std::chrono::local_days { date } + time };  // or use sys_days for system time
+auto tp { std::chrono::local_days { date } + time };  // local_days is local clock, use sys_days for system clock
 ```
+
+### Text Conversion
+
+`{bm} /(Library Functions\/Time\/Text Conversion)_TOPIC/`
+
+```{prereq}
+Library Functions/Strings/Formatter_TOPIC
+Library Functions/Streams_TOPIC
+```
+
+Most time-related types can be written to / parsed from a text string:
+
+ * Writing text happens through overloads provided for both output streams and `std::format()`.
+ * Parsing text happens through overloads provided for input streams (via `std::chrono::from_stream()` and `std::chrono::parse()`).
+
+The subsections below detail text output and text parsing in closer detail.
+
+#### Output
+
+`{bm} /(Library Functions\/Time\/Text Conversion\/Output)_TOPIC/`
+
+```{prereq}
+Library Functions/Time/Timestamps/Clocks_TOPIC
+Library Functions/Time/Durations_TOPIC
+Library Functions/Time/Calendar Dates_TOPIC
+Library Functions/Strings/Formatter_TOPIC
+Library Functions/Streams_TOPIC
+```
+
+Most time-related types provide overloads for both `std::formatter` and output streams.
+
+```c++
+std::cout << std::chrono::hours(5) << std::endl;              // prints "5h"
+std::string s1 { std::format("{}", std::chrono::hours(5)) };  // s1 is "5h"
+```
+
+The examples below show the standard output formats for common types. The examples target streams, but those same objects passed into `std::format("{}", obj)` will produce the same output.
+
+```c++
+// Durations
+// ---------
+std::cout << 5ns;                    // prints "5ns"
+std::cout << 5ms;                    // prints "5ms"
+std::cout << 5us;                    // prints "5µs"
+std::cout << 5s;                     // prints "5s"
+std::cout << 5min;                   // prints "5min"
+std::cout << 5h;                     // prints "5h"
+std::cout << std::chrono::hours(5);  // prints "5h"
+std::cout << std::chrono::days(5);   // prints "5d"
+std::cout << std::chrono::weeks(5);  // prints "5[604800]s"
+std::cout << std::chrono::months(5); // prints "5[2629746]s"
+std::cout << std::chrono::years(5);  // prints "5[31556952]s"
+
+
+// Time points from different clock types
+// --------------------------------------
+// NOTE: I haven't gotten anything other than system_clock to work. The program does
+//       a hard crash if I try to use anything else (or a compiler error because I
+//       guess it lacks support for outputting) because godbolt currently has a bug
+//       in it where icu.dll is missing or causing an issue or something.
+std::cout << std::chrono::system_clock::now();    // prints "2022-08-26 13:41:08.4774688"
+std::cout << std::chrono::steady_clock::now();    // COMPILER ERROR -- provides no overloads for output?
+std::cout << std::chrono::file_clock::now();      // MSVC compiler generated program that hard crashed
+std::cout << std::chrono::gps_clock::now();       // MSVC compiler generated program that hard crashed
+std::cout << std::chrono::tai_clock::now();       // MSVC compiler generated program that hard crashed
+std::cout << std::chrono::utc_clock::now();       // MSVC compiler generated program that hard crashed
+
+
+// Time points that go through truncation
+// --------------------------------------
+auto now = std::chrono::system_clock::now();
+std::cout << now;                                                 // prints "2022-08-26 14:07:30.2313305"
+std::cout << std::chrono::floor<std::chrono::microseconds>(now);  // prints "2022-08-26 14:07:30.231330"
+std::cout << std::chrono::floor<std::chrono::milliseconds>(now);  // prints "2022-08-26 14:07:30.231" 
+std::cout << std::chrono::floor<std::chrono::seconds>(now);       // prints "2022-08-26 14:07:30"
+std::cout << std::chrono::floor<std::chrono::minutes>(now);       // prints "2022-08-26 14:07:00"
+std::cout << std::chrono::floor<std::chrono::hours>(now);         // prints "2022-08-26 14:00:00"
+std::cout << std::chrono::floor<std::chrono::days>(now);          // prints "2022-08-26"
+std::cout << std::chrono::floor<std::chrono::weeks>(now);         // prints "2022-08-25"
+
+// Calendar dates
+// --------------
+using namespace std::chrono_literals; 
+using namespace std::chrono; 
+std::cout << std::chrono::year_month_day(2021y, January, 1d);                                         // prints "2021-01-01"
+std::cout << std::chrono::year_month_day_last(2021y, std::chrono::month_day_last(March));             // prints "2021/Mar/last"
+std::cout << std::chrono::year_month_weekday(2021y, August, Thursday[3]);                             // prints "2021/Aug/Thu[3]"
+std::cout << std::chrono::year_month_weekday_last(2021y, August, std::chrono::weekday_last(Monday));  // prints "2021/Aug/Mon[last]"
+std::cout << 1d /*std::chrono::day(1)*/;          // prints "01"
+std::cout << January /*std::chrono::month(1)*/;   // prints "Jan"
+std::cout << 2021y /*std::chrono::year(2021)*/;   // prints "2021"
+std::cout << Friday /*std::chrono::weekday(5)*/;  // prints "Fri"
+std::cout << std::chrono::year_month(2021y, January);                                      // prints "2021/Jan"
+std::cout << std::chrono::month_day(October, 22d);                                         // prints "Oct/22"
+std::cout << std::chrono::month_day_last(October);                                         // prints "Oct/last"
+std::cout << std::chrono::month_weekday(October, Monday[3]);                               // prints "Oct/Mon[3]" 
+std::cout << std::chrono::month_weekday_last(October, std::chrono::weekday_last(Sunday));  // prints "Oct/Sun[last]"
+```
+
+As mentioned above, if you're using `std::format("{}", obj)`, the outputs will be the same as those of streams. However, if using `std::format()` with `{bm-skip} specifiers`, the output will be formatted based on those `{bm-skip} specifiers`.
+
+```c++
+auto now { std::chrono::system_clock::now() };
+auto s1 { std::format("{0:%B} -- {0:y}", now) };  // "August -- 22"
+```
+
+| `{bm-skip} Specifier` | Description                                        | Example                 |
+|-----------------------|----------------------------------------------------|-------------------------|
+| `%c`                  | Locale’s Date and time representation              | Mon Aug 9 22:58:04 2021 |
+| `%x`                  | Locale’s Date representation                       | 09/08/21                |
+| `%F`                  | year-month-day                                     | 2021-08-08              |
+| `%D`                  | month/day/year                                     | 09/08/21                |
+| `%Y`                  | Year                                               | 2021                    |
+| `%y`                  | Year without century                               | 21                      |
+| `%C`                  | Century as two digits                              | 20                      |
+| `%b`/`%h`             | Abbreviated month name                             | Aug                     |
+| `%B`                  | Month name                                         | August                  |
+| `%m`                  | Month                                              | 08                      |
+| `%W`                  | Week of the year (01 until 53, week starts Monday) | 31                      |
+| `%U`                  | Week of the year (01 until 53, week starts Sunday) | 31                      |
+| `%a`                  | Abbreviated weekday name                           | Mon                     |
+| `%A`                  | Weekday name                                       | Monday                  |
+| `%w`                  | Weekday as number (Sunday (0) until Saturday (6))  | 1                       |
+| `%u`                  | Weekday as number (Monday (1) until Sunday (7))    | 1                       |
+| `%e`                  | Day (leading space if necessary)                   | 9                       |
+| `%d`                  | Day with two digits                                | 09                      |
+| `%c`                  | Date and time representation                       | Mon Aug 9 22:58:04 2021 |
+| `%X`                  | Time representation                                | 22:58:04                |
+| `%r`                  | 12-hour clock time                                 | 10:58:04 PM             |
+| `%T`                  | hours:minutes:seconds                              | 22:58:04.435            |
+| `%R`                  | hours:minutes                                      | 22:58                   |
+| `%H`                  | 24-hour clock                                      | 22                      |
+| `%I`                  | 12-hour clock                                      | 10                      |
+| `%p`                  | AM or PM (12-hour clock)                           | PM                      |
+| `%M`                  | Minute                                             | 58                      |
+| `%S`                  | seconds.subseconds                                 | 04.453                  |
+| `%Z`                  | Time zone abbreviation                             | CEST                    |
+| `%z`                  | Offset (hours and minutes) from UTC                | +0200                   |
+| `%j`                  | Day of the year (Starting wiht 001)                | 221                     | 
+| `%q`                  | Unit suffix according to the time’s duration       | ms                      |
+
+```{note}
+The table and examples above were taken directly from the book, which the book claims was adapted from [cppreference](https://en.cppreference.com/w/cpp/chrono/parse).
+```
+
+#### Parsing
+
+`{bm} /(Library Functions\/Time\/Text Conversion\/Parsing)_TOPIC/`
+
+```{prereq}
+Library Functions/Time/Text Conversion/Output_TOPIC
+Library Functions/Time/Timestamps/Clocks_TOPIC
+Library Functions/Time/Durations_TOPIC
+Library Functions/Time/Calendar Dates_TOPIC
+Library Functions/Streams_TOPIC
+```
+
+Most time-related types provide overloads for either `std::chrono::from_stream()`, `std::chrono::parse()`, or both. Both functions parse in essentially the same way, but the former takes the stream as an argument while the latter is passed into the stream as an argument. Parsing happens using the same `{bm-skip} specifiers` used by `std::format()` to output text. In this case, only the `{bm-skip} specifier` itself is required, not the curly braces and the part before the colon (e.g. `%F` vs `{:%F}`).
+
+```c++
+// from_stream() usage
+std::chrono::system_clock::time_point tp {};
+std::istringstream is {"2021-08-11 21:49:35"};
+std::chrono::from_stream(is, "%F %T", tp);  // parses is into tp
+
+// parse() usage
+std::chrono::system_clock::time_point tp {};
+std::istringstream is {"2021-08-11 21:49:35"};
+is >> std::chrono::parse("%F %T", tp); // parses is into tp
+```
+
+```{note}
+The `{bm-skip} specifier` `%q` is not supported for inputs as it's impossible to know what the unit suffix is beforehand.
+```
+
+```{note}
+It turns out that, if you pass in an invalid `{bm-skip} specifier` for whatever type it is you're trying to parse to, it doesn't barf by default. It may be that you need to check `fail()` or you need to explicitly tell the stream to throw an exception via `exceptions()`? For example, parsing `"Aug 2021"` using `"%b %Y"` into `std::chrono::year` doesn't work because `std::chrono::year` can only contain a year.
+```
+
+Time point types of various clocks provide overloads for both `std::chrono::from_stream()` and `std::chrono::parse()`. The examples below parse text representations of time points using different `{bm-skip} specifiers`. The examples target `std::chrono::parse()`, but those same objects and `{bm-skip} specifiers` can be used with `std::chrono::from_stream()`.
+
+```c++
+std::chrono::system_clock::time_point tp {};
+std::istringstream is {"2021-08-11 21:49:35"}; is >> std::chrono::parse("%F %T", tp);              // tp is "2021-08-11 21:49:35.0000000"
+std::istringstream is {"2021-08-11 21:49:35"}; is >> std::chrono::parse("%Y-%m-%d %H:%M:%S", tp);  // tp is "2021-08-11 21:49:35.0000000"
+std::istringstream is {"2021"};                is >> std::chrono::parse("%Y", tp);                 // tp is "1970-01-01 00:00:00.0000000" -- what??? should be beginning of year?
+```
+
+Durations only provide overloads for `std::chrono::from_stream()`. The examples below parse text representations of durations using different `{bm-skip} specifiers`.
+
+```c++
+std::chrono::seconds d {};  std::istringstream is {"5"};         std::chrono::from_stream(is, "%S", d);    // 5s
+std::chrono::seconds d {};  std::istringstream is {"5"};         std::chrono::from_stream(is, "%M", d);    // 500s
+std::chrono::seconds d {};  std::istringstream is {"5"};         std::chrono::from_stream(is, "%H", d);    // 18000s
+std::chrono::seconds d {};  std::istringstream is {"5"};         std::chrono::from_stream(is, "%e", d);    // FAILED: 0s -- should be number of secs in 5 days?
+std::chrono::hours d {};    std::istringstream is {"5"};         std::chrono::from_stream(is, "%e", d);    // FAILED: 0h -- should be number of hours in 5 days?
+std::chrono::days d {};     std::istringstream is {"5"};         std::chrono::from_stream(is, "%e", d);    // FAILED: 0d -- should be number of days in 5 days?
+std::chrono::days d {};     std::istringstream is {"Aug 2021"};  std::chrono::from_stream(is, "%b %Y", d); // FAILED: 0d -- should this not be the number of days in aug 2021?
+std::chrono::years d {};    std::istringstream is {"10"};        std::chrono::from_stream(is, "%Y", d);    // this is reporting 0 years duration when it should be reporting 10
+```
+
+```{note}
+Either the version of MSVC I'm using is bugged, or has things unimplemented, or maybe I'm doing something wrong here.
+```
+
+Individual time units provide overloads for `std::chrono::from_stream()`. The examples below parse text representations of durations using different `{bm-skip} specifiers`.
+
+```c++
+std::chrono::day x {};         std::istringstream is {"5"};         std::chrono::from_stream(is, "%e", d);    // 05
+std::chrono::year x {};        std::istringstream is {"2010"};      std::chrono::from_stream(is, "%Y", y);    // 2010
+std::chrono::day x {};         std::istringstream is {"Aug 2021"};  std::chrono::from_stream(is, "%b %Y", d); // FAILED: 0d -- should this not be the number of days in aug 2021?
+std::chrono::year_month x {};  std::istringstream is {"Aug 2021"};  std::chrono::from_stream(is, "%b %Y", d); // 2021/Aug
+```
+
+````{note}
+Why didn't the 3rd failed example above work? Maybe what needs to happens is that you need to parse it as `std::chrono::year_month` (as is done in the 4th example), then finagle it into a duration. Maybe something like what's below.
+
+```c++
+std::chrono::year_month d1 { 2021y, August };
+std::chrono::year_month d2 { d1 - std::chrono::months(1) };
+auto dur { d1 - d2 };  // 1[2629746]s  -- this is the num of seconds in August? nope. it comes out to 30.5 days while aug has 31 days
+```
+````
 
 ## Numbers
 
@@ -10590,7 +11247,7 @@ Boost's Integer library also provides additional functionality for determining i
 `{bm} /(Library Functions\/Numbers\/Numeric Type Casting)_TOPIC/`
 
 ```{seealso}
-(Core Language/Variables/Explicit Conversion/Named Conversions_TOPIC (refresher)
+(Core Language/Variables/Explicit Conversion/Named Conversions_TOPIC (Refresher)
 ```
 
 Typically, the named conversion function `static_cast` is used for converting from one numeric type to another (e.g. `double` to `int`). In most cases, `static_cast` is fine to use, however  certain scenarios require a more customizable form of conversion (e.g. don't allow overflow). More customizable forms of numeric conversions are possible via the class `boost::numeric::converter`.
@@ -10628,7 +11285,7 @@ Library Functions/Strings/String_TOPIC
 Library Functions/Strings/Formatter_TOPIC
 ```
 
-The appropriate way to convert to string is `std::formatter`. For quick-and-dirty conversions of numeric built-in types to `std::string` / `std::wstring`, use `std::to_string()` / `std::to_wstring()`. Other string types such as `std::u8string` aren't supported.
+The appropriate way to convert to string is `std::format()`. For quick-and-dirty conversions of numeric built-in types to `std::string` / `std::wstring`, use `std::to_string()` / `std::to_wstring()`. Other string types such as `std::u8string` aren't supported.
 
 ```c++
 auto s { std::to_string(10) }; // int
@@ -10672,8 +11329,8 @@ Several common math functions are provided directly within the C++ standard libr
 
 | function(s)            | description                                                                                                         |
 |------------------------|---------------------------------------------------------------------------------------------------------------------|
-| `std::midpoint(a, b)`  | equivalent to `(a + (b-a)/2)`, which is the midpoint between two points                                             |
-| `std::lerp(a, b, t)`   | equivalent to `(a + t*(b-a))`, which is the linear interpolation between two points                                 |
+| `std::midpoint(a, b)`  | same as `(a + (b-a)/2)`, which is the midpoint between two points                                                   |
+| `std::lerp(a, b, t)`   | same as `(a + t*(b-a))`, which is the linear interpolation between two points                                       |
 | `std::abs(x)`          | absolute value                                                                                                      |
 | `std::min(x)`          | minimum/maximum of two values                                                                                       |
 | `std::max(x)`          | minimum/maximum of two values                                                                                       |
@@ -10867,7 +11524,7 @@ std::bitset<4> b2 {0b1011}; // 4 bits, 1011
 ```
 
 ```{seealso}
-Core Language/Variables/Core Types/Integral_TOPIC (refresher on 0b prefix for integral literals specified as binary)
+Core Language/Variables/Core Types/Integral_TOPIC (Refresher on 0b prefix for integral literals specified as binary)
 ```
 
 To create a `std::bitset` that's potentially larger than the largest available integral type, pass in an `std::string` of ones and zeros. Alternatively, you can use a custom character for the both ones and zeros by passing those characters into the constructor.
@@ -10979,7 +11636,7 @@ Why does it change to `UINT_MAX`? Because of twos complement number system used 
 ```
 
 ```{seealso}
-Core Language/Variables/Core Types/Integral_TOPIC (refresher on `*_MIN`/`*_MAX` constants)
+Core Language/Variables/Core Types/Integral_TOPIC (Refresher on `*_MIN`/`*_MAX` constants)
 ```
 
 To provide proper comparisons between signed and unsigned types, the C++ standard library provides several functions:
@@ -11022,7 +11679,7 @@ Library Functions/Containers/Sequential/Vector_TOPIC
 ```
 
 ```{seealso}
-Core Language/Variables/Core Types/Character String_TOPIC (refresher on C-style character strings)
+Core Language/Variables/Core Types/Character String_TOPIC (Refresher on C-style character strings)
 ```
 
 `std::basic_string` is used as a wrapper for representing character strings. It's different from null-terminated character strings in that strings are resizable and manipulatable similarly to how they are in other high-level languages (e.g. Java or Python). Unlike other high-level languages, a C++ string _is not immutable_ (it's characters can change).
@@ -11125,7 +11782,7 @@ To get a substring of a string, use `substr()`.
 
 ```c++
 std::string s13 { s1.substr(3, 2) }; // create by copying 2 char long substring of s1 starting at index 3
-std::string s14(s1, 3, 2);  // equivalent to the substr() above
+std::string s14(s1, 3, 2);  // same as the substr() above
 ```
 
 To delete a specific position or range of a string, use either `pop_back()`, `clear()`, or `erase()`.
@@ -11158,7 +11815,7 @@ To get the number of characters in a `std::string`, use either `size()`, `length
 ```c++
 bool empty { s1.empty() }; // check if empty
 auto len { s1.size() };
-auto len { s1.length() }; // equivalent to size()
+auto len { s1.length() }; // same as size()
 ```
 
 To test if two strings have the exact same sequence of characters, use the equality operator (==) and inequality operator (!=).
@@ -11247,21 +11904,26 @@ std::string_view sv4 { "hello" };  // view of the constant C-string hello
 ```{prereq}
 Library Functions/Strings/String_TOPIC
 Library Functions/Strings/String View_TOPIC
-Library Functions/Time_TOPIC (briefly mentioned below)
+Library Functions/Time_TOPIC (Briefly mentioned below)
 ```
 
 ```{note}
 This is from a C++ library called fmt which formats strings (similar to Python format strings). It's been included into the C++ standard library as of C++20, which is the version this section references.
 ```
 
-`std::format` is a string formatting class that provides functionality very similar to Python's string formatting. Unlike older formatting systems like `sprintf()`, it's ...
+`std::format()` is a string formatting class that provides functionality very similar to Python's string formatting. Unlike older formatting systems like `sprintf()`, it's ...
 
 * type-safe in that doesn't require you to know the type of varargs beforehand.
 * safe in that it avoids buffer overflows by using C++ strings (`std::string`) rather than null-terminated character strings (`char *`).
 * extendable in that it's easy to support custom types for the formatter.
 
 ```{note}
-Much of this functionality is also available in C++ IO streams, but this is vastly simpler to use.
+The examples below all use `std::format()`, which returns a string. The variant ...
+
+* `std::format_to()` writes the output to an output iterator.
+* `std::format_to_n()` writes at most n characters of the output to an output iterator.
+
+There's also `std::formatted_size()`, which returns the length of what the formatted string would be.
 ```
 
 ```c++
@@ -11384,7 +12046,7 @@ The text and examples below use `std::regex`, but they should work for the other
 ```
 
 ```{seealso}
-Core Language/Variables/Core Types/Character String_TOPIC (refresher on raw string literals)
+Core Language/Variables/Core Types/Character String_TOPIC (Refresher on raw string literals)
 ```
 
 To create a `std::regex`, prime it with a specific regex pattern and optionally regex flags. Unless the pattern string is presented as an initializer list argument, you can't use braced initialization or brace-plus-equals initialization. You must use parenthesis.
@@ -11392,7 +12054,7 @@ To create a `std::regex`, prime it with a specific regex pattern and optionally 
 ```c++
 std::regex pattern1 { '\\', 'd', '+' };  // initializer list of pattern.
 std::regex pattern2(R"|\d+|");
-std::regex pattern3(R"|\d+|", std::regex_constants::ECMAScript);  // equivalent to above
+std::regex pattern3(R"|\d+|", std::regex_constants::ECMAScript);  // same as above
 std::regex pattern4(R"|\d+|", std::regex_constants::ECMAScript | std::regex_constants::icase);
 ```
 
@@ -11452,8 +12114,8 @@ Library Functions/Containers/Sequential/Array_TOPIC
 
 Similar to Java's `InputStream` and `OutputStream` interfaces (and surrounding utilities and packages), the C++ standard library offers several stream classes and interfaces. Similar to `std::basic_string`, a set of templated classes are provided for streams.
 
- * `std::basic_ostream` is the equivalent of Java's `OutputStream`.
- * `std::basic_istream` is the equivalent of Java's `InputStream`.
+ * `std::basic_ostream` is the version of Java's `OutputStream`.
+ * `std::basic_istream` is the version of Java's `InputStream`.
  * `std::basic_iostream` is a combination of the above two.
 
 Each of the classes above requires two template parameters: element type of the stream (e.g. is it streaming `char`s, `int`s, a custom type, etc..) and a class that describes the element type's traits (e.g. similar to the `std::basic_string`'s character traits type). Template specializations are provided for some commonly used element types (e.g. `char` and `wchar_t`).
@@ -11474,7 +12136,7 @@ The rest of this section talks about the general functionality of streams using 
 ```
 
 ```{seealso}
-Core Language/Classes/Operator Overloading_TOPIC (refresher)
+Core Language/Classes/Operator Overloading_TOPIC (Refresher)
 ```
 
 To read and write text, operator overloads are provided called formatted operations: The left-shift operator (<<) is for writing while the right-shift operator (>>) is for reading. Each operator overload takes in the type to write/read and returns a reference back to the stream itself, allowing for chaining.
@@ -11539,7 +12201,7 @@ std::cout << std::scientific << 0.1;          // writes 1.000000e-01
 ```
 
 ```{seealso}
-Core Language/Variables/Implicit Conversion_TOPIC (refresher)
+Core Language/Variables/Implicit Conversion_TOPIC (Refresher)
 ```
 
 At any point, a stream may end or enter into a bad state. A set of member functions can be used to query the state.
@@ -11626,7 +12288,7 @@ Library Functions/Strings/String_TOPIC
 Library Functions/Strings/String View_TOPIC
 ```
 
-String streams are equivalent to Java's `ByteArrayInputStream` / `StringReader` and `ByteArrayOutputStream` / `StringWriter`. The underlying types for string streams are ...
+String streams are similar to Java's `ByteArrayInputStream` / `StringReader` and `ByteArrayOutputStream` / `StringWriter`. The underlying types for string streams are ...
 
 * `std::basic_istringstream` for input string stream.
 * `std::basic_ostringstream` for output string stream.
@@ -11672,7 +12334,7 @@ in >> x >> y;
 
 `{bm} /(Library Functions\/Streams\/File)_TOPIC/`
 
-File streams are equivalent to Java's `FileInputStream` and `FileOutputStream`. The underlying types for string stream are ...
+File streams are similar to Java's `FileInputStream` and `FileOutputStream`. The underlying types for string stream are ...
 
 * `std::basic_ifstream` for input string streams.
 * `std::basic_ofstream` for output string streams.
@@ -11779,49 +12441,6 @@ To handle IO errors, the standard stream mechanisms are available: `exceptions()
 std::cin.exceptions(std::istream::badbit | std::istream::failbit); // exception if bad/fail, but not good/eof
 ```
 
-## Span
-
-`{bm} /(Library Functions\/Span)_TOPIC/`
-
-```{prereq}
-Library Functions/Strings/String_TOPIC
-Library Functions/Strings/String View_TOPIC
-Library Functions/Ranges_TOPIC
-Library Functions/Containers_TOPIC
-```
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
-
-TODO: fill me in
-
 ## Debug Utilities
 
 `{bm} /(Library Functions\/Debug Utilities)_TOPIC/`
@@ -11907,7 +12526,7 @@ constexpr double power(double b, int x) {
 ```
 
 ```{seealso}
-Core Language/Compile-time Evaluation_TOPIC (refresher)
+Core Language/Compile-time Evaluation_TOPIC (Refresher)
 ```
 
 ```{note}
@@ -12026,7 +12645,7 @@ Technically, `std::is_constant_evaluated()` can be used anywhere. If you use it 
 
  * `{bm} equals initialization/(equals? initialization)/i` - A form of object initialization where the equals sign is used (e.g. `int x = 5`).
 
- * `{bm} braces-plus-equals initialization/(brace[sd]?[\-\s]plus[\-\s]equals? initialization)/i` - A form of object initialization where both the equals sign and braces are used for initialization (e.g. `MyStruct x = { 1, true }`). This is mostly equivalent to braced initialization.
+ * `{bm} braces-plus-equals initialization/(brace[sd]?[\-\s]plus[\-\s]equals? initialization)/i` - A form of object initialization where both the equals sign and braces are used for initialization (e.g. `MyStruct x = { 1, true }`). This is mostly the same as braced initialization.
 
    ```{note}
    See [here](https://stackoverflow.com/a/20733537). Even though there's an equal sign (=), there is no copy semantics / move semantics.
@@ -12164,13 +12783,13 @@ Technically, `std::is_constant_evaluated()` can be used anywhere. If you use it 
 
  * `{bm} scope resolution (::)/(scope resolution)/i` - An operator that's used to access static members (e.g. `MyStruct::static_func()`).
 
- * `{bm} extend/(extends?|subclass)/i` - Another way of expressing class inheritance (e.g. B extends A is equivalent to saying B is a child of A).
+ * `{bm} extend/(extends?|subclass)/i` - Another way of expressing class inheritance (e.g. B extends A is the same as saying B is a child of A).
 
  * `{bm} exception/(exception|try[\-\s]catch)/i` - An exception operation accepts an object and unwinds the call stack until reaching a special region specifically intended to stop the unwinding for objects of that type, called a try-catch block. Exceptions are a way for code to signal that something unexpected / exceptional happened.
 
  * `{bm} structured binding` - A language feature that allows for unpacking an object's members / array's elements into a set of variables (e.g. `auto [x, y] { two_elem_array }`).
 
- * `{bm} copy semantics` - The rules used for making copies of objects of some type. A copy, once made, should be equivalent to its source. A modification on the copy shouldn't modify the source as well.
+ * `{bm} copy semantics` - The rules used for making copies of objects of some type. A copy, once made, should be the same as its source. A modification on the copy shouldn't modify the source as well.
 
  * `{bm} member-wise copy/(member[\-\s]wise copy)/i` - The default copy semantics for classes. Each individual field is copied.
 
@@ -12594,7 +13213,9 @@ Technically, `std::is_constant_evaluated()` can be used anywhere. If you use it 
    auto f = [new_x=x/2, &y] (int z) -> int { return new_x + y + z; };
    ```
 
- * `{bm} callable object/(function-like object|callable object)/i` - An object that can be invoked: a function, functor, or lambda.
+ * `{bm} callable object/(function-like object|callable object)/i` - An object that can be invoked: functor, or lambda. A function isn't considered an object and as such it doesn't qualify as a callable object. However, many documents online seem to include functions under the umbrella of callable object.
+
+ * `{bm} callable unit/(callable unit|callable\b|callables\b)/i` - A functor, lambda, or function.
 
  * `{bm} function overload/(function overload|overloaded function|overload)/i` - A function that has the same name as another function within the same scope.
 
@@ -12692,6 +13313,59 @@ Technically, `std::is_constant_evaluated()` can be used anywhere. If you use it 
    ```
 
  * `{bm} special member function` - A member function which, if invoked but not explicitly implemented, the compiler will automatically generate a default implementation for. Each of the following is considered a special member function: default constructor, copy constructor, move constructor, copy assignment operator, move assignment operator, and destructor.
+
+ * `{bm} equivalence/(equivalence|equivalent)/i` - Equivalence and equality are different mechanisms for comparing two object for same-ness. When two objects `A` and `B` are ...
+
+   * equal, it means that `A` and `B` are indistinguishable (`A` can be substituted for `B` and vice-versa without any side effects).
+   * equivalent, it means that `A` and `B` may or may not be indistinguishable, but are considered to be the same under certain criteria.
+
+   For example, two strings `"hello world"` and `"HELLO WORLD"` are not equal, but would be considered equivalent if the criteria were that case is to be ignored.
+
+   ```{note}
+   The C++ standard library separates the idea of equality and equivalence by assuming the equality operator (==) only tests for equality.
+
+   * Equality: `a == b`
+   * Equivalence: `!(a < b) && !(b < a)` (or `!(a > b) && !(b > a)`, or some other relation that doesn't use `==`)
+
+   See [here](https://en.cppreference.com/w/cpp/named_req/EqualityComparable).
+   ```
+
+ * `{bm} strong ordering/(strong order|total order)/i` - A form of ordering supported by the spaceship operator that, when `A == B`, guarantees that `A` can be substituted for `B` (and vice-versa) without any side effects. The objects are considered indistinguishable, and therefore are considered both equal and equivalent.
+
+   When the spaceship operator determines that the type can only support partial ordering, its return type is `std::strong_ordering`.
+
+   ```c++
+   std::strong_ordering::less
+   std::strong_ordering::equal
+   std::strong_ordering::equivalent  // same as equal
+   std::strong_ordering::greater
+   ```
+
+ * `{bm} weak ordering` - A form of ordering supported by the spaceship operator that, when `A == B`, doesn't assume that `A` can be substituted for `B` (and vice-versa). The objects are not guaranteed to be equal (indistinguishable from each other), but they are considered equivalent. An example of weak ordering is when an object encapsulating a text string does a case-insensitive test for equality (==). The strings `"hello world"` and `"HELLO WORLD"` will be considered the same, but one can't necessarily be substituted for the other.
+
+   When the spaceship operator determines that the type can only support partial ordering, its return type is `std::weak_ordering`.
+
+   ```c++
+   std::weak_ordering::less
+   std::weak_ordering::equivalent
+   std::weak_ordering::greater
+   ```
+
+ * `{bm} partial ordering` - A form of ordering supported by the spaceship operator that is essentially weak ordering but with the caveat that the objects being compared may not be comparable at all. For example, the floating point number `5.5` is not comparable at all to `NaN`:
+
+   * `5.5 == NaN` is false.
+   * `5.5 < NaN` is false.
+   * `5.5 > NaN` is false.
+
+   When the spaceship operator determines that the type can only support partial ordering, its return type is `std::partial_ordering`.
+
+   ```c++
+   std::partial_ordering::less
+   std::partial_ordering::equivalent
+   std::partial_ordering::greater
+   std::partial_ordering::unordered
+   ```
+
 
 `{bm-ignore} (classification)/i`
 `{bm-ignore} (structure)/i`
