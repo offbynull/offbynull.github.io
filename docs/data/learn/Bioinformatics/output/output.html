@@ -647,7 +647,7 @@
 <p><strong>WHY</strong>: When a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> is found within a <a href="#BM_(sequence)%2Fi">sequence</a>, knowing the probability of that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> being found within an arbitrary <a href="#BM_(sequence)%2Fi">sequence</a> of the same length hints at the significance of the find. For example, if some <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">10-mer</a> has a 0.2 chance of appearing in an arbitrary <a href="#BM_(sequence)%2Fi">sequence</a> of length 50, that's too high of a chance to consider it a significant find -- 0.2 means 1 in 5 chance that the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">10-mer</a> just randomly happens to appear.</p>
 <a name="H_Bruteforce%20Algorithm"></a><h4>Bruteforce Algorithm</h4>
 <p><strong>ALGORITHM</strong>:</p>
-<p>This algorithm <a href="#BM_(trie)%2Fi">trie</a>s every possible combination of <a href="#BM_(sequence)%2Fi">sequence</a> to find the probability. It falls over once the length of the <a href="#BM_(sequence)%2Fi">sequence</a> extends into the double digits. It's intended to help conceptualize what's going on.</p>
+<p>This algorithm <a href="#BM_(%5Cbtrie)%2Fi">trie</a>s every possible combination of <a href="#BM_(sequence)%2Fi">sequence</a> to find the probability. It falls over once the length of the <a href="#BM_(sequence)%2Fi">sequence</a> extends into the double digits. It's intended to help conceptualize what's going on.</p>
 <p><a href="ch1_code/src/BruteforceProbabilityOfKmerInArbitrarySequence.py">ch1_code/src/BruteforceProbabilityOfKmerInArbitrarySequence.py</a> (lines 9 to 39):</p>
 <pre class="hljs"><code><span class="hljs-comment"># Of the X sequence combinations tried, Y had the k-mer. The probability is Y/X.</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">bruteforce_probability</span>(<span class="hljs-params">searchspace_len: <span class="hljs-built_in">int</span>, searchspace_symbol_count: <span class="hljs-built_in">int</span>, search_for: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>], min_occurrence: <span class="hljs-built_in">int</span></span>) -&gt; (<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>):
@@ -692,7 +692,7 @@
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The explanation in the comments below are a bastardization of "1.13 Detour: Probabilities of Patterns in a String" in the Pevzner book...</p>
 </div>
-<p>This algorithm <a href="#BM_(trie)%2Fi">trie</a>s estimating the probability by ignoring the fact that the occurrences of a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> in a <a href="#BM_(sequence)%2Fi">sequence</a> may overlap. For example, searching for the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">2-mer</a> AA in the <a href="#BM_(sequence)%2Fi">sequence</a> AAAT yields 2 instances of AA:</p>
+<p>This algorithm <a href="#BM_(%5Cbtrie)%2Fi">trie</a>s estimating the probability by ignoring the fact that the occurrences of a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> in a <a href="#BM_(sequence)%2Fi">sequence</a> may overlap. For example, searching for the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">2-mer</a> AA in the <a href="#BM_(sequence)%2Fi">sequence</a> AAAT yields 2 instances of AA:</p>
 <ul>
 <li>[AA]AT</li>
 <li>A[AA]T</li>
@@ -3535,8 +3535,8 @@ PEVZNER_2_16_ALPHABET[<span class="hljs-built_in">frozenset</span>({<span class=
 <p>Each <a href="#BM_(subpeptide)%2Fi">subpeptide</a> then will have its mass-to-charge ratio measured, which in turn gets converted to a set of potential masses by performing basic math. With these potential masses, it's possible to infer the <a href="#BM_(sequence)%2Fi">sequence</a> of the <a href="#BM_(peptide)%2Fi">peptide</a>.</p>
 <p>Special consideration needs to be given to the real-world practical problems with <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometry</a>. Specifically, the <a href="#BM_(spectrum)_MS%2Fi">spectrum</a> given back by a <a href="#BM_(mass%20spectrometer%7Cmass%20spectrometry)%2Fi">mass spectrometer</a> will very likely ...</p>
 <ul>
-<li>miss mass-to-charge ratios for some fragments of the intended molecule (missing en<a href="#BM_(trie)%2Fi">trie</a>s).</li>
-<li>include mass-to-charge ratios for fragments of unintended molecules (faulty en<a href="#BM_(trie)%2Fi">trie</a>s).</li>
+<li>miss mass-to-charge ratios for some fragments of the intended molecule (missing entries).</li>
+<li>include mass-to-charge ratios for fragments of unintended molecules (faulty entries).</li>
 <li>have noisy mass-to-charge ratios.</li>
 </ul>
 <p>The following table contains a list of <a href="#BM_(proteinogenic%20amino%20acid)%2Fi">proteinogenic amino acid</a>s with their masses and <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a> mappings:</p>
@@ -5667,7 +5667,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This was the version of the algorithm used to solve chapter 4's final assignment (<a href="#BM_(sequence)%2Fi">sequence</a> a real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> for some unknown variant of Tyrocidine). Note how the parameters into <a href="#BM_(sequence)%2Fi">sequence</a>_<a href="#BM_(peptide)%2Fi">peptide</a> take an initial leaderboard. This initial leaderboard was primed with <a href="#BM_(subpeptide)%2Fi">subpeptide</a> <a href="#BM_(sequence)%2Fi">sequence</a>s from other Tyrocidine variants discusses in chapter 4. The problem wasn't solvable without these <a href="#BM_(subpeptide)%2Fi">subpeptide</a> <a href="#BM_(sequence)%2Fi">sequence</a>s. More information on this can be found in the Python file for the final assignment.</p>
-<p>Before coming up with the above solution, I came up with another heuristic that I <a href="#BM_(trie)%2Fi">trie</a>d: Use basic genetic algorithms / evolutionary algorithms as the heuristic to move forward <a href="#BM_(peptide)%2Fi">peptide</a>s. This performed even worse than leaderboard: If the mutation rate is too low, the candidates converge to a local optima and can't break out. If the mutation rate is too high, the candidates never converge to a solution. As such, it was removed from the code.</p>
+<p>Before coming up with the above solution, I came up with another heuristic that I <a href="#BM_(%5Cbtrie)%2Fi">trie</a>d: Use basic genetic algorithms / evolutionary algorithms as the heuristic to move forward <a href="#BM_(peptide)%2Fi">peptide</a>s. This performed even worse than leaderboard: If the mutation rate is too low, the candidates converge to a local optima and can't break out. If the mutation rate is too high, the candidates never converge to a solution. As such, it was removed from the code.</p>
 </div>
 <a name="H_Sequence%20Alignment"></a><h2>Sequence Alignment</h2>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment)_TOPIC%2F"></a><strong></strong></p>
@@ -15692,7 +15692,7 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p><img src="dot_618f5a59247efef5120ce07be88aa291.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>Given a <a href="#BM_(tree)%2Fi">tree</a>, this algorithm goes over each internal edge and <a href="#BM_(trie)%2Fi">trie</a>s all possible <a href="#BM_(neighbour)%2Fi">neighbour</a> swaps on that edge in the hopes of driving down the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. After all possible swaps are performed on every internal edge, the swap that produced the lowest <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is chosen. If that <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is lower than the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> for the original <a href="#BM_(tree)%2Fi">tree</a>, the swap is applied to the original and the process repeats.</p>
+<p>Given a <a href="#BM_(tree)%2Fi">tree</a>, this algorithm goes over each internal edge and <a href="#BM_(%5Cbtrie)%2Fi">trie</a>s all possible <a href="#BM_(neighbour)%2Fi">neighbour</a> swaps on that edge in the hopes of driving down the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. After all possible swaps are performed on every internal edge, the swap that produced the lowest <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is chosen. If that <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is lower than the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> for the original <a href="#BM_(tree)%2Fi">tree</a>, the swap is applied to the original and the process repeats.</p>
 <p><a href="ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py">ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py</a> (lines 145 to 250):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">nn_interchange</span>(<span class="hljs-params">
         tree: Graph[N, ND, E, ED],
@@ -18546,19 +18546,19 @@ GGCC
 </div>
 <a name="H_Trie"></a><h3>Trie</h3>
 <p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FTrie)_TOPIC%2F"></a><strong></strong></p>
-<p><strong>WHAT</strong>: A <a href="#BM_(trie)%2Fi">trie</a> is a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> that holds a set of <a href="#BM_(sequence)%2Fi">sequence</a>s. Shared prefixes between those <a href="#BM_(sequence)%2Fi">sequence</a>s are collapsed into a single path while the non-shared remainders split out as deviating paths. For example, the <a href="#BM_(trie)%2Fi">trie</a> for [apples, applejack, apply] is as follows ...</p>
+<p><strong>WHAT</strong>: A <a href="#BM_(%5Cbtrie)%2Fi">trie</a> is a <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> that holds a set of <a href="#BM_(sequence)%2Fi">sequence</a>s. Shared prefixes between those <a href="#BM_(sequence)%2Fi">sequence</a>s are collapsed into a single path while the non-shared remainders split out as deviating paths. For example, the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> for [apples, applejack, apply] is as follows ...</p>
 <p><img src="svgbob_545555f7e431c288604a9941d8d8fb599b61bc9e.svg" alt="Kroki diagram output"></p>
-<p>Each <a href="#BM_(sequence)%2Fi">sequence</a> making up a <a href="#BM_(trie)%2Fi">trie</a> contains a special end marker (¶ in the diagram above) which help disambiguate cases where one <a href="#BM_(sequence)%2Fi">sequence</a> is <em>entirely</em> a prefix of another. For example, without the end marker, the <a href="#BM_(trie)%2Fi">trie</a> for apple and apples would only capture the plural form. The non-plural form would get engulfed entirely by the plural (apple is a prefix of apples).</p>
+<p>Each <a href="#BM_(sequence)%2Fi">sequence</a> making up a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> contains a special end marker (¶ in the diagram above) which help disambiguate cases where one <a href="#BM_(sequence)%2Fi">sequence</a> is <em>entirely</em> a prefix of another. For example, without the end marker, the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> for apple and apples would only capture the plural form. The non-plural form would get engulfed entirely by the plural (apple is a prefix of apples).</p>
 <p><img src="svgbob_dbcc79f95963ce096089711c1c3ae847c1f9bdde.svg" alt="Kroki diagram output"></p>
 <p><strong>WHY</strong>: Imagine trying to find the <a href="#BM_(sequence)%2Fi">sequence</a> "rating" in the larger <a href="#BM_(sequence)%2Fi">sequence</a> "The rating of the movie was good". The straightforward approach is to scan over that larger <a href="#BM_(sequence)%2Fi">sequence</a> and test each position to see if it starts with "rating".</p>
 <p><img src="svgbob_bdedbd05548ec895afee336a4c9f1b07927026cb.svg" alt="Kroki diagram output"></p>
 <p>When there's a set of <a href="#BM_(sequence)%2Fi">sequence</a>s S = {rating, ration, rattle} to search for, the straightforward approach requires that the larger <a href="#BM_(sequence)%2Fi">sequence</a> be scanned over multiple times (3 times, once per <a href="#BM_(sequence)%2Fi">sequence</a> in S).</p>
-<p><a href="#BM_(trie)%2Fi">Trie</a>s are a more efficient way to search for a set of <a href="#BM_(sequence)%2Fi">sequence</a>s. Rather than scanning over the larger <a href="#BM_(sequence)%2Fi">sequence</a> 3 times, a <a href="#BM_(trie)%2Fi">trie</a> combines the <a href="#BM_(sequence)%2Fi">sequence</a>s in S together such that the larger <a href="#BM_(sequence)%2Fi">sequence</a> is only scanned over once. At each position of the larger <a href="#BM_(sequence)%2Fi">sequence</a>, the starting elements at that position are tested against the all <a href="#BM_(sequence)%2Fi">sequence</a>s in S by walking the <a href="#BM_(trie)%2Fi">trie</a>. This is more efficient than searching for each <a href="#BM_(sequence)%2Fi">sequence</a> in S individually because, in a <a href="#BM_(trie)%2Fi">trie</a>, shared prefixes across S's <a href="#BM_(sequence)%2Fi">sequence</a>s are collapsed. The element comparisons for those shared prefixes only happen once.</p>
+<p><a href="#BM_(%5Cbtrie)%2Fi">Trie</a>s are a more efficient way to search for a set of <a href="#BM_(sequence)%2Fi">sequence</a>s. Rather than scanning over the larger <a href="#BM_(sequence)%2Fi">sequence</a> 3 times, a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> combines the <a href="#BM_(sequence)%2Fi">sequence</a>s in S together such that the larger <a href="#BM_(sequence)%2Fi">sequence</a> is only scanned over once. At each position of the larger <a href="#BM_(sequence)%2Fi">sequence</a>, the starting elements at that position are tested against the all <a href="#BM_(sequence)%2Fi">sequence</a>s in S by walking the <a href="#BM_(%5Cbtrie)%2Fi">trie</a>. This is more efficient than searching for each <a href="#BM_(sequence)%2Fi">sequence</a> in S individually because, in a <a href="#BM_(%5Cbtrie)%2Fi">trie</a>, shared prefixes across S's <a href="#BM_(sequence)%2Fi">sequence</a>s are collapsed. The element comparisons for those shared prefixes only happen once.</p>
 <p><img src="svgbob_33f9bce54c0661c44cd396e5f33be5c78713f481.svg" alt="Kroki diagram output"></p>
 <a name="H_Standard%20Algorithm"></a><h4>Standard Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FTrie%2FStandard%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>An empty <a href="#BM_(trie)%2Fi">trie</a> contains a single root node and nothing else (no other nodes or edges). Adding a <a href="#BM_(sequence)%2Fi">sequence</a> to a <a href="#BM_(trie)%2Fi">trie</a> requires walking the <a href="#BM_(trie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching an element missing from the <a href="#BM_(trie)%2Fi">trie</a> (a node that doesn't have an outgoing edge with that element). At that node, a new branch should be created and the remaining elements of the <a href="#BM_(sequence)%2Fi">sequence</a> should extend from it.</p>
+<p>An empty <a href="#BM_(%5Cbtrie)%2Fi">trie</a> contains a single root node and nothing else (no other nodes or edges). Adding a <a href="#BM_(sequence)%2Fi">sequence</a> to a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> requires walking the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching an element missing from the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> (a node that doesn't have an outgoing edge with that element). At that node, a new branch should be created and the remaining elements of the <a href="#BM_(sequence)%2Fi">sequence</a> should extend from it.</p>
 <p><a href="ch9_code/src/sequence_search/Trie_Basic.py">ch9_code/src/sequence_search/Trie_Basic.py</a> (lines 35 to 77):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_trie</span>(<span class="hljs-params">
         seqs: <span class="hljs-built_in">set</span>[StringView],
@@ -18613,10 +18613,10 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_0b6cc891a84d7c1b1673facbdf9c95ed.svg" alt="Dot diagram"></p>
+<p><img src="dot_f9a5c6d1258db99770ad002a0a571e30.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>Testing if a <a href="#BM_(trie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> requires walking the <a href="#BM_(trie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching the end-of-<a href="#BM_(sequence)%2Fi">sequence</a> marker.</p>
+<p>Testing if a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> requires walking the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching the end-of-<a href="#BM_(sequence)%2Fi">sequence</a> marker.</p>
 <p><a href="ch9_code/src/sequence_search/Trie_Basic.py">ch9_code/src/sequence_search/Trie_Basic.py</a> (lines 108 to 141):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_sequence</span>(<span class="hljs-params">
         data: StringView,
@@ -18664,11 +18664,11 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_5449d34a417734c16d0a602a48345a93.svg" alt="Dot diagram"></p>
+<p><img src="dot_0b6cc891a84d7c1b1673facbdf9c95ed.svg" alt="Dot diagram"></p>
 <p>Searching <code>How do you feel about apples?</code> with the trie revealed the following was found: {(22, apple)}</p>
 </div>
 <p></p>
-<p>Extending a <a href="#BM_(trie)%2Fi">trie</a> to support mismatches requires building the <a href="#BM_(trie)%2Fi">trie</a> with seeds of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found seeds have seed extension applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
+<p>Extending a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> to support mismatches requires building the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> with seeds of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found seeds have seed extension applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
 <p><a href="ch9_code/src/sequence_search/Trie_Basic.py">ch9_code/src/sequence_search/Trie_Basic.py</a> (lines 178 to 237):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">mismatch_search</span>(<span class="hljs-params">
         test_seq: StringView,
@@ -18743,7 +18743,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_e48bbf0ddff55c1e3ea452f61a79a94f.svg" alt="Dot diagram"></p>
+<p><img src="dot_76a0e1d7d23ee211b5dd3af8d9757306.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -18770,9 +18770,9 @@ GGCC
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>This algorithm is a common optimization that builds <a href="#BM_(trie)%2Fi">trie</a>s such that trains of non-forking nodes (nodes with <a href="#BM_(indegree)%2Fi">indegree</a> of 1 and <a href="#BM_(outdegree)%2Fi">outdegree</a> of 1) are represented as a single edge.</p>
+<p>This algorithm is a common optimization that builds <a href="#BM_(%5Cbtrie)%2Fi">trie</a>s such that trains of non-forking nodes (nodes with <a href="#BM_(indegree)%2Fi">indegree</a> of 1 and <a href="#BM_(outdegree)%2Fi">outdegree</a> of 1) are represented as a single edge.</p>
 <p><img src="svgbob_5b1744093c13d3edb6e9e9a35954801403dbbd4c.svg" alt="Kroki diagram output"></p>
-<p>At a high-level, the algorithm for building an edge merged <a href="#BM_(trie)%2Fi">trie</a> is more-or-less the same as building a standard <a href="#BM_(trie)%2Fi">trie</a>. Add <a href="#BM_(sequence)%2Fi">sequence</a>s to the <a href="#BM_(trie)%2Fi">trie</a> one at a time, forking where deviations occur. However, in this case, forking happens by breaking an existing edge in two.</p>
+<p>At a high-level, the algorithm for building an edge merged <a href="#BM_(%5Cbtrie)%2Fi">trie</a> is more-or-less the same as building a standard <a href="#BM_(%5Cbtrie)%2Fi">trie</a>. Add <a href="#BM_(sequence)%2Fi">sequence</a>s to the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> one at a time, forking where deviations occur. However, in this case, forking happens by breaking an existing edge in two.</p>
 <p><img src="svgbob_f45bd77532fff09be923a6a0233e002b060a0bce.svg" alt="Kroki diagram output"></p>
 <p><a href="ch9_code/src/sequence_search/Trie_EdgeMerged.py">ch9_code/src/sequence_search/Trie_EdgeMerged.py</a> (lines 36 to 106):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_trie</span>(<span class="hljs-params">
@@ -18860,7 +18860,7 @@ GGCC
 <p><img src="dot_ee42d677cbea34a3879517f1dc525445.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>Testing if a <a href="#BM_(trie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> requires walking the <a href="#BM_(trie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching the end-of-<a href="#BM_(sequence)%2Fi">sequence</a> marker.</p>
+<p>Testing if a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> requires walking the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching the end-of-<a href="#BM_(sequence)%2Fi">sequence</a> marker.</p>
 <p><a href="ch9_code/src/sequence_search/Trie_EdgeMerged.py">ch9_code/src/sequence_search/Trie_EdgeMerged.py</a> (lines 138 to 196):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_sequence</span>(<span class="hljs-params">
         data: StringView,
@@ -18937,7 +18937,7 @@ GGCC
 <p>Searching <em>How do you feel about apples?</em> with the trie revealed the following was found: {(22, 'apple')}</p>
 </div>
 <p></p>
-<p>Extending a <a href="#BM_(trie)%2Fi">trie</a> to support mismatches requires building the <a href="#BM_(trie)%2Fi">trie</a> with seeds of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found seeds have seed extension applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
+<p>Extending a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> to support mismatches requires building the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> with seeds of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found seeds have seed extension applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
 <p><a href="ch9_code/src/sequence_search/Trie_EdgeMerged.py">ch9_code/src/sequence_search/Trie_EdgeMerged.py</a> (lines 232 to 291):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">mismatch_search</span>(<span class="hljs-params">
         test_seq: StringView,
@@ -19012,7 +19012,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_096ae62378a77e32d7bc0ba51f26c033.svg" alt="Dot diagram"></p>
+<p><img src="dot_c5e54ad7756970621aa6a704f69d1daf.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19039,25 +19039,25 @@ GGCC
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>Searching a <a href="#BM_(sequence)%2Fi">sequence</a> using a standard <a href="#BM_(trie)%2Fi">trie</a> may lead to duplicate work being performed. For example, the following <a href="#BM_(trie)%2Fi">trie</a> is for <a href="#BM_(sequence)%2Fi">sequence</a>s {aratrium, aratron, ration}.</p>
+<p>Searching a <a href="#BM_(sequence)%2Fi">sequence</a> using a standard <a href="#BM_(%5Cbtrie)%2Fi">trie</a> may lead to duplicate work being performed. For example, the following <a href="#BM_(%5Cbtrie)%2Fi">trie</a> is for <a href="#BM_(sequence)%2Fi">sequence</a>s {aratrium, aratron, ration}.</p>
 <p><img src="svgbob_82481e24c4e85a5963452984fe7f0a6f6d8bbf23.svg" alt="Kroki diagram output"></p>
-<p>Searching the <a href="#BM_(sequence)%2Fi">sequence</a> "aratios" requires scanning over that <a href="#BM_(sequence)%2Fi">sequence</a> and walking the <a href="#BM_(trie)%2Fi">trie</a> at each scan position. At scan position ...</p>
+<p>Searching the <a href="#BM_(sequence)%2Fi">sequence</a> "aratios" requires scanning over that <a href="#BM_(sequence)%2Fi">sequence</a> and walking the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> at each scan position. At scan position ...</p>
 <ul>
-<li>0, the <a href="#BM_(trie)%2Fi">trie</a> walks until "arat" before failing.</li>
-<li>1, the <a href="#BM_(trie)%2Fi">trie</a> walks until "ratio" before failing.</li>
-<li>2, the <a href="#BM_(trie)%2Fi">trie</a> walks until "a" before failing.</li>
+<li>0, the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> walks until "arat" before failing.</li>
+<li>1, the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> walks until "ratio" before failing.</li>
+<li>2, the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> walks until "a" before failing.</li>
 <li>...</li>
 </ul>
 <p><img src="svgbob_3723f3282d5bcd56669b76e728b457685143f2c8.svg" alt="Kroki diagram output"></p>
-<p>At scan position 0, the <a href="#BM_(trie)%2Fi">trie</a> walked all the way to "arat". That means ...</p>
+<p>At scan position 0, the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> walked all the way to "arat". That means ...</p>
 <ul>
 <li>scan position 0 must start with "arat".</li>
 <li>scan position 1 must start with "rat" -- "rat" is "arat" with first element trimmed off.</li>
 <li>scan position 2 must start with "at" -- "at" is "arat" with first 2 elements trimmed off.</li>
 <li>scan position 3 must start with "t" -- "t" is "arat" with first 3 elements trimmed off.</li>
 </ul>
-<p>At scan position 1, the <a href="#BM_(trie)%2Fi">trie</a> walked all the way to "ratio". However, just from scan position 0's <a href="#BM_(trie)%2Fi">trie</a> walk, it's already known that scan position 1's <a href="#BM_(trie)%2Fi">trie</a> walk would have made it to at least "rat". Accordingly, at scan position 1, it's safe to start walking the <a href="#BM_(trie)%2Fi">trie</a> from the node just past "rat" rather than walking it from the root node .</p>
-<p>This algorithm is an optimization that builds a <a href="#BM_(trie)%2Fi">trie</a> with special edges to handle the scenario described above. For example, the <a href="#BM_(trie)%2Fi">trie</a> below is the same as the example <a href="#BM_(trie)%2Fi">trie</a> above except that it contains a special edge pointing from "arat" to "rat".</p>
+<p>At scan position 1, the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> walked all the way to "ratio". However, just from scan position 0's <a href="#BM_(%5Cbtrie)%2Fi">trie</a> walk, it's already known that scan position 1's <a href="#BM_(%5Cbtrie)%2Fi">trie</a> walk would have made it to at least "rat". Accordingly, at scan position 1, it's safe to start walking the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> from the node just past "rat" rather than walking it from the root node .</p>
+<p>This algorithm is an optimization that builds a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> with special edges to handle the scenario described above. For example, the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> below is the same as the example <a href="#BM_(%5Cbtrie)%2Fi">trie</a> above except that it contains a special edge pointing from "arat" to "rat".</p>
 <p><img src="svgbob_d6e202f055e470240a3f70bee8cb98c573f8141b.svg" alt="Kroki diagram output"></p>
 <p><a href="ch9_code/src/sequence_search/Trie_AhoCorasick.py">ch9_code/src/sequence_search/Trie_AhoCorasick.py</a> (lines 34 to 114):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_trie</span>(<span class="hljs-params">
@@ -19151,12 +19151,12 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_7fde12f399917a9744997e142fa22455.svg" alt="Dot diagram"></p>
+<p><img src="dot_409a5483456423f21085c64f61716b82.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>If a scan walks the <a href="#BM_(trie)%2Fi">trie</a> to "arat" and fails, the next scan position must contain "rat". Since the prefix "rat" exists in the <a href="#BM_(trie)%2Fi">trie</a>, a special edge connects "arat" to "rat" such that the scan for the next position can jump past "rat" in the <a href="#BM_(trie)%2Fi">trie</a> walk.</p>
+<p>If a scan walks the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> to "arat" and fails, the next scan position must contain "rat". Since the prefix "rat" exists in the <a href="#BM_(%5Cbtrie)%2Fi">trie</a>, a special edge connects "arat" to "rat" such that the scan for the next position can jump past "rat" in the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> walk.</p>
 <p><img src="svgbob_7e1f15b8e314f2e2483763b06ae7b0c23ae5aa1d.svg" alt="Kroki diagram output"></p>
-<p>Testing if a <a href="#BM_(trie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> is essentially the same as before, except that on failures the special edges may be used to hop ahead.</p>
+<p>Testing if a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> is essentially the same as before, except that on failures the special edges may be used to hop ahead.</p>
 <p><a href="ch9_code/src/sequence_search/Trie_AhoCorasick.py">ch9_code/src/sequence_search/Trie_AhoCorasick.py</a> (lines 145 to 204):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_sequence</span>(<span class="hljs-params">
         data: StringView,
@@ -19229,11 +19229,11 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_7fde12f399917a9744997e142fa22455.svg" alt="Dot diagram"></p>
+<p><img src="dot_74d2d883371827899a96339d864a7c5f.svg" alt="Dot diagram"></p>
 <p>Searching <em>There were multiple narrations in the play</em> with the trie revealed the following was found: {(23, ration)}</p>
 </div>
 <p></p>
-<p>Extending a <a href="#BM_(trie)%2Fi">trie</a> to support mismatches requires building the <a href="#BM_(trie)%2Fi">trie</a> with seeds of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found seeds have seed extension applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
+<p>Extending a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> to support mismatches requires building the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> with seeds of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found seeds have seed extension applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
 <p><a href="ch9_code/src/sequence_search/Trie_AhoCorasick.py">ch9_code/src/sequence_search/Trie_AhoCorasick.py</a> (lines 239 to 298):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">mismatch_search</span>(<span class="hljs-params">
         test_seq: StringView,
@@ -19308,7 +19308,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_82ee817a6f0ee45ebc7865ffd98e7cf7.svg" alt="Dot diagram"></p>
+<p><img src="dot_e23d94dce81b4cefa1e312490c2ba888.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19334,17 +19334,17 @@ GGCC
 <li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FTrie%2FEdge%20Merged%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Trie/Edge Merged Algorithm</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: A <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> is an edge merged <a href="#BM_(trie)%2Fi">trie</a> of all suffixes within a <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p><strong>WHAT</strong>: A <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> is an edge merged <a href="#BM_(%5Cbtrie)%2Fi">trie</a> of all suffixes within a <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
 <p><img src="svgbob_08896fa6e5d8d294ef06ba82e3a688cb5c1fe80f.svg" alt="Kroki diagram output"></p>
-<p><strong>WHY</strong>: The most common use-case for a <a href="#BM_(trie)%2Fi">trie</a> is to combine a set of <a href="#BM_(sequence)%2Fi">sequence</a>s S so that those <a href="#BM_(sequence)%2Fi">sequence</a> can be efficiently searched for within some larger <a href="#BM_(sequence)%2Fi">sequence</a> L. A <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> flips that idea around: Rather than creating a <a href="#BM_(trie)%2Fi">trie</a> from all <a href="#BM_(sequence)%2Fi">sequence</a>s in S, create a <a href="#BM_(trie)%2Fi">trie</a> of all suffixes in the larger <a href="#BM_(sequence)%2Fi">sequence</a> L. That way, each individual <a href="#BM_(sequence)%2Fi">sequence</a> in S can be quickly looked up in the <a href="#BM_(trie)%2Fi">trie</a> to see to test if it's contained in L.</p>
+<p><strong>WHY</strong>: The most common use-case for a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> is to combine a set of <a href="#BM_(sequence)%2Fi">sequence</a>s S so that those <a href="#BM_(sequence)%2Fi">sequence</a> can be efficiently searched for within some larger <a href="#BM_(sequence)%2Fi">sequence</a> L. A <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> flips that idea around: Rather than creating a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> from all <a href="#BM_(sequence)%2Fi">sequence</a>s in S, create a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> of all suffixes in the larger <a href="#BM_(sequence)%2Fi">sequence</a> L. That way, each individual <a href="#BM_(sequence)%2Fi">sequence</a> in S can be quickly looked up in the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> to see to test if it's contained in L.</p>
 <p><img src="svgbob_c719d5ec77d7c6994e1f183f3cae730e8ac6f1d2.svg" alt="Kroki diagram output"></p>
-<p><a href="#BM_(suffix%20tree)%2Fi">Suffix tree</a>s are useful when there are too many <a href="#BM_(sequence)%2Fi">sequence</a>s in S to form a <a href="#BM_(trie)%2Fi">trie</a> in memory.</p>
+<p><a href="#BM_(suffix%20tree)%2Fi">Suffix tree</a>s are useful when there are too many <a href="#BM_(sequence)%2Fi">sequence</a>s in S to form a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> in memory.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Wouldn't memory also be a problem for any non-trivial L (too many suffixes to form a <a href="#BM_(trie)%2Fi">trie</a> in memory)? Yes, but in this case the edges would just be pointers / string views back to L rather than full copies of L's suffixes.</p>
+<p>Wouldn't memory also be a problem for any non-trivial L (too many suffixes to form a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> in memory)? Yes, but in this case the edges would just be pointers / string views back to L rather than full copies of L's suffixes.</p>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>The <a href="#BM_(trie)%2Fi">trie</a> building algorithm is the same as it is for edge merged <a href="#BM_(trie)%2Fi">trie</a>s but updated to track multiple occurrences of an edge's value.</p>
+<p>The <a href="#BM_(%5Cbtrie)%2Fi">trie</a> building algorithm is the same as it is for edge merged <a href="#BM_(%5Cbtrie)%2Fi">trie</a>s but updated to track multiple occurrences of an edge's value.</p>
 <p><a href="ch9_code/src/sequence_search/SuffixTree.py">ch9_code/src/sequence_search/SuffixTree.py</a> (lines 33 to 112):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_suffix_tree</span>(<span class="hljs-params">
         seq: StringView,
@@ -19440,7 +19440,7 @@ GGCC
 <p><img src="dot_5dd7b1c8f69787d71ec7a44299fca9e0.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>Likewise, walking of the <a href="#BM_(trie)%2Fi">trie</a> has been modified to support string views and reports success as long as the entire search <a href="#BM_(sequence)%2Fi">sequence</a> gets consumed (the walk doesn't have to reach a leaf node).</p>
+<p>Likewise, walking of the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> has been modified to support string views and reports success as long as the entire search <a href="#BM_(sequence)%2Fi">sequence</a> gets consumed (the walk doesn't have to reach a leaf node).</p>
 <p><a href="ch9_code/src/sequence_search/SuffixTree.py">ch9_code/src/sequence_search/SuffixTree.py</a> (lines 147 to 181):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_prefix</span>(<span class="hljs-params">
         prefix: StringView,
@@ -20601,7 +20601,7 @@ xxa vehicle__¶
 </tbody>
 </table>
 <p>Only the first and last columns of the <a href="#BM_(BWT)%2F">BWT</a> matrix are required for pattern matching, meaning the columns in the middle can be discarded. Since the point is to build out a <a href="#BM_(BWT)%2F">BWT</a> matrix once and test against it many times (e.g. build a <a href="#BM_(BWT)%2F">BWT</a> of <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> and test against many <a href="#BM_(sequencer)%2Fi">sequencer</a> outputs), this implementation provides pointers that directly map symbol instances from last column to first column. That way, testing for a <a href="#BM_(substring)%2Fi">substring</a> (described in next section) doesn't need to scan over the <a href="#BM_(BWT)%2F">BWT</a> multiple times.</p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 13 to 80):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 13 to 74):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">cmp</span>(<span class="hljs-params">a: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]], b: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]], end_marker: <span class="hljs-built_in">str</span></span>):
     <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(a) != <span class="hljs-built_in">len</span>(b):
         <span class="hljs-keyword">raise</span> <span class="hljs-string">'???'</span>
@@ -20628,12 +20628,6 @@ xxa vehicle__¶
         self.last_ch = last_ch
         self.last_ch_idx = last_ch_idx
         self.last_to_first_idx = -<span class="hljs-number">1</span>
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__str__</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>((self.first_ch + <span class="hljs-built_in">str</span>(self.first_ch_idx), self.last_ch + <span class="hljs-built_in">str</span>(self.last_ch_idx), self.last_to_first_idx))
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__repr__</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>(self)
 
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">to_bwt</span>(<span class="hljs-params">
@@ -20713,7 +20707,7 @@ xxa vehicle__¶
 <li>index 5 must be a3: Find a3 in the first column and pull out the corresponding symbol instance in the last column: ¶1.</li>
 </ul>
 <p><img src="svgbob_57e0f1bae5a018cfdeaca8f0bd21352d8d510b91.svg" alt="Kroki diagram output"></p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 140 to 150):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 134 to 144):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk</span>(<span class="hljs-params">bwt_array: <span class="hljs-built_in">list</span>[BWTRecord]</span>) -&gt; <span class="hljs-built_in">str</span>:
     ret = <span class="hljs-string">''</span>
     row = <span class="hljs-number">0</span>  <span class="hljs-comment"># first idx of bwt_array always has first_ch == end_marker because of the lexicographical sorting</span>
@@ -20748,7 +20742,7 @@ xxa vehicle__¶
 </li>
 </ul>
 <p><img src="svgbob_6daab13e146d8f4524d3b6d51eeebfa62689062a.svg" alt="Kroki diagram output"></p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 190 to 245):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 184 to 239):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk_find</span>(<span class="hljs-params">
         bwt_array: <span class="hljs-built_in">list</span>[BWTRecord],
         test: <span class="hljs-built_in">str</span>,
@@ -21183,8 +21177,7 @@ xxa vehicle__¶
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>At this stage, it might be worth trying to squash the first column. For example, all "a" symbol instances in the first column are ordered one after another, so you don't need to explicitly list them out. You just need to make sure you adjust how you're doing last-to-first pointer mapping to account for the first column being squashed.</p>
-<p><img src="svgbob_a61d7c6e6d6448c3ce21f4725794b2558b5cb874.svg" alt="Kroki diagram output"></p>
+<p>At this stage, you might thinking that it's worth trying to collapse the first column. This is covered in a later section further below.</p>
 </div>
 <a name="H_Backsweep%20Algorithm"></a><h4>Backsweep Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FBacksweep%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
@@ -21413,15 +21406,16 @@ xxa vehicle__¶
 </ul>
 <p>So, at index 6 (where <code>last=a3</code>), the <code>last_to_first</code> value points to index 3 (where <code>first=a3</code>). Recall that <code>last_to_first</code> is just there to allow for quickly testing for a <a href="#BM_(substring)%2Fi">substring</a>, which goes in reverse from the last column to the first column.</p>
 </div>
-<p>The collapsed first algorithm uses a more memory efficient data structure to represent the same information as the table above. Because of the properties of <code>first</code> mentioned in the beginning of this section, this data structure is able to squash <code>first</code> such that only the index of each symbol's initial occurrence within <code>first</code> is retained: <code>first_occurrence_map</code>.</p>
+<p>The collapsed first algorithm uses a more memory efficient data structure to represent the same information as the table above. Because of the properties of <code>first</code> mentioned in the beginning of this section, this data structure is able to collapse <code>first</code> such that only the index of each symbol's initial occurrence within <code>first</code> is retained: <code>first_occurrence_map</code>.</p>
+<table>
+<tbody><tr><th>records</th><th>first_occurrence_map</th></tr>
+<tr><td>
 <table>
 <thead>
 <tr>
 <th>idx</th>
 <th>last</th>
 <th>last_to_first</th>
-<th>--------</th>
-<th>first_occurrence_map</th>
 </tr>
 </thead>
 <tbody>
@@ -21429,71 +21423,49 @@ xxa vehicle__¶
 <td>0</td>
 <td>a1</td>
 <td>1</td>
-<td></td>
-<td>¶=0</td>
 </tr>
 <tr>
 <td>1</td>
 <td>n1</td>
 <td>5</td>
-<td></td>
-<td>a=1</td>
 </tr>
 <tr>
 <td>2</td>
 <td>n2</td>
 <td>6</td>
-<td></td>
-<td>b=4</td>
 </tr>
 <tr>
 <td>3</td>
 <td>b1</td>
 <td>4</td>
-<td></td>
-<td>n=5</td>
 </tr>
 <tr>
 <td>4</td>
 <td>¶1</td>
 <td>0</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td>5</td>
 <td>a2</td>
 <td>2</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td>6</td>
 <td>a3</td>
 <td>3</td>
-<td></td>
-<td></td>
 </tr>
 </tbody>
 </table>
-<p>For example, because symbol instances of "n" started at index 5 of <code>first</code> in the original table, the squashed version has <code>first_occurrence_map['n'] = 5</code>.</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The gap in the table above is acting a delimiter. It splits the list (<code>idx</code>, <code>last</code>, <code>last_to_first</code>) from the dictionary / map <code>first_occurrence_map</code>. They're separate entities.</p>
-</div>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_SquashedFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_SquashedFirst.py</a> (lines 14 to 54):</p>
+</td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
+</tbody></table>
+<p>For example, because symbol instances of "n" started at index 5 of <code>first</code> in the original table, the collapsed version has <code>first_occurrence_map['n'] = 5</code>.</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py</a> (lines 14 to 48):</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">BWTRecord</span>:
     __slots__ = [<span class="hljs-string">'last_ch'</span>, <span class="hljs-string">'last_ch_idx'</span>]
 
     <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, last_ch: <span class="hljs-built_in">str</span>, last_ch_idx: <span class="hljs-built_in">int</span></span>):
         self.last_ch = last_ch
         self.last_ch_idx = last_ch_idx
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__str__</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-keyword">return</span> <span class="hljs-string">f'<span class="hljs-subst">{self.last_ch}</span><span class="hljs-subst">{self.last_ch_idx}</span>'</span>
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__repr__</span>(<span class="hljs-params">self</span>):
-        <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>(self)
 
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">to_bwt_and_first_occurrences</span>(<span class="hljs-params">
@@ -21532,9 +21504,9 @@ xxa vehicle__¶
 }
 
 </code></pre>
-<p>The following last column and squashed first mapping were produced ...</p>
+<p>The following last column and collapsed first mapping were produced ...</p>
 <ul>
-<li>First (squashed): {'¶': 0, 'a': 1, 'b': 4, 'n': 5}</li>
+<li>First (collapsed): {'¶': 0, 'a': 1, 'b': 4, 'n': 5}</li>
 <li>Last: ['a1', 'n1', 'n2', 'b1', '¶1', 'a2', 'a3']</li>
 </ul>
 </div>
@@ -21557,60 +21529,49 @@ xxa vehicle__¶
 </code></pre>
 <p>This is effectively an on the fly calculation of <code>last_to_first</code>: For any symbol instance in <code>last</code>, feeding that symbol instance to the algorithm above computes its index within <code>first</code>. As such, <code>last_to_first</code> is not necessary in the collapsed first algorithm's data structure. This gives huge memory savings because both <code>last_to_first</code> is gone and <code>first</code> is collapsed to <code>first_occurrence_map</code>.</p>
 <table>
+<tbody><tr><th>records</th><th>first_occurrence_map</th></tr>
+<tr><td>
+<table>
 <thead>
 <tr>
 <th>idx</th>
 <th>last</th>
-<th>--------</th>
-<th>first_occurrence_map</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>0</td>
 <td>a1</td>
-<td></td>
-<td>¶=0</td>
 </tr>
 <tr>
 <td>1</td>
 <td>n1</td>
-<td></td>
-<td>a=1</td>
 </tr>
 <tr>
 <td>2</td>
 <td>n2</td>
-<td></td>
-<td>b=4</td>
 </tr>
 <tr>
 <td>3</td>
 <td>b1</td>
-<td></td>
-<td>n=5</td>
 </tr>
 <tr>
 <td>4</td>
 <td>¶1</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td>5</td>
 <td>a2</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td>6</td>
 <td>a3</td>
-<td></td>
-<td></td>
 </tr>
 </tbody>
 </table>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_SquashedFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_SquashedFirst.py</a> (lines 140 to 164):</p>
+</td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
+</tbody></table>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py</a> (lines 134 to 158):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         bwt_first_occurrence_map: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>],
@@ -21648,7 +21609,7 @@ xxa vehicle__¶
 </code></pre>
 <p>The following first and last columns were produced ...</p>
 <ul>
-<li>First (squashed): {'¶': 0, 'a': 1, 'b': 4, 'n': 5}</li>
+<li>First (collapsed): {'¶': 0, 'a': 1, 'b': 4, 'n': 5}</li>
 <li>Last: ['a1', 'n1', 'n2', 'b1', '¶1', 'a2', 'a3']</li>
 </ul>
 <p><em>ana</em> found in <em>banana¶</em> 2 times.</p>
@@ -21662,24 +21623,98 @@ xxa vehicle__¶
 <li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FCollapsed%20First%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Collapsed First Algorithm</a></li>
 </ul>
 </div>
-<p>TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.</p>
-<p>TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.</p>
-<p>TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.</p>
-<p>TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.</p>
-<p>TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.</p>
-<p>TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.</p>
-<p>TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear.</p>
-<p>TODO: re-explain the property of the deserialization / collapsed first algorithm that the last column, is isolated to just its symbols, has in order symbol instances. add code for the sections below. fix up language to be more clear. in the first paragraph specifically, mention that the algorithm exploits the last column sorted/ordered property to further increase memory savings</p>
-<p>The ranks algorithm modifies the collapsed first algorithm's data structure by removing symbol instance counts from <code>last</code> and instead replacing them with ranks: A tally of how many times each symbol was encountered just before reaching the current index.</p>
+<p>The deserialization algorithm / collapsed first algorithm discussed earlier generates a first column with certain distinct properties:</p>
+<ol>
+<li>The first column is sorted by both symbol and symbol instance count.</li>
+<li>The symbol instance counts for some symbol starts from 1 and increments by 1.</li>
+</ol>
+<p>Because of this, the <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a> ensures that each symbol in the last column, if you were to consider that symbol just by itself, has its instances appear in the exact same fashion: Starts at 1 and increments by 1 as its instances appear from top-to-bottom. For example, given the first and last columns of the <a href="#BM_(BWT)%2F">BWT</a> matrix for "banana¶", the symbol instances of "a" in both first and last columns appear as [<span style="background-color: #f00; color: white; padding: 3px">a1</span>, <span style="background-color: #b00; color: white; padding: 3px">a2</span>, <span style="background-color: #800; color: white; padding: 3px">a3</span>].</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>¶1</td>
+<td><span style="background-color: #f00; color: white; padding: 3px">a1</span></td>
+</tr>
+<tr>
+<td><span style="background-color: #f00; color: white; padding: 3px">a1</span></td>
+<td>n1</td>
+</tr>
+<tr>
+<td><span style="background-color: #b00; color: white; padding: 3px">a2</span></td>
+<td>n2</td>
+</tr>
+<tr>
+<td><span style="background-color: #800; color: white; padding: 3px">a3</span></td>
+<td>b1</td>
+</tr>
+<tr>
+<td>b1</td>
+<td>¶1</td>
+</tr>
+<tr>
+<td>n1</td>
+<td><span style="background-color: #b00; color: white; padding: 3px">a2</span></td>
+</tr>
+<tr>
+<td>n2</td>
+<td><span style="background-color: #800; color: white; padding: 3px">a3</span></td>
+</tr>
+</tbody>
+</table>
+<p>The ranks algorithm exploits the "starts at 1 and increments by 1" property of symbols in the last column for furthering the memory savings given by the collapsed first algorithm. First, the ranks algorithm modifies the collapsed first algorithm's data structure by removing symbol instance counts from <code>last</code> and instead replacing them with ranks: A tally of how many times each symbol was encountered until reaching the current index.</p>
+<table>
+<tbody><tr><th>records (before)</th><th>records (after)</th><th>first_occurrence_map</th></tr>
+<tr><td>
 <table>
 <thead>
 <tr>
 <th>idx</th>
 <th>last</th>
-<th>--------</th>
-<th>first_occurrence_map</th>
-<th>--------</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>n1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>n2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>b1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>¶1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>a3</td>
+</tr>
+</tbody>
+</table>
+</td><td>
+<table>
+<thead>
+<tr>
 <th>idx</th>
+<th>last</th>
 <th>last_tallies</th>
 </tr>
 </thead>
@@ -21687,168 +21722,371 @@ xxa vehicle__¶
 <tr>
 <td>0</td>
 <td>a</td>
-<td></td>
-<td>¶=0</td>
-<td></td>
-<td>0</td>
-<td>{¶=0, a=1, b=0, n=0}</td>
+<td>{¶: 0, a: 1, b: 0, n: 0}</td>
 </tr>
 <tr>
 <td>1</td>
 <td>n</td>
-<td></td>
-<td>a=1</td>
-<td></td>
-<td>1</td>
-<td>{¶=0, a=1, b=0, n=1}</td>
+<td>{¶: 0, a: 1, b: 0, n: 1}</td>
 </tr>
 <tr>
 <td>2</td>
 <td>n</td>
-<td></td>
-<td>b=4</td>
-<td></td>
-<td>2</td>
-<td>{¶=0, a=1, b=0, n=2}</td>
+<td>{¶: 0, a: 1, b: 0, n: 2}</td>
 </tr>
 <tr>
 <td>3</td>
 <td>b</td>
+<td>{¶: 0, a: 1, b: 1, n: 2}</td>
+</tr>
+<tr>
+<td>4</td>
+<td>¶</td>
+<td>{¶: 1, a: 1, b: 1, n: 2}</td>
+</tr>
+<tr>
+<td>5</td>
+<td>a</td>
+<td>{¶: 1, a: 2, b: 1, n: 2}</td>
+</tr>
+<tr>
+<td>6</td>
+<td>a</td>
+<td>{¶: 1, a: 3, b: 1, n: 2}</td>
+</tr>
+</tbody>
+</table>
+</td><td>{¶: 0, a: 1, b: 4, n: =5}</td></tr>
+</tbody></table>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py</a> (lines 14 to 47):</p>
+<pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">BWTRecord</span>:
+    __slots__ = [<span class="hljs-string">'last_ch'</span>, <span class="hljs-string">'last_tallies'</span>]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, last_ch: <span class="hljs-built_in">str</span>, last_tallies: Counter[<span class="hljs-built_in">str</span>]</span>):
+        self.last_ch = last_ch
+        self.last_tallies = last_tallies
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_bwt_ranked</span>(<span class="hljs-params">
+        seq: <span class="hljs-built_in">str</span>,
+        end_marker: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">list</span>[BWTRecord], <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]]:
+    <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
+    <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[:-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> has end marker but not at the end'</span>
+    seq_rotations = rotate_right(seq)
+    seq_rotations_sorted = <span class="hljs-built_in">sorted</span>(
+        seq_rotations,
+        key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp_char_only(a, b, end_marker))
+    )
+    prev_first_ch = <span class="hljs-literal">None</span>
+    last_ch_counter = Counter()
+    bwt_array = []
+    bwt_first_occurrence_map = {}
+    <span class="hljs-keyword">for</span> i, s <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(seq_rotations_sorted):
+        first_ch = s[<span class="hljs-number">0</span>]
+        last_ch = s[-<span class="hljs-number">1</span>]
+        last_ch_counter[last_ch] += <span class="hljs-number">1</span>
+        bwt_record = BWTRecord(last_ch, last_ch_counter.copy())
+        bwt_array.append(bwt_record)
+        <span class="hljs-keyword">if</span> first_ch != prev_first_ch:
+            bwt_first_occurrence_map[first_ch] = i
+            prev_first_ch = first_ch
+    <span class="hljs-keyword">return</span> bwt_array, bwt_first_occurrence_map
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building BWT using the following settings...</p>
+<pre><code>{
+  sequence: banana¶,
+  end_marker: ¶
+}
+
+</code></pre>
+<p>The following last column and squashed first mapping were produced ...</p>
+<ul>
+<li>First (squashed): {'¶': 0, 'a': 1, 'b': 4, 'n': 5}</li>
+<li>Last: a{a=1}, n{a=1,n=1}, n{a=1,n=2}, b{a=1,n=2,b=1}, ¶{a=1,n=2,b=1,¶=1}, a{a=2,n=2,b=1,¶=1}, a{a=3,n=2,b=1,¶=1}</li>
+</ul>
+</div>
+<p></p>
+<p>At any index, the symbol in <code>last</code> can determine its symbol instance count by looking at <code>last_tallies</code>. For example, to get the symbol instance count at index 2 of the example above (where <code>last='n'</code>), <code>last_tallies[2]['n'] = 2</code>.</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py</a> (lines 88 to 90):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_symbol_instance_count</span>(<span class="hljs-params">rec: BWTRecord</span>) -&gt; <span class="hljs-built_in">int</span>:
+    ch = rec.last_ch
+    <span class="hljs-keyword">return</span> rec.last_tallies[ch]
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Extracting symbol instance count using the following settings...</p>
+<pre><code>{
+  last_ch: n,
+  last_tallies: {¶: 0, a: 1, b: 0, n: 2}
+}
+
+</code></pre>
+<p>The symbol instance count for this record is 2</p>
+</div>
+<p></p>
+<p>While replacing <code>last</code>'s symbol instance counts with <code>last_tallies</code> actually increases memory usage, it allows for a concept known as checkpointing: Instead of retaining a tally at every index of <code>last_tallies</code>, leave some empty. The indexes that have a tally are referred to as checkpoints. When an index without a tally is needed, that tally can be quickly calculated from the checkpoints.</p>
+<p>For example, retaining every 3rd <code>last_tallies</code> index in the example above would result in the following.</p>
+<table>
+<tbody><tr><th>records</th><th>first_occurrence_map</th></tr>
+<tr><td>
+<table>
+<thead>
+<tr>
+<th>idx</th>
+<th>last</th>
+<th>last_tallies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>a</td>
+<td>{¶: 0, a: 1, b: 0, n: 0}</td>
+</tr>
+<tr>
+<td>1</td>
+<td>n</td>
 <td></td>
-<td>n=5</td>
+</tr>
+<tr>
+<td>2</td>
+<td>n</td>
 <td></td>
+</tr>
+<tr>
 <td>3</td>
-<td>{¶=0, a=1, b=1, n=2}</td>
+<td>b</td>
+<td>{¶: 0, a: 1, b: 1, n: 2}</td>
 </tr>
 <tr>
 <td>4</td>
 <td>¶</td>
 <td></td>
-<td></td>
-<td></td>
-<td>4</td>
-<td>{¶=1, a=1, b=1, n=2}</td>
 </tr>
 <tr>
 <td>5</td>
 <td>a</td>
 <td></td>
-<td></td>
-<td></td>
-<td>5</td>
-<td>{¶=1, a=2, b=1, n=2}</td>
 </tr>
 <tr>
 <td>6</td>
 <td>a</td>
-<td></td>
-<td></td>
-<td></td>
-<td>6</td>
-<td>{¶=1, a=3, b=1, n=2}</td>
+<td>{¶: 1, a: 3, b: 1, n: 2}</td>
 </tr>
 </tbody>
 </table>
+</td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
+</tbody></table>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The gaps in the table above are acting as delimiters. It splits the list (<code>idx</code>, <code>last</code>, <code>last_to_first</code>) from the dictionary / map <code>first_occurrence_map</code> from the list (<code>idx</code>, <code>last_tallies</code>). They're 3 separate entities.</p>
+<p>To keep things efficient-ish, the code below actually splits out <code>last_tallies</code> into it a dictionary of index to tallies. Otherwise, you end up with a bunch of <code>None</code> entries under <code>last_tallies</code> and that actually ends up taking space.</p>
+<p>You could also make it a list where each index maps to a multiple of the original index (e.g. 0 maps to 0<em>3, 1 maps to 1</em>3, 2 maps to 2*3, ...).</p>
 </div>
-<p>At any index, the symbol in <code>last</code> can determine its symbol instance count by simply querying for that symbol at the same index at <code>last_tallies</code>. For example, to get the symbol instance count of at index 2 where <code>last=n</code>: <code>last_tallies[2]['n']</code>.</p>
-<p>TODO: ADD CODE HERE</p>
-<p>TODO: ADD CODE HERE</p>
-<p>TODO: ADD CODE HERE</p>
-<p>While this actually increases memory usage compared to the collapsed first algorithm, it allows for a concept known as checkpointing: Instead of retaining <code>last_tallies</code> in its entirety, it's possibly to only retain every <code>n</code>th row. For example, retaining every 3rd <code>last_tallies</code> value in the example table above would result in the following.</p>
-<table>
-<thead>
-<tr>
-<th>idx</th>
-<th>last</th>
-<th>--------</th>
-<th>first_occurrence_map</th>
-<th>--------</th>
-<th>idx</th>
-<th>last_tallies</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>0</td>
-<td>a</td>
-<td></td>
-<td>¶=0</td>
-<td></td>
-<td>0</td>
-<td>{¶=0, a=1, b=0, n=0}</td>
-</tr>
-<tr>
-<td>1</td>
-<td>n</td>
-<td></td>
-<td>a=1</td>
-<td></td>
-<td>1</td>
-<td></td>
-</tr>
-<tr>
-<td>2</td>
-<td>n</td>
-<td></td>
-<td>b=4</td>
-<td></td>
-<td>2</td>
-<td></td>
-</tr>
-<tr>
-<td>3</td>
-<td>b</td>
-<td></td>
-<td>n=5</td>
-<td></td>
-<td>3</td>
-<td>{¶=0, a=1, b=1, n=2}</td>
-</tr>
-<tr>
-<td>4</td>
-<td>¶</td>
-<td></td>
-<td></td>
-<td></td>
-<td>4</td>
-<td></td>
-</tr>
-<tr>
-<td>5</td>
-<td>a</td>
-<td></td>
-<td></td>
-<td></td>
-<td>5</td>
-<td></td>
-</tr>
-<tr>
-<td>6</td>
-<td>a</td>
-<td></td>
-<td></td>
-<td></td>
-<td>6</td>
-<td>{¶=1, a=3, b=1, n=2}</td>
-</tr>
-</tbody>
-</table>
-<p>To determine the value of <code>last_tallies</code> at some index without a tally, simply tally <code>last</code> symbols upwards from that index until reaching an index where <code>last_tallies</code> has a value, then add the tallies together. For example, to compute <code>last_tallies</code> for index 5...</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 14 to 50):</p>
+<pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">BWTRecord</span>:
+    __slots__ = [<span class="hljs-string">'last_ch'</span>]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, last_ch: <span class="hljs-built_in">str</span></span>):
+        self.last_ch = last_ch
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_bwt_ranked_checkpointed</span>(<span class="hljs-params">
+        seq: <span class="hljs-built_in">str</span>,
+        end_marker: <span class="hljs-built_in">str</span>,
+        last_tallies_checkpoint_n: <span class="hljs-built_in">int</span>
+</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">list</span>[BWTRecord], <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>], <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, Counter[<span class="hljs-built_in">str</span>]]]:
+    <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
+    <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[:-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> has end marker but not at the end'</span>
+    seq_rotations = rotate_right(seq)
+    seq_rotations_sorted = <span class="hljs-built_in">sorted</span>(
+        seq_rotations,
+        key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp_char_only(a, b, end_marker))
+    )
+    prev_first_ch = <span class="hljs-literal">None</span>
+    last_ch_counter = Counter()
+    bwt_array = []
+    bwt_first_occurrence_map = {}
+    bwt_last_tallies_checkpoints = {}
+    <span class="hljs-keyword">for</span> i, s <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(seq_rotations_sorted):
+        first_ch = s[<span class="hljs-number">0</span>]
+        last_ch = s[-<span class="hljs-number">1</span>]
+        last_ch_counter[last_ch] += <span class="hljs-number">1</span>
+        bwt_record = BWTRecord(last_ch)
+        bwt_array.append(bwt_record)
+        <span class="hljs-keyword">if</span> i % last_tallies_checkpoint_n == <span class="hljs-number">0</span>:
+            bwt_last_tallies_checkpoints[i] = last_ch_counter.copy()
+        <span class="hljs-keyword">if</span> first_ch != prev_first_ch:
+            bwt_first_occurrence_map[first_ch] = i
+            prev_first_ch = first_ch
+    <span class="hljs-keyword">return</span> bwt_array, bwt_first_occurrence_map, bwt_last_tallies_checkpoints
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building BWT using the following settings...</p>
+<pre><code>{
+  sequence: banana¶,
+  end_marker: ¶,
+  last_tallies_checkpoint_n: 3
+}
+
+</code></pre>
+<p>The following last column and squashed first mapping were produced ...</p>
+<ul>
+<li>First (squashed): {'¶': 0, 'a': 1, 'b': 4, 'n': 5}</li>
+<li>Last: ['a', 'n', 'n', 'b', '¶', 'a', 'a']</li>
+<li>Last tallies checkpoints: {0: {a=1}, 3: {a=1,n=2,b=1}, 6: {a=3,n=2,b=1,¶=1}}</li>
+</ul>
+</div>
+<p></p>
+<p>To determine the value of <code>last_tallies</code> at some index which is blank, simply tally <code>last</code> symbols upwards until reaching an index where <code>last_tallies</code> has a value, then add the tallies together. For example, to compute <code>last_tallies[5]</code>, ...</p>
 <ol>
-<li>add symbol in <code>last</code> at index 5 to the tally: {a=1},</li>
-<li>add symbol in <code>last</code> at index 4 to the tally: {¶=1, a=1},</li>
-<li>add <code>last_tallies</code> at index 3 to the tally calculated in the steps above: {¶=1, a=1} + {¶=0, a=1, b=1, n=2} = {¶=1, a=2, b=1, n=2}.</li>
+<li>add symbol in <code>last[5]</code> to the tally: <code>{a: 1}</code>,</li>
+<li>add symbol in <code>last[4]</code> to the tally: <code>{¶: 1, a: 1}</code>,</li>
+<li>add <code>last_tallies[3]</code> to the tally from the last step: <code>{¶: 0, a: 1, b: 1, n: 2} + {¶: 1, a: 1} = {¶: 1, a: 2, b: 1, n: 2}</code>.</li>
 </ol>
-<p>TODO: ADD CODE HERE</p>
-<p>TODO: ADD CODE HERE</p>
-<p>TODO: ADD CODE HERE</p>
-<p>Testing for a substirng works just as before with the exception that the symbol instance count for some index in <code>last</code> needs to be calculated via <code>last_tallies</code>. The idea is to make the <code>last_tallies</code> gaps wide enough to provide memory savings compared to keeping the symbol instance counts in <code>last</code>, but at the same time short enough that the time to compute the missing gap values is still negligible. For example, since there are only 4 possible symbols with a DNA <a href="#BM_(sequence)%2Fi">sequence</a> (A, C, G, and T), the gaps in <code>last_tallies</code> don't have to get too wide before seeing memory savings over keeping symbol instance counts in <code>last</code>.</p>
-<p>TODO: ADD CODE HERE</p>
-<p>TODO: ADD CODE HERE</p>
-<p>TODO: ADD CODE HERE</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 94 to 105):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk_tallies_to_checkpoint</span>(<span class="hljs-params">
+        bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
+        bwt_last_tallies_checkpoints: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, Counter[<span class="hljs-built_in">str</span>]],
+        idx: <span class="hljs-built_in">int</span>
+</span>) -&gt; Counter[<span class="hljs-built_in">str</span>]:
+    partial_tallies = Counter()
+    <span class="hljs-keyword">while</span> idx <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> bwt_last_tallies_checkpoints:
+        ch = bwt_records[idx].last_ch
+        partial_tallies[ch] += <span class="hljs-number">1</span>
+        idx -= <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> partial_tallies + bwt_last_tallies_checkpoints[idx]
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building BWT using the following settings...</p>
+<pre><code>{
+  sequence: banana¶,
+  end_marker: ¶,
+  last_tallies_checkpoint_n: 3,
+  index: 5
+}
+
+</code></pre>
+<p>The following last column and squashed first mapping were produced ...</p>
+<ul>
+<li>First (squashed): {'¶': 0, 'a': 1, 'b': 4, 'n': 5}</li>
+<li>Last: ['a', 'n', 'n', 'b', '¶', 'a', 'a']</li>
+<li>Last tallies checkpoints: {0: {a=1}, 3: {a=1,n=2,b=1}, 6: {a=3,n=2,b=1,¶=1}}</li>
+</ul>
+<p>The tally at index 5 is calculated as {a=2,¶=1,n=2,b=1}</p>
+</div>
+<p></p>
+<p>The calculation above determines the <code>last_tallies</code> value at some index, but only a single symbol within that value is of interest. Given an index <code>i</code>, the sole purpose of <code>last_tallies[i]</code> is to determine the symbol instance count of the symbol at <code>last[i]</code>. As such, only the symbol at <code>last[i]</code> needs to be counted until reaching a checkpoint. For example, at index 5, <code>last[5]</code> is "a". To compute <code>last_tallies[5]['a']</code>, ...</p>
+<ol>
+<li>increment count if <code>last[5] == 'a'</code> (true): <code>1</code>,</li>
+<li>increment count if <code>last[4] == 'a'</code> (false): <code>1</code>,</li>
+<li>add <code>last_tallies[3]['a']</code> to the count from the last step: <code>1+1=2</code>.</li>
+</ol>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 153 to 166):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">single_tally_to_checkpoint</span>(<span class="hljs-params">
+        bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
+        bwt_last_tallies_checkpoints: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, Counter[<span class="hljs-built_in">str</span>]],
+        idx: <span class="hljs-built_in">int</span>
+</span>) -&gt; <span class="hljs-built_in">int</span>:
+    tally_ch = bwt_records[idx].last_ch
+    partial_tally = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> idx <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> bwt_last_tallies_checkpoints:
+        ch = bwt_records[idx].last_ch
+        <span class="hljs-keyword">if</span> ch == tally_ch:
+            partial_tally += <span class="hljs-number">1</span>
+        idx -= <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> partial_tally + bwt_last_tallies_checkpoints[idx][tally_ch]
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building BWT using the following settings...</p>
+<pre><code>{
+  sequence: banana¶,
+  end_marker: ¶,
+  last_tallies_checkpoint_n: 3,
+  index: 5
+}
+
+</code></pre>
+<p>The following last column and squashed first mapping were produced ...</p>
+<ul>
+<li>First (squashed): {'¶': 0, 'a': 1, 'b': 4, 'n': 5}</li>
+<li>Last: ['a', 'n', 'n', 'b', '¶', 'a', 'a']</li>
+<li>Last tallies checkpoints: {0: {a=1}, 3: {a=1,n=2,b=1}, 6: {a=3,n=2,b=1,¶=1}}</li>
+</ul>
+<p>The tally for character a at index 5 is calculated as 2</p>
+</div>
+<p></p>
+<p>Testing for a <a href="#BM_(substring)%2Fi">substring</a> works just as it did with the collapsed first algorithm, with the exception that the symbol instance count for some index in <code>last</code> needs to be calculated via <code>last_tallies</code> checkpoints. The idea is to make the gaps between <code>last_tallies</code> checkpoints wide enough that it gives memory savings compared to keeping the symbol instance counts in <code>last</code>, but at the same time short enough that the time to compute the missing gap values is still negligible. For example, since there are only 4 possible symbols with a DNA <a href="#BM_(sequence)%2Fi">sequence</a> (A, C, G, and T), the gaps in <code>last_tallies</code> don't have to get too wide before seeing memory savings over keeping symbol instance counts in <code>last</code>.</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 215 to 257):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_symbol_instance_count</span>(<span class="hljs-params">
+        bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
+        bwt_last_tallies: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, Counter[<span class="hljs-built_in">str</span>]],
+        idx: <span class="hljs-built_in">int</span>
+</span>) -&gt; <span class="hljs-built_in">int</span>:
+    <span class="hljs-keyword">return</span> single_tally_to_checkpoint(bwt_records, bwt_last_tallies, idx)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_first_index</span>(<span class="hljs-params">
+        bwt_first_occurrence_map: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>],
+        symbol_instance: <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]
+</span>) -&gt; <span class="hljs-built_in">int</span>:
+    symbol, symbol_count = symbol_instance
+    <span class="hljs-keyword">return</span> bwt_first_occurrence_map[symbol] + symbol_count - <span class="hljs-number">1</span>
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">
+        bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
+        bwt_first_occurrence_map: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>],
+        bwt_last_tallies: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, Counter[<span class="hljs-built_in">str</span>]],
+        test: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">int</span>:
+    top = <span class="hljs-number">0</span>
+    bottom = <span class="hljs-built_in">len</span>(bwt_records) - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(test):
+        new_top = <span class="hljs-built_in">len</span>(bwt_records)
+        new_bottom = -<span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(top, bottom + <span class="hljs-number">1</span>):
+            record = bwt_records[i]
+            <span class="hljs-keyword">if</span> ch == record.last_ch:
+                last_ch_idx = to_symbol_instance_count(bwt_records, bwt_last_tallies, i)
+                last_to_first_idx = to_first_index(
+                    bwt_first_occurrence_map,
+                    (record.last_ch, last_ch_idx)
+                )
+                new_top = <span class="hljs-built_in">min</span>(new_top, last_to_first_idx)
+                new_bottom = <span class="hljs-built_in">max</span>(new_bottom, last_to_first_idx)
+        <span class="hljs-keyword">if</span> new_bottom == -<span class="hljs-number">1</span> <span class="hljs-keyword">or</span> new_top == <span class="hljs-built_in">len</span>(bwt_records):  <span class="hljs-comment"># technically only need to check one of these conditions</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        top = new_top
+        bottom = new_bottom
+    <span class="hljs-keyword">return</span> (bottom - top) + <span class="hljs-number">1</span>
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building BWT using the following settings...</p>
+<pre><code>{
+  sequence: banana¶,
+  end_marker: ¶,
+  last_tallies_checkpoint_n: 3,
+  index: 5,
+  test: ana
+}
+
+</code></pre>
+<p>The following first and last columns were produced ...</p>
+<ul>
+<li>First (squashed): {'¶': 0, 'a': 1, 'b': 4, 'n': 5}</li>
+<li>Last: ['a', 'n', 'n', 'b', '¶', 'a', 'a']</li>
+<li>Last tallies checkpoints: {0: {a=1}, 3: {a=1,n=2,b=1}, 6: {a=3,n=2,b=1,¶=1}}</li>
+</ul>
+<p><em>ana</em> found in <em>banana¶</em> 2 times.</p>
+</div>
+<p></p>
 <a name="H_Partial%20Suffix%20Array%20Algorithm"></a><h4>Partial Suffix Array Algorithm</h4>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
@@ -22838,7 +23076,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <p><a href="#BM_(global%20alignment%7Cglobal%20sequence%20alignment)%2Fi">Global alignment</a> that takes <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>s into account - multiple chromosomes, chromosomes becoming circular or linear, reversals, <a href="#BM_(fission)%2Fi">fission</a>s, <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a>s, copies, etc..</p>
 </li>
 <li>
-<p>Organism lookup by <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> - Two-tiered database containing <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s. The first tier is an "inverse index" of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that rarely appear across all organisms (unique or almost unique to the <a href="#BM_(genome)%2Fi">genome</a>) exposed as either a <a href="#BM_(trie)%2Fi">trie</a> / hashtable (for exact lookups) or possibly as a list where highly optimized miniature alignments get performed (for fuzzy lookups -- SIMD + things fit nicely into cache lines). It widdles down the list of organism for the second tier, which is a full on database search for each matches across all <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s.</p>
+<p>Organism lookup by <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> - Two-tiered database containing <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s. The first tier is an "inverse index" of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that rarely appear across all organisms (unique or almost unique to the <a href="#BM_(genome)%2Fi">genome</a>) exposed as either a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> / hashtable (for exact lookups) or possibly as a list where highly optimized miniature alignments get performed (for fuzzy lookups -- SIMD + things fit nicely into cache lines). It widdles down the list of organism for the second tier, which is a full on database search for each matches across all <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s.</p>
 </li>
 <li>
 <p><a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">K-mer</a> <a href="#BM_(hierarchical%20cluster)%2Fi">hierarchical cluster</a>ing - <a href="#BM_(hierarchical%20cluster)%2Fi">Hierarchical cluster</a> together similar <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s using either <a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson similarity</a>/<a href="#BM_(pearson%20correlation%20coefficient%7Cpearson%20correlation%7Cpearson%20distance%7Cpearson%20similarity)%2Fi">pearson distance</a> [between one/zero vector of sub-<a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s] or <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> distance to form its <a href="#BM_(distance%20matrix%7Cdistance%20matrices)%2Fi">distance matrix</a> / <a href="#BM_(similarity%20matrix%7Csimilarity%20matrices)%2Fi">similarity matrix</a>. This is useful for when you're trying to identify which organism a <a href="#BM_(sequence)%2Fi">sequence</a> belongs to by searching for its <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s in a database. The <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that make up the database would be <a href="#BM_(cluster)%2Fi">cluster</a>ed, and <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s that closely <a href="#BM_(cluster)%2Fi">cluster</a> together under a branch of the <a href="#BM_(hierarchical%20cluster)%2Fi">hierarchical cluster</a> <a href="#BM_(tree)%2Fi">tree</a> are those you'd be more cautious with -- the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> may have matched but it could have actually been a corrupted form of one of the other <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s in the <a href="#BM_(cluster)%2Fi">cluster</a> (<a href="#BM_(sequencing%20error)%2Fi">sequencing error</a>).</p>
@@ -23011,7 +23249,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 </li>
 <li>
 <p><a name="BM_(regulatory%20gene)%2Fi"></a><strong>regulatory gene</strong> / <a name="BM_(regulatory%20protein)%2Fi"></a><strong>regulatory protein</strong> - The proteins <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">encode</a>d by these <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> affect <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for certain other <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a>. That is, a <a href="#BM_(regulatory%20protein)%2Fi">regulatory protein</a> can cause certain other <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> to be expressed more (promote <a href="#BM_(gene%20expression)%2Fi">gene expression</a>) or less (repress <a href="#BM_(gene%20expression)%2Fi">gene expression</a>).</p>
-<p><a href="#BM_(regulatory%20gene)%2Fi">Regulatory gene</a>s are often controlled by external factors (e.g. sunlight, nu<a href="#BM_(trie)%2Fi">trie</a>nts, temperature, etc..)</p>
+<p><a href="#BM_(regulatory%20gene)%2Fi">Regulatory gene</a>s are often controlled by external factors (e.g. sunlight, nutrients, temperature, etc..)</p>
 </li>
 <li>
 <p><a name="BM_(feedback%20loop)%2Fi"></a><strong>feedback loop</strong> / <a name="BM_(negative%20feedback%20loop)%2Fi"></a><strong>negative feedback loop</strong> / <a name="BM_(positive%20feedback%20loop)%2Fi"></a><strong>positive feedback loop</strong> - A <a href="#BM_(feedback%20loop)%2Fi">feedback loop</a> is a system where the output (or some part of the output) is fed back into the system to either promote or repress further outputs.</p>
@@ -23121,7 +23359,7 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <p>The idea is that once the experimental <a href="#BM_(cDNA)%2F">cDNA</a> is introduced to that region, it should bind to the control <a href="#BM_(cDNA)%2F">cDNA</a> that's been printed to form <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a>. The color emitted in a region should correspond to the amount of <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> that region represents. For example, if a region on the sheet is fully yellow, it means that the <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for that <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is roughly equal (red mixed with green is yellow).</p>
 </li>
 <li>
-<p><a name="BM_(greedy%20algorithm)%2Fi"></a><strong>greedy algorithm</strong> - An algorithm that <a href="#BM_(trie)%2Fi">trie</a>s to speed things up by taking the locally optimal choice at each step. That is, the algorithm doesn't look more than 1 step ahead.</p>
+<p><a name="BM_(greedy%20algorithm)%2Fi"></a><strong>greedy algorithm</strong> - An algorithm that <a href="#BM_(%5Cbtrie)%2Fi">trie</a>s to speed things up by taking the locally optimal choice at each step. That is, the algorithm doesn't look more than 1 step ahead.</p>
 <p>For example, imagine a chess playing AI that had a strategy of trying to eliminate the other player's most valuable piece at each turn. It would be considered greedy because it only looks 1 move ahead before taking action. Normal chess AIs / players look many moves ahead before taking action. As such, the greedy AI may be fast but it would very likely lose most matches.</p>
 </li>
 <li>
@@ -26860,9 +27098,9 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><a name="BM_(major%20histocompatibility%20complex)%2Fi"></a><strong>major histocompatibility complex</strong> - A region of DNA containing <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> linked to the immune system. The <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> in this region are highly diverse, to the point that it's unlikely for two individuals to have the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a> in the exact same form.</p>
 </li>
 <li>
-<p><a name="BM_(trie)%2Fi"></a><strong>trie</strong> - A <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> that holds a set of <a href="#BM_(sequence)%2Fi">sequence</a>s. Shared prefixes between those <a href="#BM_(sequence)%2Fi">sequence</a>s are collapsed into a single path while the non-shared remainders split out as deviating paths.</p>
+<p><a name="BM_(%5Cbtrie)%2Fi"></a><strong>trie</strong> - A <a href="#BM_(rooted%20tree)%2Fi">rooted tree</a> that holds a set of <a href="#BM_(sequence)%2Fi">sequence</a>s. Shared prefixes between those <a href="#BM_(sequence)%2Fi">sequence</a>s are collapsed into a single path while the non-shared remainders split out as deviating paths.</p>
 <p><img src="svgbob_d4f456be496fad0e8f8044a5feab39445a23dbc8.svg" alt="Kroki diagram output"></p>
-<p>To disambiguate scenarios where one <a href="#BM_(sequence)%2Fi">sequence</a> is a prefix of the other, a <a href="#BM_(trie)%2Fi">trie</a> typically either includes a ...</p>
+<p>To disambiguate scenarios where one <a href="#BM_(sequence)%2Fi">sequence</a> is a prefix of the other, a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> typically either includes a ...</p>
 <ul>
 <li>a flag on each node to indicate if its the end of a <a href="#BM_(sequence)%2Fi">sequence</a>.</li>
 <li>a special "end-of-<a href="#BM_(sequence)%2Fi">sequence</a>" at the end of each <a href="#BM_(sequence)%2Fi">sequence</a>.</li>
@@ -26874,16 +27112,16 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 </li>
 <li>
-<p><a name="BM_(Aho%5B%5Cs-%5D%3FCorasick%7CAho%5B%5Cs-%5D%3FCorasick%20trie)%2Fi"></a><strong>Aho-Corasick trie</strong> - A <a href="#BM_(trie)%2Fi">trie</a> with special hop edges that eliminates redundant scanning during searches.</p>
-<p>Given a <a href="#BM_(trie)%2Fi">trie</a> containing <a href="#BM_(sequence)%2Fi">sequence</a> prefixes P1 and P2, a special hop edge (P1, P2) is added if P2 is equal to P1 but with its first element chopped off (<code>P2 = P1[1:]</code>). In the example below, a special hop edge connects "arat" to "rat".</p>
+<p><a name="BM_(Aho%5B%5Cs-%5D%3FCorasick%7CAho%5B%5Cs-%5D%3FCorasick%20trie)%2Fi"></a><strong>Aho-Corasick trie</strong> - A <a href="#BM_(%5Cbtrie)%2Fi">trie</a> with special hop edges that eliminates redundant scanning during searches.</p>
+<p>Given a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> containing <a href="#BM_(sequence)%2Fi">sequence</a> prefixes P1 and P2, a special hop edge (P1, P2) is added if P2 is equal to P1 but with its first element chopped off (<code>P2 = P1[1:]</code>). In the example below, a special hop edge connects "arat" to "rat".</p>
 <p><img src="svgbob_d6e202f055e470240a3f70bee8cb98c573f8141b.svg" alt="Kroki diagram output"></p>
-<p>If a scan walks the <a href="#BM_(trie)%2Fi">trie</a> to "arat", the next scan <em>must</em> contain "rat". As such, a special edge connects "arat" to "rat" such that the next scan can start directly past "rat".</p>
+<p>If a scan walks the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> to "arat", the next scan <em>must</em> contain "rat". As such, a special edge connects "arat" to "rat" such that the next scan can start directly past "rat".</p>
 <p><img src="svgbob_83da5124b5f21260416ff061e8154726d6f8d6e7.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(suffix%20trie)%2Fi"></a><strong>suffix trie</strong> - A <a href="#BM_(trie)%2Fi">trie</a> of all suffixes within a <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p><a name="BM_(suffix%20trie)%2Fi"></a><strong>suffix trie</strong> - A <a href="#BM_(%5Cbtrie)%2Fi">trie</a> of all suffixes within a <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
 <p><img src="svgbob_4edf521317c9080cb159655b0b96f9b8eb4ec93c.svg" alt="Kroki diagram output"></p>
-<p><a href="#BM_(suffix%20trie)%2Fi">Suffix trie</a>s are used to efficiently determine if a string contains a <a href="#BM_(substring)%2Fi">substring</a>. The string is converted to a <a href="#BM_(suffix%20trie)%2Fi">suffix trie</a>, then the <a href="#BM_(trie)%2Fi">trie</a> is searched from the root node to see if a specific <a href="#BM_(substring)%2Fi">substring</a> exists.</p>
+<p><a href="#BM_(suffix%20trie)%2Fi">Suffix trie</a>s are used to efficiently determine if a string contains a <a href="#BM_(substring)%2Fi">substring</a>. The string is converted to a <a href="#BM_(suffix%20trie)%2Fi">suffix trie</a>, then the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> is searched from the root node to see if a specific <a href="#BM_(substring)%2Fi">substring</a> exists.</p>
 <p><img src="svgbob_e98da221de14299799efa96f49772a00dff3993f.svg" alt="Kroki diagram output"></p>
 </li>
 <li>

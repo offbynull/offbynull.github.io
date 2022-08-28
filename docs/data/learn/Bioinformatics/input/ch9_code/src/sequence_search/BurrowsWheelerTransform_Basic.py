@@ -37,12 +37,6 @@ class BWTRecord:
         self.last_ch_idx = last_ch_idx
         self.last_to_first_idx = -1
 
-    def __str__(self):
-        return str((self.first_ch + str(self.first_ch_idx), self.last_ch + str(self.last_ch_idx), self.last_to_first_idx))
-
-    def __repr__(self):
-        return str(self)
-
 
 def to_bwt(
         seq: str,

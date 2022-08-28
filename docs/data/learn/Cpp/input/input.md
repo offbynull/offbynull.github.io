@@ -12441,6 +12441,41 @@ To handle IO errors, the standard stream mechanisms are available: `exceptions()
 std::cin.exceptions(std::istream::badbit | std::istream::failbit); // exception if bad/fail, but not good/eof
 ```
 
+## File System
+
+`{bm} /(Library Functions\/File System)_TOPIC/`
+
+```{prereq}
+Library Functions/Strings/Formatter_TOPIC
+Library Functions/Streams_TOPIC
+```
+
+The `std::filesystem` namespace contains functionality related to file systems.
+
+This type `std::filesystem::path` is the abstraction used to represent paths. It provides various helpful functions, operator overloads, as well as support for streams.
+
+```c++
+TODO: ADD VARIOUS WAYS OF CONSTRUCTING CONSTRUCT
+TODO: ADD VARIOUS WAYS OF CONSTRUCTING CONSTRUCT
+TODO: ADD VARIOUS WAYS OF CONSTRUCTING CONSTRUCT
+TODO: ADD VARIOUS WAYS OF CONSTRUCTING CONSTRUCT
+TODO: ADD VARIOUS WAYS OF CONSTRUCTING CONSTRUCT
+TODO: ADD COMMON USAGES
+TODO: ADD COMMON USAGES
+TODO: ADD COMMON USAGES
+TODO: ADD COMMON USAGES
+TODO: ADD COMMON USAGES
+
+std::filesystem::path curr_dit { std::filesystem::current_path() };
+std::cout << curr_dir << std::endl; // directly works with streams
+```
+
+To create a directory, use `std::filesystem::create_directory()`
+
+```{note}
+There's also `boost::filesystem`, which is what `std::filesystem` is based off of.
+```
+
 ## Debug Utilities
 
 `{bm} /(Library Functions\/Debug Utilities)_TOPIC/`
