@@ -1,1 +1,0 @@
-<span style="background-color: #00b; color: white; padding: 3px">n2</span>

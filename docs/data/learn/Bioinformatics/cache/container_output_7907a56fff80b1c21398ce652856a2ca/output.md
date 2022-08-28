@@ -1,1 +1,0 @@
-<span style="background-color: #f00; color: white; padding: 3px">"a1"</span>

@@ -14475,7 +14475,7 @@ More information is also available in the [Wikipedia article](https://en.wikiped
 
 Burrows-wheeler transform (BWT) is a matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. It's used for efficiently determining the number of times some substring appears in a sequence, and with some extensions it can determine their positions in the sequence as well.
 
-Similar to suffix arrays, the sequence must have an end marker, where the end marker symbol comes first in the lexicographical sort order. For example, the BWT of "banana¶" ("¶" is the end marker), first creates a matrix by stacking all possible cyclical rotations...
+Similar to suffix arrays, the sequence must have an end marker, where the end marker symbol comes first in the lexicographical sort order. For example, the BWT of "banana¶" (*¶* is the end marker), first creates a matrix by stacking all possible cyclical rotations...
 
 |   |   |   |   |   |   |   |
 |---|---|---|---|---|---|---|
@@ -14502,79 +14502,79 @@ Similar to suffix arrays, the sequence must have an end marker, where the end ma
 ```{note}
 The terminology I used below is mildly confusing.
 
- * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* [a, b, n, ¶]).
- * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of "n").
- * Symbol instance count: The occurrence part of a symbol instance (e.g. index 4 of "banana¶" is "n" and it *is occurrence number* / *has a symbol instance count of* 2).
+ * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* {a, b, n, ¶}).
+ * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of *n*).
+ * Symbol instance count: The occurrence part of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
 ```
 
-BWT matrices have a special property called the first-last property. Consider how the above matrix would look with symbol instance counts included. The symbols in "banana¶" are [a, b, n, ¶]. At index ...
+BWT matrices have a special property called the first-last property. Consider how the above matrix would look with symbol instance counts included. The symbols in "banana¶" are {a, b, n, ¶}. At index ...
 
-0. the first "b" occurs: b1
-1. the first "a" occurs: a1
-2. the first "n" occurs: n1
-3. the second "a" occurs: a2
-4. the second "n" occurs: n2
-5. the third "a" occurs: a3
-6. the first "¶" occurs: ¶1
+0. the first *b* occurs: (b,1)
+1. the first *a* occurs: (a,1)
+2. the first *n* occurs: (n,1)
+3. the second *a* occurs: (a,2)
+4. the second *n* occurs: (n,2)
+5. the third *a* occurs: (a,3)
+6. the first *¶* occurs: (¶,1)
 
-The sequence "banana¶" with symbol instance counts included is [b1, a1, n1, a2, n2, a3, ¶1]. Performing the same cyclic rotations and lexicographically sorting on this sequence results in the following matrix (symbol instance counts not included in sorting).
+The sequence "banana¶" with symbol instance counts included is [(b,1), (a,1), (n,1), (a,2), (n,2), (a,3), (¶,1)]. Performing the same cyclic rotations and lexicographically sorting on this sequence results in the following matrix (symbol instance counts not included in sorting).
 
-|    |    |    |    |    |    |    |
-|----|----|----|----|----|----|----|
-| ¶1 | b1 | a1 | n1 | a2 | n2 | a3 |
-| a3 | ¶1 | b1 | a1 | n1 | a2 | n2 |
-| a2 | n2 | a3 | ¶1 | b1 | a1 | n1 |
-| a1 | n1 | a2 | n2 | a3 | ¶1 | b1 |
-| b1 | a1 | n1 | a2 | n2 | a3 | ¶1 |
-| n2 | a3 | ¶1 | b1 | a1 | n1 | a2 |
-| n1 | a2 | n2 | a3 | ¶1 | b1 | a1 |
+|       |       |       |       |       |       |       |
+|-------|-------|-------|-------|-------|-------|-------|
+| (¶,1) | (b,1) | (a,1) | (n,1) | (a,2) | (n,2) | (a,3) |
+| (a,3) | (¶,1) | (b,1) | (a,1) | (n,1) | (a,2) | (n,2) |
+| (a,2) | (n,2) | (a,3) | (¶,1) | (b,1) | (a,1) | (n,1) |
+| (a,1) | (n,1) | (a,2) | (n,2) | (a,3) | (¶,1) | (b,1) |
+| (b,1) | (a,1) | (n,1) | (a,2) | (n,2) | (a,3) | (¶,1) |
+| (n,2) | (a,3) | (¶,1) | (b,1) | (a,1) | (n,1) | (a,2) |
+| (n,1) | (a,2) | (n,2) | (a,3) | (¶,1) | (b,1) | (a,1) |
 
 ```{note}
 It's the exact same matrix as before, it's just that the symbol instance counts are now visible whereas before they were hidden. These symbol instance counts _aren't included_ in the lexicographic sorting that happens.
 ```
 
-For each symbol [a, b, n, ¶] in "banana¶", symbol instances are positioned differently between the first and last columns of the matrix (e.g. "a1" shows up in first column at row 4 vs row 7 for the last column). However, notice how each symbol's instances appear in the same order between those two columns. For example, symbol ...
+For each symbol {a, b, n, ¶} in "banana¶", symbol instances are positioned differently between the first and last columns of the matrix (e.g. (a,1) shows up in first column at row 4 vs row 7 for the last column). However, notice how each symbol's instances appear in the same order between those two columns. For example, symbol ...
 
- * "a" has its symbol instances ordered as [`{h}#f00 a3`, `{h}#b00 a2`, `{h}#800 a1`] in both the first and last column.
- * "n" has its symbol instances ordered as [`{h}#00f n2`, `{h}#00b n1`] in both the first and last column.
+ * *a* has its symbol instances ordered as [`{h}#f00 (a,3)`, `{h}#b00 (a,2)`, `{h}#800 (a,1)`] in both the first and last column.
+ * *n* has its symbol instances ordered as [`{h}#00f (n,2)`, `{h}#00b (n,1)`] in both the first and last column.
 
-|              |    |    |    |    |    |              |
-|--------------|----|----|----|----|----|--------------|
-|          ¶1  | b1 | a1 | n1 | a2 | n2 | `{h}#f00 a3` |
-| `{h}#f00 a3` | ¶1 | b1 | a1 | n1 | a2 | `{h}#00f n2` |
-| `{h}#b00 a2` | n2 | a3 | ¶1 | b1 | a1 | `{h}#00b n1` |
-| `{h}#800 a1` | n1 | a2 | n2 | a3 | ¶1 |          b1  |
-|          b1  | a1 | n1 | a2 | n2 | a3 |          ¶1  |
-| `{h}#00f n2` | a3 | ¶1 | b1 | a1 | n1 | `{h}#b00 a2` |
-| `{h}#00b n1` | a2 | n2 | a3 | ¶1 | b1 | `{h}#800 a1` |
+|                 |       |       |       |       |       |                 |
+|-----------------|-------|-------|-------|-------|-------|-----------------|
+|          (¶,1)  | (b,1) | (a,1) | (n,1) | (a,2) | (n,2) | `{h}#f00 (a,3)` |
+| `{h}#f00 (a,3)` | (¶,1) | (b,1) | (a,1) | (n,1) | (a,2) | `{h}#00f (n,2)` |
+| `{h}#b00 (a,2)` | (n,2) | (a,3) | (¶,1) | (b,1) | (a,1) | `{h}#00b (n,1)` |
+| `{h}#800 (a,1)` | (n,1) | (a,2) | (n,2) | (a,3) | (¶,1) |          (b,1)  |
+|          (b,1)  | (a,1) | (n,1) | (a,2) | (n,2) | (a,3) |          (¶,1)  |
+| `{h}#00f (n,2)` | (a,3) | (¶,1) | (b,1) | (a,1) | (n,1) | `{h}#b00 (a,2)` |
+| `{h}#00b (n,1)` | (a,2) | (n,2) | (a,3) | (¶,1) | (b,1) | `{h}#800 (a,1)` |
 
-The phenomenon of consistent ordering of a symbol's instances is the first-last property and it's a result of the lexicographic sorting that happens. In the example matrix above, isolating the matrix to those rows with "a" in the first column shows that the second column is also lexicographically sorted.
+The phenomenon of consistent ordering of a symbol's instances is the first-last property and it's a result of the lexicographic sorting that happens. In the example matrix above, isolating the matrix to those rows with *a* in the first column shows that the second column is also lexicographically sorted.
 
-|              |  ▼ |    |    |    |    |    |
-|--------------|----|----|----|----|----|----|
-| `{h}#f00 a3` | ¶1 | b1 | a1 | n1 | a2 | n2 |
-| `{h}#b00 a2` | n2 | a3 | ¶1 | b1 | a1 | n1 |
-| `{h}#800 a1` | n1 | a2 | n2 | a3 | ¶1 | b1 |
+|                 |   ▼   |       |       |       |       |       |
+|-----------------|-------|-------|-------|-------|-------|-------|
+| `{h}#f00 (a,3)` | (¶,1) | (b,1) | (a,1) | (n,1) | (a,2) | (n,2) |
+| `{h}#b00 (a,2)` | (n,2) | (a,3) | (¶,1) | (b,1) | (a,1) | (n,1) |
+| `{h}#800 (a,1)` | (n,1) | (a,2) | (n,2) | (a,3) | (¶,1) | (b,1) |
 
-In other words, cyclically rotating each row right by 1 moves each corresponding "a" to the end, but the rows still remain lexicographically sorted.
+In other words, cyclically rotating each row right by 1 moves each corresponding *a* to the end, but the rows still remain lexicographically sorted.
 
-|  ▼ |    |    |    |    |    |              |
-|----|----|----|----|----|----|--------------|
-| ¶1 | b1 | a1 | n1 | a2 | n2 | `{h}#f00 a3` |
-| n2 | a3 | ¶1 | b1 | a1 | n1 | `{h}#b00 a2` |
-| n1 | a2 | n2 | a3 | ¶1 | b1 | `{h}#800 a1` |
+|   ▼   |       |       |       |       |       |                 |
+|-------|-------|-------|-------|-------|-------|-----------------|
+| (¶,1) | (b,1) | (a,1) | (n,1) | (a,2) | (n,2) | `{h}#f00 (a,3)` |
+| (n,2) | (a,3) | (¶,1) | (b,1) | (a,1) | (n,1) | `{h}#b00 (a,2)` |
+| (n,1) | (a,2) | (n,2) | (a,3) | (¶,1) | (b,1) | `{h}#800 (a,1)` |
 
 After the cyclic rotations above, the rows in the isolated matrix become different rows from the original matrix. Since the rows in the isolated matrix are still lexicographically sorted, they're ordered as they appear in that original matrix.
 
-|  ▼ |    |    |    |    |    |              |
-|----|----|----|----|----|----|--------------|
-| ¶1 | b1 | a1 | n1 | a2 | n2 | `{h}#f00 a3` |
-| a3 | ¶1 | b1 | a1 | n1 | a2 |          n2  |
-| a2 | n2 | a3 | ¶1 | b1 | a1 |          n1  |
-| a1 | n1 | a2 | n2 | a3 | ¶1 |          b1  |
-| b1 | a1 | n1 | a2 | n2 | a3 |          ¶1  |
-| n2 | a3 | ¶1 | b1 | a1 | n1 | `{h}#b00 a2` |
-| n1 | a2 | n2 | a3 | ¶1 | b1 | `{h}#800 a1` |
+|   ▼   |       |       |       |       |       |                 |
+|-------|-------|-------|-------|-------|-------|-----------------|
+| (¶,1) | (b,1) | (a,1) | (n,1) | (a,2) | (n,2) | `{h}#f00 (a,3)` |
+| (a,3) | (¶,1) | (b,1) | (a,1) | (n,1) | (a,2) |          (n,2)  |
+| (a,2) | (n,2) | (a,3) | (¶,1) | (b,1) | (a,1) |          (n,1)  |
+| (a,1) | (n,1) | (a,2) | (n,2) | (a,3) | (¶,1) |          (b,1)  |
+| (b,1) | (a,1) | (n,1) | (a,2) | (n,2) | (a,3) |          (¶,1)  |
+| (n,2) | (a,3) | (¶,1) | (b,1) | (a,1) | (n,1) | `{h}#b00 (a,2)` |
+| (n,1) | (a,2) | (n,2) | (a,3) | (¶,1) | (b,1) | `{h}#800 (a,1)` |
 
 Only the first and last columns of the BWT matrix are required for pattern matching, meaning the columns in the middle can be discarded. Since the point is to build out a BWT matrix once and test against it many times (e.g. build a BWT of reference genome and test against many sequencer outputs), this implementation provides pointers that directly map symbol instances from last column to first column. That way, testing for a substring (described in next section) doesn't need to scan over the BWT multiple times.
 
@@ -14596,26 +14596,26 @@ sequence_search.BurrowsWheelerTransform_Basic main_build
 Further down in this section, there's a slightly more optimal way of building BWT first and last columns. The reason that it's not up here is that some of the text below builds the foundations for that slightly more optimal way.
 ```
 
-Given just the first and last column of a BWT matrix, the original sequence can be pulled out by hopping between those columns. Because the matrix is made up of all cyclic rotations of [b1, a1, n1, a2, n2, a3, ¶1], the row containing index i of [b1, a1, n1, a2, n2, a3, ¶1] in the first column is guaranteed to contain index i-1 in the last column (wrapping around if out of bounds). For example, when ...
+Given just the first and last column of a BWT matrix, the original sequence can be pulled out by hopping between those columns. Because the matrix is made up of all cyclic rotations of [(b,1), (a,1), (n,1), (a,2), (n,2), (a,3), (¶,1)], the row containing index i of [(b,1), (a,1), (n,1), (a,2), (n,2), (a,3), (¶,1)] in the first column is guaranteed to contain index i-1 in the last column (wrapping around if out of bounds). For example, when ...
 
- * index 6 is in the first column (¶1), index 5 is guaranteed to be in the last column (a3).
- * index 5 is in the first column (a3), index 4 is guaranteed to be in the last column (n2).
- * index 4 is in the first column (n2), index 3 is guaranteed to be in the last column (a2).
+ * index 6 is in the first column, index 5 is guaranteed to be in the last column: (¶,1) and (a,3).
+ * index 5 is in the first column, index 4 is guaranteed to be in the last column: (a,3) and (n,2).
+ * index 4 is in the first column, index 3 is guaranteed to be in the last column: (n,2) and (a,2).
  * ...
- * index 1 is in the last column (a1), index 0 is guaranteed to be in the first column (b1).
+ * index 1 is in the last column, index 0 is guaranteed to be in the first column: (a,1) and (b,1).
 
 Since it's known that ...
 
- 1. index n-1 (last index) of the original sequence always contains the end marker (¶1)
- 2. the row containing the end marker (¶1) in its first column always gets sorted to the top row of the BWT matrix
+ 1. index n-1 (last index) of the original sequence always contains the end marker (¶,1)
+ 2. the row containing the end marker (¶,1) in its first column always gets sorted to the top row of the BWT matrix
  
-..., the first row's last column is guaranteed to contain index n-2 (a3). From there, since index n-2 is now known (a3), it can be found in the first column and that found row's last column is guaranteed to contain index n-3 (n2). From there, since index n-3 is now known (a2), it can be found in the first column and that found row's last column is guaranteed to contain index n-4 (a2). The process continues until the end marker is reached (¶1), at which point the original sequence has been fully walked.
+..., the first row's last column is guaranteed to contain index n-2: (a,3). From there, since index n-2 is now known, it can be found in the first column and that found row's last column is guaranteed to contain index n-3: (n,2). From there, since index n-3 is now known, it can be found in the first column and that found row's last column is guaranteed to contain index n-4: (a,2). The process continues until the end marker is reached (¶,1), at which point the original sequence has been fully walked.
 
- * last index must be ¶1: Find ¶1 in the first column and pull out the corresponding symbol instance in the last column: 31.
- * index 0 must be b1: Find b1 in the first column and pull out the corresponding symbol instance in the last column: a1.
- * index 1 must be a1: Find a1 in the first column and pull out the corresponding symbol instance in the last column: n1.
+ * last index must be (¶,1): Find (¶,1) in the first column and pull out the corresponding symbol instance in the last column: (b,1).
+ * index 0 must be (b,1): Find (b,1) in the first column and pull out the corresponding symbol instance in the last column: (a,1).
+ * index 1 must be (a,1): Find (a,1) in the first column and pull out the corresponding symbol instance in the last column: (n,1).
  * ...
- * index 5 must be a3: Find a3 in the first column and pull out the corresponding symbol instance in the last column: ¶1.
+ * index 5 must be (a,3): Find (a,3) in the first column and pull out the corresponding symbol instance in the last column: (¶,1).
   
 ```{svgbob}
 +--+--+      a    +--+--+           +--+--+           +--+--+           +--+--+           +--+--+           +--+--+
@@ -14645,9 +14645,9 @@ sequence_search.BurrowsWheelerTransform_Basic main_walk
 
 Similarly to pulling out the original sequence, given just the first and last column of a BWT matrix, it's possible to quickly identify if and how many times some substring exists in the original sequence. For example, to test if the sequence to see if it contains "nana"...
 
- * find all rows where the last column has symbol "a" and the first column has symbol "n": [a3, n2] and [a2, n1].
-   * walk backwards from [a3, n2] to see if "nana" could be fully extracted: a3 to n2 to a2 to n1: [n1, a2, n3, a3] (PASSED)
-   * walk backwards from [a2, n1] to see if "nana" could be fully extracted: a2 to n1 to a1 to b1: [b1, a1, n1, a2] (FAILED)
+ * find all rows where the last column has symbol "a" and the first column has symbol *n*: [(a,3), (n,2)] and [(a,2), (n,1)].
+   * walk backwards from [(a,3), (n,2)] to see if "nana" could be fully extracted: (a,3) to (n,2) to (a,2) to (n,1), which is "nana" (PASSED)
+   * walk backwards from [(a,2), (n,1)] to see if "nana" could be fully extracted: (a,2) to (n,1) to (a,1) to (b,1), which is "bana" (FAILED)
 
 ```{svgbob}
 "* search for substring nana"
@@ -14736,13 +14736,13 @@ When testing for a substring in the standard algorithm, the symbol instance coun
 
 Given this observation, when serializing the first and last columns of the matrix, you technically only need to store the symbols from the last column. The first column is just the last column, but sorted. For example, the symbols in last column of the example above are "annb¶aa". To convert that back into the first and last columns of the matrix with symbol instance counts, the steps are as follows:
 
-1. Last column: augment "annb¶aa" with symbol instance counts: [a1, n1, n2, b1, ¶1, a2, a3].
+1. Last column: augment "annb¶aa" with symbol instance counts: [(a,1), (n,1), (n,2), (b,1), (¶,1), (a,2), (a,3)].
 
    In this case, the augmentation isn't with symbol instance counts from the original sequence ("banana¶") but from the sequence that makes up the last column ("annb¶aa").
 
-2. First column: Sorting the result of step 1 _taking the symbol instance counts into account_: [¶1, a1, a2, a3, b1, n1, n2].
+2. First column: Sorting the result of step 1 _taking the symbol instance counts into account_: [(¶,1), (a,1), (a,2), (a,3), (b,1), (n,1), (n,2)].
 
-   The sort is still a lexicographical sort but the symbol instance counts are included as well. A lower symbol instance count should be given precedence over a higher symbol instance count. For example, once sorted, "a2" should appear before "a3" but after "a1". This is done because the ordering of symbol occurrences need to be preserved between the first and last columns.
+   The sort is still a lexicographical sort but the symbol instance counts are included as well. A lower symbol instance count should be given precedence over a higher symbol instance count. For example, once sorted, (a,2) should appear before (a,3) but after (a,1). This is done because the ordering of symbol occurrences need to be preserved between the first and last columns.
 
 The end result of reconstructing from "annb¶aa" is the following first and last columns, ...
 
@@ -14816,15 +14816,15 @@ The deserialization process described above also helps with computing the first 
 
 Then, extract the last column ("annb¶aa") and feed it into the deserialization process. The deserialization process will annotate that last column with symbol instance counts, then sort it to create the first column (with symbol instance counts).
 
-|    |    |
-|----|----|
-| ¶1 | a1 |
-| a1 | n1 |
-| a2 | n2 |
-| a3 | b1 |
-| b1 | ¶1 |
-| n1 | a2 |
-| n2 | a3 |
+|       |       |
+|-------|-------|
+| (¶,1) | (a,1) |
+| (a,1) | (n,1) |
+| (a,2) | (n,2) |
+| (a,3) | (b,1) |
+| (b,1) | (¶,1) |
+| (n,1) | (a,2) |
+| (n,2) | (a,3) |
 
 Since the original sequence isn't being annotated with symbol instance counts (as was done in the original BWT creation algorithm discussed at the beginning of this section), those symbol instance counts are omitted from the rotation stacking and sorting, meaning it saves some memory. However, the deserialization process is doing an extra sort to derive the first column, meaning some extra work is being performed.
 
@@ -14844,20 +14844,20 @@ sequence_search.BurrowsWheelerTransform_Deserialization main_optimized_build
 
 The first and last BWT matrix columns in the example above have a special property that makes the deserialization's extra sort step unnecessary: For each symbol [a, b, n, ¶] in "banana¶", notice how, in both columns, each symbol's instances appear ordered by symbol instance count. For example, symbol ...
 
- * "a" has its symbol instances ordered as [`{h}#f00 a1`, `{h}#b00 a2`, `{h}#800 a3`] in both the first and last column (1 comes first, then 2, then 3).
- * "n" has its symbol instances ordered as [`{h}#00f n1`, `{h}#00b n2`] in both the first and last column  (1 comes first, then 2).
+ * *a* has its symbol instances ordered as [`{h}#f00 (a,1)`, `{h}#b00 (a,2)`, `{h}#800 (a,3)`] in both the first and last column (1 comes first, then 2, then 3).
+ * *n* has its symbol instances ordered as [`{h}#00f (n,1)`, `{h}#00b (n,2)`] in both the first and last column  (1 comes first, then 2).
 
 |              |              |
 |--------------|--------------|
-|          ¶1  | `{h}#f00 a1` |
-| `{h}#f00 a1` | `{h}#00f n1` |
-| `{h}#b00 a2` | `{h}#00b n2` |
-| `{h}#800 a3` |          b1  |
-|          b1  |          ¶1  |
-| `{h}#00f n1` | `{h}#b00 a2` |
-| `{h}#00b n2` | `{h}#800 a3` |
+|          (¶,1)  | `{h}#f00 (a,1)` |
+| `{h}#f00 (a,1)` | `{h}#00f (n,1)` |
+| `{h}#b00 (a,2)` | `{h}#00b (n,2)` |
+| `{h}#800 (a,3)` |          (b,1)  |
+|          (b,1)  |          (¶,1)  |
+| `{h}#00f (n,1)` | `{h}#b00 (a,2)` |
+| `{h}#00b (n,2)` | `{h}#800 (a,3)` |
 
-This happens because the deserialization's extra sort step uses both the symbol and symbol instance count as the sort key (e.g. if both symbols are "a", the symbol instance counts are used to break ties). Since it's known that ...
+This happens because the deserialization's extra sort step uses both the symbol and symbol instance count as the sort key (e.g. if both symbols are *a*, the symbol instance counts are used to break ties). Since it's known that ...
 
  1. first column's sequence is "¶aaabnn"
  2. last column's sequence is "annb¶aa"
@@ -14899,28 +14899,28 @@ This algorithm focuses on a different way of testing the first and last column o
 Ultimately, it seems to be testing in a similar way as before but it doesn't try to test each potential substring instance by drilling down. Instead, it limits the span / range of options at each step to values that it knows are correct. In a way, it should be a faster way to test because of the memory layouts and principle of locality (e.g. subsequent memory access to a location that's closer to the original memory access is faster vs a location that's farther, due to caching and stuff like that).
 ```
 
-The backsweep algorithm is a different way of testing for a substring using the first and last columns of a BWT matrix. In the deserialization algorithm section, the final method of constructing the first and last columns of a BWT matrix had a distinct property: The first column was sorted by both symbol and symbol instance count. For example, given the first and last columns of the BWT matrix for "banana¶", the "a" symbol instances will appear contiguously in the first column as [`{h}#f00 a1`, `{h}#b00 a2`, `{h}#800 a3`].
+The backsweep algorithm is a different way of testing for a substring using the first and last columns of a BWT matrix. In the deserialization algorithm section, the final method of constructing the first and last columns of a BWT matrix had a distinct property: The first column was sorted by both symbol and symbol instance count. For example, given the first and last columns of the BWT matrix for "banana¶", the *a* symbol instances will appear contiguously in the first column as [`{h}#f00 (a,1)`, `{h}#b00 (a,2)`, `{h}#800 (a,3)`].
 
-|              |              |
-|--------------|--------------|
-|          ¶1  | `{h}#f00 a1` |
-| `{h}#f00 a1` |          n1  |
-| `{h}#b00 a2` |          n2  |
-| `{h}#800 a3` |          b1  |
-|          b1  |          ¶1  |
-|          n1  | `{h}#b00 a2` |
-|          n2  | `{h}#800 a3` |
+|                 |                 |
+|-----------------|-----------------|
+|          (¶,1)  | `{h}#f00 (a,1)` |
+| `{h}#f00 (a,1)` |          (n,1)  |
+| `{h}#b00 (a,2)` |          (n,2)  |
+| `{h}#800 (a,3)` |          (b,1)  |
+|          (b,1)  |          (¶,1)  |
+|          (n,1)  | `{h}#b00 (a,2)` |
+|          (n,2)  | `{h}#800 (a,3)` |
 
 ```{note}
-Recall the property of the last column of the BWT matrix as well: For each symbol, that symbol's instances may be scattered around but are sorted if you only consider them by themselves. For example, `{h}#f00 "a1"` appears before `{h}#b00 "a2"` but there are a bunch of other values in between.
+Recall the property of the last column of the BWT matrix as well: For each symbol, that symbol's instances may be scattered around but are sorted if you only consider them by themselves. For example, `{h}#f00 (a,1)` appears before `{h}#b00 (a,2)` but there are a bunch of other values in between.
 
 This is an important point to understanding why this algorithm works, explained in a note further below.
 ```
 
-The backsweep algorithm exploits the above sorted first column property to test for a substring by performing isolated scans of the BWT table. For each element of the test string, it scans a range within the BWT table, where that scan defines the range to scan for the next element. For example, searching for "bba" in "abbazabbabbu¶" starts by searching the entire BWT table for rows where `last_col="a"` (3rd letter of "bba"): `[a1, a2, a3, a4]`. Then, the whole BWT table is isolated such that the ...
+The backsweep algorithm exploits the above sorted first column property to test for a substring by performing isolated scans of the BWT table. For each element of the test string, it scans a range within the BWT table, where that scan defines the range to scan for the next element. For example, searching for "bba" in "abbazabbabbu¶" starts by searching the entire BWT table for rows where `last_col=a` (3rd letter of "bba"): [(a,1), (a,2), (a,3), (a,4)]. Then, the whole BWT table is isolated such that the ...
 
- * head of the BWT table is `min_first_col_idx([a1, a2, a3, a4])`: a1 is at index 1.
- * tail of the BWT table is `max_first_col_idx([a1, a2, a3, a4])`: a4 is at index 4.
+ * head of the BWT table is `min_first_col_idx([(a,1), (a,2), (a,3), (a,4)])`: (a,1) is at index 1.
+ * tail of the BWT table is `max_first_col_idx([(a,1), (a,2), (a,3), (a,4)])`: (a,4) is at index 4.
 
 ```{svgbob}
 "isolate to range where first_col a1-a4"
@@ -14943,10 +14943,10 @@ The backsweep algorithm exploits the above sorted first column property to test 
 +--+--+                        
 ```
 
-Essentially, the above operation isolated the BWT table to all substrings of size 2 in the original sequence that end in "a". This isolated BWT table is then again searched for rows where `last_col="b"` (2nd letter of "bba"): `[b1, b2]`. The BWT table's isolation is then reset such that the ...
+Essentially, the above operation isolated the BWT table to all substrings of size 2 in the original sequence that end in *a*. This isolated BWT table is then again searched for rows where `last_col=b` (2nd letter of "bba"): [(b,1), (b,2)]. The BWT table's isolation is then reset such that the ...
 
- * head of the BWT table is `min_first_col_idx([b1, b2])`: b1 is at index 5.
- * tail of the BWT table is `max_first_col_idx([b1, b2])`: b2 is at index 6.
+ * head of the BWT table is `min_first_col_idx([(b,1), (b,2)])`: (b,1) is at index 5.
+ * tail of the BWT table is `max_first_col_idx([(b,1), (b,2)])`: (b,2) is at index 6.
 
 ```{svgbob}
 "isolate to range where first_col a1-a4"
@@ -14972,10 +14972,10 @@ Essentially, the above operation isolated the BWT table to all substrings of siz
                        "isolate to range where first_col b1-b2"
 ```
 
-The above operation isolated the BWT table further to all substrings of size 3 in the original sequence that end in "ba". This isolated BWT table is then again searched for rows where `last_col="b"` (1st letter of "bba"): `[b3, b4]`. The BWT table's isolation is then reset such that the ...
+The above operation isolated the BWT table further to all substrings of size 3 in the original sequence that end in "ba". This isolated BWT table is then again searched for rows where `last_col=b` (1st letter of "bba"): [(b,3), (b,4)]. The BWT table's isolation is then reset such that the ...
 
- * head of the BWT table is `min_first_col_idx([b3, b4])`: b3 is at index 7.
- * tail of the BWT table is `max_first_col_idx([b3, b4])`: b4 is at index 8.
+ * head of the BWT table is `min_first_col_idx([(b,3), (b,4)])`: (b,3) is at index 7.
+ * tail of the BWT table is `max_first_col_idx([(b,3), (b,4)])`: (b,4) is at index 8.
 
 Now that all letters of the test string "bba" are consumed, the number of instances for "bba" should be `tail_index - head_index + 1`: `8 - 7 + 1 = 2`. Since there are two rows in the isolated BWT table at this point, there are two instances of "bba".
 
@@ -15006,34 +15006,34 @@ Now that all letters of the test string "bba" are consumed, the number of instan
 ```{note}
 What's actually going on here that makes this work? Recall that the ...
 
-* first column is sorted by symbol and symbol instance count (e.g. [¶1, a1, a2, a3, a4, b1, b2, ...]).
-* last column guarantees that, for each symbol, that symbol's instances may be scattered around but are sorted if you only consider them by themselves (e.g. "b5" appears after "b4", but there are a bunch of other values in between them).
+* first column is sorted by symbol and symbol instance count (e.g. [(¶,1), (a,1), (a,2), (a,3), (a,4), (b,1), (b,2), ...]).
+* last column guarantees that, for each symbol, that symbol's instances may be scattered around but are sorted if you only consider them by themselves (e.g. (b,5) appears after (b,4), but there are a bunch of other values in between them).
 
-Knowing this, consider the 2nd range isolation step. When the first column is between "a1" and "a4", the range is limited to those 4 rows. Those 4 rows are then searched to see which has a last column with symbol "b". Of the "b" symbol instances found, ...
+Knowing this, consider the 2nd range isolation step. When the first column is between (a,1) and (a,4), the range is limited to those 4 rows. Those 4 rows are then searched to see which has a last column with symbol *b*. Of the *b* symbol instances found, ...
 
-* the one with the min symbol instance count will be above the other "b" symbol instances.
-* the one with the max symbol instance count will be below the other "b" symbol instances.
+* the one with the min symbol instance count will be above the other *b* symbol instances.
+* the one with the max symbol instance count will be below the other *b* symbol instances.
 * the ones between them will have incrementing symbol instance by order of appearance.
 
-For those 4 rows, the last column has "b1" in row 3 and "b2" in row 4, so the next range was isolated between first column being between "b1" and "b2". All rows in this next range are guaranteed to be for substrings that end with "a".
+For those 4 rows, the last column has (b,1) in row 3 and (b,2) in row 4, so the next range was isolated between first column being between (b,1) and (b,2). All rows in this next range are guaranteed to be for substrings that end with *a*.
 
-The point being that the "b" symbol instance counts aren't scattered / random, instead they're guaranteed to _increment by one_ as they appear down the last column. That's why isolating the next range between `min_symbol_instance_count("b")` and `max_symbol_instance_count("b")` works. Those "b" symbol instance counts, when you search for them in the first column, are guaranteed to be contiguous rows in the BWT table.
+The point being that the *b* symbol instance counts aren't scattered / random, instead they're guaranteed to _increment by one_ as they appear down the last column. That's why isolating the next range between `min_symbol_instance_count(b)` and `max_symbol_instance_count(b)` works. Those *b* symbol instance counts, when you search for them in the first column, are guaranteed to be contiguous rows in the BWT table.
 
 For example, imagine what would happen if the last column were ...
 
- * [b2, b3, b4, b5] - the rows where `first_col=[b2,b3,b4,b5]` are contiguous rows.
- * [b2, ?, b3, b4] - the rows where `first_col=[b2,b3,b4]` are contiguous rows.
- * [b3, ?, ?, b4] - the rows where `first_col=[b3,b4]` are contiguous rows.
- * [?, b3, ?, b4] - the rows where `first_col=[b3,b4]` are contiguous rows.
- * [b2, ?, ?, b3] - the rows where `first_col=[b2,b3]` are contiguous rows.
- * [?, b2, ?, ?] - the rows where `first_col=[b2]` are contiguous rows.
+ * [(b,2), (b,3), (b,4), (b,5)] - the rows where `first_col=[(b,2),(b,3),(b,4),(b,5)]` are contiguous rows.
+ * [(b,2), ?,     (b,3), (b,4)] - the rows where `first_col=[(b,2),(b,3),(b,4)]` are contiguous rows.
+ * [(b,3), ?,     ?,     (b,4)] - the rows where `first_col=[(b,3),(b,4)]` are contiguous rows.
+ * [?,     (b,3), ?,     (b,4)] - the rows where `first_col=[(b,3),(b,4)]` are contiguous rows.
+ * [(b,2), ?,     ?,     (b,3)] - the rows where `first_col=[(b,2),(b,3)]` are contiguous rows.
+ * [?,     (b,2), ?,     ?    ] - the rows where `first_col=[(b,2)]` are contiguous rows.
 
 In contrast, the following last column scenarios will never happen ...
 
- * [b3, ?, ?, b2] - top-most "b" symbol instance doesn't have the min symbol instance count of all "b"s.
- * [b2, ?, ?, b2] - same "b" symbol instance will never appear twice.
- * [b5, b4, ?, b3] - "b" symbol instances must increment as they go top to bottom, not decrement.
- * [b4, b5, ?, b3] - "b" symbol instances must increment as they go top to bottom, not scatter.
+ * [(b,3), ?,     ?, (b,2)] - top-most *b* symbol instance doesn't have the min symbol instance count of all *b*s.
+ * [(b,2), ?,     ?, (b,2)] - same *b* symbol instance will never appear twice.
+ * [(b,5), (b,4), ?, (b,3)] - *b* symbol instances must increment as they go top to bottom, not decrement.
+ * [(b,4), (b,5), ?, (b,3)] - *b* symbol instances must increment as they go top to bottom, not scatter.
 ```
 
 ```{output}
@@ -15065,27 +15065,27 @@ The deserialization algorithm discussed earlier generates a first column with ce
 1. The first column is sorted by both symbol and symbol instance count.
 2. The symbol instance counts for some symbol starts from 1 and increments by 1.
 
-For example, given the first and last columns of the BWT matrix for "banana¶", the "a" symbol instances will appear contiguously in the first column as [`{h}#f00 a1`, `{h}#b00 a2`, `{h}#800 a3`].
+For example, given the first and last columns of the BWT matrix for "banana¶", the *a* symbol instances will appear contiguously in the first column as [`{h}#f00 (a,1)`, `{h}#b00 (a,2)`, `{h}#800 (a,3)`].
 
-| idx |     first    |     last     | last_to_first |
-|-----|--------------|--------------|---------------|
-|  0  |          ¶1  | `{h}#f00 a1` |       1       |
-|  1  | `{h}#f00 a1` |          n1  |       5       |
-|  2  | `{h}#b00 a2` |          n2  |       6       |
-|  3  | `{h}#800 a3` |          b1  |       4       |
-|  4  |          b1  |          ¶1  |       0       |
-|  5  |          n1  | `{h}#b00 a2` |       2       |
-|  6  |          n2  | `{h}#800 a3` |       3       |
+| idx |      first      |      last       | last_to_first |
+|-----|-----------------|-----------------|---------------|
+|  0  |          (¶,1)  | `{h}#f00 (a,1)` |       1       |
+|  1  | `{h}#f00 (a,1)` |          (n,1)  |       5       |
+|  2  | `{h}#b00 (a,2)` |          (n,2)  |       6       |
+|  3  | `{h}#800 (a,3)` |          (b,1)  |       4       |
+|  4  |          (b,1)  |          (¶,1)  |       0       |
+|  5  |          (n,1)  | `{h}#b00 (a,2)` |       2       |
+|  6  |          (n,2)  | `{h}#800 (a,3)` |       3       |
 
 ```{note}
 The column `idx` is just the index within the table.
 
-The column `last_to_first` wasn't discussed in the prerequisites but it was in their code. It simply maps the `last` value at a specific index to its index within `first`. For example, "a3" is contained at index ...
+The column `last_to_first` wasn't discussed in the prerequisites but it was in their code. It simply maps the `last` value at a specific index to its index within `first`. For example, (a,3) is contained at index ...
 
 * index 6 for `last`
 * index 3 for `first`
 
-So, at index 6 (where `last=a3`), the `last_to_first` value points to index 3 (where `first=a3`). Recall that `last_to_first` is just there to allow for quickly testing for a substring, which goes in reverse from the last column to the first column.
+So, at index 6 (where `last=(a,3)`), the `last_to_first` value points to index 3 (where `first=(a,3)`). Recall that `last_to_first` is just there to allow for quickly testing for a substring, which goes in reverse from the last column to the first column.
 ```
 
 The collapsed first algorithm uses a more memory efficient data structure to represent the same information as the table above. Because of the properties of `first` mentioned in the beginning of this section, this data structure is able to collapse `first` such that only the index of each symbol's initial occurrence within `first` is retained: `first_occurrence_map`.
@@ -15094,20 +15094,20 @@ The collapsed first algorithm uses a more memory efficient data structure to rep
 <tr><th>records</th><th>first_occurrence_map</th></tr>
 <tr><td>
 
-| idx | last | last_to_first |
-|-----|------|---------------|
-|  0  |  a1  |       1       |
-|  1  |  n1  |       5       |
-|  2  |  n2  |       6       |
-|  3  |  b1  |       4       |
-|  4  |  ¶1  |       0       |
-|  5  |  a2  |       2       |
-|  6  |  a3  |       3       |
+| idx |   last  | last_to_first |
+|-----|---------|---------------|
+|  0  |  (a,1)  |       1       |
+|  1  |  (n,1)  |       5       |
+|  2  |  (n,2)  |       6       |
+|  3  |  (b,1)  |       4       |
+|  4  |  (¶,1)  |       0       |
+|  5  |  (a,2)  |       2       |
+|  6  |  (a,3)  |       3       |
 
 </td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
 </table>
 
-For example, because symbol instances of "n" started at index 5 of `first` in the original table, the collapsed version has `first_occurrence_map['n'] = 5`.
+For example, because symbol instances of *n* started at index 5 of `first` in the original table, the collapsed version has `first_occurrence_map[n] = 5`.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py
@@ -15123,23 +15123,18 @@ sequence_search.BurrowsWheelerTransform_CollapsedFirst main_table_and_collapsed_
 }
 ```
 
-Given just `first_occurrence_map`, finding the index where some symbol instance should be in `first` is computed as `(first_occurrence_map[inst.symbol] + inst.count) - 1`. For example, `first_occurrence_map['a'] = 1` states that index 1 within `first` is where symbol instances for "a" start. Since the properties discussed at the beginning of this section guarantee that all "a" symbol instances in `first` ...
+Given just `first_occurrence_map`, finding the index where some symbol instance should be in `first` is computed as `(first_occurrence_map[inst.symbol] + inst.count) - 1`. For example, `first_occurrence_map[a] = 1` states that index 1 within `first` is where symbol instances for *a* start. Since the properties discussed at the beginning of this section guarantee that all *a* symbol instances in `first` ...
 
 * appear one after the other (contiguous),
 * start with a symbol instance count of 1,
 * increment their symbol instance count by 1 as they go down (sorted),
 
-..., finding the index where some "a" symbol instance should be in `first` is done by simply adding that symbol instance's count to `first_occurrence_map['a']` and subtracting 1:
+..., finding the index where some *a* symbol instance should be in `first` is done by simply adding that symbol instance's count to `first_occurrence_map[a]` and subtracting 1:
 
-```python 
-# index where first=a1
-(first_occurrence_map['a'] + 1) - 1 = (1 + 1) - 1 = 1
-
-# index where first=a2
-(first_occurrence_map['a'] + 2) - 1 = (1 + 2) - 1 = 2
-
-# index where first=a3
-(first_occurrence_map['a'] + 3) - 1 = (1 + 3) - 1 = 3
+```python
+(first_occurrence_map[a] + 1) - 1 = (1 + 1) - 1 = 1  # index where first=(a,1)
+(first_occurrence_map[a] + 2) - 1 = (1 + 2) - 1 = 2  # index where first=(a,2)
+(first_occurrence_map[a] + 3) - 1 = (1 + 3) - 1 = 3  # index where first=(a,3)
 ```
 
 This is effectively an on the fly calculation of `last_to_first`: For any symbol instance in `last`, feeding that symbol instance to the algorithm above computes its index within `first`. As such, `last_to_first` is not necessary in the collapsed first algorithm's data structure. This gives huge memory savings because both `last_to_first` is gone and `first` is collapsed to `first_occurrence_map`.
@@ -15148,15 +15143,15 @@ This is effectively an on the fly calculation of `last_to_first`: For any symbol
 <tr><th>records</th><th>first_occurrence_map</th></tr>
 <tr><td>
 
-| idx | last |
-|-----|------|
-|  0  |  a1  |
-|  1  |  n1  |
-|  2  |  n2  |
-|  3  |  b1  |
-|  4  |  ¶1  |
-|  5  |  a2  |
-|  6  |  a3  |
+| idx |   last  |
+|-----|---------|
+|  0  |  (a,1)  |
+|  1  |  (n,1)  |
+|  2  |  (n,2)  |
+|  3  |  (b,1)  |
+|  4  |  (¶,1)  |
+|  5  |  (a,2)  |
+|  6  |  (a,3)  |
 
 </td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
 </table>
@@ -15189,33 +15184,33 @@ The deserialization algorithm / collapsed first algorithm discussed earlier gene
 1. The first column is sorted by both symbol and symbol instance count.
 2. The symbol instance counts for some symbol starts from 1 and increments by 1.
 
-Because of this, the first-last property ensures that each symbol in the last column, if you were to consider that symbol just by itself, has its instances appear in the exact same fashion: Starts at 1 and increments by 1 as its instances appear from top-to-bottom. For example, given the first and last columns of the BWT matrix for "banana¶", the symbol instances of "a" in both first and last columns appear as [`{h}#f00 a1`, `{h}#b00 a2`, `{h}#800 a3`].
+Given this, the first-last property guarantees that each symbol in the last column, if you were to consider that symbol just by itself, has its instances listed out in the exact same fashion: Starts at 1 and increments by 1 as its instances appear from top-to-bottom. For example, given the first and last columns of the BWT matrix for "banana¶", the symbol instances of *a* in both first and last columns appear as [`{h}#f00 (a,1)`, `{h}#b00 (a,2)`, `{h}#800 (a,3)`].
 
-|              |              |
-|--------------|--------------|
-|          ¶1  | `{h}#f00 a1` |
-| `{h}#f00 a1` |          n1  |
-| `{h}#b00 a2` |          n2  |
-| `{h}#800 a3` |          b1  |
-|          b1  |          ¶1  |
-|          n1  | `{h}#b00 a2` |
-|          n2  | `{h}#800 a3` |
+|                 |                 |
+|-----------------|-----------------|
+|          (¶,1)  | `{h}#f00 (a,1)` |
+| `{h}#f00 (a,1)` |          (n,1)  |
+| `{h}#b00 (a,2)` |          (n,2)  |
+| `{h}#800 (a,3)` |          (b,1)  |
+|          (b,1)  |          (¶,1)  |
+|          (n,1)  | `{h}#b00 (a,2)` |
+|          (n,2)  | `{h}#800 (a,3)` |
 
-The ranks algorithm exploits the "starts at 1 and increments by 1" property of symbols in the last column for furthering the memory savings given by the collapsed first algorithm. First, the ranks algorithm modifies the collapsed first algorithm's data structure by removing symbol instance counts from `last` and instead replacing them with ranks: A tally of how many times each symbol was encountered until reaching the current index.
+The ranks algorithm exploits the "starts at 1 and increments by 1" property of symbols in the last column for further memory savings. The ranks algorithm modifies the collapsed first algorithm's data structure by removing symbol instance counts from `last` and instead replacing them with ranks: A tally of how many times each symbol was encountered until reaching the current index.
 
 <table>
 <tr><th>records (before)</th><th>records (after)</th><th>first_occurrence_map</th></tr>
 <tr><td>
 
-| idx | last |
-|-----|------|
-|  0  |  a1  |
-|  1  |  n1  |
-|  2  |  n2  |
-|  3  |  b1  |
-|  4  |  ¶1  |
-|  5  |  a2  |
-|  6  |  a3  |
+| idx |  last   |
+|-----|---------|
+|  0  |  (a,1)  |
+|  1  |  (n,1)  |
+|  2  |  (n,2)  |
+|  3  |  (b,1)  |
+|  4  |  (¶,1)  |
+|  5  |  (a,2)  |
+|  6  |  (a,3)  |
 
 </td><td>
 
@@ -15246,7 +15241,7 @@ sequence_search.BurrowsWheelerTransform_Ranks main_build
 }
 ```
 
-At any index, the symbol in `last` can determine its symbol instance count by looking at `last_tallies`. For example, to get the symbol instance count at index 2 of the example above (where `last='n'`), `last_tallies[2]['n'] = 2`.
+At any index, the symbol in `last` can determine its symbol instance count by looking at `last_tallies`. For example, to get the symbol instance count at index 2 of the example above (where `last=n`), `last_tallies[2][n] = 2`.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py
@@ -15262,7 +15257,7 @@ sequence_search.BurrowsWheelerTransform_Ranks main_to_symbol_instance_count
 }
 ```
 
-While replacing `last`'s symbol instance counts with `last_tallies` actually increases memory usage, it allows for a concept known as checkpointing: Instead of retaining a tally at every index of `last_tallies`, leave some empty. The indexes that have a tally are referred to as checkpoints. When an index without a tally is needed, that tally can be quickly calculated from the checkpoints.
+While replacing `last`'s symbol instance counts with `last_tallies` actually increases memory usage, it allows for a concept known as checkpointing: Instead of retaining a value at every index of `last_tallies`, leave some empty. The indexes that have a value in `last_values` are called checkpoints. When an index without a `last_tallies` value is needed, that value can be quickly calculated from the checkpoints.
 
 For example, retaining every 3rd `last_tallies` index in the example above would result in the following.
 
@@ -15284,9 +15279,9 @@ For example, retaining every 3rd `last_tallies` index in the example above would
 </table>
 
 ```{note}
-To keep things efficient-ish, the code below actually splits out `last_tallies` into it a dictionary of index to tallies. Otherwise, you end up with a bunch of `None` entries under `last_tallies` and that actually ends up taking space.
+To keep things efficient-ish, the code below actually splits out `last_tallies` into a dictionary of index to tallies. Otherwise, you end up with a bunch of `None` entries under `last_tallies` and that actually ends up taking space.
 
-You could also make it a list where each index maps to a multiple of the original index (e.g. 0 maps to 0*3, 1 maps to 1*3, 2 maps to 2*3, ...).
+You could also make it a list where each index maps to a multiple of the original index (e.g. 0 maps to 0*3, 1 maps to 1*3, 2 maps to 2*3).
 ```
 
 ```{output}
@@ -15306,9 +15301,9 @@ sequence_search.BurrowsWheelerTransform_RanksCheckpointed main_build
 
 To determine the value of `last_tallies` at some index which is blank, simply tally `last` symbols upwards until reaching an index where `last_tallies` has a value, then add the tallies together. For example, to compute `last_tallies[5]`, ...
 
-1. add symbol in `last[5]` to the tally: `{a: 1}`,
-2. add symbol in `last[4]` to the tally: `{¶: 1, a: 1}`,
-3. add `last_tallies[3]` to the tally from the last step: `{¶: 0, a: 1, b: 1, n: 2} + {¶: 1, a: 1} = {¶: 1, a: 2, b: 1, n: 2}`.
+1. add symbol in `last[5]` to the tally: {a: 1},
+2. add symbol in `last[4]` to the tally: {¶: 1, a: 1},
+3. add `last_tallies[3]` to the tally from the last step: {¶: 0, a: 1, b: 1, n: 2} + {¶: 1, a: 1} = {¶: 1, a: 2, b: 1, n: 2}.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py
@@ -15326,11 +15321,11 @@ sequence_search.BurrowsWheelerTransform_RanksCheckpointed main_walk_tallies_to_c
 }
 ```
 
-The calculation above determines the `last_tallies` value at some index, but only a single symbol within that value is of interest. Given an index `i`, the sole purpose of `last_tallies[i]` is to determine the symbol instance count of the symbol at `last[i]`. As such, only the symbol at `last[i]` needs to be counted until reaching a checkpoint. For example, at index 5, `last[5]` is "a". To compute `last_tallies[5]['a']`, ...
+The calculation above determines the `last_tallies` value at some index, but only a single symbol within that value is of interest. Given an index `i`, the sole purpose of `last_tallies[i]` is to determine the symbol instance count of the symbol at `last[i]`. As such, only the symbol at `last[i]` needs to be counted until reaching a checkpoint. For example, at index 5, `last[5]` is *a*. To compute `last_tallies[5][a]`, ...
 
-1. increment count if `last[5] == 'a'` (true): `1`,
-2. increment count if `last[4] == 'a'` (false): `1`,
-3. add `last_tallies[3]['a']` to the count from the last step: `1+1=2`.
+1. increment count if `last[5] == a` (true): `1`,
+2. increment count if `last[4] == a` (false): `1`,
+3. add `last_tallies[3][a]` to the count from the last step: `1+1=2`.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py
@@ -15369,52 +15364,44 @@ sequence_search.BurrowsWheelerTransform_RanksCheckpointed main_test
 
 #### Partial Suffix Array Algorithm
 
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Partial Suffix Array Algorithm)_TOPIC/`
+
 ```{prereq}
 Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Standard Algorithm_TOPIC
 Algorithms/Single Nucleotide Polymorphism/Suffix Array_TOPIC
 ```
 
+TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.
+
+TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.
+
+TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.
+
+TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.
+
+TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.
+
+TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.
+
+TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.
+
+TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.
+
+
 #### Partial Suffix Array and Checkpointed Ranks Algorithm
 
-TODO: CONTINUE HERE
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Partial Suffix Array and Checkpointed Ranks Algorithm)_TOPIC/`
 
-TODO: CONTINUE HERE
+```{prereq}
+Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Partial Suffix Array Algorithm_TOPIC
+Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Checkpointed Ranks Algorithm_TOPIC
+```
 
-TODO: CONTINUE HERE
+TODO: continue here
 
-TODO: CONTINUE HERE
+TODO: continue here
 
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
-
-TODO: CONTINUE HERE
+TODO: continue here
 
 ### BLAST
 
