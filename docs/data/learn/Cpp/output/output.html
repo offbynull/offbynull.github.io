@@ -190,6 +190,7 @@
 <li><a href="#H_Bind">Bind</a></li>
 <li><a href="#H_Reference%20Wrapper">Reference Wrapper</a></li>
 </ul>
+<li><a href="#H_Invoke">Invoke</a></li>
 <li><a href="#H_Containers">Containers</a></li>
 <ul>
 <li><a href="#H_Sequential">Sequential</a></li>
@@ -238,6 +239,28 @@
 <li><a href="#H_Type-erasure">Type-erasure</a></li>
 <li><a href="#H_Custom%20Views">Custom Views</a></li>
 </ul>
+<li><a href="#H_Algorithms">Algorithms</a></li>
+<ul>
+<li><a href="#H_Scan">Scan</a></li>
+<li><a href="#H_Fill">Fill</a></li>
+<li><a href="#H_Copy">Copy</a></li>
+<li><a href="#H_Replace">Replace</a></li>
+<li><a href="#H_Delete">Delete</a></li>
+<li><a href="#H1_Move">Move</a></li>
+<li><a href="#H1_Reverse">Reverse</a></li>
+<li><a href="#H_Shift%20%2F%20Rotate">Shift / Rotate</a></li>
+<li><a href="#H_Random">Random</a></li>
+<li><a href="#H_Search">Search</a></li>
+<li><a href="#H_Compare">Compare</a></li>
+<li><a href="#H_Partition">Partition</a></li>
+<li><a href="#H_Sort">Sort</a></li>
+<li><a href="#H_Binary%20Search">Binary Search</a></li>
+<li><a href="#H_Set%20Operations">Set Operations</a></li>
+<li><a href="#H_Min%20%2F%20Max">Min / Max</a></li>
+<li><a href="#H_Binary%20Search%20Tree">Binary Search Tree</a></li>
+<li><a href="#H_Permutations">Permutations</a></li>
+<li><a href="#H_Parallel%20Primitives">Parallel Primitives</a></li>
+</ul>
 <li><a href="#H_Span">Span</a></li>
 <li><a href="#H_Time">Time</a></li>
 <ul>
@@ -277,6 +300,17 @@
 <li><a href="#H1_String">String</a></li>
 <li><a href="#H_File">File</a></li>
 <li><a href="#H_Global">Global</a></li>
+</ul>
+<li><a href="#H_File%20System">File System</a></li>
+<ul>
+<li><a href="#H_Path%20Type">Path Type</a></li>
+<li><a href="#H_Path%20Operations">Path Operations</a></li>
+<li><a href="#H_Metadata%20Operations">Metadata Operations</a></li>
+<li><a href="#H_Copy%20Operations">Copy Operations</a></li>
+<li><a href="#H_Move%20Operations">Move Operations</a></li>
+<li><a href="#H_Delete%20Operations">Delete Operations</a></li>
+<li><a href="#H_Directory%20Operations">Directory Operations</a></li>
+<li><a href="#H_Symlink%20Operations">Symlink Operations</a></li>
 </ul>
 <li><a href="#H_Debug%20Utilities">Debug Utilities</a></li>
 <ul>
@@ -3688,7 +3722,7 @@ Distance d { <span class="hljs-number">1.2</span>_km + <span class="hljs-number"
 
 <span class="hljs-number">123.5e+12</span>_as_str;  <span class="hljs-comment">// outputs "input str: 123.5e+12"</span>
 </code></pre>
-<p>The standard C++ library makes use of <a href="#BM_(user-defined%20literal)%2Fi">user-defined literal</a>s in various places, but its identifiers don't require an underscore (_) prefix.</p>
+<p>The C++ standard library makes use of <a href="#BM_(user-defined%20literal)%2Fi">user-defined literal</a>s in various places, but its identifiers don't require an underscore (_) prefix.</p>
 <ul>
 <li>Date-time API (chrono header): <code>std:chrono::duration d  { 2h + 15ms }</code>.</li>
 <li>Complex numbers API (complex header): <code>std::complex&lt;double&gt; { (1.0 + 2.0i) * (3.0 + 4.0i) }</code>.</li>
@@ -7562,12 +7596,31 @@ wrapper.emplace&lt;MyClass&gt; { arg1, arg2 };
 <span class="hljs-keyword">auto</span> v1 = std::<span class="hljs-built_in">get</span>&lt;MyClass&gt;(wrapper);  <span class="hljs-comment">// throws std::bad_variant_access</span>
 </code></pre>
 <p>If you have a set of single parameter functions with the same name (<a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">function overload</a>), where those parameters contains all the types in a variant's allowed types list, you can use <code>std::visit()</code> to automatically pull out the <a href="#BM_(object%7Cinstance)%2Fi">object</a> contained in the variant and call the appropriate <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">function overload</a> with that <a href="#BM_(object%7Cinstance)%2Fi">object</a> as the argument.</p>
-<pre class="hljs"><code>std::variant&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; wrapper {};  <span class="hljs-comment">// may hold on to either int, float</span>
-<span class="hljs-comment">// call into a generic lambda / functor</span>
-<span class="hljs-keyword">auto</span> res1 = std::<span class="hljs-built_in">visit</span>([](<span class="hljs-keyword">auto</span>&amp; x) { <span class="hljs-keyword">return</span> <span class="hljs-number">5</span> * x; }, wrapper);
-<span class="hljs-comment">// call into an overloaded free function (via a generic lambda / functor)</span>
-<span class="hljs-keyword">auto</span> res2 = std::<span class="hljs-built_in">visit</span>([](<span class="hljs-keyword">auto</span> &amp;x) { <span class="hljs-keyword">return</span> <span class="hljs-built_in">my_function</span>(x); }, wrapper);
-<span class="hljs-comment">// call into a specific lambda / functor based on type currently being held</span>
+<pre class="hljs"><code>std::variant&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; wrapper { <span class="hljs-number">0</span> };  <span class="hljs-comment">// may hold on to either int, float</span>
+<span class="hljs-keyword">auto</span> res1 { std::<span class="hljs-built_in">visit</span>([](<span class="hljs-keyword">auto</span>&amp; x) { <span class="hljs-keyword">return</span> <span class="hljs-number">5</span> * x; }, wrapper) };           <span class="hljs-comment">// call into a generic lambda / functor</span>
+<span class="hljs-keyword">auto</span> res2 { std::<span class="hljs-built_in">visit</span>([](<span class="hljs-keyword">auto</span> &amp;x) { <span class="hljs-keyword">return</span> <span class="hljs-built_in">my_function</span>(x); }, wrapper) };  <span class="hljs-comment">// call into an overloaded free function (via a generic lambda / functor)</span>
+</code></pre>
+<p>In addition to the usage above, <code>std::visit()</code> is typically used in two other ways. The first is to pass in a <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a> with <a href="#BM_(callable%20unit%7Ccallable%5Cb%7Ccallables%5Cb)%2Fi">callable</a> operator overrides for each type in the variant.</p>
+<pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">MyFunctor</span> {
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">int</span>&amp; x)</span>   </span>{ std::cout &lt;&lt; <span class="hljs-string">"int"</span> &lt;&lt; x; }
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-type">float</span>&amp; x)</span> </span>{ std::cout &lt;&lt; <span class="hljs-string">"float"</span> &lt;&lt; x; }
+    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">operator</span><span class="hljs-params">()</span><span class="hljs-params">(<span class="hljs-keyword">auto</span>&amp; x)</span> </span>{ std::cout &lt;&lt; <span class="hljs-string">"OTHER"</span>; }
+};
+
+
+std::variant&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; wrapper { <span class="hljs-number">0</span> };
+std::<span class="hljs-built_in">visit</span>(MyFunctor{}, wrapper);
+</code></pre>
+<p>The second is to use the "<a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a> trick". The "<a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a> trick" is a <a href="#BM_(template)%2Fi">template</a>d <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> that combines multiple <a href="#BM_(callable%20unit%7Ccallable%5Cb%7Ccallables%5Cb)%2Fi">callable unit</a>s into a single <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a>, where that single <a href="#BM_(functor%7Cfunction%20object)%2Fi">functor</a> encompasses all of the <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>s of those <a href="#BM_(callable%20unit%7Ccallable%5Cb%7Ccallables%5Cb)%2Fi">callable unit</a>s.</p>
+<pre class="hljs"><code><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span>... Ts&gt;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">overloaded</span> : Ts... {
+    <span class="hljs-function"><span class="hljs-keyword">using</span> <span class="hljs-title">Ts::operator</span><span class="hljs-params">()</span>...</span>;
+};
+<span class="hljs-function"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span>... Ts&gt;
+<span class="hljs-title">overloaded</span><span class="hljs-params">(Ts...)</span> -&gt; overload&lt;Ts...&gt;</span>; <span class="hljs-comment">// line not needed in C++20...</span>
+
+
+std::variant&lt;<span class="hljs-type">int</span>, <span class="hljs-type">float</span>&gt; wrapper { <span class="hljs-number">0</span> };
 std::<span class="hljs-built_in">visit</span>(
     overloaded {
         [](<span class="hljs-type">int</span>&amp; x) { std::cout &lt;&lt; <span class="hljs-string">"int"</span> &lt;&lt; x; },
@@ -7577,6 +7630,11 @@ std::<span class="hljs-built_in">visit</span>(
     wrapper
 );
 </code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><code>std::visit()</code> can take in multiple <code>std::variant</code> <a href="#BM_(object%7Cinstance)%2Fi">object</a>s. The <a href="#BM_(callable%20unit%7Ccallable%5Cb%7Ccallables%5Cb)%2Fi">callable unit</a> passed in needs to have <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>s for the cartesian product of the variant types (param at index n covers the types of the variant at index n). For example, calling <code>std::visit()</code> with <code>std::variant&lt;int, float&gt;</code> amd <code>std::variant&lt;char, long&gt;</code> requires that the <a href="#BM_(callable%20unit%7Ccallable%5Cb%7Ccallables%5Cb)%2Fi">callable unit</a> have <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>s for (int, char), (int, long), (float, char), and (float, long).</p>
+<p>See <a href="https://www.cppstories.com/2018/09/visit-variants/">here</a> and <a href="https://dev.to/tmr232/that-overloaded-trick-overloading-lambdas-in-c17">here</a>.</p>
+</div>
 <p>Boost also provides a version of this wrapper, <code>boost::variant</code>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
@@ -7747,6 +7805,55 @@ std::cout &lt;&lt; std::endl;
 std::ordered_set&lt;MyObject*, custom_less_functor_for&gt; s { ... }
 </code></pre>
 </div>
+<a name="H_Invoke"></a><h2>Invoke</h2>
+<p><a name="BM_(Library%20Functions%5C%2FInvoke)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FWrappers%2FFunction)_TOPIC%2F">Library Functions/Wrappers/Function</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FWrappers%2FReference%20Wrapper)_TOPIC%2F">Library Functions/Wrappers/Reference Wrapper</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FType%20Traits)_TOPIC%2F">Library Functions/Type Traits</a></li>
+</ul>
+</div>
+<p><code>std::invoke()</code> is an implementation of a concept in the C++ standard library known as "INVOKE". The concept defines how generic library functions treat arguments that are callbacks, where those callbacks may not be <a href="#BM_(callable%20unit%7Ccallable%5Cb%7Ccallables%5Cb)%2Fi">callable unit</a>s at all. At its simplest, <code>std::invoke()</code> will simply invoke whatever <a href="#BM_(callable%20unit%7Ccallable%5Cb%7Ccallables%5Cb)%2Fi">callable unit</a> you give it with whatever arguments you give to it.</p>
+<pre class="hljs"><code><span class="hljs-keyword">auto</span> x { [](<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b) { <span class="hljs-keyword">return</span> a + b; }};
+<span class="hljs-keyword">auto</span> res { std::<span class="hljs-built_in">invoke</span>(x, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>) }; <span class="hljs-comment">// equivalent to calling x directly: "x(3,2)"</span>
+</code></pre>
+<p>When passed a <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>, the first argument is expected to be <code>this</code> while the remaining arguments are the <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>'s arguments. It doesn't matter if <code>this</code> is a <a href="#BM_(reference)%2Fi">reference</a>, a <a href="#BM_(pointer)%2Fi">pointer</a>, or a smarter <a href="#BM_(pointer)%2Fi">pointer</a>. It'll work regardless.</p>
+<pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">X</span> {
+    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">run</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{ <span class="hljs-keyword">return</span> a + b; }
+};
+
+X x{};
+<span class="hljs-keyword">auto</span> res1 { std::<span class="hljs-built_in">invoke</span>(&amp;X::run, x, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>) };           <span class="hljs-comment">// OKAY - this is a reference</span>
+<span class="hljs-keyword">auto</span> res2 { std::<span class="hljs-built_in">invoke</span>(&amp;X::run, std::<span class="hljs-built_in">ref</span>(x), <span class="hljs-number">3</span>, <span class="hljs-number">2</span>) }; <span class="hljs-comment">// OKAY - this is a reference_wrapper</span>
+<span class="hljs-keyword">auto</span> res3 { std::<span class="hljs-built_in">invoke</span>(&amp;X::run, &amp;x, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>) };          <span class="hljs-comment">// OKAY - this is a pointer</span>
+</code></pre>
+<p>When passed a <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">member variable</a> that's a data type, the data itself is returned. Just like with <a href="#BM_(method%7C%5Cbmember%20function)%2Fi">member function</a>s, the first argument is expected to be <code>this</code>.</p>
+<pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">X</span> {
+    <span class="hljs-type">int</span> val { <span class="hljs-number">55</span> };
+};
+
+X x{};
+<span class="hljs-keyword">auto</span> res1 { std::<span class="hljs-built_in">invoke</span>(&amp;X::val, x) };           <span class="hljs-comment">// OKAY - this is a reference</span>
+<span class="hljs-keyword">auto</span> res2 { std::<span class="hljs-built_in">invoke</span>(&amp;X::val, std::<span class="hljs-built_in">ref</span>(x)) }; <span class="hljs-comment">// OKAY - this is a reference_wrapper</span>
+<span class="hljs-keyword">auto</span> res3 { std::<span class="hljs-built_in">invoke</span>(&amp;X::val, &amp;x) };          <span class="hljs-comment">// OKAY - this is a pointer</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Be careful with data <a href="#BM_%5Cb(member)%2Fi">member</a>s that are invokable (e.g. a <a href="#BM_(field%7C%5Cbmember%20variable%7C%5Cbmember%20field)%2Fi">member variable</a> that's of type <code>std::function</code>). It will not get invoked, and will sometimes it leads to stuff being silently ignored. See <a href="https://devblogs.microsoft.com/oldnewthing/20220401-00/?p=106426">here</a>.</p>
+<p><a href="https://youtu.be/zt7ThwVfap0?t=655">Here</a>'s a good blurb going over why <code>std::invoke()</code> exists.</p>
+</div>
+<p>The type traits library has <code>std::invoke_result&lt;...&gt;::type</code>, which return the type of some "INVOKE".</p>
+<pre class="hljs"><code><span class="hljs-keyword">struct</span> <span class="hljs-title class_">X</span> {
+    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">run</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{ <span class="hljs-keyword">return</span> a + b; }
+};
+
+X x{};
+<span class="hljs-comment">// make sure type_traits header is included or else std::invoke_result won't work</span>
+<span class="hljs-keyword">using</span> <span class="hljs-type">ret_t</span> = std::invoke_result&lt;<span class="hljs-built_in">int</span> (X::*)(<span class="hljs-type">int</span>, <span class="hljs-type">int</span>), std::reference_wrapper&lt;X&gt;, <span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt;::type;
+<span class="hljs-type">ret_t</span> r { std::<span class="hljs-built_in">invoke</span>(&amp;X::run, std::<span class="hljs-built_in">ref</span>(x), <span class="hljs-number">3</span>, <span class="hljs-number">2</span>) };
+</code></pre>
 <a name="H_Containers"></a><h2>Containers</h2>
 <p><a name="BM_(Library%20Functions%5C%2FContainers)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -10200,6 +10307,974 @@ std::vector&lt;<span class="hljs-type">int</span>&gt; v{<span class="hljs-number
     std::cout &lt;&lt; x &lt;&lt; std::endl;
 }
 </code></pre>
+<a name="H_Algorithms"></a><h2>Algorithms</h2>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FIterators)_TOPIC%2F">Library Functions/Iterators</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FContainers)_TOPIC%2F">Library Functions/Containers</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FRanges)_TOPIC%2F">Library Functions/Ranges</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FStrings)_TOPIC%2F">Library Functions/Strings</a></li>
+</ul>
+</div>
+<p>The C++ standard library comes with a set of algorithms that work via <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a>s. The use of <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a>s means that the algorithms aren't necessarily bound to containers, but can work on any iterable type. For example, <code>std::vector</code>, <code>std::string</code>, and <code>std::filesystem::directory_iterator</code> are all iterable types.</p>
+<pre class="hljs"><code>std::vector&lt;<span class="hljs-type">int</span>&gt; v {<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">8</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>};
+<span class="hljs-keyword">auto</span> pos { std::<span class="hljs-built_in">find</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>(), <span class="hljs-number">5</span>) }; <span class="hljs-comment">// find first instance of the integer 5</span>
+</code></pre>
+<p>If the algorithm supports it, an execution policy may be specified via the first parameter. This policy requests a level of parallelism for the algorithm's execution.</p>
+<ul>
+<li><code>std::execution::seq</code> - single-threaded.</li>
+<li><code>std::execution::unseq</code> - single-threaded but vectorized (SIMD).</li>
+<li><code>std::execution::par</code> - multi-threaded.</li>
+<li><code>std::execution::par_unseq</code>- multi-threaded and vectorized (SIMD).</li>
+</ul>
+<pre class="hljs"><code>std::vector&lt;<span class="hljs-type">int</span>&gt; v {<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">8</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>};
+<span class="hljs-keyword">auto</span> pos { std::<span class="hljs-built_in">find</span>(std::execution::par_unseq, v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>(), <span class="hljs-number">5</span>) }; <span class="hljs-comment">// find first instance of the integer 5, requested multi-threaded + vectorized</span>
+</code></pre>
+<p>Algorithm <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">function overload</a>s requiring an execution policy may require a more elaborate <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> types vs those that don't require an execution policy. For example, <code>std::find()</code> requires...</p>
+<ul>
+<li><a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">forward iterator</a>s for the <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">function overload</a> taking an execution policy.</li>
+<li><a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">input iterator</a>s for the <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">function overload</a> not taking an execution policy.</li>
+</ul>
+<p>The reason for this discrepancy has to do with how multi-threaded / vectorized variants of an algorithm access data (e.g. typically need to hop around the data).</p>
+<p>The subsections below list out common algorithm functions.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>In the subsections below, the <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">function overload</a>s without execution policy are the ones listed. This is because not all functions provide execution policy <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>s.</p>
+<p>The required <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a> types aren't listed either because they aren't consistent between <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">function overload</a>s. Almost all <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>s will work properly on <code>std::vector</code>.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Why use some of the algorithms here instead of those that come in the ranges library? The ranges library in C++20 doesn't have parallel algorithms (future versions of C++ may have this) and is missing some of these algorithms.</p>
+</div>
+<a name="H_Scan"></a><h3>Scan</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FScan)_TOPIC%2F"></a><strong></strong></p>
+<p>These algorithms scan over elements to do something non-destructive.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::for_each(it1, it2, f)</code></td>
+<td>Call <code>f()</code> on each element</td>
+</tr>
+<tr>
+<td><code>std::for_each_n(it1, n, f)</code></td>
+<td>Call <code>f()</code> on first <code>n</code> elements</td>
+</tr>
+<tr>
+<td><code>std::count(it1, it2, v)</code></td>
+<td>Count elements that are <code>v</code></td>
+</tr>
+<tr>
+<td><code>std::count_if(it1, it2, p)</code></td>
+<td>Count elements where <code>p()</code> is true</td>
+</tr>
+<tr>
+<td><code>std::all_of(it1, it2, p)</code></td>
+<td>Check that all elements in <code>it</code> pass <code>p(*it) == true</code></td>
+</tr>
+<tr>
+<td><code>std::none_of(it1, it2, p)</code></td>
+<td>Check that all elements in <code>it</code> pass <code>p(*it) != true</code></td>
+</tr>
+<tr>
+<td><code>std::any_of(it1, it2, p)</code></td>
+<td>Check at least one element in <code>it</code> passes <code>p(*it) == true</code></td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li>Library Functions/Algorithms/Parallel Primitives (<code>std::transform()</code> is similar to <code>std::for_each</code>)</li>
+<li>Library Functions/Algorithms/Parallel Primitives (For  inclusive scan / exclusive scan algorithms)</li>
+</ul>
+</div>
+<pre class="hljs"><code>std::vector&lt;<span class="hljs-type">int</span>&gt; v {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>};
+
+
+std::for_each(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>(), [](<span class="hljs-keyword">auto</span>&amp; v) { std::cout &lt;&lt; v &lt;&lt; <span class="hljs-string">' '</span>; });  <span class="hljs-comment">// 0 1 2 3 4 5</span>
+std::for_each_n(v.<span class="hljs-built_in">begin</span>(), <span class="hljs-number">3</span>, [](<span class="hljs-keyword">auto</span>&amp; v) { std::cout &lt;&lt; v &lt;&lt; <span class="hljs-string">' '</span>; });      <span class="hljs-comment">// 0 1 2</span>
+
+<span class="hljs-keyword">auto</span> c1 { std::<span class="hljs-built_in">count</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>(), <span class="hljs-number">5</span>) };                                      <span class="hljs-comment">// 1</span>
+<span class="hljs-keyword">auto</span> c2 { std::<span class="hljs-built_in">count_if</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>(), [](<span class="hljs-keyword">auto</span>&amp; v) { <span class="hljs-keyword">return</span> v % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>; }) };  <span class="hljs-comment">// 3</span>
+
+<span class="hljs-type">bool</span> t1 { std::<span class="hljs-built_in">all_of</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>(), [](<span class="hljs-keyword">auto</span>&amp; v) { <span class="hljs-keyword">return</span> v % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>; }) };   <span class="hljs-comment">// false</span>
+<span class="hljs-type">bool</span> t2 { std::<span class="hljs-built_in">any_of</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>(), [](<span class="hljs-keyword">auto</span>&amp; v) { <span class="hljs-keyword">return</span> v % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>; }) };   <span class="hljs-comment">// true</span>
+<span class="hljs-type">bool</span> t3 { std::<span class="hljs-built_in">none_of</span>(v.<span class="hljs-built_in">begin</span>(), v.<span class="hljs-built_in">end</span>(), [](<span class="hljs-keyword">auto</span>&amp; v) { <span class="hljs-keyword">return</span> v % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>; }) };  <span class="hljs-comment">// false</span>
+</code></pre>
+<a name="H_Fill"></a><h3>Fill</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FFill)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FIterators%2FAdapters%2FInsert)_TOPIC%2F">Library Functions/Iterators/Adapters/Insert</a></li>
+</ul>
+</div>
+<p>The functions fill a range either with repeats of the same value or with generate values.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::fill(it1, it2, v)</code></td>
+<td>Write out <code>v</code></td>
+</tr>
+<tr>
+<td><code>std::fill_n(it1, n, v)</code></td>
+<td>Write out <code>n</code> copies of <code>v</code></td>
+</tr>
+<tr>
+<td><code>std::generate(it1, it2, g)</code></td>
+<td>Write out <code>g()</code>'s result</td>
+</tr>
+<tr>
+<td><code>std::generate_n(it1, n, g)</code></td>
+<td>Write out <code>g()</code>'s result <code>n</code> times</td>
+</tr>
+<tr>
+<td><code>std::iota(it1, it2, v)</code></td>
+<td>Write sequentially increasing values starting from <code>v</code></td>
+</tr>
+</tbody>
+</table>
+<pre class="hljs"><code>std::vector&lt;<span class="hljs-type">int</span>&gt; v1 {<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>};
+std::<span class="hljs-built_in">fill</span>(v1.<span class="hljs-built_in">begin</span>(), v1.<span class="hljs-built_in">end</span>(), <span class="hljs-number">0</span>);  <span class="hljs-comment">// v1 becomes {0,0,0,0}</span>
+
+std::vector&lt;<span class="hljs-type">int</span>&gt; v2 {};
+std::<span class="hljs-built_in">fill_n</span>(std::back_insert_iterator { v2 }, <span class="hljs-number">4</span>, <span class="hljs-number">-3</span>);  <span class="hljs-comment">// v2 becomes {-3,-3,-3,-3}</span>
+
+std::vector&lt;<span class="hljs-type">int</span>&gt; v3 {<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>};
+std::<span class="hljs-built_in">generate</span>(v3.<span class="hljs-built_in">begin</span>(), v3.<span class="hljs-built_in">end</span>(), []() { <span class="hljs-keyword">return</span> <span class="hljs-number">65</span>; });  <span class="hljs-comment">// v3 becomes {65,65,65,65}</span>
+
+std::vector&lt;<span class="hljs-type">int</span>&gt; v4 {};
+std::<span class="hljs-built_in">generate_n</span>(std::back_insert_iterator { v4 }, <span class="hljs-number">4</span>, []() { <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>; });  <span class="hljs-comment">// v4 becomes {1,1,1,1}</span>
+
+std::vector&lt;<span class="hljs-type">int</span>&gt; v5 {<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>};
+std::<span class="hljs-built_in">iota</span>(v5.<span class="hljs-built_in">begin</span>(), v5.<span class="hljs-built_in">end</span>(), <span class="hljs-number">150</span>);  <span class="hljs-comment">// v4 becomes {150,151,152,153}</span>
+
+<span class="hljs-comment">// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`</span>
+<span class="hljs-comment">// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that</span>
+<span class="hljs-comment">// simply calls push_back() on the underlying container.</span>
+</code></pre>
+<a name="H_Copy"></a><h3>Copy</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FCopy)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FIterators%2FAdapters%2FInsert)_TOPIC%2F">Library Functions/Iterators/Adapters/Insert</a></li>
+</ul>
+</div>
+<p>These functions copy one range into another.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::copy(itA1, itA2, itB1)</code></td>
+<td>Overwrite <code>B</code> with <code>A</code></td>
+</tr>
+<tr>
+<td><code>std::copy_n(itA1, n, itB1)</code></td>
+<td>Overwrite <code>B</code> with first <code>n</code> elements of <code>A</code></td>
+</tr>
+<tr>
+<td><code>std::copy(itA1, itA2, itB1, p)</code></td>
+<td>Overwrite <code>B</code> with <code>A</code> only for elements where <code>p()</code> is true</td>
+</tr>
+<tr>
+<td><code>std::copy_backward(itA1, itA2, itB2)</code></td>
+<td>Overwrite <code>B</code> with <code>A</code>  (from last-to-first)</td>
+</tr>
+</tbody>
+</table>
+<pre class="hljs"><code>std::vector&lt;<span class="hljs-type">int</span>&gt; v1 {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>};
+
+std::vector&lt;<span class="hljs-type">int</span>&gt; v2 {};
+std::<span class="hljs-built_in">copy</span>(v1.<span class="hljs-built_in">begin</span>(), v1.<span class="hljs-built_in">end</span>(), std::back_insert_iterator { v2 });  <span class="hljs-comment">// v2 becomes {0,1,2,3,4,5}</span>
+
+std::vector&lt;<span class="hljs-type">int</span>&gt; v3 {<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>};
+std::<span class="hljs-built_in">copy</span>(v1.<span class="hljs-built_in">begin</span>(), v1.<span class="hljs-built_in">end</span>(), v3.<span class="hljs-built_in">begin</span>());  <span class="hljs-comment">// v3 becomes {0,1,2,3,4,5}</span>
+
+std::vector&lt;<span class="hljs-type">int</span>&gt; v4 {<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>};
+std::<span class="hljs-built_in">copy_n</span>(v1.<span class="hljs-built_in">begin</span>(), <span class="hljs-number">3</span>, v4.<span class="hljs-built_in">begin</span>());  <span class="hljs-comment">// v4 becomes {0,1,2}</span>
+
+std::vector&lt;<span class="hljs-type">int</span>&gt; v5 {<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>};
+std::<span class="hljs-built_in">copy_backward</span>(v1.<span class="hljs-built_in">begin</span>(), v1.<span class="hljs-built_in">end</span>(), v5.<span class="hljs-built_in">end</span>());  <span class="hljs-comment">// v5 becomes {0,1,2,3,4,5}</span>
+
+<span class="hljs-comment">// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`</span>
+<span class="hljs-comment">// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that</span>
+<span class="hljs-comment">// simply calls push_back() on the underlying container.</span>
+</code></pre>
+<a name="H_Replace"></a><h3>Replace</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FReplace)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FIterators%2FAdapters%2FInsert)_TOPIC%2F">Library Functions/Iterators/Adapters/Insert</a></li>
+</ul>
+</div>
+<p>These functions replace elements within a range.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::replace(it1, it2, v_old, v_new)</code></td>
+<td>Set all positions with <code>v_old</code> to <code>v_new</code></td>
+</tr>
+<tr>
+<td><code>std::replace_if(it1, it2, p, v_new)</code></td>
+<td>Set all positions where <code>p()</code> is true to <code>v_new</code></td>
+</tr>
+<tr>
+<td><code>std::replace_copy(itA1, itA2, itB1, v_old, v_new)</code></td>
+<td><code>std::replace(itA1, itA2, v_old, v_new)</code> but result written to <code>B</code></td>
+</tr>
+<tr>
+<td><code>std::replace_copy_if(itA1, itA2, itB1, p, v_new)</code></td>
+<td><code>std::replace(itA1, itA2, p, v_new)</code> but result written to <code>B</code></td>
+</tr>
+</tbody>
+</table>
+<pre class="hljs"><code>std::vector&lt;<span class="hljs-type">int</span>&gt; v1 {<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>};
+
+
+std::<span class="hljs-built_in">replace</span>(v1.<span class="hljs-built_in">begin</span>(), v1.<span class="hljs-built_in">end</span>(), <span class="hljs-number">3</span>, <span class="hljs-number">9</span>);  <span class="hljs-comment">// v1 becomes {1,9,9,5}</span>
+
+std::<span class="hljs-built_in">replace_if</span>(v1.<span class="hljs-built_in">begin</span>(), v1.<span class="hljs-built_in">end</span>(), [](<span class="hljs-keyword">auto</span> &amp;v) { <span class="hljs-keyword">return</span> v == <span class="hljs-number">9</span>; }, <span class="hljs-number">0</span>);  <span class="hljs-comment">// v1 becomes {1,0,0,5}</span>
+
+std::vector&lt;<span class="hljs-type">int</span>&gt; v2 {};
+std::<span class="hljs-built_in">replace_copy</span>(v1.<span class="hljs-built_in">begin</span>(), v1.<span class="hljs-built_in">end</span>(), std::back_insert_iterator { v2 }, <span class="hljs-number">0</span>, <span class="hljs-number">4</span>);  <span class="hljs-comment">// v2 becomes {1,4,4,5}</span>
+
+std::vector&lt;<span class="hljs-type">int</span>&gt; v3 {};
+std::<span class="hljs-built_in">replace_copy_if</span>(v1.<span class="hljs-built_in">begin</span>(), v1.<span class="hljs-built_in">end</span>(), std::back_insert_iterator { v3 },  <span class="hljs-comment">// v3 becomes {1,3,3,5}</span>
+    [](<span class="hljs-keyword">auto</span> &amp;v) { <span class="hljs-keyword">return</span> v == <span class="hljs-number">0</span>; }, <span class="hljs-number">3</span>);
+
+<span class="hljs-comment">// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`</span>
+<span class="hljs-comment">// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that</span>
+<span class="hljs-comment">// simply calls push_back() on the underlying container.</span>
+</code></pre>
+<a name="H_Delete"></a><h3>Delete</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FDelete)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FIterators%2FAdapters%2FInsert)_TOPIC%2F">Library Functions/Iterators/Adapters/Insert</a></li>
+</ul>
+</div>
+<p>These functions remove elements from a range.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::remove(it1, it2, v_old)</code></td>
+<td>Remove elements that are <code>v_old</code></td>
+</tr>
+<tr>
+<td><code>std::remove_if(it1, it2, p)</code></td>
+<td>Remove elements where <code>p()</code> is true</td>
+</tr>
+<tr>
+<td><code>std::remove_copy(itA1, itA2, itB1, v_old)</code></td>
+<td><code>std::remove(itA1, itA2, v_old)</code> but result written to <code>B</code></td>
+</tr>
+<tr>
+<td><code>std::remove_copy_if(itA1, itA2, itB1, p)</code></td>
+<td><code>std::remove(itA1, itA2, p)</code> but result written to <code>B</code></td>
+</tr>
+</tbody>
+</table>
+<p>Removing an element simply shuffles around elements accordingly and returns a new ending <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a>. It won't resize the underlying container to end at that new ending <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">iterator</a>'s position. That's the user's responsibility.</p>
+<pre class="hljs"><code>std::vector&lt;<span class="hljs-type">int</span>&gt; v1 {<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>};
+<span class="hljs-keyword">auto</span> v1_new_end { std::<span class="hljs-built_in">remove</span>(v1.<span class="hljs-built_in">begin</span>(), v1.<span class="hljs-built_in">end</span>(), <span class="hljs-number">3</span>) };
+v1.<span class="hljs-built_in">erase</span>(v1_new_end, v1.<span class="hljs-built_in">end</span>());  <span class="hljs-comment">// v1 becomes {1,5}</span>
+
+std::vector&lt;<span class="hljs-type">int</span>&gt; v2 {<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>};
+<span class="hljs-keyword">auto</span> v2_new_end { std::<span class="hljs-built_in">remove_if</span>(v2.<span class="hljs-built_in">begin</span>(), v2.<span class="hljs-built_in">end</span>(), [](<span class="hljs-keyword">auto</span> &amp;e) { <span class="hljs-keyword">return</span> e == <span class="hljs-number">3</span>; }) };
+v2.<span class="hljs-built_in">erase</span>(v2_new_end, v2.<span class="hljs-built_in">end</span>());  <span class="hljs-comment">// v2 becomes {1,5}</span>
+
+std::vector&lt;<span class="hljs-type">int</span>&gt; v3 {<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>};
+std::vector&lt;<span class="hljs-type">int</span>&gt; v3_removed {};
+std::<span class="hljs-built_in">remove_copy</span>(v3.<span class="hljs-built_in">begin</span>(), v3.<span class="hljs-built_in">end</span>(), std::back_insert_iterator { v3_removed }, <span class="hljs-number">3</span>);  <span class="hljs-comment">// v3_removed becomes {1,5}</span>
+
+std::vector&lt;<span class="hljs-type">int</span>&gt; v4 {<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>};
+std::vector&lt;<span class="hljs-type">int</span>&gt; v4_removed {};
+std::<span class="hljs-built_in">remove_copy_if</span>(v4.<span class="hljs-built_in">begin</span>(), v4.<span class="hljs-built_in">end</span>(), std::back_insert_iterator { v4_removed },
+    [](<span class="hljs-keyword">auto</span> &amp;e) { <span class="hljs-keyword">return</span> e == <span class="hljs-number">3</span>; });  <span class="hljs-comment">// v4_removed becomes {1,5}</span>
+
+<span class="hljs-comment">// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`</span>
+<span class="hljs-comment">// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that</span>
+<span class="hljs-comment">// simply calls push_back() on the underlying container.</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>C++20 offers a new function called <code>std::erase()</code> / <code>std::erase_if()</code> which combines <code>std::remove()</code> / <code>std::remove_if()</code> with calling the container's <code>erase()</code> function, ensuring that container is properly resized.</p>
+</div>
+<p>These functions replace multiple adjacent occurrences of an element with a single occurrence (collapse adjacent duplicates), which is essentially just another form of removing elements.</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::unique(it1, it2)</code></td>
+<td>Collapse adjacent duplicates</td>
+</tr>
+<tr>
+<td><code>std::unique(it1, it2, bp)</code></td>
+<td>Collapse adjacent duplicates, using <code>bp()</code> to determine if two elements are duplicates</td>
+</tr>
+<tr>
+<td><code>std::unique_copy(itA1, itA2, itB1)</code></td>
+<td><code>std::unique(itA1, itA2)</code> but result written to <code>B</code></td>
+</tr>
+<tr>
+<td><code>std::unique_copy(itA1, itA2, itB1, bp)</code></td>
+<td><code>std::unique(itA1, itA2, bp)</code> but result written to <code>B</code></td>
+</tr>
+</tbody>
+</table>
+<pre class="hljs"><code>std::vector&lt;<span class="hljs-type">int</span>&gt; v1 {<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>};
+<span class="hljs-keyword">auto</span> v1_new_end { std::<span class="hljs-built_in">unique</span>(v1.<span class="hljs-built_in">begin</span>(), v1.<span class="hljs-built_in">end</span>()) } ;
+v1.<span class="hljs-built_in">erase</span>(v1_new_end, v1.<span class="hljs-built_in">end</span>());  <span class="hljs-comment">// v1 becomes {1,3,5}</span>
+
+std::vector&lt;<span class="hljs-type">int</span>&gt; v2 {<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>};
+<span class="hljs-keyword">auto</span> v2_new_end { std::<span class="hljs-built_in">unique</span>(v2.<span class="hljs-built_in">begin</span>(), v2.<span class="hljs-built_in">end</span>(), [](<span class="hljs-keyword">auto</span> &amp;e1, <span class="hljs-keyword">auto</span> &amp;e2) { <span class="hljs-keyword">return</span> e1 == e2; }) };
+v2.<span class="hljs-built_in">erase</span>(v2_new_end, v2.<span class="hljs-built_in">end</span>());  <span class="hljs-comment">// v2 becomes {1,3,5}</span>
+
+std::vector&lt;<span class="hljs-type">int</span>&gt; v3 {<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>};
+std::vector&lt;<span class="hljs-type">int</span>&gt; v3_unique {};
+std::<span class="hljs-built_in">unique_copy</span>(v3.<span class="hljs-built_in">begin</span>(), v3.<span class="hljs-built_in">end</span>(), std::back_insert_iterator { v3_unique });  <span class="hljs-comment">// v3_unique becomes {1,3,5}</span>
+
+std::vector&lt;<span class="hljs-type">int</span>&gt; v3 {<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>};
+std::vector&lt;<span class="hljs-type">int</span>&gt; v3_unique {};
+std::<span class="hljs-built_in">unique_copy</span>(v3.<span class="hljs-built_in">begin</span>(), v3.<span class="hljs-built_in">end</span>(), std::back_insert_iterator { v3_unique });  <span class="hljs-comment">// v3_unique becomes {1,3,5}</span>
+
+std::vector&lt;<span class="hljs-type">int</span>&gt; v4 {<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>};
+std::vector&lt;<span class="hljs-type">int</span>&gt; v4_unique {};
+std::<span class="hljs-built_in">unique_copy</span>(v4.<span class="hljs-built_in">begin</span>(), v4.<span class="hljs-built_in">end</span>(), std::back_insert_iterator { v4_unique },
+    [](<span class="hljs-keyword">auto</span> &amp;e1, <span class="hljs-keyword">auto</span> &amp;e2) { <span class="hljs-keyword">return</span> e1 == e2; });  <span class="hljs-comment">// v4_unique becomes {1,3,5}</span>
+
+<span class="hljs-comment">// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`</span>
+<span class="hljs-comment">// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that</span>
+<span class="hljs-comment">// simply calls push_back() on the underlying container.</span>
+</code></pre>
+<a name="H1_Move"></a><h3>Move</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FMove)_TOPIC%2F"></a><strong></strong></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::move(itA1, itA2, itB1)</code></td>
+<td>Move <code>A</code> to <code>B</code> using move semantics</td>
+</tr>
+<tr>
+<td><code>std::move_backward(itA1, itA2, itB2)</code></td>
+<td>Move <code>A</code> to <code>B</code> using move semantics (last to first)</td>
+</tr>
+<tr>
+<td><code>std::swap_ranges(itA1, itA2, itB1)</code></td>
+<td>Swap between <code>A</code> and <code>B</code> using <code>std::swap(*itA, *itB)</code></td>
+</tr>
+</tbody>
+</table>
+<p>TODO: swap_ranges() must not overlap</p>
+<a name="H1_Reverse"></a><h3>Reverse</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FReverse)_TOPIC%2F"></a><strong></strong></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::reverse(it1, it2)</code></td>
+<td>Reverse</td>
+</tr>
+<tr>
+<td><code>std::reverse_copy(itA1, itB1)</code></td>
+<td>Reverse <code>A</code> and copy into <code>B</code></td>
+</tr>
+</tbody>
+</table>
+<a name="H_Shift%20%2F%20Rotate"></a><h3>Shift / Rotate</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FShift%20%2F%20Rotate)_TOPIC%2F"></a><strong></strong></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::rotate(it1, it_mid, it2)</code></td>
+<td>Rotate such that <code>mid</code>'s position becomes the new first element</td>
+</tr>
+<tr>
+<td><code>std::rotate_copy(itA1, itA_mid, itA2, itB1)</code></td>
+<td>Copy into <code>B</code> rotated <code>A</code> that has <code>mid</code>'s position as its first element</td>
+</tr>
+</tbody>
+</table>
+<p>TODO: add shift() variants, possibly others</p>
+<a name="H_Random"></a><h3>Random</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FRandom)_TOPIC%2F"></a><strong></strong></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::rotate(it1, it_mid, it2)</code></td>
+<td>Rotate such that <code>mid</code>'s position becomes the new first element</td>
+</tr>
+<tr>
+<td><code>std::rotate_copy(itA1, itA_mid, itA2, itB1)</code></td>
+<td>Copy into <code>B</code> rotated <code>A</code> that has <code>mid</code>'s position as its first element</td>
+</tr>
+<tr>
+<td><code>std::shuffle(it1, it2, rng)</code></td>
+<td>Shuffle using the uniform random number generator <code>rng</code></td>
+</tr>
+</tbody>
+</table>
+<p>TODO: add std::sample()</p>
+<a name="H_Search"></a><h3>Search</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FSearch)_TOPIC%2F"></a><strong></strong></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::find(it1, it2, v)</code></td>
+<td>Find first <code>v</code></td>
+</tr>
+<tr>
+<td><code>std::find_if(it1, it2, p)</code></td>
+<td>Find first where <code>p(*it) == true</code></td>
+</tr>
+<tr>
+<td><code>std::find_if_not(it1, it2, p)</code></td>
+<td>Find first where <code>p(*it) != true</code></td>
+</tr>
+<tr>
+<td><code>std::find_first_of(itA1, itA2, itB1, itB2, bp)</code></td>
+<td>Find <code>itB</code> within <code>itA</code>, using <code>bp(*itA, *itB)</code> to evaluate a match</td>
+</tr>
+<tr>
+<td><code>std::mismatch(itA1, itA2, itB1, itB2)</code></td>
+<td>Find first where <code>*itA != *itB</code></td>
+</tr>
+<tr>
+<td><code>std::mismatch(itA1, itA2, itB1, itB2, bp)</code></td>
+<td>Find first where <code>bp(*itA, *itB) != true</code></td>
+</tr>
+<tr>
+<td><code>std::adjacent_find(it1, it2)</code></td>
+<td>Find first where <code>*itA == *(itA+1)</code> (same element appears twice)</td>
+</tr>
+<tr>
+<td><code>std::adjacent_find(it1, it2, bp)</code></td>
+<td>Find first where <code>bp(*itA, *(itA+1)) == true</code></td>
+</tr>
+<tr>
+<td><code>std::search(itA1, itA2, itB1, itB2)</code></td>
+<td>Search for <code>itB</code> within <code>itA</code> starting from the front, using <code>*itA == *itB</code></td>
+</tr>
+<tr>
+<td><code>std::search(itA1, itA2, itB1, itB2, bp)</code></td>
+<td>Search for <code>itB</code> within <code>itA</code> starting from the front, using <code>bp(*itA, *itB) == true</code></td>
+</tr>
+<tr>
+<td><code>std::find_end(itA1, itA2, itB1, itB2)</code></td>
+<td>Search for <code>itB</code> within <code>itA</code> starting at the end, using <code>*itA == *itB</code></td>
+</tr>
+<tr>
+<td><code>std::find_end(itA1, itA2, itB1, itB2, bp)</code></td>
+<td>Search for <code>itB</code> within <code>itA</code> starting at the end, using <code>bp(*itA, *itB) == true</code></td>
+</tr>
+<tr>
+<td><code>std::search_n(it1, it2)</code></td>
+<td>Find first where same element occurs <code>n</code> times consecutively, using <code>*itA == *(itA+1)</code></td>
+</tr>
+<tr>
+<td><code>std::search_n(it1, it2, bp)</code></td>
+<td>Find first where same element occurs <code>n</code> times consecutively, using <code>bp(*itA, *(itA+1)) == true</code></td>
+</tr>
+</tbody>
+</table>
+<p>TODO: std::search() but with custom searchers
+TODO: link back to all_of / any_of / none_of</p>
+<a name="H_Compare"></a><h3>Compare</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FCompare)_TOPIC%2F"></a><strong></strong></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::equals(itA1, itA2, itB1, itB2)</code></td>
+<td>Check if <code>itA</code> and <code>itB</code> are equal using <code>*itA == *itB</code></td>
+</tr>
+<tr>
+<td><code>std::equals(itA1, itA2, itB1, itB2, bp)</code></td>
+<td>Check if <code>itA</code> and <code>itB</code> are equal using <code>bp(*itA, *itB) == true</code></td>
+</tr>
+<tr>
+<td><code>std::lexicographical_compare(itA1, itA2, itB1, itB2)</code></td>
+<td>Check if <code>itA</code> is less than <code>itB</code> using <code>*itA &lt; *itB</code></td>
+</tr>
+<tr>
+<td><code>std::lexicographical_compare(itA1, itA2, itB1, itB2, lt)</code></td>
+<td>Check if <code>itA</code> is less than <code>itB</code> using <code>lt(*itA, *itB) == true</code></td>
+</tr>
+</tbody>
+</table>
+<p>TODO: add <a href="#BM_(reference)%2Fi">reference</a> back to search for std::mismatch</p>
+<a name="H_Partition"></a><h3>Partition</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FPartition)_TOPIC%2F"></a><strong></strong></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::partition(it1, it2, p)</code></td>
+<td>Split into two partitions based on if <code>p(*it)</code> is true or false</td>
+</tr>
+<tr>
+<td><code>std::partition_copy(itA1, itA2, itB, p)</code></td>
+<td>Copy into <code>B</code>, splitting into two partitions based on if <code>p(*it)</code> is true or false</td>
+</tr>
+<tr>
+<td><code>std::stable_partition(it1, it2, p)</code></td>
+<td>Split into two partitions based on if <code>p(*it)</code> is true or false, maintaining relative order</td>
+</tr>
+<tr>
+<td><code>std::is_partitioned(it1, it2, p)</code></td>
+<td>Check if partitioned into two based on if <code>p(*it)</code> is true or false</td>
+</tr>
+</tbody>
+</table>
+<a name="H_Sort"></a><h3>Sort</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FSort)_TOPIC%2F"></a><strong></strong></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::sort(it1, it2)</code></td>
+<td>Sort using <code>std::less&lt;&gt;()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::sort(it1, it2, cmp)</code></td>
+<td>Sort using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::stable_sort(it1, it2)</code></td>
+<td>Sort using <code>std::less&lt;&gt;()</code> to compare, maintaining relative order of elements deemed to be the same by the sort</td>
+</tr>
+<tr>
+<td><code>std::stable_sort(it1, it2, cmp)</code></td>
+<td>Sort using <code>cmp()</code> to compare, maintaining relative order of elements deemed to be the same by the sort</td>
+</tr>
+<tr>
+<td><code>std::partial_sort(it1, itm, it2)</code></td>
+<td>Sort using <code>std::less&lt;&gt;()</code> to compare, until the element at <code>*itm</code></td>
+</tr>
+<tr>
+<td><code>std::partial_sort(it1, itm, it2, cmp)</code></td>
+<td>Sort using <code>cmp()</code> to compare, until the element at <code>*itm</code></td>
+</tr>
+<tr>
+<td><code>std::partial_sort_copy(itA1, itA2, itB1, itB2)</code></td>
+<td>Sort <code>A</code> using <code>std::less&lt;&gt;()</code> to compare, copying result into <code>B</code></td>
+</tr>
+<tr>
+<td><code>std::partial_sort_copy(itA1, itA2, itB1, itB2, cmp)</code></td>
+<td>Sort using <code>cmp()</code> to compare,  copying result into <code>B</code></td>
+</tr>
+<tr>
+<td><code>std::nth_element(it1, itn, it2)</code></td>
+<td>Place into <code>itn</code> the element that would be there if the entire range were sorted, using <code>std::less&lt;&gt;()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::nth_element(it1, itn, it2, cmp)</code></td>
+<td>Place into <code>itn</code> the element that would be there if the entire range were sorted, using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::is_sorted(it1, it2)</code></td>
+<td>Check if sorted using <code>std::less&lt;&gt;()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::is_sorted(it1, it2, cmp)</code></td>
+<td>Check if sorted using <code>cmp()</code> to compare</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::merge(itA1, itA2, itB1, itB2, itC1)</code></td>
+<td>Merge sorted range <code>A</code> and sorted range <code>B</code> into sorted <code>C</code>, using <code>std::less&lt;&gt;()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::merge(itA1, itA2, itB1, itB2, itC1, cmp)</code></td>
+<td>Merge sorted range <code>A</code> and sorted range <code>B</code> into sorted <code>C</code>, using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::inplace_merge(it1, itm, it2)</code></td>
+<td>Merge together two sorted sub-ranges [<code>it1</code>, <code>itm</code>) and [<code>itm</code>, <code>it2</code>), using <code>std::less&lt;&gt;()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::inplace_merge(it1, itm, it2, cmp)</code></td>
+<td>Merge together two sorted sub-ranges [<code>it1</code>, <code>itm</code>) and [<code>itm</code>, <code>it2</code>), using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::includes(itA1, itA2, itB1, itB2)</code></td>
+<td>Check if all elements of sorted range <code>A</code> are in sorted range <code>B</code>, using <code>std::less&lt;&gt;()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::includes(itA1, itA2, itB1, itB2, cmp)</code></td>
+<td>Check if all elements of sorted range <code>A</code> are in sorted range <code>B</code>, using <code>cmp()</code> to compare</td>
+</tr>
+</tbody>
+</table>
+<a name="H_Binary%20Search"></a><h3>Binary Search</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FBinary%20Search)_TOPIC%2F"></a><strong></strong></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::binary_search(it1, it2, v)</code></td>
+<td>Searches for <code>v</code> in the sorted range, using <code>std::less&lt;&gt;()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::binary_search(it1, it2, v, bp)</code></td>
+<td>Searches for <code>v</code> in the sorted range, using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::lower_bound(it1, it2, v)</code></td>
+<td>Searches for left-most <code>v</code> in the sorted range, using <code>std::less&lt;&gt;()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::lower_bound(it1, it2, v, bp)</code></td>
+<td>Searches for left-most <code>v</code> in the sorted range, using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::upper_bound(it1, it2, v)</code></td>
+<td>Searches for right-most <code>v</code> in the sorted range, using <code>std::less&lt;&gt;()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::upper_bound(it1, it2, v, bp)</code></td>
+<td>Searches for right-most <code>v</code> in the sorted range, using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::equal_range(it1, it2, v)</code></td>
+<td>Both <code>std::lower_bound(it1, it2, v)</code> and <code>std::upper_bound(it1, it2, v)</code> returned as <code>std::pair&lt;&gt;</code></td>
+</tr>
+<tr>
+<td><code>std::equal_range(it1, it2, v, bp)</code></td>
+<td>Both <code>std::lower_bound(it1, it2, v, bp)</code> and <code>std::upper_bound(it1, it2, v, bp)</code> returned as <code>std::pair&lt;&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<a name="H_Set%20Operations"></a><h3>Set Operations</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FSet%20Operations)_TOPIC%2F"></a><strong></strong></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::set_difference(itA1, itA2, itB1, itB2, itC1)</code></td>
+<td>Difference sorted range <code>A</code> and sorted range <code>B</code> into sorted <code>C</code>, using <code>std::less&lt;&gt;()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::set_difference(itA1, itA2, itB1, itB2, itC1, cmp)</code></td>
+<td>Difference sorted range <code>A</code> and sorted range <code>B</code> into sorted <code>C</code>, using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::set_symmertic_difference(itA1, itA2, itB1, itB2, itC1)</code></td>
+<td>Symmetric difference sorted range <code>A</code> and sorted range <code>B</code> into sorted <code>C</code>, using <code>std::less&lt;&gt;()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::set_symmertic_difference(itA1, itA2, itB1, itB2, itC1, cmp)</code></td>
+<td>Symmetric difference sorted range <code>A</code> and sorted range <code>B</code> into sorted <code>C</code>, using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::set_intersect(itA1, itA2, itB1, itB2, itC1)</code></td>
+<td>Intersect sorted range <code>A</code> and sorted range <code>B</code> into sorted <code>C</code>, using <code>std::less&lt;&gt;()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::set_intersect(itA1, itA2, itB1, itB2, itC1, cmp)</code></td>
+<td>Intersect sorted range <code>A</code> and sorted range <code>B</code> into sorted <code>C</code>, using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::set_union(itA1, itA2, itB1, itB2, itC1)</code></td>
+<td><a href="#BM_(union)%2Fi">Union</a> sorted range <code>A</code> and sorted range <code>B</code> into sorted <code>C</code>, using <code>std::less&lt;&gt;()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::set_union(itA1, itA2, itB1, itB2, itC1, cmp)</code></td>
+<td><a href="#BM_(union)%2Fi">Union</a> sorted range <code>A</code> and sorted range <code>B</code> into sorted <code>C</code>, using <code>cmp()</code> to compare</td>
+</tr>
+</tbody>
+</table>
+<a name="H_Min%20%2F%20Max"></a><h3>Min / Max</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FMin%20%2F%20Max)_TOPIC%2F"></a><strong></strong></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::min_element(it1, it2)</code></td>
+<td>Get min element, using <code>&lt;</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::min_element(it1, it2, cmp)</code></td>
+<td>Get min element, using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::max_element(it1, it2)</code></td>
+<td>Get max element, using <code>&lt;</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::max_element(it1, it2, cmp)</code></td>
+<td>Get max element, using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::minmax_element(it1, it2)</code></td>
+<td>Get min and max element, using <code>&lt;</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::minmax_element(it1, it2, cmp)</code></td>
+<td>Get min and max element, using <code>cmp()</code> to compare</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::min(a, b)</code></td>
+<td>Get smaller between <code>a</code> and <code>b</code>, using <code>&lt;</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::min(a, b, cmp)</code></td>
+<td>Get smaller between <code>a</code> and <code>b</code>, using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::max(a, b)</code></td>
+<td>Get larger between <code>a</code> and <code>b</code>, using <code>&lt;</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::max(a, b, cmp)</code></td>
+<td>Get larger between <code>a</code> and <code>b</code>, using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::minmax(a, b)</code></td>
+<td>Combine <code>min(a,b)</code> and <code>max(a,b)</code></td>
+</tr>
+<tr>
+<td><code>std::minmax(a, b, cmp)</code></td>
+<td>Combine <code>min(a,b,cmp)</code> and <code>max(a,b,cmp)</code></td>
+</tr>
+<tr>
+<td><code>std::clamp(v, lo, hi)</code></td>
+<td>Return <code>v</code> clamped to be between [<code>lo</code>, <code>hi</code>], using <code>&lt;</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::clamp(v, lo, hi, cmp)</code></td>
+<td>Return <code>v</code> clamped to be between [<code>lo</code>, <code>hi</code>], using <code>cmp(lo, hi)</code> to compare</td>
+</tr>
+</tbody>
+</table>
+<a name="H_Binary%20Search%20Tree"></a><h3>Binary Search Tree</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FBinary%20Search%20Tree)_TOPIC%2F"></a><strong></strong></p>
+<p>TODO: explain how a binary search tree is also called a <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::make_heap(it1, it2)</code></td>
+<td>Reorder range such that it becomes a <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a>, using <code>&lt;</code> to compare (not <code>std::less&lt;&gt;</code>)</td>
+</tr>
+<tr>
+<td><code>std::make_heap(it1, it2, cmp)</code></td>
+<td>Reorder range such that it becomes a <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a>, using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::push_heap(it1, it2)</code></td>
+<td>Integrate last element into existing <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a> ([<code>it1</code>, <code>it2 - 1</code>) is <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a>, <code>*(it2 - 1)</code> is unintegrated element), using <code>&lt;</code> to compare (not <code>std::less&lt;&gt;</code>)</td>
+</tr>
+<tr>
+<td><code>std::push_heap(it1, it2, cmp)</code></td>
+<td>Integrate last element into existing <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a> ([<code>it1</code>, <code>it2 - 1</code>) is <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a>, <code>*(it2 - 1)</code> is unintegrated element), using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::pop_heap(it1, it2)</code></td>
+<td>Remove largest element from <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a> and places as last element ([<code>it1</code>, <code>it2 - 1</code>) becomes <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a>, <code>*(it2 - 1)</code> is removed element), using <code>&lt;</code> to compare (not <code>std::less&lt;&gt;</code>)</td>
+</tr>
+<tr>
+<td><code>std::pop_heap(it1, it2, cmp)</code></td>
+<td>Remove largest element from <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a> and places as last element ([<code>it1</code>, <code>it2 - 1</code>) becomes <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a>, <code>*(it2 - 1)</code> is removed element), using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::is_heap(it1, it2)</code></td>
+<td>Check if range is <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a>, using <code>&lt;</code> to compare (not <code>std::less&lt;&gt;</code>)</td>
+</tr>
+<tr>
+<td><code>std::is_heap(it1, it2, cmp)</code></td>
+<td>Check if range is <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a>, using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::is_heap_until(it1, it2)</code></td>
+<td>Determine until which position range is <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a>, using <code>&lt;</code> to compare (not <code>std::less&lt;&gt;</code>)</td>
+</tr>
+<tr>
+<td><code>std::is_heap_until(it1, it2, cmp)</code></td>
+<td>Determine until which position range is <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a>, using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::sort_heap(it1, it2)</code></td>
+<td>Convert <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a> to sorted range (ascending order), using <code>&lt;</code> to compare (not <code>std::less&lt;&gt;</code>)</td>
+</tr>
+<tr>
+<td><code>std::sort_heap(it1, it2, cmp)</code></td>
+<td>Convert <a href="#BM_(heap%7Cfree%20store)%2Fi">heap</a> to sorted range (ascending order), using <code>cmp()</code> to compare</td>
+</tr>
+</tbody>
+</table>
+<a name="H_Permutations"></a><h3>Permutations</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FPermutations)_TOPIC%2F"></a><strong></strong></p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::next_permutation(it1, it2)</code></td>
+<td>Reorders to next permutation and returns <code>false</code> if done, using <code>std::less&lt;&gt;</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::next_permutation(it1, it2, cmp)</code></td>
+<td>Reorders to next permutation and returns <code>false</code> if done, using <code>cmp()</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::prev_permutation(it1, it2)</code></td>
+<td>Reorders to previous permutation and returns <code>false</code> if done, using <code>std::less&lt;&gt;</code> to compare</td>
+</tr>
+<tr>
+<td><code>std::prev_permutation(it1, it2, cmp)</code></td>
+<td>Reorders to previous permutation and returns <code>false</code> if done, using <code>cmp()</code> to compare</td>
+</tr>
+</tbody>
+</table>
+<p>TODO: this must start with a sorted range</p>
+<a name="H_Parallel%20Primitives"></a><h3>Parallel Primitives</h3>
+<p><a name="BM_(Library%20Functions%5C%2FAlgorithms%2FParallel%20Primitives)_TOPIC%2F"></a><strong></strong></p>
+<p>| <code>std::transform(itA1, itA2, itB1, m)</code> | Transform <code>A</code> via <code>m(*itA)</code> into <code>B</code> |
+| <code>std::transform(itA1, itA2, itB1, itC, bt)</code> | Transform <code>A</code> and <code>B</code> such that each index is transformed via <code>bt(*itA, *itB)</code> and put into <code>C</code> |</p>
+<p>| <code>std::reduce(it1, it2)</code> | Reduce using <code>+</code> with an initia<a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">l value</a> of an empty initialization of whatever the range's element type is |
+| <code>std::reduce(it1, it2, v)</code> | Reduce using <code>+</code> with an initia<a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">l value</a> of <code>v</code> |
+| <code>std::reduce(it1, it2, f, f)</code> | Reduce using <code>f()</code> with an initia<a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">l value</a> of <code>v</code> |</p>
+<p>| <code>std::inclusive_scan(it1, it2)</code> | Inclusive prefix sum using <code>+</code> with an initia<a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">l value</a> of an empty initialization of whatever the range's element type is |
+| <code>std::inclusive_scan(it1, it2, v)</code> | Inclusive prefix sum using <code>+</code> with an initia<a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">l value</a> of <code>v</code> |
+| <code>std::inclusive_scan(it1, it2, f, f)</code> | Inclusive prefix sum using <code>f()</code> with an initia<a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">l value</a> of <code>v</code> |
+| <code>std::exclusive_scan(it1, it2)</code> | Inclusive prefix sum using <code>+</code> with an initia<a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">l value</a> of an empty initialization of whatever the range's element type is |
+| <code>std::exclusive_scan(it1, it2, v)</code> | Inclusive prefix sum using <code>+</code> with an initia<a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">l value</a> of <code>v</code> |
+| <code>std::exclusive_scan(it1, it2, f, f)</code> | Inclusive prefix sum using <code>f()</code> with an initia<a href="#BM_(value%20categories%7Cvalue%20category%7Cpr%5B%5Cs%5C-%5D%3Fvalue%7Cl%5B%5Cs%5C-%5D%3Fvalue%7Cx%5B%5Cs%5C-%5D%3Fvalue%7Cr%5B%5Cs%5C-%5D%3Fvalue%7Cgl%5B%5Cs%5C-%5D%3Fvalue)%2Fi">l value</a> of <code>v</code> |</p>
+<p>| <code>std::transform_reduce(itA1, itA2, v, r, m)</code> | Same as <code>std::transform(itA1, itA2, m)</code> followed by  <code>std::reduce(it1, it2, v, r)</code> |
+| <code>std::transform_reduce(itA1, itA2, itB1, v, r, m)</code> | Same as <code>std::transform(itA1, itA2, itB1, m)</code> followed by  <code>std::reduce(it1, it2, v, r)</code> |
+| <code>std::transform_reduce(itA1, itA2, itB1, v)</code> | Same as <code>std::transform_reduce(itA1, itA2, itB1, v, std::plus&lt;&gt;(), std::multiplies&lt;&gt;())</code> |</p>
+<p>TODO: non-parallel versions of reduce</p>
+<p>| <code>std::accumulate()</code> | reduce
+| <code>std::partial_sum()</code> | inclusive_scan
+| <code>std::adjacent_difference</code> | map
+| <code>std::inner_product()</code> | transform_reduce</p>
 <a name="H_Span"></a><h2>Span</h2>
 <p><a name="BM_(Library%20Functions%5C%2FSpan)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -12505,6 +13580,413 @@ std::cin &gt;&gt; x &gt;&gt; y;
 </code></pre>
 <p>To handle IO errors, the standard stream mechanisms are available: <code>exceptions()</code> to throw <a href="#BM_(exception%7Ctry%5B%5C-%5Cs%5Dcatch)%2Fi">exception</a>s or explicitly check flags (e.g. invoke <code>good()</code>).</p>
 <pre class="hljs"><code>std::cin.<span class="hljs-built_in">exceptions</span>(std::istream::badbit | std::istream::failbit); <span class="hljs-comment">// exception if bad/fail, but not good/eof</span>
+</code></pre>
+<a name="H_File%20System"></a><h2>File System</h2>
+<p><a name="BM_(Library%20Functions%5C%2FFile%20System)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FStrings)_TOPIC%2F">Library Functions/Strings</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FStreams)_TOPIC%2F">Library Functions/Streams</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FIterators)_TOPIC%2F">Library Functions/Iterators</a></li>
+</ul>
+</div>
+<p>The <code>std::filesystem</code> <a href="#BM_(namespace)%2Fi">namespace</a> contains functionality related to file systems. The functionality provided in this <a href="#BM_(namespace)%2Fi">namespace</a> is similar to filesystem libraries that come with other high-level langauges (e.g. Java or Python).</p>
+<p>The subsections below detail describe basic types and common functionality. Note that most filesystem functions come in two form:</p>
+<ul>
+<li>An <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a> that throws an exeception if there's an error.</li>
+<li>An <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a> that takes in a <a href="#BM_(reference)%2Fi">reference</a> to a <code>std::error_code</code> <a href="#BM_(object%7Cinstance)%2Fi">object</a> and fills in its <a href="#BM_%5Cb(member)%2Fi">member</a>s (error information).</li>
+</ul>
+<pre class="hljs"><code>std::filesystem::path p1 { std::filesystem::<span class="hljs-built_in">current_path</span>() };   <span class="hljs-comment">// on error, throws exception</span>
+
+std::error_code ec {};
+std::filesystem::path p2 { std::filesystem::<span class="hljs-built_in">current_path</span>(ec) };   <span class="hljs-comment">// on error, populates ec</span>
+</code></pre>
+<p>For brevity, the examples in the subsection typically only show one of the two <a href="#BM_(function%20overload%7Coverloaded%20function%7Coverload)%2Fi">overload</a>s being used.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's also <code>boost::filesystem</code>, which is what <code>std::filesystem</code> is based off of.</p>
+</div>
+<a name="H_Path%20Type"></a><h3>Path Type</h3>
+<p><a name="BM_(Library%20Functions%5C%2FFile%20System%2FPath%20Type)_TOPIC%2F"></a><strong></strong></p>
+<p>The type <code>std::filesystem::path</code> is the abstraction used to represent paths. Common ways to initialize a path <a href="#BM_(object%7Cinstance)%2Fi">object</a> is to supply a string, string view, or an <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">input iterator</a> sequence of characters. Multiple character types are supported: <code>char</code>, <code>wchar_t</code>, <code>char8_t</code>, <code>char16_t</code>, ..., where the characters are re-encoded to the type used by the native file system.</p>
+<pre class="hljs"><code>std::filesystem::path p1 { <span class="hljs-string">"/home/user/Downloads/my_file.txt"</span> };
+std::filesystem::path p2 { <span class="hljs-string">"Downloads/my_file.txt"</span> };
+std::filesystem::path p3 { str.<span class="hljs-built_in">begin</span>(), str.<span class="hljs-built_in">end</span>() };
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Also, as of C++20, there is no built-in character set encoding/decoding functionality, so how exactly is it converting character set encodings (e.g. utf-8 characters to whatever the platform is expecting for its filesystem)? <code>char</code> is for the platform's encoding - so maybe just use that and ignore everything else?</p>
+</div>
+<p>To fix path separators such that they're for the current platform, use <code>make_preferred()</code>.</p>
+<pre class="hljs"><code>std::filesystem::path windows_path{<span class="hljs-string">"a\\b\\c"</span>};
+std::filesystem::path posix_path{<span class="hljs-string">"a/b/c"</span>};
+windows_path.<span class="hljs-built_in">make_preferred</span>();  <span class="hljs-comment">// if on Linux, will change windows_path to be "a/b/c"</span>
+</code></pre>
+<p>Given a path, to ...</p>
+<ul>
+<li>append to a path, use <code>append()</code>, the slash operator (/), or the forward slash assignment (/=)</li>
+<li>get the parent path (as a copy), use <code>parent_path()</code>.</li>
+<li>get the the last path element, use <code>filename()</code>.</li>
+<li>perform an in-place removal the last element from a path <a href="#BM_(object%7Cinstance)%2Fi">object</a>, use <code>remove_filename()</code>.</li>
+<li>perform an in-place replacement of the last element in a path <a href="#BM_(object%7Cinstance)%2Fi">object</a>, use <code>remove_filename()</code>.</li>
+</ul>
+<pre class="hljs"><code>std::filesystem::path p1 { <span class="hljs-string">"/home/user"</span> };
+std::filesystem::path p2 { p1 / <span class="hljs-string">"file.txt"</span> };  <span class="hljs-comment">// p2 is initialized to "/home/user/file.txt"</span>
+p1 /= <span class="hljs-string">"file.txt"</span>;                              <span class="hljs-comment">// p1 becomes "/home/user/file.txt"</span>
+std::filesystem::path p3 { <span class="hljs-string">"/home/user/file.txt"</span> };
+std::filesystem::path p4 { p3.<span class="hljs-built_in">parent_path</span>() }; <span class="hljs-comment">// p4 is initialized to "home/user"</span>
+std::filesystem::path p5 { p3.<span class="hljs-built_in">filename</span>() };    <span class="hljs-comment">// p5 is initialized to "file.txt"</span>
+p3.<span class="hljs-built_in">remove_filename</span>();                          <span class="hljs-comment">// p3 becomes "/home/user"</span>
+p3.<span class="hljs-built_in">replace_filename</span>(<span class="hljs-string">"other"</span>);                  <span class="hljs-comment">// p3 becomes "/home/other"</span>
+</code></pre>
+<p>To test if a path  ...</p>
+<ul>
+<li>is absolute vs relative, use <code>is_absolute()</code> / <code>is_relative()</code>.</li>
+<li>has a filename (not root path), use <code>has_filename()</code>.</li>
+<li>has a parent path (not a top-level path), use <code>has_parent_path()</code>.</li>
+</ul>
+<pre class="hljs"><code>std::filesystem::path p1 { <span class="hljs-string">"/home/user"</span> };
+<span class="hljs-type">bool</span> is_abs { p1.<span class="hljs-built_in">is_absolute</span>() };    <span class="hljs-comment">// true</span>
+<span class="hljs-type">bool</span> is_rel { p1.<span class="hljs-built_in">is_relative</span>() };    <span class="hljs-comment">// false</span>
+<span class="hljs-type">bool</span> has_filename { p1.<span class="hljs-built_in">has_filename</span>() };        <span class="hljs-comment">// true</span>
+<span class="hljs-type">bool</span> has_parent_path { p1.<span class="hljs-built_in">has_parent_path</span>() };  <span class="hljs-comment">// true</span>
+</code></pre>
+<p>For file extensions, to ...</p>
+<ul>
+<li>get the extension, use <code>extension()</code>.</li>
+<li>get the filename before the extension, use <code>stem()</code>.</li>
+<li>check if there is a file extension / filename before the extension, use <code>has_extension()</code> / <code>has_stem()</code>.</li>
+<li>remove or replace the extension in-place, use <code>replace_extension()</code>.</li>
+</ul>
+<pre class="hljs"><code>std::filesystem::path p1 { <span class="hljs-string">"/home/user/file.txt"</span> };
+<span class="hljs-type">bool</span> has_ext { p1.<span class="hljs-built_in">has_extension</span>() };  <span class="hljs-comment">// true</span>
+<span class="hljs-type">bool</span> has_stem { p1.<span class="hljs-built_in">has_stem</span>() };      <span class="hljs-comment">// true</span>
+std::filesystem::path p1_stem  { p1.<span class="hljs-built_in">stem</span>() };    <span class="hljs-comment">// p1_stem is initialized to "file"</span>
+std::filesystem::path p1_ext { p1.<span class="hljs-built_in">extension</span>() }; <span class="hljs-comment">// p1_ext is initialized to "txt"</span>
+p1.<span class="hljs-built_in">replace_extension</span>(<span class="hljs-string">".png"</span>)  <span class="hljs-comment">// p1 becomes "/home/user/file.png"</span>
+p1.<span class="hljs-built_in">replace_extension</span>(<span class="hljs-string">"jpg"</span>)   <span class="hljs-comment">// p1 becomes "/home/user/file.jpg"</span>
+p1.<span class="hljs-built_in">replace_extension</span>(<span class="hljs-string">"."</span>)     <span class="hljs-comment">// p1 becomes "/home/user/file."</span>
+p1.<span class="hljs-built_in">replace_extension</span>(<span class="hljs-string">""</span>)      <span class="hljs-comment">// p1 becomes "/home/user/file"</span>
+</code></pre>
+<a name="H_Path%20Operations"></a><h3>Path Operations</h3>
+<p><a name="BM_(Library%20Functions%5C%2FFile%20System%2FPath%20Operations)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FFile%20System%2FPath%20Type)_TOPIC%2F">Library Functions/File System/Path Type</a></li>
+</ul>
+</div>
+<p>To get the current path, use <code>std::filesystem::current_path()</code>.</p>
+<pre class="hljs"><code>std::filesystem::path p { std::filesystem::<span class="hljs-built_in">current_path</span>() };   <span class="hljs-comment">// on error, throws exception</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalent exists that doesn't throw exceptions</span>
+</code></pre>
+<p>To relativize a path, use <code>std::filesystem::relative()</code>.</p>
+<pre class="hljs"><code>std::filesystem::path p { <span class="hljs-string">"/home/user/hello/foo.txt"</span>) };
+std::filesystem::path p_base { <span class="hljs-string">"/home/user"</span> };
+std::filesystem::path p_rel std::filesystem::<span class="hljs-built_in">relative</span>(p, p_base);
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalent exists that doesn't throw exceptions</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>If you don't supply a base, it defaults the base to <code>std::current_path()</code>.</p>
+<p>According to <a href="https://en.cppreference.com/w/cpp/filesystem/relative">cpp</a><a href="#BM_(reference)%2Fi">reference</a>, this also resolves symbolic links, meaning the path you submit has to exist? The text seems unclear. There's also <code>std::filesystem::proximate()</code> which seems to be more loose with the rules? I'm not exactly sure what's going on here. The documentation isn't clear.</p>
+</div>
+<p>To convert a relative path to an absolute path, use <code>std::filesystem::absolute()</code>. This is as if <code>std::current_path()</code> were prepended to a relative path.</p>
+<pre class="hljs"><code>std::filesystem::path p { <span class="hljs-string">"hello/foo.txt"</span>) };
+std::filesystem::path p_abs { std::filesystem::<span class="hljs-built_in">absolute</span>(p)) };   <span class="hljs-comment">// on error, throws exception</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalent exists that doesn't throw exceptions</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's no option to set the base path, so what's the point of this? Why not just append the paths together and normalize it (remove <code>..</code> and <code>.</code>)?</p>
+</div>
+<p>To convert a path to an absolute path that also processes out <code>.</code> and <code>..</code> in the path (e.g. if there's a <code>..</code>, it'll knock back a path element automatically), use <code>std::filesystem::canonical()</code>.</p>
+<pre class="hljs"><code>std::filesystem::path p { <span class="hljs-string">".././hello/foo.txt"</span>) };
+std::filesystem::path p_abs1 { std::filesystem::<span class="hljs-built_in">absolute</span>(p)) };   <span class="hljs-comment">// on error, throws exception</span>
+std::filesystem::path p_abs2 { std::filesystem::<span class="hljs-built_in">canonical</span>(p)) };   <span class="hljs-comment">// on error, throws exception</span>
+<span class="hljs-comment">// if the current path is /home/user, ...</span>
+<span class="hljs-comment">// p_abs1 will be /home/user/.././hello/foo.txt</span>
+<span class="hljs-comment">// p_abs2 will be /home/hello/foo.txt</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>According to <a href="https://en.cppreference.com/w/cpp/filesystem/canonical">cpp</a><a href="#BM_(reference)%2Fi">reference</a>, this also resolves symbolic links, meaning the path you submit has to exist? The text seems unclear. There's also <code>std::filesystem::weakly_canonical()</code> which will only "resolve" up until the last known path element and just append the rest? I don't know for sure.</p>
+</div>
+<a name="H_Metadata%20Operations"></a><h3>Metadata Operations</h3>
+<p><a name="BM_(Library%20Functions%5C%2FFile%20System%2FMetadata%20Operations)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FFile%20System%2FPath%20Type)_TOPIC%2F">Library Functions/File System/Path Type</a></li>
+</ul>
+</div>
+<p>To check if a path exists, use <code>std::filesystem::exists()</code>.</p>
+<pre class="hljs"><code>std::filesystem::path p1 { <span class="hljs-string">"/home/user/file.txt"</span> };
+<span class="hljs-type">bool</span> exists1 { std::filesystem::<span class="hljs-built_in">exists</span>(p1) };     <span class="hljs-comment">// on error, throws exception</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalent exists that doesn't throw exception</span>
+</code></pre>
+<p>To run a ...</p>
+<ul>
+<li><code>stat</code>-like command on a path, use <code>std::filesystem::status()</code>.</li>
+<li><code>lstat</code>-like command on a path, use <code>std::filesystem::symlink_status()</code>.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The difference is that, for the latter, symlinks aren't followed. The status is for the symlink itself, not what it points to.</p>
+</div>
+<pre class="hljs"><code>std::filesystem::path p1 { <span class="hljs-string">"/home/user/file.txt"</span> };
+std::filesystem::file_status stat1 { std::filesystem::<span class="hljs-built_in">status</span>(p1) };     <span class="hljs-comment">// on error, throws exception</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalent exists that doesn't throw exception</span>
+
+<span class="hljs-keyword">if</span> (stat1.<span class="hljs-built_in">type</span>() == std::filesystem::file_type::none) { <span class="hljs-comment">/* error or not evaluated yet? */</span> }
+<span class="hljs-keyword">if</span> (stat1.<span class="hljs-built_in">type</span>() == std::filesystem::file_type::not_found) { <span class="hljs-comment">/* path not found */</span> }
+<span class="hljs-keyword">if</span> (stat1.<span class="hljs-built_in">type</span>() == std::filesystem::file_type::regular) { <span class="hljs-comment">/* regular file */</span> }
+<span class="hljs-keyword">if</span> (stat1.<span class="hljs-built_in">type</span>() == std::filesystem::file_type::directory) { <span class="hljs-comment">/* directory */</span> }
+<span class="hljs-keyword">if</span> (stat1.<span class="hljs-built_in">type</span>() == std::filesystem::file_type::symlink) { <span class="hljs-comment">/* symlink */</span> }
+<span class="hljs-keyword">if</span> (stat1.<span class="hljs-built_in">type</span>() == std::filesystem::file_type::block) { <span class="hljs-comment">/* block special file */</span> }
+<span class="hljs-keyword">if</span> (stat1.<span class="hljs-built_in">type</span>() == std::filesystem::file_type::character) { <span class="hljs-comment">/* character special file */</span> }
+<span class="hljs-keyword">if</span> (stat1.<span class="hljs-built_in">type</span>() == std::filesystem::file_type::fifo) { <span class="hljs-comment">/* fifo / pipe */</span> }
+<span class="hljs-keyword">if</span> (stat1.<span class="hljs-built_in">type</span>() == std::filesystem::file_type::socket) { <span class="hljs-comment">/* socket */</span> }
+<span class="hljs-keyword">if</span> (stat1.<span class="hljs-built_in">type</span>() == std::filesystem::file_type::implementation-defined) { <span class="hljs-comment">/* for other types, such as "NTFS junctions" */</span> }
+<span class="hljs-keyword">if</span> (stat1.<span class="hljs-built_in">type</span>() == std::filesystem::file_type::unknown) { <span class="hljs-comment">/* file exists but type unknown */</span> }
+
+file::system::perms { stat1.<span class="hljs-built_in">permissions</span>() };  <span class="hljs-comment">// standard linux file permissions: three octal digits (e.g. 0777)</span>
+std::cout &lt;&lt; ((perms &amp; std::filesystem::perms::owner_read) != std::filesystem::perms::none ? <span class="hljs-string">"r"</span> : <span class="hljs-string">"-"</span>)
+          &lt;&lt; ((perms &amp; std::filesystem::perms::owner_write) != std::filesystem::perms::none ? <span class="hljs-string">"w"</span> : <span class="hljs-string">"-"</span>)
+          &lt;&lt; ((perms &amp; std::filesystem::perms::owner_exec) != std::filesystem::perms::none ? <span class="hljs-string">"x"</span> : <span class="hljs-string">"-"</span>)
+          &lt;&lt; ((perms &amp; std::filesystem::perms::group_read) != std::filesystem::perms::none ? <span class="hljs-string">"r"</span> : <span class="hljs-string">"-"</span>)
+          &lt;&lt; ((perms &amp; std::filesystem::perms::group_write) != std::filesystem::perms::none ? <span class="hljs-string">"w"</span> : <span class="hljs-string">"-"</span>)
+          &lt;&lt; ((perms &amp; std::filesystem::perms::group_exec) != std::filesystem::perms::none ? <span class="hljs-string">"x"</span> : <span class="hljs-string">"-"</span>)
+          &lt;&lt; ((perms &amp; std::filesystem::perms::others_read) != std::filesystem::perms::none ? <span class="hljs-string">"r"</span> : <span class="hljs-string">"-"</span>)
+          &lt;&lt; ((perms &amp; std::filesystem::perms::others_write) != std::filesystem::perms::none ? <span class="hljs-string">"w"</span> : <span class="hljs-string">"-"</span>)
+          &lt;&lt; ((perms &amp; std::filesystem::perms::others_exec) != std::filesystem::perms::none ? <span class="hljs-string">"x"</span> : <span class="hljs-string">"-"</span>)
+          &lt;&lt; std::endl;
+</code></pre>
+<p>To directly test a path's type, a set of helper commands are available (e.g. <code>std::filesystem::is_directory()</code>).</p>
+<pre class="hljs"><code>std::filesystem::path p1 { <span class="hljs-string">"/home/user/file.txt"</span> };
+
+<span class="hljs-keyword">if</span> (std::filesystem::<span class="hljs-built_in">is_block_file</span>(p1)) { <span class="hljs-comment">/* block special file */</span> }
+<span class="hljs-keyword">if</span> (std::filesystem::<span class="hljs-built_in">is_character_file</span>(p1)) { <span class="hljs-comment">/* character special file */</span> }
+<span class="hljs-keyword">if</span> (std::filesystem::<span class="hljs-built_in">is_directory</span>(p1)) { <span class="hljs-comment">/* directory */</span> }
+<span class="hljs-keyword">if</span> (std::filesystem::<span class="hljs-built_in">is_fifo</span>(p1)) { <span class="hljs-comment">/* fifo / pipe */</span> }
+<span class="hljs-keyword">if</span> (std::filesystem::<span class="hljs-built_in">is_regular_file</span>(p1)) { <span class="hljs-comment">/* regular file */</span> }
+<span class="hljs-keyword">if</span> (std::filesystem::<span class="hljs-built_in">is_socket</span>(p1)) { <span class="hljs-comment">/* socket */</span> }
+<span class="hljs-keyword">if</span> (std::filesystem::<span class="hljs-built_in">is_symlink</span>(p1)) { <span class="hljs-comment">/* symlink */</span> }
+<span class="hljs-keyword">if</span> (std::filesystem::<span class="hljs-built_in">is_other</span>(p1)) { <span class="hljs-comment">/* equiv to exists(s) &amp;&amp; !is_regular_file(s) &amp;&amp; !is_directory(s) &amp;&amp; !is_symlink(s) */</span> }
+<span class="hljs-keyword">if</span> (std::filesystem::<span class="hljs-built_in">status_known</span>(p1)) { <span class="hljs-comment">/* test for std::filesystem::file_type::none, NOT std::filesystem::file_type::unknown */</span> }
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalents exist that don't throw exceptionw</span>
+</code></pre>
+<p>To set a path's permissions, use <code>std::filesystem::permissions()</code>.</p>
+<pre class="hljs"><code>std::filesystem::path p1 { <span class="hljs-string">"/home/user/file.txt"</span> };
+std::filesystem::perms prms { std::filesystem::perms::owner_all | std::filesystem::perms::group_all | std::filesystem::perms::others_read };
+std::filesystem::<span class="hljs-built_in">permissions</span>(p1, prms);     <span class="hljs-comment">// on error, throws exception</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> There's a 3rd parameter called opts that controls how permissions are</span>
+<span class="hljs-comment">//       replaced, you almost always want to keep this as the default (replace).</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalent exists that doesn't throw exception</span>
+</code></pre>
+<p>To ...</p>
+<ul>
+<li>get a path's size, use <code>std::filesystem::file_size()</code>.</li>
+<li>get or set a path's last modified time, use <code>std::filesystem::last_write_time()</code>.</li>
+</ul>
+<pre class="hljs"><code>std::filesystem::path p1 { <span class="hljs-string">"/home/user/file.txt"</span> };
+std::<span class="hljs-type">uintmax_t</span> sz { std::filesystem::<span class="hljs-built_in">size</span>(p1) };                                <span class="hljs-comment">// on error, throws exception</span>
+std::filesystem::file_time_type time { std::filesystem::<span class="hljs-built_in">last_write_time</span>(p1) };  <span class="hljs-comment">// on error, throws exception</span>
+std::filesystem::<span class="hljs-built_in">last_write_time</span>(p1, time);                                     <span class="hljs-comment">// on error, throws exception</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> file_time_type is an alias to std::chrono::time_point&lt;std::chrono::file_clock&gt;</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalents exist that don't throw exceptions</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FTime)_TOPIC%2F">Library Functions/Time</a> (File time manipulations / operations)</li>
+</ul>
+</div>
+<p>To either truncate a file or expand it by filling it with zero'd out bytes (file holes), use <code>std::filesystem::resize_file()</code>.</p>
+<pre class="hljs"><code>std::filesystem::path p1 { <span class="hljs-string">"/home/user/file.txt"</span> };
+std::filesystem::<span class="hljs-built_in">resize_file</span>(<span class="hljs-number">64u</span>*<span class="hljs-number">1024u</span>);  <span class="hljs-comment">// on error, throws exception</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalents exist that don't throw exceptions</span>
+</code></pre>
+<p>To get the usage statistics for the disk that a path is for, use <code>std::filesystem::space()</code>.</p>
+<pre class="hljs"><code>std::filesystem::path p1 { <span class="hljs-string">"/home"</span> };
+std::filesystem::space_info si { std::filesystem::<span class="hljs-built_in">space</span>(p1) };  <span class="hljs-comment">// on error, throws exception</span>
+std::cout &lt;&lt; <span class="hljs-string">"disk capacity: "</span> si.capacity &lt;&lt; <span class="hljs-string">" "</span>
+          &lt;&lt; <span class="hljs-string">"disk free: "</span> si.free &lt;&lt; <span class="hljs-string">" "</span>
+          &lt;&lt; <span class="hljs-string">"disk available: "</span> si.available &lt;&lt; std::endl;
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalents exist that don't throw exceptions</span>
+</code></pre>
+<a name="H_Copy%20Operations"></a><h3>Copy Operations</h3>
+<p><a name="BM_(Library%20Functions%5C%2FFile%20System%2FCopy%20Operations)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FFile%20System%2FPath%20Type)_TOPIC%2F">Library Functions/File System/Path Type</a></li>
+</ul>
+</div>
+<p>To copy a file, use <code>std::filesystem::copy_file()</code>.</p>
+<p>Optionally, a <code>std::filesystem::copy_options</code> <a href="#BM_(object%7Cinstance)%2Fi">object</a> may be passed in which defines how the copy occurs. By default, it's set to <code>std::filesystem::copy_options::none</code> (default behaviour), but other options include skipping if the file exists, overwriting it, replacing it, etc..</p>
+<pre class="hljs"><code>std::filesystem::path p_from { <span class="hljs-string">"/home/user/file.txt"</span> };
+std::filesystem::path p_to { <span class="hljs-string">"/home/user/COPIED_file.txt"</span> };
+<span class="hljs-type">bool</span> copied { std::filesystem::<span class="hljs-built_in">copy_file</span>(p_from, p_to) };
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalents exist that don't throw exceptions</span>
+</code></pre>
+<p>To copy a directory or a file, use <code>std::filesystem::copy()</code>.</p>
+<p>Optionally, a <code>std::filesystem::copy_options</code> <a href="#BM_(object%7Cinstance)%2Fi">object</a> may be passed in which defines how the copy occurs. By default, it's set to <code>std::filesystem::copy_options::none</code> (default behaviour). If the path being copied is a directory, the default behaviour is to recursively copy that directory, meaning <code>std::filesystem::copy_options::none</code> is the same as ``std::filesystem::copy_options::recursive` when the source path is a directory.</p>
+<pre class="hljs"><code>std::filesystem::path p_from { <span class="hljs-string">"/home/user1"</span> };
+std::filesystem::path p_to { <span class="hljs-string">"/home/user2"</span> };
+std::filesystem::<span class="hljs-built_in">copy</span>(p_from, p_to);
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalents exist that don't throw exceptions</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FFile%20System%2FSymlink%20Operations)_TOPIC%2F">Library Functions/File System/Symlink Operations</a> (To copy a symlink -- not copy it's target, but copy the symlink itself)</li>
+</ul>
+</div>
+<a name="H_Move%20Operations"></a><h3>Move Operations</h3>
+<p><a name="BM_(Library%20Functions%5C%2FFile%20System%2FMove%20Operations)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FFile%20System%2FPath%20Type)_TOPIC%2F">Library Functions/File System/Path Type</a></li>
+</ul>
+</div>
+<p>To move / rename a file or directory, use <code>std::filesystem::rename()</code>.</p>
+<p>If the source is a directory, the destination can be non-existent (in which case it'll get created) or an empty directory (in which case it'll get deleted first and recreated).</p>
+<pre class="hljs"><code>std::filesystem::path p_from { <span class="hljs-string">"/home/user/file.txt"</span> };
+std::filesystem::path p_to { <span class="hljs-string">"/home/user/MOVED_file.txt"</span> };
+<span class="hljs-type">bool</span> copied { std::filesystem::<span class="hljs-built_in">rename</span>(p_from, p_to) };
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalents exist that don't throw exceptions</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Symlinks are not followed. If the source is a symlink, the symlink itself is renamed, not the target.</p>
+</div>
+<a name="H_Delete%20Operations"></a><h3>Delete Operations</h3>
+<p><a name="BM_(Library%20Functions%5C%2FFile%20System%2FDelete%20Operations)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FFile%20System%2FPath%20Type)_TOPIC%2F">Library Functions/File System/Path Type</a></li>
+</ul>
+</div>
+<p>To remove a file or empty directory, use <code>std::filesystem::remove()</code>.</p>
+<pre class="hljs"><code>std::filesystem::path p1 { <span class="hljs-string">"/home/user/file.txt"</span> };
+<span class="hljs-type">bool</span> removed { std::filesystem::<span class="hljs-built_in">remove</span>(p1) };
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalents exist that don't throw exceptions</span>
+</code></pre>
+<p>To recursively remove all files in a directory as well as the directory itself, use <code>std::filesystem::remove_all()</code>.</p>
+<pre class="hljs"><code>std::filesystem::path p1 { <span class="hljs-string">"/home/user"</span> };
+std::<span class="hljs-type">uintmax_t</span> num_items_removed { std::filesystem::<span class="hljs-built_in">remove_all</span>(p1) };
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalents exist that don't throw exceptions</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Symlinks are not followed. If the source is a symlink, the symlink itself is removed.</p>
+</div>
+<a name="H_Directory%20Operations"></a><h3>Directory Operations</h3>
+<p><a name="BM_(Library%20Functions%5C%2FFile%20System%2FDirectory%20Operations)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FFile%20System%2FPath%20Type)_TOPIC%2F">Library Functions/File System/Path Type</a></li>
+<li><a href="#BM_(Library%20Functions%5C%2FIterators)_TOPIC%2F">Library Functions/Iterators</a></li>
+</ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FFile%20System%2FMetadata%20Operations)_TOPIC%2F">Library Functions/File System/Metadata Operations</a> (To test if a path is a directory)</li>
+</ul>
+</div>
+<p>To create a directory, use either <code>std:filesystem::create_directory()</code> or <code>std::filesystem::create_directories()</code> (plural). The latter will recursively create all missing directories in the chain.</p>
+<pre class="hljs"><code>std::filesystem::path p { <span class="hljs-string">"/home/user/a/b/c"</span> };
+<span class="hljs-type">bool</span> created { std::filesystem::<span class="hljs-built_in">create_directories</span>(p) };
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalents exist that don't throw exceptions</span>
+</code></pre>
+<p>To get the directory suitable for creating temporary files, use <code>std::filesystem::temp_directory_path()</code>.</p>
+<pre class="hljs"><code>std::filesystem::path temp_path { std::filesystem::<span class="hljs-built_in">temp_directory_path</span>() };
+std::cout &lt;&lt; <span class="hljs-string">"Temp directory is "</span> &lt;&lt; temp_path &lt;&lt; std::endl;
+</code></pre>
+<p>To iterate over a directory's children, use either <code>std::filesystem::directory_iterator</code> or <code>std::filesystem::recursive_directory_iterator</code>. Both <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a>es are <a href="#BM_(input%20iterator%7Coutput%20iterator%7Cforward%20iterator%7Cbi-%3Fdirectional%20iterator%7Crandom%20access%20iterator%7Citerator)%2Fi">input iterator</a>s that give back <code>std::filesystem::directory_entry</code> <a href="#BM_(object%7Cinstance)%2Fi">object</a>s, which hold metadata information about a child path. The latter <a href="#BM_(class%7C%5Cbstruct)%2Fi">class</a> will recursively iterate down all child paths.</p>
+<pre class="hljs"><code>std::filesystem::path p { <span class="hljs-string">"/home/user/a/b/c"</span> };
+<span class="hljs-keyword">for</span> (std::filesystem::directory_entry&amp; e : std::filesystem::<span class="hljs-built_in">recursive_directory_iterator</span>(p)) {
+    std::cout &lt;&lt; e.<span class="hljs-built_in">path</span>() &lt;&lt; std::endl
+              &lt;&lt; e.<span class="hljs-built_in">file_size</span>() &lt;&lt; std::endl
+              &lt;&lt; e.<span class="hljs-built_in">last_write_time</span>() &lt;&lt; std::endl
+              &lt;&lt; e.<span class="hljs-built_in">hard_link_count</span>() &lt;&lt; std::endl
+              &lt;&lt; e.<span class="hljs-built_in">is_block_file</span>() &lt;&lt; std::endl
+              &lt;&lt; e.<span class="hljs-built_in">is_character_file</span>() &lt;&lt; std::endl
+              &lt;&lt; e.<span class="hljs-built_in">is_directory</span>() &lt;&lt; std::endl
+              &lt;&lt; e.<span class="hljs-built_in">is_fifo</span>() &lt;&lt; std::endl
+              &lt;&lt; e.<span class="hljs-built_in">is_regular_file</span>() &lt;&lt; std::endl
+              &lt;&lt; e.<span class="hljs-built_in">is_socket</span>() &lt;&lt; std::endl
+              &lt;&lt; e.<span class="hljs-built_in">is_symlink</span>() &lt;&lt; std::endl
+              &lt;&lt; e.<span class="hljs-built_in">is_other</span>() &lt;&lt; std::endl;
+    <span class="hljs-comment">// std::cout &lt;&lt; e &lt;&lt; std::endl;  // directory_entry also has a direct overload for output streams</span>
+}
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FFile%20System%2FDelete%20Operations)_TOPIC%2F">Library Functions/File System/Delete Operations</a> (To delete a directory recursively)</li>
+<li><a href="#BM_(Library%20Functions%5C%2FFile%20System%2FMove%20Operations)_TOPIC%2F">Library Functions/File System/Move Operations</a> (To move a directory)</li>
+<li><a href="#BM_(Library%20Functions%5C%2FFile%20System%2FCopy%20Operations)_TOPIC%2F">Library Functions/File System/Copy Operations</a> (To copy a directory)</li>
+</ul>
+</div>
+<a name="H_Symlink%20Operations"></a><h3>Symlink Operations</h3>
+<p><a name="BM_(Library%20Functions%5C%2FFile%20System%2FSymlink%20Operations)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FFile%20System%2FPath%20Type)_TOPIC%2F">Library Functions/File System/Path Type</a></li>
+</ul>
+</div>
+<p>To create a ...</p>
+<ul>
+<li>symlink, use <code>std::filesystem::create_symlink()</code> / <code>std::filesystem::create_directory_symlink()</code>.</li>
+<li>hardlink hard_link, use <code>std::filesystem::create_hard_link()</code>.</li>
+</ul>
+<pre class="hljs"><code>std::filesystem::path p_from { <span class="hljs-string">"/home/user/file.txt"</span> };
+std::filesystem::path p_to { <span class="hljs-string">"/home/user/LINKED_file.txt"</span> };
+std::filesystem::<span class="hljs-built_in">create_symlink</span>(p_from, p_to);
+std::filesystem::<span class="hljs-built_in">create_hard_link</span>(p_from, p_to);
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> you should use create_directory_symlink() instead of create_symlink() when symlinking dirs</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalents exist that don't throw exceptions</span>
+</code></pre>
+<p>To check if a path is a symlink, use <code>std::is_symlink()</code>.</p>
+<pre class="hljs"><code>std::filesystem::path p1 { <span class="hljs-string">"/home/user/LINKED_file.txt"</span> };
+<span class="hljs-type">bool</span> is_sym { std::filesystem::<span class="hljs-built_in">is_symlink</span>(p1) };
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalent exists that doesn't throw exceptions</span>
+</code></pre>
+<p>To follow a symlink, use <code>std::filesystem::read_symlink()</code>.</p>
+<pre class="hljs"><code>std::filesystem::path p_from { <span class="hljs-string">"/home/user/LINKED_file.txt"</span> };
+std::filesystem::path p_to { std::filesystem::<span class="hljs-built_in">read_symlink</span>(p_from) };
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalent exists that doesn't throw exceptions</span>
+</code></pre>
+<p>To copy a symlink (not copy it's target, but copy the symlink itself), use <code>std::filesystem::copy_symlink()</code>.</p>
+<pre class="hljs"><code>std::filesystem::path p1 { <span class="hljs-string">"/home/user/file.txt"</span> };
+std::filesystem::path p2 { <span class="hljs-string">"/home/user/LINKED_file.txt"</span> };
+<span class="hljs-type">bool</span> equiv { std::filesystem::<span class="hljs-built_in">copy_symlink</span>(p1, p2) };  <span class="hljs-comment">// on error, throws </span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalent exists that doesn't throw exceptions</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Library%20Functions%5C%2FFile%20System%2FMove%20Operations)_TOPIC%2F">Library Functions/File System/Move Operations</a> (To move a symlink, use normal rename function)</li>
+</ul>
+</div>
+<p>To check if two paths point to the same place (e.g. symlink or hard link), use <code>std::filesystem::equivalent()</code>.</p>
+<pre class="hljs"><code>std::filesystem::path p1 { <span class="hljs-string">"/home/user/file.txt"</span> };
+std::filesystem::path p2 { <span class="hljs-string">"/home/user/LINKED_file.txt"</span> };
+<span class="hljs-type">bool</span> equiv { std::filesystem::<span class="hljs-built_in">equivalent</span>(p1, p2) };  <span class="hljs-comment">// on error, throws </span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalent exists that doesn't throw exceptions</span>
+</code></pre>
+<p>To count the number of hard links a file has, use <code>std::filesystem::hard_link_count()</code>.</p>
+<pre class="hljs"><code>std::filesystem::path p2 { <span class="hljs-string">"/home/user/LINKED_file.txt"</span> };
+std::<span class="hljs-type">uintmax_t</span> cnt { std::filesystem::<span class="hljs-built_in">hard_link_count</span>(p2) };
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> std::error_code equivalent exists that doesn't throw exceptions</span>
 </code></pre>
 <a name="H_Debug%20Utilities"></a><h2>Debug Utilities</h2>
 <p><a name="BM_(Library%20Functions%5C%2FDebug%20Utilities)_TOPIC%2F"></a><strong></strong></p>

@@ -3249,7 +3249,7 @@ const char * operator"" _as_str (const char * n) {
 123.5e+12_as_str;  // outputs "input str: 123.5e+12"
 ```
 
-The standard C++ library makes use of user-defined literals in various places, but its identifiers don't require an underscore (_) prefix.
+The C++ standard library makes use of user-defined literals in various places, but its identifiers don't require an underscore (_) prefix.
 
  * Date-time API (chrono header): `std:chrono::duration d  { 2h + 15ms }`.
  * Complex numbers API (complex header): `std::complex<double> { (1.0 + 2.0i) * (3.0 + 4.0i) }`.
@@ -7699,12 +7699,37 @@ auto v1 = std::get<MyClass>(wrapper);  // throws std::bad_variant_access
 If you have a set of single parameter functions with the same name (function overload), where those parameters contains all the types in a variant's allowed types list, you can use `std::visit()` to automatically pull out the object contained in the variant and call the appropriate function overload with that object as the argument.
 
 ```c++
-std::variant<int, float> wrapper {};  // may hold on to either int, float
-// call into a generic lambda / functor
-auto res1 = std::visit([](auto& x) { return 5 * x; }, wrapper);
-// call into an overloaded free function (via a generic lambda / functor)
-auto res2 = std::visit([](auto &x) { return my_function(x); }, wrapper);
-// call into a specific lambda / functor based on type currently being held
+std::variant<int, float> wrapper { 0 };  // may hold on to either int, float
+auto res1 { std::visit([](auto& x) { return 5 * x; }, wrapper) };           // call into a generic lambda / functor
+auto res2 { std::visit([](auto &x) { return my_function(x); }, wrapper) };  // call into an overloaded free function (via a generic lambda / functor)
+```
+
+In addition to the usage above, `std::visit()` is typically used in two other ways. The first is to pass in a functor with callable operator overrides for each type in the variant.
+
+```c++
+struct MyFunctor {
+    void operator()(int& x)   { std::cout << "int" << x; }
+    void operator()(float& x) { std::cout << "float" << x; }
+    void operator()(auto& x) { std::cout << "OTHER"; }
+};
+
+
+std::variant<int, float> wrapper { 0 };
+std::visit(MyFunctor{}, wrapper);
+```
+
+The second is to use the "overload trick". The "overload trick" is a templated class that combines multiple callable units into a single functor, where that single functor encompasses all of the overloads of those callable units.
+
+```c++
+template<class... Ts>
+struct overloaded : Ts... {
+    using Ts::operator()...;
+};
+template<class... Ts>
+overloaded(Ts...) -> overload<Ts...>; // line not needed in C++20...
+
+
+std::variant<int, float> wrapper { 0 };
 std::visit(
     overloaded {
         [](int& x) { std::cout << "int" << x; },
@@ -7713,6 +7738,12 @@ std::visit(
     },
     wrapper
 );
+```
+
+```{note}
+`std::visit()` can take in multiple `std::variant` objects. The callable unit passed in needs to have overloads for the cartesian product of the variant types (param at index n covers the types of the variant at index n). For example, calling `std::visit()` with `std::variant<int, float>` amd `std::variant<char, long>` requires that the callable unit have overloads for (int, char), (int, long), (float, char), and (float, long).
+
+See [here](https://www.cppstories.com/2018/09/visit-variants/) and [here](https://dev.to/tmr232/that-overloaded-trick-overloading-lambdas-in-c17).
 ```
 
 Boost also provides a version of this wrapper, `boost::variant`.
@@ -7912,6 +7943,68 @@ struct custom_less_functo {
 std::ordered_set<MyObject*, custom_less_functor_for> s { ... }
 ```
 ````
+
+## Invoke
+
+`{bm} /(Library Functions\/Invoke)_TOPIC/`
+
+```{prereq}
+Library Functions/Wrappers/Function_TOPIC
+Library Functions/Wrappers/Reference Wrapper_TOPIC
+Library Functions/Type Traits_TOPIC
+```
+
+`std::invoke()` is an implementation of a concept_NORM in the C++ standard library known as "INVOKE". The concept_NORM defines how generic library functions treat arguments that are callbacks, where those callbacks may not be callable units at all. At its simplest, `std::invoke()` will simply invoke whatever callable unit you give it with whatever arguments you give to it.
+
+```c++
+auto x { [](int a, int b) { return a + b; }};
+auto res { std::invoke(x, 3, 2) }; // equivalent to calling x directly: "x(3,2)"
+```
+
+When passed a member function, the first argument is expected to be `this` while the remaining arguments are the member function's arguments. It doesn't matter if `this` is a reference, a pointer, or a smarter pointer. It'll work regardless.
+
+```c++
+struct X {
+    int run(int a, int b) { return a + b; }
+};
+
+X x{};
+auto res1 { std::invoke(&X::run, x, 3, 2) };           // OKAY - this is a reference
+auto res2 { std::invoke(&X::run, std::ref(x), 3, 2) }; // OKAY - this is a reference_wrapper
+auto res3 { std::invoke(&X::run, &x, 3, 2) };          // OKAY - this is a pointer
+```
+
+When passed a member variable that's a data type, the data itself is returned. Just like with member functions, the first argument is expected to be `this`.
+
+```c++
+struct X {
+    int val { 55 };
+};
+
+X x{};
+auto res1 { std::invoke(&X::val, x) };           // OKAY - this is a reference
+auto res2 { std::invoke(&X::val, std::ref(x)) }; // OKAY - this is a reference_wrapper
+auto res3 { std::invoke(&X::val, &x) };          // OKAY - this is a pointer
+```
+
+```{note}
+Be careful with data members that are invokable (e.g. a member variable that's of type `std::function`). It will not get invoked, and will sometimes it leads to stuff being silently ignored. See [here](https://devblogs.microsoft.com/oldnewthing/20220401-00/?p=106426).
+
+[Here](https://youtu.be/zt7ThwVfap0?t=655)'s a good blurb going over why `std::invoke()` exists.
+```
+
+The type traits library has `std::invoke_result<...>::type`, which return the type of some "INVOKE".
+
+```c++
+struct X {
+    int run(int a, int b) { return a + b; }
+};
+
+X x{};
+// make sure type_traits header is included or else std::invoke_result won't work
+using ret_t = std::invoke_result<int (X::*)(int, int), std::reference_wrapper<X>, int, int>::type;
+ret_t r { std::invoke(&X::run, std::ref(x), 3, 2) };
+```
 
 ## Containers
 
@@ -10369,6 +10462,523 @@ for (auto x : v | std::views::all | CustomViews::AddFiveView) {
 }
 ```
 
+## Algorithms 
+
+`{bm} /(Library Functions\/Algorithms)_TOPIC/`
+
+```{prereq}
+Library Functions/Iterators_TOPIC
+Library Functions/Containers_TOPIC
+Library Functions/Ranges_TOPIC
+Library Functions/Strings_TOPIC
+```
+
+The C++ standard library comes with a set of algorithms that work via iterators. The use of iterators means that the algorithms aren't necessarily bound to containers, but can work on any iterable type. For example, `std::vector`, `std::string`, and `std::filesystem::directory_iterator` are all iterable types.
+
+```c++
+std::vector<int> v {3, 2, 3, 4, 5, 6, 8, 7, 9};
+auto pos { std::find(v.begin(), v.end(), 5) }; // find first instance of the integer 5
+```
+
+If the algorithm supports it, an execution policy may be specified via the first parameter. This policy requests a level of parallelism for the algorithm's execution.
+
+ * `std::execution::seq` - single-threaded.
+ * `std::execution::unseq` - single-threaded but vectorized (SIMD).
+ * `std::execution::par` - multi-threaded.
+ * `std::execution::par_unseq`- multi-threaded and vectorized (SIMD).
+
+```c++
+std::vector<int> v {3, 2, 3, 4, 5, 6, 8, 7, 9};
+auto pos { std::find(std::execution::par_unseq, v.begin(), v.end(), 5) }; // find first instance of the integer 5, requested multi-threaded + vectorized
+```
+
+Algorithm function overloads requiring an execution policy may require a more elaborate iterator types vs those that don't require an execution policy. For example, `std::find()` requires...
+
+ * forward iterators for the function overload taking an execution policy.
+ * input iterators for the function overload not taking an execution policy.
+
+The reason for this discrepancy has to do with how multi-threaded / vectorized variants of an algorithm access data (e.g. typically need to hop around the data).
+
+The subsections below list out common algorithm functions.
+
+```{note}
+In the subsections below, the function overloads without execution policy are the ones listed. This is because not all functions provide execution policy overloads.
+
+The required iterator types aren't listed either because they aren't consistent between function overloads. Almost all overloads will work properly on `std::vector`.
+```
+
+```{note}
+Why use some of the algorithms here instead of those that come in the ranges library? The ranges library in C++20 doesn't have parallel algorithms (future versions of C++ may have this) and is missing some of these algorithms.
+```
+
+### Scan
+
+`{bm} /(Library Functions\/Algorithms\/Scan)_TOPIC/`
+
+These algorithms scan over elements to do something non-destructive.
+
+| Function                     | Description                                                |
+|------------------------------|------------------------------------------------------------|
+| `std::for_each(it1, it2, f)` | Call `f()` on each element                                 |
+| `std::for_each_n(it1, n, f)` | Call `f()` on first `n` elements                           |
+| `std::count(it1, it2, v)`    | Count elements that are `v`                                |
+| `std::count_if(it1, it2, p)` | Count elements where `p()` is true                         |
+| `std::all_of(it1, it2, p)`   | Check that all elements in `it` pass `p(*it) == true`      |
+| `std::none_of(it1, it2, p)`  | Check that all elements in `it` pass `p(*it) != true`      |
+| `std::any_of(it1, it2, p)`   | Check at least one element in `it` passes `p(*it) == true` |
+
+```{seealso}
+Library Functions/Algorithms/Parallel Primitives (`std::transform()` is similar to `std::for_each`)
+Library Functions/Algorithms/Parallel Primitives (For  inclusive scan / exclusive scan algorithms)
+```
+
+```c++
+std::vector<int> v {0,1,2,3,4,5};
+
+
+std::for_each(v.begin(), v.end(), [](auto& v) { std::cout << v << ' '; });  // 0 1 2 3 4 5
+std::for_each_n(v.begin(), 3, [](auto& v) { std::cout << v << ' '; });      // 0 1 2
+
+auto c1 { std::count(v.begin(), v.end(), 5) };                                      // 1
+auto c2 { std::count_if(v.begin(), v.end(), [](auto& v) { return v % 2 == 0; }) };  // 3
+
+bool t1 { std::all_of(v.begin(), v.end(), [](auto& v) { return v % 2 == 0; }) };   // false
+bool t2 { std::any_of(v.begin(), v.end(), [](auto& v) { return v % 2 == 0; }) };   // true
+bool t3 { std::none_of(v.begin(), v.end(), [](auto& v) { return v % 2 == 0; }) };  // false
+```
+
+### Fill
+
+`{bm} /(Library Functions\/Algorithms\/Fill)_TOPIC/`
+
+```{prereq}
+Library Functions/Iterators/Adapters/Insert_TOPIC
+```
+
+The functions fill a range either with repeats of the same value or with generate values.
+
+| Function                     | Description                                            |
+|------------------------------|--------------------------------------------------------|
+| `std::fill(it1, it2, v)`     | Write out `v`                                          |
+| `std::fill_n(it1, n, v)`     | Write out `n` copies of `v`                            |
+| `std::generate(it1, it2, g)` | Write out `g()`'s result                               |
+| `std::generate_n(it1, n, g)` | Write out `g()`'s result `n` times                     |
+| `std::iota(it1, it2, v)`     | Write sequentially increasing values starting from `v` |
+
+```c++
+std::vector<int> v1 {1,3,3,5};
+std::fill(v1.begin(), v1.end(), 0);  // v1 becomes {0,0,0,0}
+
+std::vector<int> v2 {};
+std::fill_n(std::back_insert_iterator { v2 }, 4, -3);  // v2 becomes {-3,-3,-3,-3}
+
+std::vector<int> v3 {1,2,3,4};
+std::generate(v3.begin(), v3.end(), []() { return 65; });  // v3 becomes {65,65,65,65}
+
+std::vector<int> v4 {};
+std::generate_n(std::back_insert_iterator { v4 }, 4, []() { return 1; });  // v4 becomes {1,1,1,1}
+
+std::vector<int> v5 {0,0,0,0};
+std::iota(v5.begin(), v5.end(), 150);  // v4 becomes {150,151,152,153}
+
+// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`
+// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that
+// simply calls push_back() on the underlying container.
+```
+
+### Copy
+
+`{bm} /(Library Functions\/Algorithms\/Copy)_TOPIC/`
+
+```{prereq}
+Library Functions/Iterators/Adapters/Insert_TOPIC
+```
+
+These functions copy one range into another.
+
+| Function                               | Description                                                  |
+|----------------------------------------|--------------------------------------------------------------|
+| `std::copy(itA1, itA2, itB1)`          | Overwrite `B` with `A`                                       |
+| `std::copy_n(itA1, n, itB1)`           | Overwrite `B` with first `n` elements of `A`                 |
+| `std::copy(itA1, itA2, itB1, p)`       | Overwrite `B` with `A` only for elements where `p()` is true |
+| `std::copy_backward(itA1, itA2, itB2)` | Overwrite `B` with `A`  (from last-to-first)                 |
+
+```c++
+std::vector<int> v1 {0,1,2,3,4,5};
+
+std::vector<int> v2 {};
+std::copy(v1.begin(), v1.end(), std::back_insert_iterator { v2 });  // v2 becomes {0,1,2,3,4,5}
+
+std::vector<int> v3 {-1,-1,-1,-1,-1,-1};
+std::copy(v1.begin(), v1.end(), v3.begin());  // v3 becomes {0,1,2,3,4,5}
+
+std::vector<int> v4 {-1,-1,-1};
+std::copy_n(v1.begin(), 3, v4.begin());  // v4 becomes {0,1,2}
+
+std::vector<int> v5 {-1,-1,-1,-1,-1,-1};
+std::copy_backward(v1.begin(), v1.end(), v5.end());  // v5 becomes {0,1,2,3,4,5}
+
+// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`
+// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that
+// simply calls push_back() on the underlying container.
+```
+
+### Replace
+
+`{bm} /(Library Functions\/Algorithms\/Replace)_TOPIC/`
+
+```{prereq}
+Library Functions/Iterators/Adapters/Insert_TOPIC
+```
+
+These functions replace elements within a range.
+
+| Function                                            | Description                                                        |
+|-----------------------------------------------------|--------------------------------------------------------------------|
+| `std::replace(it1, it2, v_old, v_new)`              | Set all positions with `v_old` to `v_new`                          |
+| `std::replace_if(it1, it2, p, v_new)`               | Set all positions where `p()` is true to `v_new`                   |
+| `std::replace_copy(itA1, itA2, itB1, v_old, v_new)` | `std::replace(itA1, itA2, v_old, v_new)` but result written to `B` |
+| `std::replace_copy_if(itA1, itA2, itB1, p, v_new)`  | `std::replace(itA1, itA2, p, v_new)` but result written to `B`     |
+
+```c++
+std::vector<int> v1 {1,3,3,5};
+
+
+std::replace(v1.begin(), v1.end(), 3, 9);  // v1 becomes {1,9,9,5}
+
+std::replace_if(v1.begin(), v1.end(), [](auto &v) { return v == 9; }, 0);  // v1 becomes {1,0,0,5}
+
+std::vector<int> v2 {};
+std::replace_copy(v1.begin(), v1.end(), std::back_insert_iterator { v2 }, 0, 4);  // v2 becomes {1,4,4,5}
+
+std::vector<int> v3 {};
+std::replace_copy_if(v1.begin(), v1.end(), std::back_insert_iterator { v3 },  // v3 becomes {1,3,3,5}
+    [](auto &v) { return v == 0; }, 3);
+
+// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`
+// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that
+// simply calls push_back() on the underlying container.
+```
+
+### Delete
+
+`{bm} /(Library Functions\/Algorithms\/Delete)_TOPIC/`
+
+```{prereq}
+Library Functions/Iterators/Adapters/Insert_TOPIC
+```
+
+These functions remove elements from a range.
+
+| Function                                    | Description                                                |
+|---------------------------------------------|------------------------------------------------------------|
+| `std::remove(it1, it2, v_old)`              | Remove elements that are `v_old`                           |
+| `std::remove_if(it1, it2, p)`               | Remove elements where `p()` is true                        |
+| `std::remove_copy(itA1, itA2, itB1, v_old)` | `std::remove(itA1, itA2, v_old)` but result written to `B` |
+| `std::remove_copy_if(itA1, itA2, itB1, p)`  | `std::remove(itA1, itA2, p)` but result written to `B`     |
+
+Removing an element simply shuffles around elements accordingly and returns a new ending iterator. It won't resize the underlying container to end at that new ending iterator's position. That's the user's responsibility.
+
+```c++
+std::vector<int> v1 {1,3,3,5};
+auto v1_new_end { std::remove(v1.begin(), v1.end(), 3) };
+v1.erase(v1_new_end, v1.end());  // v1 becomes {1,5}
+
+std::vector<int> v2 {1,3,3,5};
+auto v2_new_end { std::remove_if(v2.begin(), v2.end(), [](auto &e) { return e == 3; }) };
+v2.erase(v2_new_end, v2.end());  // v2 becomes {1,5}
+
+std::vector<int> v3 {1,3,3,5};
+std::vector<int> v3_removed {};
+std::remove_copy(v3.begin(), v3.end(), std::back_insert_iterator { v3_removed }, 3);  // v3_removed becomes {1,5}
+
+std::vector<int> v4 {1,3,3,5};
+std::vector<int> v4_removed {};
+std::remove_copy_if(v4.begin(), v4.end(), std::back_insert_iterator { v4_removed },
+    [](auto &e) { return e == 3; });  // v4_removed becomes {1,5}
+
+// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`
+// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that
+// simply calls push_back() on the underlying container.
+```
+
+```{note}
+C++20 offers a new function called `std::erase()` / `std::erase_if()` which combines `std::remove()` / `std::remove_if()` with calling the container's `erase()` function, ensuring that container is properly resized.
+```
+
+These functions replace multiple adjacent occurrences of an element with a single occurrence (collapse adjacent duplicates), which is essentially just another form of removing elements.
+
+| Function                                 | Description                                                                            |
+|------------------------------------------|----------------------------------------------------------------------------------------|
+| `std::unique(it1, it2)`                  | Collapse adjacent duplicates                                                           |
+| `std::unique(it1, it2, bp)`              | Collapse adjacent duplicates, using `bp()` to determine if two elements are duplicates |
+| `std::unique_copy(itA1, itA2, itB1)`     | `std::unique(itA1, itA2)` but result written to `B`                                    |
+| `std::unique_copy(itA1, itA2, itB1, bp)` | `std::unique(itA1, itA2, bp)` but result written to `B`                                |
+
+```c++
+std::vector<int> v1 {1,3,3,5};
+auto v1_new_end { std::unique(v1.begin(), v1.end()) } ;
+v1.erase(v1_new_end, v1.end());  // v1 becomes {1,3,5}
+
+std::vector<int> v2 {1,3,3,5};
+auto v2_new_end { std::unique(v2.begin(), v2.end(), [](auto &e1, auto &e2) { return e1 == e2; }) };
+v2.erase(v2_new_end, v2.end());  // v2 becomes {1,3,5}
+
+std::vector<int> v3 {1,3,3,5};
+std::vector<int> v3_unique {};
+std::unique_copy(v3.begin(), v3.end(), std::back_insert_iterator { v3_unique });  // v3_unique becomes {1,3,5}
+
+std::vector<int> v3 {1,3,3,5};
+std::vector<int> v3_unique {};
+std::unique_copy(v3.begin(), v3.end(), std::back_insert_iterator { v3_unique });  // v3_unique becomes {1,3,5}
+
+std::vector<int> v4 {1,3,3,5};
+std::vector<int> v4_unique {};
+std::unique_copy(v4.begin(), v4.end(), std::back_insert_iterator { v4_unique },
+    [](auto &e1, auto &e2) { return e1 == e2; });  // v4_unique becomes {1,3,5}
+
+// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`
+// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that
+// simply calls push_back() on the underlying container.
+```
+
+### Move
+
+`{bm} /(Library Functions\/Algorithms\/Move)_TOPIC/`
+
+| Function                               | Description                                            |
+|----------------------------------------|--------------------------------------------------------|
+| `std::move(itA1, itA2, itB1)`          | Move `A` to `B` using move semantics                   |
+| `std::move_backward(itA1, itA2, itB2)` | Move `A` to `B` using move semantics (last to first)   |
+| `std::swap_ranges(itA1, itA2, itB1)`   | Swap between `A` and `B` using `std::swap(*itA, *itB)` |
+
+TODO: swap_ranges() must not overlap
+
+### Reverse
+
+`{bm} /(Library Functions\/Algorithms\/Reverse)_TOPIC/`
+
+| Function | Description |
+|----------|-------------|
+| `std::reverse(it1, it2)` | Reverse |
+| `std::reverse_copy(itA1, itB1)` | Reverse `A` and copy into `B` |
+
+### Shift / Rotate
+
+`{bm} /(Library Functions\/Algorithms\/Shift \/ Rotate)_TOPIC/`
+
+| Function | Description |
+|----------|-------------|
+| `std::rotate(it1, it_mid, it2)` | Rotate such that `mid`'s position becomes the new first element |
+| `std::rotate_copy(itA1, itA_mid, itA2, itB1)` | Copy into `B` rotated `A` that has `mid`'s position as its first element |
+
+TODO: add shift() variants, possibly others
+
+### Random
+
+`{bm} /(Library Functions\/Algorithms\/Random)_TOPIC/`
+
+| Function | Description |
+|----------|-------------|
+| `std::rotate(it1, it_mid, it2)` | Rotate such that `mid`'s position becomes the new first element |
+| `std::rotate_copy(itA1, itA_mid, itA2, itB1)` | Copy into `B` rotated `A` that has `mid`'s position as its first element |
+| `std::shuffle(it1, it2, rng)` | Shuffle using the uniform random number generator `rng` |
+
+TODO: add std::sample()
+
+### Search
+
+`{bm} /(Library Functions\/Algorithms\/Search)_TOPIC/`
+
+| Function | Description |
+|----------|-------------|
+| `std::find(it1, it2, v)`        | Find first `v` |
+| `std::find_if(it1, it2, p)`     | Find first where `p(*it) == true` |
+| `std::find_if_not(it1, it2, p)` | Find first where `p(*it) != true` |
+| `std::find_first_of(itA1, itA2, itB1, itB2, bp)` | Find `itB` within `itA`, using `bp(*itA, *itB)` to evaluate a match |
+| `std::mismatch(itA1, itA2, itB1, itB2)` | Find first where `*itA != *itB` |
+| `std::mismatch(itA1, itA2, itB1, itB2, bp)` | Find first where `bp(*itA, *itB) != true` |
+| `std::adjacent_find(it1, it2)`  | Find first where `*itA == *(itA+1)` (same element appears twice) |
+| `std::adjacent_find(it1, it2, bp)` | Find first where `bp(*itA, *(itA+1)) == true` |
+| `std::search(itA1, itA2, itB1, itB2)` | Search for `itB` within `itA` starting from the front, using `*itA == *itB` |
+| `std::search(itA1, itA2, itB1, itB2, bp)` | Search for `itB` within `itA` starting from the front, using `bp(*itA, *itB) == true` |
+| `std::find_end(itA1, itA2, itB1, itB2)` | Search for `itB` within `itA` starting at the end, using `*itA == *itB` |
+| `std::find_end(itA1, itA2, itB1, itB2, bp)` | Search for `itB` within `itA` starting at the end, using `bp(*itA, *itB) == true` |
+| `std::search_n(it1, it2)`  | Find first where same element occurs `n` times consecutively, using `*itA == *(itA+1)` |
+| `std::search_n(it1, it2, bp)` | Find first where same element occurs `n` times consecutively, using `bp(*itA, *(itA+1)) == true` |
+
+TODO: std::search() but with custom searchers
+TODO: link back to all_of / any_of / none_of
+
+### Compare
+
+`{bm} /(Library Functions\/Algorithms\/Compare)_TOPIC/`
+
+| Function | Description |
+|----------|-------------|
+| `std::equals(itA1, itA2, itB1, itB2)` | Check if `itA` and `itB` are equal using `*itA == *itB` |
+| `std::equals(itA1, itA2, itB1, itB2, bp)` | Check if `itA` and `itB` are equal using `bp(*itA, *itB) == true` |
+| `std::lexicographical_compare(itA1, itA2, itB1, itB2)` | Check if `itA` is less than `itB` using `*itA < *itB` |
+| `std::lexicographical_compare(itA1, itA2, itB1, itB2, lt)` | Check if `itA` is less than `itB` using `lt(*itA, *itB) == true` |
+
+TODO: add reference back to search for std::mismatch
+
+### Partition
+
+`{bm} /(Library Functions\/Algorithms\/Partition)_TOPIC/`
+
+| Function | Description |
+|----------|-------------|
+| `std::partition(it1, it2, p)` | Split into two partitions based on if `p(*it)` is true or false |
+| `std::partition_copy(itA1, itA2, itB, p)` | Copy into `B`, splitting into two partitions based on if `p(*it)` is true or false |
+| `std::stable_partition(it1, it2, p)` | Split into two partitions based on if `p(*it)` is true or false, maintaining relative order |
+| `std::is_partitioned(it1, it2, p)` | Check if partitioned into two based on if `p(*it)` is true or false |
+
+### Sort
+
+`{bm} /(Library Functions\/Algorithms\/Sort)_TOPIC/`
+
+| Function | Description |
+|----------|-------------|
+| `std::sort(it1, it2)` | Sort using `std::less<>()` to compare |
+| `std::sort(it1, it2, cmp)` | Sort using `cmp()` to compare |
+| `std::stable_sort(it1, it2)` | Sort using `std::less<>()` to compare, maintaining relative order of elements deemed to be the same by the sort |
+| `std::stable_sort(it1, it2, cmp)` | Sort using `cmp()` to compare, maintaining relative order of elements deemed to be the same by the sort |
+| `std::partial_sort(it1, itm, it2)` | Sort using `std::less<>()` to compare, until the element at `*itm` |
+| `std::partial_sort(it1, itm, it2, cmp)` | Sort using `cmp()` to compare, until the element at `*itm` |
+| `std::partial_sort_copy(itA1, itA2, itB1, itB2)` | Sort `A` using `std::less<>()` to compare, copying result into `B` |
+| `std::partial_sort_copy(itA1, itA2, itB1, itB2, cmp)` | Sort using `cmp()` to compare,  copying result into `B` |
+| `std::nth_element(it1, itn, it2)` | Place into `itn` the element that would be there if the entire range were sorted, using `std::less<>()` to compare |
+| `std::nth_element(it1, itn, it2, cmp)` | Place into `itn` the element that would be there if the entire range were sorted, using `cmp()` to compare |
+| `std::is_sorted(it1, it2)` | Check if sorted using `std::less<>()` to compare |
+| `std::is_sorted(it1, it2, cmp)` | Check if sorted using `cmp()` to compare |
+
+| Function | Description |
+|----------|-------------|
+| `std::merge(itA1, itA2, itB1, itB2, itC1)` | Merge sorted range `A` and sorted range `B` into sorted `C`, using `std::less<>()` to compare |
+| `std::merge(itA1, itA2, itB1, itB2, itC1, cmp)` | Merge sorted range `A` and sorted range `B` into sorted `C`, using `cmp()` to compare |
+| `std::inplace_merge(it1, itm, it2)` | Merge together two sorted sub-ranges [`it1`, `itm`) and [`itm`, `it2`), using `std::less<>()` to compare |
+| `std::inplace_merge(it1, itm, it2, cmp)` | Merge together two sorted sub-ranges [`it1`, `itm`) and [`itm`, `it2`), using `cmp()` to compare |
+| `std::includes(itA1, itA2, itB1, itB2)` | Check if all elements of sorted range `A` are in sorted range `B`, using `std::less<>()` to compare |
+| `std::includes(itA1, itA2, itB1, itB2, cmp)` | Check if all elements of sorted range `A` are in sorted range `B`, using `cmp()` to compare |
+
+### Binary Search
+
+`{bm} /(Library Functions\/Algorithms\/Binary Search)_TOPIC/`
+
+| Function | Description |
+|----------|-------------|
+| `std::binary_search(it1, it2, v)` | Searches for `v` in the sorted range, using `std::less<>()` to compare |
+| `std::binary_search(it1, it2, v, bp)` | Searches for `v` in the sorted range, using `cmp()` to compare |
+| `std::lower_bound(it1, it2, v)` | Searches for left-most `v` in the sorted range, using `std::less<>()` to compare |
+| `std::lower_bound(it1, it2, v, bp)` | Searches for left-most `v` in the sorted range, using `cmp()` to compare |
+| `std::upper_bound(it1, it2, v)` | Searches for right-most `v` in the sorted range, using `std::less<>()` to compare |
+| `std::upper_bound(it1, it2, v, bp)` | Searches for right-most `v` in the sorted range, using `cmp()` to compare |
+| `std::equal_range(it1, it2, v)` | Both `std::lower_bound(it1, it2, v)` and `std::upper_bound(it1, it2, v)` returned as `std::pair<>` |
+| `std::equal_range(it1, it2, v, bp)` | Both `std::lower_bound(it1, it2, v, bp)` and `std::upper_bound(it1, it2, v, bp)` returned as `std::pair<>` |
+
+### Set Operations
+
+`{bm} /(Library Functions\/Algorithms\/Set Operations)_TOPIC/`
+
+| Function | Description |
+|----------|-------------|
+| `std::set_difference(itA1, itA2, itB1, itB2, itC1)` | Difference sorted range `A` and sorted range `B` into sorted `C`, using `std::less<>()` to compare |
+| `std::set_difference(itA1, itA2, itB1, itB2, itC1, cmp)` | Difference sorted range `A` and sorted range `B` into sorted `C`, using `cmp()` to compare |
+| `std::set_symmertic_difference(itA1, itA2, itB1, itB2, itC1)` | Symmetric difference sorted range `A` and sorted range `B` into sorted `C`, using `std::less<>()` to compare |
+| `std::set_symmertic_difference(itA1, itA2, itB1, itB2, itC1, cmp)` | Symmetric difference sorted range `A` and sorted range `B` into sorted `C`, using `cmp()` to compare |
+| `std::set_intersect(itA1, itA2, itB1, itB2, itC1)` | Intersect sorted range `A` and sorted range `B` into sorted `C`, using `std::less<>()` to compare |
+| `std::set_intersect(itA1, itA2, itB1, itB2, itC1, cmp)` | Intersect sorted range `A` and sorted range `B` into sorted `C`, using `cmp()` to compare |
+| `std::set_union(itA1, itA2, itB1, itB2, itC1)` | Union sorted range `A` and sorted range `B` into sorted `C`, using `std::less<>()` to compare |
+| `std::set_union(itA1, itA2, itB1, itB2, itC1, cmp)` | Union sorted range `A` and sorted range `B` into sorted `C`, using `cmp()` to compare |
+
+### Min / Max
+
+`{bm} /(Library Functions\/Algorithms\/Min \/ Max)_TOPIC/`
+
+| Function | Description |
+|----------|-------------|
+| `std::min_element(it1, it2)` | Get min element, using `<` to compare |
+| `std::min_element(it1, it2, cmp)` | Get min element, using `cmp()` to compare |
+| `std::max_element(it1, it2)` | Get max element, using `<` to compare |
+| `std::max_element(it1, it2, cmp)` | Get max element, using `cmp()` to compare |
+| `std::minmax_element(it1, it2)` | Get min and max element, using `<` to compare |
+| `std::minmax_element(it1, it2, cmp)` | Get min and max element, using `cmp()` to compare |
+
+| Function | Description |
+|----------|-------------|
+| `std::min(a, b)` | Get smaller between `a` and `b`, using `<` to compare |
+| `std::min(a, b, cmp)` | Get smaller between `a` and `b`, using `cmp()` to compare |
+| `std::max(a, b)` | Get larger between `a` and `b`, using `<` to compare |
+| `std::max(a, b, cmp)` | Get larger between `a` and `b`, using `cmp()` to compare |
+| `std::minmax(a, b)` | Combine `min(a,b)` and `max(a,b)` |
+| `std::minmax(a, b, cmp)` | Combine `min(a,b,cmp)` and `max(a,b,cmp)` |
+| `std::clamp(v, lo, hi)` | Return `v` clamped to be between [`lo`, `hi`], using `<` to compare |
+| `std::clamp(v, lo, hi, cmp)` | Return `v` clamped to be between [`lo`, `hi`], using `cmp(lo, hi)` to compare |
+
+### Binary Search Tree
+
+`{bm} /(Library Functions\/Algorithms\/Binary Search Tree)_TOPIC/`
+
+TODO: explain how a binary search tree is also called a heap
+
+| Function | Description |
+|----------|-------------|
+| `std::make_heap(it1, it2)` | Reorder range such that it becomes a heap, using `<` to compare (not `std::less<>`) |
+| `std::make_heap(it1, it2, cmp)` | Reorder range such that it becomes a heap, using `cmp()` to compare |
+| `std::push_heap(it1, it2)` | Integrate last element into existing heap ([`it1`, `it2 - 1`) is heap, `*(it2 - 1)` is unintegrated element), using `<` to compare (not `std::less<>`) |
+| `std::push_heap(it1, it2, cmp)` | Integrate last element into existing heap ([`it1`, `it2 - 1`) is heap, `*(it2 - 1)` is unintegrated element), using `cmp()` to compare |
+| `std::pop_heap(it1, it2)` | Remove largest element from heap and places as last element ([`it1`, `it2 - 1`) becomes heap, `*(it2 - 1)` is removed element), using `<` to compare (not `std::less<>`) |
+| `std::pop_heap(it1, it2, cmp)` | Remove largest element from heap and places as last element ([`it1`, `it2 - 1`) becomes heap, `*(it2 - 1)` is removed element), using `cmp()` to compare |
+| `std::is_heap(it1, it2)` | Check if range is heap, using `<` to compare (not `std::less<>`) |
+| `std::is_heap(it1, it2, cmp)` | Check if range is heap, using `cmp()` to compare |
+| `std::is_heap_until(it1, it2)` | Determine until which position range is heap, using `<` to compare (not `std::less<>`) |
+| `std::is_heap_until(it1, it2, cmp)` | Determine until which position range is heap, using `cmp()` to compare |
+| `std::sort_heap(it1, it2)` | Convert heap to sorted range (ascending order), using `<` to compare (not `std::less<>`) |
+| `std::sort_heap(it1, it2, cmp)` | Convert heap to sorted range (ascending order), using `cmp()` to compare |
+
+### Permutations
+
+`{bm} /(Library Functions\/Algorithms\/Permutations)_TOPIC/`
+
+| Function | Description |
+|----------|-------------|
+| `std::next_permutation(it1, it2)` | Reorders to next permutation and returns `false` if done, using `std::less<>` to compare |
+| `std::next_permutation(it1, it2, cmp)` |  Reorders to next permutation and returns `false` if done, using `cmp()` to compare |
+| `std::prev_permutation(it1, it2)` | Reorders to previous permutation and returns `false` if done, using `std::less<>` to compare |
+| `std::prev_permutation(it1, it2, cmp)` |  Reorders to previous permutation and returns `false` if done, using `cmp()` to compare |
+
+TODO: this must start with a sorted range
+
+### Parallel Primitives
+
+`{bm} /(Library Functions\/Algorithms\/Parallel Primitives)_TOPIC/`
+
+| `std::transform(itA1, itA2, itB1, m)` | Transform `A` via `m(*itA)` into `B` |
+| `std::transform(itA1, itA2, itB1, itC, bt)` | Transform `A` and `B` such that each index is transformed via `bt(*itA, *itB)` and put into `C` |
+
+| `std::reduce(it1, it2)` | Reduce using `+` with an initial value of an empty initialization of whatever the range's element type is |
+| `std::reduce(it1, it2, v)` | Reduce using `+` with an initial value of `v` |
+| `std::reduce(it1, it2, f, f)` | Reduce using `f()` with an initial value of `v` |
+
+| `std::inclusive_scan(it1, it2)` | Inclusive prefix sum using `+` with an initial value of an empty initialization of whatever the range's element type is |
+| `std::inclusive_scan(it1, it2, v)` | Inclusive prefix sum using `+` with an initial value of `v` |
+| `std::inclusive_scan(it1, it2, f, f)` | Inclusive prefix sum using `f()` with an initial value of `v` |
+| `std::exclusive_scan(it1, it2)` | Inclusive prefix sum using `+` with an initial value of an empty initialization of whatever the range's element type is |
+| `std::exclusive_scan(it1, it2, v)` | Inclusive prefix sum using `+` with an initial value of `v` |
+| `std::exclusive_scan(it1, it2, f, f)` | Inclusive prefix sum using `f()` with an initial value of `v` |
+
+| `std::transform_reduce(itA1, itA2, v, r, m)` | Same as `std::transform(itA1, itA2, m)` followed by  `std::reduce(it1, it2, v, r)` |
+| `std::transform_reduce(itA1, itA2, itB1, v, r, m)` | Same as `std::transform(itA1, itA2, itB1, m)` followed by  `std::reduce(it1, it2, v, r)` |
+| `std::transform_reduce(itA1, itA2, itB1, v)` | Same as `std::transform_reduce(itA1, itA2, itB1, v, std::plus<>(), std::multiplies<>())` |
+
+TODO: non-parallel versions of reduce
+
+| `std::accumulate()` | reduce
+| `std::partial_sum()` | inclusive_scan
+| `std::adjacent_difference` | map
+| `std::inner_product()` | transform_reduce
+
 ## Span
 
 `{bm} /(Library Functions\/Span)_TOPIC/`
@@ -12446,34 +13056,490 @@ std::cin.exceptions(std::istream::badbit | std::istream::failbit); // exception 
 `{bm} /(Library Functions\/File System)_TOPIC/`
 
 ```{prereq}
-Library Functions/Strings/Formatter_TOPIC
+Library Functions/Strings_TOPIC
 Library Functions/Streams_TOPIC
+Library Functions/Iterators_TOPIC
 ```
 
-The `std::filesystem` namespace contains functionality related to file systems.
+The `std::filesystem` namespace contains functionality related to file systems. The functionality provided in this namespace is similar to filesystem libraries that come with other high-level langauges (e.g. Java or Python).
 
-This type `std::filesystem::path` is the abstraction used to represent paths. It provides various helpful functions, operator overloads, as well as support for streams.
+The subsections below detail describe basic types and common functionality. Note that most filesystem functions come in two form:
+
+* An overload that throws an exeception if there's an error.
+* An overload that takes in a reference to a `std::error_code` object and fills in its members (error information).
 
 ```c++
-TODO: ADD VARIOUS WAYS OF CONSTRUCTING CONSTRUCT
-TODO: ADD VARIOUS WAYS OF CONSTRUCTING CONSTRUCT
-TODO: ADD VARIOUS WAYS OF CONSTRUCTING CONSTRUCT
-TODO: ADD VARIOUS WAYS OF CONSTRUCTING CONSTRUCT
-TODO: ADD VARIOUS WAYS OF CONSTRUCTING CONSTRUCT
-TODO: ADD COMMON USAGES
-TODO: ADD COMMON USAGES
-TODO: ADD COMMON USAGES
-TODO: ADD COMMON USAGES
-TODO: ADD COMMON USAGES
+std::filesystem::path p1 { std::filesystem::current_path() };   // on error, throws exception
 
-std::filesystem::path curr_dit { std::filesystem::current_path() };
-std::cout << curr_dir << std::endl; // directly works with streams
+std::error_code ec {};
+std::filesystem::path p2 { std::filesystem::current_path(ec) };   // on error, populates ec
 ```
 
-To create a directory, use `std::filesystem::create_directory()`
+For brevity, the examples in the subsection typically only show one of the two overloads being used.
 
 ```{note}
 There's also `boost::filesystem`, which is what `std::filesystem` is based off of.
+```
+
+### Path Type
+
+`{bm} /(Library Functions\/File System\/Path Type)_TOPIC/`
+
+The type `std::filesystem::path` is the abstraction used to represent paths. Common ways to initialize a path object is to supply a string, string view, or an input iterator sequence of characters. Multiple character types are supported: `char`, `wchar_t`, `char8_t`, `char16_t`, ..., where the characters are re-encoded to the type used by the native file system.
+
+```c++
+std::filesystem::path p1 { "/home/user/Downloads/my_file.txt" };
+std::filesystem::path p2 { "Downloads/my_file.txt" };
+std::filesystem::path p3 { str.begin(), str.end() };
+```
+
+```{note}
+Also, as of C++20, there is no built-in character set encoding/decoding functionality, so how exactly is it converting character set encodings (e.g. utf-8 characters to whatever the platform is expecting for its filesystem)? `char` is for the platform's encoding - so maybe just use that and ignore everything else?
+```
+
+To fix path separators such that they're for the current platform, use `make_preferred()`.
+
+```c++
+std::filesystem::path windows_path{"a\\b\\c"};
+std::filesystem::path posix_path{"a/b/c"};
+windows_path.make_preferred();  // if on Linux, will change windows_path to be "a/b/c"
+```
+
+Given a path, to ...
+
+ * append to a path, use `append()`, the slash operator (/), or the forward slash assignment (/=)
+ * get the parent path (as a copy), use `parent_path()`.
+ * get the the last path element, use `filename()`.
+ * perform an in-place removal the last element from a path object, use `remove_filename()`.
+ * perform an in-place replacement of the last element in a path object, use `remove_filename()`.
+
+```c++
+std::filesystem::path p1 { "/home/user" };
+std::filesystem::path p2 { p1 / "file.txt" };  // p2 is initialized to "/home/user/file.txt"
+p1 /= "file.txt";                              // p1 becomes "/home/user/file.txt"
+std::filesystem::path p3 { "/home/user/file.txt" };
+std::filesystem::path p4 { p3.parent_path() }; // p4 is initialized to "home/user"
+std::filesystem::path p5 { p3.filename() };    // p5 is initialized to "file.txt"
+p3.remove_filename();                          // p3 becomes "/home/user"
+p3.replace_filename("other");                  // p3 becomes "/home/other"
+```
+
+To test if a path  ...
+
+ * is absolute vs relative, use `is_absolute()` / `is_relative()`.
+ * has a filename (not root path), use `has_filename()`.
+ * has a parent path (not a top-level path), use `has_parent_path()`.
+
+```c++
+std::filesystem::path p1 { "/home/user" };
+bool is_abs { p1.is_absolute() };    // true
+bool is_rel { p1.is_relative() };    // false
+bool has_filename { p1.has_filename() };        // true
+bool has_parent_path { p1.has_parent_path() };  // true
+```
+
+For file extensions, to ...
+
+ * get the extension, use `extension()`.
+ * get the filename before the extension, use `stem()`.
+ * check if there is a file extension / filename before the extension, use `has_extension()` / `has_stem()`.
+ * remove or replace the extension in-place, use `replace_extension()`.
+
+```c++
+std::filesystem::path p1 { "/home/user/file.txt" };
+bool has_ext { p1.has_extension() };  // true
+bool has_stem { p1.has_stem() };      // true
+std::filesystem::path p1_stem  { p1.stem() };    // p1_stem is initialized to "file"
+std::filesystem::path p1_ext { p1.extension() }; // p1_ext is initialized to "txt"
+p1.replace_extension(".png")  // p1 becomes "/home/user/file.png"
+p1.replace_extension("jpg")   // p1 becomes "/home/user/file.jpg"
+p1.replace_extension(".")     // p1 becomes "/home/user/file."
+p1.replace_extension("")      // p1 becomes "/home/user/file"
+```
+
+### Path Operations
+
+`{bm} /(Library Functions\/File System\/Path Operations)_TOPIC/`
+
+```{prereq}
+Library Functions/File System/Path Type_TOPIC
+```
+
+To get the current path, use `std::filesystem::current_path()`.
+
+```c++
+std::filesystem::path p { std::filesystem::current_path() };   // on error, throws exception
+// NOTE: std::error_code equivalent exists that doesn't throw exceptions
+```
+
+To relativize a path, use `std::filesystem::relative()`.
+
+```c++
+std::filesystem::path p { "/home/user/hello/foo.txt") };
+std::filesystem::path p_base { "/home/user" };
+std::filesystem::path p_rel std::filesystem::relative(p, p_base);
+// NOTE: std::error_code equivalent exists that doesn't throw exceptions
+```
+
+```{note}
+If you don't supply a base, it defaults the base to `std::current_path()`.
+
+According to [cppreference](https://en.cppreference.com/w/cpp/filesystem/relative), this also resolves symbolic links, meaning the path you submit has to exist? The text seems unclear. There's also `std::filesystem::proximate()` which seems to be more loose with the rules? I'm not exactly sure what's going on here. The documentation isn't clear.
+```
+
+To convert a relative path to an absolute path, use `std::filesystem::absolute()`. This is as if `std::current_path()` were prepended to a relative path.
+
+```c++
+std::filesystem::path p { "hello/foo.txt") };
+std::filesystem::path p_abs { std::filesystem::absolute(p)) };   // on error, throws exception
+// NOTE: std::error_code equivalent exists that doesn't throw exceptions
+```
+
+```{note}
+There's no option to set the base path, so what's the point of this? Why not just append the paths together and normalize it (remove `..` and `.`)?
+```
+
+To convert a path to an absolute path that also processes out `.` and `..` in the path (e.g. if there's a `..`, it'll knock back a path element automatically), use `std::filesystem::canonical()`.
+
+```c++
+std::filesystem::path p { ".././hello/foo.txt") };
+std::filesystem::path p_abs1 { std::filesystem::absolute(p)) };   // on error, throws exception
+std::filesystem::path p_abs2 { std::filesystem::canonical(p)) };   // on error, throws exception
+// if the current path is /home/user, ...
+// p_abs1 will be /home/user/.././hello/foo.txt
+// p_abs2 will be /home/hello/foo.txt
+```
+
+```{note}
+According to [cppreference](https://en.cppreference.com/w/cpp/filesystem/canonical), this also resolves symbolic links, meaning the path you submit has to exist? The text seems unclear. There's also `std::filesystem::weakly_canonical()` which will only "resolve" up until the last known path element and just append the rest? I don't know for sure.
+```
+
+### Metadata Operations
+
+`{bm} /(Library Functions\/File System\/Metadata Operations)_TOPIC/`
+
+```{prereq}
+Library Functions/File System/Path Type_TOPIC
+```
+
+To check if a path exists, use `std::filesystem::exists()`.
+
+```c++
+std::filesystem::path p1 { "/home/user/file.txt" };
+bool exists1 { std::filesystem::exists(p1) };     // on error, throws exception
+// NOTE: std::error_code equivalent exists that doesn't throw exception
+```
+
+To run a ...
+
+ * `stat`-like command on a path, use `std::filesystem::status()`.
+ * `lstat`-like command on a path, use `std::filesystem::symlink_status()`.
+
+```{note}
+The difference is that, for the latter, symlinks aren't followed. The status is for the symlink itself, not what it points to.
+```
+
+```c++
+std::filesystem::path p1 { "/home/user/file.txt" };
+std::filesystem::file_status stat1 { std::filesystem::status(p1) };     // on error, throws exception
+// NOTE: std::error_code equivalent exists that doesn't throw exception
+
+if (stat1.type() == std::filesystem::file_type::none) { /* error or not evaluated yet? */ }
+if (stat1.type() == std::filesystem::file_type::not_found) { /* path not found */ }
+if (stat1.type() == std::filesystem::file_type::regular) { /* regular file */ }
+if (stat1.type() == std::filesystem::file_type::directory) { /* directory */ }
+if (stat1.type() == std::filesystem::file_type::symlink) { /* symlink */ }
+if (stat1.type() == std::filesystem::file_type::block) { /* block special file */ }
+if (stat1.type() == std::filesystem::file_type::character) { /* character special file */ }
+if (stat1.type() == std::filesystem::file_type::fifo) { /* fifo / pipe */ }
+if (stat1.type() == std::filesystem::file_type::socket) { /* socket */ }
+if (stat1.type() == std::filesystem::file_type::implementation-defined) { /* for other types, such as "NTFS junctions" */ }
+if (stat1.type() == std::filesystem::file_type::unknown) { /* file exists but type unknown */ }
+
+file::system::perms { stat1.permissions() };  // standard linux file permissions: three octal digits (e.g. 0777)
+std::cout << ((perms & std::filesystem::perms::owner_read) != std::filesystem::perms::none ? "r" : "-")
+          << ((perms & std::filesystem::perms::owner_write) != std::filesystem::perms::none ? "w" : "-")
+          << ((perms & std::filesystem::perms::owner_exec) != std::filesystem::perms::none ? "x" : "-")
+          << ((perms & std::filesystem::perms::group_read) != std::filesystem::perms::none ? "r" : "-")
+          << ((perms & std::filesystem::perms::group_write) != std::filesystem::perms::none ? "w" : "-")
+          << ((perms & std::filesystem::perms::group_exec) != std::filesystem::perms::none ? "x" : "-")
+          << ((perms & std::filesystem::perms::others_read) != std::filesystem::perms::none ? "r" : "-")
+          << ((perms & std::filesystem::perms::others_write) != std::filesystem::perms::none ? "w" : "-")
+          << ((perms & std::filesystem::perms::others_exec) != std::filesystem::perms::none ? "x" : "-")
+          << std::endl;
+```
+
+To directly test a path's type, a set of helper commands are available (e.g. `std::filesystem::is_directory()`).
+
+```c++
+std::filesystem::path p1 { "/home/user/file.txt" };
+
+if (std::filesystem::is_block_file(p1)) { /* block special file */ }
+if (std::filesystem::is_character_file(p1)) { /* character special file */ }
+if (std::filesystem::is_directory(p1)) { /* directory */ }
+if (std::filesystem::is_fifo(p1)) { /* fifo / pipe */ }
+if (std::filesystem::is_regular_file(p1)) { /* regular file */ }
+if (std::filesystem::is_socket(p1)) { /* socket */ }
+if (std::filesystem::is_symlink(p1)) { /* symlink */ }
+if (std::filesystem::is_other(p1)) { /* equiv to exists(s) && !is_regular_file(s) && !is_directory(s) && !is_symlink(s) */ }
+if (std::filesystem::status_known(p1)) { /* test for std::filesystem::file_type::none, NOT std::filesystem::file_type::unknown */ }
+// NOTE: std::error_code equivalents exist that don't throw exceptionw
+```
+
+To set a path's permissions, use `std::filesystem::permissions()`.
+
+```c++
+std::filesystem::path p1 { "/home/user/file.txt" };
+std::filesystem::perms prms { std::filesystem::perms::owner_all | std::filesystem::perms::group_all | std::filesystem::perms::others_read };
+std::filesystem::permissions(p1, prms);     // on error, throws exception
+// NOTE: There's a 3rd parameter called opts that controls how permissions are
+//       replaced, you almost always want to keep this as the default (replace).
+// NOTE: std::error_code equivalent exists that doesn't throw exception
+```
+
+To ...
+
+ * get a path's size, use `std::filesystem::file_size()`.
+ * get or set a path's last modified time, use `std::filesystem::last_write_time()`. 
+
+```c++
+std::filesystem::path p1 { "/home/user/file.txt" };
+std::uintmax_t sz { std::filesystem::size(p1) };                                // on error, throws exception
+std::filesystem::file_time_type time { std::filesystem::last_write_time(p1) };  // on error, throws exception
+std::filesystem::last_write_time(p1, time);                                     // on error, throws exception
+// NOTE: file_time_type is an alias to std::chrono::time_point<std::chrono::file_clock>
+// NOTE: std::error_code equivalents exist that don't throw exceptions
+```
+
+```{seealso}
+Library Functions/Time_TOPIC (File time manipulations / operations)
+```
+
+To either truncate a file or expand it by filling it with zero'd out bytes (file holes), use `std::filesystem::resize_file()`.
+
+```c++
+std::filesystem::path p1 { "/home/user/file.txt" };
+std::filesystem::resize_file(64u*1024u);  // on error, throws exception
+// NOTE: std::error_code equivalents exist that don't throw exceptions
+```
+
+To get the usage statistics for the disk that a path is for, use `std::filesystem::space()`.
+
+```c++
+std::filesystem::path p1 { "/home" };
+std::filesystem::space_info si { std::filesystem::space(p1) };  // on error, throws exception
+std::cout << "disk capacity: " si.capacity << " "
+          << "disk free: " si.free << " "
+          << "disk available: " si.available << std::endl;
+// NOTE: std::error_code equivalents exist that don't throw exceptions
+```
+
+### Copy Operations
+
+`{bm} /(Library Functions\/File System\/Copy Operations)_TOPIC/`
+
+```{prereq}
+Library Functions/File System/Path Type_TOPIC
+```
+
+To copy a file, use `std::filesystem::copy_file()`.
+
+Optionally, a `std::filesystem::copy_options` object may be passed in which defines how the copy occurs. By default, it's set to `std::filesystem::copy_options::none` (default behaviour), but other options include skipping if the file exists, overwriting it, replacing it, etc..
+
+```c++
+std::filesystem::path p_from { "/home/user/file.txt" };
+std::filesystem::path p_to { "/home/user/COPIED_file.txt" };
+bool copied { std::filesystem::copy_file(p_from, p_to) };
+// NOTE: std::error_code equivalents exist that don't throw exceptions
+```
+
+To copy a directory or a file, use `std::filesystem::copy()`.
+
+Optionally, a `std::filesystem::copy_options` object may be passed in which defines how the copy occurs. By default, it's set to `std::filesystem::copy_options::none` (default behaviour). If the path being copied is a directory, the default behaviour is to recursively copy that directory, meaning `std::filesystem::copy_options::none` is the same as ``std::filesystem::copy_options::recursive` when the source path is a directory.
+
+```c++
+std::filesystem::path p_from { "/home/user1" };
+std::filesystem::path p_to { "/home/user2" };
+std::filesystem::copy(p_from, p_to);
+// NOTE: std::error_code equivalents exist that don't throw exceptions
+```
+
+```{seealso}
+Library Functions\/File System\/Symlink Operations_TOPIC (To copy a symlink -- not copy it's target, but copy the symlink itself)
+```
+
+### Move Operations
+
+`{bm} /(Library Functions\/File System\/Move Operations)_TOPIC/`
+
+```{prereq}
+Library Functions/File System/Path Type_TOPIC
+```
+
+To move / rename a file or directory, use `std::filesystem::rename()`.
+
+If the source is a directory, the destination can be non-existent (in which case it'll get created) or an empty directory (in which case it'll get deleted first and recreated).
+
+```c++
+std::filesystem::path p_from { "/home/user/file.txt" };
+std::filesystem::path p_to { "/home/user/MOVED_file.txt" };
+bool copied { std::filesystem::rename(p_from, p_to) };
+// NOTE: std::error_code equivalents exist that don't throw exceptions
+```
+
+```{note}
+Symlinks are not followed. If the source is a symlink, the symlink itself is renamed, not the target.
+```
+
+### Delete Operations
+
+`{bm} /(Library Functions\/File System\/Delete Operations)_TOPIC/`
+
+```{prereq}
+Library Functions/File System/Path Type_TOPIC
+```
+
+To remove a file or empty directory, use `std::filesystem::remove()`.
+
+```c++
+std::filesystem::path p1 { "/home/user/file.txt" };
+bool removed { std::filesystem::remove(p1) };
+// NOTE: std::error_code equivalents exist that don't throw exceptions
+```
+
+To recursively remove all files in a directory as well as the directory itself, use `std::filesystem::remove_all()`.
+
+```c++
+std::filesystem::path p1 { "/home/user" };
+std::uintmax_t num_items_removed { std::filesystem::remove_all(p1) };
+// NOTE: std::error_code equivalents exist that don't throw exceptions
+```
+
+```{note}
+Symlinks are not followed. If the source is a symlink, the symlink itself is removed.
+```
+
+### Directory Operations
+
+`{bm} /(Library Functions\/File System\/Directory Operations)_TOPIC/`
+
+```{prereq}
+Library Functions/File System/Path Type_TOPIC
+Library Functions/Iterators_TOPIC
+```
+
+```{seealso}
+Library Functions\/File System\/Metadata Operations_TOPIC (To test if a path is a directory)
+```
+
+To create a directory, use either `std:filesystem::create_directory()` or `std::filesystem::create_directories()` (plural). The latter will recursively create all missing directories in the chain.
+
+```c++
+std::filesystem::path p { "/home/user/a/b/c" };
+bool created { std::filesystem::create_directories(p) };
+// NOTE: std::error_code equivalents exist that don't throw exceptions
+```
+
+To get the directory suitable for creating temporary files, use `std::filesystem::temp_directory_path()`.
+
+```c++
+std::filesystem::path temp_path { std::filesystem::temp_directory_path() };
+std::cout << "Temp directory is " << temp_path << std::endl;
+```
+
+To iterate over a directory's children, use either `std::filesystem::directory_iterator` or `std::filesystem::recursive_directory_iterator`. Both classes are input iterators that give back `std::filesystem::directory_entry` objects, which hold metadata information about a child path. The latter class will recursively iterate down all child paths.
+
+```c++
+std::filesystem::path p { "/home/user/a/b/c" };
+for (std::filesystem::directory_entry& e : std::filesystem::recursive_directory_iterator(p)) {
+    std::cout << e.path() << std::endl
+              << e.file_size() << std::endl
+              << e.last_write_time() << std::endl
+              << e.hard_link_count() << std::endl
+              << e.is_block_file() << std::endl
+              << e.is_character_file() << std::endl
+              << e.is_directory() << std::endl
+              << e.is_fifo() << std::endl
+              << e.is_regular_file() << std::endl
+              << e.is_socket() << std::endl
+              << e.is_symlink() << std::endl
+              << e.is_other() << std::endl;
+    // std::cout << e << std::endl;  // directory_entry also has a direct overload for output streams
+}
+```
+
+```{seealso}
+Library Functions\/File System\/Delete Operations_TOPIC (To delete a directory recursively)
+Library Functions\/File System\/Move Operations_TOPIC (To move a directory)
+Library Functions\/File System\/Copy Operations_TOPIC (To copy a directory)
+```
+
+### Symlink Operations
+
+`{bm} /(Library Functions\/File System\/Symlink Operations)_TOPIC/`
+
+```{prereq}
+Library Functions/File System/Path Type_TOPIC
+```
+
+To create a ...
+
+ * symlink, use `std::filesystem::create_symlink()` / `std::filesystem::create_directory_symlink()`.
+ * hardlink hard_link, use `std::filesystem::create_hard_link()`.
+
+```c++
+std::filesystem::path p_from { "/home/user/file.txt" };
+std::filesystem::path p_to { "/home/user/LINKED_file.txt" };
+std::filesystem::create_symlink(p_from, p_to);
+std::filesystem::create_hard_link(p_from, p_to);
+// NOTE: you should use create_directory_symlink() instead of create_symlink() when symlinking dirs
+// NOTE: std::error_code equivalents exist that don't throw exceptions
+```
+
+To check if a path is a symlink, use `std::is_symlink()`.
+
+```c++
+std::filesystem::path p1 { "/home/user/LINKED_file.txt" };
+bool is_sym { std::filesystem::is_symlink(p1) };
+// NOTE: std::error_code equivalent exists that doesn't throw exceptions
+```
+
+To follow a symlink, use `std::filesystem::read_symlink()`.
+
+```c++
+std::filesystem::path p_from { "/home/user/LINKED_file.txt" };
+std::filesystem::path p_to { std::filesystem::read_symlink(p_from) };
+// NOTE: std::error_code equivalent exists that doesn't throw exceptions
+```
+
+To copy a symlink (not copy it's target, but copy the symlink itself), use `std::filesystem::copy_symlink()`.
+
+```c++
+std::filesystem::path p1 { "/home/user/file.txt" };
+std::filesystem::path p2 { "/home/user/LINKED_file.txt" };
+bool equiv { std::filesystem::copy_symlink(p1, p2) };  // on error, throws 
+// NOTE: std::error_code equivalent exists that doesn't throw exceptions
+```
+
+```{seealso}
+Library Functions\/File System\/Move Operations_TOPIC (To move a symlink, use normal rename function)
+```
+
+To check if two paths point to the same place (e.g. symlink or hard link), use `std::filesystem::equivalent()`.
+
+```c++
+std::filesystem::path p1 { "/home/user/file.txt" };
+std::filesystem::path p2 { "/home/user/LINKED_file.txt" };
+bool equiv { std::filesystem::equivalent(p1, p2) };  // on error, throws 
+// NOTE: std::error_code equivalent exists that doesn't throw exceptions
+```
+
+To count the number of hard links a file has, use `std::filesystem::hard_link_count()`.
+
+```c++
+std::filesystem::path p2 { "/home/user/LINKED_file.txt" };
+std::uintmax_t cnt { std::filesystem::hard_link_count(p2) };
+// NOTE: std::error_code equivalent exists that doesn't throw exceptions
 ```
 
 ## Debug Utilities
