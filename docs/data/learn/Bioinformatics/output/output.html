@@ -197,11 +197,11 @@
 <li><a href="#H_Burrows-Wheeler%20Transform">Burrows-Wheeler Transform</a></li>
 <ul>
 <li><a href="#H1_Standard%20Algorithm">Standard Algorithm</a></li>
+<li><a href="#H_Partial%20Suffix%20Array%20Algorithm">Partial Suffix Array Algorithm</a></li>
 <li><a href="#H_Deserialization%20Algorithm">Deserialization Algorithm</a></li>
 <li><a href="#H_Backsweep%20Algorithm">Backsweep Algorithm</a></li>
 <li><a href="#H_Collapsed%20First%20Algorithm">Collapsed First Algorithm</a></li>
 <li><a href="#H_Checkpointed%20Ranks%20Algorithm">Checkpointed Ranks Algorithm</a></li>
-<li><a href="#H_Partial%20Suffix%20Array%20Algorithm">Partial Suffix Array Algorithm</a></li>
 <li><a href="#H_Partial%20Suffix%20Array%20and%20Checkpointed%20Ranks%20Algorithm">Partial Suffix Array and Checkpointed Ranks Algorithm</a></li>
 </ul>
 <li><a href="#H_BLAST">BLAST</a></li>
@@ -18613,7 +18613,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_f9a5c6d1258db99770ad002a0a571e30.svg" alt="Dot diagram"></p>
+<p><img src="dot_aa3e748b8b94a867a770a36d6b761e30.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>Testing if a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> requires walking the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching the end-of-<a href="#BM_(sequence)%2Fi">sequence</a> marker.</p>
@@ -18664,7 +18664,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_0b6cc891a84d7c1b1673facbdf9c95ed.svg" alt="Dot diagram"></p>
+<p><img src="dot_5449d34a417734c16d0a602a48345a93.svg" alt="Dot diagram"></p>
 <p>Searching <code>How do you feel about apples?</code> with the trie revealed the following was found: {(22, apple)}</p>
 </div>
 <p></p>
@@ -18743,7 +18743,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_76a0e1d7d23ee211b5dd3af8d9757306.svg" alt="Dot diagram"></p>
+<p><img src="dot_88a5db83ef3348edb2fafc9ae4bdd85d.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19012,7 +19012,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_c5e54ad7756970621aa6a704f69d1daf.svg" alt="Dot diagram"></p>
+<p><img src="dot_8b75edb48cb01379534a98723c8a8ea4.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19151,7 +19151,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_409a5483456423f21085c64f61716b82.svg" alt="Dot diagram"></p>
+<p><img src="dot_74d2d883371827899a96339d864a7c5f.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>If a scan walks the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> to "arat" and fails, the next scan position must contain "rat". Since the prefix "rat" exists in the <a href="#BM_(%5Cbtrie)%2Fi">trie</a>, a special edge connects "arat" to "rat" such that the scan for the next position can jump past "rat" in the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> walk.</p>
@@ -19308,7 +19308,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_e23d94dce81b4cefa1e312490c2ba888.svg" alt="Dot diagram"></p>
+<p><img src="dot_d996a5bfba88319f1d6b4d12fcfd9828.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -20256,7 +20256,7 @@ xxa vehicle__¶
 <ul>
 <li>Symbol: A unique element within the <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. "banana¶" is made up of the <em>unique elements</em> / <em>symbols</em> {a, b, n, ¶}).</li>
 <li>Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd <em>occurrence</em> / <em>symbol instance</em> of <em>n</em>).</li>
-<li>Symbol instance count: The occurrence part of a symbol instance (e.g. index 4 of "banana¶" is <em>n</em> and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
+<li>Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is <em>n</em> and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
 </ul>
 </div>
 <p><a href="#BM_(BWT)%2F">BWT</a> matrices have a special property called the <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform%7Cfirst%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a>. Consider how the above matrix would look with symbol instance counts included. The symbols in "banana¶" are {a, b, n, ¶}. At index ...</p>
@@ -20817,6 +20817,362 @@ xxa vehicle__¶
 <p><em>nana</em> found in <em>banana¶</em> at 1 times.</p>
 </div>
 <p></p>
+<a name="H_Partial%20Suffix%20Array%20Algorithm"></a><h4>Partial Suffix Array Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FPartial%20Suffix%20Array%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FStandard%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Standard Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FSuffix%20Array)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Suffix Array</a></li>
+</ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Recall the terminology used for <a href="#BM_(BWT)%2F">BWT</a>:</p>
+<ul>
+<li>Symbol: A unique element within the <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. "banana¶" is made up of the <em>unique elements</em> / <em>symbols</em> {a, b, n, ¶}).</li>
+<li>Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd <em>occurrence</em> / <em>symbol instance</em> of <em>n</em>).</li>
+<li>Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is <em>n</em> and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
+</ul>
+</div>
+<p>The standard algorithm counts the number of times a <a href="#BM_(substring)%2Fi">substring</a> occurs within some <a href="#BM_(sequence)%2Fi">sequence</a> by using the first and last columns of that <a href="#BM_(sequence)%2Fi">sequence</a>'s <a href="#BM_(BWT)%2F">BWT</a> matrix.</p>
+<p><img src="svgbob_e90904e7598e63b217b95b3a5e00a569eedeaa2d.svg" alt="Kroki diagram output"></p>
+<p>What the standard algorithm can't do is determine where those occurrences are within the <a href="#BM_(sequence)%2Fi">sequence</a>. This algorithm fixes that by extending the standard algorithm with <a href="#BM_(suffix%20array)%2Fi">suffix array</a> data.</p>
+<p>Consider the <a href="#BM_(suffix%20array)%2Fi">suffix array</a> for "banana¶" (end marker is ¶).</p>
+<p><img src="svgbob_8cf90af05a056138874652848dc03c78bb7632a7.svg" alt="Kroki diagram output"></p>
+<p>One way to think of a <a href="#BM_(suffix%20array)%2Fi">suffix array</a> is that it's just a <a href="#BM_(BWT)%2F">BWT</a> matrix (symbol instance counts not included) where each row has had everything past the end marker removed. For example, consider the <a href="#BM_(BWT)%2F">BWT</a> matrix for "banana¶" vs the <a href="#BM_(suffix%20array)%2Fi">suffix array</a> for "banana¶".</p>
+<table>
+<tbody><tr><th>BWT</th><th>BWT (Truncated)</th><th>Suffix Array</th></tr>
+<tr><td>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+</tr>
+<tr>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+</tr>
+<tr>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+</tr>
+<tr>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+</tr>
+<tr>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+</tr>
+<tr>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+</tr>
+<tr>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+</tr>
+</tbody>
+</table>
+</td><td>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>¶</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>a</td>
+<td>¶</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td></td>
+</tr>
+<tr>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+</tr>
+<tr>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</td><td>
+<table>
+<thead>
+<tr>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>¶</td>
+</tr>
+<tr>
+<td>a¶</td>
+</tr>
+<tr>
+<td>ana¶</td>
+</tr>
+<tr>
+<td>anana¶</td>
+</tr>
+<tr>
+<td>banana¶</td>
+</tr>
+<tr>
+<td>na¶</td>
+</tr>
+<tr>
+<td>nana¶</td>
+</tr>
+</tbody>
+</table>
+</td></tr>
+</tbody></table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The reason for this is that both <a href="#BM_(BWT)%2F">BWT</a> matrices and <a href="#BM_(suffix%20array)%2Fi">suffix array</a>s have their rows lexicographically sorted in the same way. Since each row's truncation point is always at the end marker (¶), and there's only ever a single end marker in a row, any symbols after that end marker don't effect of the lexicographic sorting of the rows.</p>
+<p>Try it and see. Take the <a href="#BM_(BWT)%2F">BWT</a> matrix in the example above and change the symbols after the truncation point to anything other than end marker. It won't change the sort order.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>¶</td>
+<td>z</td>
+<td>z</td>
+<td>z</td>
+<td>z</td>
+<td>z</td>
+<td>z</td>
+</tr>
+<tr>
+<td>a</td>
+<td>¶</td>
+<td>a</td>
+<td>a</td>
+<td>a</td>
+<td>a</td>
+<td>a</td>
+</tr>
+<tr>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>z</td>
+<td>z</td>
+<td>z</td>
+</tr>
+<tr>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>a</td>
+</tr>
+<tr>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+</tr>
+<tr>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>z</td>
+<td>z</td>
+<td>z</td>
+<td>z</td>
+</tr>
+<tr>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>a</td>
+<td>a</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>At its core, a <a href="#BM_(suffix%20array)%2Fi">suffix array</a> is just a list containing each suffix's starting index (each index defines a suffix in the original <a href="#BM_(sequence)%2Fi">sequence</a>). However, in the context of a <a href="#BM_(BWT)%2F">BWT</a> matrix, each of these indices is essentially the index of the corresponding first column.</p>
+<table>
+<thead>
+<tr>
+<th>first</th>
+<th>last</th>
+<th>first_idx / suffix_offset</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(¶,1)</td>
+<td>(a,3)</td>
+<td>5 (suffix=¶)</td>
+</tr>
+<tr>
+<td>(a,3)</td>
+<td>(n,2)</td>
+<td>4 (suffix=a¶)</td>
+</tr>
+<tr>
+<td>(a,2)</td>
+<td>(n,1)</td>
+<td>3 (suffix=ana¶)</td>
+</tr>
+<tr>
+<td>(a,1)</td>
+<td>(b,1)</td>
+<td>1 (suffix=anana¶)</td>
+</tr>
+<tr>
+<td>(b,1)</td>
+<td>(¶,1)</td>
+<td>0 (suffix=banana¶)</td>
+</tr>
+<tr>
+<td>(n,2)</td>
+<td>(a,2)</td>
+<td>3 (suffix=na¶)</td>
+</tr>
+<tr>
+<td>(n,1)</td>
+<td>(a,1)</td>
+<td>2 (suffix=nana¶)</td>
+</tr>
+</tbody>
+</table>
+<p>TODO: ADD CODE HERE</p>
+<p>The example below uses <code>first_idx</code> to find where occurrences of "ana" are in "banana¶": indices 3 and 1.</p>
+<p><img src="svgbob_5d4ae3a2cc4a9d57136f3a2b04d47a1da342ef88.svg" alt="Kroki diagram output"></p>
+<p>TODO: ADD CODE HERE</p>
+<p>All of this may seem pointless because the standalone <a href="#BM_(suffix%20array)%2Fi">suffix array</a> algorithm does all of this by itself (<a href="#BM_(BWT)%2F">BWT</a> isn't required at all). However, including <code>first_idx</code>  (<code>suffix_offset</code>) along with the <a href="#BM_(BWT)%2F">BWT</a> matrix's <code>first</code> and <code>last</code> allows for a concept known as checkpointing: Instead of retaining a value at every index of <code>first_idx</code>, leave some empty. The values that aren't empty are called checkpoints.</p>
+<p>TODO: CONTINUE HERE, then fix other code so instead of calling it first_ch_idx/last_ch_idx, call it first_ch_cnt/last_ch_cnt</p>
+<p>TODO: CONTINUE HERE, then fix other code so instead of calling it first_ch_idx/last_ch_idx, call it first_ch_cnt/last_ch_cnt</p>
+<p>TODO: CONTINUE HERE, then fix other code so instead of calling it first_ch_idx/last_ch_idx, call it first_ch_cnt/last_ch_cnt</p>
+<p>TODO: CONTINUE HERE, then fix other code so instead of calling it first_ch_idx/last_ch_idx, call it first_ch_cnt/last_ch_cnt</p>
 <a name="H_Deserialization%20Algorithm"></a><h4>Deserialization Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FDeserialization%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -20826,6 +21182,15 @@ xxa vehicle__¶
 </ul>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Recall the terminology used for <a href="#BM_(BWT)%2F">BWT</a>:</p>
+<ul>
+<li>Symbol: A unique element within the <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. "banana¶" is made up of the <em>unique elements</em> / <em>symbols</em> {a, b, n, ¶}).</li>
+<li>Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd <em>occurrence</em> / <em>symbol instance</em> of <em>n</em>).</li>
+<li>Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is <em>n</em> and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
+</ul>
+</div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This algorithm focuses on a different way of constructing the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix. While it seems useless, it's fundamental for building up some of the more elaborate modifications to the <a href="#BM_(BWT)%2F">BWT</a> algorithm (discussed in later sections).</p>
@@ -21190,6 +21555,15 @@ xxa vehicle__¶
 <p><strong>ALGORITHM</strong>:</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Recall the terminology used for <a href="#BM_(BWT)%2F">BWT</a>:</p>
+<ul>
+<li>Symbol: A unique element within the <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. "banana¶" is made up of the <em>unique elements</em> / <em>symbols</em> {a, b, n, ¶}).</li>
+<li>Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd <em>occurrence</em> / <em>symbol instance</em> of <em>n</em>).</li>
+<li>Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is <em>n</em> and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
+</ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This algorithm focuses on a different way of testing the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix for a <a href="#BM_(substring)%2Fi">substring</a>. It specifically requires that the first and last columns of a <a href="#BM_(BWT)%2F">BWT</a> matrix were generated using the deserialization algorithm, because that algorithm has some special properties with how symbol instances get numbered (sorted / ordered).</p>
 <p>Ultimately, it seems to be testing in a similar way as before but it doesn't try to test each potential <a href="#BM_(substring)%2Fi">substring</a> instance by drilling down. Instead, it limits the span / range of options at each step to values that it knows are correct. In a way, it should be a faster way to test because of the memory layouts and principle of locality (e.g. subsequent memory access to a location that's closer to the original memory access is faster vs a location that's farther, due to caching and stuff like that).</p>
 </div>
@@ -21334,6 +21708,15 @@ xxa vehicle__¶
 <ul>
 <li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FDeserialization%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Deserialization Algorithm</a></li>
 <li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FBacksweep%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Backsweep Algorithm</a></li>
+</ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Recall the terminology used for <a href="#BM_(BWT)%2F">BWT</a>:</p>
+<ul>
+<li>Symbol: A unique element within the <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. "banana¶" is made up of the <em>unique elements</em> / <em>symbols</em> {a, b, n, ¶}).</li>
+<li>Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd <em>occurrence</em> / <em>symbol instance</em> of <em>n</em>).</li>
+<li>Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is <em>n</em> and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
 </ul>
 </div>
 <p>The deserialization algorithm discussed earlier generates a first column with certain distinct properties:</p>
@@ -21618,6 +22001,15 @@ xxa vehicle__¶
 <li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FCollapsed%20First%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Collapsed First Algorithm</a></li>
 </ul>
 </div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Recall the terminology used for <a href="#BM_(BWT)%2F">BWT</a>:</p>
+<ul>
+<li>Symbol: A unique element within the <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. "banana¶" is made up of the <em>unique elements</em> / <em>symbols</em> {a, b, n, ¶}).</li>
+<li>Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd <em>occurrence</em> / <em>symbol instance</em> of <em>n</em>).</li>
+<li>Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is <em>n</em> and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
+</ul>
+</div>
 <p>The deserialization algorithm / collapsed first algorithm discussed earlier generates a first column with certain distinct properties:</p>
 <ol>
 <li>The first column is sorted by both symbol and symbol instance count.</li>
@@ -21664,7 +22056,7 @@ xxa vehicle__¶
 </table>
 <p>The ranks algorithm exploits the "starts at 1 and increments by 1" property of symbols in the last column for further memory savings. The ranks algorithm modifies the collapsed first algorithm's data structure by removing symbol instance counts from <code>last</code> and instead replacing them with ranks: A tally of how many times each symbol was encountered until reaching the current index.</p>
 <table>
-<tbody><tr><th>records (before)</th><th>records (after)</th><th>first_occurrence_map</th></tr>
+<tbody><tr><th>records (original)</th><th>records (using ranks)</th><th>first_occurrence_map</th></tr>
 <tr><td>
 <table>
 <thead>
@@ -21822,8 +22214,7 @@ xxa vehicle__¶
 <p>The symbol instance count for this record is 2</p>
 </div>
 <p></p>
-<p>While replacing <code>last</code>'s symbol instance counts with <code>last_tallies</code> actually increases memory usage, it allows for a concept known as checkpointing: Instead of retaining a value at every index of <code>last_tallies</code>, leave some empty. The indexes that have a value in <code>last_values</code> are called checkpoints. When an index without a <code>last_tallies</code> value is needed, that value can be quickly calculated from the checkpoints.</p>
-<p>For example, retaining every 3rd <code>last_tallies</code> index in the example above would result in the following.</p>
+<p>While replacing <code>last</code>'s symbol instance counts with <code>last_tallies</code> actually increases memory usage, it allows for a concept known as checkpointing: Instead of retaining a value at every index of <code>last_tallies</code>, leave some empty. The values that aren't empty are called checkpoints.</p>
 <table>
 <tbody><tr><th>records</th><th>first_occurrence_map</th></tr>
 <tr><td>
@@ -21936,7 +22327,7 @@ xxa vehicle__¶
 </ul>
 </div>
 <p></p>
-<p>To determine the value of <code>last_tallies</code> at some index which is blank, simply tally <code>last</code> symbols upwards until reaching an index where <code>last_tallies</code> has a value, then add the tallies together. For example, to compute <code>last_tallies[5]</code>, ...</p>
+<p>To determine the value of <code>last_tallies</code> at some index which is empty, simply tally <code>last</code> symbols upwards until reaching an index where <code>last_tallies</code> has a value, then add the tallies together. For example, to compute <code>last_tallies[5]</code>, ...</p>
 <ol>
 <li>add symbol in <code>last[5]</code> to the tally: {a: 1},</li>
 <li>add symbol in <code>last[4]</code> to the tally: {¶: 1, a: 1},</li>
@@ -21975,11 +22366,11 @@ xxa vehicle__¶
 <p>The tally at index 5 is calculated as {a=2,¶=1,n=2,b=1}</p>
 </div>
 <p></p>
-<p>The calculation above determines the <code>last_tallies</code> value at some index, but only a single symbol within that value is of interest. Given an index <code>i</code>, the sole purpose of <code>last_tallies[i]</code> is to determine the symbol instance count of the symbol at <code>last[i]</code>. As such, only the symbol at <code>last[i]</code> needs to be counted until reaching a checkpoint. For example, at index 5, <code>last[5]</code> is <em>a</em>. To compute <code>last_tallies[5][a]</code>, ...</p>
+<p>Determining the value of <code>last_tallies</code> can be further optimized by only focusing on the symbol of interest. For example, at index 5, <code>last[5]</code> is <em>a</em>. When the value for <code>last_tallies[5]</code> is computed, it's only being used to determine the symbol instance count of that <em>a</em> at <code>last[5]</code>. As such, only <em>a</em>s need to be tallied until reaching a checkpoint...</p>
 <ol>
-<li>increment count if <code>last[5] == a</code> (true): <code>1</code>,</li>
-<li>increment count if <code>last[4] == a</code> (false): <code>1</code>,</li>
-<li>add <code>last_tallies[3][a]</code> to the count from the last step: <code>1+1=2</code>.</li>
+<li>increment count if <code>last[5] == a</code> (true): 1,</li>
+<li>increment count if <code>last[4] == a</code> (false): 1,</li>
+<li>add <code>last_tallies[3][a]</code> to the count from the last step: 1+1=2.</li>
 </ol>
 <p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 153 to 166):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">single_tally_to_checkpoint</span>(<span class="hljs-params">
@@ -22016,7 +22407,7 @@ xxa vehicle__¶
 <p>The tally for character a at index 5 is calculated as 2</p>
 </div>
 <p></p>
-<p>Testing for a <a href="#BM_(substring)%2Fi">substring</a> works just as it did with the collapsed first algorithm, with the exception that the symbol instance count for some index in <code>last</code> needs to be calculated via <code>last_tallies</code> checkpoints. The idea is to make the gaps between <code>last_tallies</code> checkpoints wide enough that it gives memory savings compared to keeping the symbol instance counts in <code>last</code>, but at the same time short enough that the time to compute the missing gap values is still negligible. For example, since there are only 4 possible symbols with a DNA <a href="#BM_(sequence)%2Fi">sequence</a> (A, C, G, and T), the gaps in <code>last_tallies</code> don't have to get too wide before seeing memory savings over keeping symbol instance counts in <code>last</code>.</p>
+<p>Testing for a <a href="#BM_(substring)%2Fi">substring</a> works just as it did with the collapsed first algorithm, except that the symbol instance count for some index in <code>last</code> needs to be determined from <code>last_tallies</code> checkpoints. The idea is to make the gaps between <code>last_tallies</code> checkpoints wide enough that it gives memory savings compared to keeping the symbol instance counts in <code>last</code>, but at the same time short enough that the time to compute the missing gap values is still negligible. For example, since there are only 4 possible symbols with a DNA <a href="#BM_(sequence)%2Fi">sequence</a> (A, C, G, and T), the gaps in <code>last_tallies</code> don't have to get too wide before seeing memory savings.</p>
 <p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 215 to 257):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_symbol_instance_count</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
@@ -22082,23 +22473,6 @@ xxa vehicle__¶
 <p><em>ana</em> found in <em>banana¶</em> 2 times.</p>
 </div>
 <p></p>
-<a name="H_Partial%20Suffix%20Array%20Algorithm"></a><h4>Partial Suffix Array Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FPartial%20Suffix%20Array%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FStandard%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Standard Algorithm</a></li>
-<li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FSuffix%20Array)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Suffix Array</a></li>
-</ul>
-</div>
-<p>TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.</p>
-<p>TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.</p>
-<p>TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.</p>
-<p>TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.</p>
-<p>TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.</p>
-<p>TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.</p>
-<p>TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.</p>
-<p>TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.</p>
 <a name="H_Partial%20Suffix%20Array%20and%20Checkpointed%20Ranks%20Algorithm"></a><h4>Partial Suffix Array and Checkpointed Ranks Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FPartial%20Suffix%20Array%20and%20Checkpointed%20Ranks%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -22106,6 +22480,15 @@ xxa vehicle__¶
 <ul>
 <li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FPartial%20Suffix%20Array%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Partial Suffix Array Algorithm</a></li>
 <li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FCheckpointed%20Ranks%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Checkpointed Ranks Algorithm</a></li>
+</ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Recall the terminology used for <a href="#BM_(BWT)%2F">BWT</a>:</p>
+<ul>
+<li>Symbol: A unique element within the <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. "banana¶" is made up of the <em>unique elements</em> / <em>symbols</em> {a, b, n, ¶}).</li>
+<li>Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd <em>occurrence</em> / <em>symbol instance</em> of <em>n</em>).</li>
+<li>Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is <em>n</em> and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
 </ul>
 </div>
 <p>TODO: continue here</p>

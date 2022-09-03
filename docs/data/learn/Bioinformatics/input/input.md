@@ -14504,7 +14504,7 @@ The terminology I used below is mildly confusing.
 
  * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* {a, b, n, ¶}).
  * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of *n*).
- * Symbol instance count: The occurrence part of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
+ * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
 ```
 
 BWT matrices have a special property called the first-last property. Consider how the above matrix would look with symbol instance counts included. The symbols in "banana¶" are {a, b, n, ¶}. At index ...
@@ -14678,6 +14678,170 @@ sequence_search.BurrowsWheelerTransform_Basic main_test
 }
 ```
 
+#### Partial Suffix Array Algorithm
+
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Partial Suffix Array Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Standard Algorithm_TOPIC
+Algorithms/Single Nucleotide Polymorphism/Suffix Array_TOPIC
+```
+
+```{note}
+Recall the terminology used for BWT:
+
+ * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* {a, b, n, ¶}).
+ * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of *n*).
+ * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
+```
+
+The standard algorithm counts the number of times a substring occurs within some sequence by using the first and last columns of that sequence's BWT matrix.
+
+```{svgbob}
+"* ana occurs 2 times in banana¶"
+
++--+--+           +--+--+           +--+--+
+|¶1|a3|     na    |¶1|a3|           |¶1|a3|
+|a3|n2|-------.   |a3|n2|           |a3|n2|
+|a2|n1|-----. |   |a2|n1|     .---> |a2|n1|
+|a1|b1|     | |   |a1|b1|     | .-> |a1|b1|
+|b1|¶1|     | |   |b1|¶1|     | |   |b1|¶1|
+|n2|a2|     | '-> |n2|a2|-----' |   |n2|a2|
+|n1|a1|     '---> |n1|a1|-------'   |n1|a1|
++--+--+           +--+--+    ana    +--+--+
+```
+
+What the standard algorithm can't do is determine where those occurrences are within the sequence. This algorithm fixes that by extending the standard algorithm with suffix array data.
+
+Consider the suffix array for "banana¶" (end marker is ¶).
+
+```{svgbob}
+"SUFFIX ARRAY FOR banana"                       "SUFFIX TREE FOR banana"
+                    
+    0   ¶                                             banana¶   
+                                             .-------------------------->*
+    1   a ¶                                  |                na¶       
+        |                                    |           .---------->*    
+    2   a n a ¶                              |       na  | ¶              
+        | | |                                |   .------>*-->*            
+    3   a n a n a ¶                          | a | ¶                      
+                                             +-->*-->*                    
+    4   b a n a n a ¶                        | ¶                          
+                                             *-->*                        
+    5   n a ¶                                |   na    ¶                  
+        | |                                  '------>*-->*                
+    6   n a n a ¶                                    |   na¶          
+                                                     '---------->*        
+```
+
+One way to think of a suffix array is that it's just a BWT matrix (symbol instance counts not included) where each row has had everything past the end marker removed. For example, consider the BWT matrix for "banana¶" vs the suffix array for "banana¶".
+
+<table>
+<tr><th>BWT</th><th>BWT (Truncated)</th><th>Suffix Array</th></tr>
+<tr><td>
+
+|   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+| ¶ | b | a | n | a | n | a |
+| a | ¶ | b | a | n | a | n |
+| a | n | a | ¶ | b | a | n |
+| a | n | a | n | a | ¶ | b |
+| b | a | n | a | n | a | ¶ |
+| n | a | ¶ | b | a | n | a |
+| n | a | n | a | ¶ | b | a |
+
+</td><td>
+
+|   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+| ¶ |   |   |   |   |   |   |
+| a | ¶ |   |   |   |   |   |
+| a | n | a | ¶ |   |   |   |
+| a | n | a | n | a | ¶ |   |
+| b | a | n | a | n | a | ¶ |
+| n | a | ¶ |   |   |   |   |
+| n | a | n | a | ¶ |   |   |
+
+</td><td>
+
+|         |
+|---------|
+| ¶       |
+| a¶      |
+| ana¶    |
+| anana¶  |
+| banana¶ |
+| na¶     |
+| nana¶   |
+
+</td></tr>
+</table>
+
+```{note}
+The reason for this is that both BWT matrices and suffix arrays have their rows lexicographically sorted in the same way. Since each row's truncation point is always at the end marker (¶), and there's only ever a single end marker in a row, any symbols after that end marker don't effect of the lexicographic sorting of the rows.
+
+Try it and see. Take the BWT matrix in the example above and change the symbols after the truncation point to anything other than end marker. It won't change the sort order.
+
+|   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+| ¶ | z | z | z | z | z | z |
+| a | ¶ | a | a | a | a | a |
+| a | n | a | ¶ | z | z | z |
+| a | n | a | n | a | ¶ | a |
+| b | a | n | a | n | a | ¶ |
+| n | a | ¶ | z | z | z | z |
+| n | a | n | a | ¶ | a | a |
+```
+
+At its core, a suffix array is just a list containing each suffix's starting index (each index defines a suffix in the original sequence). However, in the context of a BWT matrix, each of these indices is essentially the index of the corresponding first column.
+
+| first | last  | first_idx / suffix_offset |
+|-------|-------|-----------------------------|
+| (¶,1) | (a,3) | 5 (suffix=¶)                |
+| (a,3) | (n,2) | 4 (suffix=a¶)               |
+| (a,2) | (n,1) | 3 (suffix=ana¶)             |
+| (a,1) | (b,1) | 1 (suffix=anana¶)           |
+| (b,1) | (¶,1) | 0 (suffix=banana¶)          |
+| (n,2) | (a,2) | 3 (suffix=na¶)              |
+| (n,1) | (a,1) | 2 (suffix=nana¶)            |
+
+TODO: ADD CODE HERE
+
+The example below uses `first_idx` to find where occurrences of "ana" are in "banana¶": indices 3 and 1.
+
+```{svgbob}
+"* find indices of ana occurrences in banana¶"
+
++--+--+-+           +--+--+-+           +--+--+-+         
+|¶1|a3|5|     na    |¶1|a3|5|           |¶1|a3|5|
+|a3|n2|4|-------.   |a3|n2|4|           |a3|n2|4|
+|a2|n1|3|-----. |   |a2|n1|3|     .---> |a2|n1|3|
+|a1|b1|1|     | |   |a1|b1|1|     | .-> |a1|b1|1|
+|b1|¶1|0|     | |   |b1|¶1|0|     | |   |b1|¶1|0|
+|n2|a2|3|     | '-> |n2|a2|3|-----' |   |n2|a2|3|
+|n1|a1|2|     '---> |n1|a1|2|-------'   |n1|a1|2|
++--+--+-+           +--+--+-+    ana    +--+--+-+
+```
+
+TODO: ADD CODE HERE
+
+All of this may seem pointless because the standalone suffix array algorithm does all of this by itself (BWT isn't required at all). However, including `first_idx`  (`suffix_offset`) along with the BWT matrix's `first` and `last` allows for a concept known as checkpointing: Instead of retaining a value at every index of `first_idx`, leave some empty. The values that aren't empty are called checkpoints.
+
+TODO: CONTINUE HERE, then fix other code so instead of calling it first_ch_idx/last_ch_idx, call it first_ch_cnt/last_ch_cnt  
+
+TODO: CONTINUE HERE, then fix other code so instead of calling it first_ch_idx/last_ch_idx, call it first_ch_cnt/last_ch_cnt  
+
+TODO: CONTINUE HERE, then fix other code so instead of calling it first_ch_idx/last_ch_idx, call it first_ch_cnt/last_ch_cnt  
+
+TODO: CONTINUE HERE, then fix other code so instead of calling it first_ch_idx/last_ch_idx, call it first_ch_cnt/last_ch_cnt  
+
+
+
+
+
+
+
+
 #### Deserialization Algorithm
 
 `{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Deserialization Algorithm)_TOPIC/`
@@ -14687,6 +14851,14 @@ Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Standard Alg
 ```
 
 **ALGORITHM**:
+
+```{note}
+Recall the terminology used for BWT:
+
+ * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* {a, b, n, ¶}).
+ * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of *n*).
+ * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
+```
 
 ```{note}
 This algorithm focuses on a different way of constructing the first and last column of a BWT matrix. While it seems useless, it's fundamental for building up some of the more elaborate modifications to the BWT algorithm (discussed in later sections).
@@ -14894,6 +15066,14 @@ Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Deserializat
 **ALGORITHM**:
 
 ```{note}
+Recall the terminology used for BWT:
+
+ * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* {a, b, n, ¶}).
+ * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of *n*).
+ * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
+```
+
+```{note}
 This algorithm focuses on a different way of testing the first and last column of a BWT matrix for a substring. It specifically requires that the first and last columns of a BWT matrix were generated using the deserialization algorithm, because that algorithm has some special properties with how symbol instances get numbered (sorted / ordered).
 
 Ultimately, it seems to be testing in a similar way as before but it doesn't try to test each potential substring instance by drilling down. Instead, it limits the span / range of options at each step to values that it knows are correct. In a way, it should be a faster way to test because of the memory layouts and principle of locality (e.g. subsequent memory access to a location that's closer to the original memory access is faster vs a location that's farther, due to caching and stuff like that).
@@ -15060,6 +15240,14 @@ Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Deserializat
 Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Backsweep Algorithm_TOPIC
 ```
 
+```{note}
+Recall the terminology used for BWT:
+
+ * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* {a, b, n, ¶}).
+ * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of *n*).
+ * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
+```
+
 The deserialization algorithm discussed earlier generates a first column with certain distinct properties:
 
 1. The first column is sorted by both symbol and symbol instance count.
@@ -15179,6 +15367,14 @@ sequence_search.BurrowsWheelerTransform_CollapsedFirst main_test
 Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Collapsed First Algorithm_TOPIC
 ```
 
+```{note}
+Recall the terminology used for BWT:
+
+ * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* {a, b, n, ¶}).
+ * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of *n*).
+ * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
+```
+
 The deserialization algorithm / collapsed first algorithm discussed earlier generates a first column with certain distinct properties:
 
 1. The first column is sorted by both symbol and symbol instance count.
@@ -15199,7 +15395,7 @@ Given this, the first-last property guarantees that each symbol in the last colu
 The ranks algorithm exploits the "starts at 1 and increments by 1" property of symbols in the last column for further memory savings. The ranks algorithm modifies the collapsed first algorithm's data structure by removing symbol instance counts from `last` and instead replacing them with ranks: A tally of how many times each symbol was encountered until reaching the current index.
 
 <table>
-<tr><th>records (before)</th><th>records (after)</th><th>first_occurrence_map</th></tr>
+<tr><th>records (original)</th><th>records (using ranks)</th><th>first_occurrence_map</th></tr>
 <tr><td>
 
 | idx |  last   |
@@ -15257,9 +15453,7 @@ sequence_search.BurrowsWheelerTransform_Ranks main_to_symbol_instance_count
 }
 ```
 
-While replacing `last`'s symbol instance counts with `last_tallies` actually increases memory usage, it allows for a concept known as checkpointing: Instead of retaining a value at every index of `last_tallies`, leave some empty. The indexes that have a value in `last_values` are called checkpoints. When an index without a `last_tallies` value is needed, that value can be quickly calculated from the checkpoints.
-
-For example, retaining every 3rd `last_tallies` index in the example above would result in the following.
+While replacing `last`'s symbol instance counts with `last_tallies` actually increases memory usage, it allows for a concept known as checkpointing: Instead of retaining a value at every index of `last_tallies`, leave some empty. The values that aren't empty are called checkpoints.
 
 <table>
 <tr><th>records</th><th>first_occurrence_map</th></tr>
@@ -15299,7 +15493,7 @@ sequence_search.BurrowsWheelerTransform_RanksCheckpointed main_build
 }
 ```
 
-To determine the value of `last_tallies` at some index which is blank, simply tally `last` symbols upwards until reaching an index where `last_tallies` has a value, then add the tallies together. For example, to compute `last_tallies[5]`, ...
+To determine the value of `last_tallies` at some index which is empty, simply tally `last` symbols upwards until reaching an index where `last_tallies` has a value, then add the tallies together. For example, to compute `last_tallies[5]`, ...
 
 1. add symbol in `last[5]` to the tally: {a: 1},
 2. add symbol in `last[4]` to the tally: {¶: 1, a: 1},
@@ -15321,11 +15515,11 @@ sequence_search.BurrowsWheelerTransform_RanksCheckpointed main_walk_tallies_to_c
 }
 ```
 
-The calculation above determines the `last_tallies` value at some index, but only a single symbol within that value is of interest. Given an index `i`, the sole purpose of `last_tallies[i]` is to determine the symbol instance count of the symbol at `last[i]`. As such, only the symbol at `last[i]` needs to be counted until reaching a checkpoint. For example, at index 5, `last[5]` is *a*. To compute `last_tallies[5][a]`, ...
+Determining the value of `last_tallies` can be further optimized by only focusing on the symbol of interest. For example, at index 5, `last[5]` is *a*. When the value for `last_tallies[5]` is computed, it's only being used to determine the symbol instance count of that *a* at `last[5]`. As such, only *a*s need to be tallied until reaching a checkpoint...
 
-1. increment count if `last[5] == a` (true): `1`,
-2. increment count if `last[4] == a` (false): `1`,
-3. add `last_tallies[3][a]` to the count from the last step: `1+1=2`.
+1. increment count if `last[5] == a` (true): 1,
+2. increment count if `last[4] == a` (false): 1,
+3. add `last_tallies[3][a]` to the count from the last step: 1+1=2.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py
@@ -15343,7 +15537,7 @@ sequence_search.BurrowsWheelerTransform_RanksCheckpointed main_single_tally_to_c
 }
 ```
 
-Testing for a substring works just as it did with the collapsed first algorithm, with the exception that the symbol instance count for some index in `last` needs to be calculated via `last_tallies` checkpoints. The idea is to make the gaps between `last_tallies` checkpoints wide enough that it gives memory savings compared to keeping the symbol instance counts in `last`, but at the same time short enough that the time to compute the missing gap values is still negligible. For example, since there are only 4 possible symbols with a DNA sequence (A, C, G, and T), the gaps in `last_tallies` don't have to get too wide before seeing memory savings over keeping symbol instance counts in `last`.
+Testing for a substring works just as it did with the collapsed first algorithm, except that the symbol instance count for some index in `last` needs to be determined from `last_tallies` checkpoints. The idea is to make the gaps between `last_tallies` checkpoints wide enough that it gives memory savings compared to keeping the symbol instance counts in `last`, but at the same time short enough that the time to compute the missing gap values is still negligible. For example, since there are only 4 possible symbols with a DNA sequence (A, C, G, and T), the gaps in `last_tallies` don't have to get too wide before seeing memory savings.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py
@@ -15362,32 +15556,6 @@ sequence_search.BurrowsWheelerTransform_RanksCheckpointed main_test
 }
 ```
 
-#### Partial Suffix Array Algorithm
-
-`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Partial Suffix Array Algorithm)_TOPIC/`
-
-```{prereq}
-Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Standard Algorithm_TOPIC
-Algorithms/Single Nucleotide Polymorphism/Suffix Array_TOPIC
-```
-
-TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.
-
-TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.
-
-TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.
-
-TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.
-
-TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.
-
-TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.
-
-TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.
-
-TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection reminding people of terminology symbol, symbol instance, symbol instance count.
-
-
 #### Partial Suffix Array and Checkpointed Ranks Algorithm
 
 `{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Partial Suffix Array and Checkpointed Ranks Algorithm)_TOPIC/`
@@ -15395,6 +15563,14 @@ TODO: CONTINUE HERE, make sure to add a note at beginning of each subsection rem
 ```{prereq}
 Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Partial Suffix Array Algorithm_TOPIC
 Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Checkpointed Ranks Algorithm_TOPIC
+```
+
+```{note}
+Recall the terminology used for BWT:
+
+ * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* {a, b, n, ¶}).
+ * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of *n*).
+ * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
 ```
 
 TODO: continue here
