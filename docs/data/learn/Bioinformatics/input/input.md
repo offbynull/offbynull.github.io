@@ -14678,9 +14678,9 @@ sequence_search.BurrowsWheelerTransform_Basic main_test
 }
 ```
 
-#### Partial Suffix Array Algorithm
+#### Checkpointed Indexes Algorithm
 
-`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Partial Suffix Array Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Checkpointed Indexes Algorithm)_TOPIC/`
 
 ```{prereq}
 Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Standard Algorithm_TOPIC
@@ -14695,25 +14695,222 @@ Recall the terminology used for BWT:
  * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
 ```
 
-The standard algorithm counts the number of times a substring occurs within some sequence by using the first and last columns of that sequence's BWT matrix.
+This algorithm adds an extra piece to the standard algorithm: Each symbol instance in the first column now has its index within the original sequence included. For example, the first and last columns of the BWT matrix for "banana¶", when augmented to include the indexes for the first column's symbol instances, are as follows.
 
-```{svgbob}
-"* ana occurs 2 times in banana¶"
+<table>
+<tr><th>Sequence</th><th>BWT</th></tr>
+<tr><td>
 
-+--+--+           +--+--+           +--+--+
-|¶1|a3|     na    |¶1|a3|           |¶1|a3|
-|a3|n2|-------.   |a3|n2|           |a3|n2|
-|a2|n1|-----. |   |a2|n1|     .---> |a2|n1|
-|a1|b1|     | |   |a1|b1|     | .-> |a1|b1|
-|b1|¶1|     | |   |b1|¶1|     | |   |b1|¶1|
-|n2|a2|     | '-> |n2|a2|-----' |   |n2|a2|
-|n1|a1|     '---> |n1|a1|-------'   |n1|a1|
-+--+--+           +--+--+    ana    +--+--+
+|   0   |   1   |   2   |   3   |   4   |   5   |   6   |
+|-------|-------|-------|-------|-------|-------|-------|
+| (b,1) | (a,1) | (n,1) | (a,2) | (n,2) | (a,3) | (¶,1) |
+
+</td><td>
+
+| first | first_idx | last  |
+|-------|-----------|-------|
+| (¶,1) | 6         | (a,3) |
+| (a,3) | 5         | (n,2) |
+| (a,2) | 3         | (n,1) |
+| (a,1) | 1         | (b,1) |
+| (b,1) | 0         | (¶,1) |
+| (n,2) | 4         | (a,2) |
+| (n,1) | 2         | (a,1) |
+
+</td></tr>
+</table>
+
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexes.py
+python
+# MARKDOWN_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_BUILD\s*[\n$]
 ```
 
-What the standard algorithm can't do is determine where those occurrences are within the sequence. This algorithm fixes that by extending the standard algorithm with suffix array data.
+```{ch9}
+sequence_search.BurrowsWheelerTransform_FirstIndexes main_build
+{
+  sequence: banana¶,
+  end_marker: ¶
+}
+```
 
-Consider the suffix array for "banana¶" (end marker is ¶).
+Recall that the standard algorithm's search only determines how many times some substring appears in a sequence. By including `first_idx`, the search will also determine the index of each appearance. The search process itself remains unchanged: Walk backwards between `last` and `first` until the entirety of the substring has been walked. However, the value of `first_idx` at the end of the walk identifies the index of the appearance.
+
+In the following example, searching for "nana" reveals that it appears only once at index 2 of "banana¶".
+
+```{svgbob}
+"* nana occurs 1 time in banana¶ (at index 2)"
+
++--+---+--+           +--+---+--+           +--+---+--+           +--+---+--+
+|¶1| 6 |a3|     na    |¶1| 6 |a3|           |¶1| 6 |a3|           |¶1| 6 |a3|
+|a3| 5 |n2|-------.   |a3| 5 |n2|           |a3| 5 |n2|   nana    |a3| 5 |n2|
+|a2| 3 |n1|-----. |   |a2| 3 |n1|     .---> |a2| 3 |n1|-------.   |a2| 3 |n1|
+|a1| 1 |b1|     | |   |a1| 1 |b1|     | .-> |a1| 1 |b1|       |   |a1| 1 |b1|
+|b1| 0 |¶1|     | |   |b1| 0 |¶1|     | |   |b1| 0 |¶1|       |   |b1| 0 |¶1|
+|n2| 4 |a2|     | '-> |n2| 4 |a2|-----' |   |n2| 4 |a2|       |   |n2| 4 |a2|
+|n1| 2 |a1|     '---> |n1| 2 |a1|-------'   |n1| 2 |a1|       '-> |n1| 2 |a1|
++--+---+--+           +--+---+--+    ana    +--+---+--+           +--+---+--+
+```
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexes.py
+python
+# MARKDOWN_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_TEST\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_FirstIndexes main_test
+{
+  test: nana,
+  sequence: banana¶,
+  end_marker: ¶
+}
+```
+
+A way to make this algorithm more memory efficient is to employ a tactic called checkpointing: Instead of retaining a value in every `first_idx` entry, leave some empty. The entries that have a value are called checkpoints.
+
+| first | first_idx | last  |
+|-------|-----------|-------|
+| (¶,1) | 6         | (a,3) |
+| (a,3) |           | (n,2) |
+| (a,2) | 3         | (n,1) |
+| (a,1) |           | (b,1) |
+| (b,1) | 0         | (¶,1) |
+| (n,2) |           | (a,2) |
+| (n,1) |           | (a,1) |
+
+In the example above, `first_idx` only contains values that are a multiple of 3.
+
+```{note}
+To keep things efficient-ish, the code below actually splits out `first_idx` into a dictionary. Otherwise, you end up with a bunch of `None` entries under `first_idx` and that actually ends up taking space.
+```
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexesCheckpointed.py
+python
+# MARKDOWN_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_BUILD\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_FirstIndexesCheckpointed main_build
+{
+  sequence: banana¶,
+  end_marker: ¶,
+  first_indexes_checkpoint_n: 3
+}
+```
+
+To determine the value of an empty `first_idx` entry, simply walk backwards (as in the `last` to `first` walk done for searching) until reaching a `first_idx` entry that has a value, then add that value to the number of steps walked. For example, to compute `first_idx[1]`, ...
+
+1. increment the number of steps walked (1), then hop to the index where `first` matches `last[1]` (hop to index 5),
+2. increment the number of steps walked (2), then hop to the index where `first` matches `last[5]` (hop to index 2),
+3. add `first_idx[2]` to the number of steps walked: 3 + 2 = 5.
+
+```{svgbob}
++--+---+--+           +--+---+--+           +--+---+--+
+|¶1| 6 |a3|    1      |¶1| 6 |a3|           |¶1| 6 |a3|
+|a3|   |n2|-------.   |a3|   |n2|           |a3|   |n2| "3+2=5"
+|a2| 3 |n1|       |   |a2| 3 |n1|       .-> |a2| 3 |n1|-------->
+|a1|   |b1|       |   |a1|   |b1|       |   |a1|   |b1|
+|b1| 0 |¶1|       |   |b1| 0 |¶1|    2  |   |b1| 0 |¶1|
+|n2|   |a2|       '-> |n2|   |a2|-------'   |n2|   |a2|
+|n1|   |a1|           |n1|   |a1|           |n1|   |a1|
++--+---+--+           +--+---+--+           +--+---+--+
+```
+
+The example above took 2 hops to reach a non-empty `first_idx` entry. Since `first_idx`'s non-empty entries are all multiples of 3, the walk backwards is guaranteed to reach a non-empty `first_idx` entry in less than 3 hops (at most it'll do 2 hops) regardless of where you start the walk from.
+
+````{note}
+Why is this the case? Remember that the `last` to `first` walk is just walking over the original sequence in reverse order. In the example above, it walks over "ana" in the sequence "banana¶".
+
+```{svgbob}
+"sequence:"  b1 a1 n1 a2 n2 a3 ¶1
+                      |  |  |
+                      a2 n2 a3
+                      <-------
+                    "walk direction"
+```
+
+`first_idx` holds on to every 3rd index of "banana¶", so the walk only needs to hop 2 times before reaching a `first_idx` entry that has a value.
+
+```{svgbob}
+"first_idx:" 0        3        6 
+"sequence:"  b1 a1 n1 a2 n2 a3 ¶1
+                      |  |  |
+                      a2 n2 a3
+                      <-------
+                    "walk direction"
+```
+
+Regardless of where in "banana¶" the walk starts from, it will never take more than 2 hops until reaching a `first_idx` entry that has a value.
+````
+
+You can generalize this as follows: If the only entries kept in `first_idx` are those that are a multiple of *n*, the walk backwards is guaranteed to reach a non-empty `first_idx` entry in less than *n* hops (at most it'll do *n-1* hops). The idea is to make *n* large enough to maximize memory savings but at the same time small enough that the computation time required for walking is still negligible.
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexesCheckpointed.py
+python
+# MARKDOWN_WALK_BACK_TO_FIRST_IDX\s*\n([\s\S]+)\n\s*# MARKDOWN_WALK_BACK_TO_FIRST_IDX\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_FirstIndexesCheckpointed main_walk_back_until_first_index_checkpoint
+{
+  sequence: banana¶,
+  end_marker: ¶,
+  first_indexes_checkpoint_n: 3,
+  from_index: 5
+}
+```
+
+Searching happens as it did before with the exception that, if a search ends up walking to a `first_idx` entry that's empty, that entry's value can be determined by walking backwards as described above.
+
+```{svgbob}
+"PHASE 1: WALK TO FIND nana IN banana¶"
++--+---+--+           +--+---+--+           +--+---+--+           +--+---+--+
+|¶1| 6 |a3|     na    |¶1| 6 |a3|           |¶1| 6 |a3|           |¶1| 6 |a3|
+|a3|   |n2|-------.   |a3|   |n2|           |a3|   |n2|   nana    |a3|   |n2|
+|a2| 3 |n1|-----. |   |a2| 3 |n1|     .---> |a2| 3 |n1|-------.   |a2| 3 |n1|
+|a1|   |b1|     | |   |a1|   |b1|     | .-> |a1|   |b1|       |   |a1|   |b1|
+|b1| 0 |¶1|     | |   |b1| 0 |¶1|     | |   |b1| 0 |¶1|       |   |b1| 0 |¶1|
+|n2|   |a2|     | '-> |n2|   |a2|-----' |   |n2|   |a2|       |   |n2|   |a2|
+|n1|   |a1|     '---> |n1|   |a1|-------'   |n1|   |a1|       '-> |n1|   |a1|
++--+---+--+           +--+---+--+    ana    +--+---+--+           +--+---+--+
+
+
+"PHASE 2: WALK TO COMPUTE MISSING first_idx AT END OF nana SEARCH ABOVE"
++--+---+--+           +--+---+--+           +--+---+--+
+|¶1| 6 |a3|           |¶1| 6 |a3|           |¶1| 6 |a3|
+|a3|   |n2|           |a3|   |n2|           |a3|   |n2|
+|a2| 3 |n1|           |a2| 3 |n1|    2      |a2| 3 |n1|
+|a1|   |b1|       .-> |a1|   |b1|-------.   |a1|   |b1| "0+2=2"
+|b1| 0 |¶1|       |   |b1| 0 |¶1|       '-> |b1| 0 |¶1|-------->
+|n2|   |a2|   1   |   |n2|   |a2|           |n2|   |a2|
+|n1|   |a1|-------'   |n1|   |a1|           |n1|   |a1|
++--+---+--+           +--+---+--+           +--+---+--+
+
+"RESULT: nana OCCURS IN banana¶ AT INDEX 2"
+```
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexesCheckpointed.py
+python
+# MARKDOWN_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_TEST\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_FirstIndexesCheckpointed main_test
+{
+  sequence: banana¶,
+  end_marker: ¶,
+  first_indexes_checkpoint_n: 3,
+  test: ana
+}
+```
+
+````{note}
+The book describes this algorithm as the "partial suffix array" algorithm. To understand why, consider the suffix array for "banana¶" (end marker is ¶).
 
 ```{svgbob}
 "SUFFIX ARRAY FOR banana"                       "SUFFIX TREE FOR banana"
@@ -14777,70 +14974,66 @@ One way to think of a suffix array is that it's just a BWT matrix (symbol instan
 </td></tr>
 </table>
 
-```{note}
-The reason for this is that both BWT matrices and suffix arrays have their rows lexicographically sorted in the same way. Since each row's truncation point is always at the end marker (¶), and there's only ever a single end marker in a row, any symbols after that end marker don't effect of the lexicographic sorting of the rows.
+> Why is this the case? Both BWT matrices and suffix arrays have their rows lexicographically sorted in the same way. Since each row's truncation point is always at the end marker (¶), and there's only ever a single end marker in a row, any symbols after that end marker don't effect of the lexicographic sorting of the rows.
+> 
+> Try it and see. Take the BWT matrix in the example above and change the symbols after the truncation point to anything other than end marker. It won't change the sort order.
+> 
+> |   |   |   |   |   |   |   |
+> |---|---|---|---|---|---|---|
+> | ¶ | z | z | z | z | z | z |
+> | a | ¶ | a | a | a | a | a |
+> | a | n | a | ¶ | z | z | z |
+> | a | n | a | n | a | ¶ | a |
+> | b | a | n | a | n | a | ¶ |
+> | n | a | ¶ | z | z | z | z |
+> | n | a | n | a | ¶ | a | a |
 
-Try it and see. Take the BWT matrix in the example above and change the symbols after the truncation point to anything other than end marker. It won't change the sort order.
+The `first_idx` column is essentially just a suffix array. In the context of a ...
 
-|   |   |   |   |   |   |   |
-|---|---|---|---|---|---|---|
-| ¶ | z | z | z | z | z | z |
-| a | ¶ | a | a | a | a | a |
-| a | n | a | ¶ | z | z | z |
-| a | n | a | n | a | ¶ | a |
-| b | a | n | a | n | a | ¶ |
-| n | a | ¶ | z | z | z | z |
-| n | a | n | a | ¶ | a | a |
-```
+* suffix array, it's a list containing each suffix's starting index (each index is the start of a suffix in the original sequence).
+* BWT matrix, it's list containing each row's starting index  (each index is the location of that row's first character in the original sequence).
 
-At its core, a suffix array is just a list containing each suffix's starting index (each index defines a suffix in the original sequence). However, in the context of a BWT matrix, each of these indices is essentially the index of the corresponding first column.
+This section described the BWT matrix context. For example, `first_idx` in the table below is used to find where "ana" appears in "banana¶": [3, 1].
 
-| first | last  | first_idx / suffix_offset |
-|-------|-------|-----------------------------|
-| (¶,1) | (a,3) | 5 (suffix=¶)                |
-| (a,3) | (n,2) | 4 (suffix=a¶)               |
-| (a,2) | (n,1) | 3 (suffix=ana¶)             |
-| (a,1) | (b,1) | 1 (suffix=anana¶)           |
-| (b,1) | (¶,1) | 0 (suffix=banana¶)          |
-| (n,2) | (a,2) | 3 (suffix=na¶)              |
-| (n,1) | (a,1) | 2 (suffix=nana¶)            |
+<table>
+<tr><th>BWT Records</th><th>Search</th></tr>
+<tr><td>
 
-TODO: ADD CODE HERE
+| first | first_idx / suffix_offset   | last  |
+|-------|-----------------------------|-------|
+| (¶,1) | 6 (suffix = ¶)              | (a,3) |
+| (a,3) | 5 (suffix = a¶)             | (n,2) |
+| (a,2) | 3 (suffix = ana¶)           | (n,1) |
+| (a,1) | 1 (suffix = anana¶)         | (b,1) |
+| (b,1) | 0 (suffix = banana¶)        | (¶,1) |
+| (n,2) | 4 (suffix = na¶)            | (a,2) |
+| (n,1) | 2 (suffix = nana¶)          | (a,1) |
 
-The example below uses `first_idx` to find where occurrences of "ana" are in "banana¶": indices 3 and 1.
+</td><td>
 
 ```{svgbob}
-"* find indices of ana occurrences in banana¶"
+"* ana occurs in banana¶ at index 3 and 1"
 
-+--+--+-+           +--+--+-+           +--+--+-+         
-|¶1|a3|5|     na    |¶1|a3|5|           |¶1|a3|5|
-|a3|n2|4|-------.   |a3|n2|4|           |a3|n2|4|
-|a2|n1|3|-----. |   |a2|n1|3|     .---> |a2|n1|3|
-|a1|b1|1|     | |   |a1|b1|1|     | .-> |a1|b1|1|
-|b1|¶1|0|     | |   |b1|¶1|0|     | |   |b1|¶1|0|
-|n2|a2|3|     | '-> |n2|a2|3|-----' |   |n2|a2|3|
-|n1|a1|2|     '---> |n1|a1|2|-------'   |n1|a1|2|
-+--+--+-+           +--+--+-+    ana    +--+--+-+
++--+---+--+           +--+---+--+           +--+---+--+         
+|¶1| 6 |a3|     na    |¶1| 6 |a3|           |¶1| 6 |a3|
+|a3| 5 |n2|-------.   |a3| 5 |n2|           |a3| 5 |n2|
+|a2| 3 |n1|-----. |   |a2| 3 |n1|     .---> |a2| 3 |n1|
+|a1| 1 |b1|     | |   |a1| 1 |b1|     | .-> |a1| 1 |b1|
+|b1| 0 |¶1|     | |   |b1| 0 |¶1|     | |   |b1| 0 |¶1|
+|n2| 4 |a2|     | '-> |n2| 4 |a2|-----' |   |n2| 4 |a2|
+|n1| 2 |a1|     '---> |n1| 2 |a1|-------'   |n1| 2 |a1|
++--+---+--+           +--+---+--+    ana    +--+---+--+
 ```
 
-TODO: ADD CODE HERE
+</td></tr>
+</table>
 
-All of this may seem pointless because the standalone suffix array algorithm does all of this by itself (BWT isn't required at all). However, including `first_idx`  (`suffix_offset`) along with the BWT matrix's `first` and `last` allows for a concept known as checkpointing: Instead of retaining a value at every index of `first_idx`, leave some empty. The values that aren't empty are called checkpoints.
+All of this leads to the following realization: The addition of `first_idx` / `suffix_offset` to the BWT records is pointless. The standalone suffix array algorithm can seek out these indexes on its own and the only data it needs is the original sequence and the `first_idx` / `suffix_offset` column (each index defines the start of a suffix in the original sequence). It doesn't need the columns `first` or `last`. What's the point of using this BWT algorithm when it needs more memory than the standalone suffix array algorithm but doesn't do anything more / better?
 
-TODO: CONTINUE HERE, then fix other code so instead of calling it first_ch_idx/last_ch_idx, call it first_ch_cnt/last_ch_cnt  
+The situation changes a little once checkpointing comes in to play. The wider the gaps are between checkpoints, the less memory gets wasted. However, regardless of how wide the gaps are, you will never reach a point where there is no memory being wasted. It's only when the checkpointed `first_idx` / `suffix_offset` column is combined with a much more memory efficient BWT representation that it beats the standalone suffix array algorithm in terms of memory efficiency.
 
-TODO: CONTINUE HERE, then fix other code so instead of calling it first_ch_idx/last_ch_idx, call it first_ch_cnt/last_ch_cnt  
-
-TODO: CONTINUE HERE, then fix other code so instead of calling it first_ch_idx/last_ch_idx, call it first_ch_cnt/last_ch_cnt  
-
-TODO: CONTINUE HERE, then fix other code so instead of calling it first_ch_idx/last_ch_idx, call it first_ch_cnt/last_ch_cnt  
-
-
-
-
-
-
-
+That more memory efficient BWT representation is described in a later section, which integrates checkpointed `first_idx` / `suffix_offset` into it: Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Checkpointed Algorithm_TOPIC
+````
 
 #### Deserialization Algorithm
 
@@ -14883,27 +15076,27 @@ When testing for a substring in the standard algorithm, the symbol instance coun
 
 "* search for substring nana using ORIGINAL first and last column"
 
-+--+--+           +--+--+           +--+--+           +--+--+
-|¶1|a3|     na    |¶1|a3|           |¶1|a3|           |¶1|a3|
-|a3|n2|-------.   |a3|n2|           |a3|n2|   nana    |a3|n2|
-|a2|n1|-----. |   |a2|n1|     .---> |a2|n1|-------.   |a2|n1|
-|a1|b1|     | |   |a1|b1|     | .-> |a1|b1|       |   |a1|b1|
-|b1|¶1|     | |   |b1|¶1|     | |   |b1|¶1|       |   |b1|¶1|
-|n2|a2|     | '-> |n2|a2|-----' |   |n2|a2|       |   |n2|a2|
-|n1|a1|     '---> |n1|a1|-------'   |n1|a1|       '-> |n1|a1|
-+--+--+           +--+--+    ana    +--+--+           +--+--+
++--+--+           +--+--+           +--+--+       
+|¶1|a3|     na    |¶1|a3|           |¶1|a3|       
+|a3|n2|-------.   |a3|n2|           |a3|n2|   nana
+|a2|n1|-----. |   |a2|n1|     .---> |a2|n1|-------->
+|a1|b1|     | |   |a1|b1|     | .-> |a1|b1|       
+|b1|¶1|     | |   |b1|¶1|     | |   |b1|¶1|       
+|n2|a2|     | '-> |n2|a2|-----' |   |n2|a2|       
+|n1|a1|     '---> |n1|a1|-------'   |n1|a1|       
++--+--+           +--+--+    ana    +--+--+       
 
 "* search for substring nana using SHAPES first and last column"
 
-+--+--+           +--+--+           +--+--+           +--+--+
-|¶■|a▲|     na    |¶■|a▲|           |¶■|a▲|           |¶■|a▲|
-|a▲|n▲|-------.   |a▲|n▲|           |a▲|n▲|   nana    |a▲|n▲|
-|a◆|n■|-----. |   |a◆|n■|     .---> |a◆|n■|-------.   |a◆|n■|
-|a■|b◆|     | |   |a■|b◆|     | .-> |a■|b◆|       |   |a■|b◆|
-|b◆|¶■|     | |   |b◆|¶■|     | |   |b◆|¶■|       |   |b◆|¶■|
-|n▲|a◆|     | '-> |n▲|a◆|-----' |   |n▲|a◆|       |   |n▲|a◆|
-|n■|a■|     '---> |n■|a■|-------'   |n■|a■|       '-> |n■|a■|
-+--+--+           +--+--+    ana    +--+--+           +--+--+
++--+--+           +--+--+           +--+--+       
+|¶■|a▲|     na    |¶■|a▲|           |¶■|a▲|       
+|a▲|n▲|-------.   |a▲|n▲|           |a▲|n▲|   nana
+|a◆|n■|-----. |   |a◆|n■|     .---> |a◆|n■|-------->
+|a■|b◆|     | |   |a■|b◆|     | .-> |a■|b◆|       
+|b◆|¶■|     | |   |b◆|¶■|     | |   |b◆|¶■|       
+|n▲|a◆|     | '-> |n▲|a◆|-----' |   |n▲|a◆|       
+|n■|a■|     '---> |n■|a■|-------'   |n■|a■|       
++--+--+           +--+--+    ana    +--+--+       
 ```
 
 Given this observation, when serializing the first and last columns of the matrix, you technically only need to store the symbols from the last column. The first column is just the last column, but sorted. For example, the symbols in last column of the example above are "annb¶aa". To convert that back into the first and last columns of the matrix with symbol instance counts, the steps are as follows:
@@ -14949,15 +15142,15 @@ While the symbol instance counts are different from the original, the mapping of
 
 "* search for substring nana using DESERIALIZED first and last column"
 
-+--+--+           +--+--+           +--+--+           +--+--+
-|¶1|a1|     na    |¶1|a1|           |¶1|a1|           |¶1|a1|
-|a1|n1|-------.   |a1|n1|           |a1|n1|   nana    |a1|n1|
-|a2|n2|-----. |   |a2|n2|     .---> |a2|n2|-------.   |a2|n2|
-|a3|b1|     | |   |a3|b1|     | .-> |a3|b1|       |   |a3|b1|
-|b1|¶1|     | |   |b1|¶1|     | |   |b1|¶1|       |   |b1|¶1|
-|n1|a2|     | '-> |n1|a2|-----' |   |n1|a2|       |   |n1|a2|
-|n2|a3|     '---> |n2|a3|-------'   |n2|a3|       '-> |n2|a3|
-+--+--+           +--+--+    ana    +--+--+           +--+--+
++--+--+           +--+--+           +--+--+       
+|¶1|a1|     na    |¶1|a1|           |¶1|a1|       
+|a1|n1|-------.   |a1|n1|           |a1|n1|   nana
+|a2|n2|-----. |   |a2|n2|     .---> |a2|n2|-------> 
+|a3|b1|     | |   |a3|b1|     | .-> |a3|b1|       
+|b1|¶1|     | |   |b1|¶1|     | |   |b1|¶1|       
+|n1|a2|     | '-> |n1|a2|-----' |   |n1|a2|       
+|n2|a3|     '---> |n2|a3|-------'   |n2|a3|       
++--+--+           +--+--+    ana    +--+--+       
 ```
 
 ```{output}
@@ -15453,7 +15646,7 @@ sequence_search.BurrowsWheelerTransform_Ranks main_to_symbol_instance_count
 }
 ```
 
-While replacing `last`'s symbol instance counts with `last_tallies` actually increases memory usage, it allows for a concept known as checkpointing: Instead of retaining a value at every index of `last_tallies`, leave some empty. The values that aren't empty are called checkpoints.
+While replacing `last`'s symbol instance counts with `last_tallies` actually increases memory usage, it allows for a concept known as checkpointing: Instead of retaining a value at every index of `last_tallies`, leave some empty. The entries that have a value are called checkpoints.
 
 <table>
 <tr><th>records</th><th>first_occurrence_map</th></tr>
@@ -15551,17 +15744,16 @@ sequence_search.BurrowsWheelerTransform_RanksCheckpointed main_test
   sequence: banana¶,
   end_marker: ¶,
   last_tallies_checkpoint_n: 3,
-  index: 5,
   test: ana
 }
 ```
 
-#### Partial Suffix Array and Checkpointed Ranks Algorithm
+#### Checkpointed Algorithm
 
-`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Partial Suffix Array and Checkpointed Ranks Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Checkpointed Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Partial Suffix Array Algorithm_TOPIC
+Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Checkpointed Indexes Algorithm_TOPIC
 Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Checkpointed Ranks Algorithm_TOPIC
 ```
 
@@ -15573,6 +15765,56 @@ Recall the terminology used for BWT:
  * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
 ```
 
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py
+python
+# MARKDOWN_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_BUILD\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Checkpointed main_build
+{
+  sequence: banana¶,
+  end_marker: ¶,
+  last_tallies_checkpoint_n: 3,
+  first_indexes_checkpoint_n: 3
+}
+```
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py
+python
+# MARKDOWN_WALK_BACK_TO_FIRST_IDX\s*\n([\s\S]+)\n\s*# MARKDOWN_WALK_BACK_TO_FIRST_IDX\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Checkpointed main_walk_back_until_first_index_checkpoint
+{
+  sequence: banana¶,
+  end_marker: ¶,
+  last_tallies_checkpoint_n: 3,
+  first_indexes_checkpoint_n: 3,
+  from_index: 5
+}
+```
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py
+python
+# MARKDOWN_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_TEST\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Checkpointed main_test
+{
+  sequence: banana¶,
+  end_marker: ¶,
+  last_tallies_checkpoint_n: 3,
+  first_indexes_checkpoint_n: 3,
+  test: ana
+}
+```
+
 TODO: continue here
 
 TODO: continue here
@@ -15582,6 +15824,8 @@ TODO: continue here
 ### BLAST
 
 Covered in section 9.14
+
+See https://www.cs.rice.edu/~ogilvie/comp571/2018/09/04/blast-fasta.html
 
 # Stories
 

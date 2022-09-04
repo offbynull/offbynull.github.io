@@ -8,20 +8,20 @@ from sequence_search.BurrowsWheelerTransform_Deserialization import to_bwt_optim
 
 # MARKDOWN_TEST
 def find(
-        bwt_array: list[BWTRecord],
+        bwt_records: list[BWTRecord],
         test: str
 ) -> int:
     top = 0
-    bottom = len(bwt_array) - 1
+    bottom = len(bwt_records) - 1
     for ch in reversed(test):
-        new_top = len(bwt_array)
+        new_top = len(bwt_records)
         new_bottom = -1
         for i in range(top, bottom + 1):
-            record = bwt_array[i]
+            record = bwt_records[i]
             if ch == record.last_ch:
                 new_top = min(new_top, record.last_to_first_idx)
                 new_bottom = max(new_bottom, record.last_to_first_idx)
-        if new_bottom == -1 or new_top == len(bwt_array):  # technically only need to check one of these conditions
+        if new_bottom == -1 or new_top == len(bwt_records):  # technically only need to check one of these conditions
             return 0
         top = new_top
         bottom = new_bottom
@@ -48,8 +48,8 @@ def main_test():
         print()
         print(f'The following first and last columns were produced ...')
         print()
-        print(f' * First: {[r.first_ch + str(r.first_ch_idx) for r in bwt_records]}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_idx) for r in bwt_records]}')
+        print(f' * First: {[r.first_ch + str(r.first_ch_cnt) for r in bwt_records]}')
+        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
         print()
         found_cnt = find(bwt_records, test)
         print()

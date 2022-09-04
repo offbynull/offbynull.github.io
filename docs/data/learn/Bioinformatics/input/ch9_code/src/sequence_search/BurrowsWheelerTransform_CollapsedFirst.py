@@ -12,11 +12,11 @@ from sequence_search.SearchUtils import StringView
 
 # MARKDOWN_BUILD_TABLE_AND_COLLAPSED_FIRST
 class BWTRecord:
-    __slots__ = ['last_ch', 'last_ch_idx']
+    __slots__ = ['last_ch', 'last_ch_cnt']
 
-    def __init__(self, last_ch: str, last_ch_idx: int):
+    def __init__(self, last_ch: str, last_ch_cnt: int):
         self.last_ch = last_ch
-        self.last_ch_idx = last_ch_idx
+        self.last_ch_cnt = last_ch_cnt
 
 
 def to_bwt_and_first_occurrences(
@@ -32,19 +32,19 @@ def to_bwt_and_first_occurrences(
     )
     prev_first_ch = None
     last_ch_counter = Counter()
-    bwt_array = []
+    bwt_records = []
     bwt_first_occurrence_map = {}
     for i, s in enumerate(seq_rotations_sorted):
         first_ch = s[0]
         last_ch = s[-1]
         last_ch_counter[last_ch] += 1
-        last_ch_idx = last_ch_counter[last_ch]
-        bwt_record = BWTRecord(last_ch, last_ch_idx)
-        bwt_array.append(bwt_record)
+        last_ch_cnt = last_ch_counter[last_ch]
+        bwt_record = BWTRecord(last_ch, last_ch_cnt)
+        bwt_records.append(bwt_record)
         if first_ch != prev_first_ch:
             bwt_first_occurrence_map[first_ch] = i
             prev_first_ch = first_ch
-    return bwt_array, bwt_first_occurrence_map
+    return bwt_records, bwt_first_occurrence_map
 # MARKDOWN_BUILD_TABLE_AND_COLLAPSED_FIRST
 
 
@@ -67,7 +67,7 @@ def main_table_and_collapsed_first():
         print(f'The following last column and collapsed first mapping were produced ...')
         print()
         print(f' * First (collapsed): {bwt_first_occurrence_map}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_idx) for r in bwt_records]}')
+        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
@@ -114,7 +114,7 @@ def main_first_index():
         print(f'The following last column and collapsed first mapping were produced ...')
         print()
         print(f' * First (collapsed): {bwt_first_occurrence_map}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_idx) for r in bwt_records]}')
+        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
         print()
         print(f'The index of {symbol}{symbol_count} in the first column is: {first_idx}')
     finally:
@@ -146,7 +146,7 @@ def find(
             if ch == record.last_ch:
                 last_to_first_idx = to_first_index(
                     bwt_first_occurrence_map,
-                    (record.last_ch, record.last_ch_idx)
+                    (record.last_ch, record.last_ch_cnt)
                 )
                 new_top = min(new_top, last_to_first_idx)
                 new_bottom = max(new_bottom, last_to_first_idx)
@@ -178,7 +178,7 @@ def main_test():
         print(f'The following first and last columns were produced ...')
         print()
         print(f' * First (collapsed): {bwt_first_occurrence_map}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_idx) for r in bwt_records]}')
+        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
         print()
         found_cnt = find(bwt_records, bwt_first_occurrence_map, test)
         print()

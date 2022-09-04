@@ -32,7 +32,7 @@ def to_bwt_ranked_checkpointed(
     )
     prev_first_ch = None
     last_ch_counter = Counter()
-    bwt_array = []
+    bwt_records = []
     bwt_first_occurrence_map = {}
     bwt_last_tallies_checkpoints = {}
     for i, s in enumerate(seq_rotations_sorted):
@@ -40,13 +40,13 @@ def to_bwt_ranked_checkpointed(
         last_ch = s[-1]
         last_ch_counter[last_ch] += 1
         bwt_record = BWTRecord(last_ch)
-        bwt_array.append(bwt_record)
+        bwt_records.append(bwt_record)
         if i % last_tallies_checkpoint_n == 0:
             bwt_last_tallies_checkpoints[i] = last_ch_counter.copy()
         if first_ch != prev_first_ch:
             bwt_first_occurrence_map[first_ch] = i
             prev_first_ch = first_ch
-    return bwt_array, bwt_first_occurrence_map, bwt_last_tallies_checkpoints
+    return bwt_records, bwt_first_occurrence_map, bwt_last_tallies_checkpoints
 # MARKDOWN_BUILD_RANKED_CHECKPOINTED
 
 
@@ -214,10 +214,10 @@ def main_single_tally_to_checkpoint():
 # MARKDOWN_TEST
 def to_symbol_instance_count(
         bwt_records: list[BWTRecord],
-        bwt_last_tallies: dict[int, Counter[str]],
+        bwt_last_tallies_checkpoints: dict[int, Counter[str]],
         idx: int
 ) -> int:
-    return single_tally_to_checkpoint(bwt_records, bwt_last_tallies, idx)
+    return single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, idx)
 
 
 def to_first_index(
@@ -231,7 +231,7 @@ def to_first_index(
 def find(
         bwt_records: list[BWTRecord],
         bwt_first_occurrence_map: dict[str, int],
-        bwt_last_tallies: dict[int, Counter[str]],
+        bwt_last_tallies_checkpoints: dict[int, Counter[str]],
         test: str
 ) -> int:
     top = 0
@@ -242,10 +242,10 @@ def find(
         for i in range(top, bottom + 1):
             record = bwt_records[i]
             if ch == record.last_ch:
-                last_ch_idx = to_symbol_instance_count(bwt_records, bwt_last_tallies, i)
+                last_ch_cnt = to_symbol_instance_count(bwt_records, bwt_last_tallies_checkpoints, i)
                 last_to_first_idx = to_first_index(
                     bwt_first_occurrence_map,
-                    (record.last_ch, last_ch_idx)
+                    (record.last_ch, last_ch_cnt)
                 )
                 new_top = min(new_top, last_to_first_idx)
                 new_bottom = max(new_bottom, last_to_first_idx)

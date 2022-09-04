@@ -1,0 +1,178 @@
+import functools
+from collections import Counter
+from sys import stdin
+from typing import Any
+
+import yaml
+
+from helpers.Utils import rotate_right_with_shift_counts
+from sequence_search.BurrowsWheelerTransform_Basic import cmp
+
+
+# MARKDOWN_BUILD
+class BWTRecord:
+    __slots__ = ['first_ch', 'first_ch_cnt', 'last_ch', 'last_ch_cnt', 'last_to_first_idx', 'first_idx']
+
+    def __init__(self, first_ch: str, first_ch_cnt: int, last_ch: str, last_ch_cnt: int, first_idx: int):
+        self.first_ch = first_ch
+        self.first_ch_cnt = first_ch_cnt
+        self.last_ch = last_ch
+        self.last_ch_cnt = last_ch_cnt
+        self.last_to_first_idx = -1
+        self.first_idx = first_idx
+
+
+def to_bwt_with_first_indexes(
+        seq: str,
+        end_marker: str
+) -> list[BWTRecord]:
+    assert end_marker == seq[-1], f'{seq} missing end marker'
+    assert end_marker not in seq[:-1], f'{seq} has end marker but not at the end'
+    # Create matrix
+    seq_with_counts = []
+    seq_ch_counter = Counter()
+    for ch in seq:
+        seq_ch_counter[ch] += 1
+        ch_cnt = seq_ch_counter[ch]
+        seq_with_counts.append((ch, ch_cnt))
+    seq_with_counts_rotations = rotate_right_with_shift_counts(seq_with_counts)  # rotations + new first_idx for each rotation
+    seq_with_counts_rotations_sorted = sorted(
+        seq_with_counts_rotations,
+        key=functools.cmp_to_key(lambda a, b: cmp(a[1], b[1], end_marker))
+    )
+    # Pull out first and last columns
+    bwt_records = []
+    for first_idx, s in seq_with_counts_rotations_sorted:
+        first_ch, first_ch_cnt = s[0]
+        last_ch, last_ch_cnt = s[-1]
+        record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt, first_idx)
+        bwt_records.append(record)
+    # Populate record last-to-first pointers
+    for i, record_a in enumerate(bwt_records):
+        last = record_a.last_ch, record_a.last_ch_cnt
+        for j, record_b in enumerate(bwt_records):
+            first = record_b.first_ch, record_b.first_ch_cnt
+            if last == first:
+                record_a.last_to_first_idx = j
+                break
+    return bwt_records
+# MARKDOWN_BUILD
+
+
+def main_build():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        data_raw = ''.join(stdin.readlines())
+        data: dict = yaml.safe_load(data_raw)
+        seq = data['sequence']
+        end_marker = data['end_marker']
+        print(f'Building BWT using the following settings...')
+        print()
+        print('```')
+        print(data_raw)
+        print('```')
+        print()
+        bwt_records = to_bwt_with_first_indexes(seq, end_marker)
+        print()
+        print(f'The following first and last columns were produced ...')
+        print()
+        print(f' * First: {[r.first_ch + str(r.first_ch_cnt) for r in bwt_records]}')
+        print(f' * First Indexes: {[r.first_idx for r in bwt_records]}')
+        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# MARKDOWN_TEST
+def walk_find(
+        bwt_records: list[BWTRecord],
+        test: str,
+        start_row: int
+) -> int | None:
+    row = start_row
+    for ch in reversed(test[:-1]):
+        if bwt_records[row].last_ch != ch:
+            return None
+        row = bwt_records[row].last_to_first_idx
+    return bwt_records[row].first_idx
+
+
+def find(
+        bwt_records: list[BWTRecord],
+        test: str
+) -> list[int]:
+    found = []
+    for i, rec in enumerate(bwt_records):
+        if rec.first_ch == test[-1]:
+            if len(test) == 1:
+                found.append(rec.first_idx)
+            elif rec.last_ch == test[-2]:
+                found_idx = walk_find(bwt_records, test, i)
+                if found_idx is not None:
+                    found.append(found_idx)
+    return found
+    # The code above is the obvious way to do this. However, since the first column is always sorted by character, the
+    # entire array doesn't need to be scanned. Instead, you can binary search to the first and last index with
+    # rec.first_ch == test[-1] and just consider those indices.
+    #
+    # The problem with doing this is that bisect_left/bisect_right has a requirement where the binary array being
+    # searched must contain the same type as the element being searched for. Even with a custom sorting "key" to try to
+    # map between the types on comparison, it won't allow it. See the "standard algorithm" implementation for more info.
+# MARKDOWN_TEST
+
+
+def main_test():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        data_raw = ''.join(stdin.readlines())
+        data: dict = yaml.safe_load(data_raw)
+        test = data['test']
+        seq = data['sequence']
+        end_marker = data['end_marker']
+        print(f'Building BWT using the following settings...')
+        print()
+        print('```')
+        print(data_raw)
+        print('```')
+        print()
+        bwt_records = to_bwt_with_first_indexes(seq, end_marker)
+        print()
+        print(f'The following first and last columns were produced ...')
+        print()
+        print(f' * First: {[r.first_ch + str(r.first_ch_cnt) for r in bwt_records]}')
+        print(f' * First Indexes: {[r.first_idx for r in bwt_records]}')
+        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
+        print()
+        found_indices = find(bwt_records, test)
+        print()
+        print(f'*{test}* found in *{seq}* at indices {found_indices}.')
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
+
+
+
+
+
+
+
+
+if __name__ == '__main__':
+    main_test()

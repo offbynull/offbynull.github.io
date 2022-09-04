@@ -32,18 +32,18 @@ def to_bwt_ranked(
     )
     prev_first_ch = None
     last_ch_counter = Counter()
-    bwt_array = []
+    bwt_records = []
     bwt_first_occurrence_map = {}
     for i, s in enumerate(seq_rotations_sorted):
         first_ch = s[0]
         last_ch = s[-1]
         last_ch_counter[last_ch] += 1
         bwt_record = BWTRecord(last_ch, last_ch_counter.copy())
-        bwt_array.append(bwt_record)
+        bwt_records.append(bwt_record)
         if first_ch != prev_first_ch:
             bwt_first_occurrence_map[first_ch] = i
             prev_first_ch = first_ch
-    return bwt_array, bwt_first_occurrence_map
+    return bwt_records, bwt_first_occurrence_map
 # MARKDOWN_BUILD_RANKED
 
 
@@ -140,10 +140,10 @@ def find(
         for i in range(top, bottom + 1):
             record = bwt_records[i]
             if ch == record.last_ch:
-                last_ch_idx = to_symbol_instance_count(record)
+                last_ch_cnt = to_symbol_instance_count(record)
                 last_to_first_idx = to_first_index(
                     bwt_first_occurrence_map,
-                    (record.last_ch, last_ch_idx)
+                    (record.last_ch, last_ch_cnt)
                 )
                 new_top = min(new_top, last_to_first_idx)
                 new_bottom = max(new_bottom, last_to_first_idx)

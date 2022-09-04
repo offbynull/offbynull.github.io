@@ -38,6 +38,11 @@ def rotate_right(l: S) -> Generator[S]:
         yield l[i:] + l[:i]
 
 
+def rotate_right_with_shift_counts(l: S) -> Generator[Tuple[int, S]]:
+    for i, v in enumerate(rotate_right(l)):
+        yield len(v) - i - 1, v
+
+
 def slide_window(data: S, k: int, cyclic: bool = False) -> Tuple[S, int]:
     for i in range(0, len(data) - k + 1):
         yield data[i:i+k], i

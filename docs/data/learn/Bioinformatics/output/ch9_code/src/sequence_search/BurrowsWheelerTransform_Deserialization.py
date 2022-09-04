@@ -1,18 +1,14 @@
 import functools
-from bisect import bisect_left, bisect_right
 from collections import Counter
 from sys import stdin
-from typing import Any
 
 import yaml
 
 from helpers.Utils import rotate_right
-
-
-# MARKDOWN_DESERIALIZE
 from sequence_search.BurrowsWheelerTransform_Basic import BWTRecord, walk
 
 
+# MARKDOWN_DESERIALIZE
 def cmp_char_only(a: str, b: str, end_marker: str):
     if len(a) != len(b):
         raise '???'
@@ -56,14 +52,14 @@ def to_bwt_from_last_sequence(
         last_ch_count = last_ch_counter[last_ch]
         last_col.append((last_ch, last_ch_count))
     first_col = sorted(last_col, key=functools.cmp_to_key(lambda a, b: cmp_char_and_instance(a, b, end_marker)))
-    for (first_ch, first_ch_idx), (last_ch, last_ch_idx) in zip(first_col, last_col):
-        record = BWTRecord(first_ch, first_ch_idx, last_ch, last_ch_idx)
+    for (first_ch, first_ch_cnt), (last_ch, last_ch_cnt) in zip(first_col, last_col):
+        record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt)
         ret.append(record)
     # Populate record last-to-first pointers
     for i, record_a in enumerate(ret):
-        last = record_a.last_ch, record_a.last_ch_idx
+        last = record_a.last_ch, record_a.last_ch_cnt
         for j, record_b in enumerate(ret):
-            first = record_b.first_ch, record_b.first_ch_idx
+            first = record_b.first_ch, record_b.first_ch_cnt
             if last == first:
                 record_a.last_to_first_idx = j
                 break
@@ -89,8 +85,8 @@ def main_deserialize():
         print()
         print(f'The following first and last columns were produced ...')
         print()
-        print(f' * First: {[r.first_ch + str(r.first_ch_idx) for r in bwt_records]}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_idx) for r in bwt_records]}')
+        print(f' * First: {[r.first_ch + str(r.first_ch_cnt) for r in bwt_records]}')
+        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
         print()
         seq = walk(bwt_records)
         print()
@@ -148,8 +144,8 @@ def main_optimized_build():
         print()
         print(f'The following first and last columns were produced ...')
         print()
-        print(f' * First: {[r.first_ch + str(r.first_ch_idx) for r in bwt_records]}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_idx) for r in bwt_records]}')
+        print(f' * First: {[r.first_ch + str(r.first_ch_cnt) for r in bwt_records]}')
+        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
@@ -196,17 +192,17 @@ def to_bwt_optimized2(
     for i, s in enumerate(seq_rotations_sorted):
         first_ch = s[0]
         first_ch_counter[first_ch] += 1
-        first_ch_idx = first_ch_counter[first_ch]
+        first_ch_cnt = first_ch_counter[first_ch]
         last_ch = s[-1]
         last_ch_counter[last_ch] += 1
-        last_ch_idx = last_ch_counter[last_ch]
-        record = BWTRecord(first_ch, first_ch_idx, last_ch, last_ch_idx)
+        last_ch_cnt = last_ch_counter[last_ch]
+        record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt)
         ret.append(record)
     # Populate record last-to-first pointers
     for i, record_a in enumerate(ret):
-        last = record_a.last_ch, record_a.last_ch_idx
+        last = record_a.last_ch, record_a.last_ch_cnt
         for j, record_b in enumerate(ret):
-            first = record_b.first_ch, record_b.first_ch_idx
+            first = record_b.first_ch, record_b.first_ch_cnt
             if last == first:
                 record_a.last_to_first_idx = j
                 break
@@ -232,8 +228,8 @@ def main_optimized2_build():
         print()
         print(f'The following first and last columns were produced ...')
         print()
-        print(f' * First: {[r.first_ch + str(r.first_ch_idx) for r in bwt_records]}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_idx) for r in bwt_records]}')
+        print(f' * First: {[r.first_ch + str(r.first_ch_cnt) for r in bwt_records]}')
+        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")

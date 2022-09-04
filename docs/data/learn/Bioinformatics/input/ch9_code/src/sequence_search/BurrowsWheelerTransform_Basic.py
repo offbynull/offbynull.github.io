@@ -28,13 +28,13 @@ def cmp(a: list[tuple[str, int]], b: list[tuple[str, int]], end_marker: str):
 
 
 class BWTRecord:
-    __slots__ = ['first_ch', 'first_ch_idx', 'last_ch', 'last_ch_idx', 'last_to_first_idx']
+    __slots__ = ['first_ch', 'first_ch_cnt', 'last_ch', 'last_ch_cnt', 'last_to_first_idx']
 
-    def __init__(self, first_ch: str, first_ch_idx: int, last_ch: str, last_ch_idx: int):
+    def __init__(self, first_ch: str, first_ch_cnt: int, last_ch: str, last_ch_cnt: int):
         self.first_ch = first_ch
-        self.first_ch_idx = first_ch_idx
+        self.first_ch_cnt = first_ch_cnt
         self.last_ch = last_ch
-        self.last_ch_idx = last_ch_idx
+        self.last_ch_cnt = last_ch_cnt
         self.last_to_first_idx = -1
 
 
@@ -58,16 +58,16 @@ def to_bwt(
     )
     # Pull out first and last columns
     ret = []
-    for i, s in enumerate(seq_with_counts_rotations_sorted):
-        first_ch, first_ch_idx = s[0]
-        last_ch, last_ch_idx = s[-1]
-        record = BWTRecord(first_ch, first_ch_idx, last_ch, last_ch_idx)
+    for s in seq_with_counts_rotations_sorted:
+        first_ch, first_ch_cnt = s[0]
+        last_ch, last_ch_cnt = s[-1]
+        record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt)
         ret.append(record)
     # Populate record last-to-first pointers
     for i, record_a in enumerate(ret):
-        last = record_a.last_ch, record_a.last_ch_idx
+        last = record_a.last_ch, record_a.last_ch_cnt
         for j, record_b in enumerate(ret):
-            first = record_b.first_ch, record_b.first_ch_idx
+            first = record_b.first_ch, record_b.first_ch_cnt
             if last == first:
                 record_a.last_to_first_idx = j
                 break
@@ -93,8 +93,8 @@ def main_build():
         print()
         print(f'The following first and last columns were produced ...')
         print()
-        print(f' * First: {[r.first_ch + str(r.first_ch_idx) for r in bwt_records]}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_idx) for r in bwt_records]}')
+        print(f' * First: {[r.first_ch + str(r.first_ch_cnt) for r in bwt_records]}')
+        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
@@ -121,9 +121,9 @@ def to_bwt_from_first_last_cols(
         record = BWTRecord(first[0], first[1], last[0], last[1])
         ret.append(record)
     for i, record_a in enumerate(ret):
-        last = record_a.last_ch, record_a.last_ch_idx
+        last = record_a.last_ch, record_a.last_ch_cnt
         for j, record_b in enumerate(ret):
-            first = record_b.first_ch, record_b.first_ch_idx
+            first = record_b.first_ch, record_b.first_ch_cnt
             if last == first:
                 record_a.last_to_first_idx = j
                 break
@@ -131,12 +131,12 @@ def to_bwt_from_first_last_cols(
 
 
 # MARKDOWN_WALK
-def walk(bwt_array: list[BWTRecord]) -> str:
+def walk(bwt_records: list[BWTRecord]) -> str:
     ret = ''
-    row = 0  # first idx of bwt_array always has first_ch == end_marker because of the lexicographical sorting
+    row = 0  # first idx of bwt_records always has first_ch == end_marker because of the lexicographical sorting
     while True:
-        ret += bwt_array[row].last_ch
-        row = bwt_array[row].last_to_first_idx
+        ret += bwt_records[row].last_ch
+        row = bwt_records[row].last_to_first_idx
         if row == 0:
             break
     ret = ret[::-1]  # reverse ret
@@ -182,26 +182,26 @@ def main_walk():
 
 # MARKDOWN_TEST
 def walk_find(
-        bwt_array: list[BWTRecord],
+        bwt_records: list[BWTRecord],
         test: str,
         start_row: int
 ) -> bool:
     row = start_row
     for ch in reversed(test[:-1]):
-        if bwt_array[row].last_ch != ch:
+        if bwt_records[row].last_ch != ch:
             return False
-        row = bwt_array[row].last_to_first_idx
+        row = bwt_records[row].last_to_first_idx
     return True
 
 
 def find(
-        bwt_array: list[BWTRecord],
+        bwt_records: list[BWTRecord],
         test: str
 ) -> int:
     found = 0
-    for i, rec in enumerate(bwt_array):
+    for i, rec in enumerate(bwt_records):
         if rec.first_ch == test[-1]:
-            if len(test) == 1 or (rec.last_ch == test[-2] and walk_find(bwt_array, test, i)):
+            if len(test) == 1 or (rec.last_ch == test[-2] and walk_find(bwt_records, test, i)):
                 found += 1
     return found
     # The code above is the obvious way to do this. However, since the first column is always sorted by character, the
@@ -212,18 +212,18 @@ def find(
     # searched must contain the same type as the element being searched for. Even with a custom sorting "key" to try to
     # map between the types on comparison, it won't allow it. Otherwise, the code below would probably work fine...
     #
-    # end_marker = bwt_array[0].first_ch  # bwt_array[0] always has first_ch == end_marker because of lexicographic sort
+    # end_marker = bwt_records[0].first_ch  # bwt_records[0] always has first_ch == end_marker because of lexicographic sort
     # found = 0
-    # # Binary search the bwt_array for the left-most (top) entry with first_ch in its
+    # # Binary search the bwt_records for the left-most (top) entry with first_ch in its
     # bwt_top = bisect_left(
-    #     bwt_array,
+    #     bwt_records,
     #     test[-1],
     #     key=functools.cmp_to_key(lambda a, b: cmp(a.first_ch[0], b.first_ch[0], end_marker)))
     # if bwt_top == len(test):
     #     return 0  # not found
-    # # Binary search the bwt_array for the right-most (bottom) entry with first_ch in its
+    # # Binary search the bwt_records for the right-most (bottom) entry with first_ch in its
     # bwt_bottom = bisect_right(
-    #     bwt_array,
+    #     bwt_records,
     #     test[-1],
     #     lo=bwt_top,
     #     key=functools.cmp_to_key(lambda a, b: cmp(a.first_ch[0], b.first_ch[0], end_marker)))
@@ -232,8 +232,8 @@ def find(
     #     return bwt_bottom - bwt_top + 1
     # # Otherwise, scan only between those indices
     # for i in range(bwt_top, bwt_bottom + 1):
-    #     rec = bwt_array[i]
-    #     if rec.last_ch == test[-2] and walk_find(bwt_array, test, i):
+    #     rec = bwt_records[i]
+    #     if rec.last_ch == test[-2] and walk_find(bwt_records, test, i):
     #         found += 1
     # return found
 # MARKDOWN_TEST
@@ -258,8 +258,8 @@ def main_test():
         print()
         print(f'The following first and last columns were produced ...')
         print()
-        print(f' * First: {[r.first_ch + str(r.first_ch_idx) for r in bwt_records]}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_idx) for r in bwt_records]}')
+        print(f' * First: {[r.first_ch + str(r.first_ch_cnt) for r in bwt_records]}')
+        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
         print()
         found_cnt = find(bwt_records, test)
         print()
