@@ -118,7 +118,28 @@
 </div>
 </li>
 <li>
-<p><a name="BM_(strategy%7Cstrategies)%2Fi"></a><strong>strategy</strong> - One of many choices that a <a href="#BM_(player)%2Fi">player</a> has in a <a href="#BM_(game)%2Fi">game</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p19]</a></sub></p>
+<p><a name="BM_(strategy%7Cstrategies)%2Fi"></a><strong>strategy</strong> - One of many choices that a <a href="#BM_(player)%2Fi">player</a> has in a <a href="#BM_(game)%2Fi">game</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p19]</a></sub>  For example, Alice and Bob are the <a href="#BM_(player)%2Fi">player</a>s of a <a href="#BM_(game)%2Fi">game</a> where ...</p>
+<ul>
+<li>Alice's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Lie, Get Violent, Stay Silent}</code>.</li>
+<li>Bob's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Truth, Lie}</code>.</li>
+</ul>
+</li>
+<li>
+<p><a name="BM_(strategy%20profile)%2Fi"></a><strong>strategy profile</strong> - Given a set of <a href="#BM_(player)%2Fi">player</a>s and their <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> <code>{(P1, S1), (P2, S2), ..., (Pn, Sn)}</code>, <code>S</code> is the cartesian product of each <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a>: <code>S1 x S2 x ... Sn</code>. Each element in <code>S</code> is called a <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p19]</a></sub></p>
+<p>For example, Alice and Bob are the <a href="#BM_(player)%2Fi">player</a>s of a <a href="#BM_(game)%2Fi">game</a> where ...</p>
+<ul>
+<li>Alice's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Lie, Get Violent, Stay Silent}</code>.</li>
+<li>Bob's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Truth, Lie}</code>.</li>
+</ul>
+<p>The cartesian product of these <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are listed below. Each entry is a <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>.</p>
+<ul>
+<li><code>(Lie, Truth)</code></li>
+<li><code>(Lie, Lie)</code></li>
+<li><code>(Get Violent, Truth)</code></li>
+<li><code>(Get Violent, Lie)</code></li>
+<li><code>(Stay Silent, Truth)</code></li>
+<li><code>(Stay Silent, Lie)</code></li>
+</ul>
 </li>
 <li>
 <p><a name="BM_(game%5B-%5Cs%5Dframe)%2Fi"></a><strong>game frame</strong> - The cartesian product of each <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> in a <a href="#BM_(game)%2Fi">game</a>, where each output has a set of outcomes. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p18-19]</a></sub> For example, the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game-frame</a> below is for a scenario where Alice's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Lie, Get Violent, Stay Silent}</code> and Bob's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Truth, Lie}</code>.</p>
@@ -161,9 +182,9 @@
 <p><a name="BM_(game%5B-%5Cs%5Dframe%20in%20strategic%20form)%2Fi"></a><strong>game frame in strategic form</strong> - Representation of a <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game frame</a> as a tuple with 4 items, where item ...</p>
 <ol>
 <li>is a set of <a href="#BM_(player)%2Fi">player</a>s: <code>I = {1, 2, ..., n}</code></li>
-<li>is the <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> for each <a href="#BM_(player)%2Fi">player</a>, represented as a list of sets: <code>(S1, S2, ..., Sn)</code>. The cartesian product of these sets is denoted as just <code>S</code>, where each element of the set is called a <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> profile.</li>
+<li>is the <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> for each <a href="#BM_(player)%2Fi">player</a>, represented as a list of sets: <code>(S1, S2, ..., Sn)</code>. The cartesian product of these sets is denoted as just <code>S</code>, where each element of the set is called a <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>.</li>
 <li>is the set of outcomes: <code>O</code>.</li>
-<li>is a function that associates each <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> profile in <code>S</code> with an outcome in <code>O</code>: <code>f : S -&gt; O</code> where <code>f(s) E O</code>.</li>
+<li>is a function that associates each <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> in <code>S</code> with an outcome in <code>O</code>: <code>f : S -&gt; O</code> where <code>f(s) E O</code>.</li>
 </ol>
 <p><sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p19]</a></sub></p>
 </li>
@@ -202,16 +223,81 @@
 <li>B is ranked <code>[A freed / B freed, A jailed / B freed, A jailed / B jailed, A freed / B jailed]</code>.</li>
 </ul>
 </li>
+<li>
+<p><a name="BM_(ordinal%20game%20in%20strategic%20form)%2Fi"></a><strong>ordinal game in strategic form</strong> - Representation of an ordinal <a href="#BM_(game)%2Fi">game</a> as a tuple with 5 items. The first 4 items are the same as those of a <a href="#BM_(game%5B-%5Cs%5Dframe%20in%20strategic%20form)%2Fi">game frame in strategic form</a>, while the 5th item is the <a href="#BM_(preference)%2Fi">preference</a> for each <a href="#BM_(player)%2Fi">player</a> in the <a href="#BM_(game)%2Fi">game</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p22]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(pay%5B-%5Cs%5D%3Foff%20function)%2Fi"></a><strong>payoff function</strong> - Maps each <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> in a <a href="#BM_(game)%2Fi">game</a> to a <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(preference)%2Fi">preference</a>s via a <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p22]</a></sub>  For example, the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game-frame</a> below is for a scenario where Alice's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Lie, Get Violent, Stay Silent}</code> and Bob's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Truth, Lie}</code>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>B: Truth</th>
+<th>B: Lie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A: Lie</td>
+<td>A freed / B jailed</td>
+<td>A freed / B freed</td>
+</tr>
+<tr>
+<td>A: Get Violent</td>
+<td>A jailed / B jailed</td>
+<td>A jailed / B freed</td>
+</tr>
+<tr>
+<td>A: Stay Silent</td>
+<td>A freed / B jailed</td>
+<td>A freed / B freed</td>
+</tr>
+</tbody>
+</table>
+<p>Listed from most-to-least desired, the <a href="#BM_(preference)%2Fi">preference</a>s of <a href="#BM_(player)%2Fi">player</a>...</p>
+<ul>
+<li>Alice are <code>[A freed / B jailed, A freed / B freed, A jailed / B jailed, A jailed / B freed]</code>.</li>
+<li>Bob are <code>[A freed / B freed, A jailed / B freed, A jailed / B jailed, A freed / B jailed]</code>.</li>
 </ul>
-<p>TODO: CONTINUE FROM PAGE22 "<a href="#BM_(utility%20function%7Cutility)%2Fi">Utility function</a>s are a particularly convenient way of representing <a href="#BM_(preference)%2Fi">preference</a>s. In fact, by using <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a>s one can ..."</p>
-<p>TODO: CONTINUE FROM PAGE22 "<a href="#BM_(utility%20function%7Cutility)%2Fi">Utility function</a>s are a particularly convenient way of representing <a href="#BM_(preference)%2Fi">preference</a>s. In fact, by using <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a>s one can ..."</p>
-<p>TODO: CONTINUE FROM PAGE22 "<a href="#BM_(utility%20function%7Cutility)%2Fi">Utility function</a>s are a particularly convenient way of representing <a href="#BM_(preference)%2Fi">preference</a>s. In fact, by using <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a>s one can ..."</p>
-<p>TODO: CONTINUE FROM PAGE22 "<a href="#BM_(utility%20function%7Cutility)%2Fi">Utility function</a>s are a particularly convenient way of representing <a href="#BM_(preference)%2Fi">preference</a>s. In fact, by using <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a>s one can ..."</p>
-<p>TODO: CONTINUE FROM PAGE22 "<a href="#BM_(utility%20function%7Cutility)%2Fi">Utility function</a>s are a particularly convenient way of representing <a href="#BM_(preference)%2Fi">preference</a>s. In fact, by using <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a>s one can ..."</p>
-<p>TODO: CONTINUE FROM PAGE22 "<a href="#BM_(utility%20function%7Cutility)%2Fi">Utility function</a>s are a particularly convenient way of representing <a href="#BM_(preference)%2Fi">preference</a>s. In fact, by using <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a>s one can ..."</p>
-<p>TODO: CONTINUE FROM PAGE22 "<a href="#BM_(utility%20function%7Cutility)%2Fi">Utility function</a>s are a particularly convenient way of representing <a href="#BM_(preference)%2Fi">preference</a>s. In fact, by using <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a>s one can ..."</p>
-<p>TODO: CONTINUE FROM PAGE22 "<a href="#BM_(utility%20function%7Cutility)%2Fi">Utility function</a>s are a particularly convenient way of representing <a href="#BM_(preference)%2Fi">preference</a>s. In fact, by using <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a>s one can ..."</p>
-<p>TODO: CONTINUE FROM PAGE22 "<a href="#BM_(utility%20function%7Cutility)%2Fi">Utility function</a>s are a particularly convenient way of representing <a href="#BM_(preference)%2Fi">preference</a>s. In fact, by using <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a>s one can ..."</p>
-<p>TODO: CONTINUE FROM PAGE22 "<a href="#BM_(utility%20function%7Cutility)%2Fi">Utility function</a>s are a particularly convenient way of representing <a href="#BM_(preference)%2Fi">preference</a>s. In fact, by using <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a>s one can ..."</p>
+<p>Once each <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(preference)%2Fi">preference</a>s is passed through its respective <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a>, those <a href="#BM_(preference)%2Fi">preference</a>s are represented as numeric rankings. The numeric rankings for ...</p>
+<ul>
+<li>Alice is <code>{A freed / B jailed: 4, A freed / B freed: 3,  A jailed / B jailed: 2, A jailed / B freed: 2}</code>.</li>
+<li>Bob is   <code>{A freed / B jailed: 1, A freed / B freed: 10, A jailed / B jailed: 3, A jailed / B freed: 6}</code>.</li>
+</ul>
+<p>Instead of mapping each outcome to a numeric rank (as is done above), a <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function)%2Fi">payoff function</a> maps the <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> <em>that leads to that outcome</em> to a numeric rank. The <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function)%2Fi">payoff function</a>s for Alice and Bob perform mappings as follows.</p>
+<pre class="hljs"><code><span class="hljs-attr">Alice:</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">4</span>          <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 4</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span>            <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 3</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">2</span>  <span class="hljs-comment"># outcome is A jailed / B jailed, which is ranked as 2</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">2</span>    <span class="hljs-comment"># outcome is A jailed / B freed, which is ranked as 2</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">4</span>  <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 4</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span>    <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 3</span>
+<span class="hljs-attr">Bob:</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">1</span>          <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 1</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">10</span>           <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 10</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span>  <span class="hljs-comment"># outcome is A jailed / B jailed, which is ranked as 3</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">6</span>    <span class="hljs-comment"># outcome is A jailed / B freed, which is ranked as 6</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">1</span>  <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 1</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">10</span>   <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 10</span>
+</code></pre>
+</li>
+<li>
+<p><a name="BM_(reduced-form%20ordinal%20game%20in%20strategic%20form)%2Fi"></a><strong>reduced-form ordinal game in strategic form</strong> - An <a href="#BM_(ordinal%20game%20in%20strategic%20form)%2Fi">ordinal game in strategic form</a> where ...</p>
+<ul>
+<li>the set of outcomes <code>O</code>,</li>
+<li>the function that associates each <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> in <code>S</code> with an outcome in <code>O</code>: <code>f : S -&gt; O</code> where <code>f(s) E O</code>,</li>
+<li>and the <a href="#BM_(preference)%2Fi">preference</a> ranking for each outcome,</li>
+</ul>
+<p>... have been replaced with a set of <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function)%2Fi">payoff function</a>s (one for each <a href="#BM_(player)%2Fi">player</a>). <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p22]</a></sub> The <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function)%2Fi">payoff function</a> directly maps <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s to numeric rankings (<a href="#BM_(preference)%2Fi">preference</a>), where as a <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> would normally lead to an outcome which would have a <a href="#BM_(preference)%2Fi">preference</a> ranking.</p>
+</li>
+</ul>
+<p>TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game-frame</a> illustrated in Figure 2.1, let Sarah be <a href="#BM_(player)%2Fi">Player</a> 1 and Steven <a href="#BM_(player)%2Fi">Player</a> 2 and" and add tabular example to <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function)%2Fi">payoff function</a></p>
+<p>TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game-frame</a> illustrated in Figure 2.1, let Sarah be <a href="#BM_(player)%2Fi">Player</a> 1 and Steven <a href="#BM_(player)%2Fi">Player</a> 2 and" and add tabular example to <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function)%2Fi">payoff function</a></p>
+<p>TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game-frame</a> illustrated in Figure 2.1, let Sarah be <a href="#BM_(player)%2Fi">Player</a> 1 and Steven <a href="#BM_(player)%2Fi">Player</a> 2 and" and add tabular example to <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function)%2Fi">payoff function</a></p>
+<p>TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game-frame</a> illustrated in Figure 2.1, let Sarah be <a href="#BM_(player)%2Fi">Player</a> 1 and Steven <a href="#BM_(player)%2Fi">Player</a> 2 and" and add tabular example to <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function)%2Fi">payoff function</a></p>
+<p>TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game-frame</a> illustrated in Figure 2.1, let Sarah be <a href="#BM_(player)%2Fi">Player</a> 1 and Steven <a href="#BM_(player)%2Fi">Player</a> 2 and" and add tabular example to <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function)%2Fi">payoff function</a></p>
+<p>TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game-frame</a> illustrated in Figure 2.1, let Sarah be <a href="#BM_(player)%2Fi">Player</a> 1 and Steven <a href="#BM_(player)%2Fi">Player</a> 2 and" and add tabular example to <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function)%2Fi">payoff function</a></p>
+<p>TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game-frame</a> illustrated in Figure 2.1, let Sarah be <a href="#BM_(player)%2Fi">Player</a> 1 and Steven <a href="#BM_(player)%2Fi">Player</a> 2 and" and add tabular example to <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function)%2Fi">payoff function</a></p>
+<p>TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game-frame</a> illustrated in Figure 2.1, let Sarah be <a href="#BM_(player)%2Fi">Player</a> 1 and Steven <a href="#BM_(player)%2Fi">Player</a> 2 and" and add tabular example to <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function)%2Fi">payoff function</a></p>
 
         </body></html>

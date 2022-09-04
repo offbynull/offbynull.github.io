@@ -101,7 +101,26 @@
    If the outcomes are drink Coke vs drink Sprite and the utility function assigns `{Coke=30, Sprite=10}, that doesn't mean Coke is 3 times more as desired as Sprite. It simply means Coke is preferred over Sprite.
    ```
 
- * `{bm} strategy/(strategy|strategies)/i` - One of many choices that a player has in a game. `{ref} gt:p19`
+ * `{bm} strategy/(strategy|strategies)/i` - One of many choices that a player has in a game. `{ref} gt:p19`  For example, Alice and Bob are the players of a game where ...
+ 
+   * Alice's strategies are `{Lie, Get Violent, Stay Silent}`.
+   * Bob's strategies are `{Truth, Lie}`. 
+
+ * `{bm} strategy profile` - Given a set of players and their strategies `{(P1, S1), (P2, S2), ..., (Pn, Sn)}`, `S` is the cartesian product of each player's strategies: `S1 x S2 x ... Sn`. Each element in `S` is called a strategy profile. `{ref} gt:p19`
+ 
+   For example, Alice and Bob are the players of a game where ...
+ 
+   * Alice's strategies are `{Lie, Get Violent, Stay Silent}`.
+   * Bob's strategies are `{Truth, Lie}`. 
+
+   The cartesian product of these strategies are listed below. Each entry is a strategy profile.
+
+   * `(Lie, Truth)`
+   * `(Lie, Lie)`
+   * `(Get Violent, Truth)`
+   * `(Get Violent, Lie)`
+   * `(Stay Silent, Truth)`
+   * `(Stay Silent, Lie)`
 
  * `{bm} game frame/(game[-\s]frame)/i` - The cartesian product of each player's strategies in a game, where each output has a set of outcomes. `{ref} gt:p18-19` For example, the game-frame below is for a scenario where Alice's strategies are `{Lie, Get Violent, Stay Silent}` and Bob's strategies are `{Truth, Lie}`.
   
@@ -146,28 +165,68 @@
    * A is ranked `[A freed / B jailed, A freed / B freed, A jailed / B jailed, A jailed / B freed]`.
    * B is ranked `[A freed / B freed, A jailed / B freed, A jailed / B jailed, A freed / B jailed]`.
 
+ * `{bm} ordinal game in strategic form` - Representation of an ordinal game as a tuple with 5 items. The first 4 items are the same as those of a game frame in strategic form, while the 5th item is the preference for each player in the game. `{ref} gt:p22`
+
+ * `{bm} payoff function/(pay[-\s]?off function)/i` - Maps each strategy profile in a game to a player's preferences via a utility function. `{ref} gt:p22`  For example, the game-frame below is for a scenario where Alice's strategies are `{Lie, Get Violent, Stay Silent}` and Bob's strategies are `{Truth, Lie}`.
+  
+   |                |      B: Truth       |       B: Lie       |
+   |----------------|---------------------|--------------------|
+   | A: Lie         | A freed / B jailed  | A freed / B freed  |
+   | A: Get Violent | A jailed / B jailed | A jailed / B freed |
+   | A: Stay Silent | A freed / B jailed  | A freed / B freed  |
+
+   Listed from most-to-least desired, the preferences of player...
+
+   * Alice are `[A freed / B jailed, A freed / B freed, A jailed / B jailed, A jailed / B freed]`.
+   * Bob are `[A freed / B freed, A jailed / B freed, A jailed / B jailed, A freed / B jailed]`.
+
+   Once each player's preferences is passed through its respective utility function, those preferences are represented as numeric rankings. The numeric rankings for ...
+
+   * Alice is `{A freed / B jailed: 4, A freed / B freed: 3,  A jailed / B jailed: 2, A jailed / B freed: 2}`.
+   * Bob is   `{A freed / B jailed: 1, A freed / B freed: 10, A jailed / B jailed: 3, A jailed / B freed: 6}`.
+   
+   Instead of mapping each outcome to a numeric rank (as is done above), a payoff function maps the strategy profile *that leads to that outcome* to a numeric rank. The payoff functions for Alice and Bob perform mappings as follows.
+
+   ```yaml
+   Alice:
+    - [Lie, Truth]: 4          # outcome is A freed / B jailed, which is ranked as 4
+    - [Lie, Lie]: 3            # outcome is A freed / B freed, which is ranked as 3
+    - [Get Violent, Truth]: 2  # outcome is A jailed / B jailed, which is ranked as 2
+    - [Get Violent, Lie]: 2    # outcome is A jailed / B freed, which is ranked as 2
+    - [Stay Silent, Truth]: 4  # outcome is A freed / B jailed, which is ranked as 4
+    - [Stay Silent, Lie]: 3    # outcome is A freed / B freed, which is ranked as 3
+   Bob:
+    - [Lie, Truth]: 1          # outcome is A freed / B jailed, which is ranked as 1
+    - [Lie, Lie]: 10           # outcome is A freed / B freed, which is ranked as 10
+    - [Get Violent, Truth]: 3  # outcome is A jailed / B jailed, which is ranked as 3
+    - [Get Violent, Lie]: 6    # outcome is A jailed / B freed, which is ranked as 6
+    - [Stay Silent, Truth]: 1  # outcome is A freed / B jailed, which is ranked as 1
+    - [Stay Silent, Lie]: 10   # outcome is A freed / B freed, which is ranked as 10
+   ```
+
+ * `{bm} reduced-form ordinal game in strategic form` - An ordinal game in strategic form where ...
+ 
+   * the set of outcomes `O`,
+   * the function that associates each strategy profile in `S` with an outcome in `O`: `f : S -> O` where `f(s) E O`,
+   * and the preference ranking for each outcome,
+
+   ... have been replaced with a set of payoff functions (one for each player). `{ref} gt:p22` The payoff function directly maps strategy profiles to numeric rankings (preference), where as a strategy profile would normally lead to an outcome which would have a preference ranking.
 
 
 
 
+TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
 
-TODO: CONTINUE FROM PAGE22 "Utility functions are a particularly convenient way of representing preferences. In fact, by using utility functions one can ..."
+TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
 
-TODO: CONTINUE FROM PAGE22 "Utility functions are a particularly convenient way of representing preferences. In fact, by using utility functions one can ..."
+TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
 
-TODO: CONTINUE FROM PAGE22 "Utility functions are a particularly convenient way of representing preferences. In fact, by using utility functions one can ..."
+TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
 
-TODO: CONTINUE FROM PAGE22 "Utility functions are a particularly convenient way of representing preferences. In fact, by using utility functions one can ..."
+TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
 
-TODO: CONTINUE FROM PAGE22 "Utility functions are a particularly convenient way of representing preferences. In fact, by using utility functions one can ..."
+TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
 
-TODO: CONTINUE FROM PAGE22 "Utility functions are a particularly convenient way of representing preferences. In fact, by using utility functions one can ..."
+TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
 
-TODO: CONTINUE FROM PAGE22 "Utility functions are a particularly convenient way of representing preferences. In fact, by using utility functions one can ..."
-
-TODO: CONTINUE FROM PAGE22 "Utility functions are a particularly convenient way of representing preferences. In fact, by using utility functions one can ..."
-
-TODO: CONTINUE FROM PAGE22 "Utility functions are a particularly convenient way of representing preferences. In fact, by using utility functions one can ..."
-
-TODO: CONTINUE FROM PAGE22 "Utility functions are a particularly convenient way of representing preferences. In fact, by using utility functions one can ..."
-
+TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
