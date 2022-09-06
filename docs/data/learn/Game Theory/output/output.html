@@ -32,16 +32,16 @@
 <p><a name="BM_(non-cooperative%20game%20theory)%2Fi"></a><strong>non-cooperative game theory</strong> - A branch of <a href="#BM_(game%20theory)%2Fi">game theory</a> where <a href="#BM_(player)%2Fi">player</a>s are either unable to communicate or unable to make binding agreements. An example of <a href="#BM_(non-cooperative%20game%20theory)%2Fi">non-cooperative game theory</a> is competing firms that are hampered from colluding due to anti-trust laws.  <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p12]</a></sub></p>
 </li>
 <li>
-<p><a name="BM_(ordinal%20payoff%7Cordinal%20pay-off)%2Fi"></a><strong>ordinal payoff</strong> - A <a href="#BM_(game)%2Fi">game</a> where the <a href="#BM_(preference)%2Fi">preference</a>s of discrete outcomes are ranked using numbers. For example, the <a href="#BM_(preference)%2Fi">preference</a> for the type of cake to consume at a birthday party may be ...</p>
-<ol start="0">
+<p><a name="BM_(ordinal%20payoff%7Cordinal%20pay-off%7Cordinal%20game)%2Fi"></a><strong>ordinal payoff</strong> - A <a href="#BM_(game)%2Fi">game</a> where the <a href="#BM_(preference)%2Fi">preference</a>s of discrete outcomes are ranked using numbers. For example, the <a href="#BM_(preference)%2Fi">preference</a> for the type of cake to consume at a birthday party may be ...</p>
+<ol>
 <li>no cake available</li>
 <li>non-chocolate cake</li>
 <li>chocolate cake</li>
 </ol>
-<p>Item 2 (chocolate cake) is preferable over item 1 (non-chocolate cake), which is preferable over 0 (no cake).  <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p12]</a></sub></p>
+<p>Item 3 (chocolate cake) is preferable over item 2 (non-chocolate cake), which is preferable over 1 (no cake).  <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p12]</a></sub></p>
 </li>
 <li>
-<p><a name="BM_(cardinal%20payoff)%2Fi"></a><strong>cardinal payoff</strong> - A <a href="#BM_(game)%2Fi">game</a> where the <a href="#BM_(preference)%2Fi">preference</a> of outcome is based on quantities (e.g. amount of money) rather than a ranking of discrete items based on <a href="#BM_(preference)%2Fi">preference</a> (<a href="#BM_(ordinal%20payoff%7Cordinal%20pay-off)%2Fi">ordinal payoff</a>s).  <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p12]</a></sub></p>
+<p><a name="BM_(cardinal%20payoff%7Ccardinal%20pay-off%7Ccardinal%20game)%2Fi"></a><strong>cardinal payoff</strong> - A <a href="#BM_(game)%2Fi">game</a> where the <a href="#BM_(preference)%2Fi">preference</a> of outcome is based on quantities (e.g. amount of money) rather than a ranking of discrete items based on <a href="#BM_(preference)%2Fi">preference</a> (<a href="#BM_(ordinal%20payoff%7Cordinal%20pay-off%7Cordinal%20game)%2Fi">ordinal payoff</a>s).  <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p12]</a></sub></p>
 </li>
 <li>
 <p><a name="BM_(selfish%20and%20greedy)%2Fi"></a><strong>selfish and greedy</strong> - A <a href="#BM_(player)%2Fi">player</a> that focuses exclusively on itself when evaluating outcomes (selfish) and has <a href="#BM_(preference)%2Fi">preference</a> for an outcome where it gains more over less (greedy). <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p18]</a></sub></p>
@@ -75,14 +75,14 @@
 </div>
 </li>
 <li>
-<p>Cartesian product - Given the cartesian product of the outcomes with itself, keep only the ordered pairs <code>(A, B)</code> where <code>A</code> is at least desired as much as <code>B</code>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p20]</a></sub></p>
+<p>Cartesian product - Given the cartesian product of the outcomes with itself, keep only the ordered pairs <code>[A, B]</code> where <code>A</code> is at least desired as much as <code>B</code>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p20]</a></sub></p>
 <p>The scenario above would be represented as follows.</p>
-<pre class="hljs"><code>{
-  (o1, o1), (o1, o4), (o1, o2),
-  (o2, o2),
-  (o3, o3), (o3, o1), (o3, o4), (o3, o2),
-  (o4, o4), (o4, o1), (o4, o2)
-}
+<pre class="hljs"><code>[
+  [<span class="hljs-string">o1</span>, <span class="hljs-string">o1</span>], [<span class="hljs-string">o1</span>, <span class="hljs-string">o4</span>], [<span class="hljs-string">o1</span>, <span class="hljs-string">o2</span>],
+  [<span class="hljs-string">o2</span>, <span class="hljs-string">o2</span>],
+  [<span class="hljs-string">o3</span>, <span class="hljs-string">o3</span>], [<span class="hljs-string">o3</span>, <span class="hljs-string">o1</span>], [<span class="hljs-string">o3</span>, <span class="hljs-string">o4</span>], [<span class="hljs-string">o3</span>, <span class="hljs-string">o2</span>],
+  [<span class="hljs-string">o4</span>, <span class="hljs-string">o4</span>], [<span class="hljs-string">o4</span>, <span class="hljs-string">o1</span>], [<span class="hljs-string">o4</span>, <span class="hljs-string">o2</span>]
+]
 </code></pre>
 </li>
 <li>
@@ -120,35 +120,35 @@
 <li>
 <p><a name="BM_(strategy%7Cstrategies)%2Fi"></a><strong>strategy</strong> - One of many choices that a <a href="#BM_(player)%2Fi">player</a> has in a <a href="#BM_(game)%2Fi">game</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p19]</a></sub>  For example, Alice and Bob are the <a href="#BM_(player)%2Fi">player</a>s of a <a href="#BM_(game)%2Fi">game</a> where ...</p>
 <ul>
-<li>Alice's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Lie, Get Violent, Stay Silent}</code>.</li>
-<li>Bob's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Truth, Lie}</code>.</li>
+<li>Alice's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>[Lie, Get Violent, Stay Silent]</code>.</li>
+<li>Bob's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>[Truth, Lie]</code>.</li>
 </ul>
 </li>
 <li>
-<p><a name="BM_(strategy%20profile)%2Fi"></a><strong>strategy profile</strong> - Given a set of <a href="#BM_(player)%2Fi">player</a>s and their <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> <code>{(P1, S1), (P2, S2), ..., (Pn, Sn)}</code>, <code>S</code> is the cartesian product of each <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a>: <code>S1 x S2 x ... Sn</code>. Each element in <code>S</code> is called a <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p19]</a></sub></p>
+<p><a name="BM_(strategy%20profile)%2Fi"></a><strong>strategy profile</strong> - Given a set of <a href="#BM_(player)%2Fi">player</a>s and their <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> <code>[[P1, S1], [P2, S2], ..., [Pn, Sn]]</code>, <code>S</code> is the cartesian product of each <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a>: <code>S1 x S2 x ... Sn</code>. Each element in <code>S</code> is called a <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p19]</a></sub></p>
 <p>For example, Alice and Bob are the <a href="#BM_(player)%2Fi">player</a>s of a <a href="#BM_(game)%2Fi">game</a> where ...</p>
 <ul>
-<li>Alice's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Lie, Get Violent, Stay Silent}</code>.</li>
-<li>Bob's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Truth, Lie}</code>.</li>
+<li>Alice's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>[Lie, Get Violent, Stay Silent]</code>.</li>
+<li>Bob's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>[Truth, Lie]</code>.</li>
 </ul>
 <p>The cartesian product of these <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are listed below. Each entry is a <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>.</p>
 <ul>
-<li><code>(Lie, Truth)</code></li>
-<li><code>(Lie, Lie)</code></li>
-<li><code>(Get Violent, Truth)</code></li>
-<li><code>(Get Violent, Lie)</code></li>
-<li><code>(Stay Silent, Truth)</code></li>
-<li><code>(Stay Silent, Lie)</code></li>
+<li><code>[Lie, Truth]</code></li>
+<li><code>[Lie, Lie]</code></li>
+<li><code>[Get Violent, Truth]</code></li>
+<li><code>[Get Violent, Lie]</code></li>
+<li><code>[Stay Silent, Truth]</code></li>
+<li><code>[Stay Silent, Lie]</code></li>
 </ul>
 </li>
 <li>
-<p><a name="BM_(game%5B-%5Cs%5Dframe)%2Fi"></a><strong>game frame</strong> - The cartesian product of each <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> in a <a href="#BM_(game)%2Fi">game</a>, where each output has a set of outcomes. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p18-19]</a></sub> For example, the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game-frame</a> below is for a scenario where Alice's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Lie, Get Violent, Stay Silent}</code> and Bob's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Truth, Lie}</code>.</p>
-<pre><code>(Lie, Truth)         -&gt; A freed, B jailed
-(Lie, Lie)           -&gt; A freed, B freed
-(Get Violent, Truth) -&gt; A jailed, B jailed
-(Get Violent, Lie)   -&gt; A jailed, B freed
-(Stay Silent, Truth) -&gt; A freed, B jailed
-(Stay Silent, Lie)   -&gt; A freed, B freed
+<p><a name="BM_(game%5B-%5Cs%5Dframe)%2Fi"></a><strong>game frame</strong> - The cartesian product of each <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> in a <a href="#BM_(game)%2Fi">game</a>, where each output has a set of outcomes. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p18-19]</a></sub> For example, the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game-frame</a> below is for a scenario where Alice's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>[Lie, Get Violent, Stay Silent]</code> and Bob's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>[Truth, Lie]</code>.</p>
+<pre class="hljs"><code>[<span class="hljs-string">Lie</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span>  <span class="hljs-string">A</span> <span class="hljs-string">freed,</span> <span class="hljs-string">B</span> <span class="hljs-string">jailed</span>
+[<span class="hljs-string">Lie</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span>  <span class="hljs-string">A</span> <span class="hljs-string">freed,</span> <span class="hljs-string">B</span> <span class="hljs-string">freed</span>
+[<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span>  <span class="hljs-string">A</span> <span class="hljs-string">jailed,</span> <span class="hljs-string">B</span> <span class="hljs-string">jailed</span>
+[<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span>  <span class="hljs-string">A</span> <span class="hljs-string">jailed,</span> <span class="hljs-string">B</span> <span class="hljs-string">freed</span>
+[<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span>  <span class="hljs-string">A</span> <span class="hljs-string">freed,</span> <span class="hljs-string">B</span> <span class="hljs-string">jailed</span>
+[<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span>  <span class="hljs-string">A</span> <span class="hljs-string">freed,</span> <span class="hljs-string">B</span> <span class="hljs-string">freed</span>
 </code></pre>
 <p>If there are only two <a href="#BM_(player)%2Fi">player</a>s, a <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game-frame</a> can be represented as a table. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p19]</a></sub></p>
 <table>
@@ -179,7 +179,7 @@
 </table>
 </li>
 <li>
-<p><a name="BM_(game%5B-%5Cs%5Dframe%20in%20strategic%20form)%2Fi"></a><strong>game frame in strategic form</strong> - Representation of a <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game frame</a> as the tuple <code>(I, S, O, f)</code>, where ...</p>
+<p><a name="BM_(game%5B-%5Cs%5Dframe%20in%20strategic%20form)%2Fi"></a><strong>game frame in strategic form</strong> - Representation of a <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game frame</a> as the tuple <code>[I, S, O, f]</code>, where ...</p>
 <ul>
 <li><code>I</code> is the set of <a href="#BM_(player)%2Fi">player</a>s: <code>[1, 2, ..., n]</code></li>
 <li><code>S</code> is the set of <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> each <a href="#BM_(player)%2Fi">player</a> has: <code>[S1, S2, ..., Sn]</code></li>
@@ -229,7 +229,7 @@
 </ul>
 </li>
 <li>
-<p><a name="BM_(ordinal%20game%20in%20strategic%20form)%2Fi"></a><strong>ordinal game in strategic form</strong> - Representation of an ordinal <a href="#BM_(game)%2Fi">game</a> as a <a href="#BM_(game%5B-%5Cs%5Dframe%20in%20strategic%20form)%2Fi">game frame in strategic form</a> with an extra item appended to the tuple: The <a href="#BM_(preference)%2Fi">preference</a> for each <a href="#BM_(player)%2Fi">player</a> in the <a href="#BM_(game)%2Fi">game</a>. As such, the items of the tuple are as follows:</p>
+<p><a name="BM_(ordinal%20game%20in%20strategic%20form)%2Fi"></a><strong>ordinal game in strategic form</strong> - Representation of an <a href="#BM_(ordinal%20payoff%7Cordinal%20pay-off%7Cordinal%20game)%2Fi">ordinal game</a> as a <a href="#BM_(game%5B-%5Cs%5Dframe%20in%20strategic%20form)%2Fi">game frame in strategic form</a> with an extra item appended to the tuple: The <a href="#BM_(preference)%2Fi">preference</a> for each <a href="#BM_(player)%2Fi">player</a> in the <a href="#BM_(game)%2Fi">game</a>. As such, the items of the tuple are as follows:</p>
 <ul>
 <li><code>I</code> is the set of <a href="#BM_(player)%2Fi">player</a>s: <code>[1, 2, ..., n]</code></li>
 <li><code>S</code> is the set of <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> each <a href="#BM_(player)%2Fi">player</a> has: <code>[S1, S2, ..., Sn]</code> (<code>S</code> on its own is represented as the complete set of <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s for the <a href="#BM_(game)%2Fi">game</a>).</li>
@@ -241,10 +241,8 @@
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Similar to <code>S</code>, each index in <code>P</code> maps to the <a href="#BM_(player)%2Fi">player</a> at the same index in <code>I</code>. For example, <code>P2</code> is the <a href="#BM_(preference)%2Fi">preference</a> ranking for <a href="#BM_(player)%2Fi">player</a> <code>2</code>.</p>
 </div>
-</li>
-</ul>
 <p><sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p22]</a></sub></p>
-<ul>
+</li>
 <li>
 <p><a name="BM_(pay%5B-%5Cs%5D%3Foff%20function)%2Fi"></a><strong>payoff function</strong> - Maps each <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> in a <a href="#BM_(game)%2Fi">game</a> to a <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(preference)%2Fi">preference</a>s via a <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p22]</a></sub>  For example, the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game-frame</a> below is for a scenario where Alice's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Lie, Get Violent, Stay Silent}</code> and Bob's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Truth, Lie}</code>.</p>
 <table>
@@ -327,7 +325,7 @@
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>It's called reduced-form because some information has been lost. Specifically, <code>O</code> is no longer there, which actually spelled out what the outcomes were.</p>
 </div>
-<p>A table is commonly used to represent a <a href="#BM_(reduced-form%20ordinal%20game%20in%20strategic%20form)%2Fi">reduced-form ordinal game in strategic form</a> when there are only 2 <a href="#BM_(player)%2Fi">player</a>s. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p23]</a></sub>  For example, Alice nad Bob are the <a href="#BM_(player)%2Fi">player</a>s in a <a href="#BM_(game)%2Fi">game</a>. The <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> for ...</p>
+<p>A table is commonly used to represent a <a href="#BM_(reduced-form%20ordinal%20game%20in%20strategic%20form)%2Fi">reduced-form ordinal game in strategic form</a> when there are only 2 <a href="#BM_(player)%2Fi">player</a>s. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p23]</a></sub>  For example, Alice and Bob are the <a href="#BM_(player)%2Fi">player</a>s in a <a href="#BM_(game)%2Fi">game</a>. The <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> for ...</p>
 <ul>
 <li>Alice are <code>[Lie, Get Violent, Stay Silent]</code>.</li>
 <li>Bob are <code>[Truth, Lie]</code>.</li>
@@ -360,18 +358,18 @@
 <tbody>
 <tr>
 <td>A: Lie</td>
-<td>(4, 1)</td>
-<td>(3, 10)</td>
+<td>[4, 1]</td>
+<td>[3, 10]</td>
 </tr>
 <tr>
 <td>A: Get Violent</td>
-<td>(2, 3)</td>
-<td>(2, 6)</td>
+<td>[2, 3]</td>
+<td>[2, 6]</td>
 </tr>
 <tr>
 <td>A: Stay Silent</td>
-<td>(4, 1)</td>
-<td>(3, 10)</td>
+<td>[4, 1]</td>
+<td>[3, 10]</td>
 </tr>
 </tbody>
 </table>

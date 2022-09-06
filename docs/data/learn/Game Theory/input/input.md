@@ -21,15 +21,15 @@
 
  * `{bm} non-cooperative game theory` - A branch of game theory where players are either unable to communicate or unable to make binding agreements. An example of non-cooperative game theory is competing firms that are hampered from colluding due to anti-trust laws.  `{ref} gt:p12`
 
- * `{bm} ordinal payoff/(ordinal payoff|ordinal pay-off)/i` - A game where the preferences of discrete outcomes are ranked using numbers. For example, the preference for the type of cake to consume at a birthday party may be ...
+ * `{bm} ordinal payoff/(ordinal payoff|ordinal pay-off|ordinal game)/i` - A game where the preferences of discrete outcomes are ranked using numbers. For example, the preference for the type of cake to consume at a birthday party may be ...
 
-   0. no cake available
-   1. non-chocolate cake
-   2. chocolate cake
+   1. no cake available
+   2. non-chocolate cake
+   3. chocolate cake
 
-   Item 2 (chocolate cake) is preferable over item 1 (non-chocolate cake), which is preferable over 0 (no cake).  `{ref} gt:p12`
+   Item 3 (chocolate cake) is preferable over item 2 (non-chocolate cake), which is preferable over 1 (no cake).  `{ref} gt:p12`
 
- * `{bm} cardinal payoff` - A game where the preference of outcome is based on quantities (e.g. amount of money) rather than a ranking of discrete items based on preference (ordinal payoffs).  `{ref} gt:p12`
+ * `{bm} cardinal payoff/(cardinal payoff|cardinal pay-off|cardinal game)/i` - A game where the preference of outcome is based on quantities (e.g. amount of money) rather than a ranking of discrete items based on preference (ordinal payoffs).  `{ref} gt:p12`
 
  * `{bm} selfish and greedy` - A player that focuses exclusively on itself when evaluating outcomes (selfish) and has preference for an outcome where it gains more over less (greedy). `{ref} gt:p18`
 
@@ -59,17 +59,17 @@
       The problem is, I don't know what "at least as good as" means in terms of the desire for an outcome. If something A is "at least as good as" B (e.g. `A >= B`), there's the possibility that I'll gain more from A vs B, so why wouldn't I always prefer A over B?
       ```
 
-    * Cartesian product - Given the cartesian product of the outcomes with itself, keep only the ordered pairs `(A, B)` where `A` is at least desired as much as `B`. `{ref} gt:p20`
+    * Cartesian product - Given the cartesian product of the outcomes with itself, keep only the ordered pairs `[A, B]` where `A` is at least desired as much as `B`. `{ref} gt:p20`
 
       The scenario above would be represented as follows.
       
-      ```python
-      {
-        (o1, o1), (o1, o4), (o1, o2),
-        (o2, o2),
-        (o3, o3), (o3, o1), (o3, o4), (o3, o2),
-        (o4, o4), (o4, o1), (o4, o2)
-      }
+      ```yaml
+      [
+        [o1, o1], [o1, o4], [o1, o2],
+        [o2, o2],
+        [o3, o3], [o3, o1], [o3, o4], [o3, o2],
+        [o4, o4], [o4, o1], [o4, o2]
+      ]
       ```
 
     * Ranked list - Represent which outcome has preference as a list from best-to-worst, where equally desired outcomes are put into the same index.  `{ref} gt:p21`
@@ -103,35 +103,35 @@
 
  * `{bm} strategy/(strategy|strategies)/i` - One of many choices that a player has in a game. `{ref} gt:p19`  For example, Alice and Bob are the players of a game where ...
  
-   * Alice's strategies are `{Lie, Get Violent, Stay Silent}`.
-   * Bob's strategies are `{Truth, Lie}`. 
+   * Alice's strategies are `[Lie, Get Violent, Stay Silent]`.
+   * Bob's strategies are `[Truth, Lie]`. 
 
- * `{bm} strategy profile` - Given a set of players and their strategies `{(P1, S1), (P2, S2), ..., (Pn, Sn)}`, `S` is the cartesian product of each player's strategies: `S1 x S2 x ... Sn`. Each element in `S` is called a strategy profile. `{ref} gt:p19`
+ * `{bm} strategy profile` - Given a set of players and their strategies `[[P1, S1], [P2, S2], ..., [Pn, Sn]]`, `S` is the cartesian product of each player's strategies: `S1 x S2 x ... Sn`. Each element in `S` is called a strategy profile. `{ref} gt:p19`
  
    For example, Alice and Bob are the players of a game where ...
  
-   * Alice's strategies are `{Lie, Get Violent, Stay Silent}`.
-   * Bob's strategies are `{Truth, Lie}`. 
+   * Alice's strategies are `[Lie, Get Violent, Stay Silent]`.
+   * Bob's strategies are `[Truth, Lie]`. 
 
    The cartesian product of these strategies are listed below. Each entry is a strategy profile.
 
-   * `(Lie, Truth)`
-   * `(Lie, Lie)`
-   * `(Get Violent, Truth)`
-   * `(Get Violent, Lie)`
-   * `(Stay Silent, Truth)`
-   * `(Stay Silent, Lie)`
+   * `[Lie, Truth]`
+   * `[Lie, Lie]`
+   * `[Get Violent, Truth]`
+   * `[Get Violent, Lie]`
+   * `[Stay Silent, Truth]`
+   * `[Stay Silent, Lie]`
 
- * `{bm} game frame/(game[-\s]frame)/i` - The cartesian product of each player's strategies in a game, where each output has a set of outcomes. `{ref} gt:p18-19` For example, the game-frame below is for a scenario where Alice's strategies are `{Lie, Get Violent, Stay Silent}` and Bob's strategies are `{Truth, Lie}`.
+ * `{bm} game frame/(game[-\s]frame)/i` - The cartesian product of each player's strategies in a game, where each output has a set of outcomes. `{ref} gt:p18-19` For example, the game-frame below is for a scenario where Alice's strategies are `[Lie, Get Violent, Stay Silent]` and Bob's strategies are `[Truth, Lie]`.
   
+   ```yaml
+   [Lie, Truth]:  A freed, B jailed
+   [Lie, Lie]:  A freed, B freed
+   [Get Violent, Truth]:  A jailed, B jailed
+   [Get Violent, Lie]:  A jailed, B freed
+   [Stay Silent, Truth]:  A freed, B jailed
+   [Stay Silent, Lie]:  A freed, B freed
    ```
-   (Lie, Truth)         -> A freed, B jailed
-   (Lie, Lie)           -> A freed, B freed
-   (Get Violent, Truth) -> A jailed, B jailed
-   (Get Violent, Lie)   -> A jailed, B freed
-   (Stay Silent, Truth) -> A freed, B jailed
-   (Stay Silent, Lie)   -> A freed, B freed
-   ``` 
 
    If there are only two players, a game-frame can be represented as a table. `{ref} gt:p19`
 
@@ -141,7 +141,7 @@
    | Get Violent | A jailed, B jailed | A jailed, B freed |
    | Stay Silent | A freed, B jailed  | A freed, B freed  |
 
- * `{bm} game frame in strategic form/(game[-\s]frame in strategic form)/i` - Representation of a game frame as the tuple `(I, S, O, f)`, where ...
+ * `{bm} game frame in strategic form/(game[-\s]frame in strategic form)/i` - Representation of a game frame as the tuple `[I, S, O, f]`, where ...
 
    * `I` is the set of players: `[1, 2, ..., n]`
    * `S` is the set of strategies each player has: `[S1, S2, ..., Sn]`
@@ -183,7 +183,7 @@
    Similar to `S`, each index in `P` maps to the player at the same index in `I`. For example, `P2` is the preference ranking for player `2`.
    ```
 
-  `{ref} gt:p22`
+   `{ref} gt:p22`
 
  * `{bm} payoff function/(pay[-\s]?off function)/i` - Maps each strategy profile in a game to a player's preferences via a utility function. `{ref} gt:p22`  For example, the game-frame below is for a scenario where Alice's strategies are `{Lie, Get Violent, Stay Silent}` and Bob's strategies are `{Truth, Lie}`.
   
@@ -250,7 +250,7 @@
    It's called reduced-form because some information has been lost. Specifically, `O` is no longer there, which actually spelled out what the outcomes were.
    ```
 
-   A table is commonly used to represent a reduced-form ordinal game in strategic form when there are only 2 players. `{ref} gt:p23`  For example, Alice nad Bob are the players in a game. The strategies for ...
+   A table is commonly used to represent a reduced-form ordinal game in strategic form when there are only 2 players. `{ref} gt:p23`  For example, Alice and Bob are the players in a game. The strategies for ...
    
    * Alice are `[Lie, Get Violent, Stay Silent]`.
    * Bob are `[Truth, Lie]`.
@@ -278,9 +278,9 @@
 
    |                | B: Truth |  B: Lie |
    |----------------|----------|---------|
-   | A: Lie         |  (4, 1)  | (3, 10) |
-   | A: Get Violent |  (2, 3)  | (2, 6)  |
-   | A: Stay Silent |  (4, 1)  | (3, 10) |
+   | A: Lie         |  [4, 1]  | [3, 10] |
+   | A: Get Violent |  [2, 3]  | [2, 6]  |
+   | A: Stay Silent |  [4, 1]  | [3, 10] |
 
 
 
