@@ -141,12 +141,18 @@
    | Get Violent | A jailed, B jailed | A jailed, B freed |
    | Stay Silent | A freed, B jailed  | A freed, B freed  |
 
- * `{bm} game frame in strategic form/(game[-\s]frame in strategic form)/i` - Representation of a game frame as a tuple with 4 items, where item ...
+ * `{bm} game frame in strategic form/(game[-\s]frame in strategic form)/i` - Representation of a game frame as the tuple `(I, S, O, f)`, where ...
 
-   1. is a set of players: `I = {1, 2, ..., n}`
-   2. is the strategies for each player, represented as a list of sets: `(S1, S2, ..., Sn)`. The cartesian product of these sets is denoted as just `S`, where each element of the set is called a strategy profile.
-   3. is the set of outcomes: `O`.
-   4. is a function that associates each strategy profile in `S` with an outcome in `O`: `f : S -> O` where `f(s) E O`.
+   * `I` is the set of players: `[1, 2, ..., n]`
+   * `S` is the set of strategies each player has: `[S1, S2, ..., Sn]`
+   * `O` is the set of outcomes: `[O1, O2, ..., Om]`.
+   * `f` is a function that maps each strategy profile in `S` to an outcome in `O`.
+
+   ```{note}
+   Each index in `S` maps to the player at the same index in `I`. For example, `S2` is the set of strategies for player `2`.
+   ```
+
+   `S` on its own is represented as the complete set of strategy profiles for the game: The cartesian product of `[S1, S2, ..., S4]`. For each strategy profile `s` in `S`, `f(s) E O`.
 
    `{ref} gt:p19`
 
@@ -165,7 +171,19 @@
    * A is ranked `[A freed / B jailed, A freed / B freed, A jailed / B jailed, A jailed / B freed]`.
    * B is ranked `[A freed / B freed, A jailed / B freed, A jailed / B jailed, A freed / B jailed]`.
 
- * `{bm} ordinal game in strategic form` - Representation of an ordinal game as a tuple with 5 items. The first 4 items are the same as those of a game frame in strategic form, while the 5th item is the preference for each player in the game. `{ref} gt:p22`
+ * `{bm} ordinal game in strategic form` - Representation of an ordinal game as a game frame in strategic form with an extra item appended to the tuple: The preference for each player in the game. As such, the items of the tuple are as follows:
+
+   * `I` is the set of players: `[1, 2, ..., n]`
+   * `S` is the set of strategies each player has: `[S1, S2, ..., Sn]` (`S` on its own is represented as the complete set of strategy profiles for the game).
+   * `O` is the set of outcomes: `[O1, O2, ..., Om]`.
+   * `f` is a function that maps each strategy profile in `S` to an outcome in `O`.
+   * `P` is the set containing each player's preference rankings: `[P1, P2, ..., Pn]`.
+ 
+   ```{note}
+   Similar to `S`, each index in `P` maps to the player at the same index in `I`. For example, `P2` is the preference ranking for player `2`.
+   ```
+
+  `{ref} gt:p22`
 
  * `{bm} payoff function/(pay[-\s]?off function)/i` - Maps each strategy profile in a game to a player's preferences via a utility function. `{ref} gt:p22`  For example, the game-frame below is for a scenario where Alice's strategies are `{Lie, Get Violent, Stay Silent}` and Bob's strategies are `{Truth, Lie}`.
   
@@ -204,29 +222,87 @@
     - [Stay Silent, Lie]: 10   # outcome is A freed / B freed, which is ranked as 10
    ```
 
- * `{bm} reduced-form ordinal game in strategic form` - An ordinal game in strategic form where ...
+ * `{bm} reduced-form ordinal game in strategic form` - An ordinal game in strategic form but condensed by removing / replacing certain items in the tuple.
+
+   The following items have been removed from the tuple:
  
-   * the set of outcomes `O`,
-   * the function that associates each strategy profile in `S` with an outcome in `O`: `f : S -> O` where `f(s) E O`,
-   * and the preference ranking for each outcome,
+   * `O` is the set of outcomes: `[O1, O2, ..., Om]`.
+   * `f` is a function that maps each strategy profile in `S` to an outcome in `O`.
+   * `P` is the set of preference each player has: `[P1, P2, ..., Pn]`.
 
-   ... have been replaced with a set of payoff functions (one for each player). `{ref} gt:p22` The payoff function directly maps strategy profiles to numeric rankings (preference), where as a strategy profile would normally lead to an outcome which would have a preference ranking.
+   The following items have been added to the tuple:
+
+   * `fp` is the set containing each player's payoff function: `[fp1, fp2, ..., fpn]`
+
+   As such, the items of the tuple are as follows:
+
+   * `I` is the set of players: `[1, 2, ..., n]`
+   * `S` is the set of strategies each player has: `[S1, S2, ..., Sn]` (`S` on its own is represented as the complete set of strategy profiles for the game).
+   * `fp` is the set containing each player's payoff function: `[fp1, fp2, ..., fpn]`
+ 
+   ```{note}
+   Similar to `S`, each index in `fp` maps to the player at the same index in `I`. For example, `fp2` is the preference ranking for player `2`.
+   ```
+
+   Previously, player n had its preferences for outcomes `O` specified in `Pn`. The idea with this change is that, since a strategy profile in `S` leads to an outcome in `O`, player n can specify its preference by mapping strategy profiles directly to numeric rankings via `fpn()`. `{ref} gt:p22`
+
+   ```{note}
+   It's called reduced-form because some information has been lost. Specifically, `O` is no longer there, which actually spelled out what the outcomes were.
+   ```
+
+   A table is commonly used to represent a reduced-form ordinal game in strategic form when there are only 2 players. `{ref} gt:p23`  For example, Alice nad Bob are the players in a game. The strategies for ...
+   
+   * Alice are `[Lie, Get Violent, Stay Silent]`.
+   * Bob are `[Truth, Lie]`.
+   
+   Once each strategy profile is passed through both Alice's payoff function and Bob's payoff functions, their preferences are encoded using the following numeric rankings:
+
+   ```yaml
+   Alice:
+    - [Lie, Truth]: 4          # outcome is A freed / B jailed, which is ranked as 4
+    - [Lie, Lie]: 3            # outcome is A freed / B freed, which is ranked as 3
+    - [Get Violent, Truth]: 2  # outcome is A jailed / B jailed, which is ranked as 2
+    - [Get Violent, Lie]: 2    # outcome is A jailed / B freed, which is ranked as 2
+    - [Stay Silent, Truth]: 4  # outcome is A freed / B jailed, which is ranked as 4
+    - [Stay Silent, Lie]: 3    # outcome is A freed / B freed, which is ranked as 3
+   Bob:
+    - [Lie, Truth]: 1          # outcome is A freed / B jailed, which is ranked as 1
+    - [Lie, Lie]: 10           # outcome is A freed / B freed, which is ranked as 10
+    - [Get Violent, Truth]: 3  # outcome is A jailed / B jailed, which is ranked as 3
+    - [Get Violent, Lie]: 6    # outcome is A jailed / B freed, which is ranked as 6
+    - [Stay Silent, Truth]: 1  # outcome is A freed / B jailed, which is ranked as 1
+    - [Stay Silent, Lie]: 10   # outcome is A freed / B freed, which is ranked as 10
+   ```
+
+   The table lists out Alice's strategies on the left and Bob's strategies on the top. Each cell in the table maps to a strategy profile. Alice and Bob's numeric rankings for each strategy profile are paired together and placed into the cell for that strategy profile.
+
+   |                | B: Truth |  B: Lie |
+   |----------------|----------|---------|
+   | A: Lie         |  (4, 1)  | (3, 10) |
+   | A: Get Violent |  (2, 3)  | (2, 6)  |
+   | A: Stay Silent |  (4, 1)  | (3, 10) |
 
 
 
 
-TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
 
-TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
 
-TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
 
-TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
 
-TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
 
-TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
 
-TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
 
-TODO: fix up the "in strategic form" terms, then start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+
+TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+
+TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+
+TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
