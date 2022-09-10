@@ -1,11 +1,12 @@
 import functools
+from bisect import bisect_left
 from collections import Counter
 from sys import stdin
 
 import yaml
 
-from helpers.Utils import rotate_right
 from sequence_search.BurrowsWheelerTransform_Basic import BWTRecord, walk
+from sequence_search.SearchUtils import RotatedStringView
 
 
 # MARKDOWN_DESERIALIZE
@@ -53,16 +54,14 @@ def to_bwt_from_last_sequence(
         last_col.append((last_ch, last_ch_count))
     first_col = sorted(last_col, key=functools.cmp_to_key(lambda a, b: cmp_char_and_instance(a, b, end_marker)))
     for (first_ch, first_ch_cnt), (last_ch, last_ch_cnt) in zip(first_col, last_col):
+        # Create record
         record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt)
+        # Figure out where in first_col that (last_ch, last_ch_cnt) occurs using binary search. This is
+        # possible because first_col is sorted.
+        first_col_idx = bisect_left(first_col, (last_ch, last_ch_cnt))
+        record.last_to_first_idx = first_col_idx
+        # Append to return
         ret.append(record)
-    # Populate record last-to-first pointers
-    for i, record_a in enumerate(ret):
-        last = record_a.last_ch, record_a.last_ch_cnt
-        for j, record_b in enumerate(ret):
-            first = record_b.first_ch, record_b.first_ch_cnt
-            if last == first:
-                record_a.last_to_first_idx = j
-                break
     return ret
 # MARKDOWN_DESERIALIZE
 
@@ -116,10 +115,10 @@ def to_bwt_optimized(
 ) -> list[BWTRecord]:
     assert end_marker == seq[-1], f'{seq} missing end marker'
     assert end_marker not in seq[:-1], f'{seq} has end marker but not at the end'
-    seq_rotations = rotate_right(seq)
+    seq_rotations = [RotatedStringView(i, seq) for i in range(len(seq))]
     seq_rotations_sorted = sorted(
         seq_rotations,
-        key=functools.cmp_to_key(lambda a, b: cmp_char_only(a[0], b[0], end_marker))
+        key=functools.cmp_to_key(lambda a, b: cmp_char_only(a, b, end_marker))
     )
     last_col_seq = ''.join(row[-1] for row in seq_rotations_sorted)
     return to_bwt_from_last_sequence(last_col_seq, end_marker)
@@ -181,13 +180,15 @@ def to_bwt_optimized2(
     assert end_marker == seq[-1], f'{seq} missing end marker'
     assert end_marker not in seq[:-1], f'{seq} has end marker but not at the end'
     # Create first and last columns
-    seq_rotations = rotate_right(seq)
+    seq_rotations = [RotatedStringView(i, seq) for i in range(len(seq))]
     seq_rotations_sorted = sorted(
         seq_rotations,
         key=functools.cmp_to_key(lambda a, b: cmp_char_only(a, b, end_marker))
     )
     first_ch_counter = Counter()
     last_ch_counter = Counter()
+    first_col = []
+    last_col = []
     ret = []
     for i, s in enumerate(seq_rotations_sorted):
         first_ch = s[0]
@@ -196,16 +197,17 @@ def to_bwt_optimized2(
         last_ch = s[-1]
         last_ch_counter[last_ch] += 1
         last_ch_cnt = last_ch_counter[last_ch]
+        first_col.append((first_ch, first_ch_cnt))
+        last_col.append((last_ch, last_ch_cnt))
+    for (first_ch, first_ch_cnt), (last_ch, last_ch_cnt) in zip(first_col, last_col):
+        # Create record
         record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt)
+        # Figure out where in first_col that (last_ch, last_ch_cnt) occurs using binary search. This is
+        # possible because first_col is sorted.
+        first_col_idx = bisect_left(first_col, (last_ch, last_ch_cnt))
+        record.last_to_first_idx = first_col_idx
+        # Append to return
         ret.append(record)
-    # Populate record last-to-first pointers
-    for i, record_a in enumerate(ret):
-        last = record_a.last_ch, record_a.last_ch_cnt
-        for j, record_b in enumerate(ret):
-            first = record_b.first_ch, record_b.first_ch_cnt
-            if last == first:
-                record_a.last_to_first_idx = j
-                break
     return ret
 # MARKDOWN_OPTIMIZED2_BUILD
 
@@ -243,4 +245,4 @@ def main_optimized2_build():
 
 
 if __name__ == '__main__':
-    main_optimized2_build()
+    main_optimized_build()

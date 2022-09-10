@@ -1,13 +1,11 @@
 import functools
-from bisect import bisect_left
 from collections import Counter
 from sys import stdin
 
 import yaml
 
-from helpers.Utils import rotate_right
 from sequence_search.BurrowsWheelerTransform_Deserialization import cmp_char_only
-from sequence_search.SearchUtils import StringView
+from sequence_search.SearchUtils import RotatedStringView
 
 
 # MARKDOWN_BUILD_TABLE_AND_COLLAPSED_FIRST
@@ -25,7 +23,7 @@ def to_bwt_and_first_occurrences(
 ) -> tuple[list[BWTRecord], dict[str, int]]:
     assert end_marker == seq[-1], f'{seq} missing end marker'
     assert end_marker not in seq[:-1], f'{seq} has end marker but not at the end'
-    seq_rotations = rotate_right(seq)
+    seq_rotations = [RotatedStringView(i, seq) for i in range(len(seq))]
     seq_rotations_sorted = sorted(
         seq_rotations,
         key=functools.cmp_to_key(lambda a, b: cmp_char_only(a, b, end_marker))

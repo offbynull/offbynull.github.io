@@ -1,13 +1,11 @@
 import functools
-from bisect import bisect_left
 from collections import Counter
 from sys import stdin
 
 import yaml
 
-from helpers.Utils import rotate_right, rotate_right_with_shift_counts
 from sequence_search.BurrowsWheelerTransform_Deserialization import cmp_char_only
-from sequence_search.SearchUtils import StringView
+from sequence_search.SearchUtils import RotatedStringView
 
 
 # MARKDOWN_BUILD
@@ -26,7 +24,7 @@ def to_bwt_checkpointed(
 ) -> tuple[list[BWTRecord], dict[str, int], dict[int, Counter[str]], dict[int, int]]:
     assert end_marker == seq[-1], f'{seq} missing end marker'
     assert end_marker not in seq[:-1], f'{seq} has end marker but not at the end'
-    seq_with_counts_rotations = rotate_right_with_shift_counts(seq)  # rotations + new first_idx for each rotation
+    seq_with_counts_rotations = [(i, RotatedStringView(i, seq)) for i in range(len(seq))]  # rotations + new first_idx for each rotation
     seq_with_counts_rotations_sorted = sorted(
         seq_with_counts_rotations,
         key=functools.cmp_to_key(lambda a, b: cmp_char_only(a[1], b[1], end_marker))

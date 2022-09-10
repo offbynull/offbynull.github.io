@@ -18613,7 +18613,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_aa3e748b8b94a867a770a36d6b761e30.svg" alt="Dot diagram"></p>
+<p><img src="dot_0b6cc891a84d7c1b1673facbdf9c95ed.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>Testing if a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> requires walking the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching the end-of-<a href="#BM_(sequence)%2Fi">sequence</a> marker.</p>
@@ -18664,7 +18664,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_f9a5c6d1258db99770ad002a0a571e30.svg" alt="Dot diagram"></p>
+<p><img src="dot_aa3e748b8b94a867a770a36d6b761e30.svg" alt="Dot diagram"></p>
 <p>Searching <code>How do you feel about apples?</code> with the trie revealed the following was found: {(22, apple)}</p>
 </div>
 <p></p>
@@ -18743,7 +18743,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_4005b82f3b9616bd54fedc933ca436c3.svg" alt="Dot diagram"></p>
+<p><img src="dot_a72fd4c5dcf7e89ce4bad3fd08d8a92b.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19012,7 +19012,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_6ab214fa045c9b4c638904d62c74b867.svg" alt="Dot diagram"></p>
+<p><img src="dot_e210e0c38c83f48efd1792098eacd31c.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19151,7 +19151,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_409a5483456423f21085c64f61716b82.svg" alt="Dot diagram"></p>
+<p><img src="dot_7fde12f399917a9744997e142fa22455.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>If a scan walks the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> to "arat" and fails, the next scan position must contain "rat". Since the prefix "rat" exists in the <a href="#BM_(%5Cbtrie)%2Fi">trie</a>, a special edge connects "arat" to "rat" such that the scan for the next position can jump past "rat" in the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> walk.</p>
@@ -19229,7 +19229,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_409a5483456423f21085c64f61716b82.svg" alt="Dot diagram"></p>
+<p><img src="dot_9385fdb5c72c66fbf41095609cabad9c.svg" alt="Dot diagram"></p>
 <p>Searching <em>There were multiple narrations in the play</em> with the trie revealed the following was found: {(23, ration)}</p>
 </div>
 <p></p>
@@ -19308,7 +19308,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_3766d540e7ff20f8f6424f334bf8c5b5.svg" alt="Dot diagram"></p>
+<p><img src="dot_f15dd1558fc10b9faa3f31a0eb51deac.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -20601,7 +20601,7 @@ xxa vehicle__¶
 </tbody>
 </table>
 <p>Only the first and last columns of the <a href="#BM_(BWT)%2F">BWT</a> matrix are required for pattern matching, meaning the columns in the middle can be discarded. Since the point is to build out a <a href="#BM_(BWT)%2F">BWT</a> matrix once and test against it many times (e.g. build a <a href="#BM_(BWT)%2F">BWT</a> of <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> and test against many <a href="#BM_(sequencer)%2Fi">sequencer</a> outputs), this implementation provides pointers that directly map symbol instances from last column to first column. That way, testing for a <a href="#BM_(substring)%2Fi">substring</a> (described in next section) doesn't need to scan over the <a href="#BM_(BWT)%2F">BWT</a> multiple times.</p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 13 to 74):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 12 to 73):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">cmp</span>(<span class="hljs-params">a: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]], b: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]], end_marker: <span class="hljs-built_in">str</span></span>):
     <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(a) != <span class="hljs-built_in">len</span>(b):
         <span class="hljs-keyword">raise</span> <span class="hljs-string">'???'</span>
@@ -20643,7 +20643,7 @@ xxa vehicle__¶
         seq_ch_counter[ch] += <span class="hljs-number">1</span>
         ch_cnt = seq_ch_counter[ch]
         seq_with_counts.append((ch, ch_cnt))
-    seq_with_counts_rotations = rotate_right(seq_with_counts)
+    seq_with_counts_rotations = [RotatedListView(i, seq_with_counts) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(seq_with_counts))]
     seq_with_counts_rotations_sorted = <span class="hljs-built_in">sorted</span>(
         seq_with_counts_rotations,
         key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp(a, b, end_marker))
@@ -20707,7 +20707,7 @@ xxa vehicle__¶
 <li>index 5 must be (a,3): Find (a,3) in the first column and pull out the corresponding symbol instance in the last column: (¶,1).</li>
 </ul>
 <p><img src="svgbob_57e0f1bae5a018cfdeaca8f0bd21352d8d510b91.svg" alt="Kroki diagram output"></p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 134 to 144):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 133 to 143):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk</span>(<span class="hljs-params">bwt_records: <span class="hljs-built_in">list</span>[BWTRecord]</span>) -&gt; <span class="hljs-built_in">str</span>:
     ret = <span class="hljs-string">''</span>
     row = <span class="hljs-number">0</span>  <span class="hljs-comment"># first idx of bwt_records always has first_ch == end_marker because of the lexicographical sorting</span>
@@ -20742,7 +20742,7 @@ xxa vehicle__¶
 </li>
 </ul>
 <p><img src="svgbob_6daab13e146d8f4524d3b6d51eeebfa62689062a.svg" alt="Kroki diagram output"></p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 184 to 239):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 183 to 238):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk_find</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         test: <span class="hljs-built_in">str</span>,
@@ -20912,7 +20912,7 @@ xxa vehicle__¶
 </table>
 </td></tr>
 </tbody></table>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexes.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexes.py</a> (lines 13 to 59):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexes.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexes.py</a> (lines 12 to 58):</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">BWTRecord</span>:
     __slots__ = [<span class="hljs-string">'first_ch'</span>, <span class="hljs-string">'first_ch_cnt'</span>, <span class="hljs-string">'last_ch'</span>, <span class="hljs-string">'last_ch_cnt'</span>, <span class="hljs-string">'last_to_first_idx'</span>, <span class="hljs-string">'first_idx'</span>]
 
@@ -20938,7 +20938,7 @@ xxa vehicle__¶
         seq_ch_counter[ch] += <span class="hljs-number">1</span>
         ch_cnt = seq_ch_counter[ch]
         seq_with_counts.append((ch, ch_cnt))
-    seq_with_counts_rotations = rotate_right_with_shift_counts(seq_with_counts)  <span class="hljs-comment"># rotations + new first_idx for each rotation</span>
+    seq_with_counts_rotations = [(i, RotatedListView(i, seq_with_counts)) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(seq_with_counts))]  <span class="hljs-comment"># rotations + new first_idx for each rotation</span>
     seq_with_counts_rotations_sorted = <span class="hljs-built_in">sorted</span>(
         seq_with_counts_rotations,
         key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp(a[<span class="hljs-number">1</span>], b[<span class="hljs-number">1</span>], end_marker))
@@ -20980,7 +20980,7 @@ xxa vehicle__¶
 <p>Recall that the standard algorithm's search only determines how many times some <a href="#BM_(substring)%2Fi">substring</a> appears in a <a href="#BM_(sequence)%2Fi">sequence</a>. By including <code>first_idx</code>, the search will also determine the index of each appearance. The search process itself remains unchanged: Walk backwards between <code>last</code> and <code>first</code> until the entirety of the <a href="#BM_(substring)%2Fi">substring</a> has been walked. However, the value of <code>first_idx</code> at the end of the walk identifies the index of the appearance.</p>
 <p>In the following example, searching for "nana" reveals that it appears only once at index 2 of "banana¶".</p>
 <p><img src="svgbob_9afdd3d1d15e5075e37eca0fe0840e437520227d.svg" alt="Kroki diagram output"></p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexes.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexes.py</a> (lines 101 to 135):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexes.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexes.py</a> (lines 100 to 134):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk_find</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         test: <span class="hljs-built_in">str</span>,
@@ -21087,7 +21087,7 @@ xxa vehicle__¶
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>To keep things efficient-ish, the code below actually splits out <code>first_idx</code> into a dictionary. Otherwise, you end up with a bunch of <code>None</code> entries under <code>first_idx</code> and that actually ends up taking space.</p>
 </div>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexesCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexesCheckpointed.py</a> (lines 13 to 62):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexesCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexesCheckpointed.py</a> (lines 12 to 61):</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">BWTRecord</span>:
     __slots__ = [<span class="hljs-string">'first_ch'</span>, <span class="hljs-string">'first_ch_cnt'</span>, <span class="hljs-string">'last_ch'</span>, <span class="hljs-string">'last_ch_cnt'</span>, <span class="hljs-string">'last_to_first_idx'</span>]
 
@@ -21113,7 +21113,7 @@ xxa vehicle__¶
         seq_ch_counter[ch] += <span class="hljs-number">1</span>
         ch_cnt = seq_ch_counter[ch]
         seq_with_counts.append((ch, ch_cnt))
-    seq_with_counts_rotations = rotate_right_with_shift_counts(seq_with_counts)  <span class="hljs-comment"># rotations + new first_idx for each rotation</span>
+    seq_with_counts_rotations = [(i, RotatedListView(i, seq_with_counts)) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(seq_with_counts))]  <span class="hljs-comment"># rotations + new first_idx for each rotation</span>
     seq_with_counts_rotations_sorted = <span class="hljs-built_in">sorted</span>(
         seq_with_counts_rotations,
         key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp(a[<span class="hljs-number">1</span>], b[<span class="hljs-number">1</span>], end_marker))
@@ -21173,7 +21173,7 @@ xxa vehicle__¶
 <p>Regardless of where in "banana¶" the walk starts from, it will never take more than 2 hops until reaching a <code>first_idx</code> entry that has a value.</p>
 </div>
 <p>You can generalize this as follows: If the only entries kept in <code>first_idx</code> are those that are a multiple of <em>n</em>, the walk backwards is guaranteed to reach a non-empty <code>first_idx</code> entry in less than <em>n</em> hops (at most it'll do <em>n-1</em> hops). The idea is to make <em>n</em> large enough to maximize memory savings but at the same time small enough that the computation time required for walking is still negligible.</p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexesCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexesCheckpointed.py</a> (lines 101 to 117):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexesCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexesCheckpointed.py</a> (lines 100 to 116):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk_back_until_first_index_checkpoint</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         bwt_first_indexes_checkpoints: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>],
@@ -21214,7 +21214,7 @@ xxa vehicle__¶
 <p></p>
 <p>Searching happens as it did before with the exception that, if a search ends up walking to a <code>first_idx</code> entry that's empty, that entry's value can be determined by walking backwards as described above.</p>
 <p><img src="svgbob_e2a07bc8df4442823b29d972b1321f96f0f1ddd9.svg" alt="Kroki diagram output"></p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexesCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexesCheckpointed.py</a> (lines 164 to 202):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexesCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexesCheckpointed.py</a> (lines 163 to 201):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk_find</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         bwt_first_indexes_checkpoints: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>],
@@ -21656,7 +21656,7 @@ xxa vehicle__¶
 <p><img src="svgbob_ea099f6ec8f6995365f5fb7e267c8b89e0407bdf.svg" alt="Kroki diagram output"></p>
 <p>While the symbol instance counts are different from the original, the mapping of symbol instances between the first and last columns are the same, meaning that you can still use it to search for <a href="#BM_(substring)%2Fi">substring</a>s in "banana¶". It's the mapping between the columns that's important. The actual symbol instance counts have no purpose other than mapping symbol instances between the two columns.</p>
 <p><img src="svgbob_d8b35c9e176c02e07f2dc0977b586aafe18b12aa.svg" alt="Kroki diagram output"></p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py</a> (lines 12 to 66):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py</a> (lines 13 to 65):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">cmp_char_only</span>(<span class="hljs-params">a: <span class="hljs-built_in">str</span>, b: <span class="hljs-built_in">str</span>, end_marker: <span class="hljs-built_in">str</span></span>):
     <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(a) != <span class="hljs-built_in">len</span>(b):
         <span class="hljs-keyword">raise</span> <span class="hljs-string">'???'</span>
@@ -21701,16 +21701,14 @@ xxa vehicle__¶
         last_col.append((last_ch, last_ch_count))
     first_col = <span class="hljs-built_in">sorted</span>(last_col, key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp_char_and_instance(a, b, end_marker)))
     <span class="hljs-keyword">for</span> (first_ch, first_ch_cnt), (last_ch, last_ch_cnt) <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(first_col, last_col):
+        <span class="hljs-comment"># Create record</span>
         record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt)
+        <span class="hljs-comment"># Figure out where in first_col that (last_ch, last_ch_cnt) occurs using binary search. This is</span>
+        <span class="hljs-comment"># possible because first_col is sorted.</span>
+        first_col_idx = bisect_left(first_col, (last_ch, last_ch_cnt))
+        record.last_to_first_idx = first_col_idx
+        <span class="hljs-comment"># Append to return</span>
         ret.append(record)
-    <span class="hljs-comment"># Populate record last-to-first pointers</span>
-    <span class="hljs-keyword">for</span> i, record_a <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
-        last = record_a.last_ch, record_a.last_ch_cnt
-        <span class="hljs-keyword">for</span> j, record_b <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
-            first = record_b.first_ch, record_b.first_ch_cnt
-            <span class="hljs-keyword">if</span> last == first:
-                record_a.last_to_first_idx = j
-                <span class="hljs-keyword">break</span>
     <span class="hljs-keyword">return</span> ret
 </code></pre>
 <div style="border:1px solid black;">
@@ -21727,7 +21725,7 @@ xxa vehicle__¶
 <li>First: ['¶1', 'a1', 'a2', 'a3', 'b1', 'n1', 'n2']</li>
 <li>Last: ['a1', 'n1', 'n2', 'b1', '¶1', 'a2', 'a3']</li>
 </ul>
-<p>The original sequence reconstructed from the BWT array: <em>banana¶</em>.</p>
+<p>The original sequence reconstructed from the BWT array: <em>a</em>.</p>
 </div>
 <p></p>
 <p>The deserialization process described above also helps with computing the first and last <a href="#BM_(BWT)%2F">BWT</a> matrix columns from the original <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. "banana¶" instead of "annb¶aa") by making the entire process slightly more memory efficient. Keeping the original <a href="#BM_(sequence)%2Fi">sequence</a> as-is (do not annotate with symbol instance counts), stack its rotations and sort them to form a <a href="#BM_(BWT)%2F">BWT</a> matrix (without symbol instance counts). For example, the original <a href="#BM_(sequence)%2Fi">sequence</a> "banana¶" forms the following <a href="#BM_(BWT)%2F">BWT</a> matrix.</p>
@@ -21849,17 +21847,17 @@ xxa vehicle__¶
 </tbody>
 </table>
 <p>Since the original <a href="#BM_(sequence)%2Fi">sequence</a> isn't being annotated with symbol instance counts (as was done in the original <a href="#BM_(BWT)%2F">BWT</a> creation algorithm discussed at the beginning of this section), those symbol instance counts are omitted from the rotation stacking and sorting, meaning it saves some memory. However, the deserialization process is doing an extra sort to derive the first column, meaning some extra work is being performed.</p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py</a> (lines 113 to 126):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py</a> (lines 112 to 125):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_bwt_optimized</span>(<span class="hljs-params">
         seq: <span class="hljs-built_in">str</span>,
         end_marker: <span class="hljs-built_in">str</span>
 </span>) -&gt; <span class="hljs-built_in">list</span>[BWTRecord]:
     <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
     <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[:-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> has end marker but not at the end'</span>
-    seq_rotations = rotate_right(seq)
+    seq_rotations = [RotatedStringView(i, seq) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(seq))]
     seq_rotations_sorted = <span class="hljs-built_in">sorted</span>(
         seq_rotations,
-        key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp_char_only(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>], end_marker))
+        key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp_char_only(a, b, end_marker))
     )
     last_col_seq = <span class="hljs-string">''</span>.join(row[-<span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> seq_rotations_sorted)
     <span class="hljs-keyword">return</span> to_bwt_from_last_sequence(last_col_seq, end_marker)
@@ -21930,7 +21928,7 @@ xxa vehicle__¶
 <li>regardless of column, symbol instance counts for each symbol are ordered by their appearance in the column (top-down)</li>
 </ol>
 <p>..., you can add symbol instance counts directly to the first column the same way the deserialization process adds them to the last column. The resulting first column will end up being exactly the same as if the first column were generated by the deserialization's sort step.</p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py</a> (lines 177 to 209):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py</a> (lines 176 to 211):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_bwt_optimized2</span>(<span class="hljs-params">
         seq: <span class="hljs-built_in">str</span>,
         end_marker: <span class="hljs-built_in">str</span>
@@ -21938,13 +21936,15 @@ xxa vehicle__¶
     <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
     <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[:-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> has end marker but not at the end'</span>
     <span class="hljs-comment"># Create first and last columns</span>
-    seq_rotations = rotate_right(seq)
+    seq_rotations = [RotatedStringView(i, seq) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(seq))]
     seq_rotations_sorted = <span class="hljs-built_in">sorted</span>(
         seq_rotations,
         key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp_char_only(a, b, end_marker))
     )
     first_ch_counter = Counter()
     last_ch_counter = Counter()
+    first_col = []
+    last_col = []
     ret = []
     <span class="hljs-keyword">for</span> i, s <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(seq_rotations_sorted):
         first_ch = s[<span class="hljs-number">0</span>]
@@ -21953,16 +21953,17 @@ xxa vehicle__¶
         last_ch = s[-<span class="hljs-number">1</span>]
         last_ch_counter[last_ch] += <span class="hljs-number">1</span>
         last_ch_cnt = last_ch_counter[last_ch]
+        first_col.append((first_ch, first_ch_cnt))
+        last_col.append((last_ch, last_ch_cnt))
+    <span class="hljs-keyword">for</span> (first_ch, first_ch_cnt), (last_ch, last_ch_cnt) <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(first_col, last_col):
+        <span class="hljs-comment"># Create record</span>
         record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt)
+        <span class="hljs-comment"># Figure out where in first_col that (last_ch, last_ch_cnt) occurs using binary search. This is</span>
+        <span class="hljs-comment"># possible because first_col is sorted.</span>
+        first_col_idx = bisect_left(first_col, (last_ch, last_ch_cnt))
+        record.last_to_first_idx = first_col_idx
+        <span class="hljs-comment"># Append to return</span>
         ret.append(record)
-    <span class="hljs-comment"># Populate record last-to-first pointers</span>
-    <span class="hljs-keyword">for</span> i, record_a <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
-        last = record_a.last_ch, record_a.last_ch_cnt
-        <span class="hljs-keyword">for</span> j, record_b <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
-            first = record_b.first_ch, record_b.first_ch_cnt
-            <span class="hljs-keyword">if</span> last == first:
-                record_a.last_to_first_idx = j
-                <span class="hljs-keyword">break</span>
     <span class="hljs-keyword">return</span> ret
 </code></pre>
 <div style="border:1px solid black;">
@@ -22169,7 +22170,6 @@ xxa vehicle__¶
 <table>
 <thead>
 <tr>
-<th>idx</th>
 <th>first</th>
 <th>last</th>
 <th>last_to_first</th>
@@ -22177,43 +22177,36 @@ xxa vehicle__¶
 </thead>
 <tbody>
 <tr>
-<td>0</td>
 <td>(¶,1)</td>
 <td><span style="background-color: #f00; color: white; padding: 3px">(a,1)</span></td>
 <td>1</td>
 </tr>
 <tr>
-<td>1</td>
 <td><span style="background-color: #f00; color: white; padding: 3px">(a,1)</span></td>
 <td>(n,1)</td>
 <td>5</td>
 </tr>
 <tr>
-<td>2</td>
 <td><span style="background-color: #b00; color: white; padding: 3px">(a,2)</span></td>
 <td>(n,2)</td>
 <td>6</td>
 </tr>
 <tr>
-<td>3</td>
 <td><span style="background-color: #800; color: white; padding: 3px">(a,3)</span></td>
 <td>(b,1)</td>
 <td>4</td>
 </tr>
 <tr>
-<td>4</td>
 <td>(b,1)</td>
 <td>(¶,1)</td>
 <td>0</td>
 </tr>
 <tr>
-<td>5</td>
 <td>(n,1)</td>
 <td><span style="background-color: #b00; color: white; padding: 3px">(a,2)</span></td>
 <td>2</td>
 </tr>
 <tr>
-<td>6</td>
 <td>(n,2)</td>
 <td><span style="background-color: #800; color: white; padding: 3px">(a,3)</span></td>
 <td>3</td>
@@ -22222,7 +22215,6 @@ xxa vehicle__¶
 </table>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The column <code>idx</code> is just the index within the table.</p>
 <p>The column <code>last_to_first</code> wasn't discussed in the prerequisites but it was in their code. It simply maps the <code>last</code> value at a specific index to its index within <code>first</code>. For example, (a,3) is contained at index ...</p>
 <ul>
 <li>index 6 for <code>last</code></li>
@@ -22237,44 +22229,36 @@ xxa vehicle__¶
 <table>
 <thead>
 <tr>
-<th>idx</th>
 <th>last</th>
 <th>last_to_first</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>0</td>
 <td>(a,1)</td>
 <td>1</td>
 </tr>
 <tr>
-<td>1</td>
 <td>(n,1)</td>
 <td>5</td>
 </tr>
 <tr>
-<td>2</td>
 <td>(n,2)</td>
 <td>6</td>
 </tr>
 <tr>
-<td>3</td>
 <td>(b,1)</td>
 <td>4</td>
 </tr>
 <tr>
-<td>4</td>
 <td>(¶,1)</td>
 <td>0</td>
 </tr>
 <tr>
-<td>5</td>
 <td>(a,2)</td>
 <td>2</td>
 </tr>
 <tr>
-<td>6</td>
 <td>(a,3)</td>
 <td>3</td>
 </tr>
@@ -22283,7 +22267,7 @@ xxa vehicle__¶
 </td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
 </tbody></table>
 <p>For example, because symbol instances of <em>n</em> started at index 5 of <code>first</code> in the original table, the collapsed version has <code>first_occurrence_map[n] = 5</code>.</p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py</a> (lines 14 to 48):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py</a> (lines 12 to 46):</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">BWTRecord</span>:
     __slots__ = [<span class="hljs-string">'last_ch'</span>, <span class="hljs-string">'last_ch_cnt'</span>]
 
@@ -22298,7 +22282,7 @@ xxa vehicle__¶
 </span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">list</span>[BWTRecord], <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]]:
     <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
     <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[:-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> has end marker but not at the end'</span>
-    seq_rotations = rotate_right(seq)
+    seq_rotations = [RotatedStringView(i, seq) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(seq))]
     seq_rotations_sorted = <span class="hljs-built_in">sorted</span>(
         seq_rotations,
         key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp_char_only(a, b, end_marker))
@@ -22353,44 +22337,36 @@ xxa vehicle__¶
 <table>
 <thead>
 <tr>
-<th>idx</th>
 <th>last</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>0</td>
 <td>(a,1)</td>
 </tr>
 <tr>
-<td>1</td>
 <td>(n,1)</td>
 </tr>
 <tr>
-<td>2</td>
 <td>(n,2)</td>
 </tr>
 <tr>
-<td>3</td>
 <td>(b,1)</td>
 </tr>
 <tr>
-<td>4</td>
 <td>(¶,1)</td>
 </tr>
 <tr>
-<td>5</td>
 <td>(a,2)</td>
 </tr>
 <tr>
-<td>6</td>
 <td>(a,3)</td>
 </tr>
 </tbody>
 </table>
 </td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
 </tbody></table>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py</a> (lines 134 to 158):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py</a> (lines 132 to 156):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         bwt_first_occurrence_map: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>],
@@ -22502,37 +22478,29 @@ xxa vehicle__¶
 <table>
 <thead>
 <tr>
-<th>idx</th>
 <th>last</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>0</td>
 <td>(a,1)</td>
 </tr>
 <tr>
-<td>1</td>
 <td>(n,1)</td>
 </tr>
 <tr>
-<td>2</td>
 <td>(n,2)</td>
 </tr>
 <tr>
-<td>3</td>
 <td>(b,1)</td>
 </tr>
 <tr>
-<td>4</td>
 <td>(¶,1)</td>
 </tr>
 <tr>
-<td>5</td>
 <td>(a,2)</td>
 </tr>
 <tr>
-<td>6</td>
 <td>(a,3)</td>
 </tr>
 </tbody>
@@ -22541,44 +22509,36 @@ xxa vehicle__¶
 <table>
 <thead>
 <tr>
-<th>idx</th>
 <th>last</th>
 <th>last_tallies</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>0</td>
 <td>a</td>
 <td>{¶: 0, a: 1, b: 0, n: 0}</td>
 </tr>
 <tr>
-<td>1</td>
 <td>n</td>
 <td>{¶: 0, a: 1, b: 0, n: 1}</td>
 </tr>
 <tr>
-<td>2</td>
 <td>n</td>
 <td>{¶: 0, a: 1, b: 0, n: 2}</td>
 </tr>
 <tr>
-<td>3</td>
 <td>b</td>
 <td>{¶: 0, a: 1, b: 1, n: 2}</td>
 </tr>
 <tr>
-<td>4</td>
 <td>¶</td>
 <td>{¶: 1, a: 1, b: 1, n: 2}</td>
 </tr>
 <tr>
-<td>5</td>
 <td>a</td>
 <td>{¶: 1, a: 2, b: 1, n: 2}</td>
 </tr>
 <tr>
-<td>6</td>
 <td>a</td>
 <td>{¶: 1, a: 3, b: 1, n: 2}</td>
 </tr>
@@ -22586,7 +22546,7 @@ xxa vehicle__¶
 </table>
 </td><td>{¶: 0, a: 1, b: 4, n: =5}</td></tr>
 </tbody></table>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py</a> (lines 14 to 47):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py</a> (lines 12 to 45):</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">BWTRecord</span>:
     __slots__ = [<span class="hljs-string">'last_ch'</span>, <span class="hljs-string">'last_tallies'</span>]
 
@@ -22601,7 +22561,7 @@ xxa vehicle__¶
 </span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">list</span>[BWTRecord], <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]]:
     <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
     <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[:-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> has end marker but not at the end'</span>
-    seq_rotations = rotate_right(seq)
+    seq_rotations = [RotatedStringView(i, seq) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(seq))]
     seq_rotations_sorted = <span class="hljs-built_in">sorted</span>(
         seq_rotations,
         key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp_char_only(a, b, end_marker))
@@ -22638,7 +22598,7 @@ xxa vehicle__¶
 </div>
 <p></p>
 <p>At any index, the symbol in <code>last</code> can determine its symbol instance count by looking at <code>last_tallies</code>. For example, to get the symbol instance count at index 2 of the example above (where <code>last=n</code>), <code>last_tallies[2][n] = 2</code>.</p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py</a> (lines 88 to 90):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py</a> (lines 86 to 88):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_symbol_instance_count</span>(<span class="hljs-params">rec: BWTRecord</span>) -&gt; <span class="hljs-built_in">int</span>:
     ch = rec.last_ch
     <span class="hljs-keyword">return</span> rec.last_tallies[ch]
@@ -22662,44 +22622,36 @@ xxa vehicle__¶
 <table>
 <thead>
 <tr>
-<th>idx</th>
 <th>last</th>
 <th>last_tallies</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>0</td>
 <td>a</td>
 <td>{¶: 0, a: 1, b: 0, n: 0}</td>
 </tr>
 <tr>
-<td>1</td>
 <td>n</td>
 <td></td>
 </tr>
 <tr>
-<td>2</td>
 <td>n</td>
 <td></td>
 </tr>
 <tr>
-<td>3</td>
 <td>b</td>
 <td>{¶: 0, a: 1, b: 1, n: 2}</td>
 </tr>
 <tr>
-<td>4</td>
 <td>¶</td>
 <td></td>
 </tr>
 <tr>
-<td>5</td>
 <td>a</td>
 <td></td>
 </tr>
 <tr>
-<td>6</td>
 <td>a</td>
 <td>{¶: 1, a: 3, b: 1, n: 2}</td>
 </tr>
@@ -22712,7 +22664,7 @@ xxa vehicle__¶
 <p>To keep things efficient-ish, the code below actually splits out <code>last_tallies</code> into a dictionary of index to tallies. Otherwise, you end up with a bunch of <code>None</code> entries under <code>last_tallies</code> and that actually ends up taking space.</p>
 <p>You could also make it a list where each index maps to a multiple of the original index (e.g. 0 maps to 0<em>3, 1 maps to 1</em>3, 2 maps to 2*3).</p>
 </div>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 14 to 50):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 12 to 48):</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">BWTRecord</span>:
     __slots__ = [<span class="hljs-string">'last_ch'</span>]
 
@@ -22727,7 +22679,7 @@ xxa vehicle__¶
 </span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">list</span>[BWTRecord], <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>], <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, Counter[<span class="hljs-built_in">str</span>]]]:
     <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
     <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[:-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> has end marker but not at the end'</span>
-    seq_rotations = rotate_right(seq)
+    seq_rotations = [RotatedStringView(i, seq) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(seq))]
     seq_rotations_sorted = <span class="hljs-built_in">sorted</span>(
         seq_rotations,
         key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp_char_only(a, b, end_marker))
@@ -22774,7 +22726,7 @@ xxa vehicle__¶
 <li>add symbol in <code>last[4]</code> to the tally: {¶: 1, a: 1},</li>
 <li>add <code>last_tallies[3]</code> to the tally from the last step: {¶: 0, a: 1, b: 1, n: 2} + {¶: 1, a: 1} = {¶: 1, a: 2, b: 1, n: 2}.</li>
 </ol>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 94 to 105):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 92 to 103):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk_tallies_to_checkpoint</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         bwt_last_tallies_checkpoints: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, Counter[<span class="hljs-built_in">str</span>]],
@@ -22813,7 +22765,7 @@ xxa vehicle__¶
 <li>increment count if <code>last[4] == a</code> (false): 1,</li>
 <li>add <code>last_tallies[3][a]</code> to the count from the last step: 1+1=2.</li>
 </ol>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 153 to 166):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 151 to 164):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">single_tally_to_checkpoint</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         bwt_last_tallies_checkpoints: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, Counter[<span class="hljs-built_in">str</span>]],
@@ -22849,7 +22801,7 @@ xxa vehicle__¶
 </div>
 <p></p>
 <p>Testing for a <a href="#BM_(substring)%2Fi">substring</a> works just as it did with the collapsed first algorithm, except that the symbol instance count for some index in <code>last</code> needs to be determined from <code>last_tallies</code> checkpoints. The idea is to make the gaps between <code>last_tallies</code> checkpoints wide enough that it gives memory savings compared to keeping the symbol instance counts in <code>last</code>, but at the same time short enough that the time to compute the missing gap values is still negligible. For example, since there are only 4 possible symbols with a DNA <a href="#BM_(sequence)%2Fi">sequence</a> (A, C, G, and T), the gaps in <code>last_tallies</code> don't have to get too wide before seeing memory savings.</p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 215 to 257):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 213 to 255):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_symbol_instance_count</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         bwt_last_tallies_checkpoints: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, Counter[<span class="hljs-built_in">str</span>]],
@@ -22920,6 +22872,7 @@ xxa vehicle__¶
 <ul>
 <li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FCheckpointed%20Indexes%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Checkpointed Indexes Algorithm</a></li>
 <li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FCheckpointed%20Ranks%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Checkpointed Ranks Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FSuffix%20Array)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Suffix Array</a></li>
 </ul>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -22931,7 +22884,65 @@ xxa vehicle__¶
 <li>Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is <em>n</em> and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
 </ul>
 </div>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py</a> (lines 14 to 54):</p>
+<p>This algorithm is the checkpointed ranks algorithm with the checkpointed indexes algorithm tacked onto it. For example, the following data structure is for the <a href="#BM_(sequence)%2Fi">sequence</a> "banana¶", where ...</p>
+<ul>
+<li><code>first_idx</code> is checkpointed to every 3rd symbol instance in the <a href="#BM_(sequence)%2Fi">sequence</a>,</li>
+<li><code>last_tallies</code> is checkpointed every 3rd row of the table.</li>
+</ul>
+<table>
+<tbody><tr><th>records</th><th>first_occurrence_map</th></tr>
+<tr><td>
+<table>
+<thead>
+<tr>
+<th>first_idx</th>
+<th>last</th>
+<th>last_tallies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6</td>
+<td>a</td>
+<td>{¶: 0, a: 1, b: 0, n: 0}</td>
+</tr>
+<tr>
+<td></td>
+<td>n</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>n</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>b</td>
+<td>{¶: 0, a: 1, b: 1, n: 2}</td>
+</tr>
+<tr>
+<td>0</td>
+<td>¶</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>a</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>a</td>
+<td>{¶: 1, a: 3, b: 1, n: 2}</td>
+</tr>
+</tbody>
+</table>
+</td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
+</tbody></table>
+<p>When <code>first_idx</code> and <code>last_tallies</code> are big enough, this algorithm ends up using less memory than the <a href="#BM_(suffix%20array)%2Fi">suffix array</a> algorithm, but it does so at the cost of doing extra computations during searches to fill in the gaps between checkpointed <code>first_idx</code> / <code>last_tallies</code> values. This may be an acceptable tradeoff in a lot of cases because <a href="#BM_(SNP)%2F">SNP</a> analysis requires holding large <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a>s in memory and that extra computation time is often negligible.</p>
+<p>The construction process for this algorithm is the same as that for the checkpointed ranks algorithm, but modified to also produce <code>first_idx</code>.</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py</a> (lines 12 to 52):</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">BWTRecord</span>:
     __slots__ = [<span class="hljs-string">'last_ch'</span>]
 
@@ -22947,7 +22958,7 @@ xxa vehicle__¶
 </span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">list</span>[BWTRecord], <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>], <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, Counter[<span class="hljs-built_in">str</span>]], <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>]]:
     <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
     <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[:-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> has end marker but not at the end'</span>
-    seq_with_counts_rotations = rotate_right_with_shift_counts(seq)  <span class="hljs-comment"># rotations + new first_idx for each rotation</span>
+    seq_with_counts_rotations = [(i, RotatedStringView(i, seq)) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(seq))]  <span class="hljs-comment"># rotations + new first_idx for each rotation</span>
     seq_with_counts_rotations_sorted = <span class="hljs-built_in">sorted</span>(
         seq_with_counts_rotations,
         key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp_char_only(a[<span class="hljs-number">1</span>], b[<span class="hljs-number">1</span>], end_marker))
@@ -22993,7 +23004,8 @@ xxa vehicle__¶
 </ul>
 </div>
 <p></p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py</a> (lines 135 to 166):</p>
+<p>The checkpointed indexes algorithm requires <code>last_to_first_idx</code> when walking back to a checkpointed <code>first_idx</code> value. <code>last_to_first_idx</code> doesn't exist in the checkpointed ranks algorithm: In the checkpointed ranks algorithm, all <code>last_to_first_idx</code> values have been replaced with a function that computes a <code>last_to_first_idx</code> value from <code>last_tallies</code> checkpoints. As such, this algorithm, when walking back to a checkpointed <code>first_idx</code>, uses that function to determine what a <code>last_to_first_idx</code> value should be for some row.</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py</a> (lines 133 to 164):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk_back_until_first_index_checkpoint</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         bwt_first_indexes_checkpoints: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>],
@@ -23049,7 +23061,8 @@ xxa vehicle__¶
 <p>Walking back to a first index checkpoint resulted in a first index of 4 ...</p>
 </div>
 <p></p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py</a> (lines 260 to 298):</p>
+<p>The testing process for this algorithm is the same as that for the checkpointed ranks algorithm, but modified to use the above function to determine where each <a href="#BM_(substring)%2Fi">substring</a> occurrence is in the original <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py</a> (lines 258 to 296):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         bwt_first_indexes_checkpoints: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>],
@@ -23111,9 +23124,6 @@ xxa vehicle__¶
 <p><em>ana</em> found in <em>banana¶</em> at indices [3, 1].</p>
 </div>
 <p></p>
-<p>TODO: continue here</p>
-<p>TODO: continue here</p>
-<p>TODO: continue here</p>
 <a name="H_BLAST"></a><h3>BLAST</h3>
 <p>Covered in section 9.14</p>
 <p>See https://www.cs.rice.edu/~ogilvie/comp571/2018/09/04/blast-fasta.html</p>

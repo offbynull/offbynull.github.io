@@ -1,12 +1,11 @@
 import functools
 from collections import Counter
 from sys import stdin
-from typing import Any
 
 import yaml
 
-from helpers.Utils import rotate_right_with_shift_counts
 from sequence_search.BurrowsWheelerTransform_Basic import cmp
+from sequence_search.SearchUtils import RotatedListView
 
 
 # MARKDOWN_BUILD
@@ -35,7 +34,7 @@ def to_bwt_with_first_indexes(
         seq_ch_counter[ch] += 1
         ch_cnt = seq_ch_counter[ch]
         seq_with_counts.append((ch, ch_cnt))
-    seq_with_counts_rotations = rotate_right_with_shift_counts(seq_with_counts)  # rotations + new first_idx for each rotation
+    seq_with_counts_rotations = [(i, RotatedListView(i, seq_with_counts)) for i in range(len(seq_with_counts))]  # rotations + new first_idx for each rotation
     seq_with_counts_rotations_sorted = sorted(
         seq_with_counts_rotations,
         key=functools.cmp_to_key(lambda a, b: cmp(a[1], b[1], end_marker))

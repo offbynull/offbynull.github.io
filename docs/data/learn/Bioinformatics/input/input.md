@@ -15448,19 +15448,17 @@ The deserialization algorithm discussed earlier generates a first column with ce
 
 For example, given the first and last columns of the BWT matrix for "banana¶", the *a* symbol instances will appear contiguously in the first column as [`{h}#f00 (a,1)`, `{h}#b00 (a,2)`, `{h}#800 (a,3)`].
 
-| idx |      first      |      last       | last_to_first |
-|-----|-----------------|-----------------|---------------|
-|  0  |          (¶,1)  | `{h}#f00 (a,1)` |       1       |
-|  1  | `{h}#f00 (a,1)` |          (n,1)  |       5       |
-|  2  | `{h}#b00 (a,2)` |          (n,2)  |       6       |
-|  3  | `{h}#800 (a,3)` |          (b,1)  |       4       |
-|  4  |          (b,1)  |          (¶,1)  |       0       |
-|  5  |          (n,1)  | `{h}#b00 (a,2)` |       2       |
-|  6  |          (n,2)  | `{h}#800 (a,3)` |       3       |
+|      first      |      last       | last_to_first |
+|-----------------|-----------------|---------------|
+|          (¶,1)  | `{h}#f00 (a,1)` |       1       |
+| `{h}#f00 (a,1)` |          (n,1)  |       5       |
+| `{h}#b00 (a,2)` |          (n,2)  |       6       |
+| `{h}#800 (a,3)` |          (b,1)  |       4       |
+|          (b,1)  |          (¶,1)  |       0       |
+|          (n,1)  | `{h}#b00 (a,2)` |       2       |
+|          (n,2)  | `{h}#800 (a,3)` |       3       |
 
 ```{note}
-The column `idx` is just the index within the table.
-
 The column `last_to_first` wasn't discussed in the prerequisites but it was in their code. It simply maps the `last` value at a specific index to its index within `first`. For example, (a,3) is contained at index ...
 
 * index 6 for `last`
@@ -15475,15 +15473,15 @@ The collapsed first algorithm uses a more memory efficient data structure to rep
 <tr><th>records</th><th>first_occurrence_map</th></tr>
 <tr><td>
 
-| idx |   last  | last_to_first |
-|-----|---------|---------------|
-|  0  |  (a,1)  |       1       |
-|  1  |  (n,1)  |       5       |
-|  2  |  (n,2)  |       6       |
-|  3  |  (b,1)  |       4       |
-|  4  |  (¶,1)  |       0       |
-|  5  |  (a,2)  |       2       |
-|  6  |  (a,3)  |       3       |
+|   last  | last_to_first |
+|---------|---------------|
+|  (a,1)  |       1       |
+|  (n,1)  |       5       |
+|  (n,2)  |       6       |
+|  (b,1)  |       4       |
+|  (¶,1)  |       0       |
+|  (a,2)  |       2       |
+|  (a,3)  |       3       |
 
 </td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
 </table>
@@ -15524,15 +15522,15 @@ This is effectively an on the fly calculation of `last_to_first`: For any symbol
 <tr><th>records</th><th>first_occurrence_map</th></tr>
 <tr><td>
 
-| idx |   last  |
-|-----|---------|
-|  0  |  (a,1)  |
-|  1  |  (n,1)  |
-|  2  |  (n,2)  |
-|  3  |  (b,1)  |
-|  4  |  (¶,1)  |
-|  5  |  (a,2)  |
-|  6  |  (a,3)  |
+|   last  |
+|---------|
+|  (a,1)  |
+|  (n,1)  |
+|  (n,2)  |
+|  (b,1)  |
+|  (¶,1)  |
+|  (a,2)  |
+|  (a,3)  |
 
 </td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
 </table>
@@ -15591,27 +15589,27 @@ The ranks algorithm exploits the "starts at 1 and increments by 1" property of s
 <tr><th>records (original)</th><th>records (using ranks)</th><th>first_occurrence_map</th></tr>
 <tr><td>
 
-| idx |  last   |
-|-----|---------|
-|  0  |  (a,1)  |
-|  1  |  (n,1)  |
-|  2  |  (n,2)  |
-|  3  |  (b,1)  |
-|  4  |  (¶,1)  |
-|  5  |  (a,2)  |
-|  6  |  (a,3)  |
+|  last   |
+|---------|
+|  (a,1)  |
+|  (n,1)  |
+|  (n,2)  |
+|  (b,1)  |
+|  (¶,1)  |
+|  (a,2)  |
+|  (a,3)  |
 
 </td><td>
 
-| idx | last |     last_tallies         |
-|-----|------|--------------------------|
-|  0  |  a   | {¶: 0, a: 1, b: 0, n: 0} |
-|  1  |  n   | {¶: 0, a: 1, b: 0, n: 1} |
-|  2  |  n   | {¶: 0, a: 1, b: 0, n: 2} |
-|  3  |  b   | {¶: 0, a: 1, b: 1, n: 2} |
-|  4  |  ¶   | {¶: 1, a: 1, b: 1, n: 2} |
-|  5  |  a   | {¶: 1, a: 2, b: 1, n: 2} |
-|  6  |  a   | {¶: 1, a: 3, b: 1, n: 2} |
+| last |     last_tallies         |
+|------|--------------------------|
+|  a   | {¶: 0, a: 1, b: 0, n: 0} |
+|  n   | {¶: 0, a: 1, b: 0, n: 1} |
+|  n   | {¶: 0, a: 1, b: 0, n: 2} |
+|  b   | {¶: 0, a: 1, b: 1, n: 2} |
+|  ¶   | {¶: 1, a: 1, b: 1, n: 2} |
+|  a   | {¶: 1, a: 2, b: 1, n: 2} |
+|  a   | {¶: 1, a: 3, b: 1, n: 2} |
 
 </td><td>{¶: 0, a: 1, b: 4, n: =5}</td></tr>
 </table>
@@ -15652,15 +15650,15 @@ While replacing `last`'s symbol instance counts with `last_tallies` actually inc
 <tr><th>records</th><th>first_occurrence_map</th></tr>
 <tr><td>
 
-| idx | last |     last_tallies         |
-|-----|------|--------------------------|
-|  0  |  a   | {¶: 0, a: 1, b: 0, n: 0} |
-|  1  |  n   |                          |
-|  2  |  n   |                          |
-|  3  |  b   | {¶: 0, a: 1, b: 1, n: 2} |
-|  4  |  ¶   |                          |
-|  5  |  a   |                          |
-|  6  |  a   | {¶: 1, a: 3, b: 1, n: 2} |
+| last |     last_tallies         |
+|------|--------------------------|
+|  a   | {¶: 0, a: 1, b: 0, n: 0} |
+|  n   |                          |
+|  n   |                          |
+|  b   | {¶: 0, a: 1, b: 1, n: 2} |
+|  ¶   |                          |
+|  a   |                          |
+|  a   | {¶: 1, a: 3, b: 1, n: 2} |
 
 </td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
 </table>
@@ -15755,6 +15753,7 @@ sequence_search.BurrowsWheelerTransform_RanksCheckpointed main_test
 ```{prereq}
 Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Checkpointed Indexes Algorithm_TOPIC
 Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Checkpointed Ranks Algorithm_TOPIC
+Algorithms/Single Nucleotide Polymorphism/Suffix Array_TOPIC
 ```
 
 ```{note}
@@ -15764,6 +15763,32 @@ Recall the terminology used for BWT:
  * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of *n*).
  * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
 ```
+
+This algorithm is the checkpointed ranks algorithm with the checkpointed indexes algorithm tacked onto it. For example, the following data structure is for the sequence "banana¶", where ...
+
+* `first_idx` is checkpointed to every 3rd symbol instance in the sequence,
+* `last_tallies` is checkpointed every 3rd row of the table.
+
+<table>
+<tr><th>records</th><th>first_occurrence_map</th></tr>
+<tr><td>
+
+| first_idx | last |     last_tallies         |
+|-----------|------|--------------------------|
+| 6         |  a   | {¶: 0, a: 1, b: 0, n: 0} |
+|           |  n   |                          |
+| 3         |  n   |                          |
+|           |  b   | {¶: 0, a: 1, b: 1, n: 2} |
+| 0         |  ¶   |                          |
+|           |  a   |                          |
+|           |  a   | {¶: 1, a: 3, b: 1, n: 2} |
+
+</td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
+</table>
+
+When `first_idx` and `last_tallies` are big enough, this algorithm ends up using less memory than the suffix array algorithm, but it does so at the cost of doing extra computations during searches to fill in the gaps between checkpointed `first_idx` / `last_tallies` values. This may be an acceptable tradeoff in a lot of cases because SNP analysis requires holding large reference genomes in memory and that extra computation time is often negligible.
+
+The construction process for this algorithm is the same as that for the checkpointed ranks algorithm, but modified to also produce `first_idx`.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py
@@ -15780,6 +15805,8 @@ sequence_search.BurrowsWheelerTransform_Checkpointed main_build
   first_indexes_checkpoint_n: 3
 }
 ```
+
+The checkpointed indexes algorithm requires `last_to_first_idx` when walking back to a checkpointed `first_idx` value. `last_to_first_idx` doesn't exist in the checkpointed ranks algorithm: In the checkpointed ranks algorithm, all `last_to_first_idx` values have been replaced with a function that computes a `last_to_first_idx` value from `last_tallies` checkpoints. As such, this algorithm, when walking back to a checkpointed `first_idx`, uses that function to determine what a `last_to_first_idx` value should be for some row.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py
@@ -15798,6 +15825,8 @@ sequence_search.BurrowsWheelerTransform_Checkpointed main_walk_back_until_first_
 }
 ```
 
+The testing process for this algorithm is the same as that for the checkpointed ranks algorithm, but modified to use the above function to determine where each substring occurrence is in the original sequence.
+
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py
 python
@@ -15814,12 +15843,6 @@ sequence_search.BurrowsWheelerTransform_Checkpointed main_test
   test: ana
 }
 ```
-
-TODO: continue here
-
-TODO: continue here
-
-TODO: continue here
 
 ### BLAST
 
