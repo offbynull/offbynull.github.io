@@ -2941,7 +2941,7 @@ if ((a <=> b) == std::strong_ordering::equal) {
 ````
 
 ```{seealso}
-Core Language/Templates/Concepts/Ordered Type Concept_TOPIC
+Core Language/Concepts/Common Concepts/Ordered Type_TOPIC
 ```
 
 ### Conversion Overloading
@@ -3507,7 +3507,7 @@ Concept_TEMPLATEs may be used both with `auto` and with explicit template parame
 ```
 
 ```{seealso}
-Core Language/Templates/Concepts_TOPIC
+Core Language/Concepts_TOPIC
 Library Functions/Containers_TOPIC
 ```
 
@@ -3613,7 +3613,7 @@ Templates work differently from Java generics in that the C++ compiler generates
 `{bm} /(Core Language\/Templates\/Universal References)_TOPIC/`
 
 ```{prereq}
-Core Language/Templates/Concepts_TOPIC
+Core Language/Concepts_TOPIC
 Core Language/Variables/References_TOPIC
 Core Language/Variables/Rvalue References_TOPIC
 Core Language/Classes/Moving_TOPIC
@@ -3712,26 +3712,6 @@ The reason why universal references work is that the compiler is deducing the co
 
 Internally, the compiler uses a technique called "reference collapsing" to get this to work, which temporarily / internally allows certain unallowable C++ constructs (references to references are disallowed). See [here](https://isocpp.org/blog/2012/11/universal-references-in-c11-scott-meyers) for more information.
 ```
-
-````{note}
-Concept_TEMPLATEs can be used to ensure that the underlying type of a universal reference is correct. In the example above, it's expected that the underlying type is `int`.
-
-```c++
-// VERSION 1: Accept only int, int &, or int &&
-template<typename T>
-  requires std::same_as<T, int> || std::same_as<T, int &> || std::same_as<T, int &&>
-void test(T && x) {
-    ...
-}
-
-// VERSION 2: Must be the same as int once you strip the reference and const/volatile off
-template<typename T>
-  requires std::is_same_v<std::remove_cv_t<std::remove_reference_t<T>>, int>
-void test(T && x) {
-    ...
-}
-```
-````
 
 ### Auto Syntax
 
@@ -4182,723 +4162,6 @@ You can't do something similar with the original return type syntax because the 
 template<typename T>
 decltype(x + 5) f1(T x) { // THIS WON'T WORK: x used in decltype() before it's encountered in parameter list
     return x + 5;
-}
-```
-````
-
-### Concepts
-
-`{bm} /(Core Language\/Templates\/Concepts)_TOPIC/`
-
-```{prereq}
-Core Language/Templates/Auto Syntax_TOPIC
-```
-
-```{note}
-This section makes use of the type traits library in the C++ standard libraries. Type traits are templates that provide information about types (e.g if a type is signed or unsigned, if it has a copy constructor, etc...). The link below jumps to that section. At this point, it's safe to read the type traits section because it doesn't require any background knowledge other than how to make use of templates, which is something you should already be aware of at this point.
-```
-
-```{seealso}
-Library Functions/Type Traits_TOPIC
-```
-
-In certain cases, a set of types substituted in for a template parameters won't produce working code.
-
-```c++
-// declare
-template <typename X, typename Y, typename Z>
-X perform(Y& var1, Z& var2) {
-    return var1 + var2;
-}
-```
-
-In the example above, `Y` and `Z` need to be types that support the plus operator (+) on each other (e.g. `int` and `short`) and the result must be of type `X` (or convertible to `X`). If types substituted for `X`, `Y`, and `Z` don't satisfy those conditions, the compiler gives back cryptic compilation errors.
-
-Concept_TEMPLATEs may be used within a template to produce more straightforward compilation errors for bad type substitutions: A concept_TEMPLATE is a predicate, evaluated at compile-time (not runtime), that ensures a set of substituted types support specific type traits (e.g. supports plus operator, has a specific member function, has a copy constructor, etc..). The compiler gives back easier to understand compilation errors when the predicate fails.
-
-Concept_TEMPLATEs themselves are templates where the `concept` keyword is used followed by its name and a compile-time evaluated expression that returns a `bool`. For example, the concept_TEMPLATE below uses the type traits library to ensure that `T` is both has a default constructor and a copy constructor.
-
-```c++
-template <typename T>
-concept DefaultAndCopy = std::is_default_constructible<T>::value && std::is_copy_constructible<T>::value;
-```
-
-A concept_TEMPLATE's expression can invoke other concept_TEMPLATEs. For example, the concept_TEMPLATE below makes use of the example concept_TEMPLATE above and includes an additional type traits check to ensure that `T` also has a move constructor.
-
-```c++
-template <typename T>
-concept DefaultAndCopyAndMove = DefaultAndCopy<T> && std::is_move_constructible<T>::value;
-```
-
-The C++ standard library includes a set of commonly used concept_TEMPLATEs. These concept_TEMPLATEs perform checks similar to the checks provided by the type traits library.
-
-```c++
-// equiv to DefaultAndCopyAndMove but written using the concepts library.
-template <typename T>
-concept DefaultAndCopyAndMove = std::default_initializable<T> && std::copy_constructible<T> && std::move_constructible<T>;
-```
-
-In cases where neither the type traits library nor the concept_TEMPLATEs library has the check you need, a special `requires` clause can be used to directly specify exactly what a type needs to support. This `requires` clause has a parameter list (exactly as if it were a function), and within its body is a list of expressions that _must_ be supported by the types.
-
-```c++
-template <typename T1, typename T2, typename TR>
-concept MyConcept =
-        requires(const T1* t1, const T2& t2) { // param list may also contain non-template types like int, float, ...
-            { (*t1) + t2 } -> std::same_as<TR>;
-            { (*t1) * t2 } -> std::same_as<TR>;
-            { std::hash<T1>{}(*t1) } -> std::convertible_to<std::size_t>;
-            { std::hash<T2>{}(t2)  } -> std::convertible_to<std::size_t>;
-        }
-        && std::is_default_constructible<T1>::value
-        && std::is_default_constructible<T2>::value;
-```
-
-The `requires` clause in the example above pretends as if it's a function taking a pointer to a `const` (`T1`) and a lvalue reference to a `const` (`T2`).
-
- * When `T1` is dereferenced and either added / multiplied to `T2`, it must produce a type of `TR`.
- * When `T1` is dereferenced and passed to `std::hash`, it must produce a type that's convertible to `size_t`.
- * When `T2` is passed to `std::hash`, it must produce a type that's convertible to `size_t`.
-
-```{note}
-Note the syntax. Each statement in the body of `requires` is an expression that must result in a type that passes its concept_TEMPLATE check.
-```
-
-To apply a concept_TEMPLATE to a template, add a `requires` just before the body of the template with a concept_TEMPLATE expression. The concept_TEMPLATE expression is the exact same as the expressions used to define concept_TEMPLATEs: It's evaluated at compile-time, can reference type traits, can reference other concept_TEMPLATEs, can have a special parameter list `requires` clause, and must return a `bool`.
-
-```c++
-// templated function perform() using the concept "MyConcept" declared above.
-template <typename T1, typename T2, typename TR>
-    requires MyConcept<T1, T2, TR>
-TR perform(T1 t1, T2 t2) { /* ... implementation ... */ }
-
-
-// templated function perform() embedding the rules for that same concept.
-template <typename T1, typename T2, typename TR>
-    requires requires(const T1* t1, const T2& t2) {
-        { (*t1) + t2 } -> std::same_as<TR>;
-        { (*t1) * t2 } -> std::same_as<TR>;
-        { std::hash<T1>{}(*t1) } -> std::convertible_to<std::size_t>;
-        { std::hash<T2>{}(t2)  } -> std::convertible_to<std::size_t>;
-    }
-    && std::is_default_constructible<T1>::value
-    && std::is_default_constructible<T2>::value;
-TR perform(T1 t1, T2 t2) {
-    /* ... implementation ... */
-}
-```
-
-```{note}
-The `requires requires` above is valid. The first `requires` is saying that this template is performing checks, and the second `requires` is the special parameter list `requires` clause that lists out what operations `T1`, `T2`, and `TR` must support.
-```
-
-If a concept_TEMPLATE only checks a single type, it's possible to use it just by substituting its name in place of the `typename` / `class` for the template parameter that requires it (as opposed to using `requires` shown above).
-
-```c++
-// concept
-template <typename T>
-concept SingleTypeConcept = requires(T a, T b) {
-            { a + b } -> std::same_as<T>;
-            { a * b } -> std::same_as<T>;
-        };
-
-// usage of concept
-template <SingleTypeConcept X>  // this line is updated -- "typename T" replaced with "SingleTypeConcept T"
-X add_and_multiply(X &var1, X &var2) {
-    X x { var1 + var 2};
-    return x * var2;
-}
-```
-
-For function templates specifically, rather than parameterizing using `template`, a common shorthand is to use `auto` for the return type / parameter types being templated. The compiler automatically infers the correct types based on usage. Each `auto` parameter / return type can have a concept_TEMPLATE applied to it by placing that concept_TEMPLATE's name just before `auto`. For example, the usage of `SingleTypeConcept` in the example above can be rewritten as follows.
-
-```c++
-// usage of concept
-SingleTypeConcept auto add_and_multiply(
-    SingleTypeConcept auto &var1,
-    SingleTypeConcept auto &var2
-) {
-    auto x { var1 + var 2};
-    return x * var2;
-}
-```
-
-````{note}
-Be careful when making use of concept_TEMPLATEs like this. When `const auto` is involved, it'll break compilation. 
-
-```c++
-std::integral const auto f() {
-    return 0;
-}
-```
-
-The above function won't compile because there's something before the `const`. When a `const` is the left-most thing, it can't have anything further left of it. You need to move the `const` after `auto` (`const auto` is the exact same as `auto const`, having `const` as left-most thing is just a syntactical convenience thing).
-
-```c++
-std::integral auto const f() {
-    return 0;
-}
-```
-````
-
-```{note}
-Does this work with `decltype(auto)` as well?
-```
-
-```{seealso}
-Core Language/Templates/Type Deduction/Type Cloning Deduction_TOPIC (`decltype(auto)` description)
-```
-
-#### Ordered Type Concept
-
-`{bm} /(Core Language\/Templates\/Concepts\/Ordered Type Concept)_TOPIC/`
-
-An ordered type is a type that can be compared typically overrides the 6 common relational operators: equals, not equals, less than, less than or equals, greater than, and greater than or equals to. The example concept_TEMPLATE below provides a concept_TEMPLATE that ensures the type provides all of these relational operators.
-
-```c++
-template<typename T>
-concept Ordering =
-    requires(T a, T b) {
-        { a == b } -> std::convertible_to<bool>;
-        { a != b } -> std::convertible_to<bool>;
-        { a <= b } -> std::convertible_to<bool>;
-        { a < b } -> std::convertible_to<bool>;
-        { a > b } -> std::convertible_to<bool>;
-        { a >= b } -> std::convertible_to<bool>;
-    };
-```
-
-```{note}
-You typically won't have to write this out by hand. The C++ standard library has the concept_TEMPLATEs `std::three_way_comparable` and `std::three_way_comparable_with`. The former makes sure that a type allows relational comparisons against the same type (same as the example above) while the former allows relational comparisons against different types (e.g. comparing an `int` against a `long`).
-
-Both concept_TEMPLATEs are related to the spaceship operator.
-```
-
-```{seealso}
-Core Language/Classes/Three-way Comparison Overloading_TOPIC (Spaceship operator)
-```
-
-#### Semi-regular Type Concept
-
-`{bm} /(Core Language\/Templates\/Concepts\/Semi-regular Type Concept)_TOPIC/`
-
-```{prereq}
-Core Language/Classes/Construction_TOPIC
-Core Language/Classes/Copying_TOPIC
-Core Language/Classes/Moving_TOPIC
-Core Language/Templates/Specialization_TOPIC
-```
-
-A semi-regular type is a common idea in C++, commonly referred to in documentation on C++ and the C++ standard library. A type is considered semi-regular type if it has a ...
-
- * default constructor
- * copy constructor
- * move constructor
- * copy assignment overload
- * move assignment overload
- * destructor
- * template specialization / overload for `std::swap(T, T)` (is a swappable type)
-
-```c++
-template<typename T>
-concept SemiRegular =
-    std::is_default_constructible<T>::value &&
-    std::is_copy_constructible<T>::value &&
-    std::is_copy_assignable<T>::value &&
-    std::is_move_constructible<T>::value &&
-    std::is_move_assignable<T>::value &&
-    std::is_destructible<T>::value &&
-    std::is_swappable<T>::value;
-```
-
-```{note}
-This type is built out using functionality provided by the type traits library. Even then, you don't need to use this as the C++ standard library already provides the `std::semiregular` concept_TEMPLATE.
-```
-
-#### Regular Type Concept
-
-`{bm} /(Core Language\/Templates\/Concepts\/Regular Type Concept)_TOPIC/`
-
-```{prereq}
-Core Language/Templates/Concepts/Semi-regular Type Concept_TOPIC
-```
-
-A regular type is a common idea in C++, commonly referred to in documentation on C++ and the C++ standard library. A type is considered regular type if it supports all the traits of a semi-regular type and it supports both the equality operator (==) and inequality operator (!=).
-
-```c++
-template<typename T>
-concept Regular =
-    SemiRegular<T> &&
-    requires(T a, T b) {
-        { a == b } -> std::convertible_to<bool>;
-        { a != b } -> std::convertible_to<bool>;
-    };
-```
-
-```{note}
-You don't need to use this as the C++ standard library already provides the `std::regular` concept_TEMPLATE.
-```
-
-```{note}
-The book and online documentation claims that regular types should behave similarly built-in types like `int`.
-```
-
-#### Union Type Concept
-
-`{bm} /(Core Language\/Templates\/Concepts\/Union Type Concept)_TOPIC/`
-
-One of the most basic use-cases for concept_TEMPLATEs is to require that a type be one of a set of known types (e.g. require that the type be either `short`, `int`, or `long`). In the example below, a clever use of templates is used to test if the two types are equal, then a concept_TEMPLATE makes use of those templates to see if a type is contained in some larger set.
-
-```c++
-// templates
-template<typename T, typename U>
-struct is_same {
-    static constexpr bool value = false; 
-};
-
-template<typename T>
-struct is_same<T, T> { 
-   static constexpr bool value = true; 
-};
-
-
-// concept for a function whose first parameter's type is an integral type
-template<typename T>
-concept integral_check = is_same<T, short>::value || is_same<T, int>::value || is_same<T, long>::value;
-
-
-// usage
-template<integral_check T>
-long square(T num) {
-    return num * num;
-}
-
-int main() {
-    std::cout << square(2) << std::endl;
-    std::cout << square(2L) << std::endl;
-    return 0;
-}
-```
-
-```{note}
-In most cases, you shouldn't have to write out templates like `is_same<>` yourself. The C++ standard library provides the `type_traits` header library which contains `std::is_same<>` and several other type checks. The C++ standard library also provides a set of pre-built concept_TEMPLATEs that make use of check that a type has specific type traits. For example, `std::is_same<>` is exposed as the concept_TEMPLATE `std::same_as<>`.
-
-Likewise, the C++ standard library provides a more elaborate version of `integral_check<>` as `std::integral<>`.
-```
-
-#### Callable Type Concept
-
-`{bm} /(Core Language\/Templates\/Concepts\/Callable Type Concept)_TOPIC/`
-
-```{prereq}
-Core Language/Templates/Variadic_TOPIC
-Core Language/Templates/Concepts/Union Type Concept_TOPIC
-Core Language/Templates/Callable Type Unpacking_TOPIC
-```
-
-Concept_TEMPLATEs can be used to specify the requirements for a callable object:
-
-* How many parameters it takes in.
-* The types allowed for each parameter / the type traits required by each parameter type.
-* The types allowed for return / traits required by the return type.
-
-Up to C++20, the C++ standard library doesn't provide much functionality for verifying the requirements above. The subsections below make clever use of templates to design checks for these requirements from scratch.
-
-```{note}
-These sub-sections come from my question on [stackoverflow](https://stackoverflow.com/q/73198589/1196226). Everything was tested on g++12.1 using C++20 standard. Newer versions of C++ or the g++ compiler might have better stuff to handle these types of requirements.
-```
-
-##### Parameter Counts
-
-`{bm} /(Core Language\/Templates\/Concepts\/Callable Types\/Parameter Counts)_TOPIC/`
-
-```{prereq}
-Core Language/Templates/Variadic_TOPIC
-Core Language/Compile-time Evaluation_TOPIC
-```
-
-To test a callable's parameter count within a concept_TEMPLATE, templates can be used to extract the parameter count. In the example below, the concept_TEMPLATE checks that a callable has exactly 1 parameter.
-
-```c++
-// template(s) to extract parameter count
-template <typename F>
-struct argCnt;
-
-template <typename R, typename ... As>
-struct argCnt<R(*)(As...)> { static constexpr size_t cnt = sizeof...(As); };  // needed for std::integral<>
-
-template <typename R, typename ... As>
-struct argCnt<R(As...)> { static constexpr size_t cnt = sizeof...(As); };  // needed for std::integral<>
-
-
-// concept for a callable that has exactly 1 parameter
-template<typename Fn>
-concept MySpecialFunction = argCnt<Fn>::cnt == 1;
-
-
-// usage
-template<MySpecialFunction Fn>
-decltype(auto) call(Fn fn) {
-    return fn(2);
-}
-
-int square_int(int num) {
-    return num * num;
-}
-
-long square_long(long num) {
-    return num * num;
-}
-
-int main() {
-    std::cout << call(square_int) << std::endl;
-    std::cout << call(square_long) << std::endl;
-    return 0;
-}
-```
-
-##### Parameter Types
-
-`{bm} /(Core Language\/Templates\/Concepts\/Callable Types\/Parameter Types)_TOPIC/`
-
-```{prereq}
-Core Language/Templates/Variadic_TOPIC
-```
-
-To test a callable's parameter type within a concept_TEMPLATE, templates can be used to extract the parameter type. In the example below, the concept_TEMPLATE checks that a callable's first parameter has a type conforming to the concept_TEMPLATE `std::integral`.
-
-```c++
-// template(s) to extract parameter types
-template <std::size_t N, typename T0, typename ... Ts>
-struct typeN { using type = typename typeN<N-1U, Ts...>::type; };
-
-template <typename T0, typename ... Ts>
-struct typeN<0U, T0, Ts...> { using type = T0; };
-
-template <std::size_t, typename F>
-struct argN;
-
-template <std::size_t N, typename R, typename ... As>
-struct argN<N, R(*)(As...)> { using type = typename typeN<N, As...>::type; };  // needed for std::integral<>
-
-template <std::size_t N, typename R, typename ... As>
-struct argN<N, R(As...)>  { using type = typename typeN<N, As...>::type; };  // needed for std::is_integeral_v<>
-
-
-// concept for a function whose first parameter's type is an integral type
-template<typename Fn>
-concept MySpecialFunction = std::integral<typename argN<0U, Fn>::type>;
-
-
-// usage
-template<MySpecialFunction Fn>
-decltype(auto) call(Fn fn) {
-    return fn(2);
-}
-
-int square_int(int num) {
-    return num * num;
-}
-
-long square_long(long num) {
-    return num * num;
-}
-
-int main() {
-    std::cout << call(square_int) << std::endl;
-    std::cout << call(square_long) << std::endl;
-    return 0;
-}
-
-
-// type trait checks using static_assert() -- not necessary
-static_assert( std::is_integral_v<typename argN<0U, decltype(square_int)>::type> );
-static_assert( std::is_integral_v<typename argN<0U, decltype(square_long)>::type> );
-```
-
-```{note}
-Instead of using the templates show above, one other solution is to use [Boost's type traits library](https://www.boost.org/doc/libs/1_79_0/libs/type_traits/doc/html/boost_typetraits/reference/function_traits.html): `function_traits<my_func>::argN_type`
-```
-
-````{note}
-Cleverly using templates as shown above is the most robust way to check a parameter's type. But, if your requirements aren't overly complex, there may be simpler ways.
-
-**SCENARIO 1: Testing for a known concrete types**
-
-In this scenario, the requirement is that a callable's parameter type be a concrete type that's known beforehand (e.g. `int`). The concept_TEMPLATE for the callable itself can simply use a parameter list `requires` clause.
-
-```c++
-// concept for a function that takes in a single argument of type int
-template <typename Fn>
-concept MySpecialFunction = requires(Fn f, int t) {
-            { f(t) } -> std::same_as<int>;
-        };
-```
-
-**SCENARIO 2: Testing for a set of known concrete types**
-
-In this scenario, the requirement is that a callable's parameter be one of a set of concrete types that's known beforehand (e.g. `int` or `long`). The concept_TEMPLATE for the callable can be exploded out into several sub-concept_TEMPLATEs: Each sub-concept_TEMPLATE checks that the callable's parameter type match a specific concrete type, then those sub-concept_TEMPLATEs combine to form the full concept_TEMPLATE.
-
-```c++
-// concept that combines the two sub-concepts: checks for a function has a single parameter of type int or long
-template<typename Fn>
-concept MySpecialFunction1 = requires(Fn f, int i) {   // sub-concept1: func that has a single parameter of type int
-    { f(i) } -> std::same_as<decltype(i)>;
-};
-
-template<typename Fn>
-concept MySpecialFunction2 = requires(Fn f, long l) {  // sub-concept2: func that has a single parameter of type long
-    { f(l) } -> std::same_as<decltype(l)>;
-};
-
-template<typename Fn>
-concept MySpecialFunction = MySpecialFunction1<Fn> || MySpecialFunction2<Fn>;  // final concept: func that has a single parameter of type int or long
-
-
-// usage
-template<MySpecialFunction Fn>
-decltype(auto) call(Fn f) {
-    return f(2);
-}
-
-int square_int(int num) {
-    return num * num;
-}
-
-long square_long(long num) {
-    return num * num;
-}
-
-int main() {
-    std::cout << call(square_int) << std::endl;
-    std::cout << call(square_long) << std::endl;
-    return 0;
-}
-```
-
-The problem with exploding out to sub-concept_TEMPLATEs is that the number of sub-concept_TEMPLATEs can get very large. For example, if the callable should have 4 parameters and each of those parameters should be of type `int`, `long`, `short`, or `void*`, that's 256 different sub-concept_TEMPLATEs to list out.
-
-```c++
-// sub-concepts for function that takes in 4 params:
-// param1: int|long|short|void*
-// param2: int|long|short|void*
-// param2: int|long|short|void*
-// param3: int|long|short|void*
-//
-// 4^4=256 sub-concepts required, not really feasible to code something like this out
-template<typename Fn>
-concept MySpecialFunction1 = requires(Fn f, int p1, int p2, int p3, int p4) {
-    { f(p1, p2, p3, p4) } -> std::same_as<long>;
-};
-
-template<typename Fn>
-concept MySpecialFunction2 = requires(Fn f, int p1, int p2, int p3, long p4) {
-    { f(p1, p2, p3, p4) } -> std::same_as<long>;
-};
-
-template<typename Fn>
-concept MySpecialFunction3 = requires(Fn f, int p1, int p2, int p3, short p4) {
-    { f(p1, p2, p3, p4) } -> std::same_as<long>;
-};
-
-template<typename Fn>
-concept MySpecialFunction4 = requires(Fn f, int p1, int p2, int p3, void* p4) {
-    { f(p1, p2, p3, p4) } -> std::same_as<long>;
-};
-
-template<typename Fn>
-concept MySpecialFunction5 = requires(Fn f, int p1, int p2, long p3, int p4) {
-    { f(p1, p2, p3, p4) } -> std::same_as<long>;
-};
-
-template<typename Fn>
-concept MySpecialFunction6 = requires(Fn f, int p1, int p2, long p3, long p4) {
-    { f(p1, p2, p3, p4) } -> std::same_as<long>;
-};
-
-...
-
-template<typename Fn>
-concept MySpecialFunction256 = requires(Fn f, void* p1, void* p2, void* p3, void* p4) {
-    { f(p1, p2, p3, p4) } -> std::same_as<long>;
-};
-
-// combine sub-concepts together into final concept
-template<typename Fn>
-concept MySpecialFunction =
-    MySpecialFunction1<Fn>
-    || MySpecialFunction2<Fn>
-    || MySpecialFunction3<Fn>
-    || MySpecialFunction4<Fn>
-    || MySpecialFunction5<Fn>
-    || MySpecialFunction6<Fn>
-    || ...
-    || MySpecialFunction256<Fn>;
-
-
-
-// usage
-template<typename Fn>
-    requires MySpecialFunction<Fn>
-decltype(auto) call(Fn fn) {
-    return fn(1, 2, 3, 4);
-}
-
-long multiply(int num1, long num2, short num3, long num4) {
-    return num1 * num2 * num3 * num4;
-}
-
-int main() {
-    std::cout << call(multiply) << std::endl;
-    return 0;
-}
-```
-
-One potential workaround to the sub-concept_TEMPLATE explosion problem shown in the example above is to use a parameter list `requires` clause: Each of the 4 parameter types gets fed into the top-level concept_TEMPLATE as a template parameter and requirements are individually tested on each of those template parameters.
-
-```c++
-// function that takes in 4 params:
-// param1: int|long|short|void*
-// param2: int|long|short|void*
-// param2: int|long|short|void*
-// param3: int|long|short|void*
-template<typename Fn, typename P1, typename P2, typename P3, typename P4>
-concept MySpecialFunction =
-    (std::same_as<P1, int> || std::same_as<P1, long> || std::same_as<P1, short> || std::same_as<P1, void*>)
-    && (std::same_as<P2, int> || std::same_as<P2, long> || std::same_as<P2, short> || std::same_as<P2, void*>)
-    && (std::same_as<P3, int> || std::same_as<P3, long> || std::same_as<P3, short> || std::same_as<P3, void*>)
-    && (std::same_as<P4, int> || std::same_as<P4, long> || std::same_as<P4, short> || std::same_as<P4, void*>)
-    && requires(Fn f, P1 p1, P2 p2, P3 p3, P4 p4) {
-        { f(p1, p2, p3, p4) } -> std::same_as<long>;
-    };
-```
-
-Doing this removes the sub-concept_TEMPLATE explosion problem, but it introduces a new problem of the compiler losing the ability to infer template parameters from usage. In the example below, the concept_TEMPLATE for the callable is concise, but usages of `call()` now need to explicitly specify what each template argument is because the C++ compiler is no longer able to infer them on its own.
-
-```c++
-// function that takes in 4 params:
-// param1: int|long|short|void*
-// param2: int|long|short|void*
-// param2: int|long|short|void*
-// param3: int|long|short|void*
-template<typename Fn, typename P1, typename P2, typename P3, typename P4>
-concept MySpecialFunction =
-    (std::same_as<P1, int> || std::same_as<P1, long> || std::same_as<P1, short> || std::same_as<P1, void*>)
-    && (std::same_as<P2, int> || std::same_as<P2, long> || std::same_as<P2, short> || std::same_as<P2, void*>)
-    && (std::same_as<P3, int> || std::same_as<P3, long> || std::same_as<P3, short> || std::same_as<P3, void*>)
-    && (std::same_as<P4, int> || std::same_as<P4, long> || std::same_as<P4, short> || std::same_as<P4, void*>)
-    && requires(Fn f, P1 p1, P2 p2, P3 p3, P4 p4) {
-        { f(p1, p2, p3, p4) } -> std::same_as<long>;
-    };
-
-
-// usage
-template<typename Fn, typename P1, typename P2, typename P3, typename P4>
-    requires MySpecialFunction<Fn, P1, P2, P3, P4>
-decltype(auto) call(Fn fn) {
-    return fn(1, 2, 3, 4);
-}
-
-long multiply(int num1, long num2, short num3, long num4) {
-    return num1 * num2 * num3 * num4;
-}
-
-int main() {
-    // std::cout << call(multiply) << std::endl; // <--- WON'T COMPILE because template parameters can't be inferred by the compiler
-    std::cout << call<decltype(multiply), int, long, short, long>(multiply) << std::endl; // <--- WILL COMPILE because template parameters explicitly listed,
-    return 0;
-}
-```
-````
-
-##### Return Types
-
-`{bm} /(Core Language\/Templates\/Concepts\/Callable Types\/Return Types)_TOPIC/`
-
-```{prereq}
-Core Language/Templates/Variadic_TOPIC
-Core Language/Templates/Concepts/Callable Types/Parameter Types_TOPIC
-```
-
-To test a callable's return type within a concept_TEMPLATE, templates can be used to extract the type. In the example below, the concept_TEMPLATE checks that a callable has a return type of integral.
-
-```c++
-// template(s) to extract return types
-template <typename F>
-struct returnType;
-
-template <typename R, typename ... As>
-struct returnType<R(*)(As...)> { using type = R; };
-
-template <typename R, typename ... As>
-struct returnType<R(As...)> { using type = R; };
-
-
-// concept for a function whose return type is an integral type
-template<typename Fn>
-concept MySpecialFunction =
-    std::integral<typename returnType<Fn>::type>;
-
-
-// usage
-template<MySpecialFunction Fn>
-decltype(auto) call(Fn fn) {
-    return fn(2);
-}
-
-int square_int(int num) {
-    return num * num;
-}
-
-long square_long(long num) {
-    return num * num;
-}
-
-int main() {
-    std::cout << call(square_int) << std::endl;
-    std::cout << call(square_long) << std::endl;
-    return 0;
-}
-```
-
-```{note}
-Instead of using the templates show above, one other solution is to use [Boost's type traits library](https://www.boost.org/doc/libs/1_79_0/libs/type_traits/doc/html/boost_typetraits/reference/function_traits.html): `function_traits<my_func>::result_type`
-
-Somewhat related as well from the C++ standard library: `std::result_of` / `std::invoke_result`.
-```
-
-````{note}
-Cleverly using templates as shown above is the most robust way to check a callable's return type. But, if your requirements aren't overly complex, it may be feasible to use simpler checks such as those discussed in the parameter types section before this section. For example, if the scenario allows for it, a concept_TEMPLATE check can be reduced to just a set of parameter list `requires` clauses being logically or'd together.
-
-```c++
-// concept for a function whose return type is an integral type
-template<typename Fn>
-concept MySpecialFunction =
-    requires(Fn f, int i) {
-        { f(i) } -> std::same_as<int>;
-    }
-    || requires(Fn f, long l) {
-        { f(l) } -> std::same_as<long>;
-    };
-
-
-// usage
-template<MySpecialFunction Fn>
-decltype(auto) call(Fn fn) {
-    return fn(2);
-}
-
-int square_int(int num) {
-    return num * num;
-}
-
-long square_long(long num) {
-    return num * num;
-}
-
-int main() {
-    std::cout << call(square_int) << std::endl;
-    std::cout << call(square_long) << std::endl;
-    return 0;
 }
 ```
 ````
@@ -5666,6 +4929,829 @@ int main() {
     std::cout << (std::is_same<types::param_t<0u>, long>::value ? "true" : "false") << std::endl;  // prints "true"
     std::cout << (std::is_same<types::param_t<1u>, short>::value ? "true" : "false") << std::endl; // prints "true"
     std::cout << types::param_cnt;
+    return 0;
+}
+```
+````
+
+## Concepts
+
+`{bm} /(Core Language\/Concepts)_TOPIC/`
+
+```{prereq}
+Core Language/Templates_TOPIC
+```
+
+```{note}
+This section makes use of the type traits library in the C++ standard libraries. Type traits are templates that provide information about types (e.g if a type is signed or unsigned, if it has a copy constructor, etc...). The link below jumps to that section. At this point, it's safe to read the type traits section because it doesn't require any background knowledge other than how to make use of templates, which is something you should already be aware of at this point.
+```
+
+```{seealso}
+Library Functions/Type Traits_TOPIC
+```
+
+In certain cases, a set of types substituted in for a template parameters won't produce working code.
+
+```c++
+// declare
+template <typename X, typename Y, typename Z>
+X perform(Y& var1, Z& var2) {
+    return var1 + var2;
+}
+```
+
+In the example above, `Y` and `Z` need to be types that support the plus operator (+) on each other (e.g. `int` and `short`) and the result must be of type `X` (or convertible to `X`). If types substituted for `X`, `Y`, and `Z` don't satisfy those conditions, the compiler gives back cryptic compilation errors.
+
+Concept_TEMPLATEs may be used within a template to produce more straightforward compilation errors for bad type substitutions: A concept_TEMPLATE is a predicate, evaluated at compile-time (not runtime), that ensures a set of substituted types support specific type traits (e.g. supports plus operator, has a specific member function, has a copy constructor, etc..). The compiler gives back easier to understand compilation errors when the predicate fails.
+
+Concept_TEMPLATEs themselves are templates where the `concept` keyword is used followed by its name and a compile-time evaluated expression that returns a `bool`. For example, the concept_TEMPLATE below uses the type traits library to ensure that `T` is both has a default constructor and a copy constructor.
+
+```c++
+template <typename T>
+concept DefaultAndCopy = std::is_default_constructible<T>::value && std::is_copy_constructible<T>::value;
+```
+
+A concept_TEMPLATE's expression can invoke other concept_TEMPLATEs. For example, the concept_TEMPLATE below makes use of the example concept_TEMPLATE above and includes an additional type traits check to ensure that `T` also has a move constructor.
+
+```c++
+template <typename T>
+concept DefaultAndCopyAndMove = DefaultAndCopy<T> && std::is_move_constructible<T>::value;
+```
+
+The C++ standard library includes a set of commonly used concept_TEMPLATEs. These concept_TEMPLATEs perform checks similar to the checks provided by the type traits library.
+
+```c++
+// equiv to DefaultAndCopyAndMove but written using the concepts library.
+template <typename T>
+concept DefaultAndCopyAndMove = std::default_initializable<T> && std::copy_constructible<T> && std::move_constructible<T>;
+```
+
+In cases where neither the type traits library nor the concept_TEMPLATEs library has the check you need, a special `requires` clause can be used to directly specify exactly what a type needs to support. This `requires` clause has a parameter list (exactly as if it were a function), and within its body is a list of expressions that _must_ be supported by the types.
+
+```c++
+template <typename T1, typename T2, typename TR>
+concept MyConcept =
+        requires(const T1* t1, const T2& t2) { // param list may also contain non-template types like int, float, ...
+            { (*t1) + t2 } -> std::same_as<TR>;
+            { (*t1) * t2 } -> std::same_as<TR>;
+            { std::hash<T1>{}(*t1) } -> std::convertible_to<std::size_t>;
+            { std::hash<T2>{}(t2)  } -> std::convertible_to<std::size_t>;
+        }
+        && std::is_default_constructible<T1>::value
+        && std::is_default_constructible<T2>::value;
+```
+
+The `requires` clause in the example above pretends as if it's a function taking a pointer to a `const` (`T1`) and a lvalue reference to a `const` (`T2`).
+
+ * When `T1` is dereferenced and either added / multiplied to `T2`, it must produce a type of `TR`.
+ * When `T1` is dereferenced and passed to `std::hash`, it must produce a type that's convertible to `size_t`.
+ * When `T2` is passed to `std::hash`, it must produce a type that's convertible to `size_t`.
+
+```{note}
+Note the syntax. Each statement in the body of `requires` is an expression that must result in a type that passes its concept_TEMPLATE check.
+```
+
+To apply a concept_TEMPLATE to a template, add a `requires` just before the body of the template with a concept_TEMPLATE expression. The concept_TEMPLATE expression is the exact same as the expressions used to define concept_TEMPLATEs: It's evaluated at compile-time, can reference type traits, can reference other concept_TEMPLATEs, can have a special parameter list `requires` clause, and must return a `bool`.
+
+```c++
+// templated function perform() using the concept "MyConcept" declared above.
+template <typename T1, typename T2, typename TR>
+    requires MyConcept<T1, T2, TR>
+TR perform(T1 t1, T2 t2) { /* ... implementation ... */ }
+
+
+// templated function perform() embedding the rules for that same concept.
+template <typename T1, typename T2, typename TR>
+    requires requires(const T1* t1, const T2& t2) {
+        { (*t1) + t2 } -> std::same_as<TR>;
+        { (*t1) * t2 } -> std::same_as<TR>;
+        { std::hash<T1>{}(*t1) } -> std::convertible_to<std::size_t>;
+        { std::hash<T2>{}(t2)  } -> std::convertible_to<std::size_t>;
+    }
+    && std::is_default_constructible<T1>::value
+    && std::is_default_constructible<T2>::value;
+TR perform(T1 t1, T2 t2) {
+    /* ... implementation ... */
+}
+```
+
+```{note}
+The `requires requires` above is valid. The first `requires` is saying that this template is performing checks, and the second `requires` is the special parameter list `requires` clause that lists out what operations `T1`, `T2`, and `TR` must support.
+```
+
+If a concept_TEMPLATE only checks a single type, it's possible to use it just by substituting its name in place of the `typename` / `class` for the template parameter that requires it (as opposed to using `requires` shown above).
+
+```c++
+// concept
+template <typename T>
+concept SingleTypeConcept = requires(T a, T b) {
+            { a + b } -> std::same_as<T>;
+            { a * b } -> std::same_as<T>;
+        };
+
+// usage of concept
+template <SingleTypeConcept X>  // this line is updated -- "typename T" replaced with "SingleTypeConcept T"
+X add_and_multiply(X &var1, X &var2) {
+    X x { var1 + var 2};
+    return x * var2;
+}
+```
+
+For function templates specifically, rather than parameterizing using `template`, a common shorthand is to use `auto` for the return type / parameter types being templated. The compiler automatically infers the correct types based on usage. Each `auto` parameter / return type can have a concept_TEMPLATE applied to it by placing that concept_TEMPLATE's name just before `auto`. For example, the usage of `SingleTypeConcept` in the example above can be rewritten as follows.
+
+```c++
+// usage of concept
+SingleTypeConcept auto add_and_multiply(
+    SingleTypeConcept auto &var1,
+    SingleTypeConcept auto &var2
+) {
+    auto x { var1 + var 2};
+    return x * var2;
+}
+```
+
+````{note}
+Be careful when making use of concept_TEMPLATEs like this. When `const auto` is involved, it'll break compilation. 
+
+```c++
+std::integral const auto f() {
+    return 0;
+}
+```
+
+The above function won't compile because there's something before the `const`. When a `const` is the left-most thing, it can't have anything further left of it. You need to move the `const` after `auto` (`const auto` is the exact same as `auto const`, having `const` as left-most thing is just a syntactical convenience thing).
+
+```c++
+std::integral auto const f() {
+    return 0;
+}
+```
+````
+
+```{note}
+Does this work with `decltype(auto)` as well?
+```
+
+```{seealso}
+Core Language/Templates/Type Deduction/Type Cloning Deduction_TOPIC (`decltype(auto)` description)
+```
+
+### Function Overloading
+
+`{bm} /(Core Language\/Concepts\/Function Overloading)_TOPIC/`
+
+```{prereq}
+Core Language/Functions/Overloading_TOPIC
+```
+
+Concept_TEMPLATEs can be used to overload based on type traits instead of actual types. In the example below, there are two overloads for the function `multiply()`. The overload that gets used depends on if the type supports the multiplication operator (*) or the addition operation (+).
+
+```c++
+// Use this multiply() if the type supports the * operator
+template<typename T>
+    requires requires(T a, T b) {
+        { a * b } -> std::same_as<T>;
+    }
+T multiply(T a, T b) {
+    return a * b;
+}
+
+
+// Use this multiply() if the type supports the + operator
+template<typename T>
+    requires requires(T a, T b) {
+        { a + b } -> std::same_as<T>;
+    }
+T multiply(T a, T b) {
+    T ret {a};
+    for (T i {0}; i < b; i++) {
+        ret = ret + a;
+    }
+    return ret;
+}
+```
+
+If the type supports both operators (such as `int`), the compiler will complain that it can't decide which overload to use. In such cases, you can add a constrained function overload for the type in question (regular function overload with the concrete type).
+
+```c++
+int multiply(int a, int b) {
+    return a * b;
+}
+```
+
+The compiler will always choose to use the overload with constrained types over the unconstrained ones.
+
+```{note}
+See [here](https://stackoverflow.com/a/63380360) for more information.
+```
+
+### Template Specialization
+
+`{bm} /(Core Language\/Concepts\/Template Specialization)_TOPIC/`
+
+```{prereq}
+Core Language/Templates/Specialization_TOPIC
+Core Language/Concepts/Function Overloading_TOPIC
+```
+
+Concept_TEMPLATEs can be used for template specializations similar to function overloading: A template specialization's template parameter can be set to a concept_TEMPLATE rather than an actual type. In the example below, a concept_TEMPLATE is used for a template specialization. The template specialization that gets used depends on if the type supports the multiplication operator (*) or the addition operation (+).
+
+```c++
+// Concepts to use
+template<typename T>
+concept AddableTypeConcept = requires(T a, T b) {
+            { a + b } -> std::same_as<T>;
+        };
+template<typename T>
+concept MultiplyableTypeConcept = requires(T a, T b) {
+            { a * b } -> std::same_as<T>;
+        };
+
+// The base template
+template<typename T>
+T multiply(T a, T b) {
+    return -1;
+}
+
+// The template specializations
+template<MultiplyableTypeConcept T>
+T multiply(T a, T b) {
+    return a * b;
+}
+
+template<AddableTypeConcept T>
+T multiply(T a, T b) {
+    T ret {a};
+    for (T i {0}; i < b; i++) {
+        ret = ret + a;
+    }
+    return ret;
+}
+```
+
+If the type supports both operators (such as `int`), the compiler will complain that it can't decide which template specialization to use. 
+
+````{note}
+Recall that, with concept_TEMPLATE function overloading, you can add a constrained function overload (overload using concrete types in the parameters) and the compiler will always default to that if there's ambiguity in which unconstrained function overload it should use. The same doesn't seem to apply with template specializations. I added the following template specialization and the compiler still complained about ambiguity when I did `multiply(3, 5)`:
+
+```c++
+template<>
+int multiply<int>(int a, int b) {
+    return a * b;
+}
+```
+````
+
+### Common Concepts
+
+`{bm} /(Core Language\/Concepts\/Common Concepts)_TOPIC/`
+
+The following subsections detail some common concept_TEMPLATEs that are either useful or used heavily within the C++ standard library.
+
+#### Ordered Type
+
+`{bm} /(Core Language\/Concepts\/Common Concepts\/Ordered Type)_TOPIC/`
+
+An ordered type is a type that can be compared typically overrides the 6 common relational operators: equals, not equals, less than, less than or equals, greater than, and greater than or equals to. The example concept_TEMPLATE below provides a concept_TEMPLATE that ensures the type provides all of these relational operators.
+
+```c++
+template<typename T>
+concept Ordering =
+    requires(T a, T b) {
+        { a == b } -> std::convertible_to<bool>;
+        { a != b } -> std::convertible_to<bool>;
+        { a <= b } -> std::convertible_to<bool>;
+        { a < b } -> std::convertible_to<bool>;
+        { a > b } -> std::convertible_to<bool>;
+        { a >= b } -> std::convertible_to<bool>;
+    };
+```
+
+```{note}
+You typically won't have to write this out by hand. The C++ standard library has the concept_TEMPLATEs `std::three_way_comparable` and `std::three_way_comparable_with`. The former makes sure that a type allows relational comparisons against the same type (same as the example above) while the former allows relational comparisons against different types (e.g. comparing an `int` against a `long`).
+
+Both concept_TEMPLATEs are related to the spaceship operator.
+```
+
+```{seealso}
+Core Language/Classes/Three-way Comparison Overloading_TOPIC (Spaceship operator)
+```
+
+#### Semi-regular Type
+
+`{bm} /(Core Language\/Concepts\/Common Concepts\/Semi-regular Type)_TOPIC/`
+
+```{prereq}
+Core Language/Classes/Construction_TOPIC
+Core Language/Classes/Copying_TOPIC
+Core Language/Classes/Moving_TOPIC
+Core Language/Templates/Specialization_TOPIC
+```
+
+A semi-regular type is a common idea in C++, commonly referred to in documentation on C++ and the C++ standard library. A type is considered semi-regular type if it has a ...
+
+ * default constructor
+ * copy constructor
+ * move constructor
+ * copy assignment overload
+ * move assignment overload
+ * destructor
+ * template specialization / overload for `std::swap(T, T)` (is a swappable type)
+
+```c++
+template<typename T>
+concept SemiRegular =
+    std::is_default_constructible<T>::value &&
+    std::is_copy_constructible<T>::value &&
+    std::is_copy_assignable<T>::value &&
+    std::is_move_constructible<T>::value &&
+    std::is_move_assignable<T>::value &&
+    std::is_destructible<T>::value &&
+    std::is_swappable<T>::value;
+```
+
+```{note}
+This type is built out using functionality provided by the type traits library. Even then, you don't need to use this as the C++ standard library already provides the `std::semiregular` concept_TEMPLATE.
+```
+
+#### Regular Type
+
+`{bm} /(Core Language\/Concepts\/Common Concepts\/Regular Type)_TOPIC/`
+
+```{prereq}
+Core Language/Concepts/Common Concepts/Semi-regular Type_TOPIC
+```
+
+A regular type is a common idea in C++, commonly referred to in documentation on C++ and the C++ standard library. A type is considered regular type if it supports all the traits of a semi-regular type and it supports both the equality operator (==) and inequality operator (!=).
+
+```c++
+template<typename T>
+concept Regular =
+    SemiRegular<T> &&
+    requires(T a, T b) {
+        { a == b } -> std::convertible_to<bool>;
+        { a != b } -> std::convertible_to<bool>;
+    };
+```
+
+```{note}
+You don't need to use this as the C++ standard library already provides the `std::regular` concept_TEMPLATE.
+```
+
+```{note}
+The book and online documentation claims that regular types should behave similarly built-in types like `int`.
+```
+
+#### Union Type
+
+`{bm} /(Core Language\/Concepts\/Common Concepts\/Union Type)_TOPIC/`
+
+One of the most basic use-cases for concept_TEMPLATEs is to require that a type be one of a set of known types (e.g. require that the type be either `short`, `int`, or `long`). In the example below, a clever use of templates is used to test if the two types are equal, then a concept_TEMPLATE makes use of those templates to see if a type is contained in some larger set.
+
+```c++
+// templates
+template<typename T, typename U>
+struct is_same {
+    static constexpr bool value = false; 
+};
+
+template<typename T>
+struct is_same<T, T> { 
+   static constexpr bool value = true; 
+};
+
+
+// concept for a function whose first parameter's type is an integral type
+template<typename T>
+concept integral_check = is_same<T, short>::value || is_same<T, int>::value || is_same<T, long>::value;
+
+
+// usage
+template<integral_check T>
+long square(T num) {
+    return num * num;
+}
+
+int main() {
+    std::cout << square(2) << std::endl;
+    std::cout << square(2L) << std::endl;
+    return 0;
+}
+```
+
+```{note}
+In most cases, you shouldn't have to write out templates like `is_same<>` yourself. The C++ standard library provides the `type_traits` header library which contains `std::is_same<>` and several other type checks. The C++ standard library also provides a set of pre-built concept_TEMPLATEs that make use of check that a type has specific type traits. For example, `std::is_same<>` is exposed as the concept_TEMPLATE `std::same_as<>`.
+
+Likewise, the C++ standard library provides a more elaborate version of `integral_check<>` as `std::integral<>`.
+```
+
+
+#### Callable Parameter Count
+
+`{bm} /(Core Language\/Concepts\/Common Concepts\/Callable Parameter Counts)_TOPIC/`
+
+```{prereq}
+Core Language/Templates/Callable Type Unpacking_TOPIC
+Core Language/Templates/Variadic_TOPIC
+Core Language/Compile-time Evaluation_TOPIC
+```
+
+To test a callable's parameter count within a concept_TEMPLATE, templates can be used to extract the parameter count. In the example below, the concept_TEMPLATE checks that a callable has exactly 1 parameter.
+
+```c++
+// template(s) to extract parameter count
+template <typename F>
+struct argCnt;
+
+template <typename R, typename ... As>
+struct argCnt<R(*)(As...)> { static constexpr size_t cnt = sizeof...(As); };  // needed for std::integral<>
+
+template <typename R, typename ... As>
+struct argCnt<R(As...)> { static constexpr size_t cnt = sizeof...(As); };  // needed for std::integral<>
+
+
+// concept for a callable that has exactly 1 parameter
+template<typename Fn>
+concept MySpecialFunction = argCnt<Fn>::cnt == 1;
+
+
+// usage
+template<MySpecialFunction Fn>
+decltype(auto) call(Fn fn) {
+    return fn(2);
+}
+
+int square_int(int num) {
+    return num * num;
+}
+
+long square_long(long num) {
+    return num * num;
+}
+
+int main() {
+    std::cout << call(square_int) << std::endl;
+    std::cout << call(square_long) << std::endl;
+    return 0;
+}
+```
+
+```{note}
+This section comes from my question on [stackoverflow](https://stackoverflow.com/q/73198589/1196226). Everything was tested on g++12.1 using C++20 standard. Newer versions of C++ or the g++ compiler might have better stuff to handle these types of requirements.
+```
+
+#### Callable Parameter Types
+
+`{bm} /(Core Language\/Concepts\/Common Concepts\/Callable Parameter Types)_TOPIC/`
+
+```{prereq}
+Core Language/Templates/Callable Type Unpacking_TOPIC
+Core Language/Templates/Variadic_TOPIC
+Core Language/Concepts/Common Concepts/Union Type_TOPIC
+```
+
+To test a callable's parameter type within a concept_TEMPLATE, templates can be used to extract the parameter type. In the example below, the concept_TEMPLATE checks that a callable's first parameter has a type conforming to the concept_TEMPLATE `std::integral`.
+
+```c++
+// template(s) to extract parameter types
+template <std::size_t N, typename T0, typename ... Ts>
+struct typeN { using type = typename typeN<N-1U, Ts...>::type; };
+
+template <typename T0, typename ... Ts>
+struct typeN<0U, T0, Ts...> { using type = T0; };
+
+template <std::size_t, typename F>
+struct argN;
+
+template <std::size_t N, typename R, typename ... As>
+struct argN<N, R(*)(As...)> { using type = typename typeN<N, As...>::type; };  // needed for std::integral<>
+
+template <std::size_t N, typename R, typename ... As>
+struct argN<N, R(As...)>  { using type = typename typeN<N, As...>::type; };  // needed for std::is_integeral_v<>
+
+
+// concept for a function whose first parameter's type is an integral type
+template<typename Fn>
+concept MySpecialFunction = std::integral<typename argN<0U, Fn>::type>;
+
+
+// usage
+template<MySpecialFunction Fn>
+decltype(auto) call(Fn fn) {
+    return fn(2);
+}
+
+int square_int(int num) {
+    return num * num;
+}
+
+long square_long(long num) {
+    return num * num;
+}
+
+int main() {
+    std::cout << call(square_int) << std::endl;
+    std::cout << call(square_long) << std::endl;
+    return 0;
+}
+
+
+// type trait checks using static_assert() -- not necessary
+static_assert( std::is_integral_v<typename argN<0U, decltype(square_int)>::type> );
+static_assert( std::is_integral_v<typename argN<0U, decltype(square_long)>::type> );
+```
+
+```{note}
+This section comes from my question on [stackoverflow](https://stackoverflow.com/q/73198589/1196226). Everything was tested on g++12.1 using C++20 standard. Newer versions of C++ or the g++ compiler might have better stuff to handle these types of requirements.
+```
+
+```{note}
+Instead of using the templates show above, one other solution is to use [Boost's type traits library](https://www.boost.org/doc/libs/1_79_0/libs/type_traits/doc/html/boost_typetraits/reference/function_traits.html): `function_traits<my_func>::argN_type`
+```
+
+````{note}
+Cleverly using templates as shown above is the most robust way to check a parameter's type. But, if your requirements aren't overly complex, there may be simpler ways.
+
+**SCENARIO 1: Testing for a known concrete types**
+
+In this scenario, the requirement is that a callable's parameter type be a concrete type that's known beforehand (e.g. `int`). The concept_TEMPLATE for the callable itself can simply use a parameter list `requires` clause.
+
+```c++
+// concept for a function that takes in a single argument of type int
+template <typename Fn>
+concept MySpecialFunction = requires(Fn f, int t) {
+            { f(t) } -> std::same_as<int>;
+        };
+```
+
+**SCENARIO 2: Testing for a set of known concrete types**
+
+In this scenario, the requirement is that a callable's parameter be one of a set of concrete types that's known beforehand (e.g. `int` or `long`). The concept_TEMPLATE for the callable can be exploded out into several sub-concept_TEMPLATEs: Each sub-concept_TEMPLATE checks that the callable's parameter type match a specific concrete type, then those sub-concept_TEMPLATEs combine to form the full concept_TEMPLATE.
+
+```c++
+// concept that combines the two sub-concepts: checks for a function has a single parameter of type int or long
+template<typename Fn>
+concept MySpecialFunction1 = requires(Fn f, int i) {   // sub-concept1: func that has a single parameter of type int
+    { f(i) } -> std::same_as<decltype(i)>;
+};
+
+template<typename Fn>
+concept MySpecialFunction2 = requires(Fn f, long l) {  // sub-concept2: func that has a single parameter of type long
+    { f(l) } -> std::same_as<decltype(l)>;
+};
+
+template<typename Fn>
+concept MySpecialFunction = MySpecialFunction1<Fn> || MySpecialFunction2<Fn>;  // final concept: func that has a single parameter of type int or long
+
+
+// usage
+template<MySpecialFunction Fn>
+decltype(auto) call(Fn f) {
+    return f(2);
+}
+
+int square_int(int num) {
+    return num * num;
+}
+
+long square_long(long num) {
+    return num * num;
+}
+
+int main() {
+    std::cout << call(square_int) << std::endl;
+    std::cout << call(square_long) << std::endl;
+    return 0;
+}
+```
+
+The problem with exploding out to sub-concept_TEMPLATEs is that the number of sub-concept_TEMPLATEs can get very large. For example, if the callable should have 4 parameters and each of those parameters should be of type `int`, `long`, `short`, or `void*`, that's 256 different sub-concept_TEMPLATEs to list out.
+
+```c++
+// sub-concepts for function that takes in 4 params:
+// param1: int|long|short|void*
+// param2: int|long|short|void*
+// param2: int|long|short|void*
+// param3: int|long|short|void*
+//
+// 4^4=256 sub-concepts required, not really feasible to code something like this out
+template<typename Fn>
+concept MySpecialFunction1 = requires(Fn f, int p1, int p2, int p3, int p4) {
+    { f(p1, p2, p3, p4) } -> std::same_as<long>;
+};
+
+template<typename Fn>
+concept MySpecialFunction2 = requires(Fn f, int p1, int p2, int p3, long p4) {
+    { f(p1, p2, p3, p4) } -> std::same_as<long>;
+};
+
+template<typename Fn>
+concept MySpecialFunction3 = requires(Fn f, int p1, int p2, int p3, short p4) {
+    { f(p1, p2, p3, p4) } -> std::same_as<long>;
+};
+
+template<typename Fn>
+concept MySpecialFunction4 = requires(Fn f, int p1, int p2, int p3, void* p4) {
+    { f(p1, p2, p3, p4) } -> std::same_as<long>;
+};
+
+template<typename Fn>
+concept MySpecialFunction5 = requires(Fn f, int p1, int p2, long p3, int p4) {
+    { f(p1, p2, p3, p4) } -> std::same_as<long>;
+};
+
+template<typename Fn>
+concept MySpecialFunction6 = requires(Fn f, int p1, int p2, long p3, long p4) {
+    { f(p1, p2, p3, p4) } -> std::same_as<long>;
+};
+
+...
+
+template<typename Fn>
+concept MySpecialFunction256 = requires(Fn f, void* p1, void* p2, void* p3, void* p4) {
+    { f(p1, p2, p3, p4) } -> std::same_as<long>;
+};
+
+// combine sub-concepts together into final concept
+template<typename Fn>
+concept MySpecialFunction =
+    MySpecialFunction1<Fn>
+    || MySpecialFunction2<Fn>
+    || MySpecialFunction3<Fn>
+    || MySpecialFunction4<Fn>
+    || MySpecialFunction5<Fn>
+    || MySpecialFunction6<Fn>
+    || ...
+    || MySpecialFunction256<Fn>;
+
+
+
+// usage
+template<typename Fn>
+    requires MySpecialFunction<Fn>
+decltype(auto) call(Fn fn) {
+    return fn(1, 2, 3, 4);
+}
+
+long multiply(int num1, long num2, short num3, long num4) {
+    return num1 * num2 * num3 * num4;
+}
+
+int main() {
+    std::cout << call(multiply) << std::endl;
+    return 0;
+}
+```
+
+One potential workaround to the sub-concept_TEMPLATE explosion problem shown in the example above is to use a parameter list `requires` clause: Each of the 4 parameter types gets fed into the top-level concept_TEMPLATE as a template parameter and requirements are individually tested on each of those template parameters.
+
+```c++
+// function that takes in 4 params:
+// param1: int|long|short|void*
+// param2: int|long|short|void*
+// param2: int|long|short|void*
+// param3: int|long|short|void*
+template<typename Fn, typename P1, typename P2, typename P3, typename P4>
+concept MySpecialFunction =
+    (std::same_as<P1, int> || std::same_as<P1, long> || std::same_as<P1, short> || std::same_as<P1, void*>)
+    && (std::same_as<P2, int> || std::same_as<P2, long> || std::same_as<P2, short> || std::same_as<P2, void*>)
+    && (std::same_as<P3, int> || std::same_as<P3, long> || std::same_as<P3, short> || std::same_as<P3, void*>)
+    && (std::same_as<P4, int> || std::same_as<P4, long> || std::same_as<P4, short> || std::same_as<P4, void*>)
+    && requires(Fn f, P1 p1, P2 p2, P3 p3, P4 p4) {
+        { f(p1, p2, p3, p4) } -> std::same_as<long>;
+    };
+```
+
+Doing this removes the sub-concept_TEMPLATE explosion problem, but it introduces a new problem of the compiler losing the ability to infer template parameters from usage. In the example below, the concept_TEMPLATE for the callable is concise, but usages of `call()` now need to explicitly specify what each template argument is because the C++ compiler is no longer able to infer them on its own.
+
+```c++
+// function that takes in 4 params:
+// param1: int|long|short|void*
+// param2: int|long|short|void*
+// param2: int|long|short|void*
+// param3: int|long|short|void*
+template<typename Fn, typename P1, typename P2, typename P3, typename P4>
+concept MySpecialFunction =
+    (std::same_as<P1, int> || std::same_as<P1, long> || std::same_as<P1, short> || std::same_as<P1, void*>)
+    && (std::same_as<P2, int> || std::same_as<P2, long> || std::same_as<P2, short> || std::same_as<P2, void*>)
+    && (std::same_as<P3, int> || std::same_as<P3, long> || std::same_as<P3, short> || std::same_as<P3, void*>)
+    && (std::same_as<P4, int> || std::same_as<P4, long> || std::same_as<P4, short> || std::same_as<P4, void*>)
+    && requires(Fn f, P1 p1, P2 p2, P3 p3, P4 p4) {
+        { f(p1, p2, p3, p4) } -> std::same_as<long>;
+    };
+
+
+// usage
+template<typename Fn, typename P1, typename P2, typename P3, typename P4>
+    requires MySpecialFunction<Fn, P1, P2, P3, P4>
+decltype(auto) call(Fn fn) {
+    return fn(1, 2, 3, 4);
+}
+
+long multiply(int num1, long num2, short num3, long num4) {
+    return num1 * num2 * num3 * num4;
+}
+
+int main() {
+    // std::cout << call(multiply) << std::endl; // <--- WON'T COMPILE because template parameters can't be inferred by the compiler
+    std::cout << call<decltype(multiply), int, long, short, long>(multiply) << std::endl; // <--- WILL COMPILE because template parameters explicitly listed,
+    return 0;
+}
+```
+````
+
+#### Callable Return Types
+
+`{bm} /(Core Language\/Concepts\/Common Concepts\/Callable Return Types)_TOPIC/`
+
+```{prereq}
+Core Language/Templates/Variadic_TOPIC
+Core Language/Concepts/Common Concepts/Callable Parameter Types_TOPIC
+```
+
+To test a callable's return type within a concept_TEMPLATE, templates can be used to extract the type. In the example below, the concept_TEMPLATE checks that a callable has a return type of integral.
+
+```c++
+// template(s) to extract return types
+template <typename F>
+struct returnType;
+
+template <typename R, typename ... As>
+struct returnType<R(*)(As...)> { using type = R; };
+
+template <typename R, typename ... As>
+struct returnType<R(As...)> { using type = R; };
+
+
+// concept for a function whose return type is an integral type
+template<typename Fn>
+concept MySpecialFunction =
+    std::integral<typename returnType<Fn>::type>;
+
+
+// usage
+template<MySpecialFunction Fn>
+decltype(auto) call(Fn fn) {
+    return fn(2);
+}
+
+int square_int(int num) {
+    return num * num;
+}
+
+long square_long(long num) {
+    return num * num;
+}
+
+int main() {
+    std::cout << call(square_int) << std::endl;
+    std::cout << call(square_long) << std::endl;
+    return 0;
+}
+```
+
+```{note}
+This section comes from my question on [stackoverflow](https://stackoverflow.com/q/73198589/1196226). Everything was tested on g++12.1 using C++20 standard. Newer versions of C++ or the g++ compiler might have better stuff to handle these types of requirements.
+```
+
+```{note}
+Instead of using the templates show above, one other solution is to use [Boost's type traits library](https://www.boost.org/doc/libs/1_79_0/libs/type_traits/doc/html/boost_typetraits/reference/function_traits.html): `function_traits<my_func>::result_type`
+
+Somewhat related as well from the C++ standard library: `std::result_of` / `std::invoke_result`.
+```
+
+````{note}
+Cleverly using templates as shown above is the most robust way to check a callable's return type. But, if your requirements aren't overly complex, it may be feasible to use simpler checks such as those discussed in the parameter types section before this section. For example, if the scenario allows for it, a concept_TEMPLATE check can be reduced to just a set of parameter list `requires` clauses being logically or'd together.
+
+```c++
+// concept for a function whose return type is an integral type
+template<typename Fn>
+concept MySpecialFunction =
+    requires(Fn f, int i) {
+        { f(i) } -> std::same_as<int>;
+    }
+    || requires(Fn f, long l) {
+        { f(l) } -> std::same_as<long>;
+    };
+
+
+// usage
+template<MySpecialFunction Fn>
+decltype(auto) call(Fn fn) {
+    return fn(2);
+}
+
+int square_int(int num) {
+    return num * num;
+}
+
+long square_long(long num) {
+    return num * num;
+}
+
+int main() {
+    std::cout << call(square_int) << std::endl;
+    std::cout << call(square_long) << std::endl;
     return 0;
 }
 ```
@@ -10480,6 +10566,32 @@ std::vector<int> v {3, 2, 3, 4, 5, 6, 8, 7, 9};
 auto pos { std::find(v.begin(), v.end(), 5) }; // find first instance of the integer 5
 ```
 
+Algorithms are commonly exposed as callable units. Common algorithm functions are listed below. More elaborate functions and their usages are covered in the subsections below.
+
+| Function          | Description                                       |
+|-------------------|---------------------------------------------------|
+| `std::for_each()` | Walks over each element of a range                |
+| `std::transform()`| Transforms each element of a range                |
+| `std::count()`    | Counts the number of times some element occurs    |
+| `std::fill()`     | Fills range with a specific element               | 
+| `std::copy()`     | Copies each element of a range into another range | 
+| `std::move()`     | Moves each element of a range into another range  |
+| `std::replace()`  | Replaces elements within a range                  |
+| `std::remove()`   | Removes elements within a range                   |
+| `std::reverse()`  | Reverses the order of a range's elements          |
+| `std::find()`     | Finds an element in a range                       |
+| `std::search()`   | Finds a sub-range within a range                  |
+| `std::equal()`    | Checks if two ranges are equal                    |
+| `std::sort()`     | Sorts a range                                     |
+
+```{note}
+Why use some of the algorithms here instead of those that come in the ranges library? The ranges library in C++20 doesn't have parallel algorithms (future versions of C++ may have this) and is missing some of these algorithms.
+```
+
+### Parallelism
+
+`{bm} /(Library Functions\/Algorithms\/Parallelism)_TOPIC/`
+
 If the algorithm supports it, an execution policy may be specified via the first parameter. This policy requests a level of parallelism for the algorithm's execution.
 
  * `std::execution::seq` - single-threaded.
@@ -10492,30 +10604,31 @@ std::vector<int> v {3, 2, 3, 4, 5, 6, 8, 7, 9};
 auto pos { std::find(std::execution::par_unseq, v.begin(), v.end(), 5) }; // find first instance of the integer 5, requested multi-threaded + vectorized
 ```
 
-Algorithm function overloads requiring an execution policy may require a more elaborate iterator types vs those that don't require an execution policy. For example, `std::find()` requires...
+Function overloads needing an execution policy may require more elaborate iterator types (e.g. `std::find()`'s execution policy overloads require forward iterators instead of input iterators). This is has to do with how multi-threaded / vectorized variants of an algorithm access data (e.g. typically need to hop around the data).
 
- * forward iterators for the function overload taking an execution policy.
- * input iterators for the function overload not taking an execution policy.
+### Categories
 
-The reason for this discrepancy has to do with how multi-threaded / vectorized variants of an algorithm access data (e.g. typically need to hop around the data).
+`{bm} /(Library Functions\/Algorithms\/Categories)_TOPIC/`
 
-The subsections below list out common algorithm functions.
+The subsections below list out various algorithm functions, their overloads, and usage examples. Different algorithm functions / overloads of the same function may use different type traits to perform the same task. For example, ...
 
-```{note}
-In the subsections below, the function overloads without execution policy are the ones listed. This is because not all functions provide execution policy overloads.
-
-The required iterator types aren't listed either because they aren't consistent between function overloads. Almost all overloads will work properly on `std::vector`.
-```
+* some functions will test for equality using == while others will require a `std::equal_to<>()` overload.
+* some functions will compare using < while others will require a `std::less<>()` overload.
+* some overloads of the same function will move elements using `std::swap()` while others use assignment.
 
 ```{note}
-Why use some of the algorithms here instead of those that come in the ranges library? The ranges library in C++20 doesn't have parallel algorithms (future versions of C++ may have this) and is missing some of these algorithms.
+I think the best thing you can do to avoid these type trait requirement issues is to maybe just ensure the type is "regular" / "semi-regular". Hopefully that'll make things just work with most algorithm functions.
 ```
 
-### Scan
+```{seealso}
+Core Language/Concepts/Common Concepts/Regular Type_TOPIC (Refresher)
+```
 
-`{bm} /(Library Functions\/Algorithms\/Scan)_TOPIC/`
+#### Iterate / Count
 
-These algorithms scan over elements to do something non-destructive.
+`{bm} /(Library Functions\/Algorithms\/Categories\/Iterate \/ Count)_TOPIC/`
+
+These algorithms iterate over elements of a range to do something non-destructive.
 
 | Function                     | Description                                                |
 |------------------------------|------------------------------------------------------------|
@@ -10526,11 +10639,6 @@ These algorithms scan over elements to do something non-destructive.
 | `std::all_of(it1, it2, p)`   | Check that all elements in `it` pass `p(*it) == true`      |
 | `std::none_of(it1, it2, p)`  | Check that all elements in `it` pass `p(*it) != true`      |
 | `std::any_of(it1, it2, p)`   | Check at least one element in `it` passes `p(*it) == true` |
-
-```{seealso}
-Library Functions/Algorithms/Parallel Primitives (`std::transform()` is similar to `std::for_each`)
-Library Functions/Algorithms/Parallel Primitives (For  inclusive scan / exclusive scan algorithms)
-```
 
 ```c++
 std::vector<int> v {0,1,2,3,4,5};
@@ -10547,9 +10655,9 @@ bool t2 { std::any_of(v.begin(), v.end(), [](auto& v) { return v % 2 == 0; }) };
 bool t3 { std::none_of(v.begin(), v.end(), [](auto& v) { return v % 2 == 0; }) };  // false
 ```
 
-### Fill
+#### Fill / Generate
 
-`{bm} /(Library Functions\/Algorithms\/Fill)_TOPIC/`
+`{bm} /(Library Functions\/Algorithms\/Categories\/Fill \/ Generate)_TOPIC/`
 
 ```{prereq}
 Library Functions/Iterators/Adapters/Insert_TOPIC
@@ -10586,9 +10694,9 @@ std::iota(v5.begin(), v5.end(), 150);  // v4 becomes {150,151,152,153}
 // simply calls push_back() on the underlying container.
 ```
 
-### Copy
+#### Copy / Move / Replace
 
-`{bm} /(Library Functions\/Algorithms\/Copy)_TOPIC/`
+`{bm} /(Library Functions\/Algorithms\/Categories\/Copy \/ Move \/ Replace)_TOPIC/`
 
 ```{prereq}
 Library Functions/Iterators/Adapters/Insert_TOPIC
@@ -10623,12 +10731,45 @@ std::copy_backward(v1.begin(), v1.end(), v5.end());  // v5 becomes {0,1,2,3,4,5}
 // simply calls push_back() on the underlying container.
 ```
 
-### Replace
+These functions move elements between ranges.
 
-`{bm} /(Library Functions\/Algorithms\/Replace)_TOPIC/`
+```{seealso}
+Core Language/Classes/Moving_TOPIC
+```
 
-```{prereq}
-Library Functions/Iterators/Adapters/Insert_TOPIC
+| Function                               | Description                                            |
+|----------------------------------------|--------------------------------------------------------|
+| `std::move(itA1, itA2, itB1)`          | Move `A` to `B` using move semantics                   |
+| `std::move_backward(itA1, itA2, itB2)` | Move `A` to `B` using move semantics (last to first)   |
+| `std::swap_ranges(itA1, itA2, itB1)`   | Swap between `A` and `B` using `std::swap(*itA, *itB)` |
+
+```c++
+std::vector<int> v1 {1,3,3,5};
+std::vector<int> v2 {};
+std::move(v1.begin(), v1.end(), std::back_insert_iterator { v2 });  // v2 becomes {1,3,3,5}
+
+std::vector<int> v3 {1,3,3,5};
+std::vector<int> v4 {};
+std::move(v3.begin(), v3.end(), v4.begin());  // v4 becomes {1,3,3,5}
+
+std::vector<int> v5 {1,3,3,5};
+std::vector<int> v6 {0,0,0,0};
+std::move_backward(v5.begin(), v5.end(), v6.end());  // v6 becomes {1,3,3,5}
+
+std::vector<int> v7 {1,3,3,5};
+std::vector<int> v8 {9,9,9,9};
+std::swap_ranges(v7.begin(), v7.end(), v8.begin());  // v7 becomes {9,9,9,9} and v8 becomes {1,3,3,5}
+
+std::vector<int> v9 {1,3,3,5};
+std::swap_ranges(v9.begin() + 2, v9.end(), v9.begin());  // v9 becomes {3,5,1,3}
+
+// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`
+// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that
+// simply calls push_back() on the underlying container.
+```
+
+```{note}
+If you're swapping within the same range via `std::swap_ranges()`, the positions being swapped can't overlap. If they do, it's undefined behaviour.
 ```
 
 These functions replace elements within a range.
@@ -10660,12 +10801,16 @@ std::replace_copy_if(v1.begin(), v1.end(), std::back_insert_iterator { v3 },  //
 // simply calls push_back() on the underlying container.
 ```
 
-### Delete
+#### Delete / Unique
 
-`{bm} /(Library Functions\/Algorithms\/Delete)_TOPIC/`
+`{bm} /(Library Functions\/Algorithms\/Categories\/Delete \/ Unique)_TOPIC/`
 
 ```{prereq}
 Library Functions/Iterators/Adapters/Insert_TOPIC
+```
+
+```{note}
+Are these using `std::swap()` or `std::move()` or assignment (=)?
 ```
 
 These functions remove elements from a range.
@@ -10706,7 +10851,7 @@ std::remove_copy_if(v4.begin(), v4.end(), std::back_insert_iterator { v4_removed
 C++20 offers a new function called `std::erase()` / `std::erase_if()` which combines `std::remove()` / `std::remove_if()` with calling the container's `erase()` function, ensuring that container is properly resized.
 ```
 
-These functions replace multiple adjacent occurrences of an element with a single occurrence (collapse adjacent duplicates), which is essentially just another form of removing elements.
+These functions replace multiple adjacent occurrences of an element within a range with a single occurrence (collapse adjacent duplicates), which is essentially just another form of removing elements.
 
 | Function                                 | Description                                                                            |
 |------------------------------------------|----------------------------------------------------------------------------------------|
@@ -10742,242 +10887,750 @@ std::unique_copy(v4.begin(), v4.end(), std::back_insert_iterator { v4_unique },
 // simply calls push_back() on the underlying container.
 ```
 
-### Move
+#### Reverse / Shift / Rotate
 
-`{bm} /(Library Functions\/Algorithms\/Move)_TOPIC/`
+`{bm} /(Library Functions\/Algorithms\/Categories\/Reverse \/ Shift \/ Rotate)_TOPIC/`
 
-| Function                               | Description                                            |
-|----------------------------------------|--------------------------------------------------------|
-| `std::move(itA1, itA2, itB1)`          | Move `A` to `B` using move semantics                   |
-| `std::move_backward(itA1, itA2, itB2)` | Move `A` to `B` using move semantics (last to first)   |
-| `std::swap_ranges(itA1, itA2, itB1)`   | Swap between `A` and `B` using `std::swap(*itA, *itB)` |
+```{prereq}
+Library Functions/Iterators/Adapters/Insert_TOPIC
+```
 
-TODO: swap_ranges() must not overlap
+```{note}
+Are these using `std::swap()` or `std::move()` or assignment (=)?
+```
 
-### Reverse
+These functions reverse a range's order.
 
-`{bm} /(Library Functions\/Algorithms\/Reverse)_TOPIC/`
+| Function                              | Description                   |
+|---------------------------------------|-------------------------------|
+| `std::reverse(it1, it2)`              | Reverse                       |
+| `std::reverse_copy(itA1, itA2, itB1)` | Reverse `A` and copy into `B` |
 
-| Function | Description |
-|----------|-------------|
-| `std::reverse(it1, it2)` | Reverse |
-| `std::reverse_copy(itA1, itB1)` | Reverse `A` and copy into `B` |
+```c++
+std::vector<int> v1 {1,3,3,5};
+std::reverse(v1.begin(), v1.end());  // v1 becomes {5,3,3,1}
 
-### Shift / Rotate
+std::vector<int> v2 {1,3,3,5};
+std::vector<int> v3 {0,0,0,0};
+std::reverse_copy(v2.begin(), v2.end(), v3.begin());  // v3 becomes {5,3,3,1}
 
-`{bm} /(Library Functions\/Algorithms\/Shift \/ Rotate)_TOPIC/`
+std::vector<int> v4 {1,3,3,5};
+std::vector<int> v5 {};
+std::reverse_copy(v4.begin(), v4.end(), std::back_insert_iterator { v5 });  // v5 becomes {5,3,3,1}
 
-| Function | Description |
-|----------|-------------|
-| `std::rotate(it1, it_mid, it2)` | Rotate such that `mid`'s position becomes the new first element |
+// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`
+// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that
+// simply calls push_back() on the underlying container.
+```
+
+These functions rotate a range.
+
+| Function                                      | Description                                                              |
+|-----------------------------------------------|--------------------------------------------------------------------------|
+| `std::rotate(it1, it_mid, it2)`               | Rotate such that `mid`'s position becomes the new first element          |
 | `std::rotate_copy(itA1, itA_mid, itA2, itB1)` | Copy into `B` rotated `A` that has `mid`'s position as its first element |
 
-TODO: add shift() variants, possibly others
+```c++
+std::vector<int> v1 {1,3,3,5};
+std::rotate(v1.begin(), v1.begin() + 1, v1.end());  // v1 becomes {3,3,5,1}
 
-### Random
+std::vector<int> v2 {1,3,3,5};
+std::vector<int> v3 {0,0,0,0};
+std::rotate_copy(v2.begin(), v2.begin() + 1, v2.end(), v3.begin());  // v3 becomes {3,3,5,1}
 
-`{bm} /(Library Functions\/Algorithms\/Random)_TOPIC/`
+std::vector<int> v4 {1,3,3,5};
+std::vector<int> v5 {};
+std::rotate_copy(v4.begin(), v4.begin() + 1, v4.end(), std::back_insert_iterator { v5 });  // v5 becomes {3,3,5,1}
 
-| Function | Description |
-|----------|-------------|
-| `std::rotate(it1, it_mid, it2)` | Rotate such that `mid`'s position becomes the new first element |
-| `std::rotate_copy(itA1, itA_mid, itA2, itB1)` | Copy into `B` rotated `A` that has `mid`'s position as its first element |
-| `std::shuffle(it1, it2, rng)` | Shuffle using the uniform random number generator `rng` |
+// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`
+// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that
+// simply calls push_back() on the underlying container.
+```
 
-TODO: add std::sample()
+These functions shift the elements within a range. Shifting an element simply shuffles around elements accordingly and returns a new ending / beginning iterator. It won't resize the underlying container to end at that new ending iterator's position. That's the user's responsibility.
 
-### Search
+| Function                        | Description        |
+|---------------------------------|--------------------|
+| `std::shift_left(it1, it2, n)`  | Shift left by `n`  |
+| `std::shift_right(it1, it2, n)` | Shift right by `n` |
 
-`{bm} /(Library Functions\/Algorithms\/Search)_TOPIC/`
+```c++
+std::vector<int> v1 {1,3,3,5};
+auto v1_new_end { std::shift_left(v1.begin(), v1.end(), 2) };
+v1.erase(v1_new_end, v1.end());  // v1 becomes {3,5}
 
-| Function | Description |
-|----------|-------------|
-| `std::find(it1, it2, v)`        | Find first `v` |
-| `std::find_if(it1, it2, p)`     | Find first where `p(*it) == true` |
-| `std::find_if_not(it1, it2, p)` | Find first where `p(*it) != true` |
-| `std::find_first_of(itA1, itA2, itB1, itB2, bp)` | Find `itB` within `itA`, using `bp(*itA, *itB)` to evaluate a match |
-| `std::mismatch(itA1, itA2, itB1, itB2)` | Find first where `*itA != *itB` |
-| `std::mismatch(itA1, itA2, itB1, itB2, bp)` | Find first where `bp(*itA, *itB) != true` |
-| `std::adjacent_find(it1, it2)`  | Find first where `*itA == *(itA+1)` (same element appears twice) |
-| `std::adjacent_find(it1, it2, bp)` | Find first where `bp(*itA, *(itA+1)) == true` |
-| `std::search(itA1, itA2, itB1, itB2)` | Search for `itB` within `itA` starting from the front, using `*itA == *itB` |
-| `std::search(itA1, itA2, itB1, itB2, bp)` | Search for `itB` within `itA` starting from the front, using `bp(*itA, *itB) == true` |
-| `std::find_end(itA1, itA2, itB1, itB2)` | Search for `itB` within `itA` starting at the end, using `*itA == *itB` |
-| `std::find_end(itA1, itA2, itB1, itB2, bp)` | Search for `itB` within `itA` starting at the end, using `bp(*itA, *itB) == true` |
-| `std::search_n(it1, it2)`  | Find first where same element occurs `n` times consecutively, using `*itA == *(itA+1)` |
-| `std::search_n(it1, it2, bp)` | Find first where same element occurs `n` times consecutively, using `bp(*itA, *(itA+1)) == true` |
+std::vector<int> v2 {1,3,3,5};
+auto v2_new_begin { std::shift_right(v2.begin(), v2.end(), 2) };
+v2.erase(v2_new_begin, v2.end());  // v2 becomes {1,3}
+```
 
-TODO: std::search() but with custom searchers
-TODO: link back to all_of / any_of / none_of
+#### Shuffle / Sample
 
-### Compare
+`{bm} /(Library Functions\/Algorithms\/Categories\/Shuffle \/ Sample)_TOPIC/`
 
-`{bm} /(Library Functions\/Algorithms\/Compare)_TOPIC/`
+```{prereq}
+Library Functions/Iterators/Adapters/Insert_TOPIC
+```
 
-| Function | Description |
-|----------|-------------|
-| `std::equals(itA1, itA2, itB1, itB2)` | Check if `itA` and `itB` are equal using `*itA == *itB` |
-| `std::equals(itA1, itA2, itB1, itB2, bp)` | Check if `itA` and `itB` are equal using `bp(*itA, *itB) == true` |
-| `std::lexicographical_compare(itA1, itA2, itB1, itB2)` | Check if `itA` is less than `itB` using `*itA < *itB` |
-| `std::lexicographical_compare(itA1, itA2, itB1, itB2, lt)` | Check if `itA` is less than `itB` using `lt(*itA, *itB) == true` |
+```{note}
+Are these using `std::swap()` or `std::move()` or assignment (=)?
+```
 
-TODO: add reference back to search for std::mismatch
+These functions shuffle / sample based on some random number generator.
 
-### Partition
+| Function                                | Description                                                                           |
+|-----------------------------------------|---------------------------------------------------------------------------------------|
+| `std::shuffle(it1, it2, rng)`           | Shuffle using the uniform random number generator `rng`                               |
+| `std::sample(itA1, itA2, itB1, n, rng)` | Sample `n` elements from `A` into `B` using the uniform random number generator `rng` |
 
-`{bm} /(Library Functions\/Algorithms\/Partition)_TOPIC/`
+```c++
+std::random_device rd {};
+std::mt19937 g { rd() };
 
-| Function | Description |
-|----------|-------------|
-| `std::partition(it1, it2, p)` | Split into two partitions based on if `p(*it)` is true or false |
-| `std::partition_copy(itA1, itA2, itB, p)` | Copy into `B`, splitting into two partitions based on if `p(*it)` is true or false |
-| `std::stable_partition(it1, it2, p)` | Split into two partitions based on if `p(*it)` is true or false, maintaining relative order |
-| `std::is_partitioned(it1, it2, p)` | Check if partitioned into two based on if `p(*it)` is true or false |
+std::vector<int> v1 {1,3,3,5};
+std::shuffle(v1.begin(), v1.end(), g);  // v1 ended up as {1,3,5,3} on one of the runs
 
-### Sort
+std::vector<int> v2 {1,3,3,5};
+std::vector<int> v3 {};
+std::sample(v2.begin(), v2.end(), std::back_insert_iterator { v3 }, 2, g);  // v3 ended up as {1,5} on one of the runs
 
-`{bm} /(Library Functions\/Algorithms\/Sort)_TOPIC/`
+std::vector<int> v4 {1,3,3,5};
+std::vector<int> v5 {9,9};
+std::sample(v4.begin(), v4.end(), v5.begin(), 2, g);  // v3 ended up as {1,3} on one of the runs
 
-| Function | Description |
-|----------|-------------|
-| `std::sort(it1, it2)` | Sort using `std::less<>()` to compare |
-| `std::sort(it1, it2, cmp)` | Sort using `cmp()` to compare |
-| `std::stable_sort(it1, it2)` | Sort using `std::less<>()` to compare, maintaining relative order of elements deemed to be the same by the sort |
-| `std::stable_sort(it1, it2, cmp)` | Sort using `cmp()` to compare, maintaining relative order of elements deemed to be the same by the sort |
-| `std::partial_sort(it1, itm, it2)` | Sort using `std::less<>()` to compare, until the element at `*itm` |
-| `std::partial_sort(it1, itm, it2, cmp)` | Sort using `cmp()` to compare, until the element at `*itm` |
-| `std::partial_sort_copy(itA1, itA2, itB1, itB2)` | Sort `A` using `std::less<>()` to compare, copying result into `B` |
-| `std::partial_sort_copy(itA1, itA2, itB1, itB2, cmp)` | Sort using `cmp()` to compare,  copying result into `B` |
-| `std::nth_element(it1, itn, it2)` | Place into `itn` the element that would be there if the entire range were sorted, using `std::less<>()` to compare |
-| `std::nth_element(it1, itn, it2, cmp)` | Place into `itn` the element that would be there if the entire range were sorted, using `cmp()` to compare |
-| `std::is_sorted(it1, it2)` | Check if sorted using `std::less<>()` to compare |
-| `std::is_sorted(it1, it2, cmp)` | Check if sorted using `cmp()` to compare |
+// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`
+// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that
+// simply calls push_back() on the underlying container.
+```
 
-| Function | Description |
-|----------|-------------|
-| `std::merge(itA1, itA2, itB1, itB2, itC1)` | Merge sorted range `A` and sorted range `B` into sorted `C`, using `std::less<>()` to compare |
-| `std::merge(itA1, itA2, itB1, itB2, itC1, cmp)` | Merge sorted range `A` and sorted range `B` into sorted `C`, using `cmp()` to compare |
-| `std::inplace_merge(it1, itm, it2)` | Merge together two sorted sub-ranges [`it1`, `itm`) and [`itm`, `it2`), using `std::less<>()` to compare |
-| `std::inplace_merge(it1, itm, it2, cmp)` | Merge together two sorted sub-ranges [`it1`, `itm`) and [`itm`, `it2`), using `cmp()` to compare |
-| `std::includes(itA1, itA2, itB1, itB2)` | Check if all elements of sorted range `A` are in sorted range `B`, using `std::less<>()` to compare |
-| `std::includes(itA1, itA2, itB1, itB2, cmp)` | Check if all elements of sorted range `A` are in sorted range `B`, using `cmp()` to compare |
+#### Find Element / Find Sub-range
 
-### Binary Search
+`{bm} /(Library Functions\/Algorithms\/Categories\/Find Element \/ Find Sub-range)_TOPIC/`
 
-`{bm} /(Library Functions\/Algorithms\/Binary Search)_TOPIC/`
+```{seealso}
+Library Functions/Algorithms/Categories/Iterate / Count_TOPIC (Related to search: `std::all_of()` / `std::any_of()` / `std::none_of()`)
+```
 
-| Function | Description |
-|----------|-------------|
-| `std::binary_search(it1, it2, v)` | Searches for `v` in the sorted range, using `std::less<>()` to compare |
-| `std::binary_search(it1, it2, v, bp)` | Searches for `v` in the sorted range, using `cmp()` to compare |
-| `std::lower_bound(it1, it2, v)` | Searches for left-most `v` in the sorted range, using `std::less<>()` to compare |
-| `std::lower_bound(it1, it2, v, bp)` | Searches for left-most `v` in the sorted range, using `cmp()` to compare |
-| `std::upper_bound(it1, it2, v)` | Searches for right-most `v` in the sorted range, using `std::less<>()` to compare |
-| `std::upper_bound(it1, it2, v, bp)` | Searches for right-most `v` in the sorted range, using `cmp()` to compare |
-| `std::equal_range(it1, it2, v)` | Both `std::lower_bound(it1, it2, v)` and `std::upper_bound(it1, it2, v)` returned as `std::pair<>` |
-| `std::equal_range(it1, it2, v, bp)` | Both `std::lower_bound(it1, it2, v, bp)` and `std::upper_bound(it1, it2, v, bp)` returned as `std::pair<>` |
+```{note}
+Do these functions actually call into the `std::equal_to<>()` to compare, or is it just using the equal to operator (==) directly? cppreference doesn't seem to say?
+```
 
-### Set Operations
+These functions find a single element within a range.
 
-`{bm} /(Library Functions\/Algorithms\/Set Operations)_TOPIC/`
+| Function                                         | Description                                                           |
+|--------------------------------------------------|-----------------------------------------------------------------------|
+| `std::find(it1, it2, v)`                         | Find first `v`                                                        |
+| `std::find_if(it1, it2, p)`                      | Find first where `p()` determines a match                             |
+| `std::find_if_not(it1, it2, p)`                  | Find first where `!p()` determines a match                            |
+| `std::find_first_of(itA1, itA2, itB1, itB2)`     | Find any element in `B` within `A`                                    |
+| `std::find_first_of(itA1, itA2, itB1, itB2, bp)` | Find any element in `B` within `A`, using `bp()` to determine a match |
 
-| Function | Description |
-|----------|-------------|
-| `std::set_difference(itA1, itA2, itB1, itB2, itC1)` | Difference sorted range `A` and sorted range `B` into sorted `C`, using `std::less<>()` to compare |
-| `std::set_difference(itA1, itA2, itB1, itB2, itC1, cmp)` | Difference sorted range `A` and sorted range `B` into sorted `C`, using `cmp()` to compare |
-| `std::set_symmertic_difference(itA1, itA2, itB1, itB2, itC1)` | Symmetric difference sorted range `A` and sorted range `B` into sorted `C`, using `std::less<>()` to compare |
-| `std::set_symmertic_difference(itA1, itA2, itB1, itB2, itC1, cmp)` | Symmetric difference sorted range `A` and sorted range `B` into sorted `C`, using `cmp()` to compare |
-| `std::set_intersect(itA1, itA2, itB1, itB2, itC1)` | Intersect sorted range `A` and sorted range `B` into sorted `C`, using `std::less<>()` to compare |
-| `std::set_intersect(itA1, itA2, itB1, itB2, itC1, cmp)` | Intersect sorted range `A` and sorted range `B` into sorted `C`, using `cmp()` to compare |
-| `std::set_union(itA1, itA2, itB1, itB2, itC1)` | Union sorted range `A` and sorted range `B` into sorted `C`, using `std::less<>()` to compare |
-| `std::set_union(itA1, itA2, itB1, itB2, itC1, cmp)` | Union sorted range `A` and sorted range `B` into sorted `C`, using `cmp()` to compare |
+```c++
+std::string s {"hello world!"};
 
-### Min / Max
+auto s1_it { std::find(s.begin(), s.end(), 'o') };  // points to s.begin()+4
+auto s2_it { std::find(s.begin(), s.end(), 'z') };  // points to s.end() (not found)
+auto s3_it { std::find_if(s.begin(), s.end(), [](auto &ch) { return ch == 'o'; }) };  // points to s.begin()+4
+auto s4_it { std::find_if(s.begin(), s.end(), [](auto &ch) { return ch == 'z'; }) };  // points to s.end() (not found)
+auto s5_it { std::find_if_not(s.begin(), s.end(), [](auto &ch) { return ch == 'h'; }) };  // points to s.begin()+1
+auto s6_it { std::find_if_not(s.begin(), s.end(), [](auto &ch) { return ch == 'z'; }) };  // points to s.begin()
 
-`{bm} /(Library Functions\/Algorithms\/Min \/ Max)_TOPIC/`
+std::string s_ {"dw!"};
+auto s7_it { std::find_first_of(s.begin(), s.end(), s_.begin(), s_.end()) };  // points to s.begin()+6
+auto s8_it { std::find_first_of(s.begin(), s.end(), s_.begin(), s_.end(),
+    [](auto &ch1, auto &ch2) { return ch1 == ch2; }) };  // points to s.begin()+6
+```
 
-| Function | Description |
-|----------|-------------|
-| `std::min_element(it1, it2)` | Get min element, using `<` to compare |
-| `std::min_element(it1, it2, cmp)` | Get min element, using `cmp()` to compare |
-| `std::max_element(it1, it2)` | Get max element, using `<` to compare |
-| `std::max_element(it1, it2, cmp)` | Get max element, using `cmp()` to compare |
-| `std::minmax_element(it1, it2)` | Get min and max element, using `<` to compare |
+These functions finds consecutive elements in a range.
+
+| Function                            | Description                                                                                    |
+|-------------------------------------|------------------------------------------------------------------------------------------------|
+| `std::adjacent_find(it1, it2)`      | Find first where same element appears twice                                                    |
+| `std::adjacent_find(it1, it2, bp)`  | Find first where same element appears twice using `bp()` to determine a match                  |
+| `std::search_n(it1, it2, n, v)`     | Find first where same element occurs `n` times consecutively                                   |
+| `std::search_n(it1, it2, n, v, bp)` | Find first where same element occurs `n` times consecutively using `bp()` to determine a match |
+
+```c++
+std::string s {"hello world AAA!"};
+
+auto s1_it { std::adjacent_find(s.begin(), s.end()) };  // points to s.begin()+2
+auto s2_it { std::adjacent_find(s.begin(), s.end(),
+    [](auto &ch1, auto &ch2) { return ch1 == ch2; }) };  // points to s.begin()+2
+
+auto s3_it { std::search_n(s.begin(), s.end(), 3, 'A') }; // points to s.begin()+12
+auto s4_it { std::search_n(s.begin(), s.end(), 3, 'A',
+    [](auto &ch1, auto &ch2) { return ch1 == ch2; }) };  // points to s.begin()+12
+```
+
+These functions finds the first mismatch between two ranges.
+
+| Function                                    | Description                                                                 |
+|---------------------------------------------|-----------------------------------------------------------------------------|
+| `std::mismatch(itA1, itA2, itB1, itB2)`     | Find first mismatch between `A` and `B`                                     |
+| `std::mismatch(itA1, itA2, itB1, itB2, bp)` | Find first mismatch between `A` and `B` where `!bp()` determines a mismatch |
+
+```c++
+std::string s1 {"hello world!"};
+std::string s2 {"hello moon!"};
+
+auto [s1_it, s2_it] { std::mismatch(s1.begin(), s1.end(), s2.begin(), s2.end()) };  // s1_it=s1.begin()+6, s2_it=s2.begin()+6
+auto [s3_it, s4_it] { std::mismatch(s1.begin(), s1.end(), s2.begin(), s2.end(),
+    [](auto &ch1, auto &ch2) { return ch1 == ch2; }) };  // s3_it=s1.begin()+6, s3_it=s2.begin()+6
+```
+
+These functions find a sub-range within a larger range (e.g. find a substring).
+
+| Function                                    | Description                                                                                    |
+|---------------------------------------------|------------------------------------------------------------------------------------------------|
+| `std::search(itA1, itA2, itB1, itB2)`       | Search for first occurrence of `B` within `A`                                                  |
+| `std::search(itA1, itA2, itB1, itB2, bp)`   | Search for first occurrence of `B` within `A`, using `bp()` to determine if elements are equal |
+| `std::find_end(itA1, itA2, itB1, itB2)`     | Search for last occurrence of `B` within `A`                                                   |
+| `std::find_end(itA1, itA2, itB1, itB2, bp)` | Search for last occurrence of `B` within `A`, using `bp()` to determine if elements are equal  |
+
+```c++
+std::string s {"hello world!"};
+std::string s_ {"world"};
+
+auto s1_it { std::search(s.begin(), s.end(), s_.begin(), s_.end()) };  // points to s.begin()+6
+auto s2_it { std::search(s.begin(), s.end(), s_.begin(), s_.end(),
+    [](auto &ch1, auto &ch2) { return ch1 == ch2; }) };  // points to s.begin()+6
+
+auto s3_it { std::find_end(s.begin(), s.end(), 3, s_.begin(), s_.end()) };  // points to s.begin()+6
+auto s4_it { std::find_end(s.begin(), s.end(), 3, s_.begin(), s_.end(),
+    [](auto &ch1, auto &ch2) { return ch1 == ch2; }) };  // points to s.begin()+6
+```
+
+```{note}
+`std::search()` in particular seems to have overloads for different kinds of "searchers": `default_searcher`, `boyer_moore_searcher`, `boyer_moore_horspool_searcher`, and possibly others maybe provided by other libraries (e.g. boost). I don't know enough about this to know what the benefit of using one over the other is. 
+```
+
+#### Equality / Lexicographical Comparison
+
+`{bm} /(Library Functions\/Algorithms\/Categories\/Equality \/ Lexicographical Comparison)_TOPIC/`
+
+```{seealso}
+Library Functions/Algorithms/Categories/Iterate / Count_TOPIC (Related to `std::equal()`: `std::mismatch()`)
+```
+
+```{note}
+Do these functions actually call into the `std::equal_to<>()` / `std::less<>()` to compare, or is it just using the equal to operator (==) / less than operator (<) directly? cppreference doesn't seem to say?
+```
+
+These functions compare ranges.
+
+| Function                                                   | Description                                             |
+|------------------------------------------------------------|---------------------------------------------------------|
+| `std::equal(itA1, itA2, itB1, itB2)`                       | Check if `A` and `B` are equal using `==` on elements   |
+| `std::equal(itA1, itA2, itB1, itB2, bp)`                   | Check if `A` and `B` are equal using `bp()` on elements |
+| `std::lexicographical_compare(itA1, itA2, itB1, itB2)`     | Check if `A` is less than `B` using `<` on elements     |
+| `std::lexicographical_compare(itA1, itA2, itB1, itB2, lt)` | Check if `A` is less than `B` using `lt()` on elements  |
+
+```{note}
+There's also `std::lexicographical_compare_three_way()`, which does lexicographical comparison but uses the spaceship operator to do so.
+```
+
+```c++
+std::string s {"hello world!"};
+std::string s_ {"world"};
+
+bool eq1 { std::equal(s.begin()+6, s.end()-1, s_.begin(), s_.end()) };  // true
+bool eq2 { std::equal(s.begin()+6, s.end()-1, s_.begin(), s_.end(),
+    [](auto& ch1, auto& ch2) { return ch1 == ch2; }) };  // true
+
+bool lt1 { std::lexicographical_compare(s.begin(), s.end(), s_.begin(), s_.end()) };  // true
+bool lt2 { std::lexicographical_compare(s.begin(), s.end(), s_.begin(), s_.end(),
+    [](auto& ch1, auto& ch2) { return ch1 < ch2; }) };  // true
+```
+
+#### Partition
+
+`{bm} /(Library Functions\/Algorithms\/Categories\/Partition)_TOPIC/`
+
+```{prereq}
+Library Functions/Iterators/Adapters/Insert_TOPIC
+```
+
+```{note}
+Are these using `std::swap()` or `std::move()` or assignment (=)?
+```
+
+| Function                                       | Description                                                                                   |
+|------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| `std::partition(it1, it2, p)`                  | Split into two partitions based on `p()`                                                      |
+| `std::stable_partition(it1, it2, p)`           | Split into two partitions based on `p()` and maintaining relative order                       |
+| `std::partition_copy(itA1, itA2, itB, itC, p)` | Split `A` into two partitions based on `p()`, copying to `B` `p() == true` otherwise into `C` |
+| `std::is_partitioned(it1, it2, p)`             | Check if partitioned into two based on `p()`                                                  |
+| `std::partition_point(it1, it2, p)`            | Return the first element after the first partition, based on `p()`                            |
+
+```c++
+std::vector<int> v1 {0,1,2,3,4,5};
+auto v1_odd_it { std::partition(v1.begin(), v1.end(), [](auto &e) { return e%2 == 0; }) };
+// v1 becomes {0,4,2,3,1,5}, v1_odd_it is iterator pointing to first element of the odd group
+
+std::vector<int> v2 {0,1,2,3,4,5};
+auto v2_odd_it { std::stable_partition(v2.begin(), v2.end(), [](auto &e) { return e%2 == 0; }) };
+// v2 becomes {0,2,4,1,3,5}, v2_odd_it is iterator pointing to first element of the odd group
+
+std::vector<int> v3 {0,1,2,3,4,5};
+std::vector<int> v3_even {};
+std::vector<int> v3_odd {};
+std::partition_copy(v3.begin(), v3.end(),
+    std::back_insert_iterator { v3_even },
+    std::back_insert_iterator { v3_odd },
+    [](auto &e) { return e%2 == 0; }) // v3_even becomes {0,2,4} and v3_odd becomes {1,3,5}
+
+bool v3_partitioned { std::is_partitioned(v3.begin(), v3.end(), [](auto &e) { return e%2 == 0; }) };  // false
+bool v1_partitioned { std::is_partitioned(v1.begin(), v1.end(), [](auto &e) { return e%2 == 0; }) };  // true
+
+auto v1_odd_it2 { std::partition_point(v1.begin(), v1.end(), [](auto &e) { return e%2 == 0; }) };
+// v1_odd_it2 returns iterator pointing to first element of the odd group
+
+// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`
+// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that
+// simply calls push_back() on the underlying container.
+```
+
+```{note}
+You may be wondering what the point of partitioning is if you can only partition into two groups. You can partition into more than two groups by iteratively calling `std::partition()`. For example, imagine you need to partition into 4 groups: Call `std::partition()` with the predicate that partitions by the first group's criteria, which will end up partitioning and returning an iterator that points to the element just after where all the elements for the first group got moved to. Then call `std::partition()` with the second group's criteria but use the return value of the previous `std::partition()` for the starting iterator. Do the same thing for the third and fourth group.
+```
+
+#### Sort / Merge / Binary Search
+
+`{bm} /(Library Functions\/Algorithms\/Categories\/Sort \/ Merge \/ Binary Search)_TOPIC/`
+
+```{prereq}
+Library Functions/Iterators/Adapters/Insert_TOPIC
+```
+
+```{note}
+Do these functions actually call into the `std::less<>()` to compare, or is it just using the less than operator (<) directly? cppreference doesn't seem to say?
+
+For `std::stable_sort()`, it says it maintains the order of elements that are the same, but cppreference doesn't say how "sameness" is determined? Does it use equal operator (==), `std::equal_to()`, or is it doing `!(a < b) && !(b < a)`?
+
+How are they moving values around? Are these using `std::swap()` or `std::move()` or assignment (=)?
+```
+
+```{seealso}
+Library Functions/Algorithms/Categories/Equality / Lexicographical Comparison_TOPIC (Related to `std::sort()`: `std::lexicographical_compare()`)
+```
+
+These functions sort a range / check to see if a range is sorted.
+
+| Function                                              | Description                                                                                     |
+|-------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| `std::sort(it1, it2)`                                 | Sort using `<` to compare                                                                       |
+| `std::sort(it1, it2, cmp)`                            | Sort using `cmp()` to compare                                                                   |
+| `std::stable_sort(it1, it2)`                          | Sort using `<` to compare, maintaining order of elements that are the same                      |
+| `std::stable_sort(it1, it2, cmp)`                     | Sort using `cmp()` to compare, maintaining order of elements that are the same                  |
+| `std::is_sorted(it1, it2)`                            | Check if sorted using `<` to compare                                                            |
+| `std::is_sorted(it1, it2, cmp)`                       | Check if sorted using `cmp()` to compare                                                        |
+| `std::partial_sort(it1, itm, it2)`                    | Sort using `<` to compare until the element at `itm`                                            |
+| `std::partial_sort(it1, itm, it2, cmp)`               | Sort using `cmp()` to compare until the element at `itm`                                        |
+| `std::partial_sort_copy(itA1, itA2, itB1, itB2)`      | Sort `A` using `<`, copying result into `B`                                                     |
+| `std::partial_sort_copy(itA1, itA2, itB1, itB2, cmp)` | Sort `A` using `cmp()`, copying result into `B`                                                 |
+| `std::is_sorted_until(it1, it2)`                      | Find first unsorted element using `<` to compare                                                |
+| `std::is_sorted_until(it1, it2, cmp)`                 | Find first unsorted element using `cmp()` to compare                                            |
+| `std::nth_element(it1, itn, it2)`                     | Place into `itn` the element that would be there if range were sorted, using `<` to compare     |
+| `std::nth_element(it1, itn, it2, cmp)`                | Place into `itn` the element that would be there if range were sorted, using `cmp()` to compare |
+
+```c++
+std::vector<int> v1 {0,5,1,2,3,4};
+std::sort(v1.begin(), v1.end());  // v1 becomes {0,1,2,3,4,5}
+std::vector<int> v2 {0,5,1,2,3,4};
+std::sort(v2.begin(), v2.end(), [](auto &a, auto &b) { return a < b; });  // v2 becomes {0,1,2,3,4,5}
+
+std::vector<int> v3 {0,5,1,2,3,4};
+std::stable_sort(v3.begin(), v3.end());  // v3 becomes {0,1,2,3,4,5}
+
+bool s1 { std::is_sorted(v1.begin(), v1.end()) };  // true
+
+std::vector<int> v4 {0,5,1,2,3,4};
+std::partial_sort(v4.begin(), v4.begin()+3, v4.end());  // v4 becomes {0,1,2,5,3,4}
+
+std::vector<int> v5 {0,5,1,2,3,4};
+std::vector<int> v6 {0,0,0};
+std::partial_sort_copy(v5.begin(), v5.begin()+3, v6.begin(), v6.end());  // v6 becomes {0,1,5}
+
+auto v6_it1 { std::is_sorted_until(v6.begin(), v6.end()) };  // returns iterator pointing to 3rd element of v6
+```
+
+These functions merge two sorted ranges together (result is also sorted).
+
+| Function                                        | Description                                                                                      |
+|-------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| `std::merge(itA1, itA2, itB1, itB2, itC1)`      | Merge sorted range `A` and sorted range `B` into sorted `C`, using `<` to compare                |
+| `std::merge(itA1, itA2, itB1, itB2, itC1, cmp)` | Merge sorted range `A` and sorted range `B` into sorted `C`, using `cmp()` to compare            |
+| `std::inplace_merge(it1, itm, it2)`             | Merge together two sorted sub-ranges [`it1`, `itm`) and [`itm`, `it2`), using `<` to compare     |
+| `std::inplace_merge(it1, itm, it2, cmp)`        | Merge together two sorted sub-ranges [`it1`, `itm`) and [`itm`, `it2`), using `cmp()` to compare |
+| `std::includes(itA1, itA2, itB1, itB2)`         | Check if all elements of sorted range `A` are in sorted range `B`, using `<` to compare          |
+| `std::includes(itA1, itA2, itB1, itB2, cmp)`    | Check if all elements of sorted range `A` are in sorted range `B`, using `cmp()` to compare      |
+
+```c++
+std::vector<int> v1 {0,2,4};
+std::vector<int> v2 {1,3,5};
+std::vector<int> v3 {};
+std::merge(v1.begin(), v1.end(), v2.begin(), v2.end(), std::back_insert_iterator { v3 });  // v3 becomes {0,1,2,3,4,5}
+
+std::vector<int> v7 {0,2,4,1,3,5};
+std::inplace_merge(v7.begin(), v7.begin()+3, v7.end());  // v7 becomes {0,1,2,3,4,5}
+
+std::vector<int> v9  {0,1,2,3,4,5};
+std::vector<int> v10 {1,3,5};
+bool sorted1 { std::includes(v9.begin(), v9.end(), v10.begin(), v10.end()) };  // true
+
+bool sorted2 { std::includes(v9.begin(), v9.end(), v10.begin(), v10.end(),
+    [](auto &a, auto &b) { return a < b; }) };  // true
+
+// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`
+// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that
+// simply calls push_back() on the underlying container.
+```
+
+These functions perform binary search on a sorted range.
+
+| Function                              | Description                                                                                                |
+|---------------------------------------|------------------------------------------------------------------------------------------------------------|
+| `std::binary_search(it1, it2, v)`     | Searches for `v` in the sorted range, using `<` to compare                                                 |
+| `std::binary_search(it1, it2, v, bp)` | Searches for `v` in the sorted range, using `cmp()` to compare                                             |
+| `std::lower_bound(it1, it2, v)`       | Searches for left-most `v` in the sorted range, using `<` to compare                                       |
+| `std::lower_bound(it1, it2, v, bp)`   | Searches for left-most `v` in the sorted range, using `cmp()` to compare                                   |
+| `std::upper_bound(it1, it2, v)`       | Searches for right-most `v` in the sorted range, using `<` to compare                                      |
+| `std::upper_bound(it1, it2, v, bp)`   | Searches for right-most `v` in the sorted range, using `cmp()` to compare                                  |
+| `std::equal_range(it1, it2, v)`       | Both `std::lower_bound(it1, it2, v)` and `std::upper_bound(it1, it2, v)` returned as `std::pair<>`         |
+| `std::equal_range(it1, it2, v, bp)`   | Both `std::lower_bound(it1, it2, v, bp)` and `std::upper_bound(it1, it2, v, bp)` returned as `std::pair<>` |
+
+```c++
+std::vector<int> v1  {0,1,2,3,3,4,5};
+
+bool found1 { std::binary_search(v1.begin(), v1.end(), 3) };  // true
+auto it1 { std::lower_bound(v1.begin(), v1.end(), 3) };  // returns iterator pointing to first 3 entry
+auto it3 { std::upper_bound(v1.begin(), v1.end(), 3) };  // returns iterator pointing to last 3 entryry
+auto [it5, it6] { std::equal_range(v1.begin(), v1.end(), 3) };  // returns pair of iterators pointing to first / last 3 entries
+
+auto [it7, it8] { std::equal_range(v1.begin(), v1.end(), 3,
+    [](auto &a, auto &b) { return a < b; }) };  // returns pair of iterators pointing to first / last 3 entries
+```
+
+#### Intersection / Union / Difference
+
+`{bm} /(Library Functions\/Algorithms\/Categories\/Intersection \/ Union \/ Difference)_TOPIC/`
+
+```{prereq}
+Library Functions/Iterators/Adapters/Insert_TOPIC
+Library Functions/Algorithms/Categories/Sort / Merge / Binary Search_TOPIC
+```
+
+```{note}
+Do these functions actually call into the `std::less<>()` to compare, or is it just using the less than operator (<) directly? cppreference doesn't seem to say?
+
+How are they moving values around? Are these using `std::swap()` or `std::move()` or assignment (=)?
+```
+
+These functions are set operations, but they only operate on *sorted* ranges.
+
+```{note}
+It's better to think of these operations as a bag rather than a set, since a sorted range can have duplicates and these operations work just fine if they see duplicates.
+```
+
+| Function                                                           | Description                                                                        |
+|--------------------------------------------------------------------|------------------------------------------------------------------------------------|
+| `std::set_difference(itA1, itA2, itB1, itB2, itC1)`                | Difference sorted `A` and sorted `B` into sorted `C`, using `<` to compare         |
+| `std::set_difference(itA1, itA2, itB1, itB2, itC1, cmp)`           | Difference sorted `A` and sorted `B` into sorted `C`, using `cmp()` to compare     |
+| `std::set_symmetric_difference(itA1, itA2, itB1, itB2, itC1)`      | Sym difference sorted `A` and sorted `B` into sorted `C`, using `<` to compare     |
+| `std::set_symmetric_difference(itA1, itA2, itB1, itB2, itC1, cmp)` | Sym difference sorted `A` and sorted `B` into sorted `C`, using `cmp()` to compare |
+| `std::set_intersection(itA1, itA2, itB1, itB2, itC1)`              | Intersect sorted `A` and sorted `B` into sorted `C`, using `<` to compare          |
+| `std::set_intersection(itA1, itA2, itB1, itB2, itC1, cmp)`         | Intersect sorted `A` and sorted `B` into sorted `C`, using `cmp()` to compare      |
+| `std::set_union(itA1, itA2, itB1, itB2, itC1)`                     | Union sorted `A` and sorted `B` into sorted `C`, using `<` to compare              |
+| `std::set_union(itA1, itA2, itB1, itB2, itC1, cmp)`                | Union sorted `A` and sorted `B` into sorted `C`, using `cmp()` to compare          |
+
+```{note}
+There's also `std::includes()`, which checks to see if all the elements in sorted range `A` are in sorted range `B`. In other words, if `A` is a subsequence of `B` (not substring, but subsequence).
+```
+
+```c++
+std::vector<int> v1 {0,1,2,3,3,4,5};
+std::vector<int> v2 {3,4,5,5,6,7,8};
+
+std::vector<int> v3 {};
+std::vector<int> v4 {};
+std::set_difference(v1.begin(), v1.end(), v2.begin(), v2.end(), std::back_insert_iterator { v3 } );  // v3 becomes {0,1,2,3}
+std::set_difference(v2.begin(), v2.end(), v1.begin(), v1.end(), std::back_insert_iterator { v4 } );  // v4 becomes {5,6,7,8}
+
+std::vector<int> v5 {};
+std::vector<int> v6 {};
+std::set_symmetric_difference(v1.begin(), v1.end(), v2.begin(), v2.end(), std::back_insert_iterator { v5 } );  // v5 becomes {0,1,2,3,5,6,7,8}
+std::set_symmetric_difference(v2.begin(), v2.end(), v1.begin(), v1.end(), std::back_insert_iterator { v6 } );  // v6 becomes {0,1,2,3,5,6,7,8}
+
+std::vector<int> v7 {};
+std::vector<int> v8 {};
+std::set_intersection(v1.begin(), v1.end(), v2.begin(), v2.end(), std::back_insert_iterator { v7 } );  // v7 becomes {3,4,5}
+std::set_intersection(v2.begin(), v2.end(), v1.begin(), v1.end(), std::back_insert_iterator { v8 } );  // v8 becomes {3,4,5}
+
+std::vector<int> v9 {};
+std::vector<int> v10 {};
+std::set_union(v1.begin(), v1.end(), v2.begin(), v2.end(), std::back_insert_iterator { v9 } );  // v9 becomes {0,1,2,3,3,4,5,5,6,7,8}
+std::set_union(v2.begin(), v2.end(), v1.begin(), v1.end(), std::back_insert_iterator { v10 } );  // v10 becomes {0,1,2,3,3,4,5,5,6,7,8}
+
+std::vector<int> v11 {};
+std::set_union(v2.begin(), v2.end(), v1.begin(), v1.end(), std::back_insert_iterator { v11 },
+    [](auto &a, auto &b) { return a < b;} );  // v10 becomes {0,1,2,3,3,4,5,5,6,7,8}
+
+// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`
+// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that
+// simply calls push_back() on the underlying container.
+```
+
+#### Min / Max
+
+`{bm} /(Library Functions\/Algorithms\/Categories\/Min \/ Max)_TOPIC/`
+
+```{note}
+Do these functions actually call into the `std::less<>()` to compare, or is it just using the less than operator (<) directly? cppreference doesn't seem to say?
+```
+
+These functions find the min / max element within a range.
+
+| Function                             | Description                                       |
+|--------------------------------------|---------------------------------------------------|
+| `std::min_element(it1, it2)`         | Get min element, using `<` to compare             |
+| `std::min_element(it1, it2, cmp)`    | Get min element, using `cmp()` to compare         |
+| `std::max_element(it1, it2)`         | Get max element, using `>` to compare             |
+| `std::max_element(it1, it2, cmp)`    | Get max element, using `cmp()` to compare         |
+| `std::minmax_element(it1, it2)`      | Get min and max element, using `<` to compare     |
 | `std::minmax_element(it1, it2, cmp)` | Get min and max element, using `cmp()` to compare |
 
-| Function | Description |
-|----------|-------------|
-| `std::min(a, b)` | Get smaller between `a` and `b`, using `<` to compare |
-| `std::min(a, b, cmp)` | Get smaller between `a` and `b`, using `cmp()` to compare |
-| `std::max(a, b)` | Get larger between `a` and `b`, using `<` to compare |
-| `std::max(a, b, cmp)` | Get larger between `a` and `b`, using `cmp()` to compare |
-| `std::minmax(a, b)` | Combine `min(a,b)` and `max(a,b)` |
-| `std::minmax(a, b, cmp)` | Combine `min(a,b,cmp)` and `max(a,b,cmp)` |
-| `std::clamp(v, lo, hi)` | Return `v` clamped to be between [`lo`, `hi`], using `<` to compare |
+```c++
+std::vector<int> v1 {0,5,1,4,2,3};
+
+auto v1_it1 { std::min_element(v1.begin(), v1.end()) };  // returns iterator to 0
+auto v1_it2 { std::max_element(v1.begin(), v1.end()) };  // returns iterator to 6
+auto [v1_it3, v1_it4] { std::minmax_element(v1.begin(), v1.end()) };  // returns iterators to 0 and 5
+
+auto [v1_it5, v1_it6] { std::minmax_element(v1.begin(), v1.end(),
+    [](auto &a, auto &b) { return a < b;}) };  // returns iterators to 0 and 5
+```
+
+These functions compare two elements to determine which one's the min / max.
+
+| Function                     | Description                                                                   |
+|------------------------------|-------------------------------------------------------------------------------|
+| `std::min(a, b)`             | Get smaller between `a` and `b`, using `<` to compare                         |
+| `std::min(a, b, cmp)`        | Get smaller between `a` and `b`, using `cmp()` to compare                     |
+| `std::max(a, b)`             | Get larger between `a` and `b`, using `<` to compare                          |
+| `std::max(a, b, cmp)`        | Get larger between `a` and `b`, using `cmp()` to compare                      |
+| `std::minmax(a, b)`          | Combine `min(a,b)` and `max(a,b)`                                             |
+| `std::minmax(a, b, cmp)`     | Combine `min(a,b,cmp)` and `max(a,b,cmp)`                                     |
+| `std::clamp(v, lo, hi)`      | Return `v` clamped to be between [`lo`, `hi`], using `<` to compare           |
 | `std::clamp(v, lo, hi, cmp)` | Return `v` clamped to be between [`lo`, `hi`], using `cmp(lo, hi)` to compare |
 
-### Binary Search Tree
+```c++
+int res1 { std::min(0, 5) };  // returns 0
+int res2 { std::max(0, 5) };  // returns 5
+int [res3, res4] { std::minmax{0, 5} }; // returns 0 and 5
+int res5 { std::clamp(3, 6, 9) }; // returns 6
 
-`{bm} /(Library Functions\/Algorithms\/Binary Search Tree)_TOPIC/`
+int res6 { std::clamp(3, 6, 9, [](auto &a, auto &b) { return a < b;}) }; // returns 6
 
-TODO: explain how a binary search tree is also called a heap
+// NOTE: The overloads for these functions are such that each either ...
+//  * takes in and returns lvalue references. 
+//  * takes in an initializer_list and returns a copy.
+// I think that's happening in the above usages is that the initializer list version is being invoked. To
+// make it explicit which one you're using, maybe invoke with curly braces for initializer list version? Like
+// std::min({4,1,2,3,3}). The lvalue reference overloads can only take 2 items, while the initializer list
+// overloads can take more than two. Maybe this'll change in future versions of C++ (as of writing is C++20).
+```
 
-| Function | Description |
-|----------|-------------|
-| `std::make_heap(it1, it2)` | Reorder range such that it becomes a heap, using `<` to compare (not `std::less<>`) |
-| `std::make_heap(it1, it2, cmp)` | Reorder range such that it becomes a heap, using `cmp()` to compare |
-| `std::push_heap(it1, it2)` | Integrate last element into existing heap ([`it1`, `it2 - 1`) is heap, `*(it2 - 1)` is unintegrated element), using `<` to compare (not `std::less<>`) |
-| `std::push_heap(it1, it2, cmp)` | Integrate last element into existing heap ([`it1`, `it2 - 1`) is heap, `*(it2 - 1)` is unintegrated element), using `cmp()` to compare |
-| `std::pop_heap(it1, it2)` | Remove largest element from heap and places as last element ([`it1`, `it2 - 1`) becomes heap, `*(it2 - 1)` is removed element), using `<` to compare (not `std::less<>`) |
-| `std::pop_heap(it1, it2, cmp)` | Remove largest element from heap and places as last element ([`it1`, `it2 - 1`) becomes heap, `*(it2 - 1)` is removed element), using `cmp()` to compare |
-| `std::is_heap(it1, it2)` | Check if range is heap, using `<` to compare (not `std::less<>`) |
-| `std::is_heap(it1, it2, cmp)` | Check if range is heap, using `cmp()` to compare |
-| `std::is_heap_until(it1, it2)` | Determine until which position range is heap, using `<` to compare (not `std::less<>`) |
-| `std::is_heap_until(it1, it2, cmp)` | Determine until which position range is heap, using `cmp()` to compare |
-| `std::sort_heap(it1, it2)` | Convert heap to sorted range (ascending order), using `<` to compare (not `std::less<>`) |
-| `std::sort_heap(it1, it2, cmp)` | Convert heap to sorted range (ascending order), using `cmp()` to compare |
+#### Binary Search Tree
 
-### Permutations
+`{bm} /(Library Functions\/Algorithms\/Categories\/Binary Search Tree)_TOPIC/`
 
-`{bm} /(Library Functions\/Algorithms\/Permutations)_TOPIC/`
+```{note}
+Do these functions actually call into the `std::less<>()` to compare, or is it just using the less than operator (<) directly? cppreference doesn't seem to say?
+```
 
-| Function | Description |
-|----------|-------------|
-| `std::next_permutation(it1, it2)` | Reorders to next permutation and returns `false` if done, using `std::less<>` to compare |
-| `std::next_permutation(it1, it2, cmp)` |  Reorders to next permutation and returns `false` if done, using `cmp()` to compare |
-| `std::prev_permutation(it1, it2)` | Reorders to previous permutation and returns `false` if done, using `std::less<>` to compare |
-| `std::prev_permutation(it1, it2, cmp)` |  Reorders to previous permutation and returns `false` if done, using `cmp()` to compare |
+These functions shuffle around an existing range such that it acts as a binary search tree ([max heap](https://en.wikipedia.org/wiki/Binary_heap)).
 
-TODO: this must start with a sorted range
+| Function                            | Description                                                              |
+|-------------------------------------|--------------------------------------------------------------------------|
+| `std::make_heap(it1, it2)`          | Convert range such that it becomes a heap, using `<` to compare          |
+| `std::make_heap(it1, it2, cmp)`     | Convert range such that it becomes a heap, using `cmp()` to compare      |
+| `std::sort_heap(it1, it2)`          | Convert heap to sorted range (ascending order), using `<` to compare     |
+| `std::sort_heap(it1, it2, cmp)`     | Convert heap to sorted range (ascending order), using `cmp()` to compare |
+| `std::is_heap(it1, it2)`            | Check if range is heap, using `<` to compare                             |
+| `std::is_heap(it1, it2, cmp)`       | Check if range is heap, using `cmp()` to compare                         |
+| `std::is_heap_until(it1, it2)`      | Determine until which position range is heap, using `<` to compare       |
+| `std::is_heap_until(it1, it2, cmp)` | Determine until which position range is heap, using `cmp()` to compare   |
+| `std::push_heap(it1, it2)`          | Push element into heap, using `<` to compare                             |
+| `std::push_heap(it1, it2, cmp)`     | Push element into heap, using `cmp()` to compare                         |
+| `std::pop_heap(it1, it2)`           | Pop largest element out of heap, using `<` to compare                    |
+| `std::pop_heap(it1, it2, cmp)`      | Pop largest element out of heap, using `cmp()` to compare                |
 
-### Parallel Primitives
+```c++
+std::vector<int> v1 {0,5,1,4,2,3};
 
-`{bm} /(Library Functions\/Algorithms\/Parallel Primitives)_TOPIC/`
+std::make_heap(v1.begin(), v1.end());  // v1 becomes {5,4,3,0,2,1}
+std::is_heap(v1.begin(), v1.end());    // returns true
+std::sort_heap(v1.begin(), v1.end());  // v1 becomes {0,1,2,3,4,5}
+std::is_heap(v1.begin(), v1.end());    // returns false
 
-| `std::transform(itA1, itA2, itB1, m)` | Transform `A` via `m(*itA)` into `B` |
-| `std::transform(itA1, itA2, itB1, itC, bt)` | Transform `A` and `B` such that each index is transformed via `bt(*itA, *itB)` and put into `C` |
+std::make_heap(v1.begin(), v1.end());  // v1 becomes {5,4,3,0,2,1}
+std::pop_heap(v1.begin(), v1.end());   // v1 becomes {4,2,3,0,1,5} -- 5 got popped off heap (moved to last element), heap's range is now v1.begin() to v1.end()-1
+auto it1 { std::is_heap_until(v1.begin(), v1.end()) }; // returns iterator pointing to v1.end()-1 (where popped element is)
+bool h1 { std::is_heap(v1.begin(), v1.end()-1) };      // returns true
+bool h2 { std::is_heap(v1.begin(), v1.end()) };        // returns false
+v1[5] = 8;
+std::push_heap(v1.begin(), v1.end());   // v1 becomes {8,2,4,0,1,3} -- 8 got pushed onto heap (moved from last element), heap's range is now v1.begin() to v1.end()
+auto it2 { std::is_heap_until(v1.begin(), v1.end()) }; // returns iterator pointing to v1.end()
+bool h3 { std::is_heap(v1.begin(), v1.end()-1) };      // returns false
+bool h4 { std::is_heap(v1.begin(), v1.end()) };        // returns true
+```
 
-| `std::reduce(it1, it2)` | Reduce using `+` with an initial value of an empty initialization of whatever the range's element type is |
-| `std::reduce(it1, it2, v)` | Reduce using `+` with an initial value of `v` |
-| `std::reduce(it1, it2, f, f)` | Reduce using `f()` with an initial value of `v` |
+#### Permutations
 
-| `std::inclusive_scan(it1, it2)` | Inclusive prefix sum using `+` with an initial value of an empty initialization of whatever the range's element type is |
-| `std::inclusive_scan(it1, it2, v)` | Inclusive prefix sum using `+` with an initial value of `v` |
-| `std::inclusive_scan(it1, it2, f, f)` | Inclusive prefix sum using `f()` with an initial value of `v` |
-| `std::exclusive_scan(it1, it2)` | Inclusive prefix sum using `+` with an initial value of an empty initialization of whatever the range's element type is |
-| `std::exclusive_scan(it1, it2, v)` | Inclusive prefix sum using `+` with an initial value of `v` |
-| `std::exclusive_scan(it1, it2, f, f)` | Inclusive prefix sum using `f()` with an initial value of `v` |
+`{bm} /(Library Functions\/Algorithms\/Categories\/Permutations)_TOPIC/`
 
-| `std::transform_reduce(itA1, itA2, v, r, m)` | Same as `std::transform(itA1, itA2, m)` followed by  `std::reduce(it1, it2, v, r)` |
-| `std::transform_reduce(itA1, itA2, itB1, v, r, m)` | Same as `std::transform(itA1, itA2, itB1, m)` followed by  `std::reduce(it1, it2, v, r)` |
-| `std::transform_reduce(itA1, itA2, itB1, v)` | Same as `std::transform_reduce(itA1, itA2, itB1, v, std::plus<>(), std::multiplies<>())` |
+```{prereq}
+Library Functions/Algorithms/Categories/Sort / Merge / Binary Search_TOPIC
+```
 
-TODO: non-parallel versions of reduce
+```{note}
+Do these functions actually call into the `std::less<>()` to compare, or is it just using the less than operator (<) directly? cppreference doesn't seem to say?
+```
 
-| `std::accumulate()` | reduce
-| `std::partial_sum()` | inclusive_scan
-| `std::adjacent_difference` | map
-| `std::inner_product()` | transform_reduce
+These functions take an existing *sorted* range and shuffle its elements around to list out all possible permutations.
+
+| Function                               | Description                                                                              |
+|----------------------------------------|------------------------------------------------------------------------------------------|
+| `std::next_permutation(it1, it2)`      | Reorders to next permutation using `<` to compare, returning `false` on overflow         |
+| `std::next_permutation(it1, it2, cmp)` | Reorders to next permutation using `cmp()` to compare, returning `false` on overflow     |
+| `std::prev_permutation(it1, it2)`      | Reorders to previous permutation using `<` to compare, returning `false` on overflow     |
+| `std::prev_permutation(it1, it2, cmp)` | Reorders to previous permutation using `cmp()` to compare, returning `false` on overflow |
+
+```{note}
+There's also `std::is_permutation()`, which checks to see if a range is a permutation of another *sorted* range.
+```
+
+```c++
+std::vector<int> v1 {1,2,3};
+
+std::next_permutation(v1.begin(), v1.end());  // v1 becomes {1,3,2}, returns true
+std::next_permutation(v1.begin(), v1.end());  // v1 becomes {2,1,3}, returns true
+std::next_permutation(v1.begin(), v1.end());  // v1 becomes {2,3,1}, returns true
+std::next_permutation(v1.begin(), v1.end());  // v1 becomes {3,1,2}, returns true
+std::next_permutation(v1.begin(), v1.end());  // v1 becomes {3,2,1}, returns true
+std::next_permutation(v1.begin(), v1.end());  // v1 becomes {1,2,3}, returns false
+
+std::prev_permutation(v1.begin(), v1.end(), [](auto &a, auto &b) { return a < b;});  // v1 becomes {3,2,1}, returns false
+std::prev_permutation(v1.begin(), v1.end(), [](auto &a, auto &b) { return a < b;});  // v1 becomes {3,1,2}, returns true
+std::prev_permutation(v1.begin(), v1.end(), [](auto &a, auto &b) { return a < b;});  // v1 becomes {2,3,1}, returns true
+std::prev_permutation(v1.begin(), v1.end(), [](auto &a, auto &b) { return a < b;});  // v1 becomes {2,1,3}, returns true
+std::prev_permutation(v1.begin(), v1.end(), [](auto &a, auto &b) { return a < b;});  // v1 becomes {1,3,2}, returns true
+std::prev_permutation(v1.begin(), v1.end(), [](auto &a, auto &b) { return a < b;});  // v1 becomes {1,2,3}, returns true
+```
+
+#### Map / Reduce / Scan
+
+`{bm} /(Library Functions\/Algorithms\/Categories\/Map \/ Reduce \/ Scan)_TOPIC/`
+
+```{prereq}
+Library Functions/Iterators/Adapters/Insert_TOPIC
+```
+
+```{note}
+Do these functions actually call into the `std::plus<>()` / `std::multiplies<>()`, or is it just using the plus operator (+) / multiply operate (*) directly? cppreference doesn't seem to say?
+```
+
+This section covers the common parallel primitives: map, reduce, and prefix sum (scan).
+
+These functions map values.
+
+| Function                                    | Description                                                                           |
+|---------------------------------------------|---------------------------------------------------------------------------------------|
+| `std::transform(itA1, itA2, itB1, m)`       | Transform `A` via `m()` into `B`                                                      |
+| `std::transform(itA1, itA2, itB1, itC, bt)` | Transform `A` and `B` such that each index is transformed via `bt()` and put into `C` |
+
+```c++
+// Transform to other range
+std::vector<int> v1 {1,2,3};
+std::vector<int> v2 {};
+std::transform(v1.begin(), v1.end(), std::back_insert_iterator { v2 }, [](auto &v) { return v*2; });  // v2 becomes {2,4,6}
+// Transforms in-place (destination is the source)
+std::vector<int> v3 {1,2,3};
+std::transform(v3.begin(), v3.end(), v3.begin(), [](auto &v) { return v*2; });  // v3 becomes {2,4,6}
+// Transforms two range in-place (destination is the first source)
+std::transform(v1.begin(), v1.end(), v2.begin(), v1.begin(), [](auto &e1, auto &e2) { return e1+e2; }); // v1 becomes {3,6,9}
+
+// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`
+// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that
+// simply calls push_back() on the underlying container.
+```
+
+These functions reduce values into a single element.
+
+| Function                                    | Description                                                                                   |
+|---------------------------------------------|-----------------------------------------------------------------------------------------------|
+| `std::reduce(it1, it2)`                     | Reduce using `+` with an initial value of range's element type created via no-arg constructor |
+| `std::reduce(it1, it2, v)`                  | Reduce using `+` with an initial value of `v`                                                 |
+| `std::reduce(it1, it2, v, f)`               | Reduce using `f()` with an initial value of `v`                                               |
+
+```{note}
+There's also `std::accumulate()`, which is like `std::reduce()` but guarantees the operation goes from left-to-right (left-fold). `std::reduce()` doesn't guarantee which elements get operated on first, meaning multiple runs of `std::reduce()` with the same inputs may return different result if the type isn't commutative.
+```
+
+```c++
+std::vector<int> v1 {1,2,3};
+
+int ret1 { std::reduce(v1.begin(), v1.end()) };     // returns 6
+int ret2 { std::reduce(v1.begin(), v1.end(), 0) };  // returns 6
+int ret3 { std::reduce(v1.begin(), v1.end(), 0, [](auto &e1, auto &e2) { return e1+e2; }) };  // returns 6
+```
+
+These functions apply prefix sum (scan) to values into a single element.
+
+| Function                                      | Description                                                                                               |
+|-----------------------------------------------|-----------------------------------------------------------------------------------------------------------|
+| `std::inclusive_scan(itA1, itA2, itB2)`       | Inclusive scan `A` to `B` using `+` with initial value of no-arg constructor created range element type   |
+| `std::inclusive_scan(itA1, itA2, itB2, f)`    | Inclusive scan `A` to `B` using `f()` with initial value of no-arg constructor created range element type |
+| `std::inclusive_scan(itA1, itA2, itB2, f, v)` | Inclusive scan `A` to `B` using `f()` with initial value of `v`                                           |
+| `std::exclusive_scan(itA1, itA2, itB2)`       | Exclusive scan `A` to `B` using `+` with initial value of no-arg constructor created range element type   |
+| `std::exclusive_scan(itA1, itA2, itB2, f)`    | Exclusive scan `A` to `B` using `f()` with initial value of no-arg constructor created range element type |
+| `std::exclusive_scan(itA1, itA2, itB2, f, v)` | Exclusive scan `A` to `B` using `f()` with initial value of `v`                                           |
+
+```{note}
+There's also `std::partial_sum()`, which is like `std::inclusive_scan()` but guarantees the operation goes from left-to-right (left-fold). The scan functions don't guarantee which elements get operated on first, meaning multiple runs of o the same scan function with the same inputs may return different result if the type isn't commutative.
+```
+
+```c++
+// THESE EXAMPLES ARE JUST FOR inclusive_scan(), BUT exclusive_scan() IS USED IN THE EXACT SAME WAY
+
+// Scan to other range
+std::vector<int> v1 {1,2,3};
+std::vector<int> v2 {};
+std::inclusive_scan(v1.begin(), v1.end(), std::back_insert_iterator { v2 });  // v2 becomes {1,3,6}
+// Scan in-place (destination is source)
+std::vector<int> v3 {1,2,3};
+std::inclusive_scan(v3.begin(), v3.end(), v3.begin());  // v3 becomes {1,3,6}
+
+std::vector<int> v4 {1,2,3};
+std::inclusive_scan(v4.begin(), v4.end(), v4.begin(),
+    [](auto &e1, auto &e2) { return e1+e2; }, 0);  // v4 becomes {1,3,6}
+
+// Note the use of std::back_insert_iterator in some of these examples. You need to use `std::back_insert_iterator`
+// when you want to insert elements rather than overwrite them. It creates a phony never-ending output iterator that
+// simply calls push_back() on the underlying container.
+```
+
+| Function                                           | Description                                                                      |
+|----------------------------------------------------|----------------------------------------------------------------------------------|
+| `std::transform_reduce(itA1, itA2, v, r, m)`       | `std::transform(itA1, itA2, m)` followed by  `std::reduce(it1, it2, v, r)`       |
+| `std::transform_reduce(itA1, itA2, itB1, v, r, m)` | `std::transform(itA1, itA2, itB1, m)` followed by  `std::reduce(it1, it2, v, r)` |
+| `std::transform_reduce(itA1, itA2, itB1, v)`       | `std::transform_reduce(itA1, itA2, itB1, v)` with `+` for reduce and `*` for map |
+
+```{note}
+There are also functions that are a combination of various functions above: `std::transform_reduce()`, `std::transform_inclusive_scan()`, and `std::transform_exclusive_scan()`.
+
+`std::inner_product()` is like `std::transform_reduce()` except it guarantees the operation goe from left-to-right (left-fold).
+```
 
 ## Span
 
