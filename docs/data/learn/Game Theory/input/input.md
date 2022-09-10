@@ -285,24 +285,137 @@
 
 
 
-TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
 
-TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
 
-TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
 
-TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
 
-TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
 
-TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
 
-TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
 
-TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
 
-TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
 
-TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
 
-TODO: start from pg 22 "For example, take the game-frame illustrated in Figure 2.1, let Sarah be Player 1 and Steven Player 2 and" and add tabular example to payoff function
+TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
+
+# Exercises
+
+## 2.9.1 Exercise 2.1 a
+
+Recall game frame in strategic form: `[I, S, O, f]`, where ...
+
+ * `I` is the set of players: `[1, 2, ..., n]`
+ * `S` is the set of strategies each player has: `[S1, S2, ..., Sn]`
+ * `O` is the set of outcomes: `[O1, O2, ..., Om]`.
+ * `f` is a function that maps each strategy profile in `S` to an outcome in `O`.
+
+As a game frame in strategic form, the game frame is described as ...
+
+```yaml
+I: 2  # 2 players, 1 is Antonia and 2 is Bob
+S:
+  - [Pick 2, Pick 4, Pick 6] # Player 1's strategies (Antonia)
+  - [Pick 1, Pick 3, Pick 5] # Player 2's strategies (Bob)
+O: [Mexican, Italian, Japanese]
+f:
+  [Pick 2, Pick 1]: Mexican
+  [Pick 2, Pick 3]: Mexican
+  [Pick 2, Pick 5]: Italian
+  [Pick 4, Pick 1]: Mexican
+  [Pick 4, Pick 3]: Italian
+  [Pick 4, Pick 5]: Japanese
+  [Pick 6, Pick 1]: Italian
+  [Pick 6, Pick 3]: Japanese
+  [Pick 6, Pick 5]: Japanese
+```
+
+As a table, the game frame is described as ...
+
+|           | B: Pick 1 | B: Pick 3 | B: Pick 5 |
+|-----------|-----------|-----------|-----------|
+| A: Pick 2 | Mexican   | Mexican   | Italian   |
+| A: Pick 4 | Mexican   | Italian   | Japanese  |
+| A: Pick 6 | Italian   | Japanese  | Japanese  |
+
+## 2.9.1 Exercise 2.1 b
+
+Recall reduced-form ordinal game in strategic form: `[I, S, fp]`, where ...
+
+ * `I` is the set of players: `[1, 2, ..., n]`
+ * `S` is the set of strategies each player has: `[S1, S2, ..., Sn]` (`S` on its own is represented as the complete set of strategy profiles for the game).
+ * `fp` is the set containing each player's payoff function: `[fp1, fp2, ..., fpn]`
+
+As a reduced-form ordinal game in strategic form, the game is described as ...
+
+```yaml
+I: 2  # 2 players, 1 is Antonia and 2 is Bob
+S:
+  - [Pick 2, Pick 4, Pick 6] # Player 1's strategies (Antonia)
+  - [Pick 1, Pick 3, Pick 5] # Player 2's strategies (Bob)
+fp:
+  - # Antonia's strategies to preference rankings
+    [Pick 2, Pick 1]: 3 # Mexican
+    [Pick 2, Pick 3]: 3 # Mexican
+    [Pick 2, Pick 5]: 2 # Italian
+    [Pick 4, Pick 1]: 3 # Mexican
+    [Pick 4, Pick 3]: 2 # Italian
+    [Pick 4, Pick 5]: 1 # Japanese
+    [Pick 6, Pick 1]: 2 # Italian
+    [Pick 6, Pick 3]: 1 # Japanese
+    [Pick 6, Pick 5]: 1 # Japanese
+    # Bob's strategies to preference rankings
+  - [Pick 2, Pick 1]: 2 # Mexican
+    [Pick 2, Pick 3]: 2 # Mexican
+    [Pick 2, Pick 5]: 3 # Italian
+    [Pick 4, Pick 1]: 2 # Mexican
+    [Pick 4, Pick 3]: 3 # Italian
+    [Pick 4, Pick 5]: 1 # Japanese
+    [Pick 6, Pick 1]: 3 # Italian
+    [Pick 6, Pick 3]: 1 # Japanese
+    [Pick 6, Pick 5]: 1 # Japanese
+```
+
+As a table, the reduced-form ordinal game in strategic form is described as ...
+
+|           | B: Pick 1 | B: Pick 3 | B: Pick 5 |
+|-----------|-----------|-----------|-----------|
+| A: Pick 2 | `[3,2]`   | `[3,2]`   | `[2,3]`   |
+| A: Pick 4 | `[3,2]`   | `[2,3]`   | `[1,1]`   |
+| A: Pick 6 | `[2,3]`   | `[1,1]`   | `[1,1]`   |
+
+## 2.9.1 Exercise 2.2 a
+
+As a table, the game frame is described as ...
+
+|           | B: Pick 0  | B: Pick 1  | B: Pick 2  |
+|-----------|------------|------------|------------|
+| A: Pick 2 | A:0/B:+2   | A:0/B:+3   | A:0/B:+2   |
+| A: Pick 4 | A:0/B:+2   | A:+5/B:+5  | A:+4/B:+2  |
+| A: Pick 6 | A:+4/B:+2  | A:+3/B:+7  | A:+2/B:0   |
+
+## 2.9.1 Exercise 2.2 b
+
+Recall that a player being selfish and greedy means that it only cares about how much it gain and prefers more gain over less
+
+If both Antonia and Bob are selfish and greedy, as a table, the reduced-form ordinal game in strategic form is described as ...
+
+|           | B: Pick 0  | B: Pick 1  | B: Pick 2  |
+|-----------|------------|------------|------------|
+| A: Pick 2 | `[0,2]`    | `[0,3]`    | `[0,2]`    |
+| A: Pick 4 | `[0,2]`    | `[5,5]`    | `[4,2]`    |
+| A: Pick 6 | `[4,2]`    | `[3,7]`    | `[2,0]`    |
+
+## 2.9.1 Exercise 2.3 a
+
+## 2.9.1 Exercise 2.3 b
+
+## 2.9.1 Exercise 2.3 c
