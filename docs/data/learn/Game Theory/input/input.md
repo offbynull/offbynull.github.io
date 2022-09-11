@@ -285,27 +285,27 @@
 
 
 
-TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
+TODO: then start from top of pg 24
 
-TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
+TODO: then start from top of pg 24
 
-TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
+TODO: then start from top of pg 24
 
-TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
+TODO: then start from top of pg 24
 
-TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
+TODO: then start from top of pg 24
 
-TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
+TODO: then start from top of pg 24
 
-TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
+TODO: then start from top of pg 24
 
-TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
+TODO: then start from top of pg 24
 
-TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
+TODO: then start from top of pg 24
 
-TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
+TODO: then start from top of pg 24
 
-TODO: Finish 2.9.1 exercise 2.3 a to c, then start from top of pg 24
+TODO: then start from top of pg 24
 
 # Exercises
 
@@ -416,6 +416,63 @@ If both Antonia and Bob are selfish and greedy, as a table, the reduced-form ord
 
 ## 2.9.1 Exercise 2.3 a
 
+<table>
+<tr><th>C: Yes Press</th><th>C: No Press</th></tr>
+<tr><td>
+
+|              | B: Yes Press | B: No Press |
+|--------------|--------------|-------------|
+| A: Yes Press |       A      |      B      |
+| A: No Press  |       B      |      A      |
+
+</td><td>
+
+|              | B: Yes Press | B: No Press |
+|--------------|--------------|-------------|
+| A: Yes Press |       B      |      A      |
+| A: No Press  |       A      |      C      |
+
+</td></tr>
+</table>
+
 ## 2.9.1 Exercise 2.3 b
 
+<table>
+<tr><th>C: Yes Press</th><th>C: No Press</th></tr>
+<tr><td>
+
+|              | B: Yes Press | B: No Press |
+|--------------|--------------|-------------|
+| A: Yes Press |   `[1,0,0]`  |  `[0,1,0]`  |
+| A: No Press  |   `[0,1,0]`  |  `[1,0,0]`  |
+
+</td><td>
+
+|              | B: Yes Press | B: No Press |
+|--------------|--------------|-------------|
+| A: Yes Press |   `[0,1,0]`  |  `[1,0,0]`  |
+| A: No Press  |   `[1,0,0]`  |  `[0,0,1]`  |
+
+</td></tr>
+</table>
+
 ## 2.9.1 Exercise 2.3 c
+
+<table>
+<tr><th>C: Yes Press</th><th>C: No Press</th></tr>
+<tr><td>
+
+|              | B: Yes Press | B: No Press |
+|--------------|--------------|-------------|
+| A: Yes Press |   `[2,0,0]`  |  `[0,2,1]`  |
+| A: No Press  |   `[0,2,1]`  |  `[2,0,0]`  |
+
+</td><td>
+
+|              | B: Yes Press | B: No Press |
+|--------------|--------------|-------------|
+| A: Yes Press |   `[0,2,1]`  |  `[2,0,0]`  |
+| A: No Press  |   `[2,0,0]`  |  `[0,1,2]`  |
+
+</td></tr>
+</table>
