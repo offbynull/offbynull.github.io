@@ -15844,6 +15844,27 @@ sequence_search.BurrowsWheelerTransform_Checkpointed main_test
 }
 ```
 
+This algorithm can be extended to support mismatches by searching for the seeds of some substring. The algorithm returns the indexes within the original sequence where a seed is, at which point seed extension is applied and the relevant segment of the original sequence is extracted and tested to see if its within the mismatch limit.
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py
+python
+# MARKDOWN_MISMATCH\s*\n([\s\S]+)\n\s*# MARKDOWN_MISMATCH\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Checkpointed main_mismatch
+{
+  sequence: 'banana ankle baxana orange banxxa vehicle',
+  search_sequences: ['anana', 'banana', 'ankle'],
+  end_marker: ¶,
+  pad_marker: _,
+  max_mismatch: 2,
+  last_tallies_checkpoint_n: 3,
+  first_indexes_checkpoint_n: 3
+}
+```
+
 ### BLAST
 
 Covered in section 9.14
@@ -17082,6 +17103,94 @@ PracticalGEODatasetClustering
   edge_scale: 3.0
 }
 ```
+
+## Point Mutations / Single Nulceotide Polymorphism
+
+`{bm} /(Stories\/Point Mutations \/ Single Nulceotide Polymorphism)_TOPIC/`
+
+A mutation where a single nucleotide is substituted for another has two different classifications: point mutation and single nucleotide polymorphism.
+
+A single nucleotide polymorphism (SNP) is a variation at a specific location of a DNA sequence -- it's one choice out of multiple possible nucleotides choices at that position (e.g. G out of {C, G, T}). Across a population, if a specific change at that position occurs frequently enough, it's considered a SNP rather than a mutation. Specifically, if the frequency of the change occurring is ...
+
+ * less than 1%, it's considered a point mutation.
+ * at least 1%, it's considered a SNP.
+
+```{svgbob}
+... - A - C - T - G - T - G - C -.     .- A - T - T - A - G - ...
+                                 +- A -+ "(80% frequency -- SNP)"
+                                 +- T -+ "(5% frequency -- SNP)"
+                                 +- C -+ "(4.5% frequency -- SNP)"
+                                 '- G -' "(0.5% frequency -- point mutation)"
+```
+
+Studies commonly attempt to associate SNPs with diseases. By comparing SNPs between a diseased population vs non-diseased population, scientists are able to discover which SNPs are responsible for a disease / increase the risk of a disease occurring. For example, a study might find that the population of heart attack victims had a location with a higher likelihood of G vs C.
+
+```{svgbob}
+... - A - A - A - G - T - A -.     .- A - G - G - A - A - ...
+                             +- G -+ "(80% in heart attack population / 20% in healthy population)"
+                             '- C -' "(20% in heart attack population / 80% in healthy population)"
+```
+
+### Find Substitutions
+
+```{prereq}
+Algorithms/Single Nucleotide Polymorphism_TOPIC
+```
+
+`{bm} /(Stories\/Point Mutations \/ Single Nulceotide Polymorphism\/Find Substitutions)_TOPIC/`
+
+The SNPs / point mutations that an individual organism has are identified through a process called read mapping. Read mapping attempts to align the individual organism's sequenced DNA segments (e.g. read_SEQs, read-pairs, contigs) to an idealized genome for the population that organism belongs to (e.g. species, race, etc..), called a reference genome. The result of the alignment should have few indels and a fair amount of mismatches, where those mismatches identify that organism's SNPs / point mutations.
+
+Since read mapping for SNP / point mutation identification focuses on identifying substitutions and not indels, traditional sequence alignment algorithms aren't required. More efficient substring matching algorithms can be used instead. Specifically, if you have a sequence that you're trying to map and you know it can tolerate d mismatches at most, any substring matching algorithm will work.
+
+If a sequence can tolerate d mismatches, separate it into d + 1 blocks. It's impossible for d mismatches to exist across d + 1 blocks. There are more blocks than there are mismatches -- at least one of the blocks must match exactly.
+
+These blocks are called seeds, and the act of finding seeds and testing the hamming distance of the extended region is called seed extension.
+
+```{svgbob}
+* "ACGTT separated into 3 seeds. It's impossible for 2"
+  "mismatches to be spread across 3 seeds. Dots represent"
+  "mismatches. Exact matching seeds wrapped in brackets."
+
+( A C )    ( G )      ● ● 
+( A C )      ●        T ● 
+  A ●        G        T ● 
+  ● C      ( G )      T ● 
+( A C )      ●        ● T 
+  A ●      ( G )      ● T 
+  ● C      ( G )      ● T 
+  A ●        ●      ( T T )
+  ● C        ●      ( T T )
+  ● ●      ( G )    ( T T )
+```
+
+The example below attempted to map a set of read_SEQs to reference genome for Mycoplasma bovis.
+
+TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
+
+TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
+
+TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
+
+TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
+
+TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
+
+TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
+
+TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
+
+TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
+
+TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
+
+TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
+
+TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
+
+TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
+
+TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
 
 # Ideas
 
@@ -21116,9 +21225,9 @@ PracticalGEODatasetClustering
    The entire point of the suffix array is that it's just an array of pointers to the suffix in the source sequence. Since the pointers are sorted (sorted by the suffixes they point to), you can quickly find if a substring exists just by doing a binary search on the suffix array (if a substring exists, it must be a prefix of one of the suffixes).
    ```
 
- * `{bm} Burrows-Wheeler transform/(burrows[-\s]wheeler transform|first[-\s]last property)/i` `{bm} /(BWT)/` - A matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. The sequence must have an end marker where the end marker comes first in the lexicogrpahical sort order (similar to suffix arrays).
+ * `{bm} Burrows-Wheeler transform/(burrows[-\s]wheeler transform)/i` `{bm} /(BWT)/` - A matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. The sequence must have an end marker where the end marker comes first in the lexicogrpahical sort order (similar to suffix arrays).
  
-   The example below is the burrows-wheeler transform of "banana".
+   The example below is the burrows-wheeler transform of "banana¶", where *¶* is the end marker.
    
    1. Cyclic rotations.
 
@@ -21143,26 +21252,25 @@ PracticalGEODatasetClustering
       | b | a | n | a | n | a | ¶ |
       | n | a | ¶ | b | a | n | a |
       | n | a | n | a | ¶ | b | a |
-     
-    BWT matrices have a special property called the first-last property: For each symbol in the sequence, the order in which instances of that symbol appear in the first column matches that of the last column. Continuing with the above example, adding symbol instance counts to the banana becomes [
-    b<sub>1</sub>,
-    a<sub>1</sub>,
-    n<sub>1</sub>,
-    a<sub>2</sub>,
-    n<sub>2</sub>,
-    a<sub>3</sub>,
-    ¶<sub>1</sub>
-    ]. For each symbol, even though the position of symbol instances are different between the first and last columns, the order in which those instances appear in are the same.
 
-    * Symbol a instances are ordered as [
-      `{h}#f00 a<sub>3</sub>`,
-      `{h}#b00 a<sub>2</sub>`,
-      `{h}#800 a<sub>1</sub>`
-      ] in both the first and last column.
-    * Symbol n instances are ordered as [
-      `{h}#00f n<sub>2</sub>`,
-      `{h}#00b n<sub>1</sub>`
-      ] in both the first and last column.
+   BWT matrices have a special property called the first-last property which makes them suitable for quickly determining if and how many times a substring exists in the original sequence.
+     
+ * `{bm} first-last property/(first[-\s]last property)/i` - The property of BWT matrices that guarantees consistent ordering of a symbols instances between the first and last columns of a BWT matrix (a symbol's instances appear in the first column as it does in the last column).
+
+   Consider the sequence "banana¶": The symbols in "banana¶" are {a, b, n, ¶}. At index ...
+
+   0. the first *b* occurs: b<sub>1</sub>
+   1. the first *a* occurs: a<sub>1</sub>
+   2. the first *n* occurs: n<sub>1</sub>
+   3. the second *a* occurs: a<sub>2</sub> 
+   4. the second *n* occurs: n<sub>2</sub>
+   5. the third *a* occurs: a<sub>3</sub>
+   6. the first *¶* occurs: ¶<sub>1</sub>
+
+   Adding symbol instance counts to the sequence becomes [b<sub>1</sub>, a<sub>1</sub>, n<sub>1</sub>, a<sub>2</sub>, n<sub>2</sub>, a<sub>3</sub>, ¶<sub>1</sub>]. In the BWT matrix, for each symbol, even though the position of symbol instances are different between the first and last columns, the order in which those instances appear in are the same.
+
+    * Symbol *a* instances are ordered as [`{h}#f00 a<sub>3</sub>`, `{h}#b00 a<sub>2</sub>`, `{h}#800 a<sub>1</sub>`] in both the first and last column.
+    * Symbol *n* instances are ordered as [`{h}#00f n<sub>2</sub>`, `{h}#00b n<sub>1</sub>`] in both the first and last column.
 
    |                         |               |               |               |               |               |                         |
    |-------------------------|---------------|---------------|---------------|---------------|---------------|-------------------------|
@@ -21234,10 +21342,6 @@ PracticalGEODatasetClustering
       n1,a1      |  n1,a1         n1,a1   |
                  '------------------------'
                          "1 x nan"         
-   ```
-
-   ```{note}
-   If storing, you only need to store the last column because the first column can be reconstructed just be sorting the last column.
    ```
 
  * `{bm} pre-order traversal/(pre[-\s]?order traversal)/i` - A form of depth-first traversal for binary trees where, starting from the root node, ...
