@@ -2154,6 +2154,8 @@ The stop marker tells the ribosome to stop translating / the protein is complete
 
 ### Codon Encode
 
+`{bm} /(Algorithms\/Peptide Sequence\/Codon Encode)_TOPIC/`
+
 **WHAT**: Given a DNA sequence, map each codon to the amino acid it represents. In total, there are 6 different ways that a DNA sequence could be translated:
 
  1. Since the length of a codon is 3, the encoding of the peptide could start from offset 0, 1, or 2 (referred to as reading frames).
@@ -2181,6 +2183,8 @@ AAAAGAACCTAATCTTAAAGGAGATGATGATTCTAA
 ```
 
 ### Codon Decode
+
+`{bm} /(Algorithms\/Peptide Sequence\/Codon Decode)_TOPIC/`
 
 **WHAT**: Given a peptide, map each amino acid to the DNA sequences it represents. Since each amino acid can map to multiple codons, there may be multiple DNA sequences for a single peptide.
 
@@ -15181,7 +15185,7 @@ The deserialization process described above also helps with computing the first 
 
 Then, extract the last column ("annb¶aa") and feed it into the deserialization process. The deserialization process will annotate that last column with symbol instance counts, then sort it to create the first column (with symbol instance counts).
 
-|       |       |
+| first | last  |
 |-------|-------|
 | (¶,1) | (a,1) |
 | (a,1) | (n,1) |
@@ -15212,8 +15216,8 @@ The first and last BWT matrix columns in the example above have a special proper
  * *a* has its symbol instances ordered as [`{h}#f00 (a,1)`, `{h}#b00 (a,2)`, `{h}#800 (a,3)`] in both the first and last column (1 comes first, then 2, then 3).
  * *n* has its symbol instances ordered as [`{h}#00f (n,1)`, `{h}#00b (n,2)`] in both the first and last column  (1 comes first, then 2).
 
-|              |              |
-|--------------|--------------|
+|      first      |      last       |
+|-----------------|-----------------|
 |          (¶,1)  | `{h}#f00 (a,1)` |
 | `{h}#f00 (a,1)` | `{h}#00f (n,1)` |
 | `{h}#b00 (a,2)` | `{h}#00b (n,2)` |
@@ -15274,7 +15278,7 @@ Ultimately, it seems to be testing in a similar way as before but it doesn't try
 
 The backsweep algorithm is a different way of testing for a substring using the first and last columns of a BWT matrix. In the deserialization algorithm section, the final method of constructing the first and last columns of a BWT matrix had a distinct property: The first column was sorted by both symbol and symbol instance count. For example, given the first and last columns of the BWT matrix for "banana¶", the *a* symbol instances will appear contiguously in the first column as [`{h}#f00 (a,1)`, `{h}#b00 (a,2)`, `{h}#800 (a,3)`].
 
-|                 |                 |
+|      first      |       last      |
 |-----------------|-----------------|
 |          (¶,1)  | `{h}#f00 (a,1)` |
 | `{h}#f00 (a,1)` |          (n,1)  |
@@ -15290,10 +15294,10 @@ Recall the property of the last column of the BWT matrix as well: For each symbo
 This is an important point to understanding why this algorithm works, explained in a note further below.
 ```
 
-The backsweep algorithm exploits the above sorted first column property to test for a substring by performing isolated scans of the BWT table. For each element of the test string, it scans a range within the BWT table, where that scan defines the range to scan for the next element. For example, searching for "bba" in "abbazabbabbu¶" starts by searching the entire BWT table for rows where `last_col=a` (3rd letter of "bba"): [(a,1), (a,2), (a,3), (a,4)]. Then, the whole BWT table is isolated such that the ...
+The backsweep algorithm exploits the above sorted first column property to test for a substring by performing isolated scans of the BWT table. For each element of the test string, it scans a range within the BWT table, where that scan defines the range to scan for the next element. For example, searching for "bba" in "abbazabbabbu¶" starts by searching the entire BWT table for rows where `last_col='a'` (3rd letter of "bba"): [(a,1), (a,2), (a,3), (a,4)]. Then, the whole BWT table is isolated such that the ...
 
- * head of the BWT table is `min_first_col_idx([(a,1), (a,2), (a,3), (a,4)])`: (a,1) is at index 1.
- * tail of the BWT table is `max_first_col_idx([(a,1), (a,2), (a,3), (a,4)])`: (a,4) is at index 4.
+ * head of the BWT table is `min_first_col_idx([('a',1), ('a',2), ('a',3), ('a',4)])`: (a,1) is at index 1.
+ * tail of the BWT table is `max_first_col_idx([('a',1), ('a',2), ('a',3), ('a',4)])`: (a,4) is at index 4.
 
 ```{svgbob}
 "isolate to range where first_col a1-a4"
@@ -15316,10 +15320,10 @@ The backsweep algorithm exploits the above sorted first column property to test 
 +--+--+                        
 ```
 
-Essentially, the above operation isolated the BWT table to all substrings of size 2 in the original sequence that end in *a*. This isolated BWT table is then again searched for rows where `last_col=b` (2nd letter of "bba"): [(b,1), (b,2)]. The BWT table's isolation is then reset such that the ...
+Essentially, the above operation isolated the BWT table to all substrings of size 2 in the original sequence that end in *a*. This isolated BWT table is then again searched for rows where `last_col='b'` (2nd letter of "bba"): [(b,1), (b,2)]. The BWT table's isolation is then reset such that the ...
 
- * head of the BWT table is `min_first_col_idx([(b,1), (b,2)])`: (b,1) is at index 5.
- * tail of the BWT table is `max_first_col_idx([(b,1), (b,2)])`: (b,2) is at index 6.
+ * head of the BWT table is `min_first_col_idx([('b',1), ('b',2)])`: (b,1) is at index 5.
+ * tail of the BWT table is `max_first_col_idx([('b',1), ('b',2)])`: (b,2) is at index 6.
 
 ```{svgbob}
 "isolate to range where first_col a1-a4"
@@ -15345,10 +15349,10 @@ Essentially, the above operation isolated the BWT table to all substrings of siz
                        "isolate to range where first_col b1-b2"
 ```
 
-The above operation isolated the BWT table further to all substrings of size 3 in the original sequence that end in "ba". This isolated BWT table is then again searched for rows where `last_col=b` (1st letter of "bba"): [(b,3), (b,4)]. The BWT table's isolation is then reset such that the ...
+The above operation isolated the BWT table further to all substrings of size 3 in the original sequence that end in "ba". This isolated BWT table is then again searched for rows where `last_col='b'` (1st letter of "bba"): [(b,3), (b,4)]. The BWT table's isolation is then reset such that the ...
 
- * head of the BWT table is `min_first_col_idx([(b,3), (b,4)])`: (b,3) is at index 7.
- * tail of the BWT table is `max_first_col_idx([(b,3), (b,4)])`: (b,4) is at index 8.
+ * head of the BWT table is `min_first_col_idx([('b',3), ('b',4)])`: (b,3) is at index 7.
+ * tail of the BWT table is `max_first_col_idx([('b',3), ('b',4)])`: (b,4) is at index 8.
 
 Now that all letters of the test string "bba" are consumed, the number of instances for "bba" should be `tail_index - head_index + 1`: `8 - 7 + 1 = 2`. Since there are two rows in the isolated BWT table at this point, there are two instances of "bba".
 
@@ -15394,12 +15398,12 @@ The point being that the *b* symbol instance counts aren't scattered / random, i
 
 For example, imagine what would happen if the last column were ...
 
- * [(b,2), (b,3), (b,4), (b,5)] - the rows where `first_col=[(b,2),(b,3),(b,4),(b,5)]` are contiguous rows.
- * [(b,2), ?,     (b,3), (b,4)] - the rows where `first_col=[(b,2),(b,3),(b,4)]` are contiguous rows.
- * [(b,3), ?,     ?,     (b,4)] - the rows where `first_col=[(b,3),(b,4)]` are contiguous rows.
- * [?,     (b,3), ?,     (b,4)] - the rows where `first_col=[(b,3),(b,4)]` are contiguous rows.
- * [(b,2), ?,     ?,     (b,3)] - the rows where `first_col=[(b,2),(b,3)]` are contiguous rows.
- * [?,     (b,2), ?,     ?    ] - the rows where `first_col=[(b,2)]` are contiguous rows.
+ * [(b,2), (b,3), (b,4), (b,5)] - the rows where `first_col=[('b',2),('b',3),('b',4),('b',5)]` are contiguous rows.
+ * [(b,2), ?,     (b,3), (b,4)] - the rows where `first_col=[('b',2),('b',3),('b',4)]` are contiguous rows.
+ * [(b,3), ?,     ?,     (b,4)] - the rows where `first_col=[('b',3),('b',4)]` are contiguous rows.
+ * [?,     (b,3), ?,     (b,4)] - the rows where `first_col=[('b',3),('b',4)]` are contiguous rows.
+ * [(b,2), ?,     ?,     (b,3)] - the rows where `first_col=[('b',2),('b',3)]` are contiguous rows.
+ * [?,     (b,2), ?,     ?    ] - the rows where `first_col=[('b',2)]` are contiguous rows.
 
 In contrast, the following last column scenarios will never happen ...
 
@@ -15441,12 +15445,13 @@ Recall the terminology used for BWT:
  * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
 ```
 
-The deserialization algorithm discussed earlier generates a first column with certain distinct properties:
+The deserialization algorithm discussed earlier generates a first column with certain distinct properties: For each symbol, it guarantees that all of that symbol's instances in `first` ...
 
-1. The first column is sorted by both symbol and symbol instance count.
-2. The symbol instance counts for some symbol starts from 1 and increments by 1.
+ * appear one after the other (contiguous),
+ * start with symbol instance count of 1,
+ * increment their symbol instance count by 1 as they go down (sorted ascending).
 
-For example, given the first and last columns of the BWT matrix for "banana¶", the *a* symbol instances will appear contiguously in the first column as [`{h}#f00 (a,1)`, `{h}#b00 (a,2)`, `{h}#800 (a,3)`].
+For example, given the BWT records for "banana¶", *a*'s symbol instances will appear contiguously in `first` as [`{h}#f00 (a,1)`, `{h}#b00 (a,2)`, `{h}#800 (a,3)`].
 
 |      first      |      last       | last_to_first |
 |-----------------|-----------------|---------------|
@@ -15467,7 +15472,7 @@ The column `last_to_first` wasn't discussed in the prerequisites but it was in t
 So, at index 6 (where `last=(a,3)`), the `last_to_first` value points to index 3 (where `first=(a,3)`). Recall that `last_to_first` is just there to allow for quickly testing for a substring, which goes in reverse from the last column to the first column.
 ```
 
-The collapsed first algorithm uses a more memory efficient data structure to represent the same information as the table above. Because of the properties of `first` mentioned in the beginning of this section, this data structure is able to collapse `first` such that only the index of each symbol's initial occurrence within `first` is retained: `first_occurrence_map`.
+The collapsed first algorithm uses a more memory efficient data structure to represent BWT records. Because of `first`'s properties mentioned in the beginning of this section, you can collapse `first` such that only the index of each symbol's initial occurrence is retained: `first_occurrence_map`.
 
 <table>
 <tr><th>records</th><th>first_occurrence_map</th></tr>
@@ -15486,37 +15491,29 @@ The collapsed first algorithm uses a more memory efficient data structure to rep
 </td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
 </table>
 
-For example, because symbol instances of *n* started at index 5 of `first` in the original table, the collapsed version has `first_occurrence_map[n] = 5`.
+For example, because *a*'s symbol instances start at index 1 of `first` in the original example, in the collapsed example `first_occurrence_map['a'] = 1`. You can use `first_occurrence_map['a']` to determine the index of any *a* symbol instance in `first`:
+
+ * (a,1) is at `(first_occurrence_map['a']+1)-1 = 1+1-1 = 1`.
+ * (a,2) is at `(first_occurrence_map['a']+2)-1 = 1+2-1 = 2`.
+ * (a,3) is at `(first_occurrence_map['a']+3)-1 = 1+3-1 = 3`.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py
 python
-# MARKDOWN_BUILD_TABLE_AND_COLLAPSED_FIRST\s*\n([\s\S]+)\n\s*# MARKDOWN_BUILD_TABLE_AND_COLLAPSED_FIRST\s*[\n$]
+# MARKDOWN_FIRST_INDEX\s*\n([\s\S]+)\n\s*# MARKDOWN_FIRST_INDEX\s*[\n$]
 ```
 
 ```{ch9}
-sequence_search.BurrowsWheelerTransform_CollapsedFirst main_table_and_collapsed_first
+sequence_search.BurrowsWheelerTransform_CollapsedFirst main_first_index
 {
   sequence: banana¶,
-  end_marker: ¶
+  end_marker: ¶,
+  symbol: a,
+  symbol_count: 2
 }
 ```
 
-Given just `first_occurrence_map`, finding the index where some symbol instance should be in `first` is computed as `(first_occurrence_map[inst.symbol] + inst.count) - 1`. For example, `first_occurrence_map[a] = 1` states that index 1 within `first` is where symbol instances for *a* start. Since the properties discussed at the beginning of this section guarantee that all *a* symbol instances in `first` ...
-
-* appear one after the other (contiguous),
-* start with a symbol instance count of 1,
-* increment their symbol instance count by 1 as they go down (sorted),
-
-..., finding the index where some *a* symbol instance should be in `first` is done by simply adding that symbol instance's count to `first_occurrence_map[a]` and subtracting 1:
-
-```python
-(first_occurrence_map[a] + 1) - 1 = (1 + 1) - 1 = 1  # index where first=(a,1)
-(first_occurrence_map[a] + 2) - 1 = (1 + 2) - 1 = 2  # index where first=(a,2)
-(first_occurrence_map[a] + 3) - 1 = (1 + 3) - 1 = 3  # index where first=(a,3)
-```
-
-This is effectively an on the fly calculation of `last_to_first`: For any symbol instance in `last`, feeding that symbol instance to the algorithm above computes its index within `first`. As such, `last_to_first` is not necessary in the collapsed first algorithm's data structure. This gives huge memory savings because both `last_to_first` is gone and `first` is collapsed to `first_occurrence_map`.
+Recall that some row's `last_to_first` simply maps that row's `last` value to its index in `first` (`last_to_first[i]` determines the index within `first` where `last[i]` is). The algorithm above is effectively an on-the-fly calculation of `last_to_first`: Feeding any symbol instance from `last` to the above algorithm computes that symbol instance's index within `first`. As such, you can remove `last_to_first` from the BWT records as well.
 
 <table>
 <tr><th>records</th><th>first_occurrence_map</th></tr>
@@ -15535,6 +15532,24 @@ This is effectively an on the fly calculation of `last_to_first`: For any symbol
 </td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
 </table>
 
+By collapsing `first` into `first_occurrence_map` and removing `last_to_first`, you're greatly reducing the amount of memory required by the algorithm.
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py
+python
+# MARKDOWN_BUILD_TABLE_AND_COLLAPSED_FIRST\s*\n([\s\S]+)\n\s*# MARKDOWN_BUILD_TABLE_AND_COLLAPSED_FIRST\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_CollapsedFirst main_table_and_collapsed_first
+{
+  sequence: banana¶,
+  end_marker: ¶
+}
+```
+
+The original backsweep testing algorithm still works with this revised data structure. The only modification you need to make is to replace usages of `last_to_first` with the `first` index computation algorithm described above.
+
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py
 python
@@ -15550,12 +15565,63 @@ sequence_search.BurrowsWheelerTransform_CollapsedFirst main_test
 }
 ```
 
-#### Checkpointed Ranks Algorithm
+The backsweep testing algorithm can go through one further optimization thanks to `first_occurrence_map`: The initial top-to-bottom scan isn't needed anymore. For example, in the original backsweep testing algorithm, searching for "bba" in "abbazabbabbu¶" starts by scanning over all rows for `last='a'` to determine where the *a* symbol instances start and end in `first`.
 
-`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Checkpointed Ranks Algorithm)_TOPIC/`
+```{svgbob}
+"isolate to range where first_col a1-a4"    "isolate to range where first_col b3-b4"
+   .-----------------------.                 .-----------------------.
+   |                       |                 |                       |
++--+--+                    v                 |                       |
+|¶1|u1|                 +--+--+              |                       |
+|a1|z1|                 |a1|z1|              |                       |
+|a2|¶1|                 |a2|¶1|              |                       |
+|a3|b1|                 |a3|b1|              |                       |
+|a4|b2|                 |a4|b2|           +--+--+                    |
+|b1|b3|                 +--+--+           |b1|b3|                    v
+|b2|b4|                    |              |b2|b4|                 +--+--+
+|b3|a1|                    |              +--+--+                 |b3|a1|
+|b4|a2|                    |                 ^                    |b4|a2|
+|b5|a3|                    |                 |                    +--+--+
+|b6|b5|                    |                 |               "(2 instances of bba)"
+|u1|b6|                    |                 |
+|z1|a4|                    |                 |
++--+--+                    |                 |   
+                           |                 |   
+                           '-----------------'
+                    "isolate to range where first_col b1-b2"
+```
+
+With `first_occurrence_map`, that initial scan isn't necessary anymore. The row where *a* symbol instances ...
+
+ * start is `first_occurrence_map['a'] = 1`.
+ * end is `first_occurrence_map['b']-1 = 5-1 = 4`.
+
+```{note}
+The end is referencing *b* because *b* comes after *a* in lexicographic order. So, what the above "end" calculation is doing is getting the index of the initial *b* symbol instance and subtracting it by 1, which ends up being the index of the last *a* symbol instance.
+```
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py
+python
+# MARKDOWN_TEST_INITIAL_PASS_OPTIMIZED\s*\n([\s\S]+)\n\s*# MARKDOWN_TEST_INITIAL_PASS_OPTIMIZED\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_CollapsedFirst main_test
+{
+  sequence: banana¶,
+  end_marker: ¶,
+  test: ana
+}
+```
+
+#### Ranks Algorithm
+
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Ranks Algorithm)_TOPIC/`
 
 ```{prereq}
 Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Collapsed First Algorithm_TOPIC
+Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Backsweep Algorithm_TOPIC
 ```
 
 ```{note}
@@ -15566,14 +15632,15 @@ Recall the terminology used for BWT:
  * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
 ```
 
-The deserialization algorithm / collapsed first algorithm discussed earlier generates a first column with certain distinct properties:
+The deserialization algorithm / collapsed first algorithm discussed earlier generates a first column with certain distinct properties: For each symbol, it guarantees that all of that symbol's instances in `first` ...
 
-1. The first column is sorted by both symbol and symbol instance count.
-2. The symbol instance counts for some symbol starts from 1 and increments by 1.
+* appear one after the other (contiguous),
+* start with symbol instance count of 1,
+* increment their symbol instance count by 1 as they go down (sorted ascending).
 
-Given this, the first-last property guarantees that each symbol in the last column, if you were to consider that symbol just by itself, has its instances listed out in the exact same fashion: Starts at 1 and increments by 1 as its instances appear from top-to-bottom. For example, given the first and last columns of the BWT matrix for "banana¶", the symbol instances of *a* in both first and last columns appear as [`{h}#f00 (a,1)`, `{h}#b00 (a,2)`, `{h}#800 (a,3)`].
+Given this, the first-last property guarantees that each symbol in `last`, if you were to consider that symbol just by itself, has its instances listed out in the exact same fashion: Starts at 1 and increments by 1 as its instances appear from top-to-bottom. For example, given the `first` and `last` of the BWT records for "banana¶", *a*'s symbol instances in both `first` and `last` appear as [`{h}#f00 (a,1)`, `{h}#b00 (a,2)`, `{h}#800 (a,3)`].
 
-|                 |                 |
+|      first      |      last       |
 |-----------------|-----------------|
 |          (¶,1)  | `{h}#f00 (a,1)` |
 | `{h}#f00 (a,1)` |          (n,1)  |
@@ -15583,10 +15650,10 @@ Given this, the first-last property guarantees that each symbol in the last colu
 |          (n,1)  | `{h}#b00 (a,2)` |
 |          (n,2)  | `{h}#800 (a,3)` |
 
-The ranks algorithm exploits the "starts at 1 and increments by 1" property of symbols in the last column for further memory savings. The ranks algorithm modifies the collapsed first algorithm's data structure by removing symbol instance counts from `last` and instead replacing them with ranks: A tally of how many times each symbol was encountered until reaching the current index.
+The ranks algorithm exploits the "starts at 1 and increments by 1" property of symbols in `last` to greatly speed up the backsweep testing algorithm. To start with, the ranks algorithm modifies the collapsed first algorithm's data structure by removing symbol instance counts from `last` and instead replacing them with ranks: A tally of how many times each symbol was encountered until reaching the current index.
 
 <table>
-<tr><th>records (original)</th><th>records (using ranks)</th><th>first_occurrence_map</th></tr>
+<tr><th>records (collapsed first)</th><th>records (ranks)</th><th>first_occurrence_map</th></tr>
 <tr><td>
 
 |  last   |
@@ -15611,7 +15678,7 @@ The ranks algorithm exploits the "starts at 1 and increments by 1" property of s
 |  a   | {¶: 1, a: 2, b: 1, n: 2} |
 |  a   | {¶: 1, a: 3, b: 1, n: 2} |
 
-</td><td>{¶: 0, a: 1, b: 4, n: =5}</td></tr>
+</td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
 </table>
 
 ```{output}
@@ -15628,7 +15695,7 @@ sequence_search.BurrowsWheelerTransform_Ranks main_build
 }
 ```
 
-At any index, the symbol in `last` can determine its symbol instance count by looking at `last_tallies`. For example, to get the symbol instance count at index 2 of the example above (where `last=n`), `last_tallies[2][n] = 2`.
+At any index, you can determine the symbol instance count of the symbol in `last` by looking at `last_tallies`. For example, to get the symbol instance count at index 2 of the example above (where `last='n'`), `last_tallies[2]['n'] = 2`.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py
@@ -15644,7 +15711,165 @@ sequence_search.BurrowsWheelerTransform_Ranks main_to_symbol_instance_count
 }
 ```
 
-While replacing `last`'s symbol instance counts with `last_tallies` actually increases memory usage, it allows for a concept known as checkpointing: Instead of retaining a value at every index of `last_tallies`, leave some empty. The entries that have a value are called checkpoints.
+With the inclusion of `last_tallies`, the backsweep algorithm doesn't need to scan over `last` anymore.  For example, in the original backsweep testing algorithm, searching for "bba" in "abbazabbabbu¶" starts by scanning over all rows for `last='a'` to determine where the *a* symbol instances start and end in `first`.
+
+```{svgbob}
+"isolate to range where first_col a1-a4"    "isolate to range where first_col b3-b4"
+   .-----------------------.                 .-----------------------.
+   |                       |                 |                       |
++--+--+                    v                 |                       |
+|¶1|u1|                 +--+--+              |                       |
+|a1|z1|                 |a1|z1|              |                       |
+|a2|¶1|                 |a2|¶1|              |                       |
+|a3|b1|                 |a3|b1|              |                       |
+|a4|b2|                 |a4|b2|           +--+--+                    |
+|b1|b3|                 +--+--+           |b1|b3|                    v
+|b2|b4|                    |              |b2|b4|                 +--+--+
+|b3|a1|                    |              +--+--+                 |b3|a1|
+|b4|a2|                    |                 ^                    |b4|a2|
+|b5|a3|                    |                 |                    +--+--+
+|b6|b5|                    |                 |               "(2 instances of bba)"
+|u1|b6|                    |                 |
+|z1|a4|                    |                 |
++--+--+                    |                 |   
+                           |                 |   
+                           '-----------------'
+                    "isolate to range where first_col b1-b2"
+```
+
+With `last_tallies` and `first_occurrence_map`, you can quickly compute where `last='a'` starts and ends in `first`.
+
+<table>
+<tr><th>records (using ranks)</th><th>first_occurrence_map</th></tr>
+<tr><td>
+
+| last |          last_tallies          |
+|------|--------------------------------|
+|  u   | {u: 1, z: 0, ¶: 0, b: 0, a: 0} |
+|  z   | {u: 1, z: 1, ¶: 0, b: 0, a: 0} |
+|  ¶   | {u: 1, z: 1, ¶: 1, b: 0, a: 0} |
+|  b   | {u: 1, z: 1, ¶: 1, b: 1, a: 0} |
+|  b   | {u: 1, z: 1, ¶: 1, b: 2, a: 0} |
+|  b   | {u: 1, z: 1, ¶: 1, b: 3, a: 0} |
+|  b   | {u: 1, z: 1, ¶: 1, b: 4, a: 0} |
+|  a   | {u: 1, z: 1, ¶: 1, b: 4, a: 1} |
+|  a   | {u: 1, z: 1, ¶: 1, b: 4, a: 2} |
+|  a   | {u: 1, z: 1, ¶: 1, b: 4, a: 3} |
+|  b   | {u: 1, z: 1, ¶: 1, b: 5, a: 3} |
+|  b   | {u: 1, z: 1, ¶: 1, b: 6, a: 3} |
+|  a   | {u: 1, z: 1, ¶: 1, b: 6, a: 4} |
+
+</td><td>{¶: 0, a: 1, b: 5, u: 11, z: 12}</td></tr>
+</table>
+
+For the initial scan iterator (scans all rows), the rows where `first=a` ...
+
+ * start at `first_occurrence_map['a'] + last_tallies[0]['a']        = 1+0     = 1`.
+ * end at   `first_occurrence_map['a'] + (last_tallies[12]['a'] - 1) = 1+(4-1) = 4`.
+
+```{svgbob}
+"isolate to range where first_col a1-a4"
+   .-----------------------.
+   |                       |
++--+--+                    v
+|¶1|u1|                 +--+--+
+|a1|z1|                 |a1|z1|
+|a2|¶1|                 |a2|¶1|
+|a3|b1|                 |a3|b1|
+|a4|b2|                 |a4|b2|
+|b1|b3|                 +--+--+
+|b2|b4|                 
+|b3|a1|                 
+|b4|a2|                 
+|b5|a3|                 
+|b6|b5|                 
+|u1|b6|                 
+|z1|a4|                 
++--+--+                 
+```
+
+Similarly, for the second scan iteration (scans rows 1 to 4), the rows where `first=b` ...
+
+ * start is `first_occurrence_map['b'] + (last_tallies[1]['b'])     = 5+0     = 5`.
+ * end is   `first_occurrence_map['b'] + (last_tallies[4]['b'] - 1) = 5+(2-1) = 6`.
+
+```{svgbob}
+"isolate to range where first_col a1-a4"
+   .-----------------------.            
+   |                       |            
++--+--+                    v            
+|¶1|u1|                 +--+--+         
+|a1|z1|                 |a1|z1|         
+|a2|¶1|                 |a2|¶1|         
+|a3|b1|                 |a3|b1|         
+|a4|b2|                 |a4|b2|           +--+--+
+|b1|b3|                 +--+--+           |b1|b3|
+|b2|b4|                    |              |b2|b4|
+|b3|a1|                    |              +--+--+
+|b4|a2|                    |                 ^
+|b5|a3|                    |                 |
+|b6|b5|                    |                 |
+|u1|b6|                    |                 |
+|z1|a4|                    |                 |
++--+--+                    |                 |
+                           |                 |
+                           '-----------------'
+                    "isolate to range where first_col b1-b2"
+```
+
+Similarly, for the third scan iteration (scans rows 5 to 6), the rows where `first=b` ...
+
+ * start is `first_occurrence_map['b'] + (last_tallies[5]['b'] - 1) = 5+(3-1) = 7`.
+ * end is   `first_occurrence_map['b'] + (last_tallies[6]['b'] - 1) = 5+(4-1) = 8`.
+
+```{svgbob}
+"isolate to range where first_col a1-a4"    "isolate to range where first_col b3-b4"
+   .-----------------------.                 .-----------------------.
+   |                       |                 |                       |
++--+--+                    v                 |                       |
+|¶1|u1|                 +--+--+              |                       |
+|a1|z1|                 |a1|z1|              |                       |
+|a2|¶1|                 |a2|¶1|              |                       |
+|a3|b1|                 |a3|b1|              |                       |
+|a4|b2|                 |a4|b2|           +--+--+                    |
+|b1|b3|                 +--+--+           |b1|b3|                    v
+|b2|b4|                    |              |b2|b4|                 +--+--+
+|b3|a1|                    |              +--+--+                 |b3|a1|
+|b4|a2|                    |                 ^                    |b4|a2|
+|b5|a3|                    |                 |                    +--+--+
+|b6|b5|                    |                 |               "(2 instances of bba)"
+|u1|b6|                    |                 |
+|z1|a4|                    |                 |
++--+--+                    |                 |   
+                           |                 |   
+                           '-----------------'
+                    "isolate to range where first_col b1-b2"
+```
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py
+python
+# MARKDOWN_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_TEST\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Ranks main_test
+{
+  sequence: abbazabbabbu¶,
+  end_marker: ¶,
+  test: bba
+}
+```
+
+#### Checkpointed Ranks Algorithm
+
+`{bm} /(Algorithms\/Single Nucleotide Polymorphism\/Burrows-Wheeler Transform\/Checkpointed Ranks Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Ranks Algorithm_TOPIC
+```
+
+While the ranks algorithm's replacement of `last` with `last_tallies` actually increases memory usage, it allows for a concept known as checkpointing: Instead of retaining a value at every index of `last_tallies`, leave some empty. The entries that have a value are called checkpoints.
 
 <table>
 <tr><th>records</th><th>first_occurrence_map</th></tr>
@@ -15708,9 +15933,9 @@ sequence_search.BurrowsWheelerTransform_RanksCheckpointed main_walk_tallies_to_c
 
 Determining the value of `last_tallies` can be further optimized by only focusing on the symbol of interest. For example, at index 5, `last[5]` is *a*. When the value for `last_tallies[5]` is computed, it's only being used to determine the symbol instance count of that *a* at `last[5]`. As such, only *a*s need to be tallied until reaching a checkpoint...
 
-1. increment count if `last[5] == a` (true): 1,
-2. increment count if `last[4] == a` (false): 1,
-3. add `last_tallies[3][a]` to the count from the last step: 1+1=2.
+1. increment count if `last[5] == 'a'` (true): 1,
+2. increment count if `last[4] == 'a'` (false): 1,
+3. add `last_tallies[3]['a']` to the count from the last step: 1+1=2.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py
@@ -15865,11 +16090,201 @@ sequence_search.BurrowsWheelerTransform_Checkpointed main_mismatch
 }
 ```
 
-### BLAST
+FIX ME: TESTING ALGORITHM IS WRONG / SLOW. ADD TERMS FOR SEED AND SEED EXPANSION. FIX FINAL STORY.
 
-Covered in section 9.14
+FIX ME: TESTING ALGORITHM IS WRONG / SLOW. ADD TERMS FOR SEED AND SEED EXPANSION. FIX FINAL STORY.
 
-See https://www.cs.rice.edu/~ogilvie/comp571/2018/09/04/blast-fasta.html
+FIX ME: TESTING ALGORITHM IS WRONG / SLOW. ADD TERMS FOR SEED AND SEED EXPANSION. FIX FINAL STORY.
+
+FIX ME: TESTING ALGORITHM IS WRONG / SLOW. ADD TERMS FOR SEED AND SEED EXPANSION. FIX FINAL STORY.
+
+FIX ME: TESTING ALGORITHM IS WRONG / SLOW. ADD TERMS FOR SEED AND SEED EXPANSION. FIX FINAL STORY.
+
+FIX ME: TESTING ALGORITHM IS WRONG / SLOW. ADD TERMS FOR SEED AND SEED EXPANSION. FIX FINAL STORY.
+
+FIX ME: TESTING ALGORITHM IS WRONG / SLOW. ADD TERMS FOR SEED AND SEED EXPANSION. FIX FINAL STORY.
+
+FIX ME: TESTING ALGORITHM IS WRONG / SLOW. ADD TERMS FOR SEED AND SEED EXPANSION. FIX FINAL STORY.
+
+FIX ME: TESTING ALGORITHM IS WRONG / SLOW. ADD TERMS FOR SEED AND SEED EXPANSION. FIX FINAL STORY.
+
+FIX ME: TESTING ALGORITHM IS WRONG / SLOW. ADD TERMS FOR SEED AND SEED EXPANSION. FIX FINAL STORY.
+
+## BLAST
+
+`{bm} /(Algorithms\/BLAST)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment_TOPIC
+Algorithms/Single Nucleotide Polymorphism_TOPIC
+Algorithms/Peptide Sequence/Codon Encode_TOPIC
+Algorithms/Peptide Sequence/Codon Decode_TOPIC
+```
+
+**WHAT**: Basic Local Alignment Search Tool (BLAST) is a heuristic algorithm that quickly finds shared regions between some sequence and a known database of sequences.
+
+```{svgbob}
+             .---------.
+"DB Seq 1:"   A C C C T G G G C G T T A C G T
+"Quey Seq:" G A C C C T T A A G A A A A G T T
+             '---------'
+
+                     .-----------.
+"DB Seq 2:" G G C G T A C C C T T T A C G T
+"Quey Seq:"         G A C C C T T A A G A A A A G T T
+                     '-----------'
+
+                         .---------------.
+"DB Seq 3:" T T A G G C C A C C C T T A A T
+"Quey Seq:"             G A C C C T T A A G A A A A G T T
+                         '---------------'
+```
+
+BLAST finds shared regions even if the query sequence has mutations, potentially even if mutated to the point where all elements are different in the shared region (e.g. BLOSUM scoring may deem two peptides to be highly related but they may not actually share any amino acids between them).
+
+```{svgbob}
+                     .---------.
+"DB Seq 4:" G G C G T C C C C T T G T A C G T
+"Quey Seq:"         G A C C C T T A A G A A A A G T T
+                     '---------'
+```
+
+**WHY**: BLAST is essentially a quick-and-dirty heuristic for finding related sequences (or related substrings within sequences). The idea is that, since the functional regions of protein sequences / DNA sequences are typically highly conserved, the regions between two related sequences for the same / similar function will be mostly identical. It's much quicker to directly compare k-mers to find these identical regions than it is to perform a full-blown sequence alignment.
+
+For example, imagine a database of 100 sequences, each 50000 elements long. Performing a sequence alignment for each of the 100 database sequences against some query sequence of similar length is hugely time and resource intensive. BLAST short-circuits this by only searching for highly conserved regions.
+
+```{note}
+My guess as to how BLAST gets used: Given a query sequence, BLAST quickly filters down a database of sequences to those that may be related to the sequence. Full sequence alignment then gets performed between the query sequence and those potentially related sequences.
+```
+
+**ALGORITHM**:
+
+BLAST's database is essentially a giant hash table of k-mers to sequences. The hash table gets created by sliding a window of size *k* over each sequence to extract its k-mers. Each extracted k-mer, along with all k-mers similar to it (of that same *k*), is placed into the hash table and points to the original sequence it was extracted from. In this case, a similar k-mer is any k-mer which, when aligned against the original k-mer, has an alignment score exceeding some threshold.
+
+```{svgbob}
+G G C G T C C C C T T G T A C G T
+         '----+----'
+              |
+              +-- C C C C T "(original k-mer)"
+              +-- C C C C C "(similar k-mer to original)"
+              +-- C C C T C "(similar k-mer to original)"
+              +-- C C T C T "(similar k-mer to original)"
+              +-- "etc.."
+```
+
+```{note}
+The k, score threshold, and scoring matrix (e.g. BLOSUM, PAM, Levenshtein distance, etc..) to be used depends on context / empirical analysis. Different sources say different things about good values. It sounds like, for ...
+
+* proteins, k=5, scoring matrix is BLOSUM62, and scoring threshold is ???
+* DNA, k=11, scoring matrix is +5 for match / -4 for mismatch or +2 for match / -3 for mismatch, and scoring threshold is ???
+
+You need to play around with the numbers and find a set that does adequate filtering but still finds related sequences.
+```
+
+```{output}
+ch9_code/src/sequence_search/BLAST.py
+python
+# MARKDOWN_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_BUILD\s*[\n$]
+```
+
+To query, the process starts by breaking up the query sequence into k-mers. Each k-mer is then tested to see if it exists in the hash table. Since the hash table contains both exact k-mers and k-mers that are similar to those exact k-mers, matches may still be found even if they're inexact (e.g. slightly mutated). Regions with a match are referred to as high-scoring segment pairs (HSP).
+
+```{svgbob}
+              HSP
+         .---------.
+G G A C T C C C C T T G T A C G T
+    A C C C T T A T T G T A A G T T
+         '---------'
+```
+
+For each HSP found, the BLAST algorithm extends that HSP in both the left and right direction, checking the alignment score on each extension. As long as the alignment score stays above some minimum threshold, the expansion continues.
+
+```{svgbob}
+"Original HSP:"
+         .---------.
+G G A C T C C C C T T G T A C G T
+    A C C C T T A T T G T A A G T T
+         '---------'
+
+"Expand HSP by 1 each way:"
+       .-------------.
+G G A C T C C C C T T G T A C G T
+    A C C C T T A T T G T A A G T T
+       '-------------'
+
+"Expand HSP by 1 each way:"
+     .-----------------.
+G G A C T C C C C T T G T A C G T
+    A C C C T T A T T G T A A G T T
+     '-----------------'
+
+"Expand HSP by 1 each way:"
+   .---------------------.
+G G A C T C C C C T T G T A C G T
+    A C C C T T A T T G T A A G T T
+   '---------------------'
+
+"Expand HSP by 1 right (can't go left anymore):"
+   .-----------------------.
+G G A C T C C C C T T G T A C G T
+    A C C C T T A T T G T A A G T T
+   '-----------------------'
+
+"... (keep expanding until score goes below threshold) ..."
+```
+
+```{note}
+There's some ambiguity here as to what actually happens. Different sources are saying different things. One source says that HSPs keep expanding only if the score doesn't decrease. Other sources are saying HSPs keep expanding as long as they stay above some threshold. I ignored the Pevzner book's description of how BLAST works because it was short, confusing, didn't really explain anything, and glossed over / papered over important details.
+
+The [Wikipedia entry](https://en.wikipedia.org/wiki/BLAST_(biotechnology)) says that BLAST also uses some statistical analysis to determine if an HSP is significant enough to include. It also says that newer versions of BLAST will combine HSPs into one if the they're close enough together (only a short gap between them). I don't know enough to dig into these parts.
+```
+
+```{output}
+ch9_code/src/sequence_search/BLAST.py
+python
+# MARKDOWN_FIND\s*\n([\s\S]+)\n\s*# MARKDOWN_FIND\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BLAST
+database_sequences:
+  ">AAB30886.1 glycogen synthase [Homo sapiens]": MLRGRSLSVTSLGGLPQWEVEELPVEELLLFEVAWEVTNKVGGIYTVIQTKAKTTADEWGENYFLIGPYFEHNMKTQVEQCEPVNDAVRRAVDAMNKHGCQVHFGRWLIEGSPYVVLFDIGYSAWNLDRWKGDLWEACSVGIPYHDREANDMLIFGSLTAWFLKEVTDHADGKYVVAQFHEWQAGIGLILSRARKLPIATIFTTHATLLGRYLCAANIDFYNHLDKFNIDKEAGERQIYHRYCMERASVHCAHVFTTVSEITAIEAEHMLKRKPDVVTPNGLNVKKFSAVHEFQNLHAMYKARIQDFVRGHFYGHLDFDLEKTLFLFIAGRYEFSNKGADIFLESLSRLNFLLRMHKSDITVVVFFIMPAKTNNFNVETLKGQAVRKQLWDVAHSVKEKFGKKLYDALLRGEIPDLNDILDRDDLTIMKRAIFSTQRQSLPPVTTHNMIDDSTDPILSTIRRIGLFNNRTDRVKVILHPEFLSSTSPLLPMDYEEFVRGCHLGVFPSYYEPWGYTPAECTVMGIPSVTTNLSGFGCFMQEHVADPTAYGIYIVDRRFRSPDDSCNQLTKFLYGFCKQSRRQRIIQRNRTERLSDLLDWRYLGRYYQHARHLTLSRAFPDKFHVELTSPPTTEGFKYPRPSSVPPSPSGSQASSPQSSDVEDEVEDERYDEEEEAERDRLNIKSPFSLSHVPHGKKKLHGEYKN
+  ">ARD36931.1 glycogen synthase [Streptococcus pneumoniae]": MKILFVAAEGAPFSKTGGLGDVIGALPKSLVKAGHEVAVILPYYDMVEAKFGNQIEDVLHFEVSVGWRRQYCGIKKTVLNGVTFYFIDNQYYFFRGHVYGDFDDGERFAFFQLAAIEAMERIAFIPDLLHVHDYHTAMIPFLLKEKYRWIQAYEDIETVLTIHNLEFQGQFSEGMLGDLFGVGFERYADGTLRWNNCLNWMKAGILYANRVSTVSPSYAHEIMTSQFGCNLDQILKMESGKVSGIVNGIDADLYNPQTDALLDYHFNQEDLSGKAKNKAKLQERVGLPVRADVPLVGIVSRLTRQKGFDVVVESLHHILQEDVQIVLLGTGDPAFEGAFSWFAQIYPDKLSANITFDVKLAQEIYAACDLFLMPSRFEPCGLSQMMAMRYGTLPLVHEVGGLRDTVCAFNPIEGSGTGFSFDNLSPYWLNWTFQTALDLYRNHPDIWRNLQKQAMESDFSWDTACKSYLDLYHSLVN
+  ">CDM59237.1 glycogen synthase [Rhizobium favelukesii]": MKVLSVSSEVFPLVKTGGLADVAGALPIALKRFGVETKTLMPGYPAVMKAIRKPVARLQFDDLLGEPATVLEVEHEGIDILVLDAPAYYDRAGGPYLDATGRDYPDNWRRFAALSLAGAEIAAGLMPGWRPDLVHTHDWQSAMTSVYMRYYPTPELPSVLTIHNIAFQGQFGADVFPGLRLPPHAFATESIEYYGNVGFLKGGLQTAHAITTVSPSYAGEILTPEFGMGLQGVITSRIDSLHGIVNGIDTDVWNPSTDPVVHTHYNGTTLKSRVENRTSIAEFFGLHNDNAPIFSIISRLTWQKGMDVIAATADQIVDMGGKLAILGSGDAALEGSLLAAAARHPGRIGVSIGYNEPMSHLMQAGSDAIIIPSRFEPCGLTQLYGLRYGCVPIVARTGGLNDTVIDANHAALAAKVATGIQFSPVTASGLLQAIRRALLLYADQKVWTQLQKQGMKSDVSWEKSAERYAALYSSLAPKGK
+  ">VTR16721.1 biotin ligase [Staphylococcus capitis]": MSKYSQDVVRMLYENQPNYISGQFIADQLNITRAGVKKIIDQLKNDGCDIESVNHKGHQLNALPDQWYSGIVQPIVKDFDSIDQIEVYNSVDSTQTKAKKALVGNKSSFLILSDEQTEGRGRFNRNWSSSKGKGLWMSLVLRPNVPFAMIPKFNLFIALGIRDAIQQFSNDRVAIKWPNDIYIGKKKICGFLTEMVANYDAIEAIICGIGINMNHVEDDFNDEIRHIATSMRLHADDKINRYDFLKILLYEINKRYKQFLEQPFEMIREEYIAATNMWNRQLRFTENGHQFIGKAFDIDQDGFLLVKDDEGNLHRLMSADIDL
+# query_sequence is from ">KOP63806.1 biotin [Bacillus sp. FJAT-18019]"
+query_sequence: MKDSDQDNTLLHIFQENPGQFLSGEEISRRLSISRAAVWKQINKLRNLGYEFEAIPRMGYRMTDVPDTLSMDTLTAGMMTREYFGKPLILLDKTTSTQEDARQLAEEGASEGTLVISEEQTGGRGRMGKKFYSPRGKGIWMSLVLRPKQPLHLTQQLTLLTGVAVCRAIAKCTGVQTDIKWPNDILFRGKKVCGILLESATEDERVRYCIAGIGISANLKESDFPEDLRSVATSIRMAGGTAVNRTELIQSIMAEMEGLYQLYNEQGFKPIASLWEALSGSVGREVHVQTARERFSGMATGLNRDGALLVRNQAGELIPVYSGDIFFDTR
+k: 2
+min_neighbourhood_score: 9
+min_extension_score: 60
+# scoring_matrix is BLOSUM62
+scoring_matrix: |+2
+     A  R  N  D  C  Q  E  G  H  I  L  K  M  F  P  S  T  W  Y  V  B  Z  X  *
+  A  4 -1 -2 -2  0 -1 -1  0 -2 -1 -1 -1 -1 -2 -1  1  0 -3 -2  0 -2 -1  0 -4
+  R -1  5  0 -2 -3  1  0 -2  0 -3 -2  2 -1 -3 -2 -1 -1 -3 -2 -3 -1  0 -1 -4
+  N -2  0  6  1 -3  0  0  0  1 -3 -3  0 -2 -3 -2  1  0 -4 -2 -3  3  0 -1 -4
+  D -2 -2  1  6 -3  0  2 -1 -1 -3 -4 -1 -3 -3 -1  0 -1 -4 -3 -3  4  1 -1 -4
+  C  0 -3 -3 -3  9 -3 -4 -3 -3 -1 -1 -3 -1 -2 -3 -1 -1 -2 -2 -1 -3 -3 -2 -4
+  Q -1  1  0  0 -3  5  2 -2  0 -3 -2  1  0 -3 -1  0 -1 -2 -1 -2  0  3 -1 -4
+  E -1  0  0  2 -4  2  5 -2  0 -3 -3  1 -2 -3 -1  0 -1 -3 -2 -2  1  4 -1 -4
+  G  0 -2  0 -1 -3 -2 -2  6 -2 -4 -4 -2 -3 -3 -2  0 -2 -2 -3 -3 -1 -2 -1 -4
+  H -2  0  1 -1 -3  0  0 -2  8 -3 -3 -1 -2 -1 -2 -1 -2 -2  2 -3  0  0 -1 -4
+  I -1 -3 -3 -3 -1 -3 -3 -4 -3  4  2 -3  1  0 -3 -2 -1 -3 -1  3 -3 -3 -1 -4
+  L -1 -2 -3 -4 -1 -2 -3 -4 -3  2  4 -2  2  0 -3 -2 -1 -2 -1  1 -4 -3 -1 -4
+  K -1  2  0 -1 -3  1  1 -2 -1 -3 -2  5 -1 -3 -1  0 -1 -3 -2 -2  0  1 -1 -4
+  M -1 -1 -2 -3 -1  0 -2 -3 -2  1  2 -1  5  0 -2 -1 -1 -1 -1  1 -3 -1 -1 -4
+  F -2 -3 -3 -3 -2 -3 -3 -3 -1  0  0 -3  0  6 -4 -2 -2  1  3 -1 -3 -3 -1 -4
+  P -1 -2 -2 -1 -3 -1 -1 -2 -2 -3 -3 -1 -2 -4  7 -1 -1 -4 -3 -2 -2 -1 -2 -4
+  S  1 -1  1  0 -1  0  0  0 -1 -2 -2  0 -1 -2 -1  4  1 -3 -2 -2  0  0  0 -4
+  T  0 -1  0 -1 -1 -1 -1 -2 -2 -1 -1 -1 -1 -2 -1  1  5 -2 -2  0 -1 -1  0 -4
+  W -3 -3 -4 -4 -2 -2 -3 -2 -2 -3 -2 -3 -1  1 -4 -3 -2 11  2 -3 -4 -3 -2 -4
+  Y -2 -2 -2 -3 -2 -1 -2 -3  2 -1 -1 -2 -1  3 -3 -2 -2  2  7 -1 -3 -2 -1 -4
+  V  0 -3 -3 -3 -1 -2 -2 -3 -3  3  1 -2  1 -1 -2 -2  0 -3 -1  4 -3 -2 -1 -4
+  B -2 -1  3  4 -3  0  1 -1  0 -3 -4  0 -3 -3 -2  0 -1 -4 -3 -3  4  1 -1 -4
+  Z -1  0  0  1 -3  3  4 -2  0 -3 -3  1 -1 -3 -1  0 -1 -3 -2 -2  1  4 -1 -4
+  X  0 -1 -1 -1 -2 -1 -1 -1 -1 -1 -1 -1 -1 -1 -2  0  0 -2 -1 -1 -1 -1 -1 -4
+  * -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4  1
+```
 
 # Stories
 
@@ -21429,6 +21844,79 @@ TODO: Create and add example here. Mycoplasma reference genome is already in dir
 
    ```{note}
    It's unclear if there's an analog for this for non-binary trees (variable number of children per node). Maybe if the children have a specific order, it recursively visits the first half (left children), then visits the parent node, then recursively visits the last half (right children). But, how would this work if there were an odd number of children? The middle child wouldn't be in the left-half or right-half.
+   ```
+
+ * `{bm} Basic Local Alignment Search Tool/(Basic Local Alignment Search Tool|high[-\s]scoring segment pair)/i` `{bm} /(BLAST)/` `{bm} /(HSP)/` - A heuristic algorithm that compares a sequence against a known set of sequences to quickly find shared regions, called high-scoring segment pairs. High-scoring segment pairs may be identified even in the presence of mutations, potentially even if mutated to the point where all elements are different in the shared region (e.g. BLOSUM scoring may deem two peptides to be highly related but they may not actually share any amino acids between them).
+
+   ```{svgbob}
+                .---------.
+   "DB Seq 1:"   A C C C T G G G C G T T A C G T
+   "Quey Seq:" G A C C C T T A A G A A A A G T T
+                '---------'
+   
+                        .-----------.
+   "DB Seq 2:" G G C G T A C C C T T T A C G T
+   "Quey Seq:"         G A C C C T T A A G A A A A G T T
+                        '-----------'
+   
+                            .---------------.
+   "DB Seq 3:" T T A G G C C A C C C T T A A T
+   "Quey Seq:"             G A C C C T T A A G A A A A G T T
+                            '---------------'
+
+                        .---------.
+   "DB Seq 4:" G G C G T C C C C T T G T A C G T
+   "Quey Seq:"         G A C C C T T A A G A A A A G T T
+                        '---------'
+   ```
+
+   BLAST works by preprocessing the known set of sequences into a hash table of k-mers, where other k-mers similar to those k-mers are included in the hash table as well. Similarity is determined by performing sequence alignments (the higher the score, the more similar the k-mer is).
+   
+   ```{svgbob}
+   G G C G T C C C C T T G T A C G T
+            '----+----'
+                 |
+                 +-- C C C C T "(original k-mer)"
+                 +-- C C C C C "(similar k-mer to original)"
+                 +-- C C C T C "(similar k-mer to original)"
+                 +-- C C T C T "(similar k-mer to original)"
+                 +-- "etc.."
+   ```
+   
+   K-mers from a query sequence are then looked up one-by-one in the hash table. Found matches are extended left and right until some criteria is met (e.g. the score drops below some threshold). The final product of the extension is called a high-scoring segment pair.
+
+   ```{svgbob}
+   "Original HSP:"
+            .---------.
+   G G A C T C C C C T T G T A C G T
+       A C C C T T A T T G T A A G T T
+            '---------'
+   
+   "Expand HSP by 1 each way:"
+          .-------------.
+   G G A C T C C C C T T G T A C G T
+       A C C C T T A T T G T A A G T T
+          '-------------'
+   
+   "Expand HSP by 1 each way:"
+        .-----------------.
+   G G A C T C C C C T T G T A C G T
+       A C C C T T A T T G T A A G T T
+        '-----------------'
+   
+   "Expand HSP by 1 each way:"
+      .---------------------.
+   G G A C T C C C C T T G T A C G T
+       A C C C T T A T T G T A A G T T
+      '---------------------'
+   
+   "Expand HSP by 1 right (can't go left anymore):"
+      .-----------------------.
+   G G A C T C C C C T T G T A C G T
+       A C C C T T A T T G T A A G T T
+      '-----------------------'
+   
+   "... (keep expanding until score goes below threshold) ..."
    ```
 
 `{bm-ignore} \b(read)_NORM/i`

@@ -4,6 +4,7 @@ from sys import stdin
 
 import yaml
 
+from helpers.Utils import slide_window
 from sequence_search.BurrowsWheelerTransform_Deserialization import cmp_char_only
 from sequence_search.SearchUtils import RotatedStringView
 
@@ -117,12 +118,26 @@ def main_to_symbol_instance_count():
 
 
 # MARKDOWN_TEST
-def to_first_index(
-        bwt_first_occurrence_map: dict[str, int],
-        symbol_instance: tuple[str, int]
-) -> int:
-    symbol, symbol_count = symbol_instance
-    return bwt_first_occurrence_map[symbol] + symbol_count - 1
+def compute_new_top(
+        ch: str,
+        top: int,
+        first_occurrence_idx_for_ch: int,
+        bwt_records: list[BWTRecord]
+):
+    incremented_at_top = bwt_records[top].last_ch == ch
+    offset = 0
+    if incremented_at_top:
+        offset = 1
+    return first_occurrence_idx_for_ch + (bwt_records[top].last_tallies[ch] - offset)
+
+
+def compute_new_bottom(
+        ch: str,
+        bottom: int,
+        first_occurrence_idx_for_ch: int,
+        bwt_records: list[BWTRecord]
+):
+    return first_occurrence_idx_for_ch + (bwt_records[bottom].last_tallies[ch] - 1)
 
 
 def find(
@@ -132,23 +147,14 @@ def find(
 ) -> int:
     top = 0
     bottom = len(bwt_records) - 1
-    for ch in reversed(test):
-        new_top = len(bwt_records)
-        new_bottom = -1
-        for i in range(top, bottom + 1):
-            record = bwt_records[i]
-            if ch == record.last_ch:
-                last_ch_cnt = to_symbol_instance_count(record)
-                last_to_first_idx = to_first_index(
-                    bwt_first_occurrence_map,
-                    (record.last_ch, last_ch_cnt)
-                )
-                new_top = min(new_top, last_to_first_idx)
-                new_bottom = max(new_bottom, last_to_first_idx)
-        if new_bottom == -1 or new_top == len(bwt_records):  # technically only need to check one of these conditions
+    for i, ch in reversed(list(enumerate(test))):
+        first_idx_for_ch = bwt_first_occurrence_map.get(ch, None)
+        if first_idx_for_ch is None:  # ch must be in first occurrence map, otherwise it's not in the original seq
             return 0
-        top = new_top
-        bottom = new_bottom
+        top = compute_new_top(ch, top, first_idx_for_ch, bwt_records)
+        bottom = compute_new_bottom(ch, bottom, first_idx_for_ch, bwt_records)
+        if top > bottom:  # top>bottom once the scan reaches a point in the test sequence where it's not in original seq
+            return 0
     return (bottom - top) + 1
 # MARKDOWN_TEST
 

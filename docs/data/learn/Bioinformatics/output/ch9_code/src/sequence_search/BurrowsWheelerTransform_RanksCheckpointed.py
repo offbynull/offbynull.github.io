@@ -151,9 +151,9 @@ def main_walk_tallies_to_checkpoint():
 def single_tally_to_checkpoint(
         bwt_records: list[BWTRecord],
         bwt_last_tallies_checkpoints: dict[int, Counter[str]],
-        idx: int
+        idx: int,
+        tally_ch: str
 ) -> int:
-    tally_ch = bwt_records[idx].last_ch
     partial_tally = 0
     while idx not in bwt_last_tallies_checkpoints:
         ch = bwt_records[idx].last_ch
@@ -193,7 +193,7 @@ def main_single_tally_to_checkpoint():
             r_strs.append(r_str)
         print(f' * Last tallies checkpoints: {{{", ".join(r_strs)}}}')
         print()
-        tally = single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, index)
+        tally = single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, index, bwt_records[index].last_ch)
         print(f'The tally for character {bwt_records[index].last_ch} at index {index} is calculated as {tally}')
     finally:
         print("</div>", end="\n\n")
@@ -210,12 +210,12 @@ def main_single_tally_to_checkpoint():
 
 
 # MARKDOWN_TEST
-def to_symbol_instance_count(
+def to_last_symbol_instance_count(
         bwt_records: list[BWTRecord],
         bwt_last_tallies_checkpoints: dict[int, Counter[str]],
         idx: int
 ) -> int:
-    return single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, idx)
+    return single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, idx, bwt_records[idx].last_ch)
 
 
 def to_first_index(
@@ -226,6 +226,32 @@ def to_first_index(
     return bwt_first_occurrence_map[symbol] + symbol_count - 1
 
 
+def compute_new_top(
+        ch: str,
+        top: int,
+        first_occurrence_idx_for_ch: int,
+        bwt_records: list[BWTRecord],
+        bwt_last_tallies_checkpoints: dict[int, Counter[str]]
+):
+    incremented_at_top = bwt_records[top].last_ch == ch
+    offset = 0
+    if incremented_at_top:
+        offset = 1
+    last_tally_for_ch_top = single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, top, ch)
+    return first_occurrence_idx_for_ch + (last_tally_for_ch_top - offset)
+
+
+def compute_new_bottom(
+        ch: str,
+        bottom: int,
+        first_occurrence_idx_for_ch: int,
+        bwt_records: list[BWTRecord],
+        bwt_last_tallies_checkpoints: dict[int, Counter[str]]
+):
+    last_tally_for_ch_bottom = single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, bottom, ch)
+    return first_occurrence_idx_for_ch + (last_tally_for_ch_bottom - 1)
+
+
 def find(
         bwt_records: list[BWTRecord],
         bwt_first_occurrence_map: dict[str, int],
@@ -234,23 +260,14 @@ def find(
 ) -> int:
     top = 0
     bottom = len(bwt_records) - 1
-    for ch in reversed(test):
-        new_top = len(bwt_records)
-        new_bottom = -1
-        for i in range(top, bottom + 1):
-            record = bwt_records[i]
-            if ch == record.last_ch:
-                last_ch_cnt = to_symbol_instance_count(bwt_records, bwt_last_tallies_checkpoints, i)
-                last_to_first_idx = to_first_index(
-                    bwt_first_occurrence_map,
-                    (record.last_ch, last_ch_cnt)
-                )
-                new_top = min(new_top, last_to_first_idx)
-                new_bottom = max(new_bottom, last_to_first_idx)
-        if new_bottom == -1 or new_top == len(bwt_records):  # technically only need to check one of these conditions
+    for i, ch in reversed(list(enumerate(test))):
+        first_idx_for_ch = bwt_first_occurrence_map.get(ch, None)
+        if first_idx_for_ch is None:  # ch must be in first occurrence map, otherwise it's not in the original seq
             return 0
-        top = new_top
-        bottom = new_bottom
+        top = compute_new_top(ch, top, first_idx_for_ch, bwt_records, bwt_last_tallies_checkpoints)
+        bottom = compute_new_bottom(ch, bottom, first_idx_for_ch, bwt_records, bwt_last_tallies_checkpoints)
+        if top > bottom:  # top>bottom once the scan reaches a point in the test sequence where it's not in original seq
+            return 0
     return (bottom - top) + 1
 # MARKDOWN_TEST
 
