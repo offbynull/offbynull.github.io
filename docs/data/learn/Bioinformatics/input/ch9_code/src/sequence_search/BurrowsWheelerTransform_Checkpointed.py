@@ -256,30 +256,27 @@ def to_first_index(
 
 
 # MARKDOWN_TEST
-def compute_new_top(
-        ch: str,
-        top: int,
-        first_occurrence_idx_for_ch: int,
+def symbol_tally_before_index(
+        symbol: str,
+        idx: int,
         bwt_records: list[BWTRecord],
         bwt_last_tallies_checkpoints: dict[int, Counter[str]]
 ):
-    incremented_at_top = bwt_records[top].last_ch == ch
-    offset = 0
-    if incremented_at_top:
-        offset = 1
-    last_tally_for_ch_top = single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, top, ch)
-    return first_occurrence_idx_for_ch + (last_tally_for_ch_top - offset)
+    ch_incremented_at_idx = bwt_records[idx].last_ch == symbol
+    ch_tally = single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, idx, symbol)
+    if ch_incremented_at_idx:
+        ch_tally -= 1
+    return ch_tally
 
 
-def compute_new_bottom(
-        ch: str,
-        bottom: int,
-        first_occurrence_idx_for_ch: int,
+def symbol_tally_at_index(
+        symbol: str,
+        idx: int,
         bwt_records: list[BWTRecord],
         bwt_last_tallies_checkpoints: dict[int, Counter[str]]
 ):
-    last_tally_for_ch_bottom = single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, bottom, ch)
-    return first_occurrence_idx_for_ch + (last_tally_for_ch_bottom - 1)
+    ch_tally = single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, idx, symbol)
+    return ch_tally
 
 
 def find(
@@ -295,8 +292,8 @@ def find(
         first_idx_for_ch = bwt_first_occurrence_map.get(ch, None)
         if first_idx_for_ch is None:  # ch must be in first occurrence map, otherwise it's not in the original seq
             return []
-        top = compute_new_top(ch, top, first_idx_for_ch, bwt_records, bwt_last_tallies_checkpoints)
-        bottom = compute_new_bottom(ch, bottom, first_idx_for_ch, bwt_records, bwt_last_tallies_checkpoints)
+        top = first_idx_for_ch + symbol_tally_before_index(ch, top, bwt_records, bwt_last_tallies_checkpoints)
+        bottom = first_idx_for_ch + symbol_tally_at_index(ch, bottom, bwt_records, bwt_last_tallies_checkpoints) - 1
         if top > bottom:  # top>bottom once the scan reaches a point in the test sequence where it's not in original seq
             return []
     # Find first_index for each entry in between top and bottom

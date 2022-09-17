@@ -14,13 +14,21 @@ def find(
     top = 0
     bottom = len(bwt_records) - 1
     for ch in reversed(test):
+        # Scan down to find new top, which is the first instance of ch (lowest symbol instance count for ch)
         new_top = len(bwt_records)
-        new_bottom = -1
         for i in range(top, bottom + 1):
             record = bwt_records[i]
             if ch == record.last_ch:
-                new_top = min(new_top, record.last_to_first_idx)
-                new_bottom = max(new_bottom, record.last_to_first_idx)
+                new_top = record.last_to_first_idx
+                break
+        # Scan up to find new bottom, which is the last instance of ch (highest symbol instance count for ch)
+        new_bottom = -1
+        for i in range(bottom, top - 1, -1):
+            record = bwt_records[i]
+            if ch == record.last_ch:
+                new_bottom = record.last_to_first_idx
+                break
+        # Check if not found
         if new_bottom == -1 or new_top == len(bwt_records):  # technically only need to check one of these conditions
             return 0
         top = new_top

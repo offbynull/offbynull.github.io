@@ -117,29 +117,75 @@ def main_to_symbol_instance_count():
 
 
 
+# MARKDOWN_TALLY_BEFORE_IDX
+def symbol_tally_at_index(
+        symbol: str,
+        idx: int,
+        bwt_records: list[BWTRecord]
+):
+    ch_tally = bwt_records[idx].last_tallies[symbol]
+    return ch_tally
+
+
+def symbol_tally_before_index(
+        symbol: str,
+        idx: int,
+        bwt_records: list[BWTRecord]
+):
+    ch_incremented_at_idx = bwt_records[idx].last_ch == symbol
+    ch_tally = bwt_records[idx].last_tallies[symbol]
+    if ch_incremented_at_idx:
+        ch_tally -= 1
+    return ch_tally
+# MARKDOWN_TALLY_BEFORE_IDX
+
+
+def main_tally_before_idx():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    try:
+        data_raw = ''.join(stdin.readlines())
+        data: dict = yaml.safe_load(data_raw)
+        seq = data['sequence']
+        end_marker = data['end_marker']
+        index = data['index']
+        symbol = data['symbol']
+        print(f'Building BWT using the following settings...')
+        print()
+        print('```')
+        print(data_raw)
+        print('```')
+        print()
+        bwt_records, bwt_first_occurrence_map = to_bwt_ranked(seq, end_marker)
+        print()
+        print(f'The following first and last columns were produced ...')
+        print()
+        print(f' * First (squashed): {bwt_first_occurrence_map}')
+        r_strs = []
+        for r in bwt_records:
+            tallies_str = ','.join(f"{k}={v}" for k, v in r.last_tallies.items())
+            r_str = f'{r.last_ch}{{{tallies_str}}}'
+            r_strs.append(r_str)
+        print(f' * Last: {", ".join(r_strs)}')
+        print()
+        found1 = symbol_tally_before_index(symbol, index, bwt_records)
+        found2 = symbol_tally_at_index(symbol, index, bwt_records)
+        print()
+        print(f'There where {found1} instances of *{symbol}* just before reaching index *{index}* in last.')
+        print()
+        print(f'There where {found2} instances of *{symbol}* at index *{index}* in last.')
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
+
+
+
+
+
+
 # MARKDOWN_TEST
-def compute_new_top(
-        ch: str,
-        top: int,
-        first_occurrence_idx_for_ch: int,
-        bwt_records: list[BWTRecord]
-):
-    incremented_at_top = bwt_records[top].last_ch == ch
-    offset = 0
-    if incremented_at_top:
-        offset = 1
-    return first_occurrence_idx_for_ch + (bwt_records[top].last_tallies[ch] - offset)
-
-
-def compute_new_bottom(
-        ch: str,
-        bottom: int,
-        first_occurrence_idx_for_ch: int,
-        bwt_records: list[BWTRecord]
-):
-    return first_occurrence_idx_for_ch + (bwt_records[bottom].last_tallies[ch] - 1)
-
-
 def find(
         bwt_records: list[BWTRecord],
         bwt_first_occurrence_map: dict[str, int],
@@ -151,8 +197,8 @@ def find(
         first_idx_for_ch = bwt_first_occurrence_map.get(ch, None)
         if first_idx_for_ch is None:  # ch must be in first occurrence map, otherwise it's not in the original seq
             return 0
-        top = compute_new_top(ch, top, first_idx_for_ch, bwt_records)
-        bottom = compute_new_bottom(ch, bottom, first_idx_for_ch, bwt_records)
+        top = first_idx_for_ch + symbol_tally_before_index(ch, top, bwt_records)
+        bottom = first_idx_for_ch + symbol_tally_at_index(ch, bottom, bwt_records) - 1
         if top > bottom:  # top>bottom once the scan reaches a point in the test sequence where it's not in original seq
             return 0
     return (bottom - top) + 1

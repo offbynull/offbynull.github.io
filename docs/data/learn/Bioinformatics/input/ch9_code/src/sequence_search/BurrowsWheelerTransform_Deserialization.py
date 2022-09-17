@@ -9,6 +9,38 @@ from sequence_search.BurrowsWheelerTransform_Basic import BWTRecord, walk
 from sequence_search.SearchUtils import RotatedStringView
 
 
+
+
+
+# We need to go through all this wrpaping because bisect_left won't let you submit a key parameter that produces a type
+# different than the type in the collection, which means functools.cmp_to_key() doesn't work with bisect left.
+class FirstColBisectableWrapper:
+    def __init__(self, first, end_marker):
+        self.it = first
+        self.end_marker = end_marker
+
+    def __getitem__(self, i):
+        return FirstColBisectableWrapper.KeyWrapper(self.it[i], self.end_marker)
+
+    def __len__(self):
+        return len(self.it)
+
+    class KeyWrapper:
+        def __init__(self, v: tuple[str, int], end_marker: str):
+            self.v = v
+            self.end_marker = end_marker
+
+        def __lt__(self, other: tuple[str, int]):
+            if cmp_char_and_instance(self.v, other, self.end_marker) < 0:
+                return True
+            else:
+                return False
+
+
+
+
+
+
 # MARKDOWN_DESERIALIZE
 def cmp_char_only(a: str, b: str, end_marker: str):
     if len(a) != len(b):
@@ -58,7 +90,10 @@ def to_bwt_from_last_sequence(
         record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt)
         # Figure out where in first_col that (last_ch, last_ch_cnt) occurs using binary search. This is
         # possible because first_col is sorted.
-        first_col_idx = bisect_left(first_col, (last_ch, last_ch_cnt))
+        first_col_idx = bisect_left(
+            FirstColBisectableWrapper(first_col, end_marker),
+            (last_ch, last_ch_cnt)
+        )
         record.last_to_first_idx = first_col_idx
         # Append to return
         ret.append(record)
@@ -204,7 +239,10 @@ def to_bwt_optimized2(
         record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt)
         # Figure out where in first_col that (last_ch, last_ch_cnt) occurs using binary search. This is
         # possible because first_col is sorted.
-        first_col_idx = bisect_left(first_col, (last_ch, last_ch_cnt))
+        first_col_idx = bisect_left(
+            FirstColBisectableWrapper(first_col, end_marker),
+            (last_ch, last_ch_cnt)
+        )
         record.last_to_first_idx = first_col_idx
         # Append to return
         ret.append(record)
