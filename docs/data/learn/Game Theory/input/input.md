@@ -185,7 +185,7 @@
 
    `{ref} gt:p22`
 
- * `{bm} payoff function/(pay[-\s]?off function)/i` - Maps each strategy profile in a game to a player's preferences via a utility function. `{ref} gt:p22`  For example, the game-frame below is for a scenario where Alice's strategies are `{Lie, Get Violent, Stay Silent}` and Bob's strategies are `{Truth, Lie}`.
+ * `{bm} payoff function/(pay[-\s]?off function|pay[-\s]?off)/i` - Maps each strategy profile in a game to a player's preferences via a utility function. `{ref} gt:p22`  For example, the game-frame below is for a scenario where Alice's strategies are `{Lie, Get Violent, Stay Silent}` and Bob's strategies are `{Truth, Lie}`.
   
    |                |      B: Truth       |       B: Lie       |
    |----------------|---------------------|--------------------|
@@ -282,30 +282,79 @@
    | A: Get Violent |  [2, 3]  | [2, 6]  |
    | A: Stay Silent |  [4, 1]  | [3, 10] |
 
+ * `{bm} strict dominance/(strict dominance|strictly dominate)/i` - Given two strategies for a player in a game `[A, B]`, `A` is said to strictly dominate `B` if the strategy profiles containing `A` all have a higher payoff (numeric preference ranking) than the corresponding strategy profiles containing `B`. In this case, corresponding means that the other players's strategies must match between the strategy profiles. For example, the following two strategy profiles use the same strategies for all players other than the player at index 1: `[Walk, Lie, Run, Cheat]` vs `[Walk, Truth, Run, Cheat]`. `{ref} gt:p24`
+
+   ```python
+   def is_strictly_dominate(
+           all_player_strategies: list[list[str]],
+           player: int,
+           player_strategy_1: str,
+           player_strategy_2: str,
+           player_strategy_profile_to_payoff: dict[tuple[str, ...], int]
+   ) -> bool:
+       for player_strategy_profile in product(strategies if i != player else ['REPLACE_ME'] for i, strategies in enumerate(all_player_strategies)):
+          player_strategy_profile_1 = list(player_strategy_profile)
+          player_strategy_profile_1[player] = player_strategy_1
+          player_strategy_profile_2 = list(player_strategy_profile)
+          player_strategy_profile_2[player] = player_strategy_2
+          payoff_1 = player_strategy_profile_to_payoff[tuple(player_strategy_profile)]
+          payoff_2 = player_strategy_profile_to_payoff[tuple(player_strategy_profile)]
+          if not (payoff_1 > payoff_2):
+            return False
+       return True
+   ```
+   
+   For example, Alice and Bob are the players in a game. The strategies for ...
+   
+   * Alice are `[Lie, Get Violent, Stay Silent]`.
+   * Bob are `[Truth, Lie]`.
+   
+   Once each strategy profile is passed through both Alice's payoff function and Bob's payoff functions, their preferences are encoded using the following numeric rankings:
+
+   ```yaml
+   Alice:
+    - [Lie, Truth]: 4          # outcome is A freed / B jailed, which is ranked as 4
+    - [Lie, Lie]: 3            # outcome is A freed / B freed, which is ranked as 3
+    - [Get Violent, Truth]: 2  # outcome is A jailed / B jailed, which is ranked as 2
+    - [Get Violent, Lie]: 2    # outcome is A jailed / B freed, which is ranked as 2
+    - [Stay Silent, Truth]: 4  # outcome is A freed / B jailed, which is ranked as 4
+    - [Stay Silent, Lie]: 3    # outcome is A freed / B freed, which is ranked as 3
+   Bob:
+    - [Lie, Truth]: 1          # outcome is A freed / B jailed, which is ranked as 1
+    - [Lie, Lie]: 10           # outcome is A freed / B freed, which is ranked as 10
+    - [Get Violent, Truth]: 3  # outcome is A jailed / B jailed, which is ranked as 3
+    - [Get Violent, Lie]: 6    # outcome is A jailed / B freed, which is ranked as 6
+    - [Stay Silent, Truth]: 1  # outcome is A freed / B jailed, which is ranked as 1
+    - [Stay Silent, Lie]: 10   # outcome is A freed / B freed, which is ranked as 10
+   ```
+
+   For Alice, the strategy ...
+
+    * Lie strictly dominates Get Violent.
+    * Stay Silent strictly dominates Get Violent.
+
+   For Bob, no strategy strictly dominates another.
 
 
+TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
 
-TODO: then start from top of pg 24
+TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
 
-TODO: then start from top of pg 24
+TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
 
-TODO: then start from top of pg 24
+TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
 
-TODO: then start from top of pg 24
+TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
 
-TODO: then start from top of pg 24
+TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
 
-TODO: then start from top of pg 24
+TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
 
-TODO: then start from top of pg 24
+TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
 
-TODO: then start from top of pg 24
+TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
 
-TODO: then start from top of pg 24
-
-TODO: then start from top of pg 24
-
-TODO: then start from top of pg 24
+TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
 
 # Exercises
 
