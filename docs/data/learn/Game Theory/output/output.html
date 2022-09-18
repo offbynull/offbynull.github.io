@@ -386,22 +386,17 @@
 </li>
 <li>
 <p><a name="BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi"></a><strong>strict dominance</strong> - Given two <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> for a <a href="#BM_(player)%2Fi">player</a> in a <a href="#BM_(game)%2Fi">game</a> <code>[A, B]</code>, <code>A</code> is said to <a href="#BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi">strictly dominate</a> <code>B</code> if the <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s containing <code>A</code> all have a higher <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff</a> (numeric <a href="#BM_(preference)%2Fi">preference</a> ranking) than the corresponding <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s containing <code>B</code>. In this case, corresponding means that the other <a href="#BM_(player)%2Fi">player</a>s's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> must match between the <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s. For example, the following two <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s use the same <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> for all <a href="#BM_(player)%2Fi">player</a>s other than the <a href="#BM_(player)%2Fi">player</a> at index 1: <code>[Walk, Lie, Run, Cheat]</code> vs <code>[Walk, Truth, Run, Cheat]</code>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p24]</a></sub></p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_strictly_dominate</span>(<span class="hljs-params">
-        all_player_strategies: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">list</span>[<span class="hljs-built_in">str</span>]],
-        player: <span class="hljs-built_in">int</span>,
-        player_strategy_1: <span class="hljs-built_in">str</span>,
-        player_strategy_2: <span class="hljs-built_in">str</span>,
-        player_strategy_profile_to_payoff: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, ...], <span class="hljs-built_in">int</span>]
-</span>) -&gt; <span class="hljs-built_in">bool</span>:
-    <span class="hljs-keyword">for</span> player_strategy_profile <span class="hljs-keyword">in</span> product(strategies <span class="hljs-keyword">if</span> i != player <span class="hljs-keyword">else</span> [<span class="hljs-string">'REPLACE_ME'</span>] <span class="hljs-keyword">for</span> i, strategies <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(all_player_strategies)):
-       player_strategy_profile_1 = <span class="hljs-built_in">list</span>(player_strategy_profile)
-       player_strategy_profile_1[player] = player_strategy_1
-       player_strategy_profile_2 = <span class="hljs-built_in">list</span>(player_strategy_profile)
-       player_strategy_profile_2[player] = player_strategy_2
-       payoff_1 = player_strategy_profile_to_payoff[<span class="hljs-built_in">tuple</span>(player_strategy_profile)]
-       payoff_2 = player_strategy_profile_to_payoff[<span class="hljs-built_in">tuple</span>(player_strategy_profile)]
-       <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> (payoff_1 &gt; payoff_2):
-         <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+<p><a href="gt_ch1_code/ReducedFormOrdinalGame.py">gt_ch1_code/ReducedFormOrdinalGame.py</a> (lines 26 to 36):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_strictly_dominant</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy1: <span class="hljs-built_in">str</span>, strategy2: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-keyword">for</span> player_strategy_profile <span class="hljs-keyword">in</span> product(*(s <span class="hljs-keyword">if</span> i != player <span class="hljs-keyword">else</span> {<span class="hljs-string">'FAKE'</span>} <span class="hljs-keyword">for</span> i, s <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(self.strategies))):
+        player_strategy_profile_1 = <span class="hljs-built_in">list</span>(player_strategy_profile)
+        player_strategy_profile_2 = <span class="hljs-built_in">list</span>(player_strategy_profile)
+        player_strategy_profile_1[player] = strategy1
+        player_strategy_profile_2[player] = strategy2
+        payoff_1 = self.player_strategy_profile_preference(player, <span class="hljs-built_in">tuple</span>(player_strategy_profile_1))
+        payoff_2 = self.player_strategy_profile_preference(player, <span class="hljs-built_in">tuple</span>(player_strategy_profile_2))
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> (payoff_1 &gt; payoff_2):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
     <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre>
 <p>For example, Alice and Bob are the <a href="#BM_(player)%2Fi">player</a>s in a <a href="#BM_(game)%2Fi">game</a>. The <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> for ...</p>

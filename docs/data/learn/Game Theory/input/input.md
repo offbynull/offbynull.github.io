@@ -284,24 +284,10 @@
 
  * `{bm} strict dominance/(strict dominance|strictly dominate)/i` - Given two strategies for a player in a game `[A, B]`, `A` is said to strictly dominate `B` if the strategy profiles containing `A` all have a higher payoff (numeric preference ranking) than the corresponding strategy profiles containing `B`. In this case, corresponding means that the other players's strategies must match between the strategy profiles. For example, the following two strategy profiles use the same strategies for all players other than the player at index 1: `[Walk, Lie, Run, Cheat]` vs `[Walk, Truth, Run, Cheat]`. `{ref} gt:p24`
 
-   ```python
-   def is_strictly_dominate(
-           all_player_strategies: list[list[str]],
-           player: int,
-           player_strategy_1: str,
-           player_strategy_2: str,
-           player_strategy_profile_to_payoff: dict[tuple[str, ...], int]
-   ) -> bool:
-       for player_strategy_profile in product(strategies if i != player else ['REPLACE_ME'] for i, strategies in enumerate(all_player_strategies)):
-          player_strategy_profile_1 = list(player_strategy_profile)
-          player_strategy_profile_1[player] = player_strategy_1
-          player_strategy_profile_2 = list(player_strategy_profile)
-          player_strategy_profile_2[player] = player_strategy_2
-          payoff_1 = player_strategy_profile_to_payoff[tuple(player_strategy_profile)]
-          payoff_2 = player_strategy_profile_to_payoff[tuple(player_strategy_profile)]
-          if not (payoff_1 > payoff_2):
-            return False
-       return True
+   ```{output}
+   gt_ch1_code/ReducedFormOrdinalGame.py
+   python
+   # MARKDOWN_STRICT_DOMINANCE\s*\n([\s\S]+)\n\s*# MARKDOWN_STRICT_DOMINANCE
    ```
    
    For example, Alice and Bob are the players in a game. The strategies for ...
