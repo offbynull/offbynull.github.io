@@ -282,7 +282,7 @@
    | A: Get Violent |  [2, 3]  | [2, 6]  |
    | A: Stay Silent |  [4, 1]  | [3, 10] |
 
- * `{bm} strict dominance/(strict dominance|strictly dominate)/i` - Given two strategies for a player in a game `[A, B]`, `A` is said to strictly dominate `B` if the strategy profiles containing `A` all have a higher payoff (numeric preference ranking) than the corresponding strategy profiles containing `B`. In this case, corresponding means that the other players's strategies must match between the strategy profiles. For example, the following two strategy profiles use the same strategies for all players other than the player at index 1: `[Walk, Lie, Run, Cheat]` vs `[Walk, Truth, Run, Cheat]`. `{ref} gt:p24`
+ * `{bm} strict dominance/(strict dominance|strictly dominate)/i` - Given two strategies `[A, B]` for a player in a game, `A` is said to strictly dominate `B` if the strategy profiles containing `A` all have a higher payoff than the corresponding strategy profiles containing `B`. In this case, corresponding means that the other players's strategies must match between the strategy profiles. For example, the following two strategy profiles use the same strategies for all players other than the player at index 1: `[Walk, Lie, Run, Cheat]` vs `[Walk, Truth, Run, Cheat]`. `{ref} gt:p24`
 
    ```{output}
    gt_ch1_code/ReducedFormOrdinalGame.py
@@ -295,7 +295,7 @@
    * Alice are `[Lie, Get Violent, Stay Silent]`.
    * Bob are `[Truth, Lie]`.
    
-   Once each strategy profile is passed through both Alice's payoff function and Bob's payoff functions, their preferences are encoded using the following numeric rankings:
+   Once each strategy profile is passed through both Alice's payoff function and Bob's payoff functions, their preferences are encoded using the following payoffs:
 
    ```yaml
    Alice:
@@ -314,33 +314,97 @@
     - [Stay Silent, Lie]: 10   # outcome is A freed / B freed, which is ranked as 10
    ```
 
-   For Alice, the strategy ...
+   * For Alice, the strategy ...
+     * Lie strictly dominates Get Violent.
+     * Stay Silent strictly dominates Get Violent.
+   * For Bob, the strategy Lie strictly dominates Truth.
 
-    * Lie strictly dominates Get Violent.
-    * Stay Silent strictly dominates Get Violent.
+   ```{note}
+   It's easier to think of this in terms of a reduced game in strategic-form table. For example, the game above is represented as follows.
 
-   For Bob, no strategy strictly dominates another.
+   |                | B: Truth |  B: Lie |
+   |----------------|----------|---------|
+   | A: Lie         |  [4, 1]  | [3, 10] |
+   | A: Get Violent |  [2, 3]  | [2, 6]  |
+   | A: Stay Silent |  [4, 1]  | [3, 10] |
 
+   For Alice, each Lie payoff is greater than the corresponding Get Violent payoff (4>2 and 3>2), as such Lie strictly dominates Get Violent.
+   ```
 
-TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
+ * `{bm} weak dominance/(weak dominance|weakly dominate)/i` - Given two strategies `[A, B]` for a player in a game, `A` is said to weakly dominate `B` if both of the following conditions are met:
 
-TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
+   * All strategy profiles containing `A` have a greater than or equal payoff than the corresponding strategy profiles containing `B`.
+   * At least one strategy profile in `A` has a greater payoff than the corresponding strategy profile containing `B`.
 
-TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
+   In this case, corresponding means that the other players's strategies must match between the strategy profiles. For example, the following two strategy profiles use the same strategies for all players other than the player at index 1: `[Walk, Lie, Run, Cheat]` vs `[Walk, Truth, Run, Cheat]`. `{ref} gt:p24`
 
-TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
+   ```{note}
+   If `A` strictly dominates `B`, it also meets the conditions to weakly dominate `B` (but not necessarily the other way around). When the book says weakly dominates, it usually means it weakly dominates but not strictly dominates. `{ref} gt:p26`
+   ```
 
-TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
+   ```{output}
+   gt_ch1_code/ReducedFormOrdinalGame.py
+   python
+   # MARKDOWN_WEAK_DOMINANCE\s*\n([\s\S]+)\n\s*# MARKDOWN_WEAK_DOMINANCE
+   ```
+   
+   For example, Alice and Bob are the players in a game. The strategies for ...
+   
+   * Alice are `[Lie, Get Violent, Stay Silent]`.
+   * Bob are `[Truth, Lie]`.
+   
+   Once each strategy profile is passed through both Alice's payoff function and Bob's payoff functions, their preferences are encoded using the following payoffs:
 
-TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
+   ```yaml
+   Alice:
+    - [Lie, Truth]: 5          # outcome is A freed / B jailed, which is ranked as 4
+    - [Lie, Lie]: 3            # outcome is A freed / B freed, which is ranked as 3
+    - [Get Violent, Truth]: 2  # outcome is A jailed / B jailed, which is ranked as 2
+    - [Get Violent, Lie]: 2    # outcome is A jailed / B freed, which is ranked as 2
+    - [Stay Silent, Truth]: 4  # outcome is A freed / B jailed, which is ranked as 4
+    - [Stay Silent, Lie]: 3    # outcome is A freed / B freed, which is ranked as 3
+   Bob:
+    - [Lie, Truth]: 1          # outcome is A freed / B jailed, which is ranked as 1
+    - [Lie, Lie]: 10           # outcome is A freed / B freed, which is ranked as 10
+    - [Get Violent, Truth]: 3  # outcome is A jailed / B jailed, which is ranked as 3
+    - [Get Violent, Lie]: 6    # outcome is A jailed / B freed, which is ranked as 6
+    - [Stay Silent, Truth]: 1  # outcome is A freed / B jailed, which is ranked as 1
+    - [Stay Silent, Lie]: 10   # outcome is A freed / B freed, which is ranked as 10
+   ```
 
-TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
+   * For Alice, the strategy ...
+     * Lie weakly dominates (and strictly dominates) Get Violent.
+     * Lie weakly dominates (but does not strictly dominate) Stay Silent.
+     * Stay Silent weakly dominates (and strictly dominates) Get Violent.
+   * For Bob, the strategy Lie weakly dominates (and strictly dominates) Truth.
+   
+ * `{bm} strictly dominant` - Given strategy `A` for a player in a game, `A` is said to be strictly dominant if it's strictly dominates every other strategy that player has. A strictly dominant strategy is colloquially known as the best strategy. `{ref} gt:p26`
 
-TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
+   ```{output}
+   gt_ch1_code/ReducedFormOrdinalGame.py
+   python
+   # MARKDOWN_STRICT_DOMINANCE_TOTAL\s*\n([\s\S]+)\n\s*# MARKDOWN_STRICT_DOMINANCE_TOTAL
+   ```
 
-TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
+ * `{bm} weakly dominant` - Given strategy `A` for a player in a game, `A` is said to be weakly dominant if, for every other strategy that player has, `A` is either equivalent or `A` weakly dominates it. `{ref} gt:p26`
 
-TODO: pg24 review strict dominance terminology then move on to weak dominance, then implement both in the python code (func takes in ReducedFormOrdinalGame and tests 2 of a players strategies to see if its weakly or strongly dominant)
+TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
+
+TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
+
+TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
+
+TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
+
+TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
+
+TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
+
+TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
+
+TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
+
+TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
 
 # Exercises
 

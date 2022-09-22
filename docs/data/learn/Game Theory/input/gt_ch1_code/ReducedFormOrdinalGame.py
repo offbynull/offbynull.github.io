@@ -53,6 +53,24 @@ class ReducedFormOrdinalGame(ABC):
         return strict_found
     # MARKDOWN_WEAK_DOMINANCE
 
+    # MARKDOWN_STRICT_DOMINANCE_TOTAL
+    def strict_dominance(self, player: int) -> str | None:
+        strategy_to_payoffs = []
+        for strategy in self.strategies[player]:
+            strategy_payoffs = []
+            for player_strategy_profile in product(*(s if i != player else {'FAKE'} for i, s in enumerate(self.strategies))):
+                _player_strategy_profile = list(player_strategy_profile)
+                _player_strategy_profile[player] = strategy
+                payoff = self.player_strategy_profile_preference(player, tuple(_player_strategy_profile))
+                strategy_payoffs.append(payoff)
+            strategy_to_payoffs.append([strategy, strategy_payoffs])
+        strategy_to_payoffs.sort(key=lambda x: x[1])
+        top_strategy, top_payoffs = strategy_to_payoffs.pop()
+        next_strategy, next_payoffs = strategy_to_payoffs.pop() if strategy_to_payoffs != [] else (None, [])
+        if top_payoffs > next_payoffs:
+            return top_strategy
+        return None
+    # MARKDOWN_STRICT_DOMINANCE_TOTAL
 
 class MappedPreferencesOrdinalGame(ReducedFormOrdinalGame):
     def __init__(
@@ -94,8 +112,10 @@ if __name__ == '__main__':
             }
         }
     )
-    print(f'{og.is_weakly_dominant(0, "Get Violent", "Lie")}')
-    print(f'{og.is_weakly_dominant(0, "Get Violent", "Stay Silent")}')
-    print(f'{og.is_weakly_dominant(0, "Lie", "Stay Silent")}')
+    print(f'{og.strict_dominance(0)}')
+    print(f'{og.strict_dominance(1)}')
+    # print(f'{og.is_weakly_dominant(0, "Get Violent", "Lie")}')
+    # print(f'{og.is_weakly_dominant(0, "Get Violent", "Stay Silent")}')
+    # print(f'{og.is_weakly_dominant(0, "Lie", "Stay Silent")}')
     # m = {(p, tuple(sp)): og.player_strategy_profile_preference(p, tuple(sp)) for (p, _), sp in product(enumerate(og.players), og.strategy_profiles())}
     # print(f'{m}')
