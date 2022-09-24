@@ -14459,16 +14459,9 @@ Algorithms/Single Nucleotide Polymorphism/Suffix Array_TOPIC
 The standard algorithm along with these algorithmic extensions are all detailed in the subsections below.
 
 ```{note}
-The first-last property is explained in detail in the subsection that describes the standard algorithm.
+The first-last property is explained in the "standard algorithm" subsection below. The various other subsections below also detail the extensions discussed above, working their way up to a form of BWT that's hyper efficient for biological data (rivaling the efficiency of suffix arrays).
 
-BWT matrices have historically been used by data compression algorithms to ...
-
- * find runs of similar substrings in the sequence (e.g. "ana" appears twice in "banana¶")
- * transform the sequence into a more compressible version of itself (e.g. last colum of BWT matrix above is "annb¶aa", which has more characters repeating one after the other compared to "banana¶", and is convertible back to "banana¶").
-
-How "annb¶aa" is convertible back to "banana¶" is discussed further in the subsection that describes the standard algorithm. Specifically, the section on serialization / deserialization.
-
-More information is also available in the [Wikipedia article](https://en.wikipedia.org/wiki/Burrows%E2%80%93Wheeler_transform).
+BWT is also used for compression. More information is also available in the [Wikipedia article](https://en.wikipedia.org/wiki/Burrows%E2%80%93Wheeler_transform).
 ```
 
 #### Standard Algorithm
@@ -14477,9 +14470,9 @@ More information is also available in the [Wikipedia article](https://en.wikiped
 
 **ALGORITHM**:
 
-Burrows-wheeler transform (BWT) is a matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. It's used for efficiently determining the number of times some substring appears in a sequence, and with some extensions it can determine their positions in the sequence as well.
+A BWT matrix is formed by stacking all possible cyclic rotations of a sequence and sorting lexicographically. Similar to suffix arrays, the sequence must have an end marker, where the end marker symbol comes first in the lexicographical sort order.
 
-Similar to suffix arrays, the sequence must have an end marker, where the end marker symbol comes first in the lexicographical sort order. For example, the BWT of "banana¶" (*¶* is the end marker), first creates a matrix by stacking all possible cyclical rotations...
+For example, the BWT matrix for "banana¶" (*¶* is the end marker) is constructed by first stacking all possible cyclical rotations...
 
 |   |   |   |   |   |   |   |
 |---|---|---|---|---|---|---|
@@ -14491,7 +14484,7 @@ Similar to suffix arrays, the sequence must have an end marker, where the end ma
 | n | a | n | a | ¶ | b | a |
 | a | n | a | n | a | ¶ | b |
 
-, then lexicographically sorting the rows of the matrix ...
+, then lexicographically sorts the rows ...
 
 |   |   |   |   |   |   |   |
 |---|---|---|---|---|---|---|
@@ -14511,7 +14504,7 @@ The terminology I used below is mildly confusing.
  * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
 ```
 
-BWT matrices have a special property called the first-last property. Consider how the above matrix would look with symbol instance counts included. The symbols in "banana¶" are {a, b, n, ¶}. At index ...
+BWT matrices have a special property called the first-last property. Consider how the above matrix would look with symbol instance counts included. The symbols in "banana¶" are {¶, a, b, n}. At index ...
 
 0. the first *b* occurs: (b,1)
 1. the first *a* occurs: (a,1)
@@ -14537,7 +14530,7 @@ The sequence "banana¶" with symbol instance counts included is [(b,1), (a,1), (
 It's the exact same matrix as before, it's just that the symbol instance counts are now visible whereas before they were hidden. These symbol instance counts _aren't included_ in the lexicographic sorting that happens.
 ```
 
-For each symbol {a, b, n, ¶} in "banana¶", symbol instances are positioned differently between the first and last columns of the matrix (e.g. (a,1) shows up in first column at row 4 vs row 7 for the last column). However, notice how each symbol's instances appear in the same order between those two columns. For example, symbol ...
+For each symbol {¶, a, b, n} in "banana¶", that symbol's instances appear in the same order between the first and last columns of the matrix. For example, symbol ...
 
  * *a* has its symbol instances ordered as [`{h}#f00 (a,3)`, `{h}#b00 (a,2)`, `{h}#800 (a,1)`] in both the first and last column.
  * *n* has its symbol instances ordered as [`{h}#00f (n,2)`, `{h}#00b (n,1)`] in both the first and last column.
@@ -14552,7 +14545,7 @@ For each symbol {a, b, n, ¶} in "banana¶", symbol instances are positioned dif
 | `{h}#00f (n,2)` | (a,3) | (¶,1) | (b,1) | (a,1) | (n,1) | `{h}#b00 (a,2)` |
 | `{h}#00b (n,1)` | (a,2) | (n,2) | (a,3) | (¶,1) | (b,1) | `{h}#800 (a,1)` |
 
-The phenomenon of consistent ordering of a symbol's instances is the first-last property and it's a result of the lexicographic sorting that happens. In the example matrix above, isolating the matrix to those rows with *a* in the first column shows that the second column is also lexicographically sorted.
+This consistent ordering of a symbol's instances between the first and last columns is the first-last property, and it's a result of the lexicographic sorting that happens. In the example matrix above, isolating the matrix to those rows with *a* in the first column shows that the second column is also lexicographically sorted.
 
 |                 |   ▼   |       |       |       |       |       |
 |-----------------|-------|-------|-------|-------|-------|-------|
@@ -14568,7 +14561,7 @@ In other words, cyclically rotating each row right by 1 moves each corresponding
 | (n,2) | (a,3) | (¶,1) | (b,1) | (a,1) | (n,1) | `{h}#b00 (a,2)` |
 | (n,1) | (a,2) | (n,2) | (a,3) | (¶,1) | (b,1) | `{h}#800 (a,1)` |
 
-After the cyclic rotations above, the rows in the isolated matrix become different rows from the original matrix. Since the rows in the isolated matrix are still lexicographically sorted, they're ordered as they appear in that original matrix.
+Once rotated, the rows change to different rows from original matrix. Since the rows are still in lexicographically sorted order, they still appear in the same order in the original matrix as they do in the isolated matrix above: (a,3) comes first, followed by (a,2), followed by (a,1).
 
 |   ▼   |       |       |       |       |       |                 |
 |-------|-------|-------|-------|-------|-------|-----------------|
@@ -14580,46 +14573,62 @@ After the cyclic rotations above, the rows in the isolated matrix become differe
 | (n,2) | (a,3) | (¶,1) | (b,1) | (a,1) | (n,1) | `{h}#b00 (a,2)` |
 | (n,1) | (a,2) | (n,2) | (a,3) | (¶,1) | (b,1) | `{h}#800 (a,1)` |
 
-Only the first and last columns of the BWT matrix are required for pattern matching, meaning the columns in the middle can be discarded. Since the point is to build out a BWT matrix once and test against it many times (e.g. build a BWT of reference genome and test against many sequencer outputs), this implementation provides pointers that directly map symbol instances from last column to first column. That way, testing for a substring (described in next section) doesn't need to scan over the BWT multiple times.
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
+python
+# MARKDOWN_BUILD_MATRIX\s*\n([\s\S]+)\n\s*# MARKDOWN_BUILD_MATRIX\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Basic main_build_matrix
+sequence: banana¶
+end_marker: ¶
+```
+
+Given a BWT matrix, only the first and last columns are required for pattern matching. Consider just the first and last column of the example "banana¶" BWT matrix used above, henceforth referred to as `first` and `last` respectively.
+
+| first | last  |
+|-------|-------|
+| (¶,1) | (a,3) |
+| (a,3) | (n,2) |
+| (a,2) | (n,1) |
+| (a,1) | (b,1) |
+| (b,1) | (¶,1) |
+| (n,2) | (a,2) |
+| (n,1) | (a,1) |
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py
 python
-# MARKDOWN_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_BUILD\s*[\n$]
+# MARKDOWN_FIRST_LAST\s*\n([\s\S]+)\n\s*# MARKDOWN_FIRST_LAST\s*[\n$]
 ```
 
 ```{ch9}
-sequence_search.BurrowsWheelerTransform_Basic main_build
-{
-  sequence: banana¶,
-  end_marker: ¶
-}
+sequence_search.BurrowsWheelerTransform_Basic main_first_and_last_columns
+sequence: banana¶
+end_marker: ¶
 ```
 
-```{note}
-Further down in this section, there's a slightly more optimal way of building BWT first and last columns. The reason that it's not up here is that some of the text below builds the foundations for that slightly more optimal way.
-```
+The original sequence can be pulled out by hopping between `last` and `first`. Because the BWT matrix is made up of all cyclic rotations of [(b,1), (a,1), (n,1), (a,2), (n,2), (a,3), (¶,1)], the row containing index i in `first` is guaranteed to contain index i-1 in `last` (wrapping around if out of bounds). For example, when ...
 
-Given just the first and last column of a BWT matrix, the original sequence can be pulled out by hopping between those columns. Because the matrix is made up of all cyclic rotations of [(b,1), (a,1), (n,1), (a,2), (n,2), (a,3), (¶,1)], the row containing index i of [(b,1), (a,1), (n,1), (a,2), (n,2), (a,3), (¶,1)] in the first column is guaranteed to contain index i-1 in the last column (wrapping around if out of bounds). For example, when ...
-
- * index 6 is in the first column, index 5 is guaranteed to be in the last column: (¶,1) and (a,3).
- * index 5 is in the first column, index 4 is guaranteed to be in the last column: (a,3) and (n,2).
- * index 4 is in the first column, index 3 is guaranteed to be in the last column: (n,2) and (a,2).
+ * index 6 is in `first`, index 5 is guaranteed to be in `last`: (¶,1) and (a,3).
+ * index 5 is in `first`, index 4 is guaranteed to be in `last`: (a,3) and (n,2).
+ * index 4 is in `first`, index 3 is guaranteed to be in `last`: (n,2) and (a,2).
  * ...
- * index 1 is in the last column, index 0 is guaranteed to be in the first column: (a,1) and (b,1).
+ * index 1 is in `first`, index 0 is guaranteed to be in `last`: (a,1) and (b,1).
 
 Since it's known that ...
 
  1. index n-1 (last index) of the original sequence always contains the end marker (¶,1)
- 2. the row containing the end marker (¶,1) in its first column always gets sorted to the top row of the BWT matrix
+ 2. the row containing the end marker (¶,1) in `first` always gets sorted to the top
  
-..., the first row's last column is guaranteed to contain index n-2: (a,3). From there, since index n-2 is now known, it can be found in the first column and that found row's last column is guaranteed to contain index n-3: (n,2). From there, since index n-3 is now known, it can be found in the first column and that found row's last column is guaranteed to contain index n-4: (a,2). The process continues until the end marker is reached (¶,1), at which point the original sequence has been fully walked.
+..., the first row's `last` is guaranteed to contain index n-2: (a,3). From there, since index n-2 is now known, it can be found in `first` and that found row's `last` is guaranteed to contain index n-3: (n,2). From there, since index n-3 is now known, it can be found in `first` and that found row's `last` is guaranteed to contain index n-4: (a,2). The process continues until the end marker is reached (¶,1), at which point the original sequence has been fully walked.
 
- * last index must be (¶,1): Find (¶,1) in the first column and pull out the corresponding symbol instance in the last column: (b,1).
- * index 0 must be (b,1): Find (b,1) in the first column and pull out the corresponding symbol instance in the last column: (a,1).
- * index 1 must be (a,1): Find (a,1) in the first column and pull out the corresponding symbol instance in the last column: (n,1).
+ * last index must be (¶,1): Find (¶,1) in `first` and pull out the corresponding symbol instance in `last`: (b,1).
+ * index 0 must be (b,1): Find (b,1) in `first` and pull out the corresponding symbol instance in `last`: (a,1).
+ * index 1 must be (a,1): Find (a,1) in `first` and pull out the corresponding symbol instance in `last`: (n,1).
  * ...
- * index 5 must be (a,3): Find (a,3) in the first column and pull out the corresponding symbol instance in the last column: (¶,1).
+ * index 5 must be (a,3): Find (a,3) in `first` and pull out the corresponding symbol instance in `last`: (¶,1).
   
 ```{svgbob}
 +--+--+      a    +--+--+           +--+--+           +--+--+           +--+--+           +--+--+           +--+--+
@@ -14641,17 +14650,15 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_Basic main_walk
-{
-  first_col: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]],
-  last_col: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
-}
+first: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]]
+last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
 ```
 
-Similarly to pulling out the original sequence, given just the first and last column of a BWT matrix, it's possible to quickly identify if and how many times some substring exists in the original sequence. For example, to test if the sequence to see if it contains "nana"...
+Similarly to pulling out the original sequence, given just `first` and `last`, it's possible to quickly identify if and how many times some substring exists in the original sequence. For example, to test if the sequence to see if it contains "nana"...
 
- * find all rows where the last column has symbol "a" and the first column has symbol *n*: [(a,3), (n,2)] and [(a,2), (n,1)].
-   * walk backwards from [(a,3), (n,2)] to see if "nana" could be fully extracted: (a,3) to (n,2) to (a,2) to (n,1), which is "nana" (PASSED)
-   * walk backwards from [(a,2), (n,1)] to see if "nana" could be fully extracted: (a,2) to (n,1) to (a,1) to (b,1), which is "bana" (FAILED)
+ * find all rows where `last` has symbol "a" and `first` has symbol *n*: indexes 1 and 2.
+   * walk backwards from index 1 to see if "nana" could be fully extracted: (a,3) to (n,2) to (a,2) to (n,1), which is "nana" (PASSED)
+   * walk backwards from index 2 to see if "nana" could be fully extracted: (a,2) to (n,1) to (a,1) to (b,1), which is "bana" (FAILED)
 
 ```{svgbob}
 "* search for substring nana"
@@ -14675,11 +14682,64 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_Basic main_test
-{
-  test: nana,
-  sequence: banana¶,
-  end_marker: ¶
-}
+first: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]]
+last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
+test: nana
+```
+
+The backwards walking described above has one obvious performance issue: At each step, `first` has to be scanned over to find the index containing the previous step's `last`. For example, the 3rd step in the example above has to scan over all of `first` to find the 2nd step's `last` value of (n,1).
+
+```{svgbob}
+         "step1"           "step2"           "step3"
++--+--+           +--+--+           +--+--+           +--+--+
+|¶1|a3|     na    |¶1|a3|           |¶1|a3|           |¶1|a3|
+|a3|n2|-------.   |a3|n2|           |a3|n2|   nana    |a3|n2|
+|a2|n1|       |   |a2|n1|       .-> |a2|n1|-------.   |a2|n1|
+|a1|b1|       |   |a1|b1|       |   |a1|b1|       |   |a1|b1|
+|b1|¶1|       |   |b1|¶1|       |   |b1|¶1|       |   |b1|¶1|
+|n2|a2|       '-> |n2|a2|-------'   |n2|a2|       |   |n2|a2|
+|n1|a1|           |n1|a1|    ana    |n1|a1|       '-> |n1|a1|
++--+--+           +--+--+           +--+--+           +--+--+
+```
+
+This scanning of `first` is avoidable by building a cache before the walk starts: `last_to_first[i] = first.find(last[i])`. With `last_to_first`, each step of the backwards walk knows immediately which index of `first` to jump to.
+
+| first | last  | last_to_first |
+|-------|-------|---------------|
+| (¶,1) | (a,1) |       1       |
+| (a,1) | (n,1) |       5       |
+| (a,2) | (n,2) |       6       |
+| (a,3) | (b,1) |       4       |
+| (b,1) | (¶,1) |       0       |
+| (n,1) | (a,2) |       2       |
+| (n,2) | (a,3) |       3       |
+
+The table formed by combining `first`, `last`, and `last_to_first` is henceforth referred to as BWT records, where a row in the table is referred to as a BWT record (singular).
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic_LastToFirst.py
+python
+# MARKDOWN_BUILD\s*\n([\s\S]+)\n\s*# MARKDOWN_BUILD\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Basic_LastToFirst main_build
+sequence: banana¶
+end_marker: ¶
+```
+
+```{output}
+ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic_LastToFirst.py
+python
+# MARKDOWN_WALK_AND_TEST\s*\n([\s\S]+)\n\s*# MARKDOWN_WALK_AND_TEST\s*[\n$]
+```
+
+```{ch9}
+sequence_search.BurrowsWheelerTransform_Basic_LastToFirst main_test
+first: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]]
+last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
+last_to_first: [1,5,6,4,0,2,3]
+test: nana
 ```
 
 #### Checkpointed Indexes Algorithm
@@ -14697,9 +14757,13 @@ Recall the terminology used for BWT:
  * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* {a, b, n, ¶}).
  * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of *n*).
  * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
+ * `first`: The first column of a BWT matrix.
+ * `last`: The last column of a BWT matrix.
+ * `last_to_first`: A column that, at each row, maps that row's `last` value to its index within `first` (`last_to_first[i] = first.find(last[i])`).
+ * BWT records: The table comprised of columns `first`, `last`, and `last_to_first`.
 ```
 
-This algorithm adds an extra piece to the standard algorithm: Each symbol instance in the first column now has its index within the original sequence included. For example, the first and last columns of the BWT matrix for "banana¶", when augmented to include the indexes for the first column's symbol instances, are as follows.
+This algorithm adds an extra piece to the standard algorithm: Each symbol instance in `first` now has its index within the original sequence included. For example, `first` and `last` of the BWT matrix for "banana¶", when augmented to include the indexes for the first column's symbol instances, are as follows.
 
 <table>
 <tr><th>Sequence</th><th>BWT</th></tr>
@@ -15055,6 +15119,10 @@ Recall the terminology used for BWT:
  * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* {a, b, n, ¶}).
  * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of *n*).
  * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
+ * `first`: The first column of a BWT matrix.
+ * `last`: The last column of a BWT matrix.
+ * `last_to_first`: A column that, at each row, maps that row's `last` value to its index within `first` (`last_to_first[i] = first.find(last[i])`).
+ * BWT records: The table comprised of columns `first`, `last`, and `last_to_first`.
 ```
 
 ```{note}
@@ -15268,6 +15336,10 @@ Recall the terminology used for BWT:
  * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* {a, b, n, ¶}).
  * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of *n*).
  * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
+ * `first`: The first column of a BWT matrix.
+ * `last`: The last column of a BWT matrix.
+ * `last_to_first`: A column that, at each row, maps that row's `last` value to its index within `first` (`last_to_first[i] = first.find(last[i])`).
+ * BWT records: The table comprised of columns `first`, `last`, and `last_to_first`.
 ```
 
 ```{note}
@@ -15435,6 +15507,10 @@ Recall the terminology used for BWT:
  * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* {a, b, n, ¶}).
  * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of *n*).
  * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
+ * `first`: The first column of a BWT matrix.
+ * `last`: The last column of a BWT matrix.
+ * `last_to_first`: A column that, at each row, maps that row's `last` value to its index within `first` (`last_to_first[i] = first.find(last[i])`).
+ * BWT records: The table comprised of columns `first`, `last`, and `last_to_first`.
 ```
 
 The deserialization algorithm discussed earlier generates a first column with certain distinct properties: For each symbol, it guarantees that all of that symbol's instances in `first` ...
@@ -15622,6 +15698,10 @@ Recall the terminology used for BWT:
  * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* {a, b, n, ¶}).
  * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of *n*).
  * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
+ * `first`: The first column of a BWT matrix (removed in collapsed first algorithm, replaced with `first_occurrence_map`).
+ * `first_occurrence_map`: `first` collapsed such that only the index of each symbol's initial occurrence is retained (introduced in collapsed first algorithm).
+ * `last`: The last column of a BWT matrix.
+ * BWT records: The table comprised of just the column `last` (introduced in collapsed first algorithm).
 ```
 
 The deserialization algorithm / collapsed first algorithm discussed earlier generates a first column with certain distinct properties: For each symbol, it guarantees that all of that symbol's instances in `first` ...
@@ -15877,35 +15957,37 @@ Similarly, for the third scan iteration (scans rows 5 to 6), the rows where `fir
                     "isolate to range where first_col b1-b2"
 ```
 
-TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE BWT RECORDS.
+TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
 
-TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE BWT RECORDS.
+TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
 
-TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE BWT RECORDS.
+TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
 
-TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE BWT RECORDS.
+TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
 
-TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE BWT RECORDS.
+TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
 
-TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE BWT RECORDS.
+TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
 
-TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE BWT RECORDS.
+TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
 
-TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE BWT RECORDS.
+TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
 
-TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE BWT RECORDS.
+TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
 
-TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE BWT RECORDS.
+TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
 
-TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE BWT RECORDS.
+TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
 
-TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE BWT RECORDS.
+TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
 
-TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE BWT RECORDS.
+TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
 
-TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE BWT RECORDS.
+TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
 
-TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE BWT RECORDS.
+TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
+
+TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py
@@ -15928,6 +16010,19 @@ sequence_search.BurrowsWheelerTransform_Ranks main_test
 
 ```{prereq}
 Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Ranks Algorithm_TOPIC
+```
+
+```{note}
+Recall the terminology used for BWT:
+
+ * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* {a, b, n, ¶}).
+ * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of *n*).
+ * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
+ * `first`: The first column of a BWT matrix (removed in collapsed first algorithm, replaced with `first_occurrence_map`).
+ * `first_occurrence_map`: `first` collapsed such that only the index of each symbol's initial occurrence is retained (introduced in collapsed first algorithm).
+ * `last`: The last column of a BWT matrix with symbol instance counts removed (removed in ranks algorithm).
+ * `last_tallies`: A column where each row contains a tally of how many times each symbol `last` was encountered up until reaching that index  (introduced in ranks algorithm).
+ * BWT records: The table comprised of columns `last` and `last_tallies` (introduced in collapsed first algorithm).
 ```
 
 While the ranks algorithm's replacement of `last` with `last_tallies` actually increases memory usage, it allows for a concept known as checkpointing: Instead of retaining a value at every index of `last_tallies`, leave some empty. The entries that have a value are called checkpoints.
@@ -16048,6 +16143,12 @@ Recall the terminology used for BWT:
  * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* {a, b, n, ¶}).
  * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of *n*).
  * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
+ * `first`: The first column of a BWT matrix (removed in collapsed first algorithm, replaced with `first_occurrence_map`).
+ * `first_occurrence_map`: `first` collapsed such that only the index of each symbol's initial occurrence is retained (introduced in collapsed first algorithm).
+ * `first_idx`: A column where each row contains the index of the corresponding `first` row's symbol instance within the original sequence (introduced in checkpointed indexes algorithm).
+ * `last`: The last column of a BWT matrix with symbol instance counts removed (removed in ranks algorithm).
+ * `last_tallies`: A column where each row contains a tally of how many times each symbol `last` was encountered up until reaching that index  (introduced in ranks algorithm).
+ * BWT records: The table comprised of columns `last` and `last_tallies` (introduced in collapsed first algorithm).
 ```
 
 This algorithm is the checkpointed ranks algorithm with the checkpointed indexes algorithm tacked onto it. For example, the following data structure is for the sequence "banana¶", where ...

@@ -2,7 +2,7 @@ from sys import stdin
 
 import yaml
 
-from sequence_search.BurrowsWheelerTransform_Basic import BWTRecord
+from sequence_search.BurrowsWheelerTransform_Basic_LastToFirst import BWTRecord
 from sequence_search.BurrowsWheelerTransform_Deserialization import to_bwt_optimized2
 
 

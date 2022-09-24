@@ -5,7 +5,7 @@ from sys import stdin
 
 import yaml
 
-from sequence_search.BurrowsWheelerTransform_Basic import BWTRecord, walk
+from sequence_search.BurrowsWheelerTransform_Basic_LastToFirst import BWTRecord, walk
 from sequence_search.SearchUtils import RotatedStringView
 
 
@@ -87,7 +87,7 @@ def to_bwt_from_last_sequence(
     first_col = sorted(last_col, key=functools.cmp_to_key(lambda a, b: cmp_char_and_instance(a, b, end_marker)))
     for (first_ch, first_ch_cnt), (last_ch, last_ch_cnt) in zip(first_col, last_col):
         # Create record
-        record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt)
+        record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt, -1)
         # Figure out where in first_col that (last_ch, last_ch_cnt) occurs using binary search. This is
         # possible because first_col is sorted.
         first_col_idx = bisect_left(
@@ -236,7 +236,7 @@ def to_bwt_optimized2(
         last_col.append((last_ch, last_ch_cnt))
     for (first_ch, first_ch_cnt), (last_ch, last_ch_cnt) in zip(first_col, last_col):
         # Create record
-        record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt)
+        record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt, -1)
         # Figure out where in first_col that (last_ch, last_ch_cnt) occurs using binary search. This is
         # possible because first_col is sorted.
         first_col_idx = bisect_left(

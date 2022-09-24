@@ -216,7 +216,7 @@ class RotatedListView:
         return (self.data[(self.start + i) % len(self.data)] for i in range(len(self.data)))
 
     def __str__(self):
-        return ''.join(ch for ch in self)
+        return ''.join(str(e) for e in self)
 
     def __repr__(self):
         return str(self)

@@ -18620,7 +18620,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_aa3e748b8b94a867a770a36d6b761e30.svg" alt="Dot diagram"></p>
+<p><img src="dot_5449d34a417734c16d0a602a48345a93.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>Testing if a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> contains a <a href="#BM_(sequence)%2Fi">sequence</a> requires walking the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> with that <a href="#BM_(sequence)%2Fi">sequence</a>'s elements until reaching the end-of-<a href="#BM_(sequence)%2Fi">sequence</a> marker.</p>
@@ -18750,7 +18750,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_8e6c04af20b99396fe02b728f8c98e95.svg" alt="Dot diagram"></p>
+<p><img src="dot_8e2c1b9c3aa19902f5373ad68309b950.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19019,7 +19019,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_495d4a104ba0c9d96ea9d0687f983a2c.svg" alt="Dot diagram"></p>
+<p><img src="dot_5f9c677a8118b8d1966f80d2e2664ef8.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19158,7 +19158,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_409a5483456423f21085c64f61716b82.svg" alt="Dot diagram"></p>
+<p><img src="dot_9385fdb5c72c66fbf41095609cabad9c.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>If a scan walks the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> to "arat" and fails, the next scan position must contain "rat". Since the prefix "rat" exists in the <a href="#BM_(%5Cbtrie)%2Fi">trie</a>, a special edge connects "arat" to "rat" such that the scan for the next position can jump past "rat" in the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> walk.</p>
@@ -19236,7 +19236,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_eb1bbdcb682d6575e4952d9057abbda2.svg" alt="Dot diagram"></p>
+<p><img src="dot_13d2d8bcf728199d96b10fc01e6f9637.svg" alt="Dot diagram"></p>
 <p>Searching <em>There were multiple narrations in the play</em> with the trie revealed the following was found: {(23, ration)}</p>
 </div>
 <p></p>
@@ -19315,7 +19315,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_5764d79215b58eb2e82a6f7fb499e868.svg" alt="Dot diagram"></p>
+<p><img src="dot_1fbdd054c42da5b36f7f7ae05ced0748.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -20086,20 +20086,14 @@ xxa vehicle__¶
 <p>The standard algorithm along with these algorithmic extensions are all detailed in the subsections below.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The <a href="#BM_(first%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a> is explained in detail in the subsection that describes the standard algorithm.</p>
-<p><a href="#BM_(BWT)%2F">BWT</a> matrices have historically been used by data compression algorithms to ...</p>
-<ul>
-<li>find runs of similar <a href="#BM_(substring)%2Fi">substring</a>s in the <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. "ana" appears twice in "banana¶")</li>
-<li>transform the <a href="#BM_(sequence)%2Fi">sequence</a> into a more compressible version of itself (e.g. last colum of <a href="#BM_(BWT)%2F">BWT</a> matrix above is "annb¶aa", which has more characters repeating one after the other compared to "banana¶", and is convertible back to "banana¶").</li>
-</ul>
-<p>How "annb¶aa" is convertible back to "banana¶" is discussed further in the subsection that describes the standard algorithm. Specifically, the section on serialization / deserialization.</p>
-<p>More information is also available in the <a href="https://en.wikipedia.org/wiki/Burrows%E2%80%93Wheeler_transform">Wikipedia article</a>.</p>
+<p>The <a href="#BM_(first%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a> is explained in the "standard algorithm" subsection below. The various other subsections below also detail the extensions discussed above, working their way up to a form of <a href="#BM_(BWT)%2F">BWT</a> that's hyper efficient for biological data (rivaling the efficiency of <a href="#BM_(suffix%20array)%2Fi">suffix array</a>s).</p>
+<p><a href="#BM_(BWT)%2F">BWT</a> is also used for compression. More information is also available in the <a href="https://en.wikipedia.org/wiki/Burrows%E2%80%93Wheeler_transform">Wikipedia article</a>.</p>
 </div>
 <a name="H1_Standard%20Algorithm"></a><h4>Standard Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FStandard%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
-<p><a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi">Burrows-wheeler transform</a> (<a href="#BM_(BWT)%2F">BWT</a>) is a matrix formed by combining all cyclic rotations of a <a href="#BM_(sequence)%2Fi">sequence</a> and sorting lexicographically. It's used for efficiently determining the number of times some <a href="#BM_(substring)%2Fi">substring</a> appears in a <a href="#BM_(sequence)%2Fi">sequence</a>, and with some extensions it can determine their positions in the <a href="#BM_(sequence)%2Fi">sequence</a> as well.</p>
-<p>Similar to <a href="#BM_(suffix%20array)%2Fi">suffix array</a>s, the <a href="#BM_(sequence)%2Fi">sequence</a> must have an end marker, where the end marker symbol comes first in the lexicographical sort order. For example, the <a href="#BM_(BWT)%2F">BWT</a> of "banana¶" (<em>¶</em> is the end marker), first creates a matrix by stacking all possible cyclical rotations...</p>
+<p>A <a href="#BM_(BWT)%2F">BWT</a> matrix is formed by stacking all possible cyclic rotations of a <a href="#BM_(sequence)%2Fi">sequence</a> and sorting lexicographically. Similar to <a href="#BM_(suffix%20array)%2Fi">suffix array</a>s, the <a href="#BM_(sequence)%2Fi">sequence</a> must have an end marker, where the end marker symbol comes first in the lexicographical sort order.</p>
+<p>For example, the <a href="#BM_(BWT)%2F">BWT</a> matrix for "banana¶" (<em>¶</em> is the end marker) is constructed by first stacking all possible cyclical rotations...</p>
 <table>
 <thead>
 <tr>
@@ -20178,7 +20172,7 @@ xxa vehicle__¶
 </tr>
 </tbody>
 </table>
-<p>, then lexicographically sorting the rows of the matrix ...</p>
+<p>, then lexicographically sorts the rows ...</p>
 <table>
 <thead>
 <tr>
@@ -20266,7 +20260,7 @@ xxa vehicle__¶
 <li>Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is <em>n</em> and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
 </ul>
 </div>
-<p><a href="#BM_(BWT)%2F">BWT</a> matrices have a special property called the <a href="#BM_(first%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a>. Consider how the above matrix would look with symbol instance counts included. The symbols in "banana¶" are {a, b, n, ¶}. At index ...</p>
+<p><a href="#BM_(BWT)%2F">BWT</a> matrices have a special property called the <a href="#BM_(first%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a>. Consider how the above matrix would look with symbol instance counts included. The symbols in "banana¶" are {¶, a, b, n}. At index ...</p>
 <ol start="0">
 <li>the first <em>b</em> occurs: (b,1)</li>
 <li>the first <em>a</em> occurs: (a,1)</li>
@@ -20359,7 +20353,7 @@ xxa vehicle__¶
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>It's the exact same matrix as before, it's just that the symbol instance counts are now visible whereas before they were hidden. These symbol instance counts <em>aren't included</em> in the lexicographic sorting that happens.</p>
 </div>
-<p>For each symbol {a, b, n, ¶} in "banana¶", symbol instances are positioned differently between the first and last columns of the matrix (e.g. (a,1) shows up in first column at row 4 vs row 7 for the last column). However, notice how each symbol's instances appear in the same order between those two columns. For example, symbol ...</p>
+<p>For each symbol {¶, a, b, n} in "banana¶", that symbol's instances appear in the same order between the first and last columns of the matrix. For example, symbol ...</p>
 <ul>
 <li><em>a</em> has its symbol instances ordered as [<span style="background-color: #f00; color: white; padding: 3px">(a,3)</span>, <span style="background-color: #b00; color: white; padding: 3px">(a,2)</span>, <span style="background-color: #800; color: white; padding: 3px">(a,1)</span>] in both the first and last column.</li>
 <li><em>n</em> has its symbol instances ordered as [<span style="background-color: #00f; color: white; padding: 3px">(n,2)</span>, <span style="background-color: #00b; color: white; padding: 3px">(n,1)</span>] in both the first and last column.</li>
@@ -20442,7 +20436,7 @@ xxa vehicle__¶
 </tr>
 </tbody>
 </table>
-<p>The phenomenon of consistent ordering of a symbol's instances is the <a href="#BM_(first%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a> and it's a result of the lexicographic sorting that happens. In the example matrix above, isolating the matrix to those rows with <em>a</em> in the first column shows that the second column is also lexicographically sorted.</p>
+<p>This consistent ordering of a symbol's instances between the first and last columns is the <a href="#BM_(first%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a>, and it's a result of the lexicographic sorting that happens. In the example matrix above, isolating the matrix to those rows with <em>a</em> in the first column shows that the second column is also lexicographically sorted.</p>
 <table>
 <thead>
 <tr>
@@ -20528,7 +20522,7 @@ xxa vehicle__¶
 </tr>
 </tbody>
 </table>
-<p>After the cyclic rotations above, the rows in the isolated matrix become different rows from the original matrix. Since the rows in the isolated matrix are still lexicographically sorted, they're ordered as they appear in that original matrix.</p>
+<p>Once rotated, the rows change to different rows from original matrix. Since the rows are still in lexicographically sorted order, they still appear in the same order in the original matrix as they do in the isolated matrix above: (a,3) comes first, followed by (a,2), followed by (a,1).</p>
 <table>
 <thead>
 <tr>
@@ -20607,8 +20601,7 @@ xxa vehicle__¶
 </tr>
 </tbody>
 </table>
-<p>Only the first and last columns of the <a href="#BM_(BWT)%2F">BWT</a> matrix are required for pattern matching, meaning the columns in the middle can be discarded. Since the point is to build out a <a href="#BM_(BWT)%2F">BWT</a> matrix once and test against it many times (e.g. build a <a href="#BM_(BWT)%2F">BWT</a> of <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> and test against many <a href="#BM_(sequencer)%2Fi">sequencer</a> outputs), this implementation provides pointers that directly map symbol instances from last column to first column. That way, testing for a <a href="#BM_(substring)%2Fi">substring</a> (described in next section) doesn't need to scan over the <a href="#BM_(BWT)%2F">BWT</a> multiple times.</p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 12 to 73):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 11 to 47):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">cmp</span>(<span class="hljs-params">a: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]], b: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]], end_marker: <span class="hljs-built_in">str</span></span>):
     <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(a) != <span class="hljs-built_in">len</span>(b):
         <span class="hljs-keyword">raise</span> <span class="hljs-string">'???'</span>
@@ -20626,21 +20619,10 @@ xxa vehicle__¶
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
 
 
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">BWTRecord</span>:
-    __slots__ = [<span class="hljs-string">'first_ch'</span>, <span class="hljs-string">'first_ch_cnt'</span>, <span class="hljs-string">'last_ch'</span>, <span class="hljs-string">'last_ch_cnt'</span>, <span class="hljs-string">'last_to_first_idx'</span>]
-
-    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, first_ch: <span class="hljs-built_in">str</span>, first_ch_cnt: <span class="hljs-built_in">int</span>, last_ch: <span class="hljs-built_in">str</span>, last_ch_cnt: <span class="hljs-built_in">int</span></span>):
-        self.first_ch = first_ch
-        self.first_ch_cnt = first_ch_cnt
-        self.last_ch = last_ch
-        self.last_ch_cnt = last_ch_cnt
-        self.last_to_first_idx = -<span class="hljs-number">1</span>
-
-
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_bwt</span>(<span class="hljs-params">
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_bwt_matrix</span>(<span class="hljs-params">
         seq: <span class="hljs-built_in">str</span>,
         end_marker: <span class="hljs-built_in">str</span>
-</span>) -&gt; <span class="hljs-built_in">list</span>[BWTRecord]:
+</span>) -&gt; <span class="hljs-built_in">list</span>[RotatedListView]:
     <span class="hljs-keyword">assert</span> end_marker == seq[-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> missing end marker'</span>
     <span class="hljs-keyword">assert</span> end_marker <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seq[:-<span class="hljs-number">1</span>], <span class="hljs-string">f'<span class="hljs-subst">{seq}</span> has end marker but not at the end'</span>
     <span class="hljs-comment"># Create matrix</span>
@@ -20655,72 +20637,126 @@ xxa vehicle__¶
         seq_with_counts_rotations,
         key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp(a, b, end_marker))
     )
-    <span class="hljs-comment"># Pull out first and last columns</span>
-    ret = []
-    <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> seq_with_counts_rotations_sorted:
-        first_ch, first_ch_cnt = s[<span class="hljs-number">0</span>]
-        last_ch, last_ch_cnt = s[-<span class="hljs-number">1</span>]
-        record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt)
-        ret.append(record)
-    <span class="hljs-comment"># Populate record last-to-first pointers</span>
-    <span class="hljs-keyword">for</span> i, record_a <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
-        last = record_a.last_ch, record_a.last_ch_cnt
-        <span class="hljs-keyword">for</span> j, record_b <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(ret):
-            first = record_b.first_ch, record_b.first_ch_cnt
-            <span class="hljs-keyword">if</span> last == first:
-                record_a.last_to_first_idx = j
-                <span class="hljs-keyword">break</span>
-    <span class="hljs-keyword">return</span> ret
+    <span class="hljs-keyword">return</span> seq_with_counts_rotations_sorted
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building BWT matrix using the following settings...</p>
+<pre><code>sequence: banana¶
+end_marker: ¶
+
+</code></pre>
+<p>The following BWT matrix was produced ...</p>
+<table>
+<tbody><tr><td>(¶,1)</td><td>(b,1)</td><td>(a,1)</td><td>(n,1)</td><td>(a,2)</td><td>(n,2)</td><td>(a,3)</td></tr>
+<tr><td>(a,3)</td><td>(¶,1)</td><td>(b,1)</td><td>(a,1)</td><td>(n,1)</td><td>(a,2)</td><td>(n,2)</td></tr>
+<tr><td>(a,2)</td><td>(n,2)</td><td>(a,3)</td><td>(¶,1)</td><td>(b,1)</td><td>(a,1)</td><td>(n,1)</td></tr>
+<tr><td>(a,1)</td><td>(n,1)</td><td>(a,2)</td><td>(n,2)</td><td>(a,3)</td><td>(¶,1)</td><td>(b,1)</td></tr>
+<tr><td>(b,1)</td><td>(a,1)</td><td>(n,1)</td><td>(a,2)</td><td>(n,2)</td><td>(a,3)</td><td>(¶,1)</td></tr>
+<tr><td>(n,2)</td><td>(a,3)</td><td>(¶,1)</td><td>(b,1)</td><td>(a,1)</td><td>(n,1)</td><td>(a,2)</td></tr>
+<tr><td>(n,1)</td><td>(a,2)</td><td>(n,2)</td><td>(a,3)</td><td>(¶,1)</td><td>(b,1)</td><td>(a,1)</td></tr>
+</tbody></table>
+</div>
+<p></p>
+<p>Given a <a href="#BM_(BWT)%2F">BWT</a> matrix, only the first and last columns are required for pattern matching. Consider just the first and last column of the example "banana¶" <a href="#BM_(BWT)%2F">BWT</a> matrix used above, henceforth referred to as <code>first</code> and <code>last</code> respectively.</p>
+<table>
+<thead>
+<tr>
+<th>first</th>
+<th>last</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(¶,1)</td>
+<td>(a,3)</td>
+</tr>
+<tr>
+<td>(a,3)</td>
+<td>(n,2)</td>
+</tr>
+<tr>
+<td>(a,2)</td>
+<td>(n,1)</td>
+</tr>
+<tr>
+<td>(a,1)</td>
+<td>(b,1)</td>
+</tr>
+<tr>
+<td>(b,1)</td>
+<td>(¶,1)</td>
+</tr>
+<tr>
+<td>(n,2)</td>
+<td>(a,2)</td>
+</tr>
+<tr>
+<td>(n,1)</td>
+<td>(a,1)</td>
+</tr>
+</tbody>
+</table>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 90 to 101):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_bwt_first_and_last_columns</span>(<span class="hljs-params">
+        seq: <span class="hljs-built_in">str</span>,
+        end_marker: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]], <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]]]:
+    bwt_matrix = to_bwt_matrix(seq, end_marker)
+    first = []
+    last = []
+    <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> bwt_matrix:
+        first.append(s[<span class="hljs-number">0</span>])
+        last.append(s[-<span class="hljs-number">1</span>])
+    <span class="hljs-keyword">return</span> first, last
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
 <p>Building BWT using the following settings...</p>
-<pre><code>{
-  sequence: banana¶,
-  end_marker: ¶
-}
+<pre><code>sequence: banana¶
+end_marker: ¶
 
 </code></pre>
-<p>The following first and last columns were produced ...</p>
+<p>The following BWT first and last columns were produced ...</p>
 <ul>
-<li>First: ['¶1', 'a3', 'a2', 'a1', 'b1', 'n2', 'n1']</li>
-<li>Last: ['a3', 'n2', 'n1', 'b1', '¶1', 'a2', 'a1']</li>
+<li>first=[('¶', 1), ('a', 3), ('a', 2), ('a', 1), ('b', 1), ('n', 2), ('n', 1)]</li>
+<li>last=[('a', 3), ('n', 2), ('n', 1), ('b', 1), ('¶', 1), ('a', 2), ('a', 1)]</li>
 </ul>
 </div>
 <p></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Further down in this section, there's a slightly more optimal way of building <a href="#BM_(BWT)%2F">BWT</a> first and last columns. The reason that it's not up here is that some of the text below builds the foundations for that slightly more optimal way.</p>
-</div>
-<p>Given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, the original <a href="#BM_(sequence)%2Fi">sequence</a> can be pulled out by hopping between those columns. Because the matrix is made up of all cyclic rotations of [(b,1), (a,1), (n,1), (a,2), (n,2), (a,3), (¶,1)], the row containing index i of [(b,1), (a,1), (n,1), (a,2), (n,2), (a,3), (¶,1)] in the first column is guaranteed to contain index i-1 in the last column (wrapping around if out of bounds). For example, when ...</p>
+<p>The original <a href="#BM_(sequence)%2Fi">sequence</a> can be pulled out by hopping between <code>last</code> and <code>first</code>. Because the <a href="#BM_(BWT)%2F">BWT</a> matrix is made up of all cyclic rotations of [(b,1), (a,1), (n,1), (a,2), (n,2), (a,3), (¶,1)], the row containing index i in <code>first</code> is guaranteed to contain index i-1 in <code>last</code> (wrapping around if out of bounds). For example, when ...</p>
 <ul>
-<li>index 6 is in the first column, index 5 is guaranteed to be in the last column: (¶,1) and (a,3).</li>
-<li>index 5 is in the first column, index 4 is guaranteed to be in the last column: (a,3) and (n,2).</li>
-<li>index 4 is in the first column, index 3 is guaranteed to be in the last column: (n,2) and (a,2).</li>
+<li>index 6 is in <code>first</code>, index 5 is guaranteed to be in <code>last</code>: (¶,1) and (a,3).</li>
+<li>index 5 is in <code>first</code>, index 4 is guaranteed to be in <code>last</code>: (a,3) and (n,2).</li>
+<li>index 4 is in <code>first</code>, index 3 is guaranteed to be in <code>last</code>: (n,2) and (a,2).</li>
 <li>...</li>
-<li>index 1 is in the last column, index 0 is guaranteed to be in the first column: (a,1) and (b,1).</li>
+<li>index 1 is in <code>first</code>, index 0 is guaranteed to be in <code>last</code>: (a,1) and (b,1).</li>
 </ul>
 <p>Since it's known that ...</p>
 <ol>
 <li>index n-1 (last index) of the original <a href="#BM_(sequence)%2Fi">sequence</a> always contains the end marker (¶,1)</li>
-<li>the row containing the end marker (¶,1) in its first column always gets sorted to the top row of the <a href="#BM_(BWT)%2F">BWT</a> matrix</li>
+<li>the row containing the end marker (¶,1) in <code>first</code> always gets sorted to the top</li>
 </ol>
-<p>..., the first row's last column is guaranteed to contain index n-2: (a,3). From there, since index n-2 is now known, it can be found in the first column and that found row's last column is guaranteed to contain index n-3: (n,2). From there, since index n-3 is now known, it can be found in the first column and that found row's last column is guaranteed to contain index n-4: (a,2). The process continues until the end marker is reached (¶,1), at which point the original <a href="#BM_(sequence)%2Fi">sequence</a> has been fully walked.</p>
+<p>..., the first row's <code>last</code> is guaranteed to contain index n-2: (a,3). From there, since index n-2 is now known, it can be found in <code>first</code> and that found row's <code>last</code> is guaranteed to contain index n-3: (n,2). From there, since index n-3 is now known, it can be found in <code>first</code> and that found row's <code>last</code> is guaranteed to contain index n-4: (a,2). The process continues until the end marker is reached (¶,1), at which point the original <a href="#BM_(sequence)%2Fi">sequence</a> has been fully walked.</p>
 <ul>
-<li>last index must be (¶,1): Find (¶,1) in the first column and pull out the corresponding symbol instance in the last column: (b,1).</li>
-<li>index 0 must be (b,1): Find (b,1) in the first column and pull out the corresponding symbol instance in the last column: (a,1).</li>
-<li>index 1 must be (a,1): Find (a,1) in the first column and pull out the corresponding symbol instance in the last column: (n,1).</li>
+<li>last index must be (¶,1): Find (¶,1) in <code>first</code> and pull out the corresponding symbol instance in <code>last</code>: (b,1).</li>
+<li>index 0 must be (b,1): Find (b,1) in <code>first</code> and pull out the corresponding symbol instance in <code>last</code>: (a,1).</li>
+<li>index 1 must be (a,1): Find (a,1) in <code>first</code> and pull out the corresponding symbol instance in <code>last</code>: (n,1).</li>
 <li>...</li>
-<li>index 5 must be (a,3): Find (a,3) in the first column and pull out the corresponding symbol instance in the last column: (¶,1).</li>
+<li>index 5 must be (a,3): Find (a,3) in <code>first</code> and pull out the corresponding symbol instance in <code>last</code>: (¶,1).</li>
 </ul>
 <p><img src="svgbob_57e0f1bae5a018cfdeaca8f0bd21352d8d510b91.svg" alt="Kroki diagram output"></p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 133 to 143):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk</span>(<span class="hljs-params">bwt_records: <span class="hljs-built_in">list</span>[BWTRecord]</span>) -&gt; <span class="hljs-built_in">str</span>:
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 139 to 153):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk</span>(<span class="hljs-params">
+        first: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]],
+        last: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]]
+</span>) -&gt; <span class="hljs-built_in">str</span>:
     ret = <span class="hljs-string">''</span>
-    row = <span class="hljs-number">0</span>  <span class="hljs-comment"># first idx of bwt_records always has first_ch == end_marker because of the lexicographical sorting</span>
+    row = <span class="hljs-number">0</span>  <span class="hljs-comment"># first idx always has first_ch == end_marker because of the lexicographical sorting</span>
     <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
-        ret += bwt_records[row].last_ch
-        row = bwt_records[row].last_to_first_idx
+        last_ch, last_ch_cnt = last[row]
+        ret += last_ch
+        row = <span class="hljs-built_in">next</span>(i <span class="hljs-keyword">for</span> i, (first_ch, first_ch_cnt) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(first) <span class="hljs-keyword">if</span> first_ch == last_ch <span class="hljs-keyword">and</span> first_ch_cnt == last_ch_cnt)
         <span class="hljs-keyword">if</span> row == <span class="hljs-number">0</span>:
             <span class="hljs-keyword">break</span>
     ret = ret[::-<span class="hljs-number">1</span>]  <span class="hljs-comment"># reverse ret</span>
@@ -20730,27 +20766,173 @@ xxa vehicle__¶
 <div style="border:1px solid black;">
 <p></p>
 <p>Building BWT using the following settings...</p>
-<pre><code>{
-  first_col: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]],
-  last_col: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
-}
+<pre><code>first: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]]
+last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
 
 </code></pre>
 <p>The original sequence was <em>banana¶</em>.</p>
 </div>
 <p></p>
-<p>Similarly to pulling out the original <a href="#BM_(sequence)%2Fi">sequence</a>, given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, it's possible to quickly identify if and how many times some <a href="#BM_(substring)%2Fi">substring</a> exists in the original <a href="#BM_(sequence)%2Fi">sequence</a>. For example, to test if the <a href="#BM_(sequence)%2Fi">sequence</a> to see if it contains "nana"...</p>
+<p>Similarly to pulling out the original <a href="#BM_(sequence)%2Fi">sequence</a>, given just <code>first</code> and <code>last</code>, it's possible to quickly identify if and how many times some <a href="#BM_(substring)%2Fi">substring</a> exists in the original <a href="#BM_(sequence)%2Fi">sequence</a>. For example, to test if the <a href="#BM_(sequence)%2Fi">sequence</a> to see if it contains "nana"...</p>
 <ul>
-<li>find all rows where the last column has symbol "a" and the first column has symbol <em>n</em>: [(a,3), (n,2)] and [(a,2), (n,1)].
+<li>find all rows where <code>last</code> has symbol "a" and <code>first</code> has symbol <em>n</em>: indexes 1 and 2.
 <ul>
-<li>walk backwards from [(a,3), (n,2)] to see if "nana" could be fully extracted: (a,3) to (n,2) to (a,2) to (n,1), which is "nana" (PASSED)</li>
-<li>walk backwards from [(a,2), (n,1)] to see if "nana" could be fully extracted: (a,2) to (n,1) to (a,1) to (b,1), which is "bana" (FAILED)</li>
+<li>walk backwards from index 1 to see if "nana" could be fully extracted: (a,3) to (n,2) to (a,2) to (n,1), which is "nana" (PASSED)</li>
+<li>walk backwards from index 2 to see if "nana" could be fully extracted: (a,2) to (n,1) to (a,1) to (b,1), which is "bana" (FAILED)</li>
 </ul>
 </li>
 </ul>
 <p><img src="svgbob_6daab13e146d8f4524d3b6d51eeebfa62689062a.svg" alt="Kroki diagram output"></p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 183 to 238):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic.py</a> (lines 199 to 227):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk_find</span>(<span class="hljs-params">
+        first: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]],
+        last: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]],
+        test: <span class="hljs-built_in">str</span>,
+        start_row: <span class="hljs-built_in">int</span>
+</span>) -&gt; <span class="hljs-built_in">bool</span>:
+    row = start_row
+    <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(test[:-<span class="hljs-number">1</span>]):
+        last_ch, last_ch_cnt = last[row]
+        <span class="hljs-keyword">if</span> last_ch != ch:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        row = <span class="hljs-built_in">next</span>(i <span class="hljs-keyword">for</span> i, (first_ch, first_ch_cnt) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(first) <span class="hljs-keyword">if</span> first_ch == last_ch <span class="hljs-keyword">and</span> first_ch_cnt == last_ch_cnt)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">
+        first: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]],
+        last: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]],
+        test: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">int</span>:
+    found = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i, (first_ch, _) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(first):
+        <span class="hljs-keyword">if</span> first_ch == test[-<span class="hljs-number">1</span>] <span class="hljs-keyword">and</span> walk_find(first, last, test, i):
+            found += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> found
+    <span class="hljs-comment"># The code above is the obvious way to do this. However, since the first column is always sorted by character, the</span>
+    <span class="hljs-comment"># entire array doesn't need to be scanned. Instead, you can binary search to the first and last index with</span>
+    <span class="hljs-comment"># first_ch == test[-1] and just consider those indices.</span>
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building BWT using the following settings...</p>
+<pre><code>first: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]]
+last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
+test: nana
+
+</code></pre>
+<p><em>nana</em> found 1 times.</p>
+</div>
+<p></p>
+<p>The backwards walking described above has one obvious performance issue: At each step, <code>first</code> has to be scanned over to find the index containing the previous step's <code>last</code>. For example, the 3rd step in the example above has to scan over all of <code>first</code> to find the 2nd step's <code>last</code> value of (n,1).</p>
+<p><img src="svgbob_bc1645c4d7c940102ae5ce8650820f71fe7bd540.svg" alt="Kroki diagram output"></p>
+<p>This scanning of <code>first</code> is avoidable by building a cache before the walk starts: <code>last_to_first[i] = first.find(last[i])</code>. With <code>last_to_first</code>, each step of the backwards walk knows immediately which index of <code>first</code> to jump to.</p>
+<table>
+<thead>
+<tr>
+<th>first</th>
+<th>last</th>
+<th>last_to_first</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(¶,1)</td>
+<td>(a,1)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>(a,1)</td>
+<td>(n,1)</td>
+<td>5</td>
+</tr>
+<tr>
+<td>(a,2)</td>
+<td>(n,2)</td>
+<td>6</td>
+</tr>
+<tr>
+<td>(a,3)</td>
+<td>(b,1)</td>
+<td>4</td>
+</tr>
+<tr>
+<td>(b,1)</td>
+<td>(¶,1)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>(n,1)</td>
+<td>(a,2)</td>
+<td>2</td>
+</tr>
+<tr>
+<td>(n,2)</td>
+<td>(a,3)</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p>The table formed by combining <code>first</code>, <code>last</code>, and <code>last_to_first</code> is henceforth referred to as <a href="#BM_(BWT)%2F">BWT</a> records, where a row in the table is referred to as a <a href="#BM_(BWT)%2F">BWT</a> record (singular).</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic_LastToFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic_LastToFirst.py</a> (lines 11 to 38):</p>
+<pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">BWTRecord</span>:
+    __slots__ = [<span class="hljs-string">'first_ch'</span>, <span class="hljs-string">'first_ch_cnt'</span>, <span class="hljs-string">'last_ch'</span>, <span class="hljs-string">'last_ch_cnt'</span>, <span class="hljs-string">'last_to_first_idx'</span>]
+
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, first_ch: <span class="hljs-built_in">str</span>, first_ch_cnt: <span class="hljs-built_in">int</span>, last_ch: <span class="hljs-built_in">str</span>, last_ch_cnt: <span class="hljs-built_in">int</span>, last_to_first_idx: <span class="hljs-built_in">int</span></span>):
+        self.first_ch = first_ch
+        self.first_ch_cnt = first_ch_cnt
+        self.last_ch = last_ch
+        self.last_ch_cnt = last_ch_cnt
+        self.last_to_first_idx = last_to_first_idx
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_bwt_records</span>(<span class="hljs-params">
+        seq: <span class="hljs-built_in">str</span>,
+        end_marker: <span class="hljs-built_in">str</span>
+</span>) -&gt; <span class="hljs-built_in">list</span>[BWTRecord]:
+    first, last = BurrowsWheelerTransform_Basic.get_bwt_first_and_last_columns(seq, end_marker)
+    <span class="hljs-comment"># Create cache of last-to-first pointers</span>
+    last_to_first = []
+    <span class="hljs-keyword">for</span> last_val <span class="hljs-keyword">in</span> last:
+        idx = <span class="hljs-built_in">next</span>(i <span class="hljs-keyword">for</span> i, first_val <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(first) <span class="hljs-keyword">if</span> last_val == first_val)
+        last_to_first.append(idx)
+    <span class="hljs-comment"># Create records</span>
+    bwt_records = []
+    <span class="hljs-keyword">for</span> (first_ch, first_ch_cnt), (last_ch, last_ch_cnt), last_to_first_idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(first, last, last_to_first):
+        bwt_records.append(BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt, last_to_first_idx))
+    <span class="hljs-comment"># Return</span>
+    <span class="hljs-keyword">return</span> bwt_records
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building BWT using the following settings...</p>
+<pre><code>sequence: banana¶
+end_marker: ¶
+
+</code></pre>
+<p>The following first and last columns were produced ...</p>
+<ul>
+<li>First: [('¶', 1), ('a', 3), ('a', 2), ('a', 1), ('b', 1), ('n', 2), ('n', 1)]</li>
+<li>Last: [('a', 3), ('n', 2), ('n', 1), ('b', 1), ('¶', 1), ('a', 2), ('a', 1)]</li>
+<li>Last-to-First: [1, 5, 6, 4, 0, 2, 3]</li>
+</ul>
+</div>
+<p></p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic_LastToFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic_LastToFirst.py</a> (lines 80 to 115):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk</span>(<span class="hljs-params">bwt_records: <span class="hljs-built_in">list</span>[BWTRecord]</span>) -&gt; <span class="hljs-built_in">str</span>:
+    ret = <span class="hljs-string">''</span>
+    row = <span class="hljs-number">0</span>  <span class="hljs-comment"># first idx always has first_ch == end_marker because of the lexicographical sorting</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        ret += bwt_records[row].last_ch
+        row = bwt_records[row].last_to_first_idx
+        <span class="hljs-keyword">if</span> row == <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">break</span>
+    ret = ret[::-<span class="hljs-number">1</span>]  <span class="hljs-comment"># reverse ret</span>
+    ret = ret[<span class="hljs-number">1</span>:] + ret[<span class="hljs-number">0</span>]  <span class="hljs-comment"># ret has end_marker at beginning, rotate it to end</span>
+    <span class="hljs-keyword">return</span> ret
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">walk_find</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         test: <span class="hljs-built_in">str</span>,
         start_row: <span class="hljs-built_in">int</span>
@@ -20773,55 +20955,17 @@ xxa vehicle__¶
             <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(test) == <span class="hljs-number">1</span> <span class="hljs-keyword">or</span> (rec.last_ch == test[-<span class="hljs-number">2</span>] <span class="hljs-keyword">and</span> walk_find(bwt_records, test, i)):
                 found += <span class="hljs-number">1</span>
     <span class="hljs-keyword">return</span> found
-    <span class="hljs-comment"># The code above is the obvious way to do this. However, since the first column is always sorted by character, the</span>
-    <span class="hljs-comment"># entire array doesn't need to be scanned. Instead, you can binary search to the first and last index with</span>
-    <span class="hljs-comment"># rec.first_ch == test[-1] and just consider those indices.</span>
-    <span class="hljs-comment">#</span>
-    <span class="hljs-comment"># The problem with doing this is that bisect_left/bisect_right has a requirement where the binary array being</span>
-    <span class="hljs-comment"># searched must contain the same type as the element being searched for. Even with a custom sorting "key" to try to</span>
-    <span class="hljs-comment"># map between the types on comparison, it won't allow it. Otherwise, the code below would probably work fine...</span>
-    <span class="hljs-comment">#</span>
-    <span class="hljs-comment"># end_marker = bwt_records[0].first_ch  # bwt_records[0] always has first_ch == end_marker because of lexicographic sort</span>
-    <span class="hljs-comment"># found = 0</span>
-    <span class="hljs-comment"># # Binary search the bwt_records for the left-most (top) entry with first_ch in its</span>
-    <span class="hljs-comment"># bwt_top = bisect_left(</span>
-    <span class="hljs-comment">#     bwt_records,</span>
-    <span class="hljs-comment">#     test[-1],</span>
-    <span class="hljs-comment">#     key=functools.cmp_to_key(lambda a, b: cmp(a.first_ch[0], b.first_ch[0], end_marker)))</span>
-    <span class="hljs-comment"># if bwt_top == len(test):</span>
-    <span class="hljs-comment">#     return 0  # not found</span>
-    <span class="hljs-comment"># # Binary search the bwt_records for the right-most (bottom) entry with first_ch in its</span>
-    <span class="hljs-comment"># bwt_bottom = bisect_right(</span>
-    <span class="hljs-comment">#     bwt_records,</span>
-    <span class="hljs-comment">#     test[-1],</span>
-    <span class="hljs-comment">#     lo=bwt_top,</span>
-    <span class="hljs-comment">#     key=functools.cmp_to_key(lambda a, b: cmp(a.first_ch[0], b.first_ch[0], end_marker)))</span>
-    <span class="hljs-comment"># # If you're only searching for a single character, stop here.</span>
-    <span class="hljs-comment"># if len(test) == 1:</span>
-    <span class="hljs-comment">#     return bwt_bottom - bwt_top + 1</span>
-    <span class="hljs-comment"># # Otherwise, scan only between those indices</span>
-    <span class="hljs-comment"># for i in range(bwt_top, bwt_bottom + 1):</span>
-    <span class="hljs-comment">#     rec = bwt_records[i]</span>
-    <span class="hljs-comment">#     if rec.last_ch == test[-2] and walk_find(bwt_records, test, i):</span>
-    <span class="hljs-comment">#         found += 1</span>
-    <span class="hljs-comment"># return found</span>
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
 <p>Building BWT using the following settings...</p>
-<pre><code>{
-  test: nana,
-  sequence: banana¶,
-  end_marker: ¶
-}
+<pre><code>first: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]]
+last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
+last_to_first: [1,5,6,4,0,2,3]
+test: nana
 
 </code></pre>
-<p>The following first and last columns were produced ...</p>
-<ul>
-<li>First: ['¶1', 'a3', 'a2', 'a1', 'b1', 'n2', 'n1']</li>
-<li>Last: ['a3', 'n2', 'n1', 'b1', '¶1', 'a2', 'a1']</li>
-</ul>
-<p><em>nana</em> found in <em>banana¶</em> at 1 times.</p>
+<p><em>nana</em> found 1 times.</p>
 </div>
 <p></p>
 <a name="H_Checkpointed%20Indexes%20Algorithm"></a><h4>Checkpointed Indexes Algorithm</h4>
@@ -20840,9 +20984,13 @@ xxa vehicle__¶
 <li>Symbol: A unique element within the <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. "banana¶" is made up of the <em>unique elements</em> / <em>symbols</em> {a, b, n, ¶}).</li>
 <li>Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd <em>occurrence</em> / <em>symbol instance</em> of <em>n</em>).</li>
 <li>Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is <em>n</em> and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
+<li><code>first</code>: The first column of a <a href="#BM_(BWT)%2F">BWT</a> matrix.</li>
+<li><code>last</code>: The last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix.</li>
+<li><code>last_to_first</code>: A column that, at each row, maps that row's <code>last</code> value to its index within <code>first</code> (<code>last_to_first[i] = first.find(last[i])</code>).</li>
+<li><a href="#BM_(BWT)%2F">BWT</a> records: The table comprised of columns <code>first</code>, <code>last</code>, and <code>last_to_first</code>.</li>
 </ul>
 </div>
-<p>This algorithm adds an extra piece to the standard algorithm: Each symbol instance in the first column now has its index within the original <a href="#BM_(sequence)%2Fi">sequence</a> included. For example, the first and last columns of the <a href="#BM_(BWT)%2F">BWT</a> matrix for "banana¶", when augmented to include the indexes for the first column's symbol instances, are as follows.</p>
+<p>This algorithm adds an extra piece to the standard algorithm: Each symbol instance in <code>first</code> now has its index within the original <a href="#BM_(sequence)%2Fi">sequence</a> included. For example, <code>first</code> and <code>last</code> of the <a href="#BM_(BWT)%2F">BWT</a> matrix for "banana¶", when augmented to include the indexes for the first column's symbol instances, are as follows.</p>
 <table>
 <tbody><tr><th>Sequence</th><th>BWT</th></tr>
 <tr><td>
@@ -21640,6 +21788,10 @@ xxa vehicle__¶
 <li>Symbol: A unique element within the <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. "banana¶" is made up of the <em>unique elements</em> / <em>symbols</em> {a, b, n, ¶}).</li>
 <li>Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd <em>occurrence</em> / <em>symbol instance</em> of <em>n</em>).</li>
 <li>Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is <em>n</em> and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
+<li><code>first</code>: The first column of a <a href="#BM_(BWT)%2F">BWT</a> matrix.</li>
+<li><code>last</code>: The last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix.</li>
+<li><code>last_to_first</code>: A column that, at each row, maps that row's <code>last</code> value to its index within <code>first</code> (<code>last_to_first[i] = first.find(last[i])</code>).</li>
+<li><a href="#BM_(BWT)%2F">BWT</a> records: The table comprised of columns <code>first</code>, <code>last</code>, and <code>last_to_first</code>.</li>
 </ul>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -21709,7 +21861,7 @@ xxa vehicle__¶
     first_col = <span class="hljs-built_in">sorted</span>(last_col, key=functools.cmp_to_key(<span class="hljs-keyword">lambda</span> a, b: cmp_char_and_instance(a, b, end_marker)))
     <span class="hljs-keyword">for</span> (first_ch, first_ch_cnt), (last_ch, last_ch_cnt) <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(first_col, last_col):
         <span class="hljs-comment"># Create record</span>
-        record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt)
+        record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt, -<span class="hljs-number">1</span>)
         <span class="hljs-comment"># Figure out where in first_col that (last_ch, last_ch_cnt) occurs using binary search. This is</span>
         <span class="hljs-comment"># possible because first_col is sorted.</span>
         first_col_idx = bisect_left(
@@ -21967,7 +22119,7 @@ xxa vehicle__¶
         last_col.append((last_ch, last_ch_cnt))
     <span class="hljs-keyword">for</span> (first_ch, first_ch_cnt), (last_ch, last_ch_cnt) <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(first_col, last_col):
         <span class="hljs-comment"># Create record</span>
-        record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt)
+        record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt, -<span class="hljs-number">1</span>)
         <span class="hljs-comment"># Figure out where in first_col that (last_ch, last_ch_cnt) occurs using binary search. This is</span>
         <span class="hljs-comment"># possible because first_col is sorted.</span>
         first_col_idx = bisect_left(
@@ -22015,12 +22167,15 @@ xxa vehicle__¶
 <li>Symbol: A unique element within the <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. "banana¶" is made up of the <em>unique elements</em> / <em>symbols</em> {a, b, n, ¶}).</li>
 <li>Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd <em>occurrence</em> / <em>symbol instance</em> of <em>n</em>).</li>
 <li>Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is <em>n</em> and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
+<li><code>first</code>: The first column of a <a href="#BM_(BWT)%2F">BWT</a> matrix.</li>
+<li><code>last</code>: The last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix.</li>
+<li><code>last_to_first</code>: A column that, at each row, maps that row's <code>last</code> value to its index within <code>first</code> (<code>last_to_first[i] = first.find(last[i])</code>).</li>
+<li><a href="#BM_(BWT)%2F">BWT</a> records: The table comprised of columns <code>first</code>, <code>last</code>, and <code>last_to_first</code>.</li>
 </ul>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>This algorithm focuses on a different way of testing the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix for a <a href="#BM_(substring)%2Fi">substring</a>. It specifically requires that the first and last columns of a <a href="#BM_(BWT)%2F">BWT</a> matrix were generated using the deserialization algorithm, because that algorithm has some special properties with how symbol instances get numbered (discussed below).</p>
-<p>Ultimately, it seems to be testing in a similar way as before but it doesn't try to test each potential <a href="#BM_(substring)%2Fi">substring</a> instance by drilling down. Instead, it limits the span / range of options at each step to values that it knows are correct. In a way, it should be a faster way to test because of the memory layouts and principle of locality (e.g. subsequent memory access to a location that's closer to the original memory access is faster vs a location that's farther, due to caching and stuff like that).</p>
+<p>This algorithm seems useless but it's setting the foundations for much more efficient testing in later sections.</p>
 </div>
 <p>The deserialization algorithm discussed earlier generates a first column with certain distinct properties: For each symbol, it guarantees that all of that symbol's instances in <code>first</code> ...</p>
 <ul>
@@ -22219,6 +22374,10 @@ xxa vehicle__¶
 <li>Symbol: A unique element within the <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. "banana¶" is made up of the <em>unique elements</em> / <em>symbols</em> {a, b, n, ¶}).</li>
 <li>Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd <em>occurrence</em> / <em>symbol instance</em> of <em>n</em>).</li>
 <li>Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is <em>n</em> and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
+<li><code>first</code>: The first column of a <a href="#BM_(BWT)%2F">BWT</a> matrix.</li>
+<li><code>last</code>: The last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix.</li>
+<li><code>last_to_first</code>: A column that, at each row, maps that row's <code>last</code> value to its index within <code>first</code> (<code>last_to_first[i] = first.find(last[i])</code>).</li>
+<li><a href="#BM_(BWT)%2F">BWT</a> records: The table comprised of columns <code>first</code>, <code>last</code>, and <code>last_to_first</code>.</li>
 </ul>
 </div>
 <p>The deserialization algorithm discussed earlier generates a first column with certain distinct properties: For each symbol, it guarantees that all of that symbol's instances in <code>first</code> ...</p>
@@ -22597,6 +22756,10 @@ None</p>
 <li>Symbol: A unique element within the <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. "banana¶" is made up of the <em>unique elements</em> / <em>symbols</em> {a, b, n, ¶}).</li>
 <li>Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd <em>occurrence</em> / <em>symbol instance</em> of <em>n</em>).</li>
 <li>Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is <em>n</em> and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
+<li><code>first</code>: The first column of a <a href="#BM_(BWT)%2F">BWT</a> matrix (removed in collapsed first algorithm, replaced with <code>first_occurrence_map</code>).</li>
+<li><code>first_occurrence_map</code>: <code>first</code> collapsed such that only the index of each symbol's initial occurrence is retained (introduced in collapsed first algorithm).</li>
+<li><code>last</code>: The last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix.</li>
+<li><a href="#BM_(BWT)%2F">BWT</a> records: The table comprised of just the column <code>last</code> (introduced in collapsed first algorithm).</li>
 </ul>
 </div>
 <p>The deserialization algorithm / collapsed first algorithm discussed earlier generates a first column with certain distinct properties: For each symbol, it guarantees that all of that symbol's instances in <code>first</code> ...</p>
@@ -22940,21 +23103,22 @@ None</p>
 <li>end is   <code>first_occurrence_map['b'] + symbol_tally_at_idx('b', 6) - 1 = 8</code>.</li>
 </ul>
 <p><img src="svgbob_184cf194fc088141620282a199e137d9be506238.svg" alt="Kroki diagram output"></p>
-<p>TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE <a href="#BM_(BWT)%2F">BWT</a> RECORDS.</p>
-<p>TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE <a href="#BM_(BWT)%2F">BWT</a> RECORDS.</p>
-<p>TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE <a href="#BM_(BWT)%2F">BWT</a> RECORDS.</p>
-<p>TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE <a href="#BM_(BWT)%2F">BWT</a> RECORDS.</p>
-<p>TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE <a href="#BM_(BWT)%2F">BWT</a> RECORDS.</p>
-<p>TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE <a href="#BM_(BWT)%2F">BWT</a> RECORDS.</p>
-<p>TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE <a href="#BM_(BWT)%2F">BWT</a> RECORDS.</p>
-<p>TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE <a href="#BM_(BWT)%2F">BWT</a> RECORDS.</p>
-<p>TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE <a href="#BM_(BWT)%2F">BWT</a> RECORDS.</p>
-<p>TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE <a href="#BM_(BWT)%2F">BWT</a> RECORDS.</p>
-<p>TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE <a href="#BM_(BWT)%2F">BWT</a> RECORDS.</p>
-<p>TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE <a href="#BM_(BWT)%2F">BWT</a> RECORDS.</p>
-<p>TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE <a href="#BM_(BWT)%2F">BWT</a> RECORDS.</p>
-<p>TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE <a href="#BM_(BWT)%2F">BWT</a> RECORDS.</p>
-<p>TODO: REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last". THEN IN BEGINNING TERMINOLOGY NOTE AT EACH SECTION THAT "first"/"last" REFERS TO FIRST AND LAST COLUMNS OF THE <a href="#BM_(BWT)%2F">BWT</a> RECORDS.</p>
+<p>TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".</p>
+<p>TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".</p>
+<p>TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".</p>
+<p>TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".</p>
+<p>TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".</p>
+<p>TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".</p>
+<p>TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".</p>
+<p>TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".</p>
+<p>TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".</p>
+<p>TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".</p>
+<p>TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".</p>
+<p>TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".</p>
+<p>TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".</p>
+<p>TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".</p>
+<p>TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".</p>
+<p>TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR <a href="#BM_(SNP)%2F">SNP</a>. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".</p>
 <p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py</a> (lines 189 to 205):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
@@ -22997,6 +23161,20 @@ None</p>
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism%2FBurrows-Wheeler%20Transform%2FRanks%20Algorithm)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Ranks Algorithm</a></li>
+</ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Recall the terminology used for <a href="#BM_(BWT)%2F">BWT</a>:</p>
+<ul>
+<li>Symbol: A unique element within the <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. "banana¶" is made up of the <em>unique elements</em> / <em>symbols</em> {a, b, n, ¶}).</li>
+<li>Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd <em>occurrence</em> / <em>symbol instance</em> of <em>n</em>).</li>
+<li>Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is <em>n</em> and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
+<li><code>first</code>: The first column of a <a href="#BM_(BWT)%2F">BWT</a> matrix (removed in collapsed first algorithm, replaced with <code>first_occurrence_map</code>).</li>
+<li><code>first_occurrence_map</code>: <code>first</code> collapsed such that only the index of each symbol's initial occurrence is retained (introduced in collapsed first algorithm).</li>
+<li><code>last</code>: The last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix with symbol instance counts removed (removed in ranks algorithm).</li>
+<li><code>last_tallies</code>: A column where each row contains a tally of how many times each symbol <code>last</code> was encountered up until reaching that index  (introduced in ranks algorithm).</li>
+<li><a href="#BM_(BWT)%2F">BWT</a> records: The table comprised of columns <code>last</code> and <code>last_tallies</code> (introduced in collapsed first algorithm).</li>
 </ul>
 </div>
 <p>While the ranks algorithm's replacement of <code>last</code> with <code>last_tallies</code> actually increases memory usage, it allows for a concept known as checkpointing: Instead of retaining a value at every index of <code>last_tallies</code>, leave some empty. The entries that have a value are called checkpoints.</p>
@@ -23280,6 +23458,12 @@ None</p>
 <li>Symbol: A unique element within the <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. "banana¶" is made up of the <em>unique elements</em> / <em>symbols</em> {a, b, n, ¶}).</li>
 <li>Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd <em>occurrence</em> / <em>symbol instance</em> of <em>n</em>).</li>
 <li>Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is <em>n</em> and it <em>is occurrence number</em> / <em>has a symbol instance count of</em> 2).</li>
+<li><code>first</code>: The first column of a <a href="#BM_(BWT)%2F">BWT</a> matrix (removed in collapsed first algorithm, replaced with <code>first_occurrence_map</code>).</li>
+<li><code>first_occurrence_map</code>: <code>first</code> collapsed such that only the index of each symbol's initial occurrence is retained (introduced in collapsed first algorithm).</li>
+<li><code>first_idx</code>: A column where each row contains the index of the corresponding <code>first</code> row's symbol instance within the original <a href="#BM_(sequence)%2Fi">sequence</a> (introduced in checkpointed indexes algorithm).</li>
+<li><code>last</code>: The last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix with symbol instance counts removed (removed in ranks algorithm).</li>
+<li><code>last_tallies</code>: A column where each row contains a tally of how many times each symbol <code>last</code> was encountered up until reaching that index  (introduced in ranks algorithm).</li>
+<li><a href="#BM_(BWT)%2F">BWT</a> records: The table comprised of columns <code>last</code> and <code>last_tallies</code> (introduced in collapsed first algorithm).</li>
 </ul>
 </div>
 <p>This algorithm is the checkpointed ranks algorithm with the checkpointed indexes algorithm tacked onto it. For example, the following data structure is for the <a href="#BM_(sequence)%2Fi">sequence</a> "banana¶", where ...</p>
@@ -23689,7 +23873,7 @@ None</p>
 }
 
 </code></pre>
-<p>Searching <code>{'banana', 'ankle', 'anana'}</code> revealed the following was found:</p>
+<p>Searching <code>{'banana', 'anana', 'ankle'}</code> revealed the following was found:</p>
 <ul>
 <li>Matched <code>banana</code> against <code>banana</code> with distance of 0 at index 0</li>
 <li>Matched <code>anana</code> against <code>anana</code> with distance of 0 at index 1</li>
@@ -23872,39 +24056,15 @@ scoring_matrix: |+2
 <p>Scanning the database for 2-mers in MKDSDQDNTLLHIFQENPGQFLSGEEISRRLSISRAAVWKQINKLRNLGYEFEAIPRMGYRMTDVPDTLSMDTLTAGMMTREYFGKPLILLDKTTSTQEDARQLAEEGASEGTLVISEEQTGGRGRMGKKFYSPRGKGIWMSLVLRPKQPLHLTQQLTLLTGVAVCRAIAKCTGVQTDIKWPNDILFRGKKVCGILLESATEDERVRYCIAGIGISANLKESDFPEDLRSVATSIRMAGGTAVNRTELIQSIMAEMEGLYQLYNEQGFKPIASLWEALSGSVGREVHVQTARERFSGMATGLNRDGALLVRNQAGELIPVYSGDIFFDTR...</p>
 <ul>
 <li>
-<p>k=16 / score=68.0</p>
-<pre><code>Query k-mer: SPRGKGIWMSLVLRPK @ 132
-DB k-mer:    SSKGKGLWMSLVLRPN @ 128 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+<p>k=14 / score=65.0</p>
+<pre><code>Query k-mer: RGKGIWMSLVLRPK @ 134
+DB k-mer:    KGKGLWMSLVLRPN @ 130 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
 </code></pre>
 </li>
 <li>
 <p>k=22 / score=68.0</p>
 <pre><code>Query k-mer: IKWPNDILFRGKKVCGILLESA @ 178
 DB k-mer:    AIKWPNDIYIGKKKICGFLTEM @ 173 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
-</code></pre>
-</li>
-<li>
-<p>k=24 / score=76.0</p>
-<pre><code>Query k-mer: IKWPNDILFRGKKVCGILLESATE @ 178
-DB k-mer:    IKWPNDIYIGKKKICGFLTEMVAN @ 174 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
-</code></pre>
-</li>
-<li>
-<p>k=22 / score=69.0</p>
-<pre><code>Query k-mer: RGKGIWMSLVLRPKQPLHLTQQ @ 134
-DB k-mer:    KGKGLWMSLVLRPNVPFAMIPK @ 130 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
-</code></pre>
-</li>
-<li>
-<p>k=18 / score=67.0</p>
-<pre><code>Query k-mer: FYSPRGKGIWMSLVLRPK @ 130
-DB k-mer:    WSSSKGKGLWMSLVLRPN @ 126 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
-</code></pre>
-</li>
-<li>
-<p>k=28 / score=96.0</p>
-<pre><code>Query k-mer: GRGRMGKKFYSPRGKGIWMSLVLRPKQP @ 122
-DB k-mer:    GRGRFNRNWSSSKGKGLWMSLVLRPNVP @ 118 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
 </code></pre>
 </li>
 <li>
@@ -23920,21 +24080,45 @@ DB k-mer:    SNDRVAIKWPNDIYIGKKKICGFL @ 168 ['&gt;VTR16721.1 biotin ligase [Stap
 </code></pre>
 </li>
 <li>
-<p>k=14 / score=65.0</p>
-<pre><code>Query k-mer: RGKGIWMSLVLRPK @ 134
-DB k-mer:    KGKGLWMSLVLRPN @ 130 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+<p>k=24 / score=76.0</p>
+<pre><code>Query k-mer: IKWPNDILFRGKKVCGILLESATE @ 178
+DB k-mer:    IKWPNDIYIGKKKICGFLTEMVAN @ 174 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
 </code></pre>
 </li>
 <li>
-<p>k=46 / score=119.0</p>
-<pre><code>Query k-mer: QLAEEGASEGTLVISEEQTGGRGRMGKKFYSPRGKGIWMSLVLRPK @ 102
-DB k-mer:    KKALVGNKSSFLILSDEQTEGRGRFNRNWSSSKGKGLWMSLVLRPN @ 98 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+<p>k=28 / score=96.0</p>
+<pre><code>Query k-mer: GRGRMGKKFYSPRGKGIWMSLVLRPKQP @ 122
+DB k-mer:    GRGRFNRNWSSSKGKGLWMSLVLRPNVP @ 118 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+</code></pre>
+</li>
+<li>
+<p>k=16 / score=68.0</p>
+<pre><code>Query k-mer: SPRGKGIWMSLVLRPK @ 132
+DB k-mer:    SSKGKGLWMSLVLRPN @ 128 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+</code></pre>
+</li>
+<li>
+<p>k=18 / score=67.0</p>
+<pre><code>Query k-mer: FYSPRGKGIWMSLVLRPK @ 130
+DB k-mer:    WSSSKGKGLWMSLVLRPN @ 126 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
 </code></pre>
 </li>
 <li>
 <p>k=28 / score=76.0</p>
 <pre><code>Query k-mer: SPRGKGIWMSLVLRPKQPLHLTQQLTLL @ 132
 DB k-mer:    SSKGKGLWMSLVLRPNVPFAMIPKFNLF @ 128 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+</code></pre>
+</li>
+<li>
+<p>k=22 / score=69.0</p>
+<pre><code>Query k-mer: RGKGIWMSLVLRPKQPLHLTQQ @ 134
+DB k-mer:    KGKGLWMSLVLRPNVPFAMIPK @ 130 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+</code></pre>
+</li>
+<li>
+<p>k=46 / score=119.0</p>
+<pre><code>Query k-mer: QLAEEGASEGTLVISEEQTGGRGRMGKKFYSPRGKGIWMSLVLRPK @ 102
+DB k-mer:    KKALVGNKSSFLILSDEQTEGRGRFNRNWSSSKGKGLWMSLVLRPN @ 98 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
 </code></pre>
 </li>
 </ul>
