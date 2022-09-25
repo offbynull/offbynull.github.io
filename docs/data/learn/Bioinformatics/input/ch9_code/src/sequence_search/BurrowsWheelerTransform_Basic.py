@@ -142,14 +142,14 @@ def walk(
 ) -> str:
     ret = ''
     row = 0  # first idx always has first_ch == end_marker because of the lexicographical sorting
+    end_marker, _ = first[row]
     while True:
         last_ch, last_ch_cnt = last[row]
+        if last_ch == end_marker:
+            break
         ret += last_ch
         row = next(i for i, (first_ch, first_ch_cnt) in enumerate(first) if first_ch == last_ch and first_ch_cnt == last_ch_cnt)
-        if row == 0:
-            break
-    ret = ret[::-1]  # reverse ret
-    ret = ret[1:] + ret[0]  # ret has end_marker at beginning, rotate it to end
+    ret = ret[::-1] + end_marker  # reverse ret and add end marker
     return ret
 # MARKDOWN_WALK
 
@@ -252,4 +252,4 @@ def main_test():
 
 
 if __name__ == '__main__':
-    main_test()
+    main_walk()

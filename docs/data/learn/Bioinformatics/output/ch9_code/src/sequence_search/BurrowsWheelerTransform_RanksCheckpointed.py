@@ -4,7 +4,7 @@ from sys import stdin
 
 import yaml
 
-from sequence_search.BurrowsWheelerTransform_Deserialization import cmp_char_only
+from sequence_search.BurrowsWheelerTransform_Deserialization import cmp_symbol
 from sequence_search.SearchUtils import RotatedStringView
 
 
@@ -26,7 +26,7 @@ def to_bwt_ranked_checkpointed(
     seq_rotations = [RotatedStringView(i, seq) for i in range(len(seq))]
     seq_rotations_sorted = sorted(
         seq_rotations,
-        key=functools.cmp_to_key(lambda a, b: cmp_char_only(a, b, end_marker))
+        key=functools.cmp_to_key(lambda a, b: cmp_symbol(a, b, end_marker))
     )
     prev_first_ch = None
     last_ch_counter = Counter()
@@ -70,9 +70,9 @@ def main_build():
         print(f' * First (squashed): {bwt_first_occurrence_map}')
         print(f' * Last: {[r.last_ch for r in bwt_records]}')
         r_strs = []
-        for idx, last_tallies in bwt_last_tallies_checkpoints.items():
+        for row, last_tallies in bwt_last_tallies_checkpoints.items():
             tallies_str = ','.join(f"{k}={v}" for k, v in last_tallies.items())
-            r_str = f'{idx}: {{{tallies_str}}}'
+            r_str = f'{row}: {{{tallies_str}}}'
             r_strs.append(r_str)
         print(f' * Last tallies checkpoints: {{{", ".join(r_strs)}}}')
     finally:
@@ -92,14 +92,14 @@ def main_build():
 def walk_tallies_to_checkpoint(
         bwt_records: list[BWTRecord],
         bwt_last_tallies_checkpoints: dict[int, Counter[str]],
-        idx: int
+        row: int
 ) -> Counter[str]:
     partial_tallies = Counter()
-    while idx not in bwt_last_tallies_checkpoints:
-        ch = bwt_records[idx].last_ch
+    while row not in bwt_last_tallies_checkpoints:
+        ch = bwt_records[row].last_ch
         partial_tallies[ch] += 1
-        idx -= 1
-    return partial_tallies + bwt_last_tallies_checkpoints[idx]
+        row -= 1
+    return partial_tallies + bwt_last_tallies_checkpoints[row]
 # MARKDOWN_WALK_TALLIES_TO_CHECKPOINT
 
 
@@ -126,9 +126,9 @@ def main_walk_tallies_to_checkpoint():
         print(f' * First (squashed): {bwt_first_occurrence_map}')
         print(f' * Last: {[r.last_ch for r in bwt_records]}')
         r_strs = []
-        for idx, tallies in bwt_last_tallies_checkpoints.items():
+        for row, tallies in bwt_last_tallies_checkpoints.items():
             tallies_str = ','.join(f"{k}={v}" for k, v in tallies.items())
-            r_str = f'{idx}: {{{tallies_str}}}'
+            r_str = f'{row}: {{{tallies_str}}}'
             r_strs.append(r_str)
         print(f' * Last tallies checkpoints: {{{", ".join(r_strs)}}}')
         print()
@@ -151,16 +151,16 @@ def main_walk_tallies_to_checkpoint():
 def single_tally_to_checkpoint(
         bwt_records: list[BWTRecord],
         bwt_last_tallies_checkpoints: dict[int, Counter[str]],
-        idx: int,
+        row: int,
         tally_ch: str
 ) -> int:
     partial_tally = 0
-    while idx not in bwt_last_tallies_checkpoints:
-        ch = bwt_records[idx].last_ch
+    while row not in bwt_last_tallies_checkpoints:
+        ch = bwt_records[row].last_ch
         if ch == tally_ch:
             partial_tally += 1
-        idx -= 1
-    return partial_tally + bwt_last_tallies_checkpoints[idx][tally_ch]
+        row -= 1
+    return partial_tally + bwt_last_tallies_checkpoints[row][tally_ch]
 # MARKDOWN_SINGLE_TALLY_TO_CHECKPOINT
 
 
@@ -187,9 +187,9 @@ def main_single_tally_to_checkpoint():
         print(f' * First (squashed): {bwt_first_occurrence_map}')
         print(f' * Last: {[r.last_ch for r in bwt_records]}')
         r_strs = []
-        for idx, tallies in bwt_last_tallies_checkpoints.items():
+        for row, tallies in bwt_last_tallies_checkpoints.items():
             tallies_str = ','.join(f"{k}={v}" for k, v in tallies.items())
-            r_str = f'{idx}: {{{tallies_str}}}'
+            r_str = f'{row}: {{{tallies_str}}}'
             r_strs.append(r_str)
         print(f' * Last tallies checkpoints: {{{", ".join(r_strs)}}}')
         print()
@@ -213,9 +213,9 @@ def main_single_tally_to_checkpoint():
 def to_last_symbol_instance_count(
         bwt_records: list[BWTRecord],
         bwt_last_tallies_checkpoints: dict[int, Counter[str]],
-        idx: int
+        row: int
 ) -> int:
-    return single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, idx, bwt_records[idx].last_ch)
+    return single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, row, bwt_records[row].last_ch)
 
 
 def to_first_index(
@@ -226,26 +226,26 @@ def to_first_index(
     return bwt_first_occurrence_map[symbol] + symbol_count - 1
 
 
-def symbol_tally_before_index(
+def last_tally_before_row(
         symbol: str,
-        idx: int,
+        row: int,
         bwt_records: list[BWTRecord],
         bwt_last_tallies_checkpoints: dict[int, Counter[str]]
 ):
-    ch_incremented_at_idx = bwt_records[idx].last_ch == symbol
-    ch_tally = single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, idx, symbol)
-    if ch_incremented_at_idx:
+    ch_incremented_at_row = bwt_records[row].last_ch == symbol
+    ch_tally = single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, row, symbol)
+    if ch_incremented_at_row:
         ch_tally -= 1
     return ch_tally
 
 
-def symbol_tally_at_index(
+def last_tally_at_row(
         symbol: str,
-        idx: int,
+        row: int,
         bwt_records: list[BWTRecord],
         bwt_last_tallies_checkpoints: dict[int, Counter[str]]
 ):
-    ch_tally = single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, idx, symbol)
+    ch_tally = single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, row, symbol)
     return ch_tally
 
 
@@ -258,11 +258,11 @@ def find(
     top = 0
     bottom = len(bwt_records) - 1
     for i, ch in reversed(list(enumerate(test))):
-        first_idx_for_ch = bwt_first_occurrence_map.get(ch, None)
-        if first_idx_for_ch is None:  # ch must be in first occurrence map, otherwise it's not in the original seq
+        first_row_for_ch = bwt_first_occurrence_map.get(ch, None)
+        if first_row_for_ch is None:  # ch must be in first occurrence map, otherwise it's not in the original seq
             return 0
-        top = first_idx_for_ch + symbol_tally_before_index(ch, top, bwt_records, bwt_last_tallies_checkpoints)
-        bottom = first_idx_for_ch + symbol_tally_at_index(ch, bottom, bwt_records, bwt_last_tallies_checkpoints) - 1
+        top = first_row_for_ch + last_tally_before_row(ch, top, bwt_records, bwt_last_tallies_checkpoints)
+        bottom = first_row_for_ch + last_tally_at_row(ch, bottom, bwt_records, bwt_last_tallies_checkpoints) - 1
         if top > bottom:  # top>bottom once the scan reaches a point in the test sequence where it's not in original seq
             return 0
     return (bottom - top) + 1
@@ -292,9 +292,9 @@ def main_test():
         print(f' * First (squashed): {bwt_first_occurrence_map}')
         print(f' * Last: {[r.last_ch for r in bwt_records]}')
         r_strs = []
-        for idx, tallies in bwt_last_tallies_checkpoints.items():
+        for row, tallies in bwt_last_tallies_checkpoints.items():
             tallies_str = ','.join(f"{k}={v}" for k, v in tallies.items())
-            r_str = f'{idx}: {{{tallies_str}}}'
+            r_str = f'{row}: {{{tallies_str}}}'
             r_strs.append(r_str)
         print(f' * Last tallies checkpoints: {{{", ".join(r_strs)}}}')
         print()

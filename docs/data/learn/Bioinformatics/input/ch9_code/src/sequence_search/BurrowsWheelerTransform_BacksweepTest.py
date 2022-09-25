@@ -19,14 +19,14 @@ def find(
         for i in range(top, bottom + 1):
             record = bwt_records[i]
             if ch == record.last_ch:
-                new_top = record.last_to_first_idx
+                new_top = record.last_to_first_ptr
                 break
         # Scan up to find new bottom, which is the last instance of ch (highest symbol instance count for ch)
         new_bottom = -1
         for i in range(bottom, top - 1, -1):
             record = bwt_records[i]
             if ch == record.last_ch:
-                new_bottom = record.last_to_first_idx
+                new_bottom = record.last_to_first_ptr
                 break
         # Check if not found
         if new_bottom == -1 or new_top == len(bwt_records):  # technically only need to check one of these conditions
@@ -56,8 +56,9 @@ def main_test():
         print()
         print(f'The following first and last columns were produced ...')
         print()
-        print(f' * First: {[r.first_ch + str(r.first_ch_cnt) for r in bwt_records]}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
+        print(f' * First: {[(r.first_ch, r.first_ch_cnt) for r in bwt_records]}')
+        print(f' * Last: {[(r.last_ch, r.last_ch_cnt) for r in bwt_records]}')
+        print(f' * Last-to-First: {[r.last_to_first_ptr for r in bwt_records]}')
         print()
         found_cnt = find(bwt_records, test)
         print()

@@ -31,7 +31,7 @@ class FirstColBisectableWrapper:
             self.end_marker = end_marker
 
         def __lt__(self, other: tuple[str, int]):
-            if cmp_char_and_instance(self.v, other, self.end_marker) < 0:
+            if cmp_symbol_and_count(self.v, other, self.end_marker) < 0:
                 return True
             else:
                 return False
@@ -42,7 +42,7 @@ class FirstColBisectableWrapper:
 
 
 # MARKDOWN_DESERIALIZE
-def cmp_char_only(a: str, b: str, end_marker: str):
+def cmp_symbol(a: str, b: str, end_marker: str):
     if len(a) != len(b):
         raise '???'
     for a_ch, b_ch in zip(a, b):
@@ -59,9 +59,9 @@ def cmp_char_only(a: str, b: str, end_marker: str):
     return 0
 
 
-def cmp_char_and_instance(a: tuple[str, int], b: tuple[str, int], end_marker: str):
+def cmp_symbol_and_count(a: tuple[str, int], b: tuple[str, int], end_marker: str):
     # compare symbol
-    x = cmp_char_only(a[0], b[0], end_marker)
+    x = cmp_symbol(a[0], b[0], end_marker)
     if x != 0:
         return x
     # compare symbol instance count
@@ -73,31 +73,30 @@ def cmp_char_and_instance(a: tuple[str, int], b: tuple[str, int], end_marker: st
 
 
 def to_bwt_from_last_sequence(
-        last_col_seq: str,
+        last_seq: str,
         end_marker: str
 ) -> list[BWTRecord]:
     # Create first and last columns
-    ret = []
+    bwt_records = []
     last_ch_counter = Counter()
-    last_col = []
-    for last_ch in last_col_seq:
+    last = []
+    for last_ch in last_seq:
         last_ch_counter[last_ch] += 1
         last_ch_count = last_ch_counter[last_ch]
-        last_col.append((last_ch, last_ch_count))
-    first_col = sorted(last_col, key=functools.cmp_to_key(lambda a, b: cmp_char_and_instance(a, b, end_marker)))
-    for (first_ch, first_ch_cnt), (last_ch, last_ch_cnt) in zip(first_col, last_col):
+        last.append((last_ch, last_ch_count))
+    first = sorted(last, key=functools.cmp_to_key(lambda a, b: cmp_symbol_and_count(a, b, end_marker)))
+    for (first_ch, first_ch_cnt), (last_ch, last_ch_cnt) in zip(first, last):
         # Create record
-        record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt, -1)
-        # Figure out where in first_col that (last_ch, last_ch_cnt) occurs using binary search. This is
-        # possible because first_col is sorted.
-        first_col_idx = bisect_left(
-            FirstColBisectableWrapper(first_col, end_marker),
+        rec = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt, -1)
+        # Figure out where in first that (last_ch, last_ch_cnt) occurs using binary search. This is
+        # possible because first is sorted.
+        rec.last_to_first_ptr = bisect_left(
+            FirstColBisectableWrapper(first, end_marker),
             (last_ch, last_ch_cnt)
         )
-        record.last_to_first_idx = first_col_idx
         # Append to return
-        ret.append(record)
-    return ret
+        bwt_records.append(rec)
+    return bwt_records
 # MARKDOWN_DESERIALIZE
 
 
@@ -119,8 +118,9 @@ def main_deserialize():
         print()
         print(f'The following first and last columns were produced ...')
         print()
-        print(f' * First: {[r.first_ch + str(r.first_ch_cnt) for r in bwt_records]}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
+        print(f' * First: {[(r.first_ch, r.first_ch_cnt) for r in bwt_records]}')
+        print(f' * Last: {[(r.last_ch, r.last_ch_cnt) for r in bwt_records]}')
+        print(f' * Last-to-First: {[r.last_to_first_ptr for r in bwt_records]}')
         print()
         seq = walk(bwt_records)
         print()
@@ -153,10 +153,10 @@ def to_bwt_optimized(
     seq_rotations = [RotatedStringView(i, seq) for i in range(len(seq))]
     seq_rotations_sorted = sorted(
         seq_rotations,
-        key=functools.cmp_to_key(lambda a, b: cmp_char_only(a, b, end_marker))
+        key=functools.cmp_to_key(lambda a, b: cmp_symbol(a, b, end_marker))
     )
-    last_col_seq = ''.join(row[-1] for row in seq_rotations_sorted)
-    return to_bwt_from_last_sequence(last_col_seq, end_marker)
+    last_seq = ''.join(row[-1] for row in seq_rotations_sorted)
+    return to_bwt_from_last_sequence(last_seq, end_marker)
 # MARKDOWN_OPTIMIZED_BUILD
 
 
@@ -178,8 +178,9 @@ def main_optimized_build():
         print()
         print(f'The following first and last columns were produced ...')
         print()
-        print(f' * First: {[r.first_ch + str(r.first_ch_cnt) for r in bwt_records]}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
+        print(f' * First: {[(r.first_ch, r.first_ch_cnt) for r in bwt_records]}')
+        print(f' * Last: {[(r.last_ch, r.last_ch_cnt) for r in bwt_records]}')
+        print(f' * Last-to-First: {[r.last_to_first_ptr for r in bwt_records]}')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
@@ -218,13 +219,13 @@ def to_bwt_optimized2(
     seq_rotations = [RotatedStringView(i, seq) for i in range(len(seq))]
     seq_rotations_sorted = sorted(
         seq_rotations,
-        key=functools.cmp_to_key(lambda a, b: cmp_char_only(a, b, end_marker))
+        key=functools.cmp_to_key(lambda a, b: cmp_symbol(a, b, end_marker))
     )
     first_ch_counter = Counter()
     last_ch_counter = Counter()
-    first_col = []
-    last_col = []
-    ret = []
+    first = []
+    last = []
+    bwt_records = []
     for i, s in enumerate(seq_rotations_sorted):
         first_ch = s[0]
         first_ch_counter[first_ch] += 1
@@ -232,21 +233,20 @@ def to_bwt_optimized2(
         last_ch = s[-1]
         last_ch_counter[last_ch] += 1
         last_ch_cnt = last_ch_counter[last_ch]
-        first_col.append((first_ch, first_ch_cnt))
-        last_col.append((last_ch, last_ch_cnt))
-    for (first_ch, first_ch_cnt), (last_ch, last_ch_cnt) in zip(first_col, last_col):
+        first.append((first_ch, first_ch_cnt))
+        last.append((last_ch, last_ch_cnt))
+    for (first_ch, first_ch_cnt), (last_ch, last_ch_cnt) in zip(first, last):
         # Create record
-        record = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt, -1)
-        # Figure out where in first_col that (last_ch, last_ch_cnt) occurs using binary search. This is
-        # possible because first_col is sorted.
-        first_col_idx = bisect_left(
-            FirstColBisectableWrapper(first_col, end_marker),
+        rec = BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt, -1)
+        # Figure out where in first that (last_ch, last_ch_cnt) occurs using binary search. This is
+        # possible because first is sorted.
+        rec.last_to_first_ptr = bisect_left(
+            FirstColBisectableWrapper(first, end_marker),
             (last_ch, last_ch_cnt)
         )
-        record.last_to_first_idx = first_col_idx
         # Append to return
-        ret.append(record)
-    return ret
+        bwt_records.append(rec)
+    return bwt_records
 # MARKDOWN_OPTIMIZED2_BUILD
 
 
@@ -268,8 +268,9 @@ def main_optimized2_build():
         print()
         print(f'The following first and last columns were produced ...')
         print()
-        print(f' * First: {[r.first_ch + str(r.first_ch_cnt) for r in bwt_records]}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
+        print(f' * First: {[(r.first_ch, r.first_ch_cnt) for r in bwt_records]}')
+        print(f' * Last: {[(r.last_ch, r.last_ch_cnt) for r in bwt_records]}')
+        print(f' * Last-to-First: {[r.last_to_first_ptr for r in bwt_records]}')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")

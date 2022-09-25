@@ -1,11 +1,11 @@
 import functools
-from collections import Counter, defaultdict
+from collections import Counter
 from sys import stdin
-from typing import Iterator, Generator
+from typing import Iterator
 
 import yaml
 
-from sequence_search.BurrowsWheelerTransform_Deserialization import cmp_char_only
+from sequence_search.BurrowsWheelerTransform_Deserialization import cmp_symbol
 from sequence_search.SearchUtils import RotatedStringView, to_seeds, hamming_distance
 
 
@@ -28,7 +28,7 @@ def to_bwt_checkpointed(
     seq_with_counts_rotations = [(i, RotatedStringView(i, seq)) for i in range(len(seq))]  # rotations + new first_idx for each rotation
     seq_with_counts_rotations_sorted = sorted(
         seq_with_counts_rotations,
-        key=functools.cmp_to_key(lambda a, b: cmp_char_only(a[1], b[1], end_marker))
+        key=functools.cmp_to_key(lambda a, b: cmp_symbol(a[1], b[1], end_marker))
     )
     prev_first_ch = None
     last_ch_counter = Counter()
@@ -142,18 +142,18 @@ def walk_back_until_first_index_checkpoint(
     while index not in bwt_first_indexes_checkpoints:
         # ORIGINAL CODE
         # -------------
-        # index = bwt_records[index].last_to_first_idx
+        # index = bwt_records[index].last_to_first_ptr
         # walk_cnt += 1
         #
         # UPDATED CODE
         # ------------
-        # The updated version's "last_to_first_idx" is computed dynamically using the pieces
+        # The updated version's "last_to_first_ptr" is computed dynamically using the pieces
         # from the ranked checkpoint algorithm. First it derives the symbol instance count
         # for bwt_record[index] using ranked checkpoints, then it converts that to the
-        # "last_to_first_idx" value via to_first_index().
+        # "last_to_first_ptr" value via to_first_index().
         last_ch = bwt_records[index].last_ch
         last_ch_cnt = to_last_symbol_instance_count(bwt_records, bwt_last_tallies_checkpoints, index)
-        index = to_first_index(bwt_first_occurrence_map, (last_ch, last_ch_cnt))
+        index = to_first_row(bwt_first_occurrence_map, (last_ch, last_ch_cnt))
         walk_cnt += 1
     first_idx = bwt_first_indexes_checkpoints[index] + walk_cnt
     # It's possible that the walk back continues backward before the start of the sequence, resulting
@@ -227,16 +227,16 @@ def walk_tallies_to_checkpoint(
 def single_tally_to_checkpoint(
         bwt_records: list[BWTRecord],
         bwt_last_tallies_checkpoints: dict[int, Counter[str]],
-        idx: int,
+        row: int,
         tally_ch: str
 ) -> int:
     partial_tally = 0
-    while idx not in bwt_last_tallies_checkpoints:
-        ch = bwt_records[idx].last_ch
+    while row not in bwt_last_tallies_checkpoints:
+        ch = bwt_records[row].last_ch
         if ch == tally_ch:
             partial_tally += 1
-        idx -= 1
-    return partial_tally + bwt_last_tallies_checkpoints[idx][tally_ch]
+        row -= 1
+    return partial_tally + bwt_last_tallies_checkpoints[row][tally_ch]
 
 
 def to_last_symbol_instance_count(
@@ -247,7 +247,7 @@ def to_last_symbol_instance_count(
     return single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, idx, bwt_records[idx].last_ch)
 
 
-def to_first_index(
+def to_first_row(
         bwt_first_occurrence_map: dict[str, int],
         symbol_instance: tuple[str, int]
 ) -> int:
@@ -256,26 +256,26 @@ def to_first_index(
 
 
 # MARKDOWN_TEST
-def symbol_tally_before_index(
+def last_tally_before_row(
         symbol: str,
-        idx: int,
+        row: int,
         bwt_records: list[BWTRecord],
         bwt_last_tallies_checkpoints: dict[int, Counter[str]]
 ):
-    ch_incremented_at_idx = bwt_records[idx].last_ch == symbol
-    ch_tally = single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, idx, symbol)
-    if ch_incremented_at_idx:
+    ch_incremented_at_row = bwt_records[row].last_ch == symbol
+    ch_tally = single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, row, symbol)
+    if ch_incremented_at_row:
         ch_tally -= 1
     return ch_tally
 
 
-def symbol_tally_at_index(
+def last_tally_at_row(
         symbol: str,
-        idx: int,
+        row: int,
         bwt_records: list[BWTRecord],
         bwt_last_tallies_checkpoints: dict[int, Counter[str]]
 ):
-    ch_tally = single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, idx, symbol)
+    ch_tally = single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, row, symbol)
     return ch_tally
 
 
@@ -289,11 +289,11 @@ def find(
     top = 0
     bottom = len(bwt_records) - 1
     for i, ch in reversed(list(enumerate(test))):
-        first_idx_for_ch = bwt_first_occurrence_map.get(ch, None)
-        if first_idx_for_ch is None:  # ch must be in first occurrence map, otherwise it's not in the original seq
+        first_row_for_ch = bwt_first_occurrence_map.get(ch, None)
+        if first_row_for_ch is None:  # ch must be in first occurrence map, otherwise it's not in the original seq
             return []
-        top = first_idx_for_ch + symbol_tally_before_index(ch, top, bwt_records, bwt_last_tallies_checkpoints)
-        bottom = first_idx_for_ch + symbol_tally_at_index(ch, bottom, bwt_records, bwt_last_tallies_checkpoints) - 1
+        top = first_row_for_ch + last_tally_before_row(ch, top, bwt_records, bwt_last_tallies_checkpoints)
+        bottom = first_row_for_ch + last_tally_at_row(ch, bottom, bwt_records, bwt_last_tallies_checkpoints) - 1
         if top > bottom:  # top>bottom once the scan reaches a point in the test sequence where it's not in original seq
             return []
     # Find first_index for each entry in between top and bottom
@@ -371,7 +371,7 @@ def main_test():
 # and bwt_first_indexes_checkpoints, meaning that it wants us to use #2. I reconstructed the original sequence from that
 # already provided bwt_records via ...
 #
-#     bwt_records = BurrowsWheelerTransform_Deserialization.to_bwt_from_last_sequence(last_col, '$')
+#     bwt_records = BurrowsWheelerTransform_Deserialization.to_bwt_from_last_sequence(last_seq, '$')
 #     test_seq = BurrowsWheelerTransform_Basic.walk(bwt_records)
 #
 # It was reconstructed because it makes the code for the challenge problem cleaner (it just calls into this function,
@@ -435,15 +435,15 @@ def mismatch_search(
                     first_idxes_checkpoint_n
                 )
                 if test_seq_end_idx_moved_up_to_first_idxes_checkpoint >= len(bwt_records):
-                    extraction_bwt_idx = len(bwt_records) - 1
+                    extraction_bwt_row = len(bwt_records) - 1
                 else:
-                    extraction_bwt_idx = first_index_to_bwt_row[test_seq_end_idx_moved_up_to_first_idxes_checkpoint]
+                    extraction_bwt_row = first_index_to_bwt_row[test_seq_end_idx_moved_up_to_first_idxes_checkpoint]
                 extraction_len = test_seq_end_idx_moved_up_to_first_idxes_checkpoint - test_seq_start_idx
                 extracted_test_seq_segment = walk_back_and_extract(
                     bwt_records,
                     bwt_first_occurrence_map,
                     bwt_last_tallies_checkpoints,
-                    extraction_bwt_idx,
+                    extraction_bwt_row,
                     extraction_len
                 )
                 extracted_test_seq_segment = extracted_test_seq_segment[:len(search_seq)]  # trim off to only part we're interestd in
@@ -466,7 +466,7 @@ def walk_back_and_extract(
         bwt_records: list[BWTRecord],
         bwt_first_occurrence_map: dict[str, int],
         bwt_last_tallies_checkpoints: dict[int, Counter[str]],
-        index: int,
+        row: int,
         count: int
 ) -> str:
     ret = ''
@@ -479,10 +479,10 @@ def walk_back_and_extract(
         #
         # UPDATED CODE
         # ------------
-        ret += bwt_records[index].last_ch
-        last_ch = bwt_records[index].last_ch
-        last_ch_cnt = to_last_symbol_instance_count(bwt_records, bwt_last_tallies_checkpoints, index)
-        index = to_first_index(bwt_first_occurrence_map, (last_ch, last_ch_cnt))
+        ret += bwt_records[row].last_ch
+        last_ch = bwt_records[row].last_ch
+        last_ch_cnt = to_last_symbol_instance_count(bwt_records, bwt_last_tallies_checkpoints, row)
+        row = to_first_row(bwt_first_occurrence_map, (last_ch, last_ch_cnt))
         count -= 1
     ret = ret[::-1]  # reverse ret
     return ret

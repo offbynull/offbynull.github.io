@@ -1,11 +1,10 @@
 import functools
-from bisect import bisect_left, bisect_right
 from collections import Counter
 from sys import stdin
 
 import yaml
 
-from sequence_search.BurrowsWheelerTransform_Deserialization import cmp_char_only
+from sequence_search.BurrowsWheelerTransform_Deserialization import cmp_symbol
 from sequence_search.SearchUtils import RotatedStringView
 
 
@@ -27,7 +26,7 @@ def to_bwt_and_first_occurrences(
     seq_rotations = [RotatedStringView(i, seq) for i in range(len(seq))]
     seq_rotations_sorted = sorted(
         seq_rotations,
-        key=functools.cmp_to_key(lambda a, b: cmp_char_only(a, b, end_marker))
+        key=functools.cmp_to_key(lambda a, b: cmp_symbol(a, b, end_marker))
     )
     prev_first_ch = None
     last_ch_counter = Counter()
@@ -66,7 +65,7 @@ def main_table_and_collapsed_first():
         print(f'The following last column and collapsed first mapping were produced ...')
         print()
         print(f' * First (collapsed): {bwt_first_occurrence_map}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
+        print(f' * Last: {[(r.last_ch, r.last_ch_cnt) for r in bwt_records]}')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
@@ -82,7 +81,7 @@ def main_table_and_collapsed_first():
 
 
 # MARKDOWN_FIRST_INDEX
-def to_first_index(
+def to_first_row(
         bwt_first_occurrence_map: dict[str, int],
         symbol_instance: tuple[str, int]
 ) -> int:
@@ -97,8 +96,9 @@ def main_first_index():
     try:
         data_raw = ''.join(stdin.readlines())
         data: dict = yaml.safe_load(data_raw)
-        seq = data['sequence']
-        end_marker = data['end_marker']
+        first_occurrence_map = data['first_occurrence_map']
+        last = data['last']
+        last_to_first = data['last_to_first']
         symbol = data['symbol']
         symbol_count = data['symbol_count']
         print(print(f'Finding the first column index using the following settings...'))
@@ -107,15 +107,12 @@ def main_first_index():
         print(data_raw)
         print('```')
         print()
-        bwt_records, bwt_first_occurrence_map = to_bwt_and_first_occurrences(seq, end_marker)
-        first_idx = to_first_index(bwt_first_occurrence_map, (symbol, symbol_count))
+        bwt_records = []
+        for last_ch, last_ch_cnt in last:
+            bwt_records.append(BWTRecord(last_ch, last_ch_cnt))
+        first_row = to_first_row(first_occurrence_map, (symbol, symbol_count))
         print()
-        print(f'The following last column and collapsed first mapping were produced ...')
-        print()
-        print(f' * First (collapsed): {bwt_first_occurrence_map}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
-        print()
-        print(f'The index of {symbol}{symbol_count} in the first column is: {first_idx}')
+        print(f'The index of {symbol}{symbol_count} in the first column is: {first_row}')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
@@ -144,12 +141,12 @@ def find(
             record = bwt_records[i]
             if ch == record.last_ch:
                 # last_to_first is now calculated on-the-fly
-                last_to_first_idx = to_first_index(
+                last_to_first_ptr = to_first_row(
                     bwt_first_occurrence_map,
                     (record.last_ch, record.last_ch_cnt)
                 )
-                new_top = min(new_top, last_to_first_idx)
-                new_bottom = max(new_bottom, last_to_first_idx)
+                new_top = min(new_top, last_to_first_ptr)
+                new_bottom = max(new_bottom, last_to_first_ptr)
         if new_bottom == -1 or new_top == len(bwt_records):  # technically only need to check one of these conditions
             return 0
         top = new_top
@@ -165,24 +162,20 @@ def main_test():
         data_raw = ''.join(stdin.readlines())
         data: dict = yaml.safe_load(data_raw)
         test = data['test']
-        seq = data['sequence']
-        end_marker = data['end_marker']
+        first_occurrence_map = data['first_occurrence_map']
+        last = data['last']
         print(f'Building BWT using the following settings...')
         print()
         print('```')
         print(data_raw)
         print('```')
         print()
-        bwt_records, bwt_first_occurrence_map = to_bwt_and_first_occurrences(seq, end_marker)
+        bwt_records = []
+        for last_ch, last_ch_cnt in last:
+            bwt_records.append(BWTRecord(last_ch, last_ch_cnt))
+        found_cnt = find(bwt_records, first_occurrence_map, test)
         print()
-        print(f'The following first and last columns were produced ...')
-        print()
-        print(f' * First (collapsed): {bwt_first_occurrence_map}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
-        print()
-        found_cnt = find(bwt_records, bwt_first_occurrence_map, test)
-        print()
-        print(f'*{test}* found in *{seq}* {found_cnt} times.')
+        print(f'*{test}* found {found_cnt} times.')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
@@ -201,11 +194,11 @@ def get_top_bottom_range_for_first(
         bwt_first_occurrence_map: dict[str, int],
         ch: str
 ):
-    # End marker will always have been in idx 0 of first_col
-    end_marker = next(first_ch for first_ch, bwt_records_idx in bwt_first_occurrence_map.items() if bwt_records_idx == 0)
+    # End marker will always have been in idx 0 of first
+    end_marker = next(first_ch for first_ch, row in bwt_first_occurrence_map.items() if row == 0)
     sorted_keys = sorted(
         bwt_first_occurrence_map.keys(),
-        key=functools.cmp_to_key(lambda a, b: cmp_char_only(a, b, end_marker))
+        key=functools.cmp_to_key(lambda a, b: cmp_symbol(a, b, end_marker))
     )
     sorted_keys_idx = sorted_keys.index(ch)  # It's possible to replace this with binary search, because keys are sorted
     sorted_keys_next_idx = sorted_keys_idx + 1
@@ -239,7 +232,7 @@ def find_optimized(
             record = bwt_records[i]
             if ch == record.last_ch:
                 # last_to_first is now calculated on-the-fly
-                last_to_first_idx = to_first_index(
+                last_to_first_idx = to_first_row(
                     bwt_first_occurrence_map,
                     (record.last_ch, record.last_ch_cnt)
                 )
@@ -260,24 +253,20 @@ def main_test_optimized():
         data_raw = ''.join(stdin.readlines())
         data: dict = yaml.safe_load(data_raw)
         test = data['test']
-        seq = data['sequence']
-        end_marker = data['end_marker']
+        first_occurrence_map = data['first_occurrence_map']
+        last = data['last']
         print(f'Building BWT using the following settings...')
         print()
         print('```')
         print(data_raw)
         print('```')
         print()
-        bwt_records, bwt_first_occurrence_map = to_bwt_and_first_occurrences(seq, end_marker)
+        bwt_records = []
+        for last_ch, last_ch_cnt in last:
+            bwt_records.append(BWTRecord(last_ch, last_ch_cnt))
+        found_cnt = find(bwt_records, first_occurrence_map, test)
         print()
-        print(f'The following first and last columns were produced ...')
-        print()
-        print(f' * First (collapsed): {bwt_first_occurrence_map}')
-        print(f' * Last: {[r.last_ch + str(r.last_ch_cnt) for r in bwt_records]}')
-        print()
-        found_cnt = find(bwt_records, bwt_first_occurrence_map, test)
-        print()
-        print(f'*{test}* found in *{seq}* {found_cnt} times.')
+        print(f'*{test}* found {found_cnt} times.')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
@@ -290,5 +279,5 @@ def main_test_optimized():
 
 if __name__ == '__main__':
     # main_table_and_collapsed_first()
-    # main_first_index()
-    main_test()
+    main_first_index()
+    # main_test()

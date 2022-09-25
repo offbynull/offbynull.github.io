@@ -4,8 +4,7 @@ from sys import stdin
 
 import yaml
 
-from helpers.Utils import slide_window
-from sequence_search.BurrowsWheelerTransform_Deserialization import cmp_char_only
+from sequence_search.BurrowsWheelerTransform_Deserialization import cmp_symbol
 from sequence_search.SearchUtils import RotatedStringView
 
 
@@ -27,7 +26,7 @@ def to_bwt_ranked(
     seq_rotations = [RotatedStringView(i, seq) for i in range(len(seq))]
     seq_rotations_sorted = sorted(
         seq_rotations,
-        key=functools.cmp_to_key(lambda a, b: cmp_char_only(a, b, end_marker))
+        key=functools.cmp_to_key(lambda a, b: cmp_symbol(a, b, end_marker))
     )
     prev_first_ch = None
     last_ch_counter = Counter()
@@ -64,13 +63,9 @@ def main_build():
         print()
         print(f'The following last column and squashed first mapping were produced ...')
         print()
-        print(f' * First (squashed): {bwt_first_occurrence_map}')
-        r_strs = []
-        for r in bwt_records:
-            tallies_str = ','.join(f"{k}={v}" for k, v in r.last_tallies.items())
-            r_str = f'{r.last_ch}{{{tallies_str}}}'
-            r_strs.append(r_str)
-        print(f' * Last: {", ".join(r_strs)}')
+        print(f' * First (collapsed): {bwt_first_occurrence_map}')
+        print(f' * Last: {[r.last_ch for r in bwt_records]}')
+        print(f' * Last Tallies: {[dict(r.last_tallies) for r in bwt_records]}')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
@@ -117,37 +112,37 @@ def main_to_symbol_instance_count():
 
 
 
-# MARKDOWN_TALLY_BEFORE_IDX
-def symbol_tally_at_index(
+# MARKDOWN_TALLY_BEFORE
+def last_tally_at_row(
         symbol: str,
-        idx: int,
+        row: int,
         bwt_records: list[BWTRecord]
 ):
-    ch_tally = bwt_records[idx].last_tallies[symbol]
+    ch_tally = bwt_records[row].last_tallies[symbol]
     return ch_tally
 
 
-def symbol_tally_before_index(
+def last_tally_before_row(
         symbol: str,
-        idx: int,
+        row: int,
         bwt_records: list[BWTRecord]
 ):
-    ch_incremented_at_idx = bwt_records[idx].last_ch == symbol
-    ch_tally = bwt_records[idx].last_tallies[symbol]
-    if ch_incremented_at_idx:
+    ch_incremented_at_row = bwt_records[row].last_ch == symbol
+    ch_tally = bwt_records[row].last_tallies[symbol]
+    if ch_incremented_at_row:
         ch_tally -= 1
     return ch_tally
-# MARKDOWN_TALLY_BEFORE_IDX
+# MARKDOWN_TALLY_BEFORE
 
 
-def main_tally_before_idx():
+def main_tally_row():
     print("<div style=\"border:1px solid black;\">", end="\n\n")
     print("`{bm-disable-all}`", end="\n\n")
     try:
         data_raw = ''.join(stdin.readlines())
         data: dict = yaml.safe_load(data_raw)
-        seq = data['sequence']
-        end_marker = data['end_marker']
+        last = data['last']
+        last_tallies = data['last_tallies']
         index = data['index']
         symbol = data['symbol']
         print(f'Building BWT using the following settings...')
@@ -156,20 +151,11 @@ def main_tally_before_idx():
         print(data_raw)
         print('```')
         print()
-        bwt_records, bwt_first_occurrence_map = to_bwt_ranked(seq, end_marker)
-        print()
-        print(f'The following first and last columns were produced ...')
-        print()
-        print(f' * First (squashed): {bwt_first_occurrence_map}')
-        r_strs = []
-        for r in bwt_records:
-            tallies_str = ','.join(f"{k}={v}" for k, v in r.last_tallies.items())
-            r_str = f'{r.last_ch}{{{tallies_str}}}'
-            r_strs.append(r_str)
-        print(f' * Last: {", ".join(r_strs)}')
-        print()
-        found1 = symbol_tally_before_index(symbol, index, bwt_records)
-        found2 = symbol_tally_at_index(symbol, index, bwt_records)
+        bwt_records = []
+        for last_ch, last_tallies_single in zip(last, last_tallies):
+            bwt_records.append(BWTRecord(last_ch, last_tallies_single))
+        found1 = last_tally_before_row(symbol, index, bwt_records)
+        found2 = last_tally_at_row(symbol, index, bwt_records)
         print()
         print(f'There where {found1} instances of *{symbol}* just before reaching index *{index}* in last.')
         print()
@@ -194,11 +180,11 @@ def find(
     top = 0
     bottom = len(bwt_records) - 1
     for i, ch in reversed(list(enumerate(test))):
-        first_idx_for_ch = bwt_first_occurrence_map.get(ch, None)
-        if first_idx_for_ch is None:  # ch must be in first occurrence map, otherwise it's not in the original seq
+        first_row_for_ch = bwt_first_occurrence_map.get(ch, None)
+        if first_row_for_ch is None:  # ch must be in first occurrence map, otherwise it's not in the original seq
             return 0
-        top = first_idx_for_ch + symbol_tally_before_index(ch, top, bwt_records)
-        bottom = first_idx_for_ch + symbol_tally_at_index(ch, bottom, bwt_records) - 1
+        top = first_row_for_ch + last_tally_before_row(ch, top, bwt_records)
+        bottom = first_row_for_ch + last_tally_at_row(ch, bottom, bwt_records) - 1
         if top > bottom:  # top>bottom once the scan reaches a point in the test sequence where it's not in original seq
             return 0
     return (bottom - top) + 1
@@ -247,4 +233,4 @@ def main_test():
 
 
 if __name__ == '__main__':
-    main_test()
+    main_tally_row()

@@ -9,14 +9,14 @@ from sequence_search import BurrowsWheelerTransform_Basic
 
 # MARKDOWN_BUILD
 class BWTRecord:
-    __slots__ = ['first_ch', 'first_ch_cnt', 'last_ch', 'last_ch_cnt', 'last_to_first_idx']
+    __slots__ = ['first_ch', 'first_ch_cnt', 'last_ch', 'last_ch_cnt', 'last_to_first_ptr']
 
-    def __init__(self, first_ch: str, first_ch_cnt: int, last_ch: str, last_ch_cnt: int, last_to_first_idx: int):
+    def __init__(self, first_ch: str, first_ch_cnt: int, last_ch: str, last_ch_cnt: int, last_to_first_ptr: int):
         self.first_ch = first_ch
         self.first_ch_cnt = first_ch_cnt
         self.last_ch = last_ch
         self.last_ch_cnt = last_ch_cnt
-        self.last_to_first_idx = last_to_first_idx
+        self.last_to_first_ptr = last_to_first_ptr
 
 
 def to_bwt_records(
@@ -31,8 +31,8 @@ def to_bwt_records(
         last_to_first.append(idx)
     # Create records
     bwt_records = []
-    for (first_ch, first_ch_cnt), (last_ch, last_ch_cnt), last_to_first_idx in zip(first, last, last_to_first):
-        bwt_records.append(BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt, last_to_first_idx))
+    for (first_ch, first_ch_cnt), (last_ch, last_ch_cnt), last_to_first_ptr in zip(first, last, last_to_first):
+        bwt_records.append(BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt, last_to_first_ptr))
     # Return
     return bwt_records
 # MARKDOWN_BUILD
@@ -58,7 +58,7 @@ def main_build():
         print()
         print(f' * First: {[(r.first_ch, r.first_ch_cnt) for r in bwt_records]}')
         print(f' * Last: {[(r.last_ch, r.last_ch_cnt) for r in bwt_records]}')
-        print(f' * Last-to-First: {[r.last_to_first_idx for r in bwt_records]}')
+        print(f' * Last-to-First: {[r.last_to_first_ptr for r in bwt_records]}')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
@@ -80,13 +80,14 @@ def main_build():
 def walk(bwt_records: list[BWTRecord]) -> str:
     ret = ''
     row = 0  # first idx always has first_ch == end_marker because of the lexicographical sorting
+    end_marker = bwt_records[row].first_ch
     while True:
-        ret += bwt_records[row].last_ch
-        row = bwt_records[row].last_to_first_idx
-        if row == 0:
+        last_ch = bwt_records[row].last_ch
+        if last_ch == end_marker:
             break
-    ret = ret[::-1]  # reverse ret
-    ret = ret[1:] + ret[0]  # ret has end_marker at beginning, rotate it to end
+        ret += last_ch
+        row = bwt_records[row].last_to_first_ptr
+    ret = ret[::-1] + end_marker  # reverse ret and add end marker
     return ret
 
 
@@ -99,7 +100,7 @@ def walk_find(
     for ch in reversed(test[:-1]):
         if bwt_records[row].last_ch != ch:
             return False
-        row = bwt_records[row].last_to_first_idx
+        row = bwt_records[row].last_to_first_ptr
     return True
 
 
@@ -133,9 +134,8 @@ def main_test():
         print('```')
         print()
         bwt_records = []
-        for (first_ch, first_ch_cnt), (last_ch, last_ch_cnt), last_to_first_idx in zip(first, last, last_to_first):
-            bwt_records.append(BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt, last_to_first_idx))
-        print()
+        for (first_ch, first_ch_cnt), (last_ch, last_ch_cnt), last_to_first_ptr in zip(first, last, last_to_first):
+            bwt_records.append(BWTRecord(first_ch, first_ch_cnt, last_ch, last_ch_cnt, last_to_first_ptr))
         found_cnt = find(bwt_records, test)
         print()
         print(f'*{test}* found {found_cnt} times.')

@@ -14619,16 +14619,11 @@ The original sequence can be pulled out by hopping between `last` and `first`. B
 
 Since it's known that ...
 
- 1. index n-1 (last index) of the original sequence always contains the end marker (¶,1)
- 2. the row containing the end marker (¶,1) in `first` always gets sorted to the top
+1. the row count of the BWT matrix is the size of the original sequence: 7 rows vs 7 characters,
+2. the last index of the original sequence always contains the end marker: index 6 is (¶,1),
+3. the row containing the end marker in `first` always gets sorted to the top: (¶,1) is at top of `first`,
  
-..., the first row's `last` is guaranteed to contain index n-2: (a,3). From there, since index n-2 is now known, it can be found in `first` and that found row's `last` is guaranteed to contain index n-3: (n,2). From there, since index n-3 is now known, it can be found in `first` and that found row's `last` is guaranteed to contain index n-4: (a,2). The process continues until the end marker is reached (¶,1), at which point the original sequence has been fully walked.
-
- * last index must be (¶,1): Find (¶,1) in `first` and pull out the corresponding symbol instance in `last`: (b,1).
- * index 0 must be (b,1): Find (b,1) in `first` and pull out the corresponding symbol instance in `last`: (a,1).
- * index 1 must be (a,1): Find (a,1) in `first` and pull out the corresponding symbol instance in `last`: (n,1).
- * ...
- * index 5 must be (a,3): Find (a,3) in `first` and pull out the corresponding symbol instance in `last`: (¶,1).
+... the top row's `last` is guaranteed to contain index 5 of the original sequence: (a,3). From there, since index 5 is now known, it can be found in `first` and that found row's `last` is guaranteed to contain index 4 of the original sequence: (n,2). From there, since index 4 is now known, it can be found in `first` and that found row's `last` is guaranteed to contain index 3 of the original sequence: (a,2). The process continues until reaching index 0 of the original sequence: (b,1).
   
 ```{svgbob}
 +--+--+      a    +--+--+           +--+--+           +--+--+           +--+--+           +--+--+           +--+--+
@@ -14654,9 +14649,9 @@ first: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]]
 last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
 ```
 
-Similarly to pulling out the original sequence, given just `first` and `last`, it's possible to quickly identify if and how many times some substring exists in the original sequence. For example, to test if the sequence to see if it contains "nana"...
+Similarly to pulling out the original sequence, given just `first` and `last`, it's possible to quickly identify if and how many times some substring exists in the original sequence. For example, to test if the sequence contains "nana"...
 
- * find all rows where `last` has symbol "a" and `first` has symbol *n*: indexes 1 and 2.
+ * find all rows where `last` has symbol *a* and `first` has symbol *n*: indexes 1 and 2.
    * walk backwards from index 1 to see if "nana" could be fully extracted: (a,3) to (n,2) to (a,2) to (n,1), which is "nana" (PASSED)
    * walk backwards from index 2 to see if "nana" could be fully extracted: (a,2) to (n,1) to (a,1) to (b,1), which is "bana" (FAILED)
 
@@ -14714,7 +14709,7 @@ This scanning of `first` is avoidable by building a cache before the walk starts
 | (n,1) | (a,2) |       2       |
 | (n,2) | (a,3) |       3       |
 
-The table formed by combining `first`, `last`, and `last_to_first` is henceforth referred to as BWT records, where a row in the table is referred to as a BWT record (singular).
+The rows in the table formed by combining `first`, `last`, and `last_to_first` are henceforth referred to as BWT records.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_Basic_LastToFirst.py
@@ -14763,10 +14758,10 @@ Recall the terminology used for BWT:
  * BWT records: The table comprised of columns `first`, `last`, and `last_to_first`.
 ```
 
-This algorithm adds an extra piece to the standard algorithm: Each symbol instance in `first` now has its index within the original sequence included. For example, `first` and `last` of the BWT matrix for "banana¶", when augmented to include the indexes for the first column's symbol instances, are as follows.
+This algorithm adds an extra piece to the standard algorithm: Each symbol instance in `first` now has its index within the original sequence included: `first_indexes`. For example, the BWT records for "banana¶", when augmented to include `first_indexes`, are as follows.
 
 <table>
-<tr><th>Sequence</th><th>BWT</th></tr>
+<tr><th>Original Sequence</th><th>BWT Records</th></tr>
 <tr><td>
 
 |   0   |   1   |   2   |   3   |   4   |   5   |   6   |
@@ -14775,15 +14770,15 @@ This algorithm adds an extra piece to the standard algorithm: Each symbol instan
 
 </td><td>
 
-| first | first_idx | last  |
-|-------|-----------|-------|
-| (¶,1) | 6         | (a,3) |
-| (a,3) | 5         | (n,2) |
-| (a,2) | 3         | (n,1) |
-| (a,1) | 1         | (b,1) |
-| (b,1) | 0         | (¶,1) |
-| (n,2) | 4         | (a,2) |
-| (n,1) | 2         | (a,1) |
+| first | first_indexes | last  | last_to_first |
+|-------|---------------|-------|---------------|
+| (¶,1) | 6             | (a,3) |       1       |
+| (a,3) | 5             | (n,2) |       5       |
+| (a,2) | 3             | (n,1) |       6       |
+| (a,1) | 1             | (b,1) |       4       |
+| (b,1) | 0             | (¶,1) |       0       |
+| (n,2) | 4             | (a,2) |       2       |
+| (n,1) | 2             | (a,1) |       3       |
 
 </td></tr>
 </table>
@@ -14797,13 +14792,11 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_FirstIndexes main_build
-{
-  sequence: banana¶,
-  end_marker: ¶
-}
+sequence: banana¶
+end_marker: ¶
 ```
 
-Recall that the standard algorithm's search only determines how many times some substring appears in a sequence. By including `first_idx`, the search will also determine the index of each appearance. The search process itself remains unchanged: Walk backwards between `last` and `first` until the entirety of the substring has been walked. However, the value of `first_idx` at the end of the walk identifies the index of the appearance.
+Recall that the standard algorithm's search only determines how many times some substring appears in a sequence. By including `first_indexes`, the search will also determine the index of each appearance. The search process itself remains unchanged: Walk backwards between `last` and `first` until the entirety of the substring has been walked. However, the value of `first_indexes` at the end of the walk identifies the index of the appearance.
 
 In the following example, searching for "nana" reveals that it appears only once at index 2 of "banana¶".
 
@@ -14829,29 +14822,29 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_FirstIndexes main_test
-{
-  test: nana,
-  sequence: banana¶,
-  end_marker: ¶
-}
+first: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]]
+first_indexes: [6,5,3,1,0,4,2]
+last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
+last_to_first: [1,5,6,4,0,2,3]
+test: nana
 ```
 
-A way to make this algorithm more memory efficient is to employ a tactic called checkpointing: Instead of retaining a value in every `first_idx` entry, leave some empty. The entries that have a value are called checkpoints.
+A way to make this algorithm more memory efficient is to employ a tactic called checkpointing: Instead of retaining a value in every `first_indexes` entry, leave some empty. The entries that have a value are called checkpoints.
 
-| first | first_idx | last  |
-|-------|-----------|-------|
-| (¶,1) | 6         | (a,3) |
-| (a,3) |           | (n,2) |
-| (a,2) | 3         | (n,1) |
-| (a,1) |           | (b,1) |
-| (b,1) | 0         | (¶,1) |
-| (n,2) |           | (a,2) |
-| (n,1) |           | (a,1) |
+| first | first_indexes | last  | last_to_first |
+|-------|---------------|-------|---------------|
+| (¶,1) | 6             | (a,3) |       1       |
+| (a,3) |               | (n,2) |       5       |
+| (a,2) | 3             | (n,1) |       6       |
+| (a,1) |               | (b,1) |       4       |
+| (b,1) | 0             | (¶,1) |       0       |
+| (n,2) |               | (a,2) |       2       |
+| (n,1) |               | (a,1) |       3       |
 
-In the example above, `first_idx` only contains values that are a multiple of 3.
+In the example above, `first_indexes` only contains values that are a multiple of 3.
 
 ```{note}
-To keep things efficient-ish, the code below actually splits out `first_idx` into a dictionary. Otherwise, you end up with a bunch of `None` entries under `first_idx` and that actually ends up taking space.
+To keep things efficient-ish, the code below actually splits out `first_indexes` into a dictionary. Otherwise, you end up with a bunch of `None` entries under `first_indexes` and that actually ends up taking space.
 ```
 
 ```{output}
@@ -14862,24 +14855,22 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_FirstIndexesCheckpointed main_build
-{
-  sequence: banana¶,
-  end_marker: ¶,
-  first_indexes_checkpoint_n: 3
-}
+sequence: banana¶
+end_marker: ¶
+first_indexes_checkpoint_n: 3
 ```
 
-To determine the value of an empty `first_idx` entry, simply walk backwards (as in the `last` to `first` walk done for searching) until reaching a `first_idx` entry that has a value, then add that value to the number of steps walked. For example, to compute `first_idx[1]`, ...
+To determine the value of an empty `first_indexes` entry, simply walk backwards (as in the `last` to `first` walk done for extracting out the original sequence / testing for a substring) until reaching a `first_indexes` entry that has a value, then add that value to the number of steps walked. For example, to compute `first_indexes[1]` in the example above, ...
 
-1. increment the number of steps walked (1), then hop to the index where `first` matches `last[1]` (hop to index 5),
-2. increment the number of steps walked (2), then hop to the index where `first` matches `last[5]` (hop to index 2),
-3. add `first_idx[2]` to the number of steps walked: 3 + 2 = 5.
+1. increment the number of steps walked (1 walked), then jump to `last_to_first[1]` (row 5),
+2. increment the number of steps walked (2 walked), then jump to `last_to_first[5]` (row 2),
+3. add `first_indexes[2]` (index 3) to the number of steps walked (2 walked): 3 + 2 = 5.
 
 ```{svgbob}
 +--+---+--+           +--+---+--+           +--+---+--+
 |¶1| 6 |a3|    1      |¶1| 6 |a3|           |¶1| 6 |a3|
-|a3|   |n2|-------.   |a3|   |n2|           |a3|   |n2| "3+2=5"
-|a2| 3 |n1|       |   |a2| 3 |n1|       .-> |a2| 3 |n1|-------->
+|a3|   |n2|-------.   |a3|   |n2|           |a3|   |n2|
+|a2| 3 |n1|       |   |a2| 3 |n1|       .-> |a2| 3 |n1| "3+2=5"
 |a1|   |b1|       |   |a1|   |b1|       |   |a1|   |b1|
 |b1| 0 |¶1|       |   |b1| 0 |¶1|    2  |   |b1| 0 |¶1|
 |n2|   |a2|       '-> |n2|   |a2|-------'   |n2|   |a2|
@@ -14887,34 +14878,35 @@ To determine the value of an empty `first_idx` entry, simply walk backwards (as 
 +--+---+--+           +--+---+--+           +--+---+--+
 ```
 
-The example above took 2 hops to reach a non-empty `first_idx` entry. Since `first_idx`'s non-empty entries are all multiples of 3, the walk backwards is guaranteed to reach a non-empty `first_idx` entry in less than 3 hops (at most it'll do 2 hops) regardless of where you start the walk from.
-
-````{note}
-Why is this the case? Remember that the `last` to `first` walk is just walking over the original sequence in reverse order. In the example above, it walks over "ana" in the sequence "banana¶".
+The example above is essentially walking over the original sequence and stopping when it reaches a BWT record that has a non-empty `first_indexes` entry. That took 2 steps. 
 
 ```{svgbob}
-"sequence:"  b1 a1 n1 a2 n2 a3 ¶1
-                      |  |  |
-                      a2 n2 a3
-                      <-------
-                    "walk direction"
++--+---+--+           +--+---+--+           +--+---+--+
+|¶1| 6 |a3|    1      |¶1| 6 |a3|           |¶1| 6 |a3|
+|a3|   |n2|-------.   |a3|   |n2|           |a3|   |n2|
+|a2| 3 |n1|   na  |   |a2| 3 |n1|       .-> |a2| 3 |n1| "3+2=5"
+|a1|   |b1|       |   |a1|   |b1|       |   |a1|   |b1|
+|b1| 0 |¶1|       |   |b1| 0 |¶1|   2   |   |b1| 0 |¶1|
+|n2|   |a2|       '-> |n2|   |a2|-------'   |n2|   |a2|
+|n1|   |a1|           |n1|   |a1|   ana     |n1|   |a1|
++--+---+--+           +--+---+--+           +--+---+--+
 ```
 
-`first_idx` holds on to every 3rd index of "banana¶", so the walk only needs to hop 2 times before reaching a `first_idx` entry that has a value.
+Since `first_indexes`'s non-empty entries are all multiples of 3, the walk backwards is guaranteed to reach a non-empty `first_indexes` entry in less than 3 steps (at most 2 steps) regardless of where you start the walk from.
 
 ```{svgbob}
-"first_idx:" 0        3        6 
-"sequence:"  b1 a1 n1 a2 n2 a3 ¶1
-                      |  |  |
-                      a2 n2 a3
-                      <-------
-                    "walk direction"
+                            "start here"
+                                |
+                                |
+"first_indexes:" 0        3     v  6 
+"sequence:"      b1 a1 n1 a2 n2 a3 ¶1
+                          |  |  |
+                          a2 n2 a3
+                          <-------
+                        "walk direction"
 ```
 
-Regardless of where in "banana¶" the walk starts from, it will never take more than 2 hops until reaching a `first_idx` entry that has a value.
-````
-
-You can generalize this as follows: If the only entries kept in `first_idx` are those that are a multiple of *n*, the walk backwards is guaranteed to reach a non-empty `first_idx` entry in less than *n* hops (at most it'll do *n-1* hops). The idea is to make *n* large enough to maximize memory savings but at the same time small enough that the computation time required for walking is still negligible.
+You can generalize this as follows: If the only entries kept in `first_indexes` are those that are a multiple of n, the walk backwards is guaranteed to reach a non-empty `first_indexes` entry in less than n steps (at most n-1 steps). The idea is to make n large enough to maximize memory savings but at the same time small enough that the computation time required for walking is still negligible.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexesCheckpointed.py
@@ -14924,15 +14916,14 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_FirstIndexesCheckpointed main_walk_back_until_first_index_checkpoint
-{
-  sequence: banana¶,
-  end_marker: ¶,
-  first_indexes_checkpoint_n: 3,
-  from_index: 5
-}
+first: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]]
+first_indexes_checkpoints: {0: 6, 2: 3, 3: 0}
+last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
+last_to_first: [1,5,6,4,0,2,3]
+from_row: 1
 ```
 
-Searching happens as it did before with the exception that, if a search ends up walking to a `first_idx` entry that's empty, that entry's value can be determined by walking backwards as described above.
+Searching happens just as it did before, except that if the search ends up walking to a `first_indexes` entry that's empty, that entry's value can be determined by walking backwards as described above.
 
 ```{svgbob}
 "PHASE 1: WALK TO FIND nana IN banana¶"
@@ -14947,13 +14938,13 @@ Searching happens as it did before with the exception that, if a search ends up 
 +--+---+--+           +--+---+--+    ana    +--+---+--+           +--+---+--+
 
 
-"PHASE 2: WALK TO COMPUTE MISSING first_idx AT END OF nana SEARCH ABOVE"
+"PHASE 2: WALK TO COMPUTE MISSING first_indexes AT END OF nana SEARCH ABOVE"
 +--+---+--+           +--+---+--+           +--+---+--+
 |¶1| 6 |a3|           |¶1| 6 |a3|           |¶1| 6 |a3|
 |a3|   |n2|           |a3|   |n2|           |a3|   |n2|
 |a2| 3 |n1|           |a2| 3 |n1|    2      |a2| 3 |n1|
-|a1|   |b1|       .-> |a1|   |b1|-------.   |a1|   |b1| "0+2=2"
-|b1| 0 |¶1|       |   |b1| 0 |¶1|       '-> |b1| 0 |¶1|-------->
+|a1|   |b1|       .-> |a1|   |b1|-------.   |a1|   |b1|
+|b1| 0 |¶1|       |   |b1| 0 |¶1|       '-> |b1| 0 |¶1| "0+2=2"
 |n2|   |a2|   1   |   |n2|   |a2|           |n2|   |a2|
 |n1|   |a1|-------'   |n1|   |a1|           |n1|   |a1|
 +--+---+--+           +--+---+--+           +--+---+--+
@@ -14969,12 +14960,11 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_FirstIndexesCheckpointed main_test
-{
-  sequence: banana¶,
-  end_marker: ¶,
-  first_indexes_checkpoint_n: 3,
-  test: ana
-}
+first: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]]
+first_indexes_checkpoints: {0: 6, 2: 3, 3: 0}
+last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
+last_to_first: [1,5,6,4,0,2,3]
+test: nana
 ```
 
 ````{note}
@@ -15056,26 +15046,26 @@ One way to think of a suffix array is that it's just a BWT matrix (symbol instan
 > | n | a | ¶ | z | z | z | z |
 > | n | a | n | a | ¶ | a | a |
 
-The `first_idx` column is essentially just a suffix array. In the context of a ...
+The `first_indexes` column is essentially just a suffix array. In the context of a ...
 
 * suffix array, it's a list containing each suffix's starting index (each index is the start of a suffix in the original sequence).
 * BWT matrix, it's list containing each row's starting index  (each index is the location of that row's first character in the original sequence).
 
-This section described the BWT matrix context. For example, `first_idx` in the table below is used to find where "ana" appears in "banana¶": [3, 1].
+This section described the BWT matrix context. For example, `first_indexes` in the table below is used to find where "ana" appears in "banana¶": [3, 1].
 
 <table>
 <tr><th>BWT Records</th><th>Search</th></tr>
 <tr><td>
 
-| first | first_idx / suffix_offset   | last  |
-|-------|-----------------------------|-------|
-| (¶,1) | 6 (suffix = ¶)              | (a,3) |
-| (a,3) | 5 (suffix = a¶)             | (n,2) |
-| (a,2) | 3 (suffix = ana¶)           | (n,1) |
-| (a,1) | 1 (suffix = anana¶)         | (b,1) |
-| (b,1) | 0 (suffix = banana¶)        | (¶,1) |
-| (n,2) | 4 (suffix = na¶)            | (a,2) |
-| (n,1) | 2 (suffix = nana¶)          | (a,1) |
+| first | first_indexes / suffix_offsets | last  |
+|-------|--------------------------------|-------|
+| (¶,1) | 6 (suffix = ¶)                 | (a,3) |
+| (a,3) | 5 (suffix = a¶)                | (n,2) |
+| (a,2) | 3 (suffix = ana¶)              | (n,1) |
+| (a,1) | 1 (suffix = anana¶)            | (b,1) |
+| (b,1) | 0 (suffix = banana¶)           | (¶,1) |
+| (n,2) | 4 (suffix = na¶)               | (a,2) |
+| (n,1) | 2 (suffix = nana¶)             | (a,1) |
 
 </td><td>
 
@@ -15096,11 +15086,11 @@ This section described the BWT matrix context. For example, `first_idx` in the t
 </td></tr>
 </table>
 
-All of this leads to the following realization: The addition of `first_idx` / `suffix_offset` to the BWT records is pointless. The standalone suffix array algorithm can seek out these indexes on its own and the only data it needs is the original sequence and the `first_idx` / `suffix_offset` column (each index defines the start of a suffix in the original sequence). It doesn't need the columns `first` or `last`. What's the point of using this BWT algorithm when it needs more memory than the standalone suffix array algorithm but doesn't do anything more / better?
+All of this leads to the following realization: The addition of `first_indexes` / `suffix_offsets` to the BWT records is pointless. The standalone suffix array algorithm can seek out these indexes on its own and the only data it needs is the original sequence and the `first_indexes` / `suffix_offsets` column (each index defines the start of a suffix in the original sequence). It doesn't need the columns `first` or `last`. What's the point of using this BWT algorithm when it needs more memory than the standalone suffix array algorithm but doesn't do anything more / better?
 
-The situation changes a little once checkpointing comes in to play. The wider the gaps are between checkpoints, the less memory gets wasted. However, regardless of how wide the gaps are, you will never reach a point where there is no memory being wasted. It's only when the checkpointed `first_idx` / `suffix_offset` column is combined with a much more memory efficient BWT representation that it beats the standalone suffix array algorithm in terms of memory efficiency.
+The situation changes a little once checkpointing comes in to play. The wider the gaps are between checkpoints, the less memory gets wasted. However, regardless of how wide the gaps are, you will never reach a point where there is no memory being wasted. It's only when the checkpointed `first_indexes` / `suffix_offsets` column is combined with a much more memory efficient BWT representation that it beats the standalone suffix array algorithm in terms of memory efficiency.
 
-That more memory efficient BWT representation is described in a later section, which integrates checkpointed `first_idx` / `suffix_offset` into it: Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Checkpointed Algorithm_TOPIC
+That more memory efficient BWT representation is described in a later section, which integrates checkpointed `first_indexes` / `suffix_offsets` into it: Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Checkpointed Algorithm_TOPIC
 ````
 
 #### Deserialization Algorithm
@@ -15125,24 +15115,20 @@ Recall the terminology used for BWT:
  * BWT records: The table comprised of columns `first`, `last`, and `last_to_first`.
 ```
 
-```{note}
-This algorithm focuses on a different way of constructing the first and last column of a BWT matrix. While it seems useless, it's fundamental for building up some of the more elaborate modifications to the BWT algorithm (discussed in later sections).
-```
-
-When testing for a substring in the standard algorithm, the symbol instance counts serve no other purpose than mapping values of the BWT matrix's last and first columns. For example, instead of having symbol instance counts, you could just as well use a set of random unique shapes for each symbol's instances and the end result would be the same.
+When testing for a substring in the standard algorithm (walking backwards), the symbol instance counts serve no other purpose than mapping values of `last` to `first`. For example, instead of having symbol instance counts, you could just as well use a set of random shapes for each symbol's instances and the end result would be the same.
 
 ```{svgbob}
-   ORIGINAL                SHAPES 
-                                               
-   +--+--+                 +--+--+
-   |¶1|a3|                 |¶■|a▲|
-   |a3|n2|                 |a▲|n▲|
-   |a2|n1|                 |a◆|n■|
-   |a1|b1|        vs       |a■|b◆|
-   |b1|¶1|                 |b◆|¶■|
-   |n2|a2|                 |n▲|a◆|
-   |n1|a1|                 |n■|a■|
-   +--+--+                 +--+--+
+          ORIGINAL        SHAPES 
+                                              
+          +--+--+         +--+--+
+          |¶1|a3|         |¶■|a▲|
+          |a3|n2|         |a▲|n▲|
+          |a2|n1|         |a◆|n■|
+          |a1|b1|    vs   |a■|b◆|
+          |b1|¶1|         |b◆|¶■|
+          |n2|a2|         |n▲|a◆|
+          |n1|a1|         |n■|a■|
+          +--+--+         +--+--+
 
 
 
@@ -15171,31 +15157,54 @@ When testing for a substring in the standard algorithm, the symbol instance coun
 +--+--+           +--+--+    ana    +--+--+       
 ```
 
-Given this observation, when serializing the first and last columns of the matrix, you technically only need to store the symbols from the last column. The first column is just the last column, but sorted. For example, the symbols in last column of the example above are "annb¶aa". To convert that back into the first and last columns of the matrix with symbol instance counts, the steps are as follows:
+Given this observation, when serializing `first` and `last`, you technically only need to store the symbols from `last`'s symbol instances. For example, serializing the example above results in "annb¶aa". Given "annb¶aa", deserializing it back into `first` and `last` is done as follows:
 
-1. Last column: augment "annb¶aa" with symbol instance counts: [(a,1), (n,1), (n,2), (b,1), (¶,1), (a,2), (a,3)].
+1. `last`: augment "annb¶aa" with symbol instance counts: [(a,1), (n,1), (n,2), (b,1), (¶,1), (a,2), (a,3)].
 
-   In this case, the augmentation isn't with symbol instance counts from the original sequence ("banana¶") but from the sequence that makes up the last column ("annb¶aa").
+   In this case, the augmentation happens on the serialized sequence ("annb¶aa"), not the original sequence ("banana¶"). The serialized sequence's index ...
 
-2. First column: Sorting the result of step 1 _taking the symbol instance counts into account_: [(¶,1), (a,1), (a,2), (a,3), (b,1), (n,1), (n,2)].
+   0. has the first *a*: (a,1)
+   1. has the first *n*: (n,1)
+   2. has the second *n*: (n,2)
+   3. has the first *b*: (b,1)
+   4. has the first *¶*: (¶,1)
+   5. has the second *a*: (a,2)
+   6. has the third *a*: (a,3)
 
-   The sort is still a lexicographical sort but the symbol instance counts are included as well. A lower symbol instance count should be given precedence over a higher symbol instance count. For example, once sorted, (a,2) should appear before (a,3) but after (a,1). This is done because the ordering of symbol occurrences need to be preserved between the first and last columns.
+2. `first`: sort `last` _taking the symbol instance counts into account_: [(¶,1), (a,1), (a,2), (a,3), (b,1), (n,1), (n,2)].
 
-The end result of reconstructing from "annb¶aa" is the following first and last columns, ...
+   The sort is still a lexicographical sort but the symbol instance counts are included as well. A lower symbol instance count should be given precedence over a higher symbol instance count. For example, once sorted, (a,2) should appear before (a,3) but after (a,1).
 
-```{svgbob}
-+--+--+
-|¶1|a1|
-|a1|n1|
-|a2|n2|
-|a3|b1|
-|b1|¶1|
-|n1|a2|
-|n2|a3|
-+--+--+
-```
+<table>
+<tr><th>Original BWT Records</th><th>Deserialized BWT Records</th></tr>
+<tr><td>
 
-While the symbol instance counts are different from the original, the mapping of symbol instances between the first and last columns are the same, meaning that you can still use it to search for substrings in "banana¶". It's the mapping between the columns that's important. The actual symbol instance counts have no purpose other than mapping symbol instances between the two columns.
+| first | last  | last_to_first |
+|-------|-------|---------------|
+| (¶,1) | (a,3) |       1       |
+| (a,3) | (n,2) |       5       |
+| (a,2) | (n,1) |       6       |
+| (a,1) | (b,1) |       4       |
+| (b,1) | (¶,1) |       0       |
+| (n,2) | (a,2) |       2       |
+| (n,1) | (a,1) |       3       |
+
+</td><td>
+
+| first | last  | last_to_first |
+|-------|-------|---------------|
+| (¶,1) | (a,1) |       1       |
+| (a,1) | (n,1) |       5       |
+| (a,2) | (n,2) |       6       |
+| (a,3) | (b,1) |       4       |
+| (b,1) | (¶,1) |       0       |
+| (n,1) | (a,2) |       2       |
+| (n,2) | (a,3) |       3       |
+
+</td></tr>
+</table>
+
+The deserialized BWT records have different symbol instance counts when compared to the original BWT records, but the mapping of symbol instances between `first` and `last` remain the same (e.g. in both versions, the *a* at `first[2]` is found at `last[5]`). As such, you can use the deserialized BWT records to search for substrings in "banana¶" just like with the original BWT records. It's the mapping between `first` and `last` that's important. The actual symbol instance counts serve no purpose other than mapping between `first` and `last`.
 
 ```{svgbob}
    ORIGINAL                 SHAPES                 DESERIALIZED  
@@ -15225,6 +15234,39 @@ While the symbol instance counts are different from the original, the mapping of
 +--+--+           +--+--+    ana    +--+--+       
 ```
 
+The serialization / deserialization process works because of the first-last property: The property of BWT matrices that guarantees consistent ordering of a symbol's instances between the first and last columns of a BWT matrix. For example, in the following BWT matrix, the ...
+
+ * 1st *a* instance that appears in `last` will be the 1st *a* instance that appears in `first`: `{h}#f00 (a,3)`.
+ * 2nd *a* instance that appears in `last` will be the 2nd *a* instance that appears in `first`: `{h}#b00 (a,2)`.
+ * 3rd *a* instance that appears in `last` will be the 3rd *a* instance that appears in `first`: `{h}#800 (a,1)`.
+
+|      first      |       |       |       |       |       |       last      |
+|-----------------|-------|-------|-------|-------|-------|-----------------|
+|          (¶,1)  | (b,1) | (a,1) | (n,1) | (a,2) | (n,2) | `{h}#f00 (a,3)` |
+| `{h}#f00 (a,3)` | (¶,1) | (b,1) | (a,1) | (n,1) | (a,2) |          (n,2)  |
+| `{h}#b00 (a,2)` | (n,2) | (a,3) | (¶,1) | (b,1) | (a,1) |          (n,1)  |
+| `{h}#800 (a,1)` | (n,1) | (a,2) | (n,2) | (a,3) | (¶,1) |          (b,1)  |
+|          (b,1)  | (a,1) | (n,1) | (a,2) | (n,2) | (a,3) |          (¶,1)  |
+|          (n,2)  | (a,3) | (¶,1) | (b,1) | (a,1) | (n,1) | `{h}#b00 (a,2)` |
+|          (n,1)  | (a,2) | (n,2) | (a,3) | (¶,1) | (b,1) | `{h}#800 (a,1)` |
+
+The first-last property is exploited by the serialization / deserialization process so that only the symbol's from `last`'s symbol instances have to be stored. For example, in the deserialization example above, it's known that ...
+
+ * the starting *a* in `last` will always be the starting *a* in `first`,
+ * it doesn't matter what the symbol instance count is for that *a* so long as it's appropriately mapping it between `first` and `last`,
+
+... so deserialization just ends up giving that starting *a* a symbol instance count of 1. Likewise, the subsequent *a* is given a symbol instance count of 2, and the *a* after that is given a symbol instance count of 3.
+
+|      first      |       last      | last_to_first |
+|-----------------|-----------------|---------------|
+|          (¶,1)  | `{h}#f00 (a,1)` |       1       |
+| `{h}#f00 (a,1)` |          (n,1)  |       5       |
+| `{h}#b00 (a,2)` |          (n,2)  |       6       |
+| `{h}#800 (a,3)` |          (b,1)  |       4       |
+|          (b,1)  |          (¶,1)  |       0       |
+|          (n,1)  | `{h}#b00 (a,2)` |       2       |
+|          (n,2)  | `{h}#800 (a,3)` |       3       |
+
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py
 python
@@ -15233,13 +15275,11 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_Deserialization main_deserialize
-{
-  last_seq: annb¶aa,
-  end_marker: ¶
-}
+last_seq: annb¶aa
+end_marker: ¶
 ```
 
-The deserialization process described above also helps with computing the first and last BWT matrix columns from the original sequence (e.g. "banana¶" instead of "annb¶aa") by making the entire process slightly more memory efficient. Keeping the original sequence as-is (do not annotate with symbol instance counts), stack its rotations and sort them to form a BWT matrix (without symbol instance counts). For example, the original sequence "banana¶" forms the following BWT matrix.
+The deserialization process described above also helps with computing the `first` and `last` from the original sequence (e.g. "banana¶" instead of "annb¶aa") by making the entire process slightly more memory efficient. Keeping the original sequence as-is (do not annotate with symbol instance counts), stack its rotations and sort them to form a BWT matrix (without symbol instance counts). For example, the original sequence "banana¶" forms the following BWT matrix.
 
 |   |   |   |   |   |   |   |
 |---|---|---|---|---|---|---|
@@ -15251,19 +15291,19 @@ The deserialization process described above also helps with computing the first 
 | n | a | ¶ | b | a | n | a |
 | n | a | n | a | ¶ | b | a |
 
-Then, extract the last column ("annb¶aa") and feed it into the deserialization process. The deserialization process will annotate that last column with symbol instance counts, then sort it to create the first column (with symbol instance counts).
+Then, extract the last column ("annb¶aa") and feed it into the deserialization process. The deserialization process will annotate that last column with symbol instance counts, then sort it to create the first column.
 
-| first | last  |
-|-------|-------|
-| (¶,1) | (a,1) |
-| (a,1) | (n,1) |
-| (a,2) | (n,2) |
-| (a,3) | (b,1) |
-| (b,1) | (¶,1) |
-| (n,1) | (a,2) |
-| (n,2) | (a,3) |
+| first | last  | last_to_first |
+|-------|-------|---------------|
+| (¶,1) | (a,1) |       1       |
+| (a,1) | (n,1) |       5       |
+| (a,2) | (n,2) |       6       |
+| (a,3) | (b,1) |       4       |
+| (b,1) | (¶,1) |       0       |
+| (n,1) | (a,2) |       2       |
+| (n,2) | (a,3) |       3       |
 
-Since the original sequence isn't being annotated with symbol instance counts (as was done in the original BWT creation algorithm discussed at the beginning of this section), those symbol instance counts are omitted from the rotation stacking and sorting, meaning it saves some memory. However, the deserialization process is doing an extra sort to derive the first column, meaning some extra work is being performed.
+Since the original sequence isn't being annotated with symbol instance counts (as happens in the standard BWT algorithm), those symbol instance counts are omitted from the rotation stacking and sorting, meaning it saves some memory. However, the deserialization process is doing an extra sort to derive the first column, meaning some extra work is being performed.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py
@@ -15273,34 +15313,32 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_Deserialization main_optimized_build
-{
-  sequence: banana¶,
-  end_marker: ¶
-}
+sequence: banana¶
+end_marker: ¶
 ```
 
-The first and last BWT matrix columns in the example above have a special property that makes the deserialization's extra sort step unnecessary: For each symbol [a, b, n, ¶] in "banana¶", notice how, in both columns, each symbol's instances appear ordered by symbol instance count. For example, symbol ...
+`first` and `last` in the example above have a special property that makes the deserialization's extra sort step unnecessary: For each symbol {¶,a,b,n} in "banana¶", notice how, in both columns, each symbol's instances start with symbol instance count of 1 and increment their symbol instance count by 1 as they go down (sorted ascending). For example, ...
 
- * *a* has its symbol instances ordered as [`{h}#f00 (a,1)`, `{h}#b00 (a,2)`, `{h}#800 (a,3)`] in both the first and last column (1 comes first, then 2, then 3).
- * *n* has its symbol instances ordered as [`{h}#00f (n,1)`, `{h}#00b (n,2)`] in both the first and last column  (1 comes first, then 2).
+ * *a*'s symbol instances appear top-down as [`{h}#f00 (a,1)`, `{h}#b00 (a,2)`, `{h}#800 (a,3)`] in both `first` and `last` (1 comes first, then 2, then 3).
+ * *n*'s symbol instances appear top-down as [`{h}#00f (n,1)`, `{h}#00b (n,2)`] in both `first` and `last`  (1 comes first, then 2).
 
-|      first      |      last       |
-|-----------------|-----------------|
-|          (¶,1)  | `{h}#f00 (a,1)` |
-| `{h}#f00 (a,1)` | `{h}#00f (n,1)` |
-| `{h}#b00 (a,2)` | `{h}#00b (n,2)` |
-| `{h}#800 (a,3)` |          (b,1)  |
-|          (b,1)  |          (¶,1)  |
-| `{h}#00f (n,1)` | `{h}#b00 (a,2)` |
-| `{h}#00b (n,2)` | `{h}#800 (a,3)` |
+|      first      |      last       | last_to_first |
+|-----------------|-----------------|---------------|
+|          (¶,1)  | `{h}#f00 (a,1)` |       1       |
+| `{h}#f00 (a,1)` | `{h}#00f (n,1)` |       5       |
+| `{h}#b00 (a,2)` | `{h}#00b (n,2)` |       6       |
+| `{h}#800 (a,3)` |          (b,1)  |       4       |
+|          (b,1)  |          (¶,1)  |       0       |
+| `{h}#00f (n,1)` | `{h}#b00 (a,2)` |       2       |
+| `{h}#00b (n,2)` | `{h}#800 (a,3)` |       3       |
 
-This happens because the deserialization's extra sort step uses both the symbol and symbol instance count as the sort key (e.g. if both symbols are *a*, the symbol instance counts are used to break ties). Since it's known that ...
+This happens because of the way deserialization chooses symbol instance counts (described earlier in this section). Since it's known that ...
 
- 1. first column's sequence is "¶aaabnn"
- 2. last column's sequence is "annb¶aa"
- 3. regardless of column, symbol instance counts for each symbol are ordered by their appearance in the column (top-down)
+ 1. `first`'s sequence is "¶aaabnn",
+ 2. `last`'s sequence is "annb¶aa",
+ 3. regardless of column, each symbol's instances start with symbol instance count of 1 and increment their symbol instance count by 1 as they go down (sorted ascending),
 
-..., you can add symbol instance counts directly to the first column the same way the deserialization process adds them to the last column. The resulting first column will end up being exactly the same as if the first column were generated by the deserialization's sort step.
+... you can add symbol instance counts directly to `first` the same way the deserialization process adds them to `last`. The resulting `first` will end up being exactly the same.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_Deserialization.py
@@ -15310,15 +15348,13 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_Deserialization main_optimized2_build
-{
-  sequence: banana¶,
-  end_marker: ¶
-}
+sequence: banana¶
+end_marker: ¶
 ```
 
-````{note}
-At this stage, you might thinking that it's worth trying to collapse the first column. This is covered in a later section further below.
-````
+```{note}
+At this stage, you might thinking that it's worth trying to collapse the first column. This is covered in a later section.
+```
 
 #### Backsweep Testing Algorithm
 
@@ -15346,7 +15382,7 @@ Recall the terminology used for BWT:
 This algorithm seems useless but it's setting the foundations for much more efficient testing in later sections.
 ```
 
-The deserialization algorithm discussed earlier generates a first column with certain distinct properties: For each symbol, it guarantees that all of that symbol's instances in `first` ...
+The deserialization algorithm discussed earlier generates `first` with certain distinct properties: For each symbol, it guarantees that all of that symbol's instances in `first` ...
 
 * appear one after the other (contiguous),
 * start with symbol instance count of 1,
@@ -15354,35 +15390,35 @@ The deserialization algorithm discussed earlier generates a first column with ce
 
 Given this, the first-last property guarantees that each symbol in `last`, if you were to consider that symbol just by itself, has its instances listed out in the exact same fashion: Starts at 1 and increments by 1 as its instances appear from top-to-bottom. For example, given the `first` and `last` of the BWT records for "banana¶", *a*'s symbol instances in both `first` and `last` appear as [`{h}#f00 (a,1)`, `{h}#b00 (a,2)`, `{h}#800 (a,3)`].
 
-|      first      |      last       |
-|-----------------|-----------------|
-|          (¶,1)  | `{h}#f00 (a,1)` |
-| `{h}#f00 (a,1)` |          (n,1)  |
-| `{h}#b00 (a,2)` |          (n,2)  |
-| `{h}#800 (a,3)` |          (b,1)  |
-|          (b,1)  |          (¶,1)  |
-|          (n,1)  | `{h}#b00 (a,2)` |
-|          (n,2)  | `{h}#800 (a,3)` |
+|      first      |      last       | last_to_first |
+|-----------------|-----------------|---------------|
+|          (¶,1)  | `{h}#f00 (a,1)` |       1       |
+| `{h}#f00 (a,1)` |          (n,1)  |       5       |
+| `{h}#b00 (a,2)` |          (n,2)  |       6       |
+| `{h}#800 (a,3)` |          (b,1)  |       4       |
+|          (b,1)  |          (¶,1)  |       0       |
+|          (n,1)  | `{h}#b00 (a,2)` |       2       |
+|          (n,2)  | `{h}#800 (a,3)` |       3       |
 
 The backsweep testing algorithm is a different way of testing for a substring, one that exploits the properties mentioned above. For each element of the test string, the algorithm scans over BWT records and isolates them to some range. A subsequent scan only has to to consider the BWT records in the range isolated by the scan previous to it. For example, consider searching for "bba" in "abbazabbabbu¶".
 
-| first | last  |
-|-------|-------|
-| (¶,1) | (u,1) |
-| (a,1) | (z,1) |
-| (a,2) | (¶,1) |
-| (a,3) | (b,1) |
-| (a,4) | (b,2) |
-| (b,1) | (b,3) |
-| (b,2) | (b,4) |
-| (b,3) | (a,1) |
-| (b,4) | (a,2) |
-| (b,5) | (a,3) |
-| (b,6) | (b,5) |
-| (u,1) | (b,6) |
-| (z,1) | (a,4) |
+| first | last  | last_to_first |
+|-------|-------|---------------|
+| (¶,1) | (u,1) |       11      |
+| (a,1) | (z,1) |       12      |
+| (a,2) | (¶,1) |       0       |
+| (a,3) | (b,1) |       5       |
+| (a,4) | (b,2) |       6       |
+| (b,1) | (b,3) |       7       |
+| (b,2) | (b,4) |       8       |
+| (b,3) | (a,1) |       1       |
+| (b,4) | (a,2) |       2       |
+| (b,5) | (a,3) |       3       |
+| (b,6) | (b,5) |       9       |
+| (u,1) | (b,6) |       10      |
+| (z,1) | (a,4) |       4       |
 
-The algorithm starts by searching the entire range of BWT records for rows where `last_col='a'` (3rd letter of "bba"). The properties mentioned above guarantee that, for both `first` and `last`, the *a* symbol instance with the ...
+The algorithm starts by searching the entire range of BWT records for rows where `last='a'` (3rd letter of "bba"). The properties mentioned above guarantee that, for both `first` and `last`, the *a* symbol instance with the ...
 
  * smallest symbol instance count appears before any other *a* symbol instances.
  * largest symbol instance count appears after all other *a* symbol instances.
@@ -15395,7 +15431,7 @@ As such, the entire range of BWT records isn't scanned. Instead, the algorithm .
 The `last_to_first` of the two found BWT records are then used to find the index of (a,1) and (a,4) in `first`: index 1 and 4. Because of the properties of `first` mentioned above, it's guaranteed that all `first` entries between index 1 and 4 are for *a* symbol instances. The algorithm isolates the BWT records to this range, which is essentially just finding all substrings of "a" in the original sequence.
 
 ```{svgbob}
-"isolate to range where first_col a1-a4"
+"isolate to range where first a1-a4"
    .-----------------------.   
    |                       |   
 +--+--+                    v   
@@ -15415,7 +15451,7 @@ The `last_to_first` of the two found BWT records are then used to find the index
 +--+--+                        
 ```
 
-The isolated range of BWT records above are then again searched for rows where `last_col='b'` (2nd letter of "bba") in the exact same fashion. The algorithm ...
+The isolated range of BWT records above are then again searched for rows where `last='b'` (2nd letter of "bba") in the exact same fashion. The algorithm ...
 
  * scans downward from index 1 (starting index of the isolated range) to find the initial occurrence of *b* in `last`: (b,1) at index 3 of `last`.
  * scans upward from index 4 (ending index of the isolated range) to find the final occurrence of *b* in `last`: (b,2) at index 4 of `last`.
@@ -15423,7 +15459,7 @@ The isolated range of BWT records above are then again searched for rows where `
 The `last_to_first` of the two found BWT records are then used to find the index of (b,1) and (b,2) in `first`: index 5 and 6. The algorithm isolates the BWT records to this range, which is essentially all substrings of "ba" in the original sequence.
 
 ```{svgbob}
-"isolate to range where first_col a1-a4"
+"isolate to range where first a1-a4"
      .-----------------------.   
      |                       |   
   +--+--+                    v   
@@ -15443,18 +15479,18 @@ The `last_to_first` of the two found BWT records are then used to find the index
   +--+--+                    |                 |   
                              |                 |   
                              '-----------------'
-                       "isolate to range where first_col b1-b2"
+                       "isolate to range where first b1-b2"
 ```
 
-The isolated range of BWT records above are then again searched for rows where `last_col='b'` (3rd letter of "bba") in the exact same fashion. The algorithm ...
+The isolated range of BWT records above are then again searched for rows where `last='b'` (3rd letter of "bba") in the exact same fashion. The algorithm ...
 
  * scans downward from index 5 (starting index of the isolated range) to find the initial occurrence of *b* in `last`: (b,3) at index 5 of `last`.
  * scans upward from index 6 (ending index of the isolated range) to find the final occurrence of *b* in `last`: (b,4) at index 6 of `last`.
  
-The `last_to_first` of the two found BWT records are then used to find the index of (b,3) and (b,4) in `first`: index 6 and 7. The algorithm isolates the BWT records to this range, which is essentially all substrings of "bba" in the original sequence. Since all elements of the test string have been processed, the search stops. There are two rows in the isolated BWT table at this point, meaning are two instances of "bba" (`(7 - 6) + 1 = 2`).
+The `last_to_first` of the two found BWT records are then used to find the index of (b,3) and (b,4) in `first`: index 6 and 7. The algorithm isolates the BWT records to this range, which is essentially all substrings of "bba" in the original sequence. Since all elements of the test string have been processed, the search stops. There are two rows in the isolated range range at this point, meaning are two instances of "bba": (7 - 6) + 1 = 2.
 
 ```{svgbob}
-"isolate to range where first_col a1-a4"    "isolate to range where first_col b3-b4"
+"isolate to range where first a1-a4"    "isolate to range where first b3-b4"
    .-----------------------.                 .-----------------------.
    |                       |                 |                       |
 +--+--+                    v                 |                       |
@@ -15474,7 +15510,7 @@ The `last_to_first` of the two found BWT records are then used to find the index
 +--+--+                    |                 |   
                            |                 |   
                            '-----------------'
-                    "isolate to range where first_col b1-b2"
+                    "isolate to range where first b1-b2"
 ```
 
 ```{output}
@@ -15485,11 +15521,9 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_BacksweepTest main_test
-{
-  sequence: abbazabbabbu¶,
-  test: bba,
-  end_marker: ¶
-}
+sequence: abbazabbabbu¶
+test: bba
+end_marker: ¶
 ```
 
 #### Collapsed First Algorithm
@@ -15513,7 +15547,7 @@ Recall the terminology used for BWT:
  * BWT records: The table comprised of columns `first`, `last`, and `last_to_first`.
 ```
 
-The deserialization algorithm discussed earlier generates a first column with certain distinct properties: For each symbol, it guarantees that all of that symbol's instances in `first` ...
+The deserialization algorithm discussed earlier generates `first` with certain distinct properties: For each symbol, it guarantees that all of that symbol's instances in `first` ...
 
  * appear one after the other (contiguous),
  * start with symbol instance count of 1,
@@ -15521,26 +15555,17 @@ The deserialization algorithm discussed earlier generates a first column with ce
 
 For example, given the BWT records for "banana¶", *a*'s symbol instances will appear contiguously in `first` as [`{h}#f00 (a,1)`, `{h}#b00 (a,2)`, `{h}#800 (a,3)`].
 
-|      first      |      last       | last_to_first |
-|-----------------|-----------------|---------------|
-|          (¶,1)  | `{h}#f00 (a,1)` |       1       |
-| `{h}#f00 (a,1)` |          (n,1)  |       5       |
-| `{h}#b00 (a,2)` |          (n,2)  |       6       |
-| `{h}#800 (a,3)` |          (b,1)  |       4       |
-|          (b,1)  |          (¶,1)  |       0       |
-|          (n,1)  | `{h}#b00 (a,2)` |       2       |
-|          (n,2)  | `{h}#800 (a,3)` |       3       |
+|      first      | last  | last_to_first |
+|-----------------|-------|---------------|
+|          (¶,1)  | (a,1) |       1       |
+| `{h}#f00 (a,1)` | (n,1) |       5       |
+| `{h}#b00 (a,2)` | (n,2) |       6       |
+| `{h}#800 (a,3)` | (b,1) |       4       |
+|          (b,1)  | (¶,1) |       0       |
+|          (n,1)  | (a,2) |       2       |
+|          (n,2)  | (a,3) |       3       |
 
-```{note}
-The column `last_to_first` wasn't discussed in the prerequisites but it was in their code. It simply maps the `last` value at a specific index to its index within `first`. For example, (a,3) is contained at index ...
-
-* index 6 for `last`
-* index 3 for `first`
-
-So, at index 6 (where `last=(a,3)`), the `last_to_first` value points to index 3 (where `first=(a,3)`). Recall that `last_to_first` is just there to allow for quickly testing for a substring, which goes in reverse from the last column to the first column.
-```
-
-The collapsed first algorithm uses a more memory efficient data structure to represent BWT records. Because of `first`'s properties mentioned in the beginning of this section, you can collapse `first` such that only the index of each symbol's initial occurrence is retained: `first_occurrence_map`.
+The collapsed first algorithm exploits these properties to produce a more memory efficient representation of BWT records. Because each symbol in `first` has its instances listed contiguously and those instances start at 1 and increment by 1, you can collapse `first` such that only the index of each symbol's initial instance is retained: `first_occurrence_map`.
 
 <table>
 <tr><th>records</th><th>first_occurrence_map</th></tr>
@@ -15561,9 +15586,9 @@ The collapsed first algorithm uses a more memory efficient data structure to rep
 
 For example, because *a*'s symbol instances start at index 1 of `first` in the original example, in the collapsed example `first_occurrence_map['a'] = 1`. You can use `first_occurrence_map['a']` to determine the index of any *a* symbol instance in `first`:
 
- * (a,1) is at `(first_occurrence_map['a']+1)-1 = 1+1-1 = 1`.
- * (a,2) is at `(first_occurrence_map['a']+2)-1 = 1+2-1 = 2`.
- * (a,3) is at `(first_occurrence_map['a']+3)-1 = 1+3-1 = 3`.
+ * (a,1) is at `(first_occurrence_map['a']+1)-1 = (1+1)-1 = 1`.
+ * (a,2) is at `(first_occurrence_map['a']+2)-1 = (1+2)-1 = 2`.
+ * (a,3) is at `(first_occurrence_map['a']+3)-1 = (1+3)-1 = 3`.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py
@@ -15573,15 +15598,14 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_CollapsedFirst main_first_index
-{
-  sequence: banana¶,
-  end_marker: ¶,
-  symbol: a,
-  symbol_count: 2
-}
+first_occurrence_map: {¶: 0, a: 1, b: 4, n: 5}
+last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
+last_to_first: [1,5,6,4,0,2,3]
+symbol: a
+symbol_count: 2
 ```
 
-Recall that some row's `last_to_first` simply maps that row's `last` value to its index in `first` (`last_to_first[i] = first.find(last[i])`). The algorithm above is effectively an on-the-fly calculation of `last_to_first`: Feeding any symbol instance from `last` to the above algorithm computes that symbol instance's index within `first`. As such, you can remove `last_to_first` from the BWT records as well.
+The algorithm above is effectively an on-the-fly calculation of `last_to_first`: Feeding any symbol instance from `last` to the above algorithm computes that symbol instance's index within `first`. As such, you can remove `last_to_first` from the BWT records as well.
 
 <table>
 <tr><th>records</th><th>first_occurrence_map</th></tr>
@@ -15610,10 +15634,8 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_CollapsedFirst main_table_and_collapsed_first
-{
-  sequence: banana¶,
-  end_marker: ¶
-}
+sequence: banana¶
+end_marker: ¶
 ```
 
 The original backsweep testing algorithm still works with this revised data structure. The only modification you need to make is to replace usages of `last_to_first` with the on-the-fly calculation of `last_to_first` described above.
@@ -15626,17 +15648,21 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_CollapsedFirst main_test
-{
-  sequence: banana¶,
-  end_marker: ¶,
-  test: ana
-}
+first_occurrence_map: {¶: 0, a: 1, b: 4, n: 5}
+last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
+last_to_first: [1,5,6,4,0,2,3]
+test: ana
 ```
 
-The backsweep testing algorithm can go through one further optimization thanks to `first_occurrence_map`: The initial top-to-bottom scan isn't needed anymore. For example, in the original backsweep testing algorithm, searching for "bba" in "abbazabbabbu¶" starts by scanning over all rows for `last='a'` to determine where the *a* symbol instances start and end in `first`.
+The backsweep testing algorithm can go through one further optimization thanks to `first_occurrence_map`: The initial top and bottom scans aren't needed anymore. For example, in the original backsweep testing algorithm, searching for "bba" in "abbazabbabbu¶" starts by scanning ...
+
+ * top-down for the initial row where `last='a'`
+ * bottom-up for the final row where `last='a'`
+
+... to determine where the *a* symbol instances start and end in `first`.
 
 ```{svgbob}
-"isolate to range where first_col a1-a4"    "isolate to range where first_col b3-b4"
+"isolate to range where first a1-a4"    "isolate to range where first b3-b4"
    .-----------------------.                 .-----------------------.
    |                       |                 |                       |
 +--+--+                    v                 |                       |
@@ -15656,10 +15682,10 @@ The backsweep testing algorithm can go through one further optimization thanks t
 +--+--+                    |                 |   
                            |                 |   
                            '-----------------'
-                    "isolate to range where first_col b1-b2"
+                    "isolate to range where first b1-b2"
 ```
 
-With `first_occurrence_map`, that initial scan isn't necessary anymore. The row where *a* symbol instances ...
+With `first_occurrence_map`, those initial scans aren't necessary anymore. The row where *a*'s symbol instances ...
 
  * start is `first_occurrence_map['a'] = 1`.
  * end is `first_occurrence_map['b']-1 = 5-1 = 4`.
@@ -15675,12 +15701,11 @@ python
 ```
 
 ```{ch9}
-sequence_search.BurrowsWheelerTransform_CollapsedFirst main_test
-{
-  sequence: banana¶,
-  end_marker: ¶,
-  test: ana
-}
+sequence_search.BurrowsWheelerTransform_CollapsedFirst main_test_optimized
+first_occurrence_map: {¶: 0, a: 1, b: 4, n: 5}
+last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
+last_to_first: [1,5,6,4,0,2,3]
+test: ana
 ```
 
 #### Ranks Algorithm
@@ -15701,10 +15726,10 @@ Recall the terminology used for BWT:
  * `first`: The first column of a BWT matrix (removed in collapsed first algorithm, replaced with `first_occurrence_map`).
  * `first_occurrence_map`: `first` collapsed such that only the index of each symbol's initial occurrence is retained (introduced in collapsed first algorithm).
  * `last`: The last column of a BWT matrix.
- * BWT records: The table comprised of just the column `last` (introduced in collapsed first algorithm).
+ * BWT records: The table comprised of just the column `last` (updated in collapsed first algorithm).
 ```
 
-The deserialization algorithm / collapsed first algorithm discussed earlier generates a first column with certain distinct properties: For each symbol, it guarantees that all of that symbol's instances in `first` ...
+The deserialization algorithm / collapsed first algorithm discussed earlier generates `first` with certain distinct properties: For each symbol, it guarantees that all of that symbol's instances in `first` ...
 
 * appear one after the other (contiguous),
 * start with symbol instance count of 1,
@@ -15761,10 +15786,8 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_Ranks main_build
-{
-  sequence: banana¶,
-  end_marker: ¶
-}
+sequence: banana¶
+end_marker: ¶
 ```
 
 Even though `last` is now missing symbol instance counts, you can still determine the symbol instance count for any `last` row just by looking up that symbol in that row's `last_tallies`. For example, to get the symbol instance count at index 2 of the example above (where `last='n'`), `last_tallies[2]['n'] = 2`.
@@ -15777,20 +15800,18 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_Ranks main_to_symbol_instance_count
-{
-  last_ch: n,
-  last_tallies: {¶: 0, a: 1, b: 0, n: 2}
-}
+last_ch: n
+last_tallies: {¶: 0, a: 1, b: 0, n: 2}
 ```
 
 With the inclusion of `last_tallies`, the backsweep algorithm doesn't need to scan over `last` anymore.  For example, in the original backsweep testing algorithm, searching for "bba" in "abbazabbabbu¶" ...
 
-1. starts by scanning over all rows to find `last='a'` and isolates rows to the first and last found *a* in `first`,
-2. then, scans over those isolated rows to find `last='b'` and isolates rows (again) to the first and last found *b* in `first`,
-3. then, scans over those isolated rows to find `last='b'` and isolates rows (again) to the first and last found *b* in `first`.
+1. scans downward to find top `last='a'` / scans upward to find bottom `last='a'`, then isolates rows to the top and bottom *a* in `first`,
+2. scans downward to find top `last='b'` / scans upward to find bottom `last='b'`, then isolates rows (again) to the top and bottom *b* in `first`,
+3. scans downward to find top `last='b'` / scans upward to find bottom `last='b'`, then isolates rows (again) to the top and bottom *b* in `first`.
 
 ```{svgbob}
-"isolate to range where first_col a1-a4"    "isolate to range where first_col b3-b4"
+"isolate to range where first a1-a4"    "isolate to range where first b3-b4"
    .-----------------------.                 .-----------------------.
    |                       |                 |                       |
 +--+--+                    v                 |                       |
@@ -15810,10 +15831,10 @@ With the inclusion of `last_tallies`, the backsweep algorithm doesn't need to sc
 +--+--+                    |                 |   
                            |                 |   
                            '-----------------'
-                    "isolate to range where first_col b1-b2"
+                    "isolate to range where first b1-b2"
 ```
 
-With `last_tallies` and `first_occurrence_map`, none of these scans are necessary. For example, consider the ranked BWT data structure for "abbazabbabbu¶":
+With the ranks algorithm, "abbazabbabbu¶" is structured as follows:
 
 <table>
 <tr><th>records (ranks)</th><th>first_occurrence_map</th></tr>
@@ -15838,10 +15859,10 @@ With `last_tallies` and `first_occurrence_map`, none of these scans are necessar
 </td><td>{¶: 0, a: 1, b: 5, u: 11, z: 12}</td></tr>
 </table>
 
-At any row of the records above, `last` and `last_tallies` tell you know exactly how many of each symbol appeared in `last` *before* reaching that row. For example, at index 5...
+At any row, `last` and `last_tallies` tell you exactly how many of each symbol appeared in `last` *before* reaching that row. For example, at index 5...
 
- * `last[5]='b'`
- * `last_tallies[5]={u: 1, z: 1, ¶: 1, b: 3, a: 0}`
+ * `last[5] = 'b'`
+ * `last_tallies[5] = {u: 1, z: 1, ¶: 1, b: 3, a: 0}`
 
 Meaning, before index 5, ...
 
@@ -15852,34 +15873,94 @@ Meaning, before index 5, ...
  * *a* didn't appear.
 
 ```{note}
-You may be wondering why the bullet point for *b* says 2 appeared even though `last_tallies[5]['b']=3`. Remember that `last_tallies[5]` is giving the tallies up until index 5, not just *before* index 5. Since `last[5]='b'`, `last_tallies[5]['b']` needs to be subtracted by 1 to give the tallies just before index 5.
+You may be wondering why the bullet point for *b* says "appeared twice" even though `last_tallies[5]['b'] = 3`. Remember that `last_tallies[5]` is giving the tallies up until index 5, not just *before* index 5. Since `last[5] = 'b'`, `last_tallies[5]['b']` needs to be subtracted by 1 to give the tallies just before reaching index 5.
 ```
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py
 python
-# MARKDOWN_TALLY_BEFORE_IDX\s*\n([\s\S]+)\n\s*# MARKDOWN_TALLY_BEFORE_IDX\s*[\n$]
+# MARKDOWN_TALLY_BEFORE\s*\n([\s\S]+)\n\s*# MARKDOWN_TALLY_BEFORE\s*[\n$]
 ```
 
 ```{ch9}
-sequence_search.BurrowsWheelerTransform_Ranks main_tally_before_idx
-{
-  sequence: abbazabbabbu¶,
-  end_marker: ¶,
-  index: 5,
-  symbol: b
-}
+sequence_search.BurrowsWheelerTransform_Ranks main_tally_row
+last: [u, z, ¶, b, b, b, b, a, a, a, b, b, a]
+last_tallies: 
+  - {u: 1}
+  - {u: 1, z: 1}
+  - {u: 1, z: 1, ¶: 1}
+  - {u: 1, z: 1, ¶: 1, b: 1}
+  - {u: 1, z: 1, ¶: 1, b: 2}
+  - {u: 1, z: 1, ¶: 1, b: 3}
+  - {u: 1, z: 1, ¶: 1, b: 4}
+  - {u: 1, z: 1, ¶: 1, b: 4, a: 1}
+  - {u: 1, z: 1, ¶: 1, b: 4, a: 2}
+  - {u: 1, z: 1, ¶: 1, b: 4, a: 3}
+  - {u: 1, z: 1, ¶: 1, b: 5, a: 3}
+  - {u: 1, z: 1, ¶: 1, b: 6, a: 3}
+  - {u: 1, z: 1, ¶: 1, b: 6, a: 4}
+index: 5
+symbol: b
 ```
 
-This means that you don't need to scan down to find the first symbol instance count of some symbol / scan up to find the last symbol instance count of some symbol. For example, `last_tallies[5]['z']` tells you exactly how many times *z* appeared before entering the 5th row. Knowing this, searching "bba" in "abbazabbabbu¶" becomes as follows.
+Knowing this, the backsweep algorithm can simply use the calculation described above to determine some symbol's initial and final symbol instance in `last`. For example, finding the initial and final *a* in `last` for the range between rows 8 and 12:
 
-For the initial scan iteration (scans all rows), the rows where `first=a` ...
-
- * start at `first_occurrence_map['a'] + symbol_tally_before_idx('a', 0)  = 1+0 = 1`.
- * end at   `first_occurrence_map['a'] + symbol_tally_at_idx('a', 12) - 1 = 1+3 = 4`.
+ * In `last[8:12]`, the initial *a* is (a,2): `last_tally_before_row('a', 8) + 1 = 1+1 = 2`
+ * In `last[8:12]`, the final *a* is (a,4):   `last_tally_at_row('a', 12)              = 4`
 
 ```{svgbob}
-"isolate to range where first_col a1-a4"
++--+--+
+|¶1|u1|
+|a1|z1|
+|a2|¶1|
+|a3|b1|
+|a4|b2|
+|b1|b3|
+|b2|b4|
+|b3|a1|
+|b4|a2| -.
+|b5|a3|  | "between rows 8 and 12," 
+|b6|b5|  | "initial a is a2 / final a is a4"
+|u1|b6|  |
+|z1|a4| -'
++--+--+
+```
+
+Likewise, the backsweep algorithm can use the calculations described above to determine an isolation range's starting and ending row. For example, to isolate the BWT records such that `first` starts at (a,2) and ends at (a,4):
+
+ * (a,2) is at row 2 of `first`: `first_occurrence_map['a'] + last_tally_before_row('a', 8)  = 1+1   = 2`
+ * (a,4) is at row 4 of `first`: `first_occurrence_map['a'] + last_tally_at_row('a', 12) - 1 = 1+4-1 = 4`
+
+```{svgbob}
+"isolate to range where first a2-a4"
+   .-----------------------.
+   |                       |
++--+--+                    |
+|¶1|u1|                    v
+|a1|z1|                 +--+--+
+|a2|¶1|                 |a2|¶1|
+|a3|b1|                 |a3|b1|
+|a4|b2|                 |a4|b2|
+|b1|b3|                 +--+--+
+|b2|b4|                 
+|b3|a1|                 
+|b4|a2| -.
+|b5|a3|  | "between rows 8 and 12," 
+|b6|b5|  | "initial a is a2 / final a is a4"
+|u1|b6|  |
+|z1|a4| -'
++--+--+
+```
+
+The backsweep testing algorithm searching "bba" in "abbazabbabbu¶" using this new scan-less isolation logic is as follows:
+
+For the initial iteration (all rows), the rows where `first=a` ...
+
+ * start is `first_occurrence_map['a'] + last_tally_before_row('a', 0)  = 1+0   = 1`.
+ * end is   `first_occurrence_map['a'] + last_tally_at_row('a', 12) - 1 = 1+4-1 = 4`.
+
+```{svgbob}
+"isolate to range where first a1-a4"
    .-----------------------.
    |                       |
 +--+--+                    v
@@ -15899,13 +15980,13 @@ For the initial scan iteration (scans all rows), the rows where `first=a` ...
 +--+--+                 
 ```
 
-Similarly, for the second scan iteration (scans rows 1 to 4), the rows where `first=b` ...
+Similarly, for the second iteration (isolated to rows 1-4), the rows where `first=b` ...
 
- * start is `first_occurrence_map['b'] + symbol_tally_before_idx('b', 1) = 5+0 = 5`.
- * end is   `first_occurrence_map['b'] + symbol_tally_at_idx('b', 4) - 1 = 5+1 = 6`.
+ * start is `first_occurrence_map['b'] + last_tally_before_row('b', 1) = 5+0   = 5`.
+ * end is   `first_occurrence_map['b'] + last_tally_at_row('b', 4) - 1 = 5+2-1 = 6`.
 
 ```{svgbob}
-"isolate to range where first_col a1-a4"
+"isolate to range where first a1-a4"
    .-----------------------.            
    |                       |            
 +--+--+                    v            
@@ -15925,16 +16006,16 @@ Similarly, for the second scan iteration (scans rows 1 to 4), the rows where `fi
 +--+--+                    |                 |
                            |                 |
                            '-----------------'
-                    "isolate to range where first_col b1-b2"
+                    "isolate to range where first b1-b2"
 ```
 
-Similarly, for the third scan iteration (scans rows 5 to 6), the rows where `first=b` ...
+Similarly, for the third iteration (isolated to rows 5-6), the rows where `first=b` ...
 
- * start is `first_occurrence_map['b'] + symbol_tally_before_idx('b', 5) = 7`.
- * end is   `first_occurrence_map['b'] + symbol_tally_at_idx('b', 6) - 1 = 8`.
+ * start is `first_occurrence_map['b'] + last_tally_before_row('b', 5) = 5+2   = 7`.
+ * end is   `first_occurrence_map['b'] + last_tally_at_row('b', 6) - 1 = 5+4-1 = 8`.
 
 ```{svgbob}
-"isolate to range where first_col a1-a4"    "isolate to range where first_col b3-b4"
+"isolate to range where first a1-a4"    "isolate to range where first b3-b4"
    .-----------------------.                 .-----------------------.
    |                       |                 |                       |
 +--+--+                    v                 |                       |
@@ -15954,40 +16035,8 @@ Similarly, for the third scan iteration (scans rows 5 to 6), the rows where `fir
 +--+--+                    |                 |   
                            |                 |   
                            '-----------------'
-                    "isolate to range where first_col b1-b2"
+                    "isolate to range where first b1-b2"
 ```
-
-TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
-
-TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
-
-TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
-
-TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
-
-TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
-
-TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
-
-TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
-
-TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
-
-TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
-
-TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
-
-TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
-
-TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
-
-TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
-
-TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
-
-TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
-
-TODO: AUGMENT Standard Algorithm SECTION TO NOT USE "last_to_first", THEN MAKE A "last_to_first" VERSION AT THE END. REVIEW NEW FIXED BACKSWEEP TESTING ALGORITHM SECTION. REVIEW TERMINOLOGY NOTE AT THE BEGINNING OF EACH SECTION. THEN, FIX TEXT FOR CHECKPOINTED RANKS ALGORITHM AND FINAL CHECKPOINTED ALGORITHM. THEN FIX THE STORY FOR SNP. THEN CORRECT "first_col" / "last_col" TO BE "first"/"last".
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py
@@ -16020,12 +16069,12 @@ Recall the terminology used for BWT:
  * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
  * `first`: The first column of a BWT matrix (removed in collapsed first algorithm, replaced with `first_occurrence_map`).
  * `first_occurrence_map`: `first` collapsed such that only the index of each symbol's initial occurrence is retained (introduced in collapsed first algorithm).
- * `last`: The last column of a BWT matrix with symbol instance counts removed (removed in ranks algorithm).
+ * `last`: The last column of a BWT matrix with symbol instance counts removed (updated in ranks algorithm).
  * `last_tallies`: A column where each row contains a tally of how many times each symbol `last` was encountered up until reaching that index  (introduced in ranks algorithm).
- * BWT records: The table comprised of columns `last` and `last_tallies` (introduced in collapsed first algorithm).
+ * BWT records: The table comprised of columns `last` and `last_tallies` (updated in ranks algorithm).
 ```
 
-While the ranks algorithm's replacement of `last` with `last_tallies` actually increases memory usage, it allows for a concept known as checkpointing: Instead of retaining a value at every index of `last_tallies`, leave some empty. The entries that have a value are called checkpoints.
+The ranks algorithm's replacement of `last` with `last_tallies` increases memory usage but it also allows for a concept known as checkpointing: Instead of retaining a value at every index of `last_tallies`, leave some empty. The entries that have a value are called checkpoints.
 
 <table>
 <tr><th>records</th><th>first_occurrence_map</th></tr>
@@ -16079,12 +16128,10 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_RanksCheckpointed main_walk_tallies_to_checkpoint
-{
-  sequence: banana¶,
-  end_marker: ¶,
-  last_tallies_checkpoint_n: 3,
-  index: 5
-}
+sequence: banana¶
+end_marker: ¶
+last_tallies_checkpoint_n: 3
+index: 5
 ```
 
 Determining the value of `last_tallies` can be further optimized by only focusing on the symbol of interest. For example, at index 5, `last[5]` is *a*. When the value for `last_tallies[5]` is computed, it's only being used to determine the symbol instance count of that *a* at `last[5]`. As such, only *a*s need to be tallied until reaching a checkpoint...
@@ -16101,12 +16148,10 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_RanksCheckpointed main_single_tally_to_checkpoint
-{
-  sequence: banana¶,
-  end_marker: ¶,
-  last_tallies_checkpoint_n: 3,
-  index: 5
-}
+sequence: banana¶
+end_marker: ¶
+last_tallies_checkpoint_n: 3
+index: 5
 ```
 
 Testing for a substring works just as it did with the collapsed first algorithm, except that the symbol instance count for some index in `last` needs to be determined from `last_tallies` checkpoints. The idea is to make the gaps between `last_tallies` checkpoints wide enough that it gives memory savings compared to keeping the symbol instance counts in `last`, but at the same time short enough that the time to compute the missing gap values is still negligible. For example, since there are only 4 possible symbols with a DNA sequence (A, C, G, and T), the gaps in `last_tallies` don't have to get too wide before seeing memory savings.
@@ -16119,12 +16164,10 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_RanksCheckpointed main_test
-{
-  sequence: banana¶,
-  end_marker: ¶,
-  last_tallies_checkpoint_n: 3,
-  test: ana
-}
+sequence: banana¶
+end_marker: ¶
+last_tallies_checkpoint_n: 3
+test: ana
 ```
 
 #### Checkpointed Algorithm
@@ -16143,39 +16186,38 @@ Recall the terminology used for BWT:
  * Symbol: A unique element within the sequence (e.g. "banana¶" is made up of the *unique elements* / *symbols* {a, b, n, ¶}).
  * Symbol instance: The occurrence of a symbol (e.g. index 4 of "banana¶" is the 2nd *occurrence* / *symbol instance* of *n*).
  * Symbol instance count: The occurrence number of a symbol instance (e.g. index 4 of "banana¶" is *n* and it *is occurrence number* / *has a symbol instance count of* 2).
- * `first`: The first column of a BWT matrix (removed in collapsed first algorithm, replaced with `first_occurrence_map`).
  * `first_occurrence_map`: `first` collapsed such that only the index of each symbol's initial occurrence is retained (introduced in collapsed first algorithm).
- * `first_idx`: A column where each row contains the index of the corresponding `first` row's symbol instance within the original sequence (introduced in checkpointed indexes algorithm).
- * `last`: The last column of a BWT matrix with symbol instance counts removed (removed in ranks algorithm).
- * `last_tallies`: A column where each row contains a tally of how many times each symbol `last` was encountered up until reaching that index  (introduced in ranks algorithm).
- * BWT records: The table comprised of columns `last` and `last_tallies` (introduced in collapsed first algorithm).
+ * `first_indexes`: A column where each row contains the index of the corresponding `first` row's symbol instance within the original sequence (introduced in checkpointed indexes algorithm).
+ * `last_tallies`: A column where each row contains a tally of how many times each symbol `last` was encountered up until reaching that index (introduced in checkpointed ranks algorithm).
+ * `last_to_first`: A column that, at each row, maps that row's `last` value to its index within `first` (removed in collapsed first algorithm, replaced with dynamic calculation).
+ * BWT records: The table comprised of columns `first_indexes`, `last`, and `last_tallies` (updated in checkpointed ranks algorithm).
 ```
 
 This algorithm is the checkpointed ranks algorithm with the checkpointed indexes algorithm tacked onto it. For example, the following data structure is for the sequence "banana¶", where ...
 
-* `first_idx` is checkpointed to every 3rd symbol instance in the sequence,
+* `first_indexes` is checkpointed to every 3rd symbol instance in the sequence,
 * `last_tallies` is checkpointed every 3rd row of the table.
 
 <table>
 <tr><th>records</th><th>first_occurrence_map</th></tr>
 <tr><td>
 
-| first_idx | last |     last_tallies         |
-|-----------|------|--------------------------|
-| 6         |  a   | {¶: 0, a: 1, b: 0, n: 0} |
-|           |  n   |                          |
-| 3         |  n   |                          |
-|           |  b   | {¶: 0, a: 1, b: 1, n: 2} |
-| 0         |  ¶   |                          |
-|           |  a   |                          |
-|           |  a   | {¶: 1, a: 3, b: 1, n: 2} |
+| first_indexes | last |     last_tallies         |
+|---------------|------|--------------------------|
+| 6             |  a   | {¶: 0, a: 1, b: 0, n: 0} |
+|               |  n   |                          |
+| 3             |  n   |                          |
+|               |  b   | {¶: 0, a: 1, b: 1, n: 2} |
+| 0             |  ¶   |                          |
+|               |  a   |                          |
+|               |  a   | {¶: 1, a: 3, b: 1, n: 2} |
 
 </td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
 </table>
 
-When `first_idx` and `last_tallies` are big enough, this algorithm ends up using less memory than the suffix array algorithm, but it does so at the cost of doing extra computations during searches to fill in the gaps between checkpointed `first_idx` / `last_tallies` values. This may be an acceptable tradeoff in a lot of cases because SNP analysis requires holding large reference genomes in memory and that extra computation time is often negligible.
+When `first_indexes` and `last_tallies` gaps are wide enough, this algorithm ends up using less memory than the suffix array algorithm, but it does so at the cost of doing extra computations during searches to fill in those gaps. This may be an acceptable tradeoff in a lot of cases because SNP analysis requires holding large reference genomes in memory and that extra computation time is often negligible.
 
-The construction process for this algorithm is the same as that for the checkpointed ranks algorithm, but modified to also produce `first_idx`.
+The construction process for this algorithm is the same as that for the checkpointed ranks algorithm, but modified to also produce `first_indexes`.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py
@@ -16185,15 +16227,13 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_Checkpointed main_build
-{
-  sequence: banana¶,
-  end_marker: ¶,
-  last_tallies_checkpoint_n: 3,
-  first_indexes_checkpoint_n: 3
-}
+sequence: banana¶
+end_marker: ¶
+last_tallies_checkpoint_n: 3
+first_indexes_checkpoint_n: 3
 ```
 
-The checkpointed indexes algorithm requires `last_to_first_idx` when walking back to a checkpointed `first_idx` value. `last_to_first_idx` doesn't exist in the checkpointed ranks algorithm: In the checkpointed ranks algorithm, all `last_to_first_idx` values have been replaced with a function that computes a `last_to_first_idx` value from `last_tallies` checkpoints. As such, this algorithm, when walking back to a checkpointed `first_idx`, uses that function to determine what a `last_to_first_idx` value should be for some row.
+The checkpointed indexes algorithm requires `last_to_first` when walking back to a checkpointed `first_indexes` value. `last_to_first` doesn't exist in the checkpointed ranks algorithm: In the checkpointed ranks algorithm, all `last_to_first` values have been replaced with a function that computes a `last_to_first` value from `last_tallies` checkpoints. As such, this algorithm, when walking back to a checkpointed `first_indexes`, uses that function to determine what a `last_to_first` value should be for some row.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py
@@ -16203,13 +16243,11 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_Checkpointed main_walk_back_until_first_index_checkpoint
-{
-  sequence: banana¶,
-  end_marker: ¶,
-  last_tallies_checkpoint_n: 3,
-  first_indexes_checkpoint_n: 3,
-  from_index: 5
-}
+sequence: banana¶
+end_marker: ¶
+last_tallies_checkpoint_n: 3
+first_indexes_checkpoint_n: 3
+from_index: 5
 ```
 
 The testing process for this algorithm is the same as that for the checkpointed ranks algorithm, but modified to use the above function to determine where each substring occurrence is in the original sequence.
@@ -16222,13 +16260,11 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_Checkpointed main_test
-{
-  sequence: banana¶,
-  end_marker: ¶,
-  last_tallies_checkpoint_n: 3,
-  first_indexes_checkpoint_n: 3,
-  test: ana
-}
+sequence: banana¶
+end_marker: ¶
+last_tallies_checkpoint_n: 3
+first_indexes_checkpoint_n: 3
+test: ana
 ```
 
 This algorithm can be extended to support mismatches by searching for the seeds of some substring. The algorithm returns the indexes within the original sequence where a seed is, at which point seed extension is applied and the relevant segment of the original sequence is extracted and tested to see if its within the mismatch limit.
@@ -16241,15 +16277,13 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_Checkpointed main_mismatch
-{
-  sequence: 'banana ankle baxana orange banxxa vehicle',
-  search_sequences: ['anana', 'banana', 'ankle'],
-  end_marker: ¶,
-  pad_marker: _,
-  max_mismatch: 2,
-  last_tallies_checkpoint_n: 3,
-  first_indexes_checkpoint_n: 3
-}
+sequence: 'banana ankle baxana orange banxxa vehicle'
+search_sequences: ['anana', 'banana', 'ankle']
+end_marker: ¶
+pad_marker: _
+max_mismatch: 2
+last_tallies_checkpoint_n: 3
+first_indexes_checkpoint_n: 3
 ```
 
 ## BLAST
