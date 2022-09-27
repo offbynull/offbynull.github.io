@@ -18671,7 +18671,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_ffe79cef5efa29b2b8ef3b9bfa5a8aed.svg" alt="Dot diagram"></p>
+<p><img src="dot_aa3e748b8b94a867a770a36d6b761e30.svg" alt="Dot diagram"></p>
 <p>Searching <code>How do you feel about apples?</code> with the trie revealed the following was found: {(22, apple)}</p>
 </div>
 <p></p>
@@ -18750,7 +18750,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_ec992b88240459223c8089282ac59bd2.svg" alt="Dot diagram"></p>
+<p><img src="dot_85199bd2837242b2a21a44a5a6e0f12b.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19019,7 +19019,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_cbe365cdae89ab1c4f59b888e8db7d75.svg" alt="Dot diagram"></p>
+<p><img src="dot_a839f35a06f00934ae2fe54ce81eb645.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19158,7 +19158,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_eb1bbdcb682d6575e4952d9057abbda2.svg" alt="Dot diagram"></p>
+<p><img src="dot_9385fdb5c72c66fbf41095609cabad9c.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>If a scan walks the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> to "arat" and fails, the next scan position must contain "rat". Since the prefix "rat" exists in the <a href="#BM_(%5Cbtrie)%2Fi">trie</a>, a special edge connects "arat" to "rat" such that the scan for the next position can jump past "rat" in the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> walk.</p>
@@ -19236,7 +19236,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_409a5483456423f21085c64f61716b82.svg" alt="Dot diagram"></p>
+<p><img src="dot_eb1bbdcb682d6575e4952d9057abbda2.svg" alt="Dot diagram"></p>
 <p>Searching <em>There were multiple narrations in the play</em> with the trie revealed the following was found: {(23, ration)}</p>
 </div>
 <p></p>
@@ -19315,7 +19315,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_f8a1fefc696b88fa19cbe98a0073a711.svg" alt="Dot diagram"></p>
+<p><img src="dot_b731d7d8407dbcc953c74af610d23de2.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -20767,12 +20767,12 @@ last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
 <p>The original sequence was <em>banana¶</em>.</p>
 </div>
 <p></p>
-<p>Similarly to pulling out the original <a href="#BM_(sequence)%2Fi">sequence</a>, given just <code>first</code> and <code>last</code>, it's possible to quickly identify if and how many times some <a href="#BM_(substring)%2Fi">substring</a> exists in the original <a href="#BM_(sequence)%2Fi">sequence</a>. For example, to test if the <a href="#BM_(sequence)%2Fi">sequence</a> contains "nana"...</p>
+<p>Similar to pulling out the original <a href="#BM_(sequence)%2Fi">sequence</a>, given just <code>first</code> and <code>last</code>, it's possible to quickly identify if and how many times some <a href="#BM_(substring)%2Fi">substring</a> exists in the original <a href="#BM_(sequence)%2Fi">sequence</a>. For example, to test if the <a href="#BM_(sequence)%2Fi">sequence</a> contains "nana"...</p>
 <ul>
-<li>find all rows where <code>last</code> has symbol <em>a</em> and <code>first</code> has symbol <em>n</em>: indexes 1 and 2.
+<li>find all rows where <code>last</code> has symbol <em>a</em> and <code>first</code> has symbol <em>n</em>: row indexes 1 and 2.
 <ul>
-<li>walk backwards from index 1 to see if "nana" could be fully extracted: (a,3) to (n,2) to (a,2) to (n,1), which is "nana" (PASSED)</li>
-<li>walk backwards from index 2 to see if "nana" could be fully extracted: (a,2) to (n,1) to (a,1) to (b,1), which is "bana" (FAILED)</li>
+<li>walk backwards from row index 1 to see if "nana" could be fully extracted: (a,3) to (n,2) to (a,2) to (n,1), which is "nana" (PASSED)</li>
+<li>walk backwards from row index 2 to see if "nana" could be fully extracted: (a,2) to (n,1) to (a,1) to (b,1), which is "bana" (FAILED)</li>
 </ul>
 </li>
 </ul>
@@ -21127,7 +21127,7 @@ end_marker: ¶
 </ul>
 </div>
 <p></p>
-<p>Recall that the standard algorithm's search only determines how many times some <a href="#BM_(substring)%2Fi">substring</a> appears in a <a href="#BM_(sequence)%2Fi">sequence</a>. By including <code>first_indexes</code>, the search will also determine the index of each appearance. The search process itself remains unchanged: Walk backwards between <code>last</code> and <code>first</code> until the entirety of the <a href="#BM_(substring)%2Fi">substring</a> has been walked. However, the value of <code>first_indexes</code> at the end of the walk identifies the index of the appearance.</p>
+<p>Recall that the standard algorithm's search only determines how many times some <a href="#BM_(substring)%2Fi">substring</a> appears in a <a href="#BM_(sequence)%2Fi">sequence</a>. By including <code>first_indexes</code>, the search will also determine the index of each appearance within the original <a href="#BM_(sequence)%2Fi">sequence</a>. The search process itself remains unchanged: Walk backwards between <code>last</code> and <code>first</code> until the entirety of the <a href="#BM_(substring)%2Fi">substring</a> has been walked. However, the value of <code>first_indexes</code> at the end of the walk identifies the index of the appearance.</p>
 <p>In the following example, searching for "nana" reveals that it appears only once at index 2 of "banana¶".</p>
 <p><img src="svgbob_9afdd3d1d15e5075e37eca0fe0840e437520227d.svg" alt="Kroki diagram output"></p>
 <p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexes.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_FirstIndexes.py</a> (lines 94 to 121):</p>
@@ -21853,7 +21853,7 @@ test: nana
 </table>
 </td></tr>
 </tbody></table>
-<p>The deserialized <a href="#BM_(BWT)%2F">BWT</a> records have different symbol instance counts when compared to the original <a href="#BM_(BWT)%2F">BWT</a> records, but the mapping of symbol instances between <code>first</code> and <code>last</code> remain the same (e.g. in both versions, the <em>a</em> at <code>first[2]</code> is found at <code>last[5]</code>). As such, you can use the deserialized <a href="#BM_(BWT)%2F">BWT</a> records to search for <a href="#BM_(substring)%2Fi">substring</a>s in "banana¶" just like with the original <a href="#BM_(BWT)%2F">BWT</a> records. It's the mapping between <code>first</code> and <code>last</code> that's important. The actual symbol instance counts serve no purpose other than mapping between <code>first</code> and <code>last</code>.</p>
+<p>The deserialized <a href="#BM_(BWT)%2F">BWT</a> records have different symbol instance counts when compared to the original <a href="#BM_(BWT)%2F">BWT</a> records, but the mapping of symbol instances between <code>first</code> and <code>last</code> remain the same (e.g. in both versions, the <em>a</em> at <code>first[3]</code> is found at <code>last[6]</code>). As such, you can use the deserialized <a href="#BM_(BWT)%2F">BWT</a> records to search for <a href="#BM_(substring)%2Fi">substring</a>s in "banana¶" just like with the original <a href="#BM_(BWT)%2F">BWT</a> records. It's the mapping between <code>first</code> and <code>last</code> that's important. The actual symbol instance counts serve no purpose other than mapping between <code>first</code> and <code>last</code>.</p>
 <p><img src="svgbob_d8b35c9e176c02e07f2dc0977b586aafe18b12aa.svg" alt="Kroki diagram output"></p>
 <p>The serialization / deserialization process works because of the <a href="#BM_(first%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a>: The property of <a href="#BM_(BWT)%2F">BWT</a> matrices that guarantees consistent ordering of a symbol's instances between the first and last columns of a <a href="#BM_(BWT)%2F">BWT</a> matrix. For example, in the following <a href="#BM_(BWT)%2F">BWT</a> matrix, the ...</p>
 <ul>
@@ -22221,7 +22221,7 @@ end_marker: ¶
 </ul>
 </div>
 <p></p>
-<p><code>first</code> and <code>last</code> in the example above have a special property that makes the deserialization's extra sort step unnecessary: For each symbol {¶,a,b,n} in "banana¶", notice how, in both columns, each symbol's instances start with symbol instance count of 1 and increment their symbol instance count by 1 as they go down (sorted ascending). For example, ...</p>
+<p><code>first</code> and <code>last</code> in the example above have a special property that makes the deserialization's extra sort step unnecessary: For each symbol {¶, a, b, n} in "banana¶", notice how, in both columns, each symbol's instances start with symbol instance count of 1 and increment their symbol instance count by 1 as they go down (sorted ascending). For example, ...</p>
 <ul>
 <li><em>a</em>'s symbol instances appear top-down as [<span style="background-color: #f00; color: white; padding: 3px">(a,1)</span>, <span style="background-color: #b00; color: white; padding: 3px">(a,2)</span>, <span style="background-color: #800; color: white; padding: 3px">(a,3)</span>] in both <code>first</code> and <code>last</code> (1 comes first, then 2, then 3).</li>
 <li><em>n</em>'s symbol instances appear top-down as [<span style="background-color: #00f; color: white; padding: 3px">(n,1)</span>, <span style="background-color: #00b; color: white; padding: 3px">(n,2)</span>] in both <code>first</code> and <code>last</code>  (1 comes first, then 2).</li>
@@ -22513,7 +22513,7 @@ end_marker: ¶
 </ul>
 <p>The <code>last_to_first</code> of the two found <a href="#BM_(BWT)%2F">BWT</a> records are then used to find the index of (b,1) and (b,2) in <code>first</code>: index 5 and 6. The algorithm isolates the <a href="#BM_(BWT)%2F">BWT</a> records to this range, which is essentially all <a href="#BM_(substring)%2Fi">substring</a>s of "ba" in the original <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
 <p><img src="svgbob_98c0824ea7e60679776a59b812d68762bcb4c5c1.svg" alt="Kroki diagram output"></p>
-<p>The isolated range of <a href="#BM_(BWT)%2F">BWT</a> records above are then again searched for rows where <code>last='b'</code> (3rd letter of "bba") in the exact same fashion. The algorithm ...</p>
+<p>The isolated range of <a href="#BM_(BWT)%2F">BWT</a> records above are then again searched for rows where <code>last='b'</code> (1st letter of "bba") in the exact same fashion. The algorithm ...</p>
 <ul>
 <li>scans downward from index 5 (starting index of the isolated range) to find the initial occurrence of <em>b</em> in <code>last</code>: (b,3) at index 5 of <code>last</code>.</li>
 <li>scans upward from index 6 (ending index of the isolated range) to find the final occurrence of <em>b</em> in <code>last</code>: (b,4) at index 6 of <code>last</code>.</li>
@@ -22749,6 +22749,14 @@ symbol_count: 2
 </table>
 </td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
 </tbody></table>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py</a> (lines 94 to 100):</p>
+<pre class="hljs"><code><span class="hljs-comment"># This is just a wrapper for to_first_row(). It's here for clarity.</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">last_to_first</span>(<span class="hljs-params">
+        bwt_first_occurrence_map: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>],
+        symbol_instance: <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]
+</span>) -&gt; <span class="hljs-built_in">int</span>:
+    <span class="hljs-keyword">return</span> to_first_row(bwt_first_occurrence_map, symbol_instance)
+</code></pre>
 <p>By collapsing <code>first</code> into <code>first_occurrence_map</code> and removing <code>last_to_first</code>, you're greatly reducing the amount of memory required by the algorithm.</p>
 <p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py</a> (lines 12 to 46):</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">BWTRecord</span>:
@@ -22800,8 +22808,8 @@ end_marker: ¶
 </ul>
 </div>
 <p></p>
-<p>The original backsweep testing algorithm still works with this revised data structure. The only modification you need to make is to replace usages of <code>last_to_first</code> with the on-the-fly calculation of <code>last_to_first</code> described above.</p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py</a> (lines 130 to 155):</p>
+<p>The backsweep testing algorithm still works with this revised data structure. The only modification you need to make is to replace usages of <code>last_to_first</code> with the on-the-fly calculation of <code>last_to_first</code> described above.</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py</a> (lines 140 to 165):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         bwt_first_occurrence_map: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>],
@@ -22816,7 +22824,7 @@ end_marker: ¶
             record = bwt_records[i]
             <span class="hljs-keyword">if</span> ch == record.last_ch:
                 <span class="hljs-comment"># last_to_first is now calculated on-the-fly</span>
-                last_to_first_ptr = to_first_row(
+                last_to_first_ptr = last_to_first(
                     bwt_first_occurrence_map,
                     (record.last_ch, record.last_ch_cnt)
                 )
@@ -22847,16 +22855,16 @@ test: ana
 </ul>
 <p>... to determine where the <em>a</em> symbol instances start and end in <code>first</code>.</p>
 <p><img src="svgbob_ddd9eb159de15bf45c6483e65bbff668ad99b2a5.svg" alt="Kroki diagram output"></p>
-<p>With <code>first_occurrence_map</code>, those initial scans aren't necessary anymore. The row where <em>a</em>'s symbol instances ...</p>
+<p>With <code>first_occurrence_map</code>, the first iteration's top-down and bottom-up scans aren't necessary anymore. The row where <em>a</em>'s symbol instances ...</p>
 <ul>
-<li>start is <code>first_occurrence_map['a'] = 1</code>.</li>
-<li>end is <code>first_occurrence_map['b']-1 = 5-1 = 4</code>.</li>
+<li>start in <code>first</code> is <code>first_occurrence_map['a'] = 1</code>.</li>
+<li>end in <code>first</code> is <code>first_occurrence_map['b']-1 = 5-1 = 4</code>.</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The end is referencing <em>b</em> because <em>b</em> comes after <em>a</em> in lexicographic order. So, what the above "end" calculation is doing is getting the index of the initial <em>b</em> symbol instance and subtracting it by 1, which ends up being the index of the last <em>a</em> symbol instance.</p>
 </div>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py</a> (lines 192 to 245):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_CollapsedFirst.py</a> (lines 202 to 255):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_top_bottom_range_for_first</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         bwt_first_occurrence_map: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>],
@@ -22900,7 +22908,7 @@ test: ana
             record = bwt_records[i]
             <span class="hljs-keyword">if</span> ch == record.last_ch:
                 <span class="hljs-comment"># last_to_first is now calculated on-the-fly</span>
-                last_to_first_idx = to_first_row(
+                last_to_first_idx = last_to_first(
                     bwt_first_occurrence_map,
                     (record.last_ch, record.last_ch_cnt)
                 )
@@ -23250,13 +23258,13 @@ last_tallies: {¶: 0, a: 1, b: 0, n: 2}
 <p>Building BWT using the following settings...</p>
 <pre><code>last: [u, z, ¶, b, b, b, b, a, a, a, b, b, a]
 last_tallies: 
-  - {u: 1}
-  - {u: 1, z: 1}
-  - {u: 1, z: 1, ¶: 1}
-  - {u: 1, z: 1, ¶: 1, b: 1}
-  - {u: 1, z: 1, ¶: 1, b: 2}
-  - {u: 1, z: 1, ¶: 1, b: 3}
-  - {u: 1, z: 1, ¶: 1, b: 4}
+  - {u: 1, z: 0, ¶: 0, b: 0, a: 0}
+  - {u: 1, z: 1, ¶: 0, b: 0, a: 0}
+  - {u: 1, z: 1, ¶: 1, b: 0, a: 0}
+  - {u: 1, z: 1, ¶: 1, b: 1, a: 0}
+  - {u: 1, z: 1, ¶: 1, b: 2, a: 0}
+  - {u: 1, z: 1, ¶: 1, b: 3, a: 0}
+  - {u: 1, z: 1, ¶: 1, b: 4, a: 0}
   - {u: 1, z: 1, ¶: 1, b: 4, a: 1}
   - {u: 1, z: 1, ¶: 1, b: 4, a: 2}
   - {u: 1, z: 1, ¶: 1, b: 4, a: 3}
@@ -23271,71 +23279,82 @@ symbol: b
 <p>There where 3 instances of <em>b</em> at index <em>5</em> in last.</p>
 </div>
 <p></p>
-<p>Knowing this, the backsweep algorithm can simply use the calculation described above to determine some symbol's initial and final symbol instance in <code>last</code>. For example, finding the initial and final <em>a</em> in <code>last</code> for the range between rows 8 and 12:</p>
+<p>Knowing this, the backsweep algorithm can simply use the calculation described above to determine some symbol's initial and final symbol instance in <code>last</code>. For example, finding the initial and final <em>a</em> in <code>last</code> for the range of <a href="#BM_(BWT)%2F">BWT</a> records between rows 8 and 12:</p>
 <ul>
-<li>In <code>last[8:12]</code>, the initial <em>a</em> is (a,2): <code>last_tally_before_row('a', 8) + 1 = 1+1 = 2</code></li>
-<li>In <code>last[8:12]</code>, the final <em>a</em> is (a,4):   <code>last_tally_at_row('a', 12)              = 4</code></li>
+<li><code>last</code>'s initial <em>a</em> is (a,2): <code>last_tally_before_row('a', 8) + 1 = 1+1 = 2</code></li>
+<li><code>last</code>'s final <em>a</em> is (a,4):   <code>last_tally_at_row('a', 12)              = 4</code></li>
 </ul>
-<p><img src="svgbob_5c24f7bac1bea632feea8485cd7622aa87f435e0.svg" alt="Kroki diagram output"></p>
-<p>Likewise, the backsweep algorithm can use the calculations described above to determine an isolation range's starting and ending row. For example, to isolate the <a href="#BM_(BWT)%2F">BWT</a> records such that <code>first</code> starts at (a,2) and ends at (a,4):</p>
+<p><img src="svgbob_c453e6faa6e7aff54c5a885db589b2ffac9a17d8.svg" alt="Kroki diagram output"></p>
+<p>From there, the backsweep algorithm can use the on-the-fly <code>last_to_first</code> calculation from the collapsed first algorithm to isolate the range. For example, to isolate the <a href="#BM_(BWT)%2F">BWT</a> records such that <code>first</code> starts at (a,2) and ends at (a,4):</p>
 <ul>
-<li>(a,2) is at row 2 of <code>first</code>: <code>first_occurrence_map['a'] + last_tally_before_row('a', 8)  = 1+1   = 2</code></li>
-<li>(a,4) is at row 4 of <code>first</code>: <code>first_occurrence_map['a'] + last_tally_at_row('a', 12) - 1 = 1+4-1 = 4</code></li>
+<li>(a,2) is at index 2 of <code>first</code>.</li>
+<li>(a,4) is at index 4 of <code>first</code>.</li>
 </ul>
 <p><img src="svgbob_a895146dcdf816bbd0fa0b1a83a1145805e57626.svg" alt="Kroki diagram output"></p>
-<p>The backsweep testing algorithm searching "bba" in "abbazabbabbu¶" using this new scan-less isolation logic is as follows:</p>
-<p>For the initial iteration (all rows), the rows where <code>first=a</code> ...</p>
+<p>The backsweep testing algorithm, when revised to use this new scan-less isolation logic, searches for "bba" in "abbazabbabbu¶" by first searching the entire range of <a href="#BM_(BWT)%2F">BWT</a> records for rows where <code>last='a'</code> (3rd letter of "bba").</p>
 <ul>
-<li>start is <code>first_occurrence_map['a'] + last_tally_before_row('a', 0)  = 1+0   = 1</code>.</li>
-<li>end is   <code>first_occurrence_map['a'] + last_tally_at_row('a', 12) - 1 = 1+4-1 = 4</code>.</li>
+<li>In <code>last</code>, the initial <em>a</em> is (a,1): <code>last_tally_before_row('a', 0) + 1 = 0+1 = 1</code></li>
+<li>In <code>last</code>, the final <em>a</em> is (a,4):   <code>last_tally_at_row('a', 12)              = 4</code></li>
 </ul>
+<p>The <code>last_to_first</code> of the two found <a href="#BM_(BWT)%2F">BWT</a> records are then used to find the index of (a,1) and (a,4) in <code>first</code>: index 1 and 4. Because of the properties of <code>first</code> mentioned above, it's guaranteed that all <code>first</code> entries between index 1 and 4 are for <em>a</em> symbol instances. The algorithm isolates the <a href="#BM_(BWT)%2F">BWT</a> records to this range, which is essentially just finding all <a href="#BM_(substring)%2Fi">substring</a>s of "a" in the original <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
 <p><img src="svgbob_859b9e32d744cacc878b12900598ad5fc4d368e7.svg" alt="Kroki diagram output"></p>
-<p>Similarly, for the second iteration (isolated to rows 1-4), the rows where <code>first=b</code> ...</p>
+<p>The isolated range of <a href="#BM_(BWT)%2F">BWT</a> records above are then again searched for rows where <code>last='b'</code> (2nd letter of "bba") in the exact same fashion.</p>
 <ul>
-<li>start is <code>first_occurrence_map['b'] + last_tally_before_row('b', 1) = 5+0   = 5</code>.</li>
-<li>end is   <code>first_occurrence_map['b'] + last_tally_at_row('b', 4) - 1 = 5+2-1 = 6</code>.</li>
+<li>In isolated <code>last</code>, the initial <em>b</em> is (b,1): <code>last_tally_before_row('b', 1) + 1 = 0+1 = 1</code></li>
+<li>In isolated <code>last</code>, the final <em>b</em> is (b,2):   <code>last_tally_at_row('b', 4)               = 2</code></li>
 </ul>
+<p>The <code>last_to_first</code> of the two found <a href="#BM_(BWT)%2F">BWT</a> records are then used to find the index of (b,1) and (b,2) in <code>first</code>: index 5 and 6. The algorithm isolates the <a href="#BM_(BWT)%2F">BWT</a> records to this range, which is essentially all <a href="#BM_(substring)%2Fi">substring</a>s of "ba" in the original <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
 <p><img src="svgbob_87989dfb2f9cce9f778388d7879d6847851f9922.svg" alt="Kroki diagram output"></p>
-<p>Similarly, for the third iteration (isolated to rows 5-6), the rows where <code>first=b</code> ...</p>
+<p>The isolated range of <a href="#BM_(BWT)%2F">BWT</a> records above are then again searched for rows where <code>last='b'</code> (1st letter of "bba") in the exact same fashion.</p>
 <ul>
-<li>start is <code>first_occurrence_map['b'] + last_tally_before_row('b', 5) = 5+2   = 7</code>.</li>
-<li>end is   <code>first_occurrence_map['b'] + last_tally_at_row('b', 6) - 1 = 5+4-1 = 8</code>.</li>
+<li>In isolated <code>last</code>, the initial <em>b</em> is (b,3): <code>last_tally_before_row('b', 5) + 1 = 2+1 = 3</code></li>
+<li>In isolated <code>last</code>, the final <em>b</em> is (b,4):   <code>last_tally_at_row('b', 6)               = 4</code></li>
 </ul>
+<p>The <code>last_to_first</code> of the two found <a href="#BM_(BWT)%2F">BWT</a> records are then used to find the index of (b,3) and (b,4) in <code>first</code>: index 6 and 7. The algorithm isolates the <a href="#BM_(BWT)%2F">BWT</a> records to this range, which is essentially all <a href="#BM_(substring)%2Fi">substring</a>s of "bba" in the original <a href="#BM_(sequence)%2Fi">sequence</a>. Since all elements of the test string have been processed, the search stops. There are two rows in the isolated range range at this point, meaning are two instances of "bba": (7 - 6) + 1 = 2.</p>
 <p><img src="svgbob_ddd9eb159de15bf45c6483e65bbff668ad99b2a5.svg" alt="Kroki diagram output"></p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py</a> (lines 175 to 191):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py</a> (lines 188 to 206):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         bwt_first_occurrence_map: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>],
         test: <span class="hljs-built_in">str</span>
 </span>) -&gt; <span class="hljs-built_in">int</span>:
-    top = <span class="hljs-number">0</span>
-    bottom = <span class="hljs-built_in">len</span>(bwt_records) - <span class="hljs-number">1</span>
+    top_row = <span class="hljs-number">0</span>
+    bottom_row = <span class="hljs-built_in">len</span>(bwt_records) - <span class="hljs-number">1</span>
     <span class="hljs-keyword">for</span> i, ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(<span class="hljs-built_in">list</span>(<span class="hljs-built_in">enumerate</span>(test))):
         first_row_for_ch = bwt_first_occurrence_map.get(ch, <span class="hljs-literal">None</span>)
         <span class="hljs-keyword">if</span> first_row_for_ch <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:  <span class="hljs-comment"># ch must be in first occurrence map, otherwise it's not in the original seq</span>
             <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
-        top = first_row_for_ch + last_tally_before_row(ch, top, bwt_records)
-        bottom = first_row_for_ch + last_tally_at_row(ch, bottom, bwt_records) - <span class="hljs-number">1</span>
-        <span class="hljs-keyword">if</span> top &gt; bottom:  <span class="hljs-comment"># top&gt;bottom once the scan reaches a point in the test sequence where it's not in original seq</span>
+        top_symbol_instance = ch, last_tally_before_row(ch, top_row, bwt_records) + <span class="hljs-number">1</span>
+        top_row = last_to_first(bwt_first_occurrence_map, top_symbol_instance)
+        bottom_symbol_instance = ch, last_tally_at_row(ch, bottom_row, bwt_records)
+        bottom_row = last_to_first(bwt_first_occurrence_map, bottom_symbol_instance)
+        <span class="hljs-keyword">if</span> top_row &gt; bottom_row:  <span class="hljs-comment"># top&gt;bottom once the scan reaches a point in the test sequence where it's not in original seq</span>
             <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
-    <span class="hljs-keyword">return</span> (bottom - top) + <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> (bottom_row - top_row) + <span class="hljs-number">1</span>
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
 <p>Building BWT using the following settings...</p>
-<pre><code>{
-  sequence: abbazabbabbu¶,
-  end_marker: ¶,
-  test: bba
-}
+<pre><code>first_occurrence_map: {¶: 0, a: 1, b: 5, u: 11, z: 12}
+last: [u, z, ¶, b, b, b, b, a, a, a, b, b, a]
+last_tallies: 
+  - {u: 1, z: 0, ¶: 0, b: 0, a: 0}
+  - {u: 1, z: 1, ¶: 0, b: 0, a: 0}
+  - {u: 1, z: 1, ¶: 1, b: 0, a: 0}
+  - {u: 1, z: 1, ¶: 1, b: 1, a: 0}
+  - {u: 1, z: 1, ¶: 1, b: 2, a: 0}
+  - {u: 1, z: 1, ¶: 1, b: 3, a: 0}
+  - {u: 1, z: 1, ¶: 1, b: 4, a: 0}
+  - {u: 1, z: 1, ¶: 1, b: 4, a: 1}
+  - {u: 1, z: 1, ¶: 1, b: 4, a: 2}
+  - {u: 1, z: 1, ¶: 1, b: 4, a: 3}
+  - {u: 1, z: 1, ¶: 1, b: 5, a: 3}
+  - {u: 1, z: 1, ¶: 1, b: 6, a: 3}
+  - {u: 1, z: 1, ¶: 1, b: 6, a: 4}
+test: bba
 
 </code></pre>
-<p>The following first and last columns were produced ...</p>
-<ul>
-<li>First (squashed): {'¶': 0, 'a': 1, 'b': 5, 'u': 11, 'z': 12}</li>
-<li>Last: u{u=1}, z{u=1,z=1}, ¶{u=1,z=1,¶=1}, b{u=1,z=1,¶=1,b=1}, b{u=1,z=1,¶=1,b=2}, b{u=1,z=1,¶=1,b=3}, b{u=1,z=1,¶=1,b=4}, a{u=1,z=1,¶=1,b=4,a=1}, a{u=1,z=1,¶=1,b=4,a=2}, a{u=1,z=1,¶=1,b=4,a=3}, b{u=1,z=1,¶=1,b=5,a=3}, b{u=1,z=1,¶=1,b=6,a=3}, a{u=1,z=1,¶=1,b=6,a=4}</li>
-</ul>
-<p><em>bba</em> found in <em>abbazabbabbu¶</em> 2 times.</p>
+<p><em>bba</em> found 2 times.</p>
 </div>
 <p></p>
 <a name="H_Checkpointed%20Ranks%20Algorithm"></a><h4>Checkpointed Ranks Algorithm</h4>
@@ -23360,7 +23379,7 @@ symbol: b
 <li><a href="#BM_(BWT)%2F">BWT</a> records: The table comprised of columns <code>last</code> and <code>last_tallies</code> (updated in ranks algorithm).</li>
 </ul>
 </div>
-<p>The ranks algorithm's replacement of <code>last</code> with <code>last_tallies</code> increases memory usage but it also allows for a concept known as checkpointing: Instead of retaining a value at every index of <code>last_tallies</code>, leave some empty. The entries that have a value are called checkpoints.</p>
+<p>The ranks algorithm's replacement of <code>last</code>'s symbol instance counts with <code>last_tallies</code> increases memory usage but it also allows for a concept known as checkpointing: Instead of retaining a value at every index of <code>last_tallies</code>, leave some empty. The entries that have a value are called checkpoints.</p>
 <table>
 <tbody><tr><th>records</th><th>first_occurrence_map</th></tr>
 <tr><td>
@@ -23450,18 +23469,16 @@ symbol: b
 <div style="border:1px solid black;">
 <p></p>
 <p>Building BWT using the following settings...</p>
-<pre><code>{
-  sequence: banana¶,
-  end_marker: ¶,
-  last_tallies_checkpoint_n: 3
-}
+<pre><code>sequence: banana¶
+end_marker: ¶
+last_tallies_checkpoint_n: 3
 
 </code></pre>
 <p>The following last column and squashed first mapping were produced ...</p>
 <ul>
 <li>First (squashed): {'¶': 0, 'a': 1, 'b': 4, 'n': 5}</li>
 <li>Last: ['a', 'n', 'n', 'b', '¶', 'a', 'a']</li>
-<li>Last tallies checkpoints: {0: {a=1}, 3: {a=1,n=2,b=1}, 6: {a=3,n=2,b=1,¶=1}}</li>
+<li>Last Tallies Checkpoints: {0: {'a': 1}, 3: {'a': 1, 'n': 2, 'b': 1}, 6: {'a': 3, 'n': 2, 'b': 1, '¶': 1}}</li>
 </ul>
 </div>
 <p></p>
@@ -23471,7 +23488,7 @@ symbol: b
 <li>add symbol in <code>last[4]</code> to the tally: {¶: 1, a: 1},</li>
 <li>add <code>last_tallies[3]</code> to the tally from the last step: {¶: 0, a: 1, b: 1, n: 2} + {¶: 1, a: 1} = {¶: 1, a: 2, b: 1, n: 2}.</li>
 </ol>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 92 to 103):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 88 to 99):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk_tallies_to_checkpoint</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         bwt_last_tallies_checkpoints: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, Counter[<span class="hljs-built_in">str</span>]],
@@ -23487,19 +23504,16 @@ symbol: b
 <div style="border:1px solid black;">
 <p></p>
 <p>Building BWT using the following settings...</p>
-<pre><code>sequence: banana¶
-end_marker: ¶
-last_tallies_checkpoint_n: 3
+<pre><code>first_occurrence_map: {¶: 0, a: 1, b: 4, n: 5}
+last: [a, n, n, b, ¶, a, a]
+last_tallies_checkpoints: 
+  0: {a: 1, n: 0, b: 0, ¶: 0}
+  3: {a: 1, n: 2, b: 1, ¶: 0}
+  6: {a: 3, n: 2, b: 1, ¶: 1}
 index: 5
 
 </code></pre>
-<p>The following last column and squashed first mapping were produced ...</p>
-<ul>
-<li>First (squashed): {'¶': 0, 'a': 1, 'b': 4, 'n': 5}</li>
-<li>Last: ['a', 'n', 'n', 'b', '¶', 'a', 'a']</li>
-<li>Last tallies checkpoints: {0: {a=1}, 3: {a=1,n=2,b=1}, 6: {a=3,n=2,b=1,¶=1}}</li>
-</ul>
-<p>The tally at index 5 is calculated as {a=2,¶=1,n=2,b=1}</p>
+<p>The tally at index 5 is calculated as &lt;built-in method items of Counter object at 0x7f039f577100&gt;</p>
 </div>
 <p></p>
 <p>Determining the value of <code>last_tallies</code> can be further optimized by only focusing on the symbol of interest. For example, at index 5, <code>last[5]</code> is <em>a</em>. When the value for <code>last_tallies[5]</code> is computed, it's only being used to determine the symbol instance count of that <em>a</em> at <code>last[5]</code>. As such, only <em>a</em>s need to be tallied until reaching a checkpoint...</p>
@@ -23508,7 +23522,7 @@ index: 5
 <li>increment count if <code>last[4] == 'a'</code> (false): 1,</li>
 <li>add <code>last_tallies[3]['a']</code> to the count from the last step: 1+1=2.</li>
 </ol>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 151 to 164):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 137 to 150):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">single_tally_to_checkpoint</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         bwt_last_tallies_checkpoints: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, Counter[<span class="hljs-built_in">str</span>]],
@@ -23526,40 +23540,21 @@ index: 5
 <div style="border:1px solid black;">
 <p></p>
 <p>Building BWT using the following settings...</p>
-<pre><code>sequence: banana¶
-end_marker: ¶
-last_tallies_checkpoint_n: 3
+<pre><code>first_occurrence_map: {¶: 0, a: 1, b: 4, n: 5}
+last: [a, n, n, b, ¶, a, a]
+last_tallies_checkpoints: 
+  0: {a: 1, n: 0, b: 0, ¶: 0}
+  3: {a: 1, n: 2, b: 1, ¶: 0}
+  6: {a: 3, n: 2, b: 1, ¶: 1}
 index: 5
 
 </code></pre>
-<p>The following last column and squashed first mapping were produced ...</p>
-<ul>
-<li>First (squashed): {'¶': 0, 'a': 1, 'b': 4, 'n': 5}</li>
-<li>Last: ['a', 'n', 'n', 'b', '¶', 'a', 'a']</li>
-<li>Last tallies checkpoints: {0: {a=1}, 3: {a=1,n=2,b=1}, 6: {a=3,n=2,b=1,¶=1}}</li>
-</ul>
 <p>The tally for character a at index 5 is calculated as 2</p>
 </div>
 <p></p>
 <p>Testing for a <a href="#BM_(substring)%2Fi">substring</a> works just as it did with the collapsed first algorithm, except that the symbol instance count for some index in <code>last</code> needs to be determined from <code>last_tallies</code> checkpoints. The idea is to make the gaps between <code>last_tallies</code> checkpoints wide enough that it gives memory savings compared to keeping the symbol instance counts in <code>last</code>, but at the same time short enough that the time to compute the missing gap values is still negligible. For example, since there are only 4 possible symbols with a DNA <a href="#BM_(sequence)%2Fi">sequence</a> (A, C, G, and T), the gaps in <code>last_tallies</code> don't have to get too wide before seeing memory savings.</p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 213 to 269):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_last_symbol_instance_count</span>(<span class="hljs-params">
-        bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
-        bwt_last_tallies_checkpoints: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, Counter[<span class="hljs-built_in">str</span>]],
-        row: <span class="hljs-built_in">int</span>
-</span>) -&gt; <span class="hljs-built_in">int</span>:
-    <span class="hljs-keyword">return</span> single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, row, bwt_records[row].last_ch)
-
-
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_first_index</span>(<span class="hljs-params">
-        bwt_first_occurrence_map: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>],
-        symbol_instance: <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>]
-</span>) -&gt; <span class="hljs-built_in">int</span>:
-    symbol, symbol_count = symbol_instance
-    <span class="hljs-keyword">return</span> bwt_first_occurrence_map[symbol] + symbol_count - <span class="hljs-number">1</span>
-
-
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">last_tally_before_row</span>(<span class="hljs-params">
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 211 to 253):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">last_tally_before_row</span>(<span class="hljs-params">
         symbol: <span class="hljs-built_in">str</span>,
         row: <span class="hljs-built_in">int</span>,
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
@@ -23588,34 +23583,33 @@ index: 5
         bwt_last_tallies_checkpoints: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, Counter[<span class="hljs-built_in">str</span>]],
         test: <span class="hljs-built_in">str</span>
 </span>) -&gt; <span class="hljs-built_in">int</span>:
-    top = <span class="hljs-number">0</span>
-    bottom = <span class="hljs-built_in">len</span>(bwt_records) - <span class="hljs-number">1</span>
+    top_row = <span class="hljs-number">0</span>
+    bottom_row = <span class="hljs-built_in">len</span>(bwt_records) - <span class="hljs-number">1</span>
     <span class="hljs-keyword">for</span> i, ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(<span class="hljs-built_in">list</span>(<span class="hljs-built_in">enumerate</span>(test))):
         first_row_for_ch = bwt_first_occurrence_map.get(ch, <span class="hljs-literal">None</span>)
         <span class="hljs-keyword">if</span> first_row_for_ch <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:  <span class="hljs-comment"># ch must be in first occurrence map, otherwise it's not in the original seq</span>
             <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
-        top = first_row_for_ch + last_tally_before_row(ch, top, bwt_records, bwt_last_tallies_checkpoints)
-        bottom = first_row_for_ch + last_tally_at_row(ch, bottom, bwt_records, bwt_last_tallies_checkpoints) - <span class="hljs-number">1</span>
-        <span class="hljs-keyword">if</span> top &gt; bottom:  <span class="hljs-comment"># top&gt;bottom once the scan reaches a point in the test sequence where it's not in original seq</span>
+        top_symbol_instance = ch, last_tally_before_row(ch, top_row, bwt_records, bwt_last_tallies_checkpoints) + <span class="hljs-number">1</span>
+        top_row = last_to_first(bwt_first_occurrence_map, top_symbol_instance)
+        bottom_symbol_instance = ch, last_tally_at_row(ch, bottom_row, bwt_records, bwt_last_tallies_checkpoints)
+        bottom_row = last_to_first(bwt_first_occurrence_map, bottom_symbol_instance)
+        <span class="hljs-keyword">if</span> top_row &gt; bottom_row:  <span class="hljs-comment"># top&gt;bottom once the scan reaches a point in the test sequence where it's not in original seq</span>
             <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
-    <span class="hljs-keyword">return</span> (bottom - top) + <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> (bottom_row - top_row) + <span class="hljs-number">1</span>
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
 <p>Building BWT using the following settings...</p>
-<pre><code>sequence: banana¶
-end_marker: ¶
-last_tallies_checkpoint_n: 3
+<pre><code>first_occurrence_map: {¶: 0, a: 1, b: 4, n: 5}
+last: [a, n, n, b, ¶, a, a]
+last_tallies_checkpoints: 
+  0: {a: 1, n: 0, b: 0, ¶: 0}
+  3: {a: 1, n: 2, b: 1, ¶: 0}
+  6: {a: 3, n: 2, b: 1, ¶: 1}
 test: ana
 
 </code></pre>
-<p>The following first and last columns were produced ...</p>
-<ul>
-<li>First (squashed): {'¶': 0, 'a': 1, 'b': 4, 'n': 5}</li>
-<li>Last: ['a', 'n', 'n', 'b', '¶', 'a', 'a']</li>
-<li>Last tallies checkpoints: {0: {a=1}, 3: {a=1,n=2,b=1}, 6: {a=3,n=2,b=1,¶=1}}</li>
-</ul>
-<p><em>ana</em> found in <em>banana¶</em> 2 times.</p>
+<p><em>ana</em> found 2 times.</p>
 </div>
 <p></p>
 <a name="H_Checkpointed%20Algorithm"></a><h4>Checkpointed Algorithm</h4>
@@ -23760,17 +23754,17 @@ first_indexes_checkpoint_n: 3
 </ul>
 </div>
 <p></p>
-<p>The checkpointed indexes algorithm requires <code>last_to_first</code> when walking back to a checkpointed <code>first_indexes</code> value. <code>last_to_first</code> doesn't exist in the checkpointed ranks algorithm: In the checkpointed ranks algorithm, all <code>last_to_first</code> values have been replaced with a function that computes a <code>last_to_first</code> value from <code>last_tallies</code> checkpoints. As such, this algorithm, when walking back to a checkpointed <code>first_indexes</code>, uses that function to determine what a <code>last_to_first</code> value should be for some row.</p>
+<p>The checkpointed indexes algorithm requires <code>last_to_first</code> when walking back to a checkpointed <code>first_indexes</code> value. <code>last_to_first</code> doesn't exist in the checkpointed ranks algorithm: In the checkpointed ranks algorithm, all <code>last_to_first</code> values have been replaced with a function that computes <code>last_to_first</code> on-the-fly. As such, this algorithm, when walking back to a checkpointed <code>first_indexes</code>, uses that function to determine what a <code>last_to_first</code> value should be for some row.</p>
 <p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py</a> (lines 134 to 165):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk_back_until_first_index_checkpoint</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         bwt_first_indexes_checkpoints: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>],
         bwt_first_occurrence_map: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>],
         bwt_last_tallies_checkpoints: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, Counter[<span class="hljs-built_in">str</span>]],
-        index: <span class="hljs-built_in">int</span>
+        row: <span class="hljs-built_in">int</span>
 </span>) -&gt; <span class="hljs-built_in">int</span>:
     walk_cnt = <span class="hljs-number">0</span>
-    <span class="hljs-keyword">while</span> index <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> bwt_first_indexes_checkpoints:
+    <span class="hljs-keyword">while</span> row <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> bwt_first_indexes_checkpoints:
         <span class="hljs-comment"># ORIGINAL CODE</span>
         <span class="hljs-comment"># -------------</span>
         <span class="hljs-comment"># index = bwt_records[index].last_to_first_ptr</span>
@@ -23782,11 +23776,11 @@ first_indexes_checkpoint_n: 3
         <span class="hljs-comment"># from the ranked checkpoint algorithm. First it derives the symbol instance count</span>
         <span class="hljs-comment"># for bwt_record[index] using ranked checkpoints, then it converts that to the</span>
         <span class="hljs-comment"># "last_to_first_ptr" value via to_first_index().</span>
-        last_ch = bwt_records[index].last_ch
-        last_ch_cnt = to_last_symbol_instance_count(bwt_records, bwt_last_tallies_checkpoints, index)
-        index = to_first_row(bwt_first_occurrence_map, (last_ch, last_ch_cnt))
+        last_ch = bwt_records[row].last_ch
+        last_ch_cnt = to_last_symbol_instance_count(bwt_records, bwt_last_tallies_checkpoints, row)
+        row = last_to_first(bwt_first_occurrence_map, (last_ch, last_ch_cnt))
         walk_cnt += <span class="hljs-number">1</span>
-    first_idx = bwt_first_indexes_checkpoints[index] + walk_cnt
+    first_idx = bwt_first_indexes_checkpoints[row] + walk_cnt
     <span class="hljs-comment"># It's possible that the walk back continues backward before the start of the sequence, resulting</span>
     <span class="hljs-comment"># in it looping to the end and continuing to walk back from there. If that happens, the code below</span>
     <span class="hljs-comment"># adjusts it.</span>
@@ -23816,7 +23810,7 @@ from_index: 5
 </div>
 <p></p>
 <p>The testing process for this algorithm is the same as that for the checkpointed ranks algorithm, but modified to use the above function to determine where each <a href="#BM_(substring)%2Fi">substring</a> occurrence is in the original <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py</a> (lines 259 to 311):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py</a> (lines 266 to 320):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">last_tally_before_row</span>(<span class="hljs-params">
         symbol: <span class="hljs-built_in">str</span>,
         row: <span class="hljs-built_in">int</span>,
@@ -23847,19 +23841,21 @@ from_index: 5
         bwt_last_tallies_checkpoints: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, Counter[<span class="hljs-built_in">str</span>]],
         test: <span class="hljs-built_in">str</span>
 </span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]:
-    top = <span class="hljs-number">0</span>
-    bottom = <span class="hljs-built_in">len</span>(bwt_records) - <span class="hljs-number">1</span>
+    top_row = <span class="hljs-number">0</span>
+    bottom_row = <span class="hljs-built_in">len</span>(bwt_records) - <span class="hljs-number">1</span>
     <span class="hljs-keyword">for</span> i, ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(<span class="hljs-built_in">list</span>(<span class="hljs-built_in">enumerate</span>(test))):
         first_row_for_ch = bwt_first_occurrence_map.get(ch, <span class="hljs-literal">None</span>)
         <span class="hljs-keyword">if</span> first_row_for_ch <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:  <span class="hljs-comment"># ch must be in first occurrence map, otherwise it's not in the original seq</span>
             <span class="hljs-keyword">return</span> []
-        top = first_row_for_ch + last_tally_before_row(ch, top, bwt_records, bwt_last_tallies_checkpoints)
-        bottom = first_row_for_ch + last_tally_at_row(ch, bottom, bwt_records, bwt_last_tallies_checkpoints) - <span class="hljs-number">1</span>
-        <span class="hljs-keyword">if</span> top &gt; bottom:  <span class="hljs-comment"># top&gt;bottom once the scan reaches a point in the test sequence where it's not in original seq</span>
+        top_symbol_instance = ch, last_tally_before_row(ch, top_row, bwt_records, bwt_last_tallies_checkpoints) + <span class="hljs-number">1</span>
+        top_row = last_to_first(bwt_first_occurrence_map, top_symbol_instance)
+        bottom_symbol_instance = ch, last_tally_at_row(ch, bottom_row, bwt_records, bwt_last_tallies_checkpoints)
+        bottom_row = last_to_first(bwt_first_occurrence_map, bottom_symbol_instance)
+        <span class="hljs-keyword">if</span> top_row &gt; bottom_row:  <span class="hljs-comment"># top&gt;bottom once the scan reaches a point in the test sequence where it's not in original seq</span>
             <span class="hljs-keyword">return</span> []
     <span class="hljs-comment"># Find first_index for each entry in between top and bottom</span>
     first_idxes = []
-    <span class="hljs-keyword">for</span> index <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(top, bottom + <span class="hljs-number">1</span>):
+    <span class="hljs-keyword">for</span> index <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(top_row, bottom_row + <span class="hljs-number">1</span>):
         first_idx = walk_back_until_first_index_checkpoint(
             bwt_records,
             bwt_first_indexes_checkpoints,
@@ -23891,7 +23887,7 @@ test: ana
 </div>
 <p></p>
 <p>This algorithm can be extended to support mismatches by searching for the seeds of some <a href="#BM_(substring)%2Fi">substring</a>. The algorithm returns the indexes within the original <a href="#BM_(sequence)%2Fi">sequence</a> where a seed is, at which point seed extension is applied and the relevant segment of the original <a href="#BM_(sequence)%2Fi">sequence</a> is extracted and tested to see if its within the mismatch limit.</p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py</a> (lines 364 to 500):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py</a> (lines 373 to 509):</p>
 <pre class="hljs"><code><span class="hljs-comment"># This function has two ways of extracting out the segment of the original sequence to use for a mismatch test:</span>
 <span class="hljs-comment">#</span>
 <span class="hljs-comment">#  1. pull it out from the original sequence directly (a copy of it is in this func)</span>
@@ -24005,7 +24001,7 @@ test: ana
         <span class="hljs-comment"># PREVIOUS CODE</span>
         <span class="hljs-comment"># -------------</span>
         <span class="hljs-comment"># ret += bwt_records[index].last_ch</span>
-        <span class="hljs-comment"># index = bwt_records[index].last_to_first_idx</span>
+        <span class="hljs-comment"># index = bwt_records[index].last_to_first_ptr</span>
         <span class="hljs-comment"># count -= 1</span>
         <span class="hljs-comment">#</span>
         <span class="hljs-comment"># UPDATED CODE</span>
@@ -24013,7 +24009,7 @@ test: ana
         ret += bwt_records[row].last_ch
         last_ch = bwt_records[row].last_ch
         last_ch_cnt = to_last_symbol_instance_count(bwt_records, bwt_last_tallies_checkpoints, row)
-        row = to_first_row(bwt_first_occurrence_map, (last_ch, last_ch_cnt))
+        row = last_to_first(bwt_first_occurrence_map, (last_ch, last_ch_cnt))
         count -= <span class="hljs-number">1</span>
     ret = ret[::-<span class="hljs-number">1</span>]  <span class="hljs-comment"># reverse ret</span>
     <span class="hljs-keyword">return</span> ret
@@ -24041,7 +24037,7 @@ last_tallies_checkpoint_n: 3
 first_indexes_checkpoint_n: 3
 
 </code></pre>
-<p>Searching <code>{'ankle', 'anana', 'banana'}</code> revealed the following was found:</p>
+<p>Searching <code>{'banana', 'anana', 'ankle'}</code> revealed the following was found:</p>
 <ul>
 <li>Matched <code>banana</code> against <code>banana</code> with distance of 0 at index 0</li>
 <li>Matched <code>anana</code> against <code>anana</code> with distance of 0 at index 1</li>
@@ -24224,9 +24220,9 @@ scoring_matrix: |+2
 <p>Scanning the database for 2-mers in MKDSDQDNTLLHIFQENPGQFLSGEEISRRLSISRAAVWKQINKLRNLGYEFEAIPRMGYRMTDVPDTLSMDTLTAGMMTREYFGKPLILLDKTTSTQEDARQLAEEGASEGTLVISEEQTGGRGRMGKKFYSPRGKGIWMSLVLRPKQPLHLTQQLTLLTGVAVCRAIAKCTGVQTDIKWPNDILFRGKKVCGILLESATEDERVRYCIAGIGISANLKESDFPEDLRSVATSIRMAGGTAVNRTELIQSIMAEMEGLYQLYNEQGFKPIASLWEALSGSVGREVHVQTARERFSGMATGLNRDGALLVRNQAGELIPVYSGDIFFDTR...</p>
 <ul>
 <li>
-<p>k=48 / score=126.0</p>
-<pre><code>Query k-mer: LVISEEQTGGRGRMGKKFYSPRGKGIWMSLVLRPKQPLHLTQQLTLLT @ 113
-DB k-mer:    LILSDEQTEGRGRFNRNWSSSKGKGLWMSLVLRPNVPFAMIPKFNLFI @ 109 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+<p>k=22 / score=68.0</p>
+<pre><code>Query k-mer: IKWPNDILFRGKKVCGILLESA @ 178
+DB k-mer:    AIKWPNDIYIGKKKICGFLTEM @ 173 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
 </code></pre>
 </li>
 <li>
@@ -24236,15 +24232,15 @@ DB k-mer:    SSKGKGLWMSLVLRPN @ 128 ['&gt;VTR16721.1 biotin ligase [Staphylococc
 </code></pre>
 </li>
 <li>
-<p>k=14 / score=65.0</p>
-<pre><code>Query k-mer: RGKGIWMSLVLRPK @ 134
-DB k-mer:    KGKGLWMSLVLRPN @ 130 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+<p>k=46 / score=119.0</p>
+<pre><code>Query k-mer: QLAEEGASEGTLVISEEQTGGRGRMGKKFYSPRGKGIWMSLVLRPK @ 102
+DB k-mer:    KKALVGNKSSFLILSDEQTEGRGRFNRNWSSSKGKGLWMSLVLRPN @ 98 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
 </code></pre>
 </li>
 <li>
-<p>k=24 / score=76.0</p>
-<pre><code>Query k-mer: IKWPNDILFRGKKVCGILLESATE @ 178
-DB k-mer:    IKWPNDIYIGKKKICGFLTEMVAN @ 174 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+<p>k=48 / score=126.0</p>
+<pre><code>Query k-mer: LVISEEQTGGRGRMGKKFYSPRGKGIWMSLVLRPKQPLHLTQQLTLLT @ 113
+DB k-mer:    LILSDEQTEGRGRFNRNWSSSKGKGLWMSLVLRPNVPFAMIPKFNLFI @ 109 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
 </code></pre>
 </li>
 <li>
@@ -24260,21 +24256,21 @@ DB k-mer:    GRGRFNRNWSSSKGKGLWMSLVLRPNVP @ 118 ['&gt;VTR16721.1 biotin ligase [
 </code></pre>
 </li>
 <li>
-<p>k=46 / score=119.0</p>
-<pre><code>Query k-mer: QLAEEGASEGTLVISEEQTGGRGRMGKKFYSPRGKGIWMSLVLRPK @ 102
-DB k-mer:    KKALVGNKSSFLILSDEQTEGRGRFNRNWSSSKGKGLWMSLVLRPN @ 98 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
-</code></pre>
-</li>
-<li>
-<p>k=22 / score=68.0</p>
-<pre><code>Query k-mer: IKWPNDILFRGKKVCGILLESA @ 178
-DB k-mer:    AIKWPNDIYIGKKKICGFLTEM @ 173 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
-</code></pre>
-</li>
-<li>
 <p>k=18 / score=67.0</p>
 <pre><code>Query k-mer: FYSPRGKGIWMSLVLRPK @ 130
 DB k-mer:    WSSSKGKGLWMSLVLRPN @ 126 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+</code></pre>
+</li>
+<li>
+<p>k=24 / score=70.0</p>
+<pre><code>Query k-mer: TGVQTDIKWPNDILFRGKKVCGIL @ 172
+DB k-mer:    SNDRVAIKWPNDIYIGKKKICGFL @ 168 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+</code></pre>
+</li>
+<li>
+<p>k=24 / score=76.0</p>
+<pre><code>Query k-mer: IKWPNDILFRGKKVCGILLESATE @ 178
+DB k-mer:    IKWPNDIYIGKKKICGFLTEMVAN @ 174 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
 </code></pre>
 </li>
 <li>
@@ -24284,9 +24280,9 @@ DB k-mer:    SSKGKGLWMSLVLRPNVPFAMIPKFNLF @ 128 ['&gt;VTR16721.1 biotin ligase [
 </code></pre>
 </li>
 <li>
-<p>k=24 / score=70.0</p>
-<pre><code>Query k-mer: TGVQTDIKWPNDILFRGKKVCGIL @ 172
-DB k-mer:    SNDRVAIKWPNDIYIGKKKICGFL @ 168 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+<p>k=14 / score=65.0</p>
+<pre><code>Query k-mer: RGKGIWMSLVLRPK @ 134
+DB k-mer:    KGKGLWMSLVLRPN @ 130 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
 </code></pre>
 </li>
 </ul>

@@ -90,6 +90,16 @@ def to_first_row(
 # MARKDOWN_FIRST_INDEX
 
 
+# MARKDOWN_LAST_TO_FIRST
+# This is just a wrapper for to_first_row(). It's here for clarity.
+def last_to_first(
+        bwt_first_occurrence_map: dict[str, int],
+        symbol_instance: tuple[str, int]
+) -> int:
+    return to_first_row(bwt_first_occurrence_map, symbol_instance)
+# MARKDOWN_LAST_TO_FIRST
+
+
 def main_first_index():
     print("<div style=\"border:1px solid black;\">", end="\n\n")
     print("`{bm-disable-all}`", end="\n\n")
@@ -141,7 +151,7 @@ def find(
             record = bwt_records[i]
             if ch == record.last_ch:
                 # last_to_first is now calculated on-the-fly
-                last_to_first_ptr = to_first_row(
+                last_to_first_ptr = last_to_first(
                     bwt_first_occurrence_map,
                     (record.last_ch, record.last_ch_cnt)
                 )
@@ -232,7 +242,7 @@ def find_optimized(
             record = bwt_records[i]
             if ch == record.last_ch:
                 # last_to_first is now calculated on-the-fly
-                last_to_first_idx = to_first_row(
+                last_to_first_idx = last_to_first(
                     bwt_first_occurrence_map,
                     (record.last_ch, record.last_ch_cnt)
                 )

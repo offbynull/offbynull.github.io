@@ -69,12 +69,8 @@ def main_build():
         print()
         print(f' * First (squashed): {bwt_first_occurrence_map}')
         print(f' * Last: {[r.last_ch for r in bwt_records]}')
-        r_strs = []
-        for row, last_tallies in bwt_last_tallies_checkpoints.items():
-            tallies_str = ','.join(f"{k}={v}" for k, v in last_tallies.items())
-            r_str = f'{row}: {{{tallies_str}}}'
-            r_strs.append(r_str)
-        print(f' * Last tallies checkpoints: {{{", ".join(r_strs)}}}')
+        bwt_last_tallies_checkpoints = {k: dict(v) for k, v in bwt_last_tallies_checkpoints.items()}
+        print(f' * Last Tallies Checkpoints: {bwt_last_tallies_checkpoints}')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
@@ -109,9 +105,8 @@ def main_walk_tallies_to_checkpoint():
     try:
         data_raw = ''.join(stdin.readlines())
         data: dict = yaml.safe_load(data_raw)
-        seq = data['sequence']
-        end_marker = data['end_marker']
-        last_tallies_checkpoint_n = data['last_tallies_checkpoint_n']
+        last = data['last']
+        last_tallies_checkpoints = data['last_tallies_checkpoints']
         index = data['index']
         print(f'Building BWT using the following settings...')
         print()
@@ -119,21 +114,12 @@ def main_walk_tallies_to_checkpoint():
         print(data_raw)
         print('```')
         print()
-        bwt_records, bwt_first_occurrence_map, bwt_last_tallies_checkpoints = to_bwt_ranked_checkpointed(seq, end_marker, last_tallies_checkpoint_n)
-        print()
-        print(f'The following last column and squashed first mapping were produced ...')
-        print()
-        print(f' * First (squashed): {bwt_first_occurrence_map}')
-        print(f' * Last: {[r.last_ch for r in bwt_records]}')
-        r_strs = []
-        for row, tallies in bwt_last_tallies_checkpoints.items():
-            tallies_str = ','.join(f"{k}={v}" for k, v in tallies.items())
-            r_str = f'{row}: {{{tallies_str}}}'
-            r_strs.append(r_str)
-        print(f' * Last tallies checkpoints: {{{", ".join(r_strs)}}}')
-        print()
-        tally = walk_tallies_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, index)
-        print(f'The tally at index {index} is calculated as {{{",".join(f"{k}={v}" for k, v in tally.items())}}}')
+        last_tallies_checkpoints = {k: Counter(v) for k, v in last_tallies_checkpoints.items()}
+        bwt_records = []
+        for last_ch in last:
+            bwt_records.append(BWTRecord(last_ch))
+        tally = walk_tallies_to_checkpoint(bwt_records, last_tallies_checkpoints, index)
+        print(f'The tally at index {index} is calculated as {tally.items}')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
@@ -170,9 +156,8 @@ def main_single_tally_to_checkpoint():
     try:
         data_raw = ''.join(stdin.readlines())
         data: dict = yaml.safe_load(data_raw)
-        seq = data['sequence']
-        end_marker = data['end_marker']
-        last_tallies_checkpoint_n = data['last_tallies_checkpoint_n']
+        last = data['last']
+        last_tallies_checkpoints = data['last_tallies_checkpoints']
         index = data['index']
         print(f'Building BWT using the following settings...')
         print()
@@ -180,20 +165,11 @@ def main_single_tally_to_checkpoint():
         print(data_raw)
         print('```')
         print()
-        bwt_records, bwt_first_occurrence_map, bwt_last_tallies_checkpoints = to_bwt_ranked_checkpointed(seq, end_marker, last_tallies_checkpoint_n)
-        print()
-        print(f'The following last column and squashed first mapping were produced ...')
-        print()
-        print(f' * First (squashed): {bwt_first_occurrence_map}')
-        print(f' * Last: {[r.last_ch for r in bwt_records]}')
-        r_strs = []
-        for row, tallies in bwt_last_tallies_checkpoints.items():
-            tallies_str = ','.join(f"{k}={v}" for k, v in tallies.items())
-            r_str = f'{row}: {{{tallies_str}}}'
-            r_strs.append(r_str)
-        print(f' * Last tallies checkpoints: {{{", ".join(r_strs)}}}')
-        print()
-        tally = single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, index, bwt_records[index].last_ch)
+        last_tallies_checkpoints = {k: Counter(v) for k, v in last_tallies_checkpoints.items()}
+        bwt_records = []
+        for last_ch in last:
+            bwt_records.append(BWTRecord(last_ch))
+        tally = single_tally_to_checkpoint(bwt_records, last_tallies_checkpoints, index, bwt_records[index].last_ch)
         print(f'The tally for character {bwt_records[index].last_ch} at index {index} is calculated as {tally}')
     finally:
         print("</div>", end="\n\n")
@@ -209,16 +185,7 @@ def main_single_tally_to_checkpoint():
 
 
 
-# MARKDOWN_TEST
-def to_last_symbol_instance_count(
-        bwt_records: list[BWTRecord],
-        bwt_last_tallies_checkpoints: dict[int, Counter[str]],
-        row: int
-) -> int:
-    return single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, row, bwt_records[row].last_ch)
-
-
-def to_first_index(
+def to_first_row(
         bwt_first_occurrence_map: dict[str, int],
         symbol_instance: tuple[str, int]
 ) -> int:
@@ -226,6 +193,21 @@ def to_first_index(
     return bwt_first_occurrence_map[symbol] + symbol_count - 1
 
 
+def last_to_first(
+        bwt_first_occurrence_map: dict[str, int],
+        symbol_instance: tuple[str, int]
+) -> int:
+    return to_first_row(bwt_first_occurrence_map, symbol_instance)
+
+
+def to_last_symbol_instance_count(
+        bwt_records: list[BWTRecord],
+        bwt_last_tallies_checkpoints: dict[int, Counter[str]],
+        row: int
+) -> int:
+    return single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, row, bwt_records[row].last_ch)
+
+# MARKDOWN_TEST
 def last_tally_before_row(
         symbol: str,
         row: int,
@@ -255,17 +237,19 @@ def find(
         bwt_last_tallies_checkpoints: dict[int, Counter[str]],
         test: str
 ) -> int:
-    top = 0
-    bottom = len(bwt_records) - 1
+    top_row = 0
+    bottom_row = len(bwt_records) - 1
     for i, ch in reversed(list(enumerate(test))):
         first_row_for_ch = bwt_first_occurrence_map.get(ch, None)
         if first_row_for_ch is None:  # ch must be in first occurrence map, otherwise it's not in the original seq
             return 0
-        top = first_row_for_ch + last_tally_before_row(ch, top, bwt_records, bwt_last_tallies_checkpoints)
-        bottom = first_row_for_ch + last_tally_at_row(ch, bottom, bwt_records, bwt_last_tallies_checkpoints) - 1
-        if top > bottom:  # top>bottom once the scan reaches a point in the test sequence where it's not in original seq
+        top_symbol_instance = ch, last_tally_before_row(ch, top_row, bwt_records, bwt_last_tallies_checkpoints) + 1
+        top_row = last_to_first(bwt_first_occurrence_map, top_symbol_instance)
+        bottom_symbol_instance = ch, last_tally_at_row(ch, bottom_row, bwt_records, bwt_last_tallies_checkpoints)
+        bottom_row = last_to_first(bwt_first_occurrence_map, bottom_symbol_instance)
+        if top_row > bottom_row:  # top>bottom once the scan reaches a point in the test sequence where it's not in original seq
             return 0
-    return (bottom - top) + 1
+    return (bottom_row - top_row) + 1
 # MARKDOWN_TEST
 
 
@@ -276,31 +260,22 @@ def main_test():
         data_raw = ''.join(stdin.readlines())
         data: dict = yaml.safe_load(data_raw)
         test = data['test']
-        seq = data['sequence']
-        end_marker = data['end_marker']
-        last_tallies_checkpoint_n = data['last_tallies_checkpoint_n']
+        first_occurrence_map = data['first_occurrence_map']
+        last = data['last']
+        last_tallies_checkpoints = data['last_tallies_checkpoints']
         print(f'Building BWT using the following settings...')
         print()
         print('```')
         print(data_raw)
         print('```')
         print()
-        bwt_records, bwt_first_occurrence_map, bwt_last_tallies_checkpoints = to_bwt_ranked_checkpointed(seq, end_marker, last_tallies_checkpoint_n)
+        last_tallies_checkpoints = {k: Counter(v) for k, v in last_tallies_checkpoints.items()}
+        bwt_records = []
+        for last_ch in last:
+            bwt_records.append(BWTRecord(last_ch))
+        found_cnt = find(bwt_records, first_occurrence_map, last_tallies_checkpoints, test)
         print()
-        print(f'The following first and last columns were produced ...')
-        print()
-        print(f' * First (squashed): {bwt_first_occurrence_map}')
-        print(f' * Last: {[r.last_ch for r in bwt_records]}')
-        r_strs = []
-        for row, tallies in bwt_last_tallies_checkpoints.items():
-            tallies_str = ','.join(f"{k}={v}" for k, v in tallies.items())
-            r_str = f'{row}: {{{tallies_str}}}'
-            r_strs.append(r_str)
-        print(f' * Last tallies checkpoints: {{{", ".join(r_strs)}}}')
-        print()
-        found_cnt = find(bwt_records, bwt_first_occurrence_map, bwt_last_tallies_checkpoints, test)
-        print()
-        print(f'*{test}* found in *{seq}* {found_cnt} times.')
+        print(f'*{test}* found {found_cnt} times.')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
@@ -313,4 +288,4 @@ def main_test():
 
 
 if __name__ == '__main__':
-    main_test()
+    main_walk_tallies_to_checkpoint()

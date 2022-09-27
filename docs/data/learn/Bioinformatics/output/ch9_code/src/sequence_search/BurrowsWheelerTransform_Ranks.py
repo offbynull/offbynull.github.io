@@ -169,6 +169,19 @@ def main_tally_row():
 
 
 
+def to_first_row(
+        bwt_first_occurrence_map: dict[str, int],
+        symbol_instance: tuple[str, int]
+) -> int:
+    symbol, symbol_count = symbol_instance
+    return bwt_first_occurrence_map[symbol] + symbol_count - 1
+
+
+def last_to_first(
+        bwt_first_occurrence_map: dict[str, int],
+        symbol_instance: tuple[str, int]
+) -> int:
+    return to_first_row(bwt_first_occurrence_map, symbol_instance)
 
 
 # MARKDOWN_TEST
@@ -177,17 +190,19 @@ def find(
         bwt_first_occurrence_map: dict[str, int],
         test: str
 ) -> int:
-    top = 0
-    bottom = len(bwt_records) - 1
+    top_row = 0
+    bottom_row = len(bwt_records) - 1
     for i, ch in reversed(list(enumerate(test))):
         first_row_for_ch = bwt_first_occurrence_map.get(ch, None)
         if first_row_for_ch is None:  # ch must be in first occurrence map, otherwise it's not in the original seq
             return 0
-        top = first_row_for_ch + last_tally_before_row(ch, top, bwt_records)
-        bottom = first_row_for_ch + last_tally_at_row(ch, bottom, bwt_records) - 1
-        if top > bottom:  # top>bottom once the scan reaches a point in the test sequence where it's not in original seq
+        top_symbol_instance = ch, last_tally_before_row(ch, top_row, bwt_records) + 1
+        top_row = last_to_first(bwt_first_occurrence_map, top_symbol_instance)
+        bottom_symbol_instance = ch, last_tally_at_row(ch, bottom_row, bwt_records)
+        bottom_row = last_to_first(bwt_first_occurrence_map, bottom_symbol_instance)
+        if top_row > bottom_row:  # top>bottom once the scan reaches a point in the test sequence where it's not in original seq
             return 0
-    return (bottom - top) + 1
+    return (bottom_row - top_row) + 1
 # MARKDOWN_TEST
 
 
@@ -198,29 +213,21 @@ def main_test():
         data_raw = ''.join(stdin.readlines())
         data: dict = yaml.safe_load(data_raw)
         test = data['test']
-        seq = data['sequence']
-        end_marker = data['end_marker']
+        first_occurrence_map = data['first_occurrence_map']
+        last = data['last']
+        last_tallies = data['last_tallies']
         print(f'Building BWT using the following settings...')
         print()
         print('```')
         print(data_raw)
         print('```')
         print()
-        bwt_records, bwt_first_occurrence_map = to_bwt_ranked(seq, end_marker)
+        bwt_records = []
+        for last_ch, last_tallies_single in zip(last, last_tallies):
+            bwt_records.append(BWTRecord(last_ch, last_tallies_single))
+        found_cnt = find(bwt_records, first_occurrence_map, test)
         print()
-        print(f'The following first and last columns were produced ...')
-        print()
-        print(f' * First (squashed): {bwt_first_occurrence_map}')
-        r_strs = []
-        for r in bwt_records:
-            tallies_str = ','.join(f"{k}={v}" for k, v in r.last_tallies.items())
-            r_str = f'{r.last_ch}{{{tallies_str}}}'
-            r_strs.append(r_str)
-        print(f' * Last: {", ".join(r_strs)}')
-        print()
-        found_cnt = find(bwt_records, bwt_first_occurrence_map, test)
-        print()
-        print(f'*{test}* found in *{seq}* {found_cnt} times.')
+        print(f'*{test}* found {found_cnt} times.')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
@@ -233,4 +240,4 @@ def main_test():
 
 
 if __name__ == '__main__':
-    main_tally_row()
+    main_test()

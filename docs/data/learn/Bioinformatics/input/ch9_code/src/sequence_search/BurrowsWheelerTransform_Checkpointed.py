@@ -136,10 +136,10 @@ def walk_back_until_first_index_checkpoint(
         bwt_first_indexes_checkpoints: dict[int, int],
         bwt_first_occurrence_map: dict[str, int],
         bwt_last_tallies_checkpoints: dict[int, Counter[str]],
-        index: int
+        row: int
 ) -> int:
     walk_cnt = 0
-    while index not in bwt_first_indexes_checkpoints:
+    while row not in bwt_first_indexes_checkpoints:
         # ORIGINAL CODE
         # -------------
         # index = bwt_records[index].last_to_first_ptr
@@ -151,11 +151,11 @@ def walk_back_until_first_index_checkpoint(
         # from the ranked checkpoint algorithm. First it derives the symbol instance count
         # for bwt_record[index] using ranked checkpoints, then it converts that to the
         # "last_to_first_ptr" value via to_first_index().
-        last_ch = bwt_records[index].last_ch
-        last_ch_cnt = to_last_symbol_instance_count(bwt_records, bwt_last_tallies_checkpoints, index)
-        index = to_first_row(bwt_first_occurrence_map, (last_ch, last_ch_cnt))
+        last_ch = bwt_records[row].last_ch
+        last_ch_cnt = to_last_symbol_instance_count(bwt_records, bwt_last_tallies_checkpoints, row)
+        row = last_to_first(bwt_first_occurrence_map, (last_ch, last_ch_cnt))
         walk_cnt += 1
-    first_idx = bwt_first_indexes_checkpoints[index] + walk_cnt
+    first_idx = bwt_first_indexes_checkpoints[row] + walk_cnt
     # It's possible that the walk back continues backward before the start of the sequence, resulting
     # in it looping to the end and continuing to walk back from there. If that happens, the code below
     # adjusts it.
@@ -255,6 +255,13 @@ def to_first_row(
     return bwt_first_occurrence_map[symbol] + symbol_count - 1
 
 
+def last_to_first(
+        bwt_first_occurrence_map: dict[str, int],
+        symbol_instance: tuple[str, int]
+) -> int:
+    return to_first_row(bwt_first_occurrence_map, symbol_instance)
+
+
 # MARKDOWN_TEST
 def last_tally_before_row(
         symbol: str,
@@ -286,19 +293,21 @@ def find(
         bwt_last_tallies_checkpoints: dict[int, Counter[str]],
         test: str
 ) -> list[int]:
-    top = 0
-    bottom = len(bwt_records) - 1
+    top_row = 0
+    bottom_row = len(bwt_records) - 1
     for i, ch in reversed(list(enumerate(test))):
         first_row_for_ch = bwt_first_occurrence_map.get(ch, None)
         if first_row_for_ch is None:  # ch must be in first occurrence map, otherwise it's not in the original seq
             return []
-        top = first_row_for_ch + last_tally_before_row(ch, top, bwt_records, bwt_last_tallies_checkpoints)
-        bottom = first_row_for_ch + last_tally_at_row(ch, bottom, bwt_records, bwt_last_tallies_checkpoints) - 1
-        if top > bottom:  # top>bottom once the scan reaches a point in the test sequence where it's not in original seq
+        top_symbol_instance = ch, last_tally_before_row(ch, top_row, bwt_records, bwt_last_tallies_checkpoints) + 1
+        top_row = last_to_first(bwt_first_occurrence_map, top_symbol_instance)
+        bottom_symbol_instance = ch, last_tally_at_row(ch, bottom_row, bwt_records, bwt_last_tallies_checkpoints)
+        bottom_row = last_to_first(bwt_first_occurrence_map, bottom_symbol_instance)
+        if top_row > bottom_row:  # top>bottom once the scan reaches a point in the test sequence where it's not in original seq
             return []
     # Find first_index for each entry in between top and bottom
     first_idxes = []
-    for index in range(top, bottom + 1):
+    for index in range(top_row, bottom_row + 1):
         first_idx = walk_back_until_first_index_checkpoint(
             bwt_records,
             bwt_first_indexes_checkpoints,
@@ -474,7 +483,7 @@ def walk_back_and_extract(
         # PREVIOUS CODE
         # -------------
         # ret += bwt_records[index].last_ch
-        # index = bwt_records[index].last_to_first_idx
+        # index = bwt_records[index].last_to_first_ptr
         # count -= 1
         #
         # UPDATED CODE
@@ -482,7 +491,7 @@ def walk_back_and_extract(
         ret += bwt_records[row].last_ch
         last_ch = bwt_records[row].last_ch
         last_ch_cnt = to_last_symbol_instance_count(bwt_records, bwt_last_tallies_checkpoints, row)
-        row = to_first_row(bwt_first_occurrence_map, (last_ch, last_ch_cnt))
+        row = last_to_first(bwt_first_occurrence_map, (last_ch, last_ch_cnt))
         count -= 1
     ret = ret[::-1]  # reverse ret
     return ret
