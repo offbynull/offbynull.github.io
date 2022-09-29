@@ -386,8 +386,8 @@
 </li>
 <li>
 <p><a name="BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi"></a><strong>strict dominance</strong> - Given two <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> <code>[A, B]</code> for a <a href="#BM_(player)%2Fi">player</a> in a <a href="#BM_(game)%2Fi">game</a>, <code>A</code> is said to <a href="#BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi">strictly dominate</a> <code>B</code> if the <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s containing <code>A</code> all have a higher <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff</a> than the corresponding <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s containing <code>B</code>. In this case, corresponding means that the other <a href="#BM_(player)%2Fi">player</a>s's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> must match between the <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s. For example, the following two <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s use the same <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> for all <a href="#BM_(player)%2Fi">player</a>s other than the <a href="#BM_(player)%2Fi">player</a> at index 1: <code>[Walk, Lie, Run, Cheat]</code> vs <code>[Walk, Truth, Run, Cheat]</code>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p24]</a></sub></p>
-<p><a href="gt_ch1_code/ReducedFormOrdinalGame.py">gt_ch1_code/ReducedFormOrdinalGame.py</a> (lines 26 to 72):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_strictly_dominant</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy1: <span class="hljs-built_in">str</span>, strategy2: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+<p><a href="gt_ch1_code/ReducedFormOrdinalGame.py">gt_ch1_code/ReducedFormOrdinalGame.py</a> (lines 26 to 75):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">strictly_dominates_other</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy1: <span class="hljs-built_in">str</span>, strategy2: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
     <span class="hljs-keyword">for</span> player_strategy_profile <span class="hljs-keyword">in</span> product(*(s <span class="hljs-keyword">if</span> i != player <span class="hljs-keyword">else</span> {<span class="hljs-string">'FAKE'</span>} <span class="hljs-keyword">for</span> i, s <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(self.strategies))):
         player_strategy_profile_1 = <span class="hljs-built_in">list</span>(player_strategy_profile)
         player_strategy_profile_2 = <span class="hljs-built_in">list</span>(player_strategy_profile)
@@ -401,7 +401,7 @@
 <span class="hljs-comment"># MARKDOWN_STRICT_DOMINANCE</span>
 
 <span class="hljs-comment"># MARKDOWN_WEAK_DOMINANCE</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">is_weakly_dominant</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy1: <span class="hljs-built_in">str</span>, strategy2: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">weakly_dominates_other</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy1: <span class="hljs-built_in">str</span>, strategy2: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
     strict_found = <span class="hljs-literal">False</span>
     <span class="hljs-keyword">for</span> player_strategy_profile <span class="hljs-keyword">in</span> product(*(s <span class="hljs-keyword">if</span> i != player <span class="hljs-keyword">else</span> {<span class="hljs-string">'FAKE'</span>} <span class="hljs-keyword">for</span> i, s <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(self.strategies))):
         player_strategy_profile_1 = <span class="hljs-built_in">list</span>(player_strategy_profile)
@@ -417,23 +417,26 @@
     <span class="hljs-keyword">return</span> strict_found
 <span class="hljs-comment"># MARKDOWN_WEAK_DOMINANCE</span>
 
+<span class="hljs-comment"># MARKDOWN_EQUIVALENT</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">equivalent_to_other</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy1: <span class="hljs-built_in">str</span>, strategy2: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-keyword">for</span> player_strategy_profile <span class="hljs-keyword">in</span> product(*(s <span class="hljs-keyword">if</span> i != player <span class="hljs-keyword">else</span> {<span class="hljs-string">'FAKE'</span>} <span class="hljs-keyword">for</span> i, s <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(self.strategies))):
+        player_strategy_profile_1 = <span class="hljs-built_in">list</span>(player_strategy_profile)
+        player_strategy_profile_2 = <span class="hljs-built_in">list</span>(player_strategy_profile)
+        player_strategy_profile_1[player] = strategy1
+        player_strategy_profile_2[player] = strategy2
+        payoff_1 = self.player_strategy_profile_preference(player, <span class="hljs-built_in">tuple</span>(player_strategy_profile_1))
+        payoff_2 = self.player_strategy_profile_preference(player, <span class="hljs-built_in">tuple</span>(player_strategy_profile_2))
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> (payoff_1 == payoff_2):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+<span class="hljs-comment"># MARKDOWN_EQUIVALENT</span>
+
 <span class="hljs-comment"># MARKDOWN_STRICT_DOMINANCE_TOTAL</span>
-<span class="hljs-keyword">def</span> <span class="hljs-title function_">strict_dominance</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">str</span> | <span class="hljs-literal">None</span>:
-    strategy_to_payoffs = []
-    <span class="hljs-keyword">for</span> strategy <span class="hljs-keyword">in</span> self.strategies[player]:
-        strategy_payoffs = []
-        <span class="hljs-keyword">for</span> player_strategy_profile <span class="hljs-keyword">in</span> product(*(s <span class="hljs-keyword">if</span> i != player <span class="hljs-keyword">else</span> {<span class="hljs-string">'FAKE'</span>} <span class="hljs-keyword">for</span> i, s <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(self.strategies))):
-            _player_strategy_profile = <span class="hljs-built_in">list</span>(player_strategy_profile)
-            _player_strategy_profile[player] = strategy
-            payoff = self.player_strategy_profile_preference(player, <span class="hljs-built_in">tuple</span>(_player_strategy_profile))
-            strategy_payoffs.append(payoff)
-        strategy_to_payoffs.append([strategy, strategy_payoffs])
-    strategy_to_payoffs.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>])
-    top_strategy, top_payoffs = strategy_to_payoffs.pop()
-    next_strategy, next_payoffs = strategy_to_payoffs.pop() <span class="hljs-keyword">if</span> strategy_to_payoffs != [] <span class="hljs-keyword">else</span> (<span class="hljs-literal">None</span>, [])
-    <span class="hljs-keyword">if</span> top_payoffs &gt; next_payoffs:
-        <span class="hljs-keyword">return</span> top_strategy
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">strictly_dominates_overall</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-keyword">for</span> other_strategy <span class="hljs-keyword">in</span> self.strategies[player]:
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> self.strictly_dominates_other(player, strategy, other_strategy):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre>
 <p>For example, Alice and Bob are the <a href="#BM_(player)%2Fi">player</a>s in a <a href="#BM_(game)%2Fi">game</a>. The <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> for ...</p>
 <ul>
@@ -508,8 +511,8 @@
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>If <code>A</code> <a href="#BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi">strictly dominate</a>s <code>B</code>, it also meets the conditions to <a href="#BM_(weak%20dominance%7Cweakly%20dominate)%2Fi">weakly dominate</a> <code>B</code> (but not necessarily the other way around). When the book says <a href="#BM_(weak%20dominance%7Cweakly%20dominate)%2Fi">weakly dominate</a>s, it usually means it <a href="#BM_(weak%20dominance%7Cweakly%20dominate)%2Fi">weakly dominate</a>s but not <a href="#BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi">strictly dominate</a>s. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p26]</a></sub></p>
 </div>
-<p><a href="gt_ch1_code/ReducedFormOrdinalGame.py">gt_ch1_code/ReducedFormOrdinalGame.py</a> (lines 40 to 54):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_weakly_dominant</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy1: <span class="hljs-built_in">str</span>, strategy2: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+<p><a href="gt_ch1_code/ReducedFormOrdinalGame.py">gt_ch1_code/ReducedFormOrdinalGame.py</a> (lines 40 to 84):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">weakly_dominates_other</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy1: <span class="hljs-built_in">str</span>, strategy2: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
     strict_found = <span class="hljs-literal">False</span>
     <span class="hljs-keyword">for</span> player_strategy_profile <span class="hljs-keyword">in</span> product(*(s <span class="hljs-keyword">if</span> i != player <span class="hljs-keyword">else</span> {<span class="hljs-string">'FAKE'</span>} <span class="hljs-keyword">for</span> i, s <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(self.strategies))):
         player_strategy_profile_1 = <span class="hljs-built_in">list</span>(player_strategy_profile)
@@ -523,6 +526,37 @@
         <span class="hljs-keyword">if</span> payoff_1 &gt; payoff_2:
             strict_found = <span class="hljs-literal">True</span>
     <span class="hljs-keyword">return</span> strict_found
+<span class="hljs-comment"># MARKDOWN_WEAK_DOMINANCE</span>
+
+<span class="hljs-comment"># MARKDOWN_EQUIVALENT</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">equivalent_to_other</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy1: <span class="hljs-built_in">str</span>, strategy2: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-keyword">for</span> player_strategy_profile <span class="hljs-keyword">in</span> product(*(s <span class="hljs-keyword">if</span> i != player <span class="hljs-keyword">else</span> {<span class="hljs-string">'FAKE'</span>} <span class="hljs-keyword">for</span> i, s <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(self.strategies))):
+        player_strategy_profile_1 = <span class="hljs-built_in">list</span>(player_strategy_profile)
+        player_strategy_profile_2 = <span class="hljs-built_in">list</span>(player_strategy_profile)
+        player_strategy_profile_1[player] = strategy1
+        player_strategy_profile_2[player] = strategy2
+        payoff_1 = self.player_strategy_profile_preference(player, <span class="hljs-built_in">tuple</span>(player_strategy_profile_1))
+        payoff_2 = self.player_strategy_profile_preference(player, <span class="hljs-built_in">tuple</span>(player_strategy_profile_2))
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> (payoff_1 == payoff_2):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+<span class="hljs-comment"># MARKDOWN_EQUIVALENT</span>
+
+<span class="hljs-comment"># MARKDOWN_STRICT_DOMINANCE_TOTAL</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">strictly_dominates_overall</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-keyword">for</span> other_strategy <span class="hljs-keyword">in</span> self.strategies[player]:
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> self.strictly_dominates_other(player, strategy, other_strategy):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+<span class="hljs-comment"># MARKDOWN_STRICT_DOMINANCE_TOTAL</span>
+
+<span class="hljs-comment"># MARKDOWN_WEAK_DOMINANCE_TOTAL</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">weakly_dominates_overall</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-keyword">for</span> other_strategy <span class="hljs-keyword">in</span> self.strategies[player]:
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> self.weakly_dominates_other(player, strategy, other_strategy) \
+                <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> self.equivalent_to_other(player, strategy, other_strategy):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre>
 <p>For example, Alice and Bob are the <a href="#BM_(player)%2Fi">player</a>s in a <a href="#BM_(game)%2Fi">game</a>. The <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> for ...</p>
 <ul>
@@ -558,38 +592,34 @@
 </li>
 <li>
 <p><a name="BM_(strictly%20dominant)%2Fi"></a><strong>strictly dominant</strong> - Given <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> <code>A</code> for a <a href="#BM_(player)%2Fi">player</a> in a <a href="#BM_(game)%2Fi">game</a>, <code>A</code> is said to be <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a> if it's <a href="#BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi">strictly dominate</a>s every other <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> that <a href="#BM_(player)%2Fi">player</a> has. A <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a> <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> is colloquially known as the best <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p26]</a></sub></p>
-<p><a href="gt_ch1_code/ReducedFormOrdinalGame.py">gt_ch1_code/ReducedFormOrdinalGame.py</a> (lines 57 to 72):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">strict_dominance</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">str</span> | <span class="hljs-literal">None</span>:
-    strategy_to_payoffs = []
-    <span class="hljs-keyword">for</span> strategy <span class="hljs-keyword">in</span> self.strategies[player]:
-        strategy_payoffs = []
-        <span class="hljs-keyword">for</span> player_strategy_profile <span class="hljs-keyword">in</span> product(*(s <span class="hljs-keyword">if</span> i != player <span class="hljs-keyword">else</span> {<span class="hljs-string">'FAKE'</span>} <span class="hljs-keyword">for</span> i, s <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(self.strategies))):
-            _player_strategy_profile = <span class="hljs-built_in">list</span>(player_strategy_profile)
-            _player_strategy_profile[player] = strategy
-            payoff = self.player_strategy_profile_preference(player, <span class="hljs-built_in">tuple</span>(_player_strategy_profile))
-            strategy_payoffs.append(payoff)
-        strategy_to_payoffs.append([strategy, strategy_payoffs])
-    strategy_to_payoffs.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>])
-    top_strategy, top_payoffs = strategy_to_payoffs.pop()
-    next_strategy, next_payoffs = strategy_to_payoffs.pop() <span class="hljs-keyword">if</span> strategy_to_payoffs != [] <span class="hljs-keyword">else</span> (<span class="hljs-literal">None</span>, [])
-    <span class="hljs-keyword">if</span> top_payoffs &gt; next_payoffs:
-        <span class="hljs-keyword">return</span> top_strategy
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+<p><a href="gt_ch1_code/ReducedFormOrdinalGame.py">gt_ch1_code/ReducedFormOrdinalGame.py</a> (lines 71 to 75):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">strictly_dominates_overall</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-keyword">for</span> other_strategy <span class="hljs-keyword">in</span> self.strategies[player]:
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> self.strictly_dominates_other(player, strategy, other_strategy):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre>
 </li>
 <li>
 <p><a name="BM_(weakly%20dominant)%2Fi"></a><strong>weakly dominant</strong> - Given <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> <code>A</code> for a <a href="#BM_(player)%2Fi">player</a> in a <a href="#BM_(game)%2Fi">game</a>, <code>A</code> is said to be <a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a> if, for every other <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> that <a href="#BM_(player)%2Fi">player</a> has, <code>A</code> is either equivalent or <code>A</code> <a href="#BM_(weak%20dominance%7Cweakly%20dominate)%2Fi">weakly dominate</a>s it. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p26]</a></sub></p>
+<p><a href="gt_ch1_code/ReducedFormOrdinalGame.py">gt_ch1_code/ReducedFormOrdinalGame.py</a> (lines 79 to 84):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">weakly_dominates_overall</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-keyword">for</span> other_strategy <span class="hljs-keyword">in</span> self.strategies[player]:
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> self.weakly_dominates_other(player, strategy, other_strategy) \
+                <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> self.equivalent_to_other(player, strategy, other_strategy):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre>
+<p>By definition, if a <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> is <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a>, it's also <a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a>. To disambiguate, in most cases <a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a> is interpreted as "<a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a> but not <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a>". <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p27]</a></sub></p>
 </li>
 </ul>
-<p>TODO: pg26 add python code for <a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a> (just like you did for <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a>)</p>
-<p>TODO: pg26 add python code for <a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a> (just like you did for <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a>)</p>
-<p>TODO: pg26 add python code for <a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a> (just like you did for <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a>)</p>
-<p>TODO: pg26 add python code for <a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a> (just like you did for <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a>)</p>
-<p>TODO: pg26 add python code for <a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a> (just like you did for <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a>)</p>
-<p>TODO: pg26 add python code for <a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a> (just like you did for <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a>)</p>
-<p>TODO: pg26 add python code for <a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a> (just like you did for <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a>)</p>
-<p>TODO: pg26 add python code for <a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a> (just like you did for <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a>)</p>
-<p>TODO: pg26 add python code for <a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a> (just like you did for <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a>)</p>
+<p>TODO: pg27 start from definition 2.2.3</p>
+<p>TODO: pg27 start from definition 2.2.3</p>
+<p>TODO: pg27 start from definition 2.2.3</p>
+<p>TODO: pg27 start from definition 2.2.3</p>
+<p>TODO: pg27 start from definition 2.2.3</p>
+<p>TODO: pg27 start from definition 2.2.3</p>
+<p>TODO: pg27 start from definition 2.2.3</p>
 <a name="H_Exercises"></a><h1>Exercises</h1>
 <a name="H_2.9.1%20Exercise%202.1%20a"></a><h2>2.9.1 Exercise 2.1 a</h2>
 <p>Recall <a href="#BM_(game%5B-%5Cs%5Dframe%20in%20strategic%20form)%2Fi">game frame in strategic form</a>: <code>[I, S, O, f]</code>, where ...</p>

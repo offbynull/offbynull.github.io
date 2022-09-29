@@ -388,23 +388,27 @@
 
  * `{bm} weakly dominant` - Given strategy `A` for a player in a game, `A` is said to be weakly dominant if, for every other strategy that player has, `A` is either equivalent or `A` weakly dominates it. `{ref} gt:p26`
 
-TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
+   ```{output}
+   gt_ch1_code/ReducedFormOrdinalGame.py
+   python
+   # MARKDOWN_WEAK_DOMINANCE_TOTAL\s*\n([\s\S]+)\n\s*# MARKDOWN_WEAK_DOMINANCE_TOTAL
+   ```
 
-TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
+   By definition, if a strategy is strictly dominant, it's also weakly dominant. To disambiguate, in most cases weakly dominant is interpreted as "weakly dominant but not strictly dominant". `{ref} gt:p27`
 
-TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
+TODO: pg27 start from definition 2.2.3
 
-TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
+TODO: pg27 start from definition 2.2.3
 
-TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
+TODO: pg27 start from definition 2.2.3
 
-TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
+TODO: pg27 start from definition 2.2.3
 
-TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
+TODO: pg27 start from definition 2.2.3
 
-TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
+TODO: pg27 start from definition 2.2.3
 
-TODO: pg26 add python code for weakly dominant (just like you did for strictly dominant)
+TODO: pg27 start from definition 2.2.3
 
 # Exercises
 

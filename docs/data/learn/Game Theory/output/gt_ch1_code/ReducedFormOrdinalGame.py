@@ -23,7 +23,7 @@ class ReducedFormOrdinalGame(ABC):
         ...
 
     # MARKDOWN_STRICT_DOMINANCE
-    def is_strictly_dominant(self, player: int, strategy1: str, strategy2: str) -> bool:
+    def strictly_dominates_other(self, player: int, strategy1: str, strategy2: str) -> bool:
         for player_strategy_profile in product(*(s if i != player else {'FAKE'} for i, s in enumerate(self.strategies))):
             player_strategy_profile_1 = list(player_strategy_profile)
             player_strategy_profile_2 = list(player_strategy_profile)
@@ -37,7 +37,7 @@ class ReducedFormOrdinalGame(ABC):
     # MARKDOWN_STRICT_DOMINANCE
 
     # MARKDOWN_WEAK_DOMINANCE
-    def is_weakly_dominant(self, player: int, strategy1: str, strategy2: str) -> bool:
+    def weakly_dominates_other(self, player: int, strategy1: str, strategy2: str) -> bool:
         strict_found = False
         for player_strategy_profile in product(*(s if i != player else {'FAKE'} for i, s in enumerate(self.strategies))):
             player_strategy_profile_1 = list(player_strategy_profile)
@@ -53,24 +53,36 @@ class ReducedFormOrdinalGame(ABC):
         return strict_found
     # MARKDOWN_WEAK_DOMINANCE
 
+    # MARKDOWN_EQUIVALENT
+    def equivalent_to_other(self, player: int, strategy1: str, strategy2: str) -> bool:
+        for player_strategy_profile in product(*(s if i != player else {'FAKE'} for i, s in enumerate(self.strategies))):
+            player_strategy_profile_1 = list(player_strategy_profile)
+            player_strategy_profile_2 = list(player_strategy_profile)
+            player_strategy_profile_1[player] = strategy1
+            player_strategy_profile_2[player] = strategy2
+            payoff_1 = self.player_strategy_profile_preference(player, tuple(player_strategy_profile_1))
+            payoff_2 = self.player_strategy_profile_preference(player, tuple(player_strategy_profile_2))
+            if not (payoff_1 == payoff_2):
+                return False
+        return True
+    # MARKDOWN_EQUIVALENT
+
     # MARKDOWN_STRICT_DOMINANCE_TOTAL
-    def strict_dominance(self, player: int) -> str | None:
-        strategy_to_payoffs = []
-        for strategy in self.strategies[player]:
-            strategy_payoffs = []
-            for player_strategy_profile in product(*(s if i != player else {'FAKE'} for i, s in enumerate(self.strategies))):
-                _player_strategy_profile = list(player_strategy_profile)
-                _player_strategy_profile[player] = strategy
-                payoff = self.player_strategy_profile_preference(player, tuple(_player_strategy_profile))
-                strategy_payoffs.append(payoff)
-            strategy_to_payoffs.append([strategy, strategy_payoffs])
-        strategy_to_payoffs.sort(key=lambda x: x[1])
-        top_strategy, top_payoffs = strategy_to_payoffs.pop()
-        next_strategy, next_payoffs = strategy_to_payoffs.pop() if strategy_to_payoffs != [] else (None, [])
-        if top_payoffs > next_payoffs:
-            return top_strategy
-        return None
+    def strictly_dominates_overall(self, player: int, strategy: str) -> bool:
+        for other_strategy in self.strategies[player]:
+            if not self.strictly_dominates_other(player, strategy, other_strategy):
+                return False
+        return True
     # MARKDOWN_STRICT_DOMINANCE_TOTAL
+
+    # MARKDOWN_WEAK_DOMINANCE_TOTAL
+    def weakly_dominates_overall(self, player: int, strategy: str) -> bool:
+        for other_strategy in self.strategies[player]:
+            if not self.weakly_dominates_other(player, strategy, other_strategy) \
+                    and not self.equivalent_to_other(player, strategy, other_strategy):
+                return False
+        return True
+    # MARKDOWN_WEAK_DOMINANCE_TOTAL
 
 class MappedPreferencesOrdinalGame(ReducedFormOrdinalGame):
     def __init__(
@@ -112,8 +124,8 @@ if __name__ == '__main__':
             }
         }
     )
-    print(f'{og.strict_dominance(0)}')
-    print(f'{og.strict_dominance(1)}')
+    print(f'{og.strictly_dominates_overall(0)}')
+    print(f'{og.strictly_dominates_overall(1)}')
     # print(f'{og.is_weakly_dominant(0, "Get Violent", "Lie")}')
     # print(f'{og.is_weakly_dominant(0, "Get Violent", "Stay Silent")}')
     # print(f'{og.is_weakly_dominant(0, "Lie", "Stay Silent")}')
