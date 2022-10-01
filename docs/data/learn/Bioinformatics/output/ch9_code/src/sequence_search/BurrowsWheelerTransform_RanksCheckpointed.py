@@ -119,7 +119,7 @@ def main_walk_tallies_to_checkpoint():
         for last_ch in last:
             bwt_records.append(BWTRecord(last_ch))
         tally = walk_tallies_to_checkpoint(bwt_records, last_tallies_checkpoints, index)
-        print(f'The tally at index {index} is calculated as {tally.items}')
+        print(f'The tally at index {index} is calculated as {dict(tally)}')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
@@ -206,6 +206,7 @@ def to_last_symbol_instance_count(
         row: int
 ) -> int:
     return single_tally_to_checkpoint(bwt_records, bwt_last_tallies_checkpoints, row, bwt_records[row].last_ch)
+
 
 # MARKDOWN_TEST
 def last_tally_before_row(

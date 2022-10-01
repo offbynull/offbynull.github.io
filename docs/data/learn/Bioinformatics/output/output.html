@@ -237,7 +237,7 @@
 <ul>
 <li><a href="#H_Cluster%20Genes">Cluster Genes</a></li>
 </ul>
-<li><a href="#H_Point%20Mutations%20%2F%20Single%20Nulceotide%20Polymorphism">Point Mutations / Single Nulceotide Polymorphism</a></li>
+<li><a href="#H_Single%20Nulceotide%20Polymorphism">Single Nulceotide Polymorphism</a></li>
 <ul>
 <li><a href="#H_Find%20Substitutions">Find Substitutions</a></li>
 </ul>
@@ -18484,7 +18484,7 @@ THHHTHHHTH = 7 / 10 = 0.7
 <p><img src="svgbob_ef3cfd8fc98f0b52101026f244c728f8a8ebe01c.svg" alt="Kroki diagram output"></p>
 <p>Studies commonly attempt to associate <a href="#BM_(SNP)%2F">SNP</a>s with diseases. By comparing <a href="#BM_(SNP)%2F">SNP</a>s between a diseased population vs non-diseased population, scientists are able to discover which <a href="#BM_(SNP)%2F">SNP</a>s are responsible for a disease / increase the risk of a disease occurring. For example, a study might find that the population of heart attack victims had a location with a higher likelihood of G vs C.</p>
 <p><img src="svgbob_1b1f54a8eeffbdaa51000830fc701f1db84b0df0.svg" alt="Kroki diagram output"></p>
-<p>The <a href="#BM_(SNP)%2F">SNP</a>s an individual organism has are identified through a process called <a href="#BM_(read%20mapping%7Cread%20mapped)%2Fi">read mapping</a>. <a href="#BM_(read%20mapping%7Cread%20mapped)%2Fi">Read mapping</a> attempts to align the individual organism's <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a> DNA segments (e.g. <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s, <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a>s, <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s) to an idealized <a href="#BM_(genome)%2Fi">genome</a> for the population that organism belongs to (e.g. species, race, etc..), called a <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a>. The result of the alignment should have few <a href="#BM_(indel)%2Fi">indel</a>s and a fair amount of mismatches, where those mismatches identify that organism's <a href="#BM_(SNP)%2F">SNP</a>s.</p>
+<p>The <a href="#BM_(SNP)%2F">SNP</a>s an individual organism has are identified through a process called <a href="#BM_(read%20map)%2Fi">read map</a>ping. <a href="#BM_(read%20map)%2Fi">Read map</a>ping attempts to align the individual organism's <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a> DNA segments (e.g. <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s, <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a>s, <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s) to an idealized <a href="#BM_(genome)%2Fi">genome</a> for the population that organism belongs to (e.g. species, race, etc..), called a <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a>. The result of the alignment should have few <a href="#BM_(indel)%2Fi">indel</a>s and a fair amount of mismatches, where those mismatches identify that organism's <a href="#BM_(SNP)%2F">SNP</a>s.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Where might <a href="#BM_(indel)%2Fi">indel</a>s come from? The Pevzner book mentions that ...</p>
@@ -18494,12 +18494,12 @@ THHHTHHHTH = 7 / 10 = 0.7
 <li>a <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> may be incomplete due to the limitations of <a href="#BM_(sequencing%7Csequenced)%2Fi">sequencing</a> technology (e.g. multiple large <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s instead of the whole <a href="#BM_(genome)%2Fi">genome</a>), meaning that a correct mapping may not exist for a specific part of the individual organism's <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a> DNA, meaning it ends up mapping to the wrong part of the <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> and producing <a href="#BM_(indel)%2Fi">indel</a>s.</li>
 </ol>
 </div>
-<p>Since <a href="#BM_(read%20mapping%7Cread%20mapped)%2Fi">read mapping</a> for <a href="#BM_(SNP)%2F">SNP</a> identification focuses on identifying mismatches and not <a href="#BM_(indel)%2Fi">indel</a>s, traditional <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> algorithms aren't required. More efficient <a href="#BM_(substring)%2Fi">substring</a> matching algorithms can be used instead. Specifically, if you have a <a href="#BM_(sequence)%2Fi">sequence</a> that you're trying to map and you know it can tolerate d mismatches at most, any <a href="#BM_(substring)%2Fi">substring</a> matching algorithm will work. For example, finding GCCGTTTT with at most 1 mismatch simply requires dividing GCCGTTTT into two halves and searching for each half in the larger <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a>. Since GCCGTTTT can only contain a single mismatch, that mismatch has to be either in the 1st half (GCCG) or the 2nd half (TTTT), not both.</p>
+<p>Since <a href="#BM_(read%20map)%2Fi">read map</a>ping for <a href="#BM_(SNP)%2F">SNP</a> identification focuses on identifying mismatches and not <a href="#BM_(indel)%2Fi">indel</a>s, traditional <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> algorithms aren't required. More efficient <a href="#BM_(substring)%2Fi">substring</a> matching algorithms can be used instead. Specifically, if you have a <a href="#BM_(sequence)%2Fi">sequence</a> that you're trying to map and you know it can tolerate d mismatches at most, any <a href="#BM_(substring)%2Fi">substring</a> matching algorithm will work. For example, finding GCCGTTTT with at most 1 mismatch simply requires dividing GCCGTTTT into two halves and searching for each half in the larger <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a>. Since GCCGTTTT can only contain a single mismatch, that mismatch has to be either in the 1st half (GCCG) or the 2nd half (TTTT), not both.</p>
 <p><img src="svgbob_c27b253229bfc0915d3d183e15be77bc7a7ae320.svg" alt="Kroki diagram output"></p>
-<p>Found regions within the <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> are extended to cover all of GCCGTTT and then tested in full. If the <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the replacement tolerance, it's considered a match.</p>
-<p><img src="svgbob_04898038cf4013023c35e38e7276222810af56e3.svg" alt="Kroki diagram output"></p>
-<p>The logic described above is generalized as follows: If a <a href="#BM_(sequence)%2Fi">sequence</a> can tolerate d mismatches, separate it into d + 1 blocks. It's impossible for d mismatches to exist across d + 1 blocks. There are more blocks than there are mismatches -- at least one of the blocks must match exactly.</p>
-<p>These blocks are called seeds, and the act of finding seeds and testing the <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> of the extended region is called seed extension.</p>
+<p>Found regions within the <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> are extended to cover all of GCCGTTT and then tested in full. If the <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch tolerance, it's considered a match.</p>
+<p><img src="svgbob_9f10c1db9ba47e4e26e56bfedd44f424bc226362.svg" alt="Kroki diagram output"></p>
+<p>The logic described above is generalized as follows: If a <a href="#BM_(sequence)%2Fi">sequence</a> can tolerate d mismatches, separate it into d + 1 non-overlapping blocks. It's impossible for d mismatches to exist across d + 1 blocks. There are more blocks than there are mismatches -- at least one of the blocks must match exactly.</p>
+<p>These blocks are called <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s, and the act of finding <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s and testing the <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> of the extended region is called <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed extension</a>.</p>
 <p><img src="svgbob_27be0ab62d6a6964135cfc8727e10d7ede8f2e5f.svg" alt="Kroki diagram output"></p>
 <pre class="hljs"><code>S = TypeVar(<span class="hljs-string">'S'</span>, StringView, <span class="hljs-built_in">str</span>)
 
@@ -18548,7 +18548,7 @@ GGCC
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The Pevzner uses the formula <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⌊</mo><mfrac><mi>n</mi><mrow><mi>d</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo stretchy="false">⌋</mo></mrow><annotation encoding="application/x-tex">\lfloor \frac{n}{d+1} \rfloor</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.153331em;vertical-align:-0.403331em;"></span><span class="mopen">⌊</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.403331em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">⌋</span></span></span></span> for determining the number of nucleotides per seed, where n is the <a href="#BM_(sequence)%2Fi">sequence</a> length and d is the number of mismatches. It's the same as the code above but it takes the floor rather than the ceiling. For example, ACGTT with 2 mismatches would break down to <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>5</mn><mn>3</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{5}{3}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">5</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span> = 1.667 nucleotides per seed, which rounds down to 1, which ends up being the seeds [A, C, GTT]. That seems like a not optimal breakup -- smaller seeds may end up with more frequent hits during search?</p>
+<p>The Pevzner uses the formula <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⌊</mo><mfrac><mi>n</mi><mrow><mi>d</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo stretchy="false">⌋</mo></mrow><annotation encoding="application/x-tex">\lfloor \frac{n}{d+1} \rfloor</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.153331em;vertical-align:-0.403331em;"></span><span class="mopen">⌊</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.695392em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mbin mtight">+</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.403331em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">⌋</span></span></span></span> for determining the number of nucleotides per <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>, where n is the <a href="#BM_(sequence)%2Fi">sequence</a> length and d is the number of mismatches. It's the same as the code above but it takes the floor rather than the ceiling. For example, ACGTT with 2 mismatches would break down to <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>5</mn><mn>3</mn></mfrac></mrow><annotation encoding="application/x-tex">\frac{5}{3}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">5</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span> = 1.667 nucleotides per <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>, which rounds down to 1, which ends up being the <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s [A, C, GTT]. That seems like a not optimal breakup -- smaller <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s may end up with more frequent hits during search?</p>
 <p>Maybe this has to do with the <a href="#BM_(BLAST)%2F">BLAST</a> discussion that comes immediately after (section 9.14).</p>
 </div>
 <a name="H_Trie"></a><h3>Trie</h3>
@@ -18671,11 +18671,11 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_aa3e748b8b94a867a770a36d6b761e30.svg" alt="Dot diagram"></p>
+<p><img src="dot_0b6cc891a84d7c1b1673facbdf9c95ed.svg" alt="Dot diagram"></p>
 <p>Searching <code>How do you feel about apples?</code> with the trie revealed the following was found: {(22, apple)}</p>
 </div>
 <p></p>
-<p>Extending a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> to support mismatches requires building the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> with seeds of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found seeds have seed extension applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
+<p>Extending a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> to support mismatches requires building the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> with <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s have <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed extension</a> applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
 <p><a href="ch9_code/src/sequence_search/Trie_Basic.py">ch9_code/src/sequence_search/Trie_Basic.py</a> (lines 178 to 237):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">mismatch_search</span>(<span class="hljs-params">
         test_seq: StringView,
@@ -18750,7 +18750,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_85199bd2837242b2a21a44a5a6e0f12b.svg" alt="Dot diagram"></p>
+<p><img src="dot_e2db259b77227ff1ada624a0e9192d36.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -18944,7 +18944,7 @@ GGCC
 <p>Searching <em>How do you feel about apples?</em> with the trie revealed the following was found: {(22, 'apple')}</p>
 </div>
 <p></p>
-<p>Extending a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> to support mismatches requires building the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> with seeds of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found seeds have seed extension applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
+<p>Extending a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> to support mismatches requires building the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> with <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s have <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed extension</a> applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
 <p><a href="ch9_code/src/sequence_search/Trie_EdgeMerged.py">ch9_code/src/sequence_search/Trie_EdgeMerged.py</a> (lines 232 to 291):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">mismatch_search</span>(<span class="hljs-params">
         test_seq: StringView,
@@ -19019,7 +19019,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_a839f35a06f00934ae2fe54ce81eb645.svg" alt="Dot diagram"></p>
+<p><img src="dot_105f908e843696472b68c959635586fc.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19158,7 +19158,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_9385fdb5c72c66fbf41095609cabad9c.svg" alt="Dot diagram"></p>
+<p><img src="dot_74d2d883371827899a96339d864a7c5f.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>If a scan walks the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> to "arat" and fails, the next scan position must contain "rat". Since the prefix "rat" exists in the <a href="#BM_(%5Cbtrie)%2Fi">trie</a>, a special edge connects "arat" to "rat" such that the scan for the next position can jump past "rat" in the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> walk.</p>
@@ -19236,11 +19236,11 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_eb1bbdcb682d6575e4952d9057abbda2.svg" alt="Dot diagram"></p>
+<p><img src="dot_409a5483456423f21085c64f61716b82.svg" alt="Dot diagram"></p>
 <p>Searching <em>There were multiple narrations in the play</em> with the trie revealed the following was found: {(23, ration)}</p>
 </div>
 <p></p>
-<p>Extending a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> to support mismatches requires building the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> with seeds of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found seeds have seed extension applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
+<p>Extending a <a href="#BM_(%5Cbtrie)%2Fi">trie</a> to support mismatches requires building the <a href="#BM_(%5Cbtrie)%2Fi">trie</a> with <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s have <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed extension</a> applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
 <p><a href="ch9_code/src/sequence_search/Trie_AhoCorasick.py">ch9_code/src/sequence_search/Trie_AhoCorasick.py</a> (lines 239 to 298):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">mismatch_search</span>(<span class="hljs-params">
         test_seq: StringView,
@@ -19315,7 +19315,7 @@ GGCC
 
 </code></pre>
 <p>The following trie was produced ...</p>
-<p><img src="dot_b731d7d8407dbcc953c74af610d23de2.svg" alt="Dot diagram"></p>
+<p><img src="dot_42eaf6120c2e85ad575efda45fc07d1a.svg" alt="Dot diagram"></p>
 <p>Searching <code>banana ankle baxana orange banxxa vehicle</code> with the trie revealed the following was found:</p>
 <ul>
 <li>Matched <code>_bana</code> against <code>anana</code> with distance of 2 at index -1</li>
@@ -19499,7 +19499,7 @@ GGCC
 <p><em>an</em> found in <em>banana¶</em> at indices [1, 3]</p>
 </div>
 <p></p>
-<p>Extending a <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> to support mismatches requires scanning it for seeds of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found seeds have seed extension applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
+<p>Extending a <a href="#BM_(suffix%20tree)%2Fi">suffix tree</a> to support mismatches requires scanning it for <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s have <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed extension</a> applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
 <p><a href="ch9_code/src/sequence_search/SuffixTree.py">ch9_code/src/sequence_search/SuffixTree.py</a> (lines 224 to 278):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">mismatch_search</span>(<span class="hljs-params">
         test_seq: StringView,
@@ -19776,7 +19776,7 @@ nana¶
 <p><em>an</em> found in <em>banana¶</em> at indices [5, 3, 1]</p>
 </div>
 <p></p>
-<p>Extending a <a href="#BM_(suffix%20array)%2Fi">suffix array</a> to support mismatches requires scanning it for seeds of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found seeds have seed extension applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
+<p>Extending a <a href="#BM_(suffix%20array)%2Fi">suffix array</a> to support mismatches requires scanning it for <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s of the <a href="#BM_(sequence)%2Fi">sequence</a>s rather than the <a href="#BM_(sequence)%2Fi">sequence</a>s themselves. Any found <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s have <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed extension</a> applied to see if the full region's <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> is within the mismatch limit.</p>
 <p><a href="ch9_code/src/sequence_search/SuffixArray.py">ch9_code/src/sequence_search/SuffixArray.py</a> (lines 174 to 226):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">mismatch_search</span>(<span class="hljs-params">
         test_seq: StringView,
@@ -21311,7 +21311,7 @@ first_indexes_checkpoint_n: 3
 <p></p>
 <p>Building BWT using the following settings...</p>
 <pre><code>first: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]]
-first_indexes_checkpoints: {0: 6, 2: 3, 3: 0}
+first_indexes_checkpoints: {0: 6, 2: 3, 4: 0}
 last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
 last_to_first: [1,5,6,4,0,2,3]
 from_row: 1
@@ -21359,13 +21359,13 @@ from_row: 1
 <p></p>
 <p>Building BWT using the following settings...</p>
 <pre><code>first: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]]
-first_indexes_checkpoints: {0: 6, 2: 3, 3: 0}
+first_indexes_checkpoints: {0: 6, 2: 3, 4: 0}
 last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
 last_to_first: [1,5,6,4,0,2,3]
 test: nana
 
 </code></pre>
-<p><em>nana</em> found at indices [1].</p>
+<p><em>nana</em> found at indices [2].</p>
 </div>
 <p></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -22417,7 +22417,7 @@ end_marker: ¶
 </tr>
 </tbody>
 </table>
-<p>The backsweep testing algorithm is a different way of testing for a <a href="#BM_(substring)%2Fi">substring</a>, one that exploits the properties mentioned above. For each element of the test string, the algorithm scans over <a href="#BM_(BWT)%2F">BWT</a> records and isolates them to some range. A subsequent scan only has to to consider the <a href="#BM_(BWT)%2F">BWT</a> records in the range isolated by the scan previous to it. For example, consider searching for "bba" in "abbazabbabbu¶".</p>
+<p>The backsweep testing algorithm is a different way of testing for a <a href="#BM_(substring)%2Fi">substring</a>, one that exploits the properties mentioned above. For each element of the test string, the algorithm scans over <a href="#BM_(BWT)%2F">BWT</a> records and isolates them to some range. A subsequent scan only has to consider the <a href="#BM_(BWT)%2F">BWT</a> records in the range isolated by the scan previous to it. For example, consider searching for "bba" in "abbazabbabbu¶".</p>
 <table>
 <thead>
 <tr>
@@ -22518,7 +22518,7 @@ end_marker: ¶
 <li>scans downward from index 5 (starting index of the isolated range) to find the initial occurrence of <em>b</em> in <code>last</code>: (b,3) at index 5 of <code>last</code>.</li>
 <li>scans upward from index 6 (ending index of the isolated range) to find the final occurrence of <em>b</em> in <code>last</code>: (b,4) at index 6 of <code>last</code>.</li>
 </ul>
-<p>The <code>last_to_first</code> of the two found <a href="#BM_(BWT)%2F">BWT</a> records are then used to find the index of (b,3) and (b,4) in <code>first</code>: index 6 and 7. The algorithm isolates the <a href="#BM_(BWT)%2F">BWT</a> records to this range, which is essentially all <a href="#BM_(substring)%2Fi">substring</a>s of "bba" in the original <a href="#BM_(sequence)%2Fi">sequence</a>. Since all elements of the test string have been processed, the search stops. There are two rows in the isolated range range at this point, meaning are two instances of "bba": (7 - 6) + 1 = 2.</p>
+<p>The <code>last_to_first</code> of the two found <a href="#BM_(BWT)%2F">BWT</a> records are then used to find the index of (b,3) and (b,4) in <code>first</code>: index 6 and 7. The algorithm isolates the <a href="#BM_(BWT)%2F">BWT</a> records to this range, which is essentially all <a href="#BM_(substring)%2Fi">substring</a>s of "bba" in the original <a href="#BM_(sequence)%2Fi">sequence</a>. Since all elements of the test string have been processed, the search stops. There are two rows in the isolated range at this point, meaning are two instances of "bba": (7 - 6) + 1 = 2.</p>
 <p><img src="svgbob_ddd9eb159de15bf45c6483e65bbff668ad99b2a5.svg" alt="Kroki diagram output"></p>
 <p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_BacksweepTest.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_BacksweepTest.py</a> (lines 10 to 37):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">
@@ -23140,7 +23140,7 @@ last_tallies: {¶: 0, a: 1, b: 0, n: 2}
 <p>The symbol instance count for this record is 2</p>
 </div>
 <p></p>
-<p>With the inclusion of <code>last_tallies</code>, the backsweep algorithm doesn't need to scan over <code>last</code> anymore.  For example, in the original backsweep testing algorithm, searching for "bba" in "abbazabbabbu¶" ...</p>
+<p>With the inclusion of <code>last_tallies</code>, the backsweep testing algorithm doesn't need to scan over <code>last</code> anymore.  For example, in the original backsweep testing algorithm, searching for "bba" in "abbazabbabbu¶" ...</p>
 <ol>
 <li>scans downward to find top <code>last='a'</code> / scans upward to find bottom <code>last='a'</code>, then isolates rows to the top and bottom <em>a</em> in <code>first</code>,</li>
 <li>scans downward to find top <code>last='b'</code> / scans upward to find bottom <code>last='b'</code>, then isolates rows (again) to the top and bottom <em>b</em> in <code>first</code>,</li>
@@ -23279,13 +23279,13 @@ symbol: b
 <p>There where 3 instances of <em>b</em> at index <em>5</em> in last.</p>
 </div>
 <p></p>
-<p>Knowing this, the backsweep algorithm can simply use the calculation described above to determine some symbol's initial and final symbol instance in <code>last</code>. For example, finding the initial and final <em>a</em> in <code>last</code> for the range of <a href="#BM_(BWT)%2F">BWT</a> records between rows 8 and 12:</p>
+<p>Knowing this, the backsweep testing algorithm can simply use the calculation described above to determine some symbol's initial and final symbol instance in <code>last</code>. For example, finding the initial and final <em>a</em> in <code>last</code> for the range of <a href="#BM_(BWT)%2F">BWT</a> records between rows 8 and 12:</p>
 <ul>
 <li><code>last</code>'s initial <em>a</em> is (a,2): <code>last_tally_before_row('a', 8) + 1 = 1+1 = 2</code></li>
 <li><code>last</code>'s final <em>a</em> is (a,4):   <code>last_tally_at_row('a', 12)              = 4</code></li>
 </ul>
 <p><img src="svgbob_c453e6faa6e7aff54c5a885db589b2ffac9a17d8.svg" alt="Kroki diagram output"></p>
-<p>From there, the backsweep algorithm can use the on-the-fly <code>last_to_first</code> calculation from the collapsed first algorithm to isolate the range. For example, to isolate the <a href="#BM_(BWT)%2F">BWT</a> records such that <code>first</code> starts at (a,2) and ends at (a,4):</p>
+<p>From there, the backsweep testing algorithm can use the on-the-fly <code>last_to_first</code> calculation from the collapsed first algorithm to isolate the range. For example, to isolate the <a href="#BM_(BWT)%2F">BWT</a> records such that <code>first</code> starts at (a,2) and ends at (a,4):</p>
 <ul>
 <li>(a,2) is at index 2 of <code>first</code>.</li>
 <li>(a,4) is at index 4 of <code>first</code>.</li>
@@ -23310,7 +23310,7 @@ symbol: b
 <li>In isolated <code>last</code>, the initial <em>b</em> is (b,3): <code>last_tally_before_row('b', 5) + 1 = 2+1 = 3</code></li>
 <li>In isolated <code>last</code>, the final <em>b</em> is (b,4):   <code>last_tally_at_row('b', 6)               = 4</code></li>
 </ul>
-<p>The <code>last_to_first</code> of the two found <a href="#BM_(BWT)%2F">BWT</a> records are then used to find the index of (b,3) and (b,4) in <code>first</code>: index 6 and 7. The algorithm isolates the <a href="#BM_(BWT)%2F">BWT</a> records to this range, which is essentially all <a href="#BM_(substring)%2Fi">substring</a>s of "bba" in the original <a href="#BM_(sequence)%2Fi">sequence</a>. Since all elements of the test string have been processed, the search stops. There are two rows in the isolated range range at this point, meaning are two instances of "bba": (7 - 6) + 1 = 2.</p>
+<p>The <code>last_to_first</code> of the two found <a href="#BM_(BWT)%2F">BWT</a> records are then used to find the index of (b,3) and (b,4) in <code>first</code>: index 6 and 7. The algorithm isolates the <a href="#BM_(BWT)%2F">BWT</a> records to this range, which is essentially all <a href="#BM_(substring)%2Fi">substring</a>s of "bba" in the original <a href="#BM_(sequence)%2Fi">sequence</a>. Since all elements of the test string have been processed, the search stops. There are two rows in the isolated range at this point, meaning are two instances of "bba": (7 - 6) + 1 = 2.</p>
 <p><img src="svgbob_ddd9eb159de15bf45c6483e65bbff668ad99b2a5.svg" alt="Kroki diagram output"></p>
 <p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Ranks.py</a> (lines 188 to 206):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">
@@ -23379,7 +23379,7 @@ test: bba
 <li><a href="#BM_(BWT)%2F">BWT</a> records: The table comprised of columns <code>last</code> and <code>last_tallies</code> (updated in ranks algorithm).</li>
 </ul>
 </div>
-<p>The ranks algorithm's replacement of <code>last</code>'s symbol instance counts with <code>last_tallies</code> increases memory usage but it also allows for a concept known as checkpointing: Instead of retaining a value at every index of <code>last_tallies</code>, leave some empty. The entries that have a value are called checkpoints.</p>
+<p>The ranks algorithm's replacement of <code>last</code>'s symbol instance counts with <code>last_tallies</code> increases memory usage, but it also allows for a concept known as checkpointing: Instead of retaining a value in every <code>last_tallies</code> entry, leave some empty. The entries that have a value are called checkpoints.</p>
 <table>
 <tbody><tr><th>records</th><th>first_occurrence_map</th></tr>
 <tr><td>
@@ -23482,7 +23482,7 @@ last_tallies_checkpoint_n: 3
 </ul>
 </div>
 <p></p>
-<p>To determine the value of <code>last_tallies</code> at some index which is empty, simply tally <code>last</code> symbols upwards until reaching an index where <code>last_tallies</code> has a value, then add the tallies together. For example, to compute <code>last_tallies[5]</code>, ...</p>
+<p>To determine the value of an empty <code>last_tallies</code> entry, simply tally <code>last</code> symbols upwards until reaching a non-empty <code>last_tallies</code> entry, then add the tallies together. For example, to compute <code>last_tallies[5]</code> in the example above, ...</p>
 <ol>
 <li>add symbol in <code>last[5]</code> to the tally: {a: 1},</li>
 <li>add symbol in <code>last[4]</code> to the tally: {¶: 1, a: 1},</li>
@@ -23513,10 +23513,10 @@ last_tallies_checkpoints:
 index: 5
 
 </code></pre>
-<p>The tally at index 5 is calculated as &lt;built-in method items of Counter object at 0x7f039f577100&gt;</p>
+<p>The tally at index 5 is calculated as {'a': 2, '¶': 1, 'n': 2, 'b': 1}</p>
 </div>
 <p></p>
-<p>Determining the value of <code>last_tallies</code> can be further optimized by only focusing on the symbol of interest. For example, at index 5, <code>last[5]</code> is <em>a</em>. When the value for <code>last_tallies[5]</code> is computed, it's only being used to determine the symbol instance count of that <em>a</em> at <code>last[5]</code>. As such, only <em>a</em>s need to be tallied until reaching a checkpoint...</p>
+<p>Determining the value of <code>last_tallies</code> can be further optimized by only focusing on the symbol of interest. For example, <code>last[5]='a'</code> in the example above. When the value for <code>last_tallies[5]</code> is computed, it's only being used to determine the symbol instance count of that <em>a</em>. As such, only <em>a</em>s need to be tallied until reaching a checkpoint...</p>
 <ol>
 <li>increment count if <code>last[5] == 'a'</code> (true): 1,</li>
 <li>increment count if <code>last[4] == 'a'</code> (false): 1,</li>
@@ -23553,7 +23553,7 @@ index: 5
 </div>
 <p></p>
 <p>Testing for a <a href="#BM_(substring)%2Fi">substring</a> works just as it did with the collapsed first algorithm, except that the symbol instance count for some index in <code>last</code> needs to be determined from <code>last_tallies</code> checkpoints. The idea is to make the gaps between <code>last_tallies</code> checkpoints wide enough that it gives memory savings compared to keeping the symbol instance counts in <code>last</code>, but at the same time short enough that the time to compute the missing gap values is still negligible. For example, since there are only 4 possible symbols with a DNA <a href="#BM_(sequence)%2Fi">sequence</a> (A, C, G, and T), the gaps in <code>last_tallies</code> don't have to get too wide before seeing memory savings.</p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 211 to 253):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_RanksCheckpointed.py</a> (lines 212 to 254):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">last_tally_before_row</span>(<span class="hljs-params">
         symbol: <span class="hljs-built_in">str</span>,
         row: <span class="hljs-built_in">int</span>,
@@ -23692,7 +23692,7 @@ test: ana
 </table>
 </td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
 </tbody></table>
-<p>When <code>first_indexes</code> and <code>last_tallies</code> gaps are wide enough, this algorithm ends up using less memory than the <a href="#BM_(suffix%20array)%2Fi">suffix array</a> algorithm, but it does so at the cost of doing extra computations during searches to fill in those gaps. This may be an acceptable tradeoff in a lot of cases because <a href="#BM_(SNP)%2F">SNP</a> analysis requires holding large <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a>s in memory and that extra computation time is often negligible.</p>
+<p>When <code>first_indexes</code> and <code>last_tallies</code> gaps are wide enough, this algorithm ends up using less memory than the <a href="#BM_(suffix%20array)%2Fi">suffix array</a> algorithm, but it does so at the cost of doing extra computations during searches to fill in those gaps. This may be an acceptable tradeoff in the case of <a href="#BM_(SNP)%2F">SNP</a> analysis because it requires holding large <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a>s in memory.</p>
 <p>The construction process for this algorithm is the same as that for the checkpointed ranks algorithm, but modified to also produce <code>first_indexes</code>.</p>
 <p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py</a> (lines 13 to 53):</p>
 <pre class="hljs"><code><span class="hljs-keyword">class</span> <span class="hljs-title class_">BWTRecord</span>:
@@ -23754,9 +23754,18 @@ first_indexes_checkpoint_n: 3
 </ul>
 </div>
 <p></p>
-<p>The checkpointed indexes algorithm requires <code>last_to_first</code> when walking back to a checkpointed <code>first_indexes</code> value. <code>last_to_first</code> doesn't exist in the checkpointed ranks algorithm: In the checkpointed ranks algorithm, all <code>last_to_first</code> values have been replaced with a function that computes <code>last_to_first</code> on-the-fly. As such, this algorithm, when walking back to a checkpointed <code>first_indexes</code>, uses that function to determine what a <code>last_to_first</code> value should be for some row.</p>
+<p>The checkpointed indexes algorithm uses <code>last_to_first</code> when walking back to a non-empty <code>first_indexes</code> entry. Since, in the checkpointed ranks algorithm, <code>last_to_first</code> is replaced with a function that computes <code>last_to_first</code> on-the-fly, the walking back needs to be modified to use the said function instead.</p>
+<p><img src="svgbob_e09bc6579e8e60a8b8b1b2fcbf0e688c44043b50.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The on-the-fly <code>last_to_first</code> computation was actually first introduced in the collapsed first algorithm.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The diagram above shows <code>first</code>, but remember that <code>first</code> has been collapsed into <code>first_occurrence_map</code>. It's expanded in the diagram above to make it easier to understand what's going on.</p>
+</div>
 <p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py</a> (lines 134 to 165):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk_back_until_first_index_checkpoint</span>(<span class="hljs-params">
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">walk_back_until_first_indexes_checkpoint</span>(<span class="hljs-params">
         bwt_records: <span class="hljs-built_in">list</span>[BWTRecord],
         bwt_first_indexes_checkpoints: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>],
         bwt_first_occurrence_map: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">int</span>],
@@ -23792,25 +23801,21 @@ first_indexes_checkpoint_n: 3
 <div style="border:1px solid black;">
 <p></p>
 <p>Building BWT using the following settings...</p>
-<pre><code>sequence: banana¶
-end_marker: ¶
-last_tallies_checkpoint_n: 3
-first_indexes_checkpoint_n: 3
-from_index: 5
+<pre><code>first_occurrence_map: {¶: 0, a: 1, b: 4, n: 5}
+last: [a, n, n, b, ¶, a, a]
+last_tallies_checkpoints: 
+  0: {a: 1, n: 0, b: 0, ¶: 0}
+  3: {a: 1, n: 2, b: 1, ¶: 0}
+  6: {a: 3, n: 2, b: 1, ¶: 1}
+first_indexes_checkpoints: {0: 6, 2: 3, 4: 0}
+from_row: 5
 
 </code></pre>
-<p>The following last column and squashed first mapping were produced ...</p>
-<ul>
-<li>First (squashed): {'¶': 0, 'a': 1, 'b': 4, 'n': 5}</li>
-<li>First Index Checkpoints: {0: 6, 2: 3, 4: 0}</li>
-<li>Last: ['a', 'n', 'n', 'b', '¶', 'a', 'a']</li>
-<li>Last tallies checkpoints: {0: {a=1}, 3: {a=1,n=2,b=1}, 6: {a=3,n=2,b=1,¶=1}}</li>
-</ul>
 <p>Walking back to a first index checkpoint resulted in a first index of 4 ...</p>
 </div>
 <p></p>
 <p>The testing process for this algorithm is the same as that for the checkpointed ranks algorithm, but modified to use the above function to determine where each <a href="#BM_(substring)%2Fi">substring</a> occurrence is in the original <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py</a> (lines 266 to 320):</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py</a> (lines 255 to 309):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">last_tally_before_row</span>(<span class="hljs-params">
         symbol: <span class="hljs-built_in">str</span>,
         row: <span class="hljs-built_in">int</span>,
@@ -23856,7 +23861,7 @@ from_index: 5
     <span class="hljs-comment"># Find first_index for each entry in between top and bottom</span>
     first_idxes = []
     <span class="hljs-keyword">for</span> index <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(top_row, bottom_row + <span class="hljs-number">1</span>):
-        first_idx = walk_back_until_first_index_checkpoint(
+        first_idx = walk_back_until_first_indexes_checkpoint(
             bwt_records,
             bwt_first_indexes_checkpoints,
             bwt_first_occurrence_map,
@@ -23869,25 +23874,21 @@ from_index: 5
 <div style="border:1px solid black;">
 <p></p>
 <p>Building BWT using the following settings...</p>
-<pre><code>sequence: banana¶
-end_marker: ¶
-last_tallies_checkpoint_n: 3
-first_indexes_checkpoint_n: 3
+<pre><code>first_occurrence_map: {¶: 0, a: 1, b: 4, n: 5}
+last: [a, n, n, b, ¶, a, a]
+last_tallies_checkpoints: 
+  0: {a: 1, n: 0, b: 0, ¶: 0}
+  3: {a: 1, n: 2, b: 1, ¶: 0}
+  6: {a: 3, n: 2, b: 1, ¶: 1}
+first_indexes_checkpoints: {0: 6, 2: 3, 4: 0}
 test: ana
 
 </code></pre>
-<p>The following last column and squashed first mapping were produced ...</p>
-<ul>
-<li>First (squashed): {'¶': 0, 'a': 1, 'b': 4, 'n': 5}</li>
-<li>First Index Checkpoints: {0: 6, 2: 3, 4: 0}</li>
-<li>Last: ['a', 'n', 'n', 'b', '¶', 'a', 'a']</li>
-<li>Last tallies checkpoints: {0: {a=1}, 3: {a=1,n=2,b=1}, 6: {a=3,n=2,b=1,¶=1}}</li>
-</ul>
-<p><em>ana</em> found in <em>banana¶</em> at indices [3, 1].</p>
+<p><em>ana</em> found at indices [3, 1].</p>
 </div>
 <p></p>
-<p>This algorithm can be extended to support mismatches by searching for the seeds of some <a href="#BM_(substring)%2Fi">substring</a>. The algorithm returns the indexes within the original <a href="#BM_(sequence)%2Fi">sequence</a> where a seed is, at which point seed extension is applied and the relevant segment of the original <a href="#BM_(sequence)%2Fi">sequence</a> is extracted and tested to see if its within the mismatch limit.</p>
-<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py</a> (lines 373 to 509):</p>
+<p>This algorithm can be extended to support mismatches by searching for the <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s of some <a href="#BM_(substring)%2Fi">substring</a>. The algorithm returns the indexes within the original <a href="#BM_(sequence)%2Fi">sequence</a> where a <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a> is, at which point <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed extension</a> is applied and the relevant segment of the original <a href="#BM_(sequence)%2Fi">sequence</a> is extracted and tested to see if it's within the mismatch limit.</p>
+<p><a href="ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py">ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py</a> (lines 351 to 487):</p>
 <pre class="hljs"><code><span class="hljs-comment"># This function has two ways of extracting out the segment of the original sequence to use for a mismatch test:</span>
 <span class="hljs-comment">#</span>
 <span class="hljs-comment">#  1. pull it out from the original sequence directly (a copy of it is in this func)</span>
@@ -24037,7 +24038,7 @@ last_tallies_checkpoint_n: 3
 first_indexes_checkpoint_n: 3
 
 </code></pre>
-<p>Searching <code>{'banana', 'anana', 'ankle'}</code> revealed the following was found:</p>
+<p>Searching <code>{'ankle', 'anana', 'banana'}</code> revealed the following was found:</p>
 <ul>
 <li>Matched <code>banana</code> against <code>banana</code> with distance of 0 at index 0</li>
 <li>Matched <code>anana</code> against <code>anana</code> with distance of 0 at index 1</li>
@@ -24220,33 +24221,9 @@ scoring_matrix: |+2
 <p>Scanning the database for 2-mers in MKDSDQDNTLLHIFQENPGQFLSGEEISRRLSISRAAVWKQINKLRNLGYEFEAIPRMGYRMTDVPDTLSMDTLTAGMMTREYFGKPLILLDKTTSTQEDARQLAEEGASEGTLVISEEQTGGRGRMGKKFYSPRGKGIWMSLVLRPKQPLHLTQQLTLLTGVAVCRAIAKCTGVQTDIKWPNDILFRGKKVCGILLESATEDERVRYCIAGIGISANLKESDFPEDLRSVATSIRMAGGTAVNRTELIQSIMAEMEGLYQLYNEQGFKPIASLWEALSGSVGREVHVQTARERFSGMATGLNRDGALLVRNQAGELIPVYSGDIFFDTR...</p>
 <ul>
 <li>
-<p>k=22 / score=68.0</p>
-<pre><code>Query k-mer: IKWPNDILFRGKKVCGILLESA @ 178
-DB k-mer:    AIKWPNDIYIGKKKICGFLTEM @ 173 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
-</code></pre>
-</li>
-<li>
-<p>k=16 / score=68.0</p>
-<pre><code>Query k-mer: SPRGKGIWMSLVLRPK @ 132
-DB k-mer:    SSKGKGLWMSLVLRPN @ 128 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
-</code></pre>
-</li>
-<li>
-<p>k=46 / score=119.0</p>
-<pre><code>Query k-mer: QLAEEGASEGTLVISEEQTGGRGRMGKKFYSPRGKGIWMSLVLRPK @ 102
-DB k-mer:    KKALVGNKSSFLILSDEQTEGRGRFNRNWSSSKGKGLWMSLVLRPN @ 98 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
-</code></pre>
-</li>
-<li>
-<p>k=48 / score=126.0</p>
-<pre><code>Query k-mer: LVISEEQTGGRGRMGKKFYSPRGKGIWMSLVLRPKQPLHLTQQLTLLT @ 113
-DB k-mer:    LILSDEQTEGRGRFNRNWSSSKGKGLWMSLVLRPNVPFAMIPKFNLFI @ 109 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
-</code></pre>
-</li>
-<li>
-<p>k=22 / score=69.0</p>
-<pre><code>Query k-mer: RGKGIWMSLVLRPKQPLHLTQQ @ 134
-DB k-mer:    KGKGLWMSLVLRPNVPFAMIPK @ 130 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+<p>k=18 / score=67.0</p>
+<pre><code>Query k-mer: FYSPRGKGIWMSLVLRPK @ 130
+DB k-mer:    WSSSKGKGLWMSLVLRPN @ 126 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
 </code></pre>
 </li>
 <li>
@@ -24256,9 +24233,15 @@ DB k-mer:    GRGRFNRNWSSSKGKGLWMSLVLRPNVP @ 118 ['&gt;VTR16721.1 biotin ligase [
 </code></pre>
 </li>
 <li>
-<p>k=18 / score=67.0</p>
-<pre><code>Query k-mer: FYSPRGKGIWMSLVLRPK @ 130
-DB k-mer:    WSSSKGKGLWMSLVLRPN @ 126 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+<p>k=48 / score=126.0</p>
+<pre><code>Query k-mer: LVISEEQTGGRGRMGKKFYSPRGKGIWMSLVLRPKQPLHLTQQLTLLT @ 113
+DB k-mer:    LILSDEQTEGRGRFNRNWSSSKGKGLWMSLVLRPNVPFAMIPKFNLFI @ 109 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+</code></pre>
+</li>
+<li>
+<p>k=14 / score=65.0</p>
+<pre><code>Query k-mer: RGKGIWMSLVLRPK @ 134
+DB k-mer:    KGKGLWMSLVLRPN @ 130 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
 </code></pre>
 </li>
 <li>
@@ -24274,15 +24257,33 @@ DB k-mer:    IKWPNDIYIGKKKICGFLTEMVAN @ 174 ['&gt;VTR16721.1 biotin ligase [Stap
 </code></pre>
 </li>
 <li>
+<p>k=22 / score=69.0</p>
+<pre><code>Query k-mer: RGKGIWMSLVLRPKQPLHLTQQ @ 134
+DB k-mer:    KGKGLWMSLVLRPNVPFAMIPK @ 130 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+</code></pre>
+</li>
+<li>
 <p>k=28 / score=76.0</p>
 <pre><code>Query k-mer: SPRGKGIWMSLVLRPKQPLHLTQQLTLL @ 132
 DB k-mer:    SSKGKGLWMSLVLRPNVPFAMIPKFNLF @ 128 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
 </code></pre>
 </li>
 <li>
-<p>k=14 / score=65.0</p>
-<pre><code>Query k-mer: RGKGIWMSLVLRPK @ 134
-DB k-mer:    KGKGLWMSLVLRPN @ 130 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+<p>k=22 / score=68.0</p>
+<pre><code>Query k-mer: IKWPNDILFRGKKVCGILLESA @ 178
+DB k-mer:    AIKWPNDIYIGKKKICGFLTEM @ 173 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+</code></pre>
+</li>
+<li>
+<p>k=16 / score=68.0</p>
+<pre><code>Query k-mer: SPRGKGIWMSLVLRPK @ 132
+DB k-mer:    SSKGKGLWMSLVLRPN @ 128 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
+</code></pre>
+</li>
+<li>
+<p>k=46 / score=119.0</p>
+<pre><code>Query k-mer: QLAEEGASEGTLVISEEQTGGRGRMGKKFYSPRGKGIWMSLVLRPK @ 102
+DB k-mer:    KKALVGNKSSFLILSDEQTEGRGRFNRNWSSSKGKGLWMSLVLRPN @ 98 ['&gt;VTR16721.1 biotin ligase [Staphylococcus capitis]']
 </code></pre>
 </li>
 </ul>
@@ -25228,10 +25229,9 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 </ul>
 </div>
 <p></p>
-<a name="H_Point%20Mutations%20%2F%20Single%20Nulceotide%20Polymorphism"></a><h2>Point Mutations / Single Nulceotide Polymorphism</h2>
-<p><a name="BM_(Stories%5C%2FPoint%20Mutations%20%2F%20Single%20Nulceotide%20Polymorphism)_TOPIC%2F"></a><strong></strong></p>
-<p>A mutation where a single nucleotide is substituted for another has two different classifications: <a href="#BM_(point%20mutation)%2Fi">point mutation</a> and <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a>.</p>
-<p>A <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a> (<a href="#BM_(SNP)%2F">SNP</a>) is a variation at a specific location of a DNA <a href="#BM_(sequence)%2Fi">sequence</a> -- it's one choice out of multiple possible nucleotides choices at that position (e.g. G out of {C, G, T}). Across a population, if a specific change at that position occurs frequently enough, it's considered a <a href="#BM_(SNP)%2F">SNP</a> rather than a mutation. Specifically, if the frequency of the change occurring is ...</p>
+<a name="H_Single%20Nulceotide%20Polymorphism"></a><h2>Single Nulceotide Polymorphism</h2>
+<p><a name="BM_(Stories%5C%2FSingle%20Nulceotide%20Polymorphism)_TOPIC%2F"></a><strong></strong></p>
+<p>A <a href="#BM_(point%20mutation)%2Fi">point mutation</a> is a mutation where a specific location of a DNA <a href="#BM_(sequence)%2Fi">sequence</a> has its nucleotide substituted for another (e.g. a C got mutated to a G). Across a population, if a specific <a href="#BM_(point%20mutation)%2Fi">point mutation</a> occurs frequently enough, it's considered a <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a> (<a href="#BM_(SNP)%2F">SNP</a>) rather than a mutation (a common variation of some species's <a href="#BM_(genome)%2Fi">genome</a>). Specifically, if the frequency of the substitution occurring is ...</p>
 <ul>
 <li>less than 1%, it's considered a <a href="#BM_(point%20mutation)%2Fi">point mutation</a>.</li>
 <li>at least 1%, it's considered a <a href="#BM_(SNP)%2F">SNP</a>.</li>
@@ -25240,32 +25240,52 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <p>Studies commonly attempt to associate <a href="#BM_(SNP)%2F">SNP</a>s with diseases. By comparing <a href="#BM_(SNP)%2F">SNP</a>s between a diseased population vs non-diseased population, scientists are able to discover which <a href="#BM_(SNP)%2F">SNP</a>s are responsible for a disease / increase the risk of a disease occurring. For example, a study might find that the population of heart attack victims had a location with a higher likelihood of G vs C.</p>
 <p><img src="svgbob_1b1f54a8eeffbdaa51000830fc701f1db84b0df0.svg" alt="Kroki diagram output"></p>
 <a name="H_Find%20Substitutions"></a><h3>Find Substitutions</h3>
+<p><a name="BM_(Stories%5C%2FSingle%20Nulceotide%20Polymorphism%2FFind%20Substitutions)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FSingle%20Nucleotide%20Polymorphism)_TOPIC%2F">Algorithms/Single Nucleotide Polymorphism</a></li>
+<li>Algorithms/<a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">Single Nucleotide Polymorphism</a>/<a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi">Burrows-Wheeler Transform</a>/Checkpointed Algorithm</li>
 </ul>
 </div>
-<p><a name="BM_(Stories%5C%2FPoint%20Mutations%20%2F%20Single%20Nulceotide%20Polymorphism%2FFind%20Substitutions)_TOPIC%2F"></a><strong></strong></p>
-<p>The <a href="#BM_(SNP)%2F">SNP</a>s / <a href="#BM_(point%20mutation)%2Fi">point mutation</a>s that an individual organism has are identified through a process called <a href="#BM_(read%20mapping%7Cread%20mapped)%2Fi">read mapping</a>. <a href="#BM_(read%20mapping%7Cread%20mapped)%2Fi">Read mapping</a> attempts to align the individual organism's <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a> DNA segments (e.g. <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s, <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a>s, <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s) to an idealized <a href="#BM_(genome)%2Fi">genome</a> for the population that organism belongs to (e.g. species, race, etc..), called a <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a>. The result of the alignment should have few <a href="#BM_(indel)%2Fi">indel</a>s and a fair amount of mismatches, where those mismatches identify that organism's <a href="#BM_(SNP)%2F">SNP</a>s / <a href="#BM_(point%20mutation)%2Fi">point mutation</a>s.</p>
-<p>Since <a href="#BM_(read%20mapping%7Cread%20mapped)%2Fi">read mapping</a> for <a href="#BM_(SNP)%2F">SNP</a> / <a href="#BM_(point%20mutation)%2Fi">point mutation</a> identification focuses on identifying substitutions and not <a href="#BM_(indel)%2Fi">indel</a>s, traditional <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> algorithms aren't required. More efficient <a href="#BM_(substring)%2Fi">substring</a> matching algorithms can be used instead. Specifically, if you have a <a href="#BM_(sequence)%2Fi">sequence</a> that you're trying to map and you know it can tolerate d mismatches at most, any <a href="#BM_(substring)%2Fi">substring</a> matching algorithm will work.</p>
-<p>If a <a href="#BM_(sequence)%2Fi">sequence</a> can tolerate d mismatches, separate it into d + 1 blocks. It's impossible for d mismatches to exist across d + 1 blocks. There are more blocks than there are mismatches -- at least one of the blocks must match exactly.</p>
-<p>These blocks are called seeds, and the act of finding seeds and testing the <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> of the extended region is called seed extension.</p>
+<p>The <a href="#BM_(SNP)%2F">SNP</a>s / <a href="#BM_(point%20mutation)%2Fi">point mutation</a>s that an individual organism has are identified through a process called <a href="#BM_(read%20map)%2Fi">read map</a>ping. <a href="#BM_(read%20map)%2Fi">Read map</a>ping attempts to align the individual organism's <a href="#BM_(sequencing%7Csequenced)%2Fi">sequenced</a> DNA segments (e.g. <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s, <a href="#BM_(read-pair%7Cread%20pair)%2Fi">read-pair</a>s, <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s) to an idealized <a href="#BM_(genome)%2Fi">genome</a> for the population that organism belongs to (e.g. species, race, etc..), called a <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a>. The result of the alignment should have few <a href="#BM_(indel)%2Fi">indel</a>s and a fair amount of mismatches, where those mismatches identify that organism's <a href="#BM_(SNP)%2F">SNP</a>s / <a href="#BM_(point%20mutation)%2Fi">point mutation</a>s.</p>
+<p>Since <a href="#BM_(read%20map)%2Fi">read map</a>ping for <a href="#BM_(SNP)%2F">SNP</a> / <a href="#BM_(point%20mutation)%2Fi">point mutation</a> identification focuses on identifying mismatches and not <a href="#BM_(indel)%2Fi">indel</a>s, traditional <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> algorithms aren't required. More efficient <a href="#BM_(substring)%2Fi">substring</a> finding algorithms can be used instead. Specifically, if you have a <a href="#BM_(substring)%2Fi">substring</a> that you're trying to find in a <a href="#BM_(sequence)%2Fi">sequence</a>, and you know it can tolerate d mismatches at most, separate it into d + 1 blocks. It's impossible for d mismatches to exist across d + 1 blocks. There are more blocks than there are mismatches -- at least one of the blocks must match exactly.</p>
+<p>These blocks are called <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s, and the act of finding <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s and testing the <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> of the extended region is called <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed extension</a>.</p>
 <p><img src="svgbob_27be0ab62d6a6964135cfc8727e10d7ede8f2e5f.svg" alt="Kroki diagram output"></p>
-<p>The example below attempted to map a set of <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s to <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> for Mycoplasma bovis.</p>
-<p>TODO: Create and add example here. Mycoplasma <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> is already in directory. Either loads up some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s or pull out some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s from the other mycoplasma <a href="#BM_(genome)%2Fi">genome</a> from ch6 and find them in the <a href="#BM_(genome)%2Fi">genome</a>. Maybe <a href="#BM_(suffix%20array)%2Fi">suffix array</a> is your best bet because <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi">burrows wheeler transform</a> might take forever to generate the data structure (its very slow).</p>
-<p>TODO: Create and add example here. Mycoplasma <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> is already in directory. Either loads up some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s or pull out some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s from the other mycoplasma <a href="#BM_(genome)%2Fi">genome</a> from ch6 and find them in the <a href="#BM_(genome)%2Fi">genome</a>. Maybe <a href="#BM_(suffix%20array)%2Fi">suffix array</a> is your best bet because <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi">burrows wheeler transform</a> might take forever to generate the data structure (its very slow).</p>
-<p>TODO: Create and add example here. Mycoplasma <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> is already in directory. Either loads up some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s or pull out some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s from the other mycoplasma <a href="#BM_(genome)%2Fi">genome</a> from ch6 and find them in the <a href="#BM_(genome)%2Fi">genome</a>. Maybe <a href="#BM_(suffix%20array)%2Fi">suffix array</a> is your best bet because <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi">burrows wheeler transform</a> might take forever to generate the data structure (its very slow).</p>
-<p>TODO: Create and add example here. Mycoplasma <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> is already in directory. Either loads up some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s or pull out some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s from the other mycoplasma <a href="#BM_(genome)%2Fi">genome</a> from ch6 and find them in the <a href="#BM_(genome)%2Fi">genome</a>. Maybe <a href="#BM_(suffix%20array)%2Fi">suffix array</a> is your best bet because <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi">burrows wheeler transform</a> might take forever to generate the data structure (its very slow).</p>
-<p>TODO: Create and add example here. Mycoplasma <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> is already in directory. Either loads up some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s or pull out some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s from the other mycoplasma <a href="#BM_(genome)%2Fi">genome</a> from ch6 and find them in the <a href="#BM_(genome)%2Fi">genome</a>. Maybe <a href="#BM_(suffix%20array)%2Fi">suffix array</a> is your best bet because <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi">burrows wheeler transform</a> might take forever to generate the data structure (its very slow).</p>
-<p>TODO: Create and add example here. Mycoplasma <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> is already in directory. Either loads up some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s or pull out some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s from the other mycoplasma <a href="#BM_(genome)%2Fi">genome</a> from ch6 and find them in the <a href="#BM_(genome)%2Fi">genome</a>. Maybe <a href="#BM_(suffix%20array)%2Fi">suffix array</a> is your best bet because <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi">burrows wheeler transform</a> might take forever to generate the data structure (its very slow).</p>
-<p>TODO: Create and add example here. Mycoplasma <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> is already in directory. Either loads up some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s or pull out some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s from the other mycoplasma <a href="#BM_(genome)%2Fi">genome</a> from ch6 and find them in the <a href="#BM_(genome)%2Fi">genome</a>. Maybe <a href="#BM_(suffix%20array)%2Fi">suffix array</a> is your best bet because <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi">burrows wheeler transform</a> might take forever to generate the data structure (its very slow).</p>
-<p>TODO: Create and add example here. Mycoplasma <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> is already in directory. Either loads up some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s or pull out some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s from the other mycoplasma <a href="#BM_(genome)%2Fi">genome</a> from ch6 and find them in the <a href="#BM_(genome)%2Fi">genome</a>. Maybe <a href="#BM_(suffix%20array)%2Fi">suffix array</a> is your best bet because <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi">burrows wheeler transform</a> might take forever to generate the data structure (its very slow).</p>
-<p>TODO: Create and add example here. Mycoplasma <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> is already in directory. Either loads up some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s or pull out some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s from the other mycoplasma <a href="#BM_(genome)%2Fi">genome</a> from ch6 and find them in the <a href="#BM_(genome)%2Fi">genome</a>. Maybe <a href="#BM_(suffix%20array)%2Fi">suffix array</a> is your best bet because <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi">burrows wheeler transform</a> might take forever to generate the data structure (its very slow).</p>
-<p>TODO: Create and add example here. Mycoplasma <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> is already in directory. Either loads up some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s or pull out some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s from the other mycoplasma <a href="#BM_(genome)%2Fi">genome</a> from ch6 and find them in the <a href="#BM_(genome)%2Fi">genome</a>. Maybe <a href="#BM_(suffix%20array)%2Fi">suffix array</a> is your best bet because <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi">burrows wheeler transform</a> might take forever to generate the data structure (its very slow).</p>
-<p>TODO: Create and add example here. Mycoplasma <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> is already in directory. Either loads up some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s or pull out some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s from the other mycoplasma <a href="#BM_(genome)%2Fi">genome</a> from ch6 and find them in the <a href="#BM_(genome)%2Fi">genome</a>. Maybe <a href="#BM_(suffix%20array)%2Fi">suffix array</a> is your best bet because <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi">burrows wheeler transform</a> might take forever to generate the data structure (its very slow).</p>
-<p>TODO: Create and add example here. Mycoplasma <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> is already in directory. Either loads up some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s or pull out some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s from the other mycoplasma <a href="#BM_(genome)%2Fi">genome</a> from ch6 and find them in the <a href="#BM_(genome)%2Fi">genome</a>. Maybe <a href="#BM_(suffix%20array)%2Fi">suffix array</a> is your best bet because <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi">burrows wheeler transform</a> might take forever to generate the data structure (its very slow).</p>
-<p>TODO: Create and add example here. Mycoplasma <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> is already in directory. Either loads up some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s or pull out some fake <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s from the other mycoplasma <a href="#BM_(genome)%2Fi">genome</a> from ch6 and find them in the <a href="#BM_(genome)%2Fi">genome</a>. Maybe <a href="#BM_(suffix%20array)%2Fi">suffix array</a> is your best bet because <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi">burrows wheeler transform</a> might take forever to generate the data structure (its very slow).</p>
+<p>The example below <a href="#BM_(read%20map)%2Fi">read map</a>s the the <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s from a Mycoplasma agalactiae <a href="#BM_(genome)%2Fi">genome</a> to a <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> for Mycoplasma bovis.</p>
+<div style="border:1px solid black;">
+<p></p>
+<p>Executing checkpointed BWT search algorithm using the following settings (reverse complements of reads automatically included)...</p>
+<pre><code>reference_genome_filename: Mycoplasma bovis - GCA_000696015.1_ASM69601v1_genomic.fna.xz
+reads_filename: Mycoplasma agalactiae - READS.txt.xz
+max_mismatch: 2
+pad_marker: _
+end_marker: $
+last_tallies_checkpoint_n: 20
+first_indexes_checkpoint_n: 20
+
+</code></pre>
+<p>CP005933.1 Mycoplasma bovis CQ-W70, complete genome</p>
+<ul>
+<li>Matched read at line 4008 (TCTCGTACTA...) to index 681924 of current contig (TCTCGTACTA...) with 0 mismatches</li>
+<li>Matched read at line 1397 (AGTATTTAGC...) to index 682628 of current contig (AGTATTTAGC...) with 0 mismatches</li>
+<li>Matched read at line 1151 (CTACCTTAGG...) to index 682653 of current contig (CTACCTTAGG...) with 0 mismatches</li>
+<li>Matched read at line 2741 (TAAGCTAACG...) to index 682715 of current contig (TAAGCTAACG...) with 0 mismatches</li>
+<li>Matched read at line 2494 (CCCCACTCGT...) to index 685205 of current contig (CCCCACTCGT...) with 0 mismatches</li>
+<li>Matched read at line 4330 (CGAACGTACT...) to index 685523 of current contig (CGAACGTACT...) with 0 mismatches</li>
+<li>Matched read at line 3172 (CGCTCCATCA...) to index 686019 of current contig (CGCTCCATCA...) with 0 mismatches</li>
+<li>Matched read at line 4753 (GTGGAATATT...) to index 686043 of current contig (GTGGAATATT...) with 0 mismatches</li>
+<li>Matched read at line 1307 (CGCTATGATA...) to index 686320 of current contig (CGCTATGATA...) with 0 mismatches</li>
+<li>Matched read at line 692 (ACCAATACGA...) to index 690531 of current contig (ACCAATACGA...) with 2 mismatches</li>
+<li>Matched read at line 1461 (GTTAGCAATA...) to index 695901 of current contig (GTTAGCAATA...) with 1 mismatches</li>
+<li>Matched read at line 3725 (CAATAATACG...) to index 697008 of current contig (CAATAATACG...) with 0 mismatches</li>
+<li>Matched read at line 4838 (CTTTAATGTA...) to index 699283 of current contig (CTTTAATGTA...) with 2 mismatches</li>
+<li>Matched read at line 920 (TTTAGTAACT...) to index 757844 of current contig (TTTAGTAACT...) with 2 mismatches</li>
+<li>Matched read at line 2403 (TTCTTTTGTT...) to index 792698 of current contig (TTCTTTTGTT...) with 2 mismatches</li>
+<li>Matched read at line 4220 (TAATTGTTAA...) to index 804479 of current contig (TAATTGTTAA...) with 2 mismatches</li>
+<li>Matched read at line 3308 (TAAAAATTTA...) to index 804522 of current contig (TAAAAATTTA...) with 2 mismatches</li>
+</ul>
+</div>
+<p></p>
 <a name="H_Ideas"></a><h1>Ideas</h1>
 <ul>
 <li>
@@ -25301,6 +25321,9 @@ X -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 <li>
 <p><a href="#BM_(hierarchical%20cluster)%2Fi">Hierarchical cluster</a>ing as a means of detecting outliers - <a href="#BM_(cluster)%2Fi">Cluster</a> data using <a href="#BM_(neighbour)%2Fi">neighbour</a>ing join <a href="#BM_(phylogeny%7Cphylogenetic)%2Fi">phylogeny</a>. How far is each leaf node to its parent internal node? Find any that are grossly over the average / <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a> / some other metric? Report it. Try other ways as well (e.g. pick a root and see how far it is from the root -- root picked using some metric like avg distance between leaf nodes / 2 or <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">squared error distortion</a>).</p>
 <p>This relates to the idea above (soft <a href="#BM_(hierarchical%20cluster)%2Fi">hierarchical cluster</a>ing) -- You may be able to identify outliers using soft <a href="#BM_(hierarchical%20cluster)%2Fi">hierarchical cluster</a>ing using this (e.g. the probability of being a part of some internal node is way farther than any of the other leaf nodes).</p>
+</li>
+<li>
+<p>Checkpointed <a href="#BM_(BWT)%2F">BWT</a> algorithm in C++ - Implement it in modern C++ using concepts, as a generic library</p>
 </li>
 </ul>
 <a name="H_Terminology"></a><h1>Terminology</h1>
@@ -29281,22 +29304,22 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><a name="BM_(Ohdo%20syndrome)%2Fi"></a><strong>Ohdo syndrome</strong> - A rare disease causing learning disabilities and distinct facial features. The disease is caused by a <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a> resulting in a truncated protein (see <a href="#BM_(codon%7Cgenetic%20code)%2Fi">codon</a>s).</p>
 </li>
 <li>
-<p><a name="BM_(single%20nucleotide%20polymorphism)%2Fi"></a><strong>single nucleotide polymorphism</strong> <a name="BM_(SNP)%2F"></a><strong></strong> - A nucleotide variation at specific location in a DNA <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. position 15 has a <a href="#BM_(SNP)%2F">SNP</a> where it's A vs a <a href="#BM_(SNP)%2F">SNP</a> where it's T). While a <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a> technically qualifies as a change in DNA, it occurs frequently enough that it's considered a variation rather than a mutation. Specifically, across the entire population, if the frequency of the change occurring is ...</p>
+<p><a name="BM_(single%20nucleotide%20polymorphism)%2Fi"></a><strong>single nucleotide polymorphism</strong> <a name="BM_(SNP)%2F"></a><strong></strong> - A nucleotide variation at a specific location in a DNA <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. position 15 has a <a href="#BM_(SNP)%2F">SNP</a> where it's A vs a <a href="#BM_(SNP)%2F">SNP</a> where it's T). While a <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a> technically qualifies as a change in DNA, it occurs frequently enough that it's considered a variation rather than a mutation. Specifically, across the entire population, if the frequency of the change occurring is ...</p>
 <ul>
 <li>less than 1%, it's considered a <a href="#BM_(point%20mutation)%2Fi">point mutation</a>.</li>
 <li>at least 1%, it's considered a <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a>.</li>
 </ul>
 </li>
 <li>
-<p><a name="BM_(read%20mapping%7Cread%20mapped)%2Fi"></a><strong>read mapping</strong> - The alignment of DNA <a href="#BM_(sequence)%2Fi">sequence</a>s (e.g. <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s, <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s, etc..) to some larger DNA <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a>).</p>
+<p><a name="BM_(read%20map)%2Fi"></a><strong>read mapping</strong> - The alignment of DNA <a href="#BM_(sequence)%2Fi">sequence</a>s (e.g. <a href="#BM_%5Cb(read)_SEQ%2Fi">read</a>s, <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s, etc..) to some larger DNA <a href="#BM_(sequence)%2Fi">sequence</a> (e.g. <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a>).</p>
 </li>
 <li>
-<p><a name="BM_(reference%20genome%7Creference%20human%20genome)%2Fi"></a><strong>reference genome</strong> - A <a href="#BM_(genome)%2Fi">genome</a> <a href="#BM_(assembly%7Cassemble)%2Fi">assemble</a>d from multiple organisms of the same species, represented as the idealized <a href="#BM_(genome)%2Fi">genome</a> for that species. <a href="#BM_(sequencing%7Csequenced)%2Fi">Sequenced</a> DNA <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s / <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s of an organism are often <a href="#BM_(read%20mapping%7Cread%20mapped)%2Fi">read mapped</a> against the <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> for that organism's species, such that ...</p>
+<p><a name="BM_(reference%20genome%7Creference%20human%20genome)%2Fi"></a><strong>reference genome</strong> - A <a href="#BM_(genome)%2Fi">genome</a> <a href="#BM_(assembly%7Cassemble)%2Fi">assemble</a>d from multiple organisms of the same species, represented as the idealized <a href="#BM_(genome)%2Fi">genome</a> for that species. <a href="#BM_(sequencing%7Csequenced)%2Fi">Sequenced</a> DNA <a href="#BM_(fragment)_SEQ%2Fi">fragment</a>s / <a href="#BM_(contig)s%3F%5Cb%2Fi">contig</a>s of an organism are often <a href="#BM_(read%20map)%2Fi">read map</a>ped against the <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> for that organism's species, such that ...</p>
 <ul>
 <li>a clearer picture of the organism's <a href="#BM_(genome)%2Fi">genome</a> is produced.</li>
 <li><a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a>s can be found.</li>
 </ul>
-<p><a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">Reference genome</a>s don't capture genomic nuances such as <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>, areas of high mutation, or <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a>s. For example, roughly 0.1% of an individual human's <a href="#BM_(genome)%2Fi">genome</a> can't be <a href="#BM_(read%20mapping%7Cread%20mapped)%2Fi">read mapped</a> to the human <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> (e.g. <a href="#BM_(major%20histocompatibility%20complex)%2Fi">major histocompatibility complex</a>).</p>
+<p><a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">Reference genome</a>s don't capture genomic nuances such as <a href="#BM_(genome%20rearrangement%7Cchromosomal%20rearrangement%7Cchromosome%20rearrangement)%2Fi">genome rearrangement</a>, areas of high mutation, or <a href="#BM_(single%20nucleotide%20polymorphism)%2Fi">single nucleotide polymorphism</a>s. For example, roughly 0.1% of an individual human's <a href="#BM_(genome)%2Fi">genome</a> can't be <a href="#BM_(read%20map)%2Fi">read map</a>ped to the human <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a> (e.g. <a href="#BM_(major%20histocompatibility%20complex)%2Fi">major histocompatibility complex</a>).</p>
 <p>A new type of <a href="#BM_(reference%20genome%7Creference%20human%20genome)%2Fi">reference genome</a>, called a <a href="#BM_(pan-genome%7Cpangenome)%2Fi">pan-genome</a>, attempts to capture such nuances.</p>
 </li>
 <li>
@@ -29316,7 +29339,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><img src="svgbob_a0c667cd5b0e6bcccc82e6d79e603b8ab132125f.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>End of <a href="#BM_(sequence)%2Fi">sequence</a> marker is preferred mechanism.</p>
+<p>End of <a href="#BM_(sequence)%2Fi">sequence</a> marker is the preferred mechanism.</p>
 </div>
 </li>
 <li>
@@ -29412,7 +29435,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 </li>
 <li>
-<p><a name="BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi"></a><strong>Burrows-Wheeler transform</strong> <a name="BM_(BWT)%2F"></a><strong></strong> - A matrix formed by combining all cyclic rotations of a <a href="#BM_(sequence)%2Fi">sequence</a> and sorting lexicographically. The <a href="#BM_(sequence)%2Fi">sequence</a> must have an end marker where the end marker comes first in the lexicogrpahical sort order (similar to <a href="#BM_(suffix%20array)%2Fi">suffix array</a>s).</p>
+<p><a name="BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi"></a><strong>Burrows-Wheeler transform</strong> <a name="BM_(BWT)%2F"></a><strong></strong> - A matrix formed by combining all cyclic rotations of a <a href="#BM_(sequence)%2Fi">sequence</a> and sorting lexicographically. The <a href="#BM_(sequence)%2Fi">sequence</a> must have an end marker, where the end marker comes first in the lexicographical sort order (similar to <a href="#BM_(suffix%20array)%2Fi">suffix array</a>s).</p>
 <p>The example below is the <a href="#BM_(burrows%5B-%5Cs%5Dwheeler%20transform)%2Fi">burrows-wheeler transform</a> of "banana¶", where <em>¶</em> is the end marker.</p>
 <ol>
 <li>
@@ -29497,7 +29520,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </table>
 </li>
 <li>
-<p>Lexicogrpahically sort the cyclic rotations.</p>
+<p>Lexicographically sort the cyclic rotations.</p>
 <table>
 <thead>
 <tr>
@@ -29581,8 +29604,8 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><a href="#BM_(BWT)%2F">BWT</a> matrices have a special property called the <a href="#BM_(first%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a> which makes them suitable for quickly determining if and how many times a <a href="#BM_(substring)%2Fi">substring</a> exists in the original <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
 </li>
 <li>
-<p><a name="BM_(first%5B-%5Cs%5Dlast%20property)%2Fi"></a><strong>first-last property</strong> - The property of <a href="#BM_(BWT)%2F">BWT</a> matrices that guarantees consistent ordering of a symbols instances between the first and last columns of a <a href="#BM_(BWT)%2F">BWT</a> matrix (a symbol's instances appear in the first column as it does in the last column).</p>
-<p>Consider the <a href="#BM_(sequence)%2Fi">sequence</a> "banana¶": The symbols in "banana¶" are {a, b, n, ¶}. At index ...</p>
+<p><a name="BM_(first%5B-%5Cs%5Dlast%20property)%2Fi"></a><strong>first-last property</strong> - The property of <a href="#BM_(BWT)%2F">BWT</a> matrices that guarantees consistent ordering of a symbol's instances between the first and last columns of a <a href="#BM_(BWT)%2F">BWT</a> matrix.</p>
+<p>Consider the <a href="#BM_(sequence)%2Fi">sequence</a> "banana¶": The symbols in "banana¶" are {¶, a, b, n}. At index ...</p>
 <ol start="0">
 <li>the first <em>b</em> occurs: b<sub>1</sub></li>
 <li>the first <em>a</em> occurs: a<sub>1</sub></li>
@@ -29592,10 +29615,10 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>the third <em>a</em> occurs: a<sub>3</sub></li>
 <li>the first <em>¶</em> occurs: ¶<sub>1</sub></li>
 </ol>
-<p>Adding symbol instance counts to the <a href="#BM_(sequence)%2Fi">sequence</a> becomes [b<sub>1</sub>, a<sub>1</sub>, n<sub>1</sub>, a<sub>2</sub>, n<sub>2</sub>, a<sub>3</sub>, ¶<sub>1</sub>]. In the <a href="#BM_(BWT)%2F">BWT</a> matrix, for each symbol, even though the position of symbol instances are different between the first and last columns, the order in which those instances appear in are the same.</p>
+<p>With these occurrence counts, the <a href="#BM_(sequence)%2Fi">sequence</a> becomes b<sub>1</sub>a<sub>1</sub>n<sub>1</sub>a<sub>2</sub>n<sub>2</sub>a<sub>3</sub>¶<sub>1</sub>. In the <a href="#BM_(BWT)%2F">BWT</a> matrix, for each symbol, even though the position of symbol instances are different between the first and last columns, the order in which those instances appear in are the same. For example, ...</p>
 <ul>
-<li>Symbol <em>a</em> instances are ordered as [<span style="background-color: #f00; color: white; padding: 3px">a<sub>3</sub></span>, <span style="background-color: #b00; color: white; padding: 3px">a<sub>2</sub></span>, <span style="background-color: #800; color: white; padding: 3px">a<sub>1</sub></span>] in both the first and last column.</li>
-<li>Symbol <em>n</em> instances are ordered as [<span style="background-color: #00f; color: white; padding: 3px">n<sub>2</sub></span>, <span style="background-color: #00b; color: white; padding: 3px">n<sub>1</sub></span>] in both the first and last column.</li>
+<li>symbol <em>a</em> instances are ordered as [<span style="background-color: #f00; color: white; padding: 3px">a<sub>3</sub></span>, <span style="background-color: #b00; color: white; padding: 3px">a<sub>2</sub></span>, <span style="background-color: #800; color: white; padding: 3px">a<sub>1</sub></span>] in both the first and last column.</li>
+<li>symbol <em>n</em> instances are ordered as [<span style="background-color: #00f; color: white; padding: 3px">n<sub>2</sub></span>, <span style="background-color: #00b; color: white; padding: 3px">n<sub>1</sub></span>] in both the first and last column.</li>
 </ul>
 <table>
 <thead>
@@ -29675,7 +29698,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </tr>
 </tbody>
 </table>
-<p>The <a href="#BM_(first%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a> comes from lexicographic sorting. In the example matrix above, isolating the matrix to those rows starting with "a" shows that, the second column is also lexicographically sorted in the isolated matrix.</p>
+<p>The <a href="#BM_(first%5B-%5Cs%5Dlast%20property)%2Fi">first-last property</a> comes from lexicographic sorting. In the example matrix above, isolating the matrix to those rows starting with <em>a</em> shows that, the second column is also lexicographically sorted in the isolated matrix.</p>
 <table>
 <thead>
 <tr>
@@ -29718,7 +29741,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </tr>
 </tbody>
 </table>
-<p>In otherwords, cyclically rotating each row right by 1 moves each corresponding "a" to the end but doesn't change the lexicographic ordering of the rows.</p>
+<p>In other words, cyclically rotating each row right by 1 moves each corresponding <em>a</em> to the end but doesn't change the lexicographic ordering of the rows.</p>
 <table>
 <thead>
 <tr>
@@ -29761,7 +29784,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </tr>
 </tbody>
 </table>
-<p>After the cyclic rotations above, the rows in the isolated matrix become other rows from the original matrix. Since the rows in the isolated matrix are still lexicographically sorted, they're ordered as they appear in that original matrix.</p>
+<p>Once rotated, the rows in the isolated matrix become other rows from the original matrix. Since the rows in the isolated matrix are still lexicographically sorted, they're ordered as they appear in that original matrix.</p>
 <table>
 <thead>
 <tr>
@@ -29840,10 +29863,15 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </tr>
 </tbody>
 </table>
-<p>Given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, the original <a href="#BM_(sequence)%2Fi">sequence</a> can be pulled out by walking between those columns. The row containing the end marker in the last column has the <a href="#BM_(sequence)%2Fi">sequence</a>'s first element in its first column.</p>
-<p><img src="svgbob_a426a11d5be88f8cd35f0f8dd45880bc333e1a27.svg" alt="Kroki diagram output"></p>
-<p>Likewise, given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, it's possible to quickly identify if and how many instances of some <a href="#BM_(substring)%2Fi">substring</a> exists in th original <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
-<p><img src="svgbob_350cb485d1908ecfc7ee5dea40ddef929b32c317.svg" alt="Kroki diagram output"></p>
+<p>Given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, the original <a href="#BM_(sequence)%2Fi">sequence</a> can be pulled out by walking between those columns from last-to-first. Since it's known that ...</p>
+<ul>
+<li>the row containing the end marker (<em>¶</em>) within the first column has the <a href="#BM_(sequence)%2Fi">sequence</a>'s last element within the last column,</li>
+<li>that end marker (<em>¶</em>) only appears once in the <a href="#BM_(sequence)%2Fi">sequence</a> and is always lexicographically sorted to the top of the first column,</li>
+</ul>
+<p>... the walk always starts from the top row.</p>
+<p><img src="svgbob_57e0f1bae5a018cfdeaca8f0bd21352d8d510b91.svg" alt="Kroki diagram output"></p>
+<p>Likewise, given just the first and last column of a <a href="#BM_(BWT)%2F">BWT</a> matrix, it's possible to quickly identify if and how many instances of some <a href="#BM_(substring)%2Fi">substring</a> exists in the original <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p><img src="svgbob_6daab13e146d8f4524d3b6d51eeebfa62689062a.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(pre%5B-%5Cs%5D%3Forder%20traversal)%2Fi"></a><strong>pre-order traversal</strong> - A form of depth-first traversal for binary <a href="#BM_(tree)%2Fi">tree</a>s where, starting from the root node, ...</p>
@@ -29898,12 +29926,25 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 </li>
 <li>
-<p><a name="BM_(Basic%20Local%20Alignment%20Search%20Tool%7Chigh%5B-%5Cs%5Dscoring%20segment%20pair)%2Fi"></a><strong>Basic Local Alignment Search Tool</strong> <a name="BM_(BLAST)%2F"></a><strong></strong> <a name="BM_(HSP)%2F"></a><strong></strong> - A heuristic algorithm that compares a <a href="#BM_(sequence)%2Fi">sequence</a> against a known set of <a href="#BM_(sequence)%2Fi">sequence</a>s to quickly find shared regions, called <a href="#BM_(Basic%20Local%20Alignment%20Search%20Tool%7Chigh%5B-%5Cs%5Dscoring%20segment%20pair)%2Fi">high-scoring segment pair</a>s. <a href="#BM_(Basic%20Local%20Alignment%20Search%20Tool%7Chigh%5B-%5Cs%5Dscoring%20segment%20pair)%2Fi">High-scoring segment pair</a>s may be identified even in the presence of mutations, potentially even if mutated to the point where all elements are different in the shared region (e.g. <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> scoring may deem two <a href="#BM_(peptide)%2Fi">peptide</a>s to be highly related but they may not actually share any <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s between them).</p>
+<p><a name="BM_(Basic%20Local%20Alignment%20Search%20Tool%7Chigh%5B-%5Cs%5Dscoring%20segment%20pair)%2Fi"></a><strong>Basic Local Alignment Search Tool</strong> <a name="BM_(BLAST)%2F"></a><strong></strong> <a name="BM_(HSP)%2F"></a><strong></strong> - A heuristic algorithm that quickly finds shared regions between a query <a href="#BM_(sequence)%2Fi">sequence</a> and a database of <a href="#BM_(sequence)%2Fi">sequence</a>s, where those shared regions are called <a href="#BM_(Basic%20Local%20Alignment%20Search%20Tool%7Chigh%5B-%5Cs%5Dscoring%20segment%20pair)%2Fi">high-scoring segment pair</a>s. <a href="#BM_(Basic%20Local%20Alignment%20Search%20Tool%7Chigh%5B-%5Cs%5Dscoring%20segment%20pair)%2Fi">High-scoring segment pair</a>s may be identified even in the presence of mutations, potentially even if mutated to the point where all elements are different in the shared region (e.g. <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> scoring may deem two <a href="#BM_(peptide)%2Fi">peptide</a>s to be highly related but they may not actually share any <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s between them).</p>
 <p><img src="svgbob_bb1cb211935586eee5a511739d14c699a85f2179.svg" alt="Kroki diagram output"></p>
-<p><a href="#BM_(BLAST)%2F">BLAST</a> works by preprocessing the known set of <a href="#BM_(sequence)%2Fi">sequence</a>s into a hash table of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s, where other <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s similar to those <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s are included in the hash table as well. Similarity is determined by performing <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s (the higher the score, the more similar the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> is).</p>
+<p><a href="#BM_(BLAST)%2F">BLAST</a> works by preprocessing the database of <a href="#BM_(sequence)%2Fi">sequence</a>s into a hash table of <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s, where other <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s similar to those <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s are included in the hash table as well. Similarity is determined by performing <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>s (the higher the score, the more similar the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> is).</p>
 <p><img src="svgbob_0a9e1f0fc7f14b37640e40326681e0e3da12652b.svg" alt="Kroki diagram output"></p>
 <p><a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">K-mer</a>s from a query <a href="#BM_(sequence)%2Fi">sequence</a> are then looked up one-by-one in the hash table. Found matches are extended left and right until some criteria is met (e.g. the score drops below some threshold). The final product of the extension is called a <a href="#BM_(Basic%20Local%20Alignment%20Search%20Tool%7Chigh%5B-%5Cs%5Dscoring%20segment%20pair)%2Fi">high-scoring segment pair</a>.</p>
 <p><img src="svgbob_d1064c02dd24172be71e0d3855b32de7deef66b7.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The Pevzner book and documentation online refers to <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a>s from the query <a href="#BM_(sequence)%2Fi">sequence</a> as <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s and the extension left-and-right as <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed extension</a>.</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(seed%20extension%7Cseed)%2Fi"></a><strong>seed</strong> - A <a href="#BM_(substring)%2Fi">substring</a> of a string which is specifically used for mismatch tolerant searches.</p>
+<p>The example below searches for GCCGTTTT with a mismatch tolerance of 1 by first breaking GCCGTTTT into two non-overlapping <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s (GCCG and TTTT), then searching for each <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a> independently. Since GCCGTTTT can only contain a single mismatch, that mismatch has to be either in the 1st <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a> (GCCG) or the 2nd <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a> (TTTT), not both.</p>
+<p><img src="svgbob_c62030de2ac380d4b7ac8eaa697a6fb1805ca807.svg" alt="Kroki diagram output"></p>
+<p>Each found <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a> is then extended to cover the entirety of GCCGTTT and tested in full, called <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed extension</a>. If the <a href="#BM_(hamming%20distance)%2Fi">hamming distance</a> of the extended <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a> is within the mismatch tolerance of 1, it's considered a match.</p>
+<p><img src="svgbob_9f10c1db9ba47e4e26e56bfedd44f424bc226362.svg" alt="Kroki diagram output"></p>
+<p>It's impossible for d mismatches to exist across d + 1 <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s. There are more <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s than there are mismatches — at least one of the <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s must match exactly.</p>
+<p><img src="svgbob_27be0ab62d6a6964135cfc8727e10d7ede8f2e5f.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
 <p>

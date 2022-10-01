@@ -131,7 +131,7 @@ def main_build():
 
 
 # MARKDOWN_WALK_BACK_TO_FIRST_IDX
-def walk_back_until_first_index_checkpoint(
+def walk_back_until_first_indexes_checkpoint(
         bwt_records: list[BWTRecord],
         bwt_first_indexes_checkpoints: dict[int, int],
         bwt_first_occurrence_map: dict[str, int],
@@ -172,33 +172,22 @@ def main_walk_back_until_first_index_checkpoint():
     try:
         data_raw = ''.join(stdin.readlines())
         data: dict = yaml.safe_load(data_raw)
-        seq = data['sequence']
-        end_marker = data['end_marker']
-        last_tallies_checkpoint_n = data['last_tallies_checkpoint_n']
-        first_indexes_checkpoint_n = data['first_indexes_checkpoint_n']
-        from_index = data['from_index']
+        first_occurrence_map = data['first_occurrence_map']
+        last = data['last']
+        last_tallies_checkpoints = data['last_tallies_checkpoints']
+        first_indexes_checkpoints = data['first_indexes_checkpoints']
+        from_row = data['from_row']
         print(f'Building BWT using the following settings...')
         print()
         print('```')
         print(data_raw)
         print('```')
         print()
-        ret = to_bwt_checkpointed(seq, end_marker, last_tallies_checkpoint_n, first_indexes_checkpoint_n)
-        bwt_records, bwt_first_occurrence_map, bwt_last_tallies_checkpoints, bwt_first_indexes_checkpoints = ret
-        print()
-        print(f'The following last column and squashed first mapping were produced ...')
-        print()
-        print(f' * First (squashed): {bwt_first_occurrence_map}')
-        print(f' * First Index Checkpoints: {bwt_first_indexes_checkpoints}')
-        print(f' * Last: {[r.last_ch for r in bwt_records]}')
-        r_strs = []
-        for idx, last_tallies in bwt_last_tallies_checkpoints.items():
-            tallies_str = ','.join(f"{k}={v}" for k, v in last_tallies.items())
-            r_str = f'{idx}: {{{tallies_str}}}'
-            r_strs.append(r_str)
-        print(f' * Last tallies checkpoints: {{{", ".join(r_strs)}}}')
-        print()
-        first_idx = walk_back_until_first_index_checkpoint(bwt_records, bwt_first_indexes_checkpoints, bwt_first_occurrence_map, bwt_last_tallies_checkpoints, from_index)
+        last_tallies_checkpoints = {k: Counter(v) for k, v in last_tallies_checkpoints.items()}
+        bwt_records = []
+        for last_ch in last:
+            bwt_records.append(BWTRecord(last_ch))
+        first_idx = walk_back_until_first_indexes_checkpoint(bwt_records, first_indexes_checkpoints, first_occurrence_map, last_tallies_checkpoints, from_row)
         print(f'Walking back to a first index checkpoint resulted in a first index of {first_idx} ...')
         print()
     finally:
@@ -308,7 +297,7 @@ def find(
     # Find first_index for each entry in between top and bottom
     first_idxes = []
     for index in range(top_row, bottom_row + 1):
-        first_idx = walk_back_until_first_index_checkpoint(
+        first_idx = walk_back_until_first_indexes_checkpoint(
             bwt_records,
             bwt_first_indexes_checkpoints,
             bwt_first_occurrence_map,
@@ -327,34 +316,23 @@ def main_test():
         data_raw = ''.join(stdin.readlines())
         data: dict = yaml.safe_load(data_raw)
         test = data['test']
-        seq = data['sequence']
-        end_marker = data['end_marker']
-        first_indexes_checkpoint_n = data['first_indexes_checkpoint_n']
-        last_tallies_checkpoint_n = data['last_tallies_checkpoint_n']
+        first_occurrence_map = data['first_occurrence_map']
+        last = data['last']
+        last_tallies_checkpoints = data['last_tallies_checkpoints']
+        first_indexes_checkpoints = data['first_indexes_checkpoints']
         print(f'Building BWT using the following settings...')
         print()
         print('```')
         print(data_raw)
         print('```')
         print()
-        ret = to_bwt_checkpointed(seq, end_marker, last_tallies_checkpoint_n, first_indexes_checkpoint_n)
-        bwt_records, bwt_first_occurrence_map, bwt_last_tallies_checkpoints, bwt_first_indexes_checkpoints = ret
+        last_tallies_checkpoints = {k: Counter(v) for k, v in last_tallies_checkpoints.items()}
+        bwt_records = []
+        for last_ch in last:
+            bwt_records.append(BWTRecord(last_ch))
+        found_indices = find(bwt_records, first_indexes_checkpoints, first_occurrence_map, last_tallies_checkpoints, test)
         print()
-        print(f'The following last column and squashed first mapping were produced ...')
-        print()
-        print(f' * First (squashed): {bwt_first_occurrence_map}')
-        print(f' * First Index Checkpoints: {bwt_first_indexes_checkpoints}')
-        print(f' * Last: {[r.last_ch for r in bwt_records]}')
-        r_strs = []
-        for idx, last_tallies in bwt_last_tallies_checkpoints.items():
-            tallies_str = ','.join(f"{k}={v}" for k, v in last_tallies.items())
-            r_str = f'{idx}: {{{tallies_str}}}'
-            r_strs.append(r_str)
-        print(f' * Last tallies checkpoints: {{{", ".join(r_strs)}}}')
-        print()
-        found_cnt = find(bwt_records, bwt_first_indexes_checkpoints, bwt_first_occurrence_map, bwt_last_tallies_checkpoints, test)
-        print()
-        print(f'*{test}* found in *{seq}* at indices {found_cnt}.')
+        print(f'*{test}* found at indices {found_indices }.')
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
@@ -542,4 +520,5 @@ def main_mismatch():
 
 
 if __name__ == '__main__':
-    main_mismatch()
+    # main_mismatch()
+    main_walk_back_until_first_index_checkpoint()

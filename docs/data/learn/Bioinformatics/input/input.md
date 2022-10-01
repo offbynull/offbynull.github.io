@@ -13628,26 +13628,19 @@ A G C C G G T A A A T T C A T A G C A G T T T T A A C A A A
  '-------'                             '-------'
 ```
 
-Found regions within the reference genome are extended to cover all of GCCGTTT and then tested in full. If the hamming distance is within the replacement tolerance, it's considered a match.
+Found regions within the reference genome are extended to cover all of GCCGTTT and then tested in full. If the hamming distance is within the mismatch tolerance, it's considered a match.
 
 ```{svgbob}
-"* 1st found has hamming dist of 3 (exceeds tolerance)"
-
-  G C C G T T T T
-  | | | |   |    
-A G C C G G T A A A T T C A T A G C A G T T T T A A C A A A
- '---------------'
-
-
-"* 2nd found has hamming dist of 1 (within tolerance)"
-
-                                G C C G T T T T
-                                | |   | | | | |
+* "1st extension has hamming dist of 3 (exceeds tolerance)"
+* "2nd extension has hamming dist of 1 (within tolerance)"
+                                
+  G C C G T T T T               G C C G T T T T
+  | | | |   |                   | |   | | | | |
 A G C C G G T A A A T T C A T A G C A G T T T T A A C A A A 
-                               '---------------'
+ '---------------'             '---------------'
 ```
 
-The logic described above is generalized as follows: If a sequence can tolerate d mismatches, separate it into d + 1 blocks. It's impossible for d mismatches to exist across d + 1 blocks. There are more blocks than there are mismatches -- at least one of the blocks must match exactly.
+The logic described above is generalized as follows: If a sequence can tolerate d mismatches, separate it into d + 1 non-overlapping blocks. It's impossible for d mismatches to exist across d + 1 blocks. There are more blocks than there are mismatches -- at least one of the blocks must match exactly.
 
 These blocks are called seeds, and the act of finding seeds and testing the hamming distance of the extended region is called seed extension.
 
@@ -14917,7 +14910,7 @@ python
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_FirstIndexesCheckpointed main_walk_back_until_first_index_checkpoint
 first: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]]
-first_indexes_checkpoints: {0: 6, 2: 3, 3: 0}
+first_indexes_checkpoints: {0: 6, 2: 3, 4: 0}
 last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
 last_to_first: [1,5,6,4,0,2,3]
 from_row: 1
@@ -14961,7 +14954,7 @@ python
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_FirstIndexesCheckpointed main_test
 first: [[¶,1],[a,1],[a,2],[a,3],[b,1],[n,1],[n,2]]
-first_indexes_checkpoints: {0: 6, 2: 3, 3: 0}
+first_indexes_checkpoints: {0: 6, 2: 3, 4: 0}
 last: [[a,1],[n,1],[n,2],[b,1],[¶,1],[a,2],[a,3]]
 last_to_first: [1,5,6,4,0,2,3]
 test: nana
@@ -15400,7 +15393,7 @@ Given this, the first-last property guarantees that each symbol in `last`, if yo
 |          (n,1)  | `{h}#b00 (a,2)` |       2       |
 |          (n,2)  | `{h}#800 (a,3)` |       3       |
 
-The backsweep testing algorithm is a different way of testing for a substring, one that exploits the properties mentioned above. For each element of the test string, the algorithm scans over BWT records and isolates them to some range. A subsequent scan only has to to consider the BWT records in the range isolated by the scan previous to it. For example, consider searching for "bba" in "abbazabbabbu¶".
+The backsweep testing algorithm is a different way of testing for a substring, one that exploits the properties mentioned above. For each element of the test string, the algorithm scans over BWT records and isolates them to some range. A subsequent scan only has to consider the BWT records in the range isolated by the scan previous to it. For example, consider searching for "bba" in "abbazabbabbu¶".
 
 | first | last  | last_to_first |
 |-------|-------|---------------|
@@ -15487,7 +15480,7 @@ The isolated range of BWT records above are then again searched for rows where `
  * scans downward from index 5 (starting index of the isolated range) to find the initial occurrence of *b* in `last`: (b,3) at index 5 of `last`.
  * scans upward from index 6 (ending index of the isolated range) to find the final occurrence of *b* in `last`: (b,4) at index 6 of `last`.
  
-The `last_to_first` of the two found BWT records are then used to find the index of (b,3) and (b,4) in `first`: index 6 and 7. The algorithm isolates the BWT records to this range, which is essentially all substrings of "bba" in the original sequence. Since all elements of the test string have been processed, the search stops. There are two rows in the isolated range range at this point, meaning are two instances of "bba": (7 - 6) + 1 = 2.
+The `last_to_first` of the two found BWT records are then used to find the index of (b,3) and (b,4) in `first`: index 6 and 7. The algorithm isolates the BWT records to this range, which is essentially all substrings of "bba" in the original sequence. Since all elements of the test string have been processed, the search stops. There are two rows in the isolated range at this point, meaning are two instances of "bba": (7 - 6) + 1 = 2.
 
 ```{svgbob}
 "isolate to range where first a1-a4"    "isolate to range where first b3-b4"
@@ -15810,7 +15803,7 @@ last_ch: n
 last_tallies: {¶: 0, a: 1, b: 0, n: 2}
 ```
 
-With the inclusion of `last_tallies`, the backsweep algorithm doesn't need to scan over `last` anymore.  For example, in the original backsweep testing algorithm, searching for "bba" in "abbazabbabbu¶" ...
+With the inclusion of `last_tallies`, the backsweep testing algorithm doesn't need to scan over `last` anymore.  For example, in the original backsweep testing algorithm, searching for "bba" in "abbazabbabbu¶" ...
 
 1. scans downward to find top `last='a'` / scans upward to find bottom `last='a'`, then isolates rows to the top and bottom *a* in `first`,
 2. scans downward to find top `last='b'` / scans upward to find bottom `last='b'`, then isolates rows (again) to the top and bottom *b* in `first`,
@@ -15909,7 +15902,7 @@ index: 5
 symbol: b
 ```
 
-Knowing this, the backsweep algorithm can simply use the calculation described above to determine some symbol's initial and final symbol instance in `last`. For example, finding the initial and final *a* in `last` for the range of BWT records between rows 8 and 12:
+Knowing this, the backsweep testing algorithm can simply use the calculation described above to determine some symbol's initial and final symbol instance in `last`. For example, finding the initial and final *a* in `last` for the range of BWT records between rows 8 and 12:
 
  * `last`'s initial *a* is (a,2): `last_tally_before_row('a', 8) + 1 = 1+1 = 2`
  * `last`'s final *a* is (a,4):   `last_tally_at_row('a', 12)              = 4`
@@ -15932,7 +15925,7 @@ Knowing this, the backsweep algorithm can simply use the calculation described a
 +--+--+
 ```
 
-From there, the backsweep algorithm can use the on-the-fly `last_to_first` calculation from the collapsed first algorithm to isolate the range. For example, to isolate the BWT records such that `first` starts at (a,2) and ends at (a,4):
+From there, the backsweep testing algorithm can use the on-the-fly `last_to_first` calculation from the collapsed first algorithm to isolate the range. For example, to isolate the BWT records such that `first` starts at (a,2) and ends at (a,4):
 
  * (a,2) is at index 2 of `first`.
  * (a,4) is at index 4 of `first`.
@@ -16022,7 +16015,7 @@ The isolated range of BWT records above are then again searched for rows where `
  * In isolated `last`, the initial *b* is (b,3): `last_tally_before_row('b', 5) + 1 = 2+1 = 3`
  * In isolated `last`, the final *b* is (b,4):   `last_tally_at_row('b', 6)               = 4`
 
-The `last_to_first` of the two found BWT records are then used to find the index of (b,3) and (b,4) in `first`: index 6 and 7. The algorithm isolates the BWT records to this range, which is essentially all substrings of "bba" in the original sequence. Since all elements of the test string have been processed, the search stops. There are two rows in the isolated range range at this point, meaning are two instances of "bba": (7 - 6) + 1 = 2.
+The `last_to_first` of the two found BWT records are then used to find the index of (b,3) and (b,4) in `first`: index 6 and 7. The algorithm isolates the BWT records to this range, which is essentially all substrings of "bba" in the original sequence. Since all elements of the test string have been processed, the search stops. There are two rows in the isolated range at this point, meaning are two instances of "bba": (7 - 6) + 1 = 2.
 
 ```{svgbob}
 "isolate to range where first a1-a4"    "isolate to range where first b3-b4"
@@ -16096,7 +16089,7 @@ Recall the terminology used for BWT:
  * BWT records: The table comprised of columns `last` and `last_tallies` (updated in ranks algorithm).
 ```
 
-The ranks algorithm's replacement of `last`'s symbol instance counts with `last_tallies` increases memory usage but it also allows for a concept known as checkpointing: Instead of retaining a value at every index of `last_tallies`, leave some empty. The entries that have a value are called checkpoints.
+The ranks algorithm's replacement of `last`'s symbol instance counts with `last_tallies` increases memory usage, but it also allows for a concept known as checkpointing: Instead of retaining a value in every `last_tallies` entry, leave some empty. The entries that have a value are called checkpoints.
 
 <table>
 <tr><th>records</th><th>first_occurrence_map</th></tr>
@@ -16134,7 +16127,7 @@ end_marker: ¶
 last_tallies_checkpoint_n: 3
 ```
 
-To determine the value of `last_tallies` at some index which is empty, simply tally `last` symbols upwards until reaching an index where `last_tallies` has a value, then add the tallies together. For example, to compute `last_tallies[5]`, ...
+To determine the value of an empty `last_tallies` entry, simply tally `last` symbols upwards until reaching a non-empty `last_tallies` entry, then add the tallies together. For example, to compute `last_tallies[5]` in the example above, ...
 
 1. add symbol in `last[5]` to the tally: {a: 1},
 2. add symbol in `last[4]` to the tally: {¶: 1, a: 1},
@@ -16157,7 +16150,7 @@ last_tallies_checkpoints:
 index: 5
 ```
 
-Determining the value of `last_tallies` can be further optimized by only focusing on the symbol of interest. For example, at index 5, `last[5]` is *a*. When the value for `last_tallies[5]` is computed, it's only being used to determine the symbol instance count of that *a* at `last[5]`. As such, only *a*s need to be tallied until reaching a checkpoint...
+Determining the value of `last_tallies` can be further optimized by only focusing on the symbol of interest. For example, `last[5]='a'` in the example above. When the value for `last_tallies[5]` is computed, it's only being used to determine the symbol instance count of that *a*. As such, only *a*s need to be tallied until reaching a checkpoint...
 
 1. increment count if `last[5] == 'a'` (true): 1,
 2. increment count if `last[4] == 'a'` (false): 1,
@@ -16244,7 +16237,7 @@ This algorithm is the checkpointed ranks algorithm with the checkpointed indexes
 </td><td>{¶: 0, a: 1, b: 4, n: 5}</td></tr>
 </table>
 
-When `first_indexes` and `last_tallies` gaps are wide enough, this algorithm ends up using less memory than the suffix array algorithm, but it does so at the cost of doing extra computations during searches to fill in those gaps. This may be an acceptable tradeoff in a lot of cases because SNP analysis requires holding large reference genomes in memory and that extra computation time is often negligible.
+When `first_indexes` and `last_tallies` gaps are wide enough, this algorithm ends up using less memory than the suffix array algorithm, but it does so at the cost of doing extra computations during searches to fill in those gaps. This may be an acceptable tradeoff in the case of SNP analysis because it requires holding large reference genomes in memory.
 
 The construction process for this algorithm is the same as that for the checkpointed ranks algorithm, but modified to also produce `first_indexes`.
 
@@ -16262,7 +16255,48 @@ last_tallies_checkpoint_n: 3
 first_indexes_checkpoint_n: 3
 ```
 
-The checkpointed indexes algorithm requires `last_to_first` when walking back to a checkpointed `first_indexes` value. `last_to_first` doesn't exist in the checkpointed ranks algorithm: In the checkpointed ranks algorithm, all `last_to_first` values have been replaced with a function that computes `last_to_first` on-the-fly. As such, this algorithm, when walking back to a checkpointed `first_indexes`, uses that function to determine what a `last_to_first` value should be for some row.
+The checkpointed indexes algorithm uses `last_to_first` when walking back to a non-empty `first_indexes` entry. Since, in the checkpointed ranks algorithm, `last_to_first` is replaced with a function that computes `last_to_first` on-the-fly, the walking back needs to be modified to use the said function instead.
+
+```{svgbob}
+"PHASE 1: BACKSWEEP TEST TO FIND nana IN banana¶"
+
+                     "isolate to range where first n1-n2"           "isolate to range where first n2"
+                           .---------------------.                     .---------------------.
++--+-+-+--+                |                     |                     |                     |
+|¶1| 6 |a1|           +--+-+-+--+                |                     |                     |
+|a1|   |n1|           |a1|   |n1|                |                +--+-+-+--+                |      
+|a2| 3 |n2|           |a2| 3 |n2|                |                |a2| 3 |n2|                |      
+|a3|   |b1|           |a3|   |b1|                v                |a3|   |b1|                |      
+|b1| 0 |¶1|           +--+---+--+           +--+---+--+           +--+---+--+                v      
+|n1|   |a2|                ^                |n1|   |a2|                ^                +--+---+--+
+|n2|   |a3|                |                |n2|   |a3|                |                |n2|   |a3|
++--+-+-+--+                |                +--+-+-+--+                |                +--+---+--+
+     |                     |                     |                     |            "(1 instance of nana)"
+     '---------------------'                     '---------------------'
+"isolate to range where first a1-a3"      "isolate to range where first a2-a3"
+
+
+"PHASE 2: WALK TO COMPUTE MISSING first_indexes AT END OF nana SEARCH ABOVE"
++--+-+-+--+           +--+-+-+--+           +--+-+-+--+
+|¶1| 6 |a1|           |¶1| 6 |a1|           |¶1| 6 |a1|
+|a1|   |n1|           |a1|   |n1|           |a1|   |n1|
+|a2| 3 |n2|           |a2| 3 |n2|    2      |a2| 3 |n2|
+|a3|   |b1|       .-> |a3|   |b1|-------.   |a3|   |b1|
+|b1| 0 |¶1|       |   |b1| 0 |¶1|       '-> |b1| 0 |¶1| "0+2=2"
+|n1|   |a2|   1   |   |n1|   |a2|           |n1|   |a2|
+|n2|   |a3|-------'   |n2|   |a3|           |n2|   |a3|
++--+-+-+--+           +--+-+-+--+           +--+-+-+--+
+
+"RESULT: nana OCCURS IN banana¶ AT INDEX 2"
+```
+
+```{note}
+The on-the-fly `last_to_first` computation was actually first introduced in the collapsed first algorithm.
+```
+
+```{note}
+The diagram above shows `first`, but remember that `first` has been collapsed into `first_occurrence_map`. It's expanded in the diagram above to make it easier to understand what's going on.
+```
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py
@@ -16272,11 +16306,14 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_Checkpointed main_walk_back_until_first_index_checkpoint
-sequence: banana¶
-end_marker: ¶
-last_tallies_checkpoint_n: 3
-first_indexes_checkpoint_n: 3
-from_index: 5
+first_occurrence_map: {¶: 0, a: 1, b: 4, n: 5}
+last: [a, n, n, b, ¶, a, a]
+last_tallies_checkpoints: 
+  0: {a: 1, n: 0, b: 0, ¶: 0}
+  3: {a: 1, n: 2, b: 1, ¶: 0}
+  6: {a: 3, n: 2, b: 1, ¶: 1}
+first_indexes_checkpoints: {0: 6, 2: 3, 4: 0}
+from_row: 5
 ```
 
 The testing process for this algorithm is the same as that for the checkpointed ranks algorithm, but modified to use the above function to determine where each substring occurrence is in the original sequence.
@@ -16289,14 +16326,17 @@ python
 
 ```{ch9}
 sequence_search.BurrowsWheelerTransform_Checkpointed main_test
-sequence: banana¶
-end_marker: ¶
-last_tallies_checkpoint_n: 3
-first_indexes_checkpoint_n: 3
+first_occurrence_map: {¶: 0, a: 1, b: 4, n: 5}
+last: [a, n, n, b, ¶, a, a]
+last_tallies_checkpoints: 
+  0: {a: 1, n: 0, b: 0, ¶: 0}
+  3: {a: 1, n: 2, b: 1, ¶: 0}
+  6: {a: 3, n: 2, b: 1, ¶: 1}
+first_indexes_checkpoints: {0: 6, 2: 3, 4: 0}
 test: ana
 ```
 
-This algorithm can be extended to support mismatches by searching for the seeds of some substring. The algorithm returns the indexes within the original sequence where a seed is, at which point seed extension is applied and the relevant segment of the original sequence is extracted and tested to see if its within the mismatch limit.
+This algorithm can be extended to support mismatches by searching for the seeds of some substring. The algorithm returns the indexes within the original sequence where a seed is, at which point seed extension is applied and the relevant segment of the original sequence is extracted and tested to see if it's within the mismatch limit.
 
 ```{output}
 ch9_code/src/sequence_search/BurrowsWheelerTransform_Checkpointed.py
@@ -17724,13 +17764,11 @@ PracticalGEODatasetClustering
 }
 ```
 
-## Point Mutations / Single Nulceotide Polymorphism
+## Single Nulceotide Polymorphism
 
-`{bm} /(Stories\/Point Mutations \/ Single Nulceotide Polymorphism)_TOPIC/`
+`{bm} /(Stories\/Single Nulceotide Polymorphism)_TOPIC/`
 
-A mutation where a single nucleotide is substituted for another has two different classifications: point mutation and single nucleotide polymorphism.
-
-A single nucleotide polymorphism (SNP) is a variation at a specific location of a DNA sequence -- it's one choice out of multiple possible nucleotides choices at that position (e.g. G out of {C, G, T}). Across a population, if a specific change at that position occurs frequently enough, it's considered a SNP rather than a mutation. Specifically, if the frequency of the change occurring is ...
+A point mutation is a mutation where a specific location of a DNA sequence has its nucleotide substituted for another (e.g. a C got mutated to a G). Across a population, if a specific point mutation occurs frequently enough, it's considered a single nucleotide polymorphism (SNP) rather than a mutation (a common variation of some species's genome). Specifically, if the frequency of the substitution occurring is ...
 
  * less than 1%, it's considered a point mutation.
  * at least 1%, it's considered a SNP.
@@ -17753,17 +17791,15 @@ Studies commonly attempt to associate SNPs with diseases. By comparing SNPs betw
 
 ### Find Substitutions
 
-```{prereq}
-Algorithms/Single Nucleotide Polymorphism_TOPIC
-```
+`{bm} /(Stories\/Single Nulceotide Polymorphism\/Find Substitutions)_TOPIC/`
 
-`{bm} /(Stories\/Point Mutations \/ Single Nulceotide Polymorphism\/Find Substitutions)_TOPIC/`
+```{prereq}
+Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Checkpointed Algorithm
+```
 
 The SNPs / point mutations that an individual organism has are identified through a process called read mapping. Read mapping attempts to align the individual organism's sequenced DNA segments (e.g. read_SEQs, read-pairs, contigs) to an idealized genome for the population that organism belongs to (e.g. species, race, etc..), called a reference genome. The result of the alignment should have few indels and a fair amount of mismatches, where those mismatches identify that organism's SNPs / point mutations.
 
-Since read mapping for SNP / point mutation identification focuses on identifying substitutions and not indels, traditional sequence alignment algorithms aren't required. More efficient substring matching algorithms can be used instead. Specifically, if you have a sequence that you're trying to map and you know it can tolerate d mismatches at most, any substring matching algorithm will work.
-
-If a sequence can tolerate d mismatches, separate it into d + 1 blocks. It's impossible for d mismatches to exist across d + 1 blocks. There are more blocks than there are mismatches -- at least one of the blocks must match exactly.
+Since read mapping for SNP / point mutation identification focuses on identifying mismatches and not indels, traditional sequence alignment algorithms aren't required. More efficient substring finding algorithms can be used instead. Specifically, if you have a substring that you're trying to find in a sequence, and you know it can tolerate d mismatches at most, separate it into d + 1 blocks. It's impossible for d mismatches to exist across d + 1 blocks. There are more blocks than there are mismatches -- at least one of the blocks must match exactly.
 
 These blocks are called seeds, and the act of finding seeds and testing the hamming distance of the extended region is called seed extension.
 
@@ -17784,33 +17820,18 @@ These blocks are called seeds, and the act of finding seeds and testing the hamm
   ● ●      ( G )    ( T T )
 ```
 
-The example below attempted to map a set of read_SEQs to reference genome for Mycoplasma bovis.
+The example below read maps the the read_SEQs from a Mycoplasma agalactiae genome to a reference genome for Mycoplasma bovis.
 
-TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
-
-TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
-
-TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
-
-TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
-
-TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
-
-TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
-
-TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
-
-TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
-
-TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
-
-TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
-
-TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
-
-TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
-
-TODO: Create and add example here. Mycoplasma reference genome is already in directory. Either loads up some fake read_SEQs or pull out some fake read_SEQs from the other mycoplasma genome from ch6 and find them in the genome. Maybe suffix array is your best bet because burrows wheeler transform might take forever to generate the data structure (its very slow).
+```{ch9}
+PracticalSNPAnalysis
+reference_genome_filename: Mycoplasma bovis - GCA_000696015.1_ASM69601v1_genomic.fna.xz
+reads_filename: Mycoplasma agalactiae - READS.txt.xz
+max_mismatch: 2
+pad_marker: _
+end_marker: $
+last_tallies_checkpoint_n: 20
+first_indexes_checkpoint_n: 20
+```
 
 # Ideas
 
@@ -17841,6 +17862,8 @@ TODO: Create and add example here. Mycoplasma reference genome is already in dir
  * Hierarchical clustering as a means of detecting outliers - Cluster data using neighbouring join phylogeny. How far is each leaf node to its parent internal node? Find any that are grossly over the average / squared error distortion / some other metric? Report it. Try other ways as well (e.g. pick a root and see how far it is from the root -- root picked using some metric like avg distance between leaf nodes / 2 or squared error distortion).
 
    This relates to the idea above (soft hierarchical clustering) -- You may be able to identify outliers using soft hierarchical clustering using this (e.g. the probability of being a part of some internal node is way farther than any of the other leaf nodes).
+
+* Checkpointed BWT algorithm in C++ - Implement it in modern C++ using concepts, as a generic library
 
 # Terminology
 
@@ -21622,12 +21645,12 @@ TODO: Create and add example here. Mycoplasma reference genome is already in dir
 
  * `{bm} Ohdo syndrome` - A rare disease causing learning disabilities and distinct facial features. The disease is caused by a single nucleotide polymorphism resulting in a truncated protein (see codons).
 
- * `{bm} single nucleotide polymorphism` `{bm} /(SNP)/` - A nucleotide variation at specific location in a DNA sequence (e.g. position 15 has a SNP where it's A vs a SNP where it's T). While a single nucleotide polymorphism technically qualifies as a change in DNA, it occurs frequently enough that it's considered a variation rather than a mutation. Specifically, across the entire population, if the frequency of the change occurring is ...
+ * `{bm} single nucleotide polymorphism` `{bm} /(SNP)/` - A nucleotide variation at a specific location in a DNA sequence (e.g. position 15 has a SNP where it's A vs a SNP where it's T). While a single nucleotide polymorphism technically qualifies as a change in DNA, it occurs frequently enough that it's considered a variation rather than a mutation. Specifically, across the entire population, if the frequency of the change occurring is ...
 
     * less than 1%, it's considered a point mutation.
     * at least 1%, it's considered a single nucleotide polymorphism.
 
- * `{bm} read mapping/(read mapping|read mapped)/i` - The alignment of DNA sequences (e.g. read_SEQs, contigs, etc..) to some larger DNA sequence (e.g. reference genome).
+ * `{bm} read mapping/(read map)/i` - The alignment of DNA sequences (e.g. read_SEQs, contigs, etc..) to some larger DNA sequence (e.g. reference genome).
 
  * `{bm} reference genome/(reference genome|reference human genome)/i` - A genome assembled from multiple organisms of the same species, represented as the idealized genome for that species. Sequenced DNA fragment_SEQs / contigs of an organism are often read mapped against the reference genome for that organism's species, such that ...
 
@@ -21679,7 +21702,7 @@ TODO: Create and add example here. Mycoplasma reference genome is already in dir
    ```
 
    ```{note}
-   End of sequence marker is preferred mechanism.
+   End of sequence marker is the preferred mechanism.
    ```
 
  * `{bm} Aho-Corasick trie/(Aho[\s-]?Corasick|Aho[\s-]?Corasick trie)/i` - A trie with special hop edges that eliminates redundant scanning during searches.
@@ -21845,7 +21868,7 @@ TODO: Create and add example here. Mycoplasma reference genome is already in dir
    The entire point of the suffix array is that it's just an array of pointers to the suffix in the source sequence. Since the pointers are sorted (sorted by the suffixes they point to), you can quickly find if a substring exists just by doing a binary search on the suffix array (if a substring exists, it must be a prefix of one of the suffixes).
    ```
 
- * `{bm} Burrows-Wheeler transform/(burrows[-\s]wheeler transform)/i` `{bm} /(BWT)/` - A matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. The sequence must have an end marker where the end marker comes first in the lexicogrpahical sort order (similar to suffix arrays).
+ * `{bm} Burrows-Wheeler transform/(burrows[-\s]wheeler transform)/i` `{bm} /(BWT)/` - A matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. The sequence must have an end marker, where the end marker comes first in the lexicographical sort order (similar to suffix arrays).
  
    The example below is the burrows-wheeler transform of "banana¶", where *¶* is the end marker.
    
@@ -21861,7 +21884,7 @@ TODO: Create and add example here. Mycoplasma reference genome is already in dir
       | n | a | n | a | ¶ | b | a |
       | a | n | a | n | a | ¶ | b |
      
-   2. Lexicogrpahically sort the cyclic rotations.
+   2. Lexicographically sort the cyclic rotations.
 
       |   |   |   |   |   |   |   |
       |---|---|---|---|---|---|---|
@@ -21875,9 +21898,9 @@ TODO: Create and add example here. Mycoplasma reference genome is already in dir
 
    BWT matrices have a special property called the first-last property which makes them suitable for quickly determining if and how many times a substring exists in the original sequence.
      
- * `{bm} first-last property/(first[-\s]last property)/i` - The property of BWT matrices that guarantees consistent ordering of a symbols instances between the first and last columns of a BWT matrix (a symbol's instances appear in the first column as it does in the last column).
-
-   Consider the sequence "banana¶": The symbols in "banana¶" are {a, b, n, ¶}. At index ...
+ * `{bm} first-last property/(first[-\s]last property)/i` - The property of BWT matrices that guarantees consistent ordering of a symbol's instances between the first and last columns of a BWT matrix.
+ 
+   Consider the sequence "banana¶": The symbols in "banana¶" are {¶, a, b, n}. At index ...
 
    0. the first *b* occurs: b<sub>1</sub>
    1. the first *a* occurs: a<sub>1</sub>
@@ -21887,10 +21910,10 @@ TODO: Create and add example here. Mycoplasma reference genome is already in dir
    5. the third *a* occurs: a<sub>3</sub>
    6. the first *¶* occurs: ¶<sub>1</sub>
 
-   Adding symbol instance counts to the sequence becomes [b<sub>1</sub>, a<sub>1</sub>, n<sub>1</sub>, a<sub>2</sub>, n<sub>2</sub>, a<sub>3</sub>, ¶<sub>1</sub>]. In the BWT matrix, for each symbol, even though the position of symbol instances are different between the first and last columns, the order in which those instances appear in are the same.
+   With these occurrence counts, the sequence becomes b<sub>1</sub>a<sub>1</sub>n<sub>1</sub>a<sub>2</sub>n<sub>2</sub>a<sub>3</sub>¶<sub>1</sub>. In the BWT matrix, for each symbol, even though the position of symbol instances are different between the first and last columns, the order in which those instances appear in are the same. For example, ...
 
-    * Symbol *a* instances are ordered as [`{h}#f00 a<sub>3</sub>`, `{h}#b00 a<sub>2</sub>`, `{h}#800 a<sub>1</sub>`] in both the first and last column.
-    * Symbol *n* instances are ordered as [`{h}#00f n<sub>2</sub>`, `{h}#00b n<sub>1</sub>`] in both the first and last column.
+    * symbol *a* instances are ordered as [`{h}#f00 a<sub>3</sub>`, `{h}#b00 a<sub>2</sub>`, `{h}#800 a<sub>1</sub>`] in both the first and last column.
+    * symbol *n* instances are ordered as [`{h}#00f n<sub>2</sub>`, `{h}#00b n<sub>1</sub>`] in both the first and last column.
 
    |                         |               |               |               |               |               |                         |
    |-------------------------|---------------|---------------|---------------|---------------|---------------|-------------------------|
@@ -21902,7 +21925,7 @@ TODO: Create and add example here. Mycoplasma reference genome is already in dir
    | `{h}#00f n<sub>2</sub>` | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | `{h}#b00 a<sub>2</sub>` |
    | `{h}#00b n<sub>1</sub>` | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | `{h}#800 a<sub>1</sub>` |
 
-   The first-last property comes from lexicographic sorting. In the example matrix above, isolating the matrix to those rows starting with "a" shows that, the second column is also lexicographically sorted in the isolated matrix.
+   The first-last property comes from lexicographic sorting. In the example matrix above, isolating the matrix to those rows starting with *a* shows that, the second column is also lexicographically sorted in the isolated matrix.
 
    |                         |               |               |               |               |               |               |
    |-------------------------|---------------|---------------|---------------|---------------|---------------|---------------|
@@ -21910,7 +21933,7 @@ TODO: Create and add example here. Mycoplasma reference genome is already in dir
    | `{h}#b00 a<sub>2</sub>` | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> |
    | `{h}#800 a<sub>1</sub>` | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> |
 
-   In otherwords, cyclically rotating each row right by 1 moves each corresponding "a" to the end but doesn't change the lexicographic ordering of the rows.
+   In other words, cyclically rotating each row right by 1 moves each corresponding *a* to the end but doesn't change the lexicographic ordering of the rows.
 
    |               |               |               |               |               |               |                         |
    |---------------|---------------|---------------|---------------|---------------|---------------|-------------------------|
@@ -21918,7 +21941,7 @@ TODO: Create and add example here. Mycoplasma reference genome is already in dir
    | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | `{h}#b00 a<sub>2</sub>` |
    | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | `{h}#800 a<sub>1</sub>` |
 
-   After the cyclic rotations above, the rows in the isolated matrix become other rows from the original matrix. Since the rows in the isolated matrix are still lexicographically sorted, they're ordered as they appear in that original matrix.
+   Once rotated, the rows in the isolated matrix become other rows from the original matrix. Since the rows in the isolated matrix are still lexicographically sorted, they're ordered as they appear in that original matrix.
 
    |               |               |               |               |               |               |                         |
    |---------------|---------------|---------------|---------------|---------------|---------------|-------------------------|
@@ -21930,38 +21953,39 @@ TODO: Create and add example here. Mycoplasma reference genome is already in dir
    | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | `{h}#b00 a<sub>2</sub>` |
    | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | `{h}#800 a<sub>1</sub>` |
 
-   Given just the first and last column of a BWT matrix, the original sequence can be pulled out by walking between those columns. The row containing the end marker in the last column has the sequence's first element in its first column.
+   Given just the first and last column of a BWT matrix, the original sequence can be pulled out by walking between those columns from last-to-first. Since it's known that ...
+   
+   * the row containing the end marker (*¶*) within the first column has the sequence's last element within the last column,
+   * that end marker (*¶*) only appears once in the sequence and is always lexicographically sorted to the top of the first column,
+
+   ... the walk always starts from the top row.
   
    ```{svgbob}
-               b                          ban                       banan
-   .------------------------.  .------------------------.  .------------------------.
-   |  ¶1,a3         ¶1,a3   |  |  ¶1,a3         ¶1,a3   |  |  ¶1,a3         ¶1,a3   |      ¶1,a3 <-.
-   |  a3,n2         a3,n2   |  |  a3,n2         a3,n2   |  |  a3,n2      .- a3,n2 <-'      a3,n2   |
-   |  a2,n1         a2,n1   |  |  a2,n1      .- a2,n1 <-'  |  a2,n1      |  a2,n1          a2,n1   |
-   |  a1,b1      .- a1,b1 <-'  |  a1,b1      |  a1,b1      |  a1,b1      |  a1,b1          a1,b1   |
-   '- b1,¶1      |  b1,¶1      |  b1,¶1      |  b1,¶1      |  b1,¶1      |  b1,¶1          b1,¶1   |
-      n2,a2      |  n2,a2      |  n2,a2      |  n2,a2      '- n2,a2 <-.  |  n2,a2          n2,a2   |
-      n1,a1      |  n1,a1      '- n1,a1 <-.  |  n1,a1         n1,a1   |  |  n1,a1          n1,a1   |
-                 '------------------------'  '------------------------'  '-------------------------'
-                             ba                        bana                        banana
+   +--+--+      a    +--+--+           +--+--+           +--+--+           +--+--+           +--+--+           +--+--+
+   |¶1|a3|-------.   |¶1|a3|     na    |¶1|a3|           |¶1|a3|           |¶1|a3|           |¶1|a3|           |¶1|a3| 
+   |a3|n2|       '-> |a3|n2|-------.   |a3|n2|           |a3|n2|   nana    |a3|n2|           |a3|n2|           |a3|n2| 
+   |a2|n1|           |a2|n1|       |   |a2|n1|       .-> |a2|n1|-------.   |a2|n1|           |a2|n1| banana    |a2|n1| 
+   |a1|b1|           |a1|b1|       |   |a1|b1|       |   |a1|b1|       |   |a1|b1|       .-> |a1|b1|-------.   |a1|b1| 
+   |b1|¶1|           |b1|¶1|       |   |b1|¶1|       |   |b1|¶1|       |   |b1|¶1|       |   |b1|¶1|       '-> |b1|¶1|
+   |n2|a2|           |n2|a2|       '-> |n2|a2|-------'   |n2|a2|       |   |n2|a2|       |   |n2|a2|           |n2|a2|
+   |n1|a1|           |n1|a1|           |n1|a1|    ana    |n1|a1|       '-> |n1|a1|-------'   |n1|a1|           |n1|a1|
+   +--+--+           +--+--+           +--+--+           +--+--+           +--+--+  anana    +--+--+           +--+--+
    ```
 
-   Likewise, given just the first and last column of a BWT matrix, it's possible to quickly identify if and how many instances of some substring exists in th original sequence.
+   Likewise, given just the first and last column of a BWT matrix, it's possible to quickly identify if and how many instances of some substring exists in the original sequence.
 
    ```{svgbob}
    "* search for substring nana"
-
-            "2 x na"                 "1 x nana"
-   .------------------------.  .---------------->*
-   |  ¶1,a3         ¶1,a3 <-+  |  ¶1,a3    
-   +- a3,n2         a3,n2   |  '- a3,n2 <-.
-   '- a2,n1         a2,n1   |     a2,n1   |
-      a1,b1         a1,b1   |     a1,b1   |
-      b1,¶1         b1,¶1   |     b1,¶1   |
-      n2,a2      .- n2,a2 <-'     n2,a2   |
-      n1,a1      |  n1,a1         n1,a1   |
-                 '------------------------'
-                         "1 x nan"         
+   
+   +--+--+           +--+--+           +--+--+           +--+--+
+   |¶1|a3|     na    |¶1|a3|           |¶1|a3|           |¶1|a3|
+   |a3|n2|-------.   |a3|n2|           |a3|n2|   nana    |a3|n2|
+   |a2|n1|-----. |   |a2|n1|     .---> |a2|n1|-------.   |a2|n1|
+   |a1|b1|     | |   |a1|b1|     | .-> |a1|b1|       |   |a1|b1|
+   |b1|¶1|     | |   |b1|¶1|     | |   |b1|¶1|       |   |b1|¶1|
+   |n2|a2|     | '-> |n2|a2|-----' |   |n2|a2|       |   |n2|a2|
+   |n1|a1|     '---> |n1|a1|-------'   |n1|a1|       '-> |n1|a1|
+   +--+--+           +--+--+    ana    +--+--+           +--+--+
    ```
 
  * `{bm} pre-order traversal/(pre[-\s]?order traversal)/i` - A form of depth-first traversal for binary trees where, starting from the root node, ...
@@ -22051,7 +22075,7 @@ TODO: Create and add example here. Mycoplasma reference genome is already in dir
    It's unclear if there's an analog for this for non-binary trees (variable number of children per node). Maybe if the children have a specific order, it recursively visits the first half (left children), then visits the parent node, then recursively visits the last half (right children). But, how would this work if there were an odd number of children? The middle child wouldn't be in the left-half or right-half.
    ```
 
- * `{bm} Basic Local Alignment Search Tool/(Basic Local Alignment Search Tool|high[-\s]scoring segment pair)/i` `{bm} /(BLAST)/` `{bm} /(HSP)/` - A heuristic algorithm that compares a sequence against a known set of sequences to quickly find shared regions, called high-scoring segment pairs. High-scoring segment pairs may be identified even in the presence of mutations, potentially even if mutated to the point where all elements are different in the shared region (e.g. BLOSUM scoring may deem two peptides to be highly related but they may not actually share any amino acids between them).
+ * `{bm} Basic Local Alignment Search Tool/(Basic Local Alignment Search Tool|high[-\s]scoring segment pair)/i` `{bm} /(BLAST)/` `{bm} /(HSP)/` - A heuristic algorithm that quickly finds shared regions between a query sequence and a database of sequences, where those shared regions are called high-scoring segment pairs. High-scoring segment pairs may be identified even in the presence of mutations, potentially even if mutated to the point where all elements are different in the shared region (e.g. BLOSUM scoring may deem two peptides to be highly related but they may not actually share any amino acids between them).
 
    ```{svgbob}
                 .---------.
@@ -22075,7 +22099,7 @@ TODO: Create and add example here. Mycoplasma reference genome is already in dir
                         '---------'
    ```
 
-   BLAST works by preprocessing the known set of sequences into a hash table of k-mers, where other k-mers similar to those k-mers are included in the hash table as well. Similarity is determined by performing sequence alignments (the higher the score, the more similar the k-mer is).
+   BLAST works by preprocessing the database of sequences into a hash table of k-mers, where other k-mers similar to those k-mers are included in the hash table as well. Similarity is determined by performing sequence alignments (the higher the score, the more similar the k-mer is).
    
    ```{svgbob}
    G G C G T C C C C T T G T A C G T
@@ -22123,6 +22147,56 @@ TODO: Create and add example here. Mycoplasma reference genome is already in dir
    
    "... (keep expanding until score goes below threshold) ..."
    ```
+
+   ```{note}
+   The Pevzner book and documentation online refers to k-mers from the query sequence as seeds and the extension left-and-right as seed extension.
+   ```
+
+ * `{bm} seed/(seed extension|seed)/i` - A substring of a string which is specifically used for mismatch tolerant searches.
+ 
+   The example below searches for GCCGTTTT with a mismatch tolerance of 1 by first breaking GCCGTTTT into two non-overlapping seeds (GCCG and TTTT), then searching for each seed independently. Since GCCGTTTT can only contain a single mismatch, that mismatch has to be either in the 1st seed (GCCG) or the 2nd seed (TTTT), not both.
+
+   ```{svgbob}
+   * "GCCGTTTT with 1 mismatch into seeds: [GCCG, TTTT]"
+   
+     G C C G                               T T T T
+     | | | |                               | | | |
+   A G C C G G T A A A T T C A T A G C A G T T T T A A C A A A 
+    '-------'                             '-------'
+   ```
+
+   Each found seed is then extended to cover the entirety of GCCGTTT and tested in full, called seed extension. If the hamming distance of the extended seed is within the mismatch tolerance of 1, it's considered a match.
+
+   ```{svgbob}
+   * "1st extension has hamming dist of 3 (exceeds tolerance)"
+   * "2nd extension has hamming dist of 1 (within tolerance)"
+                                   
+     G C C G T T T T               G C C G T T T T
+     | | | |   |                   | |   | | | | |
+   A G C C G G T A A A T T C A T A G C A G T T T T A A C A A A 
+    '---------------'             '---------------'
+   ```
+
+   It's impossible for d mismatches to exist across d + 1 seeds. There are more seeds than there are mismatches — at least one of the seeds must match exactly.
+
+   ```{svgbob}
+   * "ACGTT separated into 3 seeds. It's impossible for 2"
+     "mismatches to be spread across 3 seeds. Dots represent"
+     "mismatches. Exact matching seeds wrapped in brackets."
+   
+   ( A C )    ( G )      ● ● 
+   ( A C )      ●        T ● 
+     A ●        G        T ● 
+     ● C      ( G )      T ● 
+   ( A C )      ●        ● T 
+     A ●      ( G )      ● T 
+     ● C      ( G )      ● T 
+     A ●        ●      ( T T )
+     ● C        ●      ( T T )
+     ● ●      ( G )    ( T T )
+   ```
+
+
 
 `{bm-ignore} \b(read)_NORM/i`
 `{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
