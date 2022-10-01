@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(first[-\s]last property)/i"></span>

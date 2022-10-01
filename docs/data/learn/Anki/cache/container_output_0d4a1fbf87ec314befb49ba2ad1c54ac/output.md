@@ -1,0 +1,1 @@
+<span style="background-color: #00b; color: white; padding: 3px">n<sub>1</sub></span>

@@ -1195,12 +1195,7 @@
 <p><img src="svgbob_1a5d3942fce4284a9ad77c8e4624b7b21573543d.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><span class="anki-answerpattern" data-pattern="subpeptide"></span> - A peptide derived taking some contiguous piece of a larger peptide.</p>
-<p>A subpeptide can have a length == 1 where a peptide must have a length &gt; 1. As such, in the case where the subpeptide has a length ...</p>
-<ul>
-<li>== 1, it isn't considered a peptide.</li>
-<li>&gt; 1, it is considered a peptide.</li>
-</ul>
+<p><span class="anki-answerpattern" data-pattern="subpeptide"></span> - A peptide derived taking some contiguous piece of a larger peptide. A subpeptide can have a length == 1 where a peptide must have a length &gt; 1.</p>
 </li>
 <li>
 <p><span class="anki-answerpattern" data-pattern="central dogma of molecular biology"></span> - The overall concept of transcription and translation: Instructions for making a protein are copied from DNA to RNA, then RNA feeds into the ribosome to make that protein (DNA → RNA → Protein).</p>
@@ -1525,7 +1520,7 @@
 <ul>
 <li>Subsequence: A sequence derived by traversing some other sequence in order and choosing which elements to keep vs delete. <span class="anki-listrandomorder"></span>
 </li>
-<li>String: A sequence derived by taking a contiguous part of some other sequence (order of elements maintained).</li>
+<li>Substring: A sequence derived by taking a contiguous part of some other sequence (order of elements maintained).</li>
 </ul>
 </li>
 <li>
@@ -2351,143 +2346,20 @@
 </ul>
 <p>Gap regions between synteny blocks are represented by solid colored edges, either red or blue depending on which genome it is.</p>
 <p>If the genomes are linear, gap region edges are created between the nodes and the edges and a special termination node.</p>
-<pre><code class="language-{dot}">graph G {
-layout=neato
-labelloc="t";
-label="CIRCULAR vs LINEAR...";
-node [shape=plain];
-_C1_t_ [pos="2.0,0.0!"];
-_C1_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
-_B1_t_ [pos="0.0,-2.0!"];
-_B1_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
-_A1_t_ [pos="-2.0,0.0!"];
-_A1_h_ [pos="-1.414213562373095,1.4142135623730951!"];
-_D1_t_ [pos="0.0,2.0!"];
-_D1_h_ [pos="1.4142135623730951,1.414213562373095!"];
-_C1_t_ -- _C1_h_ [style=dashed];
-_B1_t_ -- _B1_h_ [style=dashed];
-_A1_t_ -- _A1_h_ [style=dashed];
-_D1_t_ -- _D1_h_ [style=dashed];
-_C1_t_ -- _D1_h_ [color=blue];
-_A1_h_ -- _D1_t_ [color=blue];
-_B1_t_ -- _C1_h_ [color=blue];
-_A1_t_ -- _B1_h_ [color=blue];
-_B1_h_ -- _C1_h_ [color=red];
-_A1_t_ -- _C1_t_ [color=red];
-_A1_h_ -- _D1_t_ [color=red];
-_B1_t_ -- _D1_h_ [color=red];
-
-
-_C2_t_ [label="_C_t_", pos="7.0,0.0!"];
-_C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
-_B2_t_ [label="_B_t_", pos="5,-2.0!"];
-_B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
-_A2_t_ [label="_A_t_", pos="3.0,0.0!"];
-_A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
-_D2_t_ [label="_D_t_", pos="5,2.0!"];
-_D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
-TERM [pos="4.9,0.5!"];
-_C2_t_ -- _C2_h_ [style=dashed];
-_B2_t_ -- _B2_h_ [style=dashed];
-_A2_t_ -- _A2_h_ [style=dashed];
-_D2_t_ -- _D2_h_ [style=dashed];
-_C2_t_ -- _D2_h_ [color=blue];
-_B2_t_ -- _C2_h_ [color=blue];
-_A2_t_ -- _B2_h_ [color=blue];
-_A2_h_ -- TERM [color=blue];
-_D2_t_ -- TERM [color=blue];
-_B2_h_ -- _C2_h_ [color=red];
-_A2_t_ -- _C2_t_ [color=red];
-_B2_t_ -- _D2_h_ [color=red];
-_A2_h_ -- TERM [color=red];
-_D2_t_ -- TERM [color=red];
-}
-</code></pre>
+<p><img src="dot_68956ed2f489ac4cb837efb6bd1d2a65.svg" alt="Dot diagram"></p>
 <p>In the above breakpoint graph, the blue edges represent genome 2's gap regions while the red edges represent genome 1's gap regions. The set of edges representing synteny blocks is shared between them.</p>
 <p>Breakpoint graphs build on the concept of breakpoints to compute a parsimonious path of fusion, fission, and reversal mutations (genome rearrangements) that transforms one genome into the other (see 2-break). Conventionally, blue edges represent the final desired path while red edges represent the path being transformed. As such, breakpoint graphs typically order synteny blocks so that blue edges are uniformly sandwiched between synteny blocks / red edges get chaotically scattered around.</p>
 </li>
 <li>
 <p><span class="anki-answerpattern" data-pattern="\b(2-break|2 break|two break|two-break)s?\b/i"></span> - Given a breakpoint graph, a 2-break operation breaks the two red edges at a synteny block boundary and re-wires them such that one of the red edges matches the blue edge at that boundary.</p>
 <p>For example, the two red edges highlighted below share the same synteny block boundary and can be re-wired such that one of the edges matches the blue edge at that synteny boundary ...</p>
-<pre><code class="language-{dot}">graph G {
-layout=neato
-labelloc="t";
-label="BEFORE to AFTER...";
-node [shape=plain];
-
-_C1_t_ [label="_C_t_", pos="2.0,0.0!"];
-_C1_h_ [label="_C_h_", pos="1.4142135623730947,-1.4142135623730954!"];
-_B1_t_ [label="_B_t_", pos="0.0,-2.0!"];
-_B1_h_ [label="_B_h_", pos="-1.4142135623730954,-1.414213562373095!"];
-_A1_t_ [label="_A_t_", pos="-2.0,0.0!"];
-_A1_h_ [label="_A_h_", pos="-1.414213562373095,1.4142135623730951!"];
-_D1_t_ [label="_D_t_", pos="0.0,2.0!"];
-_D1_h_ [label="_D_h_", pos="1.4142135623730951,1.414213562373095!"];
-_C1_t_ -- _C1_h_ [style=dashed];
-_B1_t_ -- _B1_h_ [style=dashed];
-_A1_t_ -- _A1_h_ [style=dashed];
-_D1_t_ -- _D1_h_ [style=dashed];
-_C1_t_ -- _D1_h_ [color=blue];
-_A1_h_ -- _D1_t_ [color=blue];
-_B1_t_ -- _C1_h_ [color=blue];
-_A1_t_ -- _B1_h_ [color=blue];
-_B1_h_ -- _C1_h_ [color=red];
-_A1_t_ -- _C1_t_ [color=red, penwidth="4"];
-_A1_h_ -- _D1_t_ [color=red];
-_B1_t_ -- _D1_h_ [color=red, penwidth="4"];
-
-_C2_t_ [label="_C_t_", pos="7.0,0.0!"];
-_C2_h_ [label="_C_h_", pos="6.4142135623730947,-1.4142135623730954!"];
-_B2_t_ [label="_B_t_", pos="5,-2.0!"];
-_B2_h_ [label="_B_h_", pos="3.585786438,-1.414213562373095!"];
-_A2_t_ [label="_A_t_", pos="3.0,0.0!"];
-_A2_h_ [label="_A_h_", pos="3.585786438,1.4142135623730951!"];
-_D2_t_ [label="_D_t_", pos="5,2.0!"];
-_D2_h_ [label="_D_h_", pos="6.4142135623730951,1.414213562373095!"];
-_C2_t_ -- _C2_h_ [style=dashed];
-_B2_t_ -- _B2_h_ [style=dashed];
-_A2_t_ -- _A2_h_ [style=dashed];
-_D2_t_ -- _D2_h_ [style=dashed];
-_C2_t_ -- _D2_h_ [color=blue];
-_A2_h_ -- _D2_t_ [color=blue];
-_B2_t_ -- _C2_h_ [color=blue];
-_A2_t_ -- _B2_h_ [color=blue];
-_B2_h_ -- _C2_h_ [color=red];
-_A2_t_ -- _B2_t_ [color=red, penwidth="4"];
-_A2_h_ -- _D2_t_ [color=red];
-_C2_t_ -- _D2_h_ [color=red, penwidth="4"];
-}
-</code></pre>
+<p><img src="dot_2ca5243fc24500a47a2859ee21a4a61a.svg" alt="Dot diagram"></p>
 <p>Each 2-break operation on a breakpoint graph represents a fusion, fission, or reversal mutation (genome rearrangement). Continually applying 2-breaks until all red edges match blue edges reveals a parsimonious path of such mutations that transforms the red genome to the blue genome.</p>
 </li>
 <li>
 <p><span class="anki-answerpattern" data-pattern="(permutation)/i"></span> - A list representing a single chromosome in one of the two genomes that make up a breakpoint graph. The entire breakpoint graph is representable as two sets of permutations, where each genome in the breakpoint graph is a set.</p>
 <p>Permutation sets are commonly used for tersely representing breakpoint graphs as text. For example, given the following breakpoint graph ...</p>
-<pre><code class="language-{dot}">graph G {
-layout=neato
-node [shape=plain];
-_C_t_ [pos="2.0,0.0!"];
-_C_h_ [pos="1.4142135623730947,-1.4142135623730954!"];
-_B_t_ [pos="0.0,-2.0!"];
-_B_h_ [pos="-1.4142135623730954,-1.414213562373095!"];
-_A_t_ [pos="-2.0,0.0!"];
-_A_h_ [pos="-1.414213562373095,1.4142135623730951!"];
-_D_t_ [pos="0.0,2.0!"];
-_D_h_ [pos="1.4142135623730951,1.414213562373095!"];
-_C_t_ -- _C_h_ [style=dashed];
-_B_t_ -- _B_h_ [style=dashed];
-_A_t_ -- _A_h_ [style=dashed];
-_D_t_ -- _D_h_ [style=dashed];
-_C_t_ -- _D_h_ [color=blue];
-_A_h_ -- _D_t_ [color=blue];
-_B_t_ -- _C_h_ [color=blue];
-_A_t_ -- _B_h_ [color=blue];
-_B_h_ -- _C_h_ [color=red];
-_A_t_ -- _C_t_ [color=red];
-_A_h_ -- _D_t_ [color=red];
-_B_t_ -- _D_h_ [color=red];
-}
-</code></pre>
+<p><img src="dot_bed1d61715ed515600f51c8a4b395968.svg" alt="Dot diagram"></p>
 <p>... , the permutation set representing the red genome may be any of the following ...</p>
 <ul>
 <li><code>{[-D, -B, +C, -A]}</code></li>
@@ -2867,20 +2739,7 @@ dist(S3, S4) is 5 = x + u + z
 </tr>
 </tbody>
 </table>
-<pre><code class="language-{dot}">graph G {
- graph[rankdir=LR]
- node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
- edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
- ranksep=0.25
- subgraph cluster_rhs {
-  v0 -- i0 [label=11]
-  v1 -- i0 [label=2]
-  i0 -- i1 [label=4]
-  i1 -- v2 [label=6]
-  i1 -- v3 [label=7]
- }
-}
-</code></pre>
+<p><img src="dot_4e5daffbacf71191e85a5881e8367790.svg" alt="Dot diagram"></p>
 <p>... results in v2's row and column being removed ...</p>
 <table>
 <thead>
@@ -2912,21 +2771,7 @@ dist(S3, S4) is 5 = x + u + z
 </tr>
 </tbody>
 </table>
-<pre><code class="language-{dot}">graph G {
- graph[rankdir=LR]
- node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
- edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
- ranksep=0.25
- subgraph cluster_rhs {
-  fontname="Courier-Bold"
-  fontsize=10
-  label="v3 trimmed"
-  v0 -- i0 [label=11]
-  v1 -- i0 [label=2]
-  i0 -- v3 [label=11]
- }
-}
-</code></pre>
+<p><img src="dot_8970363f8d351a28a22328fbfd029f13.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p><span class="anki-answerpattern" data-pattern="(bald distance matrix|balded distance matrix|bald distance matrices|balded distance matrices)/i"></span> - An additive distance matrix where the distances in a leaf node's row and column have been subtracted by that leaf node's limb length. This is equivalent to setting the leaf node's limb length to 0 in the corresponding simple tree.</p>
@@ -3000,23 +2845,7 @@ dist(S3, S4) is 5 = x + u + z
 </tr>
 </tbody>
 </table>
-<pre><code class="language-{dot}">graph G {
- graph[rankdir=LR]
- node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
- edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
- ranksep=0.25
- subgraph cluster_rhs {
-  v0 -- i0 [label=11]
-  v1 -- i0 [label=2]
-  v2 -- i0 [label=10]
-  i0 -- i2 [label=4]
-  i2 -- i1 [label=3]
-  i1 -- v3 [label=3]
-  i1 -- v4 [label=4]
-  i2 -- v5 [label=7]
- }
-}
-</code></pre>
+<p><img src="dot_e304cd9917c7e5b9d72c4e876e260cba.svg" alt="Dot diagram"></p>
 <p>... results in ...</p>
 <table>
 <thead>
@@ -3087,26 +2916,7 @@ dist(S3, S4) is 5 = x + u + z
 </tr>
 </tbody>
 </table>
-<pre><code class="language-{dot}">graph G {
- graph[rankdir=LR]
- node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
- edge[arrowsize=0.6, fontname="Courier-Bold", fontsize=10, arrowhead=vee]
- ranksep=0.25
- subgraph cluster_rhs {
-  fontname="Courier-Bold"
-  fontsize=10
-  label="v5 balded"
-  v0 -- i0 [label=11]
-  v1 -- i0 [label=2]
-  v2 -- i0 [label=10]
-  i0 -- i2 [label=4]
-  i2 -- i1 [label=3]
-  i1 -- v3 [label=3]
-  i1 -- v4 [label=4]
-  i2 -- v5 [label=0 style=dashed]
- }
-}
-</code></pre>
+<p><img src="dot_504f11240750f6a2add064fe593ca205.svg" alt="Dot diagram"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Technically, an edge weight of 0 is a violation of the simple tree requirement of having edge weights &gt; 0. This is a special case.</p>
@@ -3223,51 +3033,15 @@ dist(S3, S4) is 5 = x + u + z
 </li>
 <li>
 <p>Distance matrix maps to the obvious simple tree...</p>
-<pre><code class="language-{dot}">graph G {
- graph[rankdir=LR]
- node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
- edge[fontname="Courier-Bold", fontsize=10]
- v2
- v3
- v3 -- v2 [label="13.0"]
-}
-</code></pre>
+<p><img src="dot_17295d277521c7d7445601414800311c.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p>Attach v0 to produce tree...</p>
-<pre><code class="language-{dot}">graph G {
- graph[rankdir=LR]
- node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
- edge[fontname="Courier-Bold", fontsize=10]
- N1
- v0
- v2
- v3
- v3 -- N1 [label="7.0"]
- N1 -- v2 [label="6.0"]
- N1 -- v0 [label="15.0"]
-}
-</code></pre>
+<p><img src="dot_ee7b26791f6d3ee197982f570c83e294.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p>Attach v1 to produce tree...</p>
-<pre><code class="language-{dot}">graph G {
- graph[rankdir=LR]
- node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
- edge[fontname="Courier-Bold", fontsize=10]
- N1
- N2
- v0
- v1
- v2
- v3
- v3 -- N1 [label="7.0"]
- N1 -- v2 [label="6.0"]
- v0 -- N2 [label="11.0"]
- N2 -- N1 [label="4.0"]
- N2 -- v1 [label="2.0"]
-}
-</code></pre>
+<p><img src="dot_a9a8b9059c8bf67a1d36b651e907a38a.svg" alt="Dot diagram"></p>
 </li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -3653,51 +3427,15 @@ dist(S3, S4) is 5 = x + u + z
 </li>
 <li>
 <p>Distance matrix maps to the obvious simple tree...</p>
-<pre><code class="language-{dot}">graph G {
- graph[rankdir=LR]
- node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
- edge[fontname="Courier-Bold", fontsize=10]
-N1
-N2
-N2 -- N1 [label="3.75"]
-}
-</code></pre>
+<p><img src="dot_9f4177ab91402e113243c9985f953563.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p>Attach (v2, v3) to N2 to produce tree...</p>
-<pre><code class="language-{dot}">graph G {
- graph[rankdir=LR]
- node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
- edge[fontname="Courier-Bold", fontsize=10]
-N1
-N2
-v2
-v3
-N2 -- N1 [label="3.75"]
-N2 -- v2 [label="5.75"]
-N2 -- v3 [label="5.25"]
-}
-</code></pre>
+<p><img src="dot_3bcebffa84a180db2bd3ef759fd52701.svg" alt="Dot diagram"></p>
 </li>
 <li>
 <p>Attach (v1, v0) to N1 to produce tree...</p>
-<pre><code class="language-{dot}">graph G {
- graph[rankdir=LR]
- node[shape=circle, fontname="Courier-Bold", fontsize=10, width=0.4, height=0.4, fixedsize=true]
- edge[fontname="Courier-Bold", fontsize=10]
-N1
-N2
-v0
-v1
-v2
-v3
-N2 -- N1 [label="3.75"]
-N2 -- v2 [label="5.75"]
-N2 -- v3 [label="5.25"]
-N1 -- v1 [label="3.25"]
-N1 -- v0 [label="12.75"]
-}
-</code></pre>
+<p><img src="dot_9a3e57b6b197a70fe4edf94c50972151.svg" alt="Dot diagram"></p>
 </li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -4341,6 +4079,658 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>I suspect the term transcript abundance is used instead of transcript count because oftentimes the counts are processed / normalized into some other form in an effort to denoise / de-bias (RNA sequencing is a noisy process).</p>
 </div>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="Ohdo syndrome"></span> - A rare disease causing learning disabilities and distinct facial features. The disease is caused by a single nucleotide polymorphism resulting in a truncated protein (see codons).</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="single nucleotide polymorphism"></span> <span class="anki-hidepattern" data-pattern="(SNP)/i"></span> - A nucleotide variation at a specific location in a DNA sequence (e.g. position 15 has a SNP where it's A vs a SNP where it's T). While a single nucleotide polymorphism technically qualifies as a change in DNA, it occurs frequently enough that it's considered a variation rather than a mutation. Specifically, across the entire population, if the frequency of the change occurring is ...</p>
+<ul>
+<li>less than 1%, it's considered a point mutation.</li>
+<li>at least 1%, it's considered a single nucleotide polymorphism.</li>
+</ul>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(read mapping|read mapped|read map)/i"></span> - The alignment of DNA sequences (e.g. read_SEQs, contigs, etc..) to some larger DNA sequence (e.g. reference genome).</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(reference genome|reference human genome)/i"></span> - A genome assembled from multiple organisms of the same species, represented as the idealized genome for that species. Sequenced DNA fragment_SEQs / contigs of an organism are often read mapped against the reference genome for that organism's species, such that ...</p>
+<ul>
+<li>a clearer picture of the organism's genome is produced.</li>
+<li>single nucleotide polymorphisms can be found.</li>
+</ul>
+<p>Reference genomes don't capture genomic nuances such as genome rearrangement, areas of high mutation, or single nucleotide polymorphisms. For example, roughly 0.1% of an individual human's genome can't be read mapped to the human reference genome (e.g. major histocompatibility complex).</p>
+<p>A new type of reference genome, called a pan-genome, attempts to capture such nuances.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="pan-genome|pangenome)/i"></span> - A graph representing the relationships between a set of genomes. Pan-genomes are intended to be a new form of reference genome where nuances like genome rearrangements are retained.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="major histocompatibility complex"></span> - A region of DNA containing genes linked to the immune system. The genes in this region are highly diverse, to the point that it's unlikely for two individuals to have the genes in the exact same form.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(trie)/i"></span> - A rooted tree that holds a set of sequences. Shared prefixes between those sequences are collapsed into a single path while the non-shared remainders split out as deviating paths.</p>
+<p><img src="svgbob_a84f0cb9a8ddb31c2df6974e512858573d8cde82.svg" alt="Kroki diagram output"></p>
+<p>To disambiguate scenarios where one sequence is a prefix of the other, a trie typically either includes a ...</p>
+<ul>
+<li>a flag on each node to indicate if its the end of a sequence.</li>
+<li>a special "end-of-sequence" at the end of each sequence.</li>
+</ul>
+<p><img src="svgbob_5a01644a6141c1fd7745e9eeb6f5cbb7102bee06.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>End of sequence marker is the preferred mechanism.</p>
+</div>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(Aho[\s-]?Corasick|Aho[\s-]?Corasick trie)/i"></span> - A trie with special hop edges that eliminates redundant scanning during searches.</p>
+<p>Given a trie containing sequence prefixes P1 and P2, a special hop edge (P1, P2) is added if P2 is equal to P1 but with its first element chopped off (<code>P2 = P1[1:]</code>). In the example below, a special hop edge connects "arat" to "rat".</p>
+<p><img src="svgbob_d6e202f055e470240a3f70bee8cb98c573f8141b.svg" alt="Kroki diagram output"></p>
+<p>If a scan walks the trie to "arat", the next scan <em>must</em> contain "rat". As such, a special edge connects "arat" to "rat" such that the next scan can start directly past "rat".</p>
+<p><img src="svgbob_83da5124b5f21260416ff061e8154726d6f8d6e7.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="suffix trie"></span> - A trie of all suffixes within a sequence.</p>
+<p><img src="svgbob_325556b783b02fe0931376c9510a2074bf716cc1.svg" alt="Kroki diagram output"></p>
+<p>Suffix tries are used to efficiently determine if a string contains a substring. The string is converted to a suffix trie, then the trie is searched from the root node to see if a specific substring exists.</p>
+<p><img src="svgbob_e98da221de14299799efa96f49772a00dff3993f.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="suffix tree"></span> - A suffix trie where paths of nodes with indegree and outdegree of 1 are combined into a single edge. The elements at the edges being combined are concatenated together.</p>
+<p><img src="svgbob_4eea217255c04c65a6a80ce653c8cb82e2ec2aab.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Implementations typically represent edge strings as pointers / string views back to the original string.</p>
+</div>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="suffix array"></span> - A memory-efficient representation of a suffix tree as an array of pointers.</p>
+<p>The suffixes of a sequence are sorted lexicographically, where each suffix includes the same end marker that's included in the suffix tree. The end marker comes first in the lexicographical sort order. The example below is the suffix array for the word banana.</p>
+<table>
+<thead>
+<tr>
+<th>Index</th>
+<th>Pointer</th>
+<th>Suffix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>6</td>
+<td>¶</td>
+</tr>
+<tr>
+<td>1</td>
+<td>5</td>
+<td>a¶</td>
+</tr>
+<tr>
+<td>2</td>
+<td>3</td>
+<td>ana¶</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>anana¶</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0</td>
+<td>banana¶</td>
+</tr>
+<tr>
+<td>5</td>
+<td>4</td>
+<td>na¶</td>
+</tr>
+<tr>
+<td>6</td>
+<td>2</td>
+<td>nana¶</td>
+</tr>
+</tbody>
+</table>
+<p>The common prefix between two neighbouring suffixes represents a shared branch point in the suffix tree.</p>
+<p><img src="svgbob_f4ea07d5e51e3b023280a458096fd65017e35d3b.svg" alt="Kroki diagram output"></p>
+<p>Sliding a window of size two down the suffix array, the changes in common prefix from one pair of suffixes to the next defines the suffix tree structure. If a pair's common prefix ...</p>
+<ul>
+<li>has the same length vs the previous pair, it means the branch point is the same as the previous pair's branch point.</li>
+<li>increases in length vs the previous pair, it means the branch point extends from the previous pair's branch point.</li>
+<li>decreases in length vs the previous pair, it means the branch point reverts to that of the last pair with that length.</li>
+</ul>
+<p>In the example above, the common prefix length between index ...</p>
+<ul>
+<li>(0, 1) is 0, meaning it branches from the root node.</li>
+<li>(1, 2) is 1 ("a"), meaning the branch point extends from the last branch point (root node) with an edge representing the "a".</li>
+<li>(2, 3) is 3 ("ana"), meaning the branch point extends from the last branch point ("a") with an edge representing "na".</li>
+<li>(3, 4) is 0, meaning it branches from the root node.</li>
+<li>(4, 5) is 0, meaning it branches from the root node.</li>
+<li>(5, 6) is 2 ("na"), meaning the branch point extends from the last branch point (root node) with an edge representing "na".</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The entire point of the suffix array is that it's just an array of pointers to the suffix in the source sequence. Since the pointers are sorted (sorted by the suffixes they point to), you can quickly find if a substring exists just by doing a binary search on the suffix array (if a substring exists, it must be a prefix of one of the suffixes).</p>
+</div>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(burrows[-\s]wheeler transform)/i"></span> <code>{ankiHied} (BWT)/</code> - A matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. The sequence must have an end marker, where the end marker comes first in the lexicographical sort order (similar to suffix arrays).</p>
+<p>The example below is the burrows-wheeler transform of "banana¶", where <em>¶</em> is the end marker.</p>
+<ol>
+<li>
+<p>Cyclic rotations.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+</tr>
+<tr>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+</tr>
+<tr>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+</tr>
+<tr>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+</tr>
+<tr>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+</tr>
+<tr>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+</tr>
+<tr>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Lexicographically sort the cyclic rotations.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+</tr>
+<tr>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+</tr>
+<tr>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+</tr>
+<tr>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+</tr>
+<tr>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+</tr>
+<tr>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+</tr>
+<tr>
+<td>n</td>
+<td>a</td>
+<td>n</td>
+<td>a</td>
+<td>¶</td>
+<td>b</td>
+<td>a</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+<p>BWT matrices have a special property called the first-last property which makes them suitable for quickly determining if and how many times a substring exists in the original sequence.</p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(first[-\s]last property)/i"></span> - The property of BWT matrices that guarantees consistent ordering of a symbol's instances between the first and last columns of a BWT matrix.</p>
+<p>Consider the sequence "banana¶": The symbols in "banana¶" are {¶, a, b, n}. At index ...</p>
+<ol start="0">
+<li>the first <em>b</em> occurs: b<sub>1</sub></li>
+<li>the first <em>a</em> occurs: a<sub>1</sub></li>
+<li>the first <em>n</em> occurs: n<sub>1</sub></li>
+<li>the second <em>a</em> occurs: a<sub>2</sub></li>
+<li>the second <em>n</em> occurs: n<sub>2</sub></li>
+<li>the third <em>a</em> occurs: a<sub>3</sub></li>
+<li>the first <em>¶</em> occurs: ¶<sub>1</sub></li>
+</ol>
+<p>With these occurrence counts, the sequence becomes b<sub>1</sub>a<sub>1</sub>n<sub>1</sub>a<sub>2</sub>n<sub>2</sub>a<sub>3</sub>¶<sub>1</sub>. In the BWT matrix, for each symbol, even though the position of symbol instances are different between the first and last columns, the order in which those instances appear in are the same. For example, ...</p>
+<ul>
+<li>symbol <em>a</em> instances are ordered as [<span style="background-color: #f00; color: white; padding: 3px">a<sub>3</sub></span>, <span style="background-color: #b00; color: white; padding: 3px">a<sub>2</sub></span>, <span style="background-color: #800; color: white; padding: 3px">a<sub>1</sub></span>] in both the first and last column.</li>
+<li>symbol <em>n</em> instances are ordered as [<span style="background-color: #00f; color: white; padding: 3px">n<sub>2</sub></span>, <span style="background-color: #00b; color: white; padding: 3px">n<sub>1</sub></span>] in both the first and last column.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td><span style="background-color: #f00; color: white; padding: 3px">a<sub>3</sub></span></td>
+</tr>
+<tr>
+<td><span style="background-color: #f00; color: white; padding: 3px">a<sub>3</sub></span></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td><span style="background-color: #00f; color: white; padding: 3px">n<sub>2</sub></span></td>
+</tr>
+<tr>
+<td><span style="background-color: #b00; color: white; padding: 3px">a<sub>2</sub></span></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td><span style="background-color: #00b; color: white; padding: 3px">n<sub>1</sub></span></td>
+</tr>
+<tr>
+<td><span style="background-color: #800; color: white; padding: 3px">a<sub>1</sub></span></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+</tr>
+<tr>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+</tr>
+<tr>
+<td><span style="background-color: #00f; color: white; padding: 3px">n<sub>2</sub></span></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td><span style="background-color: #b00; color: white; padding: 3px">a<sub>2</sub></span></td>
+</tr>
+<tr>
+<td><span style="background-color: #00b; color: white; padding: 3px">n<sub>1</sub></span></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td><span style="background-color: #800; color: white; padding: 3px">a<sub>1</sub></span></td>
+</tr>
+</tbody>
+</table>
+<p>The first-last property comes from lexicographic sorting. In the example matrix above, isolating the matrix to those rows starting with <em>a</em> shows that, the second column is also lexicographically sorted in the isolated matrix.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span style="background-color: #f00; color: white; padding: 3px">a<sub>3</sub></span></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+</tr>
+<tr>
+<td><span style="background-color: #b00; color: white; padding: 3px">a<sub>2</sub></span></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+</tr>
+<tr>
+<td><span style="background-color: #800; color: white; padding: 3px">a<sub>1</sub></span></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+</tr>
+</tbody>
+</table>
+<p>In other words, cyclically rotating each row right by 1 moves each corresponding <em>a</em> to the end but doesn't change the lexicographic ordering of the rows.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td><span style="background-color: #f00; color: white; padding: 3px">a<sub>3</sub></span></td>
+</tr>
+<tr>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td><span style="background-color: #b00; color: white; padding: 3px">a<sub>2</sub></span></td>
+</tr>
+<tr>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td><span style="background-color: #800; color: white; padding: 3px">a<sub>1</sub></span></td>
+</tr>
+</tbody>
+</table>
+<p>Once rotated, the rows in the isolated matrix become other rows from the original matrix. Since the rows in the isolated matrix are still lexicographically sorted, they're ordered as they appear in that original matrix.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td><span style="background-color: #f00; color: white; padding: 3px">a<sub>3</sub></span></td>
+</tr>
+<tr>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+</tr>
+<tr>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+</tr>
+<tr>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+</tr>
+<tr>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+</tr>
+<tr>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td>a<sub>1</sub></td>
+<td>n<sub>1</sub></td>
+<td><span style="background-color: #b00; color: white; padding: 3px">a<sub>2</sub></span></td>
+</tr>
+<tr>
+<td>n<sub>1</sub></td>
+<td>a<sub>2</sub></td>
+<td>n<sub>2</sub></td>
+<td>a<sub>3</sub></td>
+<td>¶<sub>1</sub></td>
+<td>b<sub>1</sub></td>
+<td><span style="background-color: #800; color: white; padding: 3px">a<sub>1</sub></span></td>
+</tr>
+</tbody>
+</table>
+<p>Given just the first and last column of a BWT matrix, the original sequence can be pulled out by walking between those columns from last-to-first. Since it's known that ...</p>
+<ul>
+<li>the row containing the end marker (<em>¶</em>) within the first column has the sequence's last element within the last column,</li>
+<li>that end marker (<em>¶</em>) only appears once in the sequence and is always lexicographically sorted to the top of the first column,</li>
+</ul>
+<p>... the walk always starts from the top row.</p>
+<p><img src="svgbob_57e0f1bae5a018cfdeaca8f0bd21352d8d510b91.svg" alt="Kroki diagram output"></p>
+<p>Likewise, given just the first and last column of a BWT matrix, it's possible to quickly identify if and how many instances of some substring exists in the original sequence.</p>
+<p><img src="svgbob_6daab13e146d8f4524d3b6d51eeebfa62689062a.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="(pre[-\s]?order traversal)/i"></span> <span class="anki-answerpattern" data-pattern="(post[-\s]?order traversal)/i"></span> <span class="anki-answerpattern" data-pattern="(in[-\s]?order traversal)/i"></span></p>
+<ul>
+<li>
+<p>pre-order traversal - A form of depth-first traversal for binary trees where, starting from the root node, ...  <span class="anki-listrandomorder"></span>
+</p>
+<ol>
+<li>visit current node.</li>
+<li>recursively visit current node's left subtree.</li>
+<li>recursively visit current node's right subtree.</li>
+</ol>
+<p><img src="svgbob_d8441d729e89e94e305e729ce7089b194c8e2e1a.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Pre-order traversal is sometimes referred to as NLR (node-left-right).</p>
+<p>For reverse pre-order traversal, swap steps 2 and 3: NRL (node-right-left).</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This is a form of topological order traversal because the parent node is traversed before its children.</p>
+</div>
+<p>The term pre-order traversal also applies to non-binary trees (variable number of children per node): If the children have a specific order, pre-order traversal recursively visits each from first (left-most) to last (right-most).</p>
+</li>
+<li>
+<p>post-order traversal  - A form of depth-first traversal for binary trees where, starting from the root node, ...</p>
+<ol>
+<li>recursively visit current node's left subtree.</li>
+<li>recursively visit current node's right subtree.</li>
+<li>visit current node.</li>
+</ol>
+<p><img src="svgbob_6d34eb672d5564c2b4ce0a9bb152ff226d2be918.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Post-order traversal is sometimes referred to as LRN (left-right-node).</p>
+<p>For reverse post-order traversal, swap steps 1 and 2: RLN (right-left-node).</p>
+</div>
+<p>The term post-order traversal also applies to non-binary trees (variable number of children per node): If the children have a specific order, post-order traversal recursively visits each from last (right-most) to first (left-most).</p>
+</li>
+<li>
+<p>in-order traversal - A form of depth-first traversal for binary trees where, starting from the root node, ...</p>
+<ol>
+<li>recursively visit current node's left subtree.</li>
+<li>visit current node.</li>
+<li>recursively visit current node's right subtree.</li>
+</ol>
+<p><img src="svgbob_7914992283ad27b17cf8643939fe25a5fb79f78a.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>In-order is sometimes referred to as LNR (left-node-right).</p>
+<p>For reverse in-order traversal, swap steps 1 and 3: RNL (right-node-left).</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>It's unclear if there's an analog for this for non-binary trees (variable number of children per node). Maybe if the children have a specific order, it recursively visits the first half (left children), then visits the parent node, then recursively visits the last half (right children). But, how would this work if there were an odd number of children? The middle child wouldn't be in the left-half or right-half.</p>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="Basic Local Alignment Search Tool"></span> <span class="anki-answerpattern" data-pattern="(high[-\s]scoring segment pair)/i"></span> <span class="anki-hidepattern" data-pattern="(BLAST)/"></span> <span class="anki-hidepattern" data-pattern="(HSP)/"></span> - A heuristic algorithm that quickly finds shared regions between a query sequence and a database of sequences, where those shared regions are called high-scoring segment pairs. High-scoring segment pairs may be identified even in the presence of mutations, potentially even if mutated to the point where all elements are different in the shared region (e.g. BLOSUM scoring may deem two peptides to be highly related but they may not actually share any amino acids between them).</p>
+<p><img src="svgbob_bb1cb211935586eee5a511739d14c699a85f2179.svg" alt="Kroki diagram output"></p>
+<p>BLAST works by preprocessing the database of sequences into a hash table of k-mers, where other k-mers similar to those k-mers are included in the hash table as well. Similarity is determined by performing sequence alignments (the higher the score, the more similar the k-mer is).</p>
+<p><img src="svgbob_0a9e1f0fc7f14b37640e40326681e0e3da12652b.svg" alt="Kroki diagram output"></p>
+<p>K-mers from a query sequence are then looked up one-by-one in the hash table. Found matches are extended left and right until some criteria is met (e.g. the score drops below some threshold). The final product of the extension is called a high-scoring segment pair.</p>
+<p><img src="svgbob_d1064c02dd24172be71e0d3855b32de7deef66b7.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The Pevzner book and documentation online refers to k-mers from the query sequence as seeds and the extension left-and-right as seed extension.</p>
+</div>
+</li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="seed extension"></span> <span class="anki-answerpattern" data-pattern="seed"></span> - A substring of a string which is specifically used for mismatch tolerant searches.</p>
+<p>The example below searches for GCCGTTTT with a mismatch tolerance of 1 by first breaking GCCGTTTT into two non-overlapping seeds (GCCG and TTTT), then searching for each seed independently. Since GCCGTTTT can only contain a single mismatch, that mismatch has to be either in the 1st seed (GCCG) or the 2nd seed (TTTT), not both.</p>
+<p><img src="svgbob_c62030de2ac380d4b7ac8eaa697a6fb1805ca807.svg" alt="Kroki diagram output"></p>
+<p>Each found seed is then extended to cover the entirety of GCCGTTT and tested in full, called seed extension. If the hamming distance of the extended seed is within the mismatch tolerance of 1, it's considered a match.</p>
+<p><img src="svgbob_9f10c1db9ba47e4e26e56bfedd44f424bc226362.svg" alt="Kroki diagram output"></p>
+<p>It's impossible for d mismatches to exist across d + 1 seeds. There are more seeds than there are mismatches — at least one of the seeds must match exactly.</p>
+<p><img src="svgbob_27be0ab62d6a6964135cfc8727e10d7ede8f2e5f.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
 

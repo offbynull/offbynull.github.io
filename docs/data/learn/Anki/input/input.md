@@ -1077,11 +1077,7 @@ ankiListRandomSelect - When used in a list item, the parent list will keep only 
    N --> Q --> Y 
    ```
 
- * `{ankiAnswer} subpeptide` - A peptide derived taking some contiguous piece of a larger peptide.
- 
-   A subpeptide can have a length == 1 where a peptide must have a length > 1. As such, in the case where the subpeptide has a length ...
-    * == 1, it isn't considered a peptide.
-    * \> 1, it is considered a peptide.
+ * `{ankiAnswer} subpeptide` - A peptide derived taking some contiguous piece of a larger peptide. A subpeptide can have a length == 1 where a peptide must have a length > 1.
 
  * `{ankiAnswer} central dogma of molecular biology` - The overall concept of transcription and translation: Instructions for making a protein are copied from DNA to RNA, then RNA feeds into the ribosome to make that protein (DNA → RNA → Protein).
 
@@ -1276,7 +1272,7 @@ ankiListRandomSelect - When used in a list item, the parent list will keep only 
  * `{ankiAnswer} subsequence` `{ankiAnswer} substring`
 
    * Subsequence: A sequence derived by traversing some other sequence in order and choosing which elements to keep vs delete. `{ankiListRandomOrder}`
-   * String: A sequence derived by taking a contiguous part of some other sequence (order of elements maintained).
+   * Substring: A sequence derived by taking a contiguous part of some other sequence (order of elements maintained).
 
  * `{ankiAnswer} (topological ordering|topological order|topological)/i` - A 1-dimensional ordering of nodes in a directed acyclic graph in which each node is ahead of all of its predecessors / parents. In other words, the node is ahead of all other nodes that connect to it.
 
@@ -3858,4 +3854,559 @@ ankiListRandomSelect - When used in a list item, the parent list will keep only 
 
    ```{note}
    I suspect the term transcript abundance is used instead of transcript count because oftentimes the counts are processed / normalized into some other form in an effort to denoise / de-bias (RNA sequencing is a noisy process).
+   ```
+
+ * `{ankiAnswer} Ohdo syndrome` - A rare disease causing learning disabilities and distinct facial features. The disease is caused by a single nucleotide polymorphism resulting in a truncated protein (see codons).
+
+ * `{ankiAnswer} single nucleotide polymorphism` `{ankiHide} (SNP)/i` - A nucleotide variation at a specific location in a DNA sequence (e.g. position 15 has a SNP where it's A vs a SNP where it's T). While a single nucleotide polymorphism technically qualifies as a change in DNA, it occurs frequently enough that it's considered a variation rather than a mutation. Specifically, across the entire population, if the frequency of the change occurring is ...
+
+    * less than 1%, it's considered a point mutation.
+    * at least 1%, it's considered a single nucleotide polymorphism.
+
+ * `{ankiAnswer} (read mapping|read mapped|read map)/i` - The alignment of DNA sequences (e.g. read_SEQs, contigs, etc..) to some larger DNA sequence (e.g. reference genome).
+
+ * `{ankiAnswer} (reference genome|reference human genome)/i` - A genome assembled from multiple organisms of the same species, represented as the idealized genome for that species. Sequenced DNA fragment_SEQs / contigs of an organism are often read mapped against the reference genome for that organism's species, such that ...
+
+   * a clearer picture of the organism's genome is produced.
+   * single nucleotide polymorphisms can be found.
+ 
+   Reference genomes don't capture genomic nuances such as genome rearrangement, areas of high mutation, or single nucleotide polymorphisms. For example, roughly 0.1% of an individual human's genome can't be read mapped to the human reference genome (e.g. major histocompatibility complex).
+
+   A new type of reference genome, called a pan-genome, attempts to capture such nuances.
+
+ * `{ankiAnswer} pan-genome|pangenome)/i` - A graph representing the relationships between a set of genomes. Pan-genomes are intended to be a new form of reference genome where nuances like genome rearrangements are retained.
+
+ * `{ankiAnswer} major histocompatibility complex` - A region of DNA containing genes linked to the immune system. The genes in this region are highly diverse, to the point that it's unlikely for two individuals to have the genes in the exact same form.
+ 
+ * `{ankiAnswer} (trie)/i` - A rooted tree that holds a set of sequences. Shared prefixes between those sequences are collapsed into a single path while the non-shared remainders split out as deviating paths.
+
+   ```{svgbob}
+   * "? for [banal, banned, banana]"
+
+                 n   e   d
+               .-->*-->*-->*
+               |
+     b   a   n | a   l 
+   *-->*-->*-->*-->*-->*
+                   |
+                   | n   a
+                   '-->*-->*
+   ```
+
+   To disambiguate scenarios where one sequence is a prefix of the other, a trie typically either includes a ...
+
+    * a flag on each node to indicate if its the end of a sequence.
+    * a special "end-of-sequence" at the end of each sequence.
+
+   ```{svgbob}
+   * "? for [apple, apples] (with end marker)"
+
+                         s   ¶  
+                       .-->*-->*
+                       |
+     a   p   p   l   e | ¶
+   *-->*-->*-->*-->*-->*-->*
+   
+   
+   * "? for [apple, apples] (without end marker)"
+   
+     a   p   p   l   e   s
+   *-->*-->*-->*-->*-->*-->*
+   ```
+
+   ```{note}
+   End of sequence marker is the preferred mechanism.
+   ```
+
+ * `{ankiAnswer} (Aho[\s-]?Corasick|Aho[\s-]?Corasick trie)/i` - A trie with special hop edges that eliminates redundant scanning during searches.
+
+   Given a trie containing sequence prefixes P1 and P2, a special hop edge (P1, P2) is added if P2 is equal to P1 but with its first element chopped off (`P2 = P1[1:]`). In the example below, a special hop edge connects "arat" to "rat". 
+
+   ```{svgbob}
+                   .- - - - - - - - - - - -.
+                   :                       :
+                   :     i   u   m   ¶     :
+                   :   .-->*-->*-->*-->*   :
+                   :   |                   :
+     a   r   a   t : r | o   n   ¶         : "hop from arat"
+   .-->*-->*-->*-->*-->*-->*-->*-->*       : "to rat"
+   |                                       :
+   *                                       :
+   | r   a   t   i   o   n   ¶             :
+   '-->*-->*-->*-->*-->*-->*-->*           :
+               ^                           :
+               :                           :
+               '- - - - - - - - - - - - - -'
+   ```
+   
+   If a scan walks the trie to "arat", the next scan _must_ contain "rat". As such, a special edge connects "arat" to "rat" such that the next scan can start directly past "rat".
+
+   ```{svgbob}
+   * "1st scan starts at index 0 and stops at index 3"
+
+   0     3
+   |     |
+   v     v
+   a r a t i o n s
+
+
+   * "2nd scan hops ahead to start at index 4"
+     "(instead of index 1) and stops at index 7"
+
+         4     7
+         |     |
+         v     v
+   a r a t i o n s
+   ```
+
+ * `{ankiAnswer} suffix trie` - A trie of all suffixes within a sequence.
+
+   ```{svgbob}
+   * "? for banana"
+
+     b   a   n   a   n   a   ¶ 
+   .-->*-->*-->*-->*-->*-->*-->*
+   |             n   a   ¶
+   |           .-->*-->*-->*
+   |     n   a | ¶
+   |   .-->*-->*-->*
+   | a | ¶
+   +-->*-->*
+   | ¶
+   *-->*
+   | n   a   ¶
+   '-->*-->*-->*
+           | n   a   ¶
+           '-->*-->*-->*
+   ```
+
+   Suffix tries are used to efficiently determine if a string contains a substring. The string is converted to a suffix trie, then the trie is searched from the root node to see if a specific substring exists.
+
+   ```{svgbob}
+   * "Search for nan in banana"
+     "(path for nan denoted by unfilled nodes)"
+
+     b   a   n   a   n   a   ¶ 
+   .-->*-->*-->*-->*-->*-->*-->*
+   |             n   a   ¶
+   |           .-->*-->*-->*
+   |     n   a | ¶
+   |   .-->*-->*-->*
+   | a | ¶
+   +-->*-->*
+   | ¶
+   o-->*
+   | n   a   ¶
+   '-->o-->o-->*
+           | n   a   ¶
+           '-->o-->*-->*
+   ```
+
+ * `{ankiAnswer} suffix tree` - A suffix trie where paths of nodes with indegree and outdegree of 1 are combined into a single edge. The elements at the edges being combined are concatenated together.
+
+   ```{svgbob}
+      "SUFFIX TRIE FOR banana"                         "? FOR banana"
+
+     b   a   n   a   n   a   ¶                              banana¶ 
+   .-->*-->*-->*-->*-->*-->*-->*                   .-------------------------->*
+   |             n   a   ¶                         |                na¶     
+   |           .-->*-->*-->*                       |           .---------->*    
+   |     n   a | ¶                                 |       na  | ¶            
+   |   .-->*-->*-->*                               |   .------>*-->*            
+   | a | ¶                                         | a | ¶                    
+   +-->*-->*                                       +-->*-->*                    
+   | ¶                                             | ¶                        
+   *-->*                                           *-->*                        
+   | n   a   ¶                                     |   na    ¶                
+   '-->*-->*-->*                                   '------>*-->*                
+           | n   a   ¶                                     |   na¶        
+           '-->*-->*-->*                                   '---------->*        
+   ```
+
+   ```{note}
+   Implementations typically represent edge strings as pointers / string views back to the original string.
+   ```
+
+ * `{ankiAnswer} suffix array` - A memory-efficient representation of a suffix tree as an array of pointers.
+ 
+   The suffixes of a sequence are sorted lexicographically, where each suffix includes the same end marker that's included in the suffix tree. The end marker comes first in the lexicographical sort order. The example below is the suffix array for the word banana.
+
+   | Index | Pointer | Suffix  |
+   |-------|---------|---------|
+   | 0     | 6       | ¶       |
+   | 1     | 5       | a¶      |
+   | 2     | 3       | ana¶    |
+   | 3     | 1       | anana¶  |
+   | 4     | 0       | banana¶ |
+   | 5     | 4       | na¶     |
+   | 6     | 2       | nana¶   |
+
+   The common prefix between two neighbouring suffixes represents a shared branch point in the suffix tree.
+
+   ```{svgbob}
+   "SUFFIX ? FOR banana"                       "SUFFIX TREE FOR banana"
+                    
+       0   ¶                                             banana¶   
+                                                .-------------------------->*
+       1   a ¶                                  |                na¶       
+           |                                    |           .---------->*    
+       2   a n a ¶                              |       na  | ¶              
+           | | |                                |   .------>*-->*            
+       3   a n a n a ¶                          | a | ¶                      
+                                                .-->*-->*                    
+       4   b a n a n a ¶                        | ¶                          
+                                                *-->*                        
+       5   n a ¶                                |   na    ¶                  
+           | |                                  '------>*-->*                
+       6   n a n a ¶                                    |   na¶          
+                                                        '---------->*        
+   ```
+
+   Sliding a window of size two down the suffix array, the changes in common prefix from one pair of suffixes to the next defines the suffix tree structure. If a pair's common prefix ...
+
+    * has the same length vs the previous pair, it means the branch point is the same as the previous pair's branch point.
+    * increases in length vs the previous pair, it means the branch point extends from the previous pair's branch point.
+    * decreases in length vs the previous pair, it means the branch point reverts to that of the last pair with that length.
+  
+   In the example above, the common prefix length between index ...
+
+    * (0, 1) is 0, meaning it branches from the root node.
+    * (1, 2) is 1 ("a"), meaning the branch point extends from the last branch point (root node) with an edge representing the "a".
+    * (2, 3) is 3 ("ana"), meaning the branch point extends from the last branch point ("a") with an edge representing "na".
+    * (3, 4) is 0, meaning it branches from the root node.
+    * (4, 5) is 0, meaning it branches from the root node.
+    * (5, 6) is 2 ("na"), meaning the branch point extends from the last branch point (root node) with an edge representing "na".
+
+   ```{note}
+   The entire point of the suffix array is that it's just an array of pointers to the suffix in the source sequence. Since the pointers are sorted (sorted by the suffixes they point to), you can quickly find if a substring exists just by doing a binary search on the suffix array (if a substring exists, it must be a prefix of one of the suffixes).
+   ```
+
+ * `{ankiAnswer} (burrows[-\s]wheeler transform)/i` `{ankiHied} (BWT)/` - A matrix formed by combining all cyclic rotations of a sequence and sorting lexicographically. The sequence must have an end marker, where the end marker comes first in the lexicographical sort order (similar to suffix arrays).
+ 
+   The example below is the burrows-wheeler transform of "banana¶", where *¶* is the end marker.
+   
+   1. Cyclic rotations.
+
+      |   |   |   |   |   |   |   |
+      |---|---|---|---|---|---|---|
+      | b | a | n | a | n | a | ¶ |
+      | ¶ | b | a | n | a | n | a |
+      | a | ¶ | b | a | n | a | n |
+      | n | a | ¶ | b | a | n | a |
+      | a | n | a | ¶ | b | a | n |
+      | n | a | n | a | ¶ | b | a |
+      | a | n | a | n | a | ¶ | b |
+     
+   2. Lexicographically sort the cyclic rotations.
+
+      |   |   |   |   |   |   |   |
+      |---|---|---|---|---|---|---|
+      | ¶ | b | a | n | a | n | a |
+      | a | ¶ | b | a | n | a | n |
+      | a | n | a | ¶ | b | a | n |
+      | a | n | a | n | a | ¶ | b |
+      | b | a | n | a | n | a | ¶ |
+      | n | a | ¶ | b | a | n | a |
+      | n | a | n | a | ¶ | b | a |
+
+   BWT matrices have a special property called the first-last property which makes them suitable for quickly determining if and how many times a substring exists in the original sequence.
+     
+ * `{ankiAnswer} (first[-\s]last property)/i` - The property of BWT matrices that guarantees consistent ordering of a symbol's instances between the first and last columns of a BWT matrix.
+ 
+   Consider the sequence "banana¶": The symbols in "banana¶" are {¶, a, b, n}. At index ...
+
+   0. the first *b* occurs: b<sub>1</sub>
+   1. the first *a* occurs: a<sub>1</sub>
+   2. the first *n* occurs: n<sub>1</sub>
+   3. the second *a* occurs: a<sub>2</sub> 
+   4. the second *n* occurs: n<sub>2</sub>
+   5. the third *a* occurs: a<sub>3</sub>
+   6. the first *¶* occurs: ¶<sub>1</sub>
+
+   With these occurrence counts, the sequence becomes b<sub>1</sub>a<sub>1</sub>n<sub>1</sub>a<sub>2</sub>n<sub>2</sub>a<sub>3</sub>¶<sub>1</sub>. In the BWT matrix, for each symbol, even though the position of symbol instances are different between the first and last columns, the order in which those instances appear in are the same. For example, ...
+
+    * symbol *a* instances are ordered as [`{h}#f00 a<sub>3</sub>`, `{h}#b00 a<sub>2</sub>`, `{h}#800 a<sub>1</sub>`] in both the first and last column.
+    * symbol *n* instances are ordered as [`{h}#00f n<sub>2</sub>`, `{h}#00b n<sub>1</sub>`] in both the first and last column.
+
+   |                         |               |               |               |               |               |                         |
+   |-------------------------|---------------|---------------|---------------|---------------|---------------|-------------------------|
+   |          ¶<sub>1</sub>  | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | `{h}#f00 a<sub>3</sub>` |
+   | `{h}#f00 a<sub>3</sub>` | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | `{h}#00f n<sub>2</sub>` |
+   | `{h}#b00 a<sub>2</sub>` | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | `{h}#00b n<sub>1</sub>` |
+   | `{h}#800 a<sub>1</sub>` | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> |          b<sub>1</sub>  |
+   |          b<sub>1</sub>  | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> |          ¶<sub>1</sub>  |
+   | `{h}#00f n<sub>2</sub>` | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | `{h}#b00 a<sub>2</sub>` |
+   | `{h}#00b n<sub>1</sub>` | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | `{h}#800 a<sub>1</sub>` |
+
+   The first-last property comes from lexicographic sorting. In the example matrix above, isolating the matrix to those rows starting with *a* shows that, the second column is also lexicographically sorted in the isolated matrix.
+
+   |                         |               |               |               |               |               |               |
+   |-------------------------|---------------|---------------|---------------|---------------|---------------|---------------|
+   | `{h}#f00 a<sub>3</sub>` | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> |
+   | `{h}#b00 a<sub>2</sub>` | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> |
+   | `{h}#800 a<sub>1</sub>` | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> |
+
+   In other words, cyclically rotating each row right by 1 moves each corresponding *a* to the end but doesn't change the lexicographic ordering of the rows.
+
+   |               |               |               |               |               |               |                         |
+   |---------------|---------------|---------------|---------------|---------------|---------------|-------------------------|
+   | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | `{h}#f00 a<sub>3</sub>` |
+   | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | `{h}#b00 a<sub>2</sub>` |
+   | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | `{h}#800 a<sub>1</sub>` |
+
+   Once rotated, the rows in the isolated matrix become other rows from the original matrix. Since the rows in the isolated matrix are still lexicographically sorted, they're ordered as they appear in that original matrix.
+
+   |               |               |               |               |               |               |                         |
+   |---------------|---------------|---------------|---------------|---------------|---------------|-------------------------|
+   | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | `{h}#f00 a<sub>3</sub>` |
+   | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> |          n<sub>2</sub>  |
+   | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> |          n<sub>1</sub>  |
+   | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> |          b<sub>1</sub>  |
+   | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> |          ¶<sub>1</sub>  |
+   | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | a<sub>1</sub> | n<sub>1</sub> | `{h}#b00 a<sub>2</sub>` |
+   | n<sub>1</sub> | a<sub>2</sub> | n<sub>2</sub> | a<sub>3</sub> | ¶<sub>1</sub> | b<sub>1</sub> | `{h}#800 a<sub>1</sub>` |
+
+   Given just the first and last column of a BWT matrix, the original sequence can be pulled out by walking between those columns from last-to-first. Since it's known that ...
+   
+   * the row containing the end marker (*¶*) within the first column has the sequence's last element within the last column,
+   * that end marker (*¶*) only appears once in the sequence and is always lexicographically sorted to the top of the first column,
+
+   ... the walk always starts from the top row.
+  
+   ```{svgbob}
+   +--+--+      a    +--+--+           +--+--+           +--+--+           +--+--+           +--+--+           +--+--+
+   |¶1|a3|-------.   |¶1|a3|     na    |¶1|a3|           |¶1|a3|           |¶1|a3|           |¶1|a3|           |¶1|a3| 
+   |a3|n2|       '-> |a3|n2|-------.   |a3|n2|           |a3|n2|   nana    |a3|n2|           |a3|n2|           |a3|n2| 
+   |a2|n1|           |a2|n1|       |   |a2|n1|       .-> |a2|n1|-------.   |a2|n1|           |a2|n1| banana    |a2|n1| 
+   |a1|b1|           |a1|b1|       |   |a1|b1|       |   |a1|b1|       |   |a1|b1|       .-> |a1|b1|-------.   |a1|b1| 
+   |b1|¶1|           |b1|¶1|       |   |b1|¶1|       |   |b1|¶1|       |   |b1|¶1|       |   |b1|¶1|       '-> |b1|¶1|
+   |n2|a2|           |n2|a2|       '-> |n2|a2|-------'   |n2|a2|       |   |n2|a2|       |   |n2|a2|           |n2|a2|
+   |n1|a1|           |n1|a1|           |n1|a1|    ana    |n1|a1|       '-> |n1|a1|-------'   |n1|a1|           |n1|a1|
+   +--+--+           +--+--+           +--+--+           +--+--+           +--+--+  anana    +--+--+           +--+--+
+   ```
+
+   Likewise, given just the first and last column of a BWT matrix, it's possible to quickly identify if and how many instances of some substring exists in the original sequence.
+
+   ```{svgbob}
+   "* search for substring nana"
+   
+   +--+--+           +--+--+           +--+--+           +--+--+
+   |¶1|a3|     na    |¶1|a3|           |¶1|a3|           |¶1|a3|
+   |a3|n2|-------.   |a3|n2|           |a3|n2|   nana    |a3|n2|
+   |a2|n1|-----. |   |a2|n1|     .---> |a2|n1|-------.   |a2|n1|
+   |a1|b1|     | |   |a1|b1|     | .-> |a1|b1|       |   |a1|b1|
+   |b1|¶1|     | |   |b1|¶1|     | |   |b1|¶1|       |   |b1|¶1|
+   |n2|a2|     | '-> |n2|a2|-----' |   |n2|a2|       |   |n2|a2|
+   |n1|a1|     '---> |n1|a1|-------'   |n1|a1|       '-> |n1|a1|
+   +--+--+           +--+--+    ana    +--+--+           +--+--+
+   ```
+
+ * `{ankiAnswer} (pre[-\s]?order traversal)/i` `{ankiAnswer} (post[-\s]?order traversal)/i` `{ankiAnswer} (in[-\s]?order traversal)/i` 
+ 
+   * pre-order traversal - A form of depth-first traversal for binary trees where, starting from the root node, ...  `{ankiListRandomOrder}`
+
+     1. visit current node.
+     2. recursively visit current node's left subtree.
+     3. recursively visit current node's right subtree.
+  
+     ```{svgbob}
+          F
+         / \
+        /   \
+       B     G
+      / \     \
+     A   D     I
+        / \   /
+       C   E H
+     
+     "F, B, A, D, C, E, G, I, H"
+     ```
+  
+     ```{note}
+     Pre-order traversal is sometimes referred to as NLR (node-left-right).
+  
+     For reverse pre-order traversal, swap steps 2 and 3: NRL (node-right-left).
+     ```
+  
+     ```{note}
+     This is a form of topological order traversal because the parent node is traversed before its children.
+     ```
+   
+     The term pre-order traversal also applies to non-binary trees (variable number of children per node): If the children have a specific order, pre-order traversal recursively visits each from first (left-most) to last (right-most).
+  
+   * post-order traversal  - A form of depth-first traversal for binary trees where, starting from the root node, ...
+  
+     1. recursively visit current node's left subtree.
+     2. recursively visit current node's right subtree.
+     3. visit current node.
+  
+     ```{svgbob}
+          F
+         / \
+        /   \
+       B     G
+      / \     \
+     A   D     I
+        / \   /
+       C   E H
+     
+     "A, C, E, D, B, H, I, G, F"
+     ```
+  
+     ```{note}
+     Post-order traversal is sometimes referred to as LRN (left-right-node).
+  
+     For reverse post-order traversal, swap steps 1 and 2: RLN (right-left-node).
+     ```
+   
+     The term post-order traversal also applies to non-binary trees (variable number of children per node): If the children have a specific order, post-order traversal recursively visits each from last (right-most) to first (left-most).
+  
+   * in-order traversal - A form of depth-first traversal for binary trees where, starting from the root node, ...
+  
+     1. recursively visit current node's left subtree.
+     2. visit current node.
+     3. recursively visit current node's right subtree.
+  
+     ```{svgbob}
+          F
+         / \
+        /   \
+       B     G
+      / \     \
+     A   D     I
+        / \   /
+       C   E H
+     
+     "A, B, C, D, E, F, G, H, I"
+     ```
+  
+     ```{note}
+     In-order is sometimes referred to as LNR (left-node-right).
+  
+     For reverse in-order traversal, swap steps 1 and 3: RNL (right-node-left).
+     ```
+  
+     ```{note}
+     It's unclear if there's an analog for this for non-binary trees (variable number of children per node). Maybe if the children have a specific order, it recursively visits the first half (left children), then visits the parent node, then recursively visits the last half (right children). But, how would this work if there were an odd number of children? The middle child wouldn't be in the left-half or right-half.
+     ```
+  
+ * `{ankiAnswer} Basic Local Alignment Search Tool` `{ankiAnswer} (high[-\s]scoring segment pair)/i` `{ankiHide} (BLAST)/` `{ankiHide} (HSP)/` - A heuristic algorithm that quickly finds shared regions between a query sequence and a database of sequences, where those shared regions are called high-scoring segment pairs. High-scoring segment pairs may be identified even in the presence of mutations, potentially even if mutated to the point where all elements are different in the shared region (e.g. BLOSUM scoring may deem two peptides to be highly related but they may not actually share any amino acids between them).
+
+   ```{svgbob}
+                .---------.
+   "DB Seq 1:"   A C C C T G G G C G T T A C G T
+   "Quey Seq:" G A C C C T T A A G A A A A G T T
+                '---------'
+   
+                        .-----------.
+   "DB Seq 2:" G G C G T A C C C T T T A C G T
+   "Quey Seq:"         G A C C C T T A A G A A A A G T T
+                        '-----------'
+   
+                            .---------------.
+   "DB Seq 3:" T T A G G C C A C C C T T A A T
+   "Quey Seq:"             G A C C C T T A A G A A A A G T T
+                            '---------------'
+
+                        .---------.
+   "DB Seq 4:" G G C G T C C C C T T G T A C G T
+   "Quey Seq:"         G A C C C T T A A G A A A A G T T
+                        '---------'
+   ```
+
+   BLAST works by preprocessing the database of sequences into a hash table of k-mers, where other k-mers similar to those k-mers are included in the hash table as well. Similarity is determined by performing sequence alignments (the higher the score, the more similar the k-mer is).
+   
+   ```{svgbob}
+   G G C G T C C C C T T G T A C G T
+            '----+----'
+                 |
+                 +-- C C C C T "(original k-mer)"
+                 +-- C C C C C "(similar k-mer to original)"
+                 +-- C C C T C "(similar k-mer to original)"
+                 +-- C C T C T "(similar k-mer to original)"
+                 +-- "etc.."
+   ```
+   
+   K-mers from a query sequence are then looked up one-by-one in the hash table. Found matches are extended left and right until some criteria is met (e.g. the score drops below some threshold). The final product of the extension is called a high-scoring segment pair.
+
+   ```{svgbob}
+   "Original HSP:"
+            .---------.
+   G G A C T C C C C T T G T A C G T
+       A C C C T T A T T G T A A G T T
+            '---------'
+   
+   "Expand HSP by 1 each way:"
+          .-------------.
+   G G A C T C C C C T T G T A C G T
+       A C C C T T A T T G T A A G T T
+          '-------------'
+   
+   "Expand HSP by 1 each way:"
+        .-----------------.
+   G G A C T C C C C T T G T A C G T
+       A C C C T T A T T G T A A G T T
+        '-----------------'
+   
+   "Expand HSP by 1 each way:"
+      .---------------------.
+   G G A C T C C C C T T G T A C G T
+       A C C C T T A T T G T A A G T T
+      '---------------------'
+   
+   "Expand HSP by 1 right (can't go left anymore):"
+      .-----------------------.
+   G G A C T C C C C T T G T A C G T
+       A C C C T T A T T G T A A G T T
+      '-----------------------'
+   
+   "... (keep expanding until score goes below threshold) ..."
+   ```
+
+   ```{note}
+   The Pevzner book and documentation online refers to k-mers from the query sequence as seeds and the extension left-and-right as seed extension.
+   ```
+
+ * `{ankiAnswer} seed extension` `{ankiAnswer} seed` - A substring of a string which is specifically used for mismatch tolerant searches.
+ 
+   The example below searches for GCCGTTTT with a mismatch tolerance of 1 by first breaking GCCGTTTT into two non-overlapping seeds (GCCG and TTTT), then searching for each seed independently. Since GCCGTTTT can only contain a single mismatch, that mismatch has to be either in the 1st seed (GCCG) or the 2nd seed (TTTT), not both.
+
+   ```{svgbob}
+   * "GCCGTTTT with 1 mismatch into seeds: [GCCG, TTTT]"
+   
+     G C C G                               T T T T
+     | | | |                               | | | |
+   A G C C G G T A A A T T C A T A G C A G T T T T A A C A A A 
+    '-------'                             '-------'
+   ```
+
+   Each found seed is then extended to cover the entirety of GCCGTTT and tested in full, called seed extension. If the hamming distance of the extended seed is within the mismatch tolerance of 1, it's considered a match.
+
+   ```{svgbob}
+   * "1st extension has hamming dist of 3 (exceeds tolerance)"
+   * "2nd extension has hamming dist of 1 (within tolerance)"
+                                   
+     G C C G T T T T               G C C G T T T T
+     | | | |   |                   | |   | | | | |
+   A G C C G G T A A A T T C A T A G C A G T T T T A A C A A A 
+    '---------------'             '---------------'
+   ```
+
+   It's impossible for d mismatches to exist across d + 1 seeds. There are more seeds than there are mismatches — at least one of the seeds must match exactly.
+
+   ```{svgbob}
+   * "ACGTT separated into 3 seeds. It's impossible for 2"
+     "mismatches to be spread across 3 seeds. Dots represent"
+     "mismatches. Exact matching seeds wrapped in brackets."
+   
+   ( A C )    ( G )      ● ● 
+   ( A C )      ●        T ● 
+     A ●        G        T ● 
+     ● C      ( G )      T ● 
+   ( A C )      ●        ● T 
+     A ●      ( G )      ● T 
+     ● C      ( G )      ● T 
+     A ●        ●      ( T T )
+     ● C        ●      ( T T )
+     ● ●      ( G )    ( T T )
    ```
