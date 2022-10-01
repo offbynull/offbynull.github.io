@@ -1116,15 +1116,15 @@ CATCTT
 Algorithms/K-mer_TOPIC
 ```
 
-DNA sequencers work by taking many copies of an organism's genome, breaking up those copies into fragment_NORMs, then scanning in those fragment_NORMs. Sequencers typically scan fragment_NORMs in 1 of 2 ways:
+DNA sequencers work by taking many copies of an organism's genome, breaking up those copies into !!fragments!!, then scanning in those !!fragments!!. Sequencers typically scan !!fragments!! in 1 of 2 ways:
 
- * read_SEQs - small DNA fragment_NORMs of equal size (represented as k-mers).
+ * read_SEQs - small DNA !!fragments!! of equal size (represented as k-mers).
 
    ```{svgbob}
    A -> A -> A -> C -> C -> G -> A -> A -> A -> C
    ```
 
- * read-pairs - small DNA fragment_NORMs of equal size where the bases in the middle part of the fragment_NORM aren't known (represented as kd-mers).
+ * read-pairs - small DNA !!fragments!! of equal size where the bases in the middle part of the !!fragment!! aren't known (represented as kd-mers).
 
    ```{svgbob}
    A -> C -> A -> ? -> ? -> ? -> ? -> ? -> ? -> ? -> ? -> ? -> ? -> ? -> ? -> ? -> ? -> ? -> ? -> T -> G -> C
@@ -2118,8 +2118,8 @@ Each subpeptide then will have its mass-to-charge ratio measured, which in turn 
 
 Special consideration needs to be given to the real-world practical problems with mass spectrometry. Specifically, the spectrum_MS given back by a mass spectrometer will very likely ...
 
- * miss mass-to-charge ratios for some fragment_NORMs of the intended molecule (missing entries).
- * include mass-to-charge ratios for fragment_NORMs of unintended molecules (faulty entries).
+ * miss mass-to-charge ratios for some !!fragments!! of the intended molecule (missing entries).
+ * include mass-to-charge ratios for !!fragments!! of unintended molecules (faulty entries).
  * have noisy mass-to-charge ratios.
 
 The following table contains a list of proteinogenic amino acids with their masses and codon mappings:
@@ -4264,9 +4264,9 @@ It's said that PAM is focused on tracking the evolutionary origins of proteins. 
 ```{note}
 [Here](http://www.compbio.dundee.ac.uk/papers/rev93_1/subsection3_3_5.html) and [here](https://en.wikipedia.org/w/index.php?title=Point_accepted_mutation&oldid=1002281881#Comparing_PAM_and_BLOSUM) both seem to say that BLOSUM supersedes PAM as a scoring matrix for protein sequences.
 
-> Although both matrices produce similar scoring outcomes they were generated using differing methodologies. The BLOSUM matrices were generated directly from the amino acid differences in aligned blocks that have diverged to varying degree_NORMs the PAM matrices reflect the extrapolation of evolutionary information based on closely related sequences to longer timescales
+> Although both matrices produce similar scoring outcomes they were generated using differing methodologies. The BLOSUM matrices were generated directly from the amino acid differences in aligned blocks that have diverged to varying !!degrees!! the PAM matrices reflect the extrapolation of evolutionary information based on closely related sequences to longer timescales
 
-> Henikoff and Henikoff [16] have compared the BLOSUM matrices to PAM, PET, Overington, Gonnet [17] and multiple PAM matrices by evaluating how effectively the matrices can detect known member_NORMs of a protein family from a database when searching with the ungapped local alignment program BLAST [18]. They conclude that overall the BLOSUM 62 matrix is the most effective.
+> Henikoff and Henikoff [16] have compared the BLOSUM matrices to PAM, PET, Overington, Gonnet [17] and multiple PAM matrices by evaluating how effectively the matrices can detect known !!members!! of a protein family from a database when searching with the ungapped local alignment program BLAST [18]. They conclude that overall the BLOSUM 62 matrix is the most effective.
 ```
 
 PAM250 is the most commonly used variant:
@@ -12384,7 +12384,7 @@ def k_means_score(data_pts, center_pts):
   return sum(res) / len(res)
 ```
 
-Compared to k-centers, cluster membership_NORM is still decided by the distance to its closest cluster (d in the formula above). It's the placement of centers that's different.
+Compared to k-centers, cluster !!membership!! is still decided by the distance to its closest cluster (d in the formula above). It's the placement of centers that's different.
 
 ```{note}
 There's a version of k-centers / k-means for similarity metrics / distance metrics other than euclidean distance. It's called k-medoids but I haven't had a chance to look at it yet and it wasn't covered by the book.
@@ -13187,7 +13187,7 @@ A2              /
                 A1  
 ```
 
-Rather than thinking of an unrooted tree's internal nodes as sub-clusters that combine together, it's more appropriate to think of them as points of commonality. An internal node captures the shared features of its neighbours and represents the degree_NORM of similarity between it and its neighbours via the distances to those neighbours. A very close neighbour is very similar while a farther away neighbour is not as similar.
+Rather than thinking of an unrooted tree's internal nodes as sub-clusters that combine together, it's more appropriate to think of them as points of commonality. An internal node captures the shared features of its neighbours and represents the !!degree!! of similarity between it and its neighbours via the distances to those neighbours. A very close neighbour is very similar while a farther away neighbour is not as similar.
 
 In the example above, the internal node that connects A2 and A4 has three neighbours: A2, A4, and the other internal node in the tree. Of those three neighbours, it's most similar to A4 (closest) and least similar to the other internal node (farthest).
 
@@ -14447,7 +14447,7 @@ Algorithms/Single Nucleotide Polymorphism/Suffix Array_TOPIC
 **WHY**: BWT matrices have a special property called the first-last property that makes them suitable for quickly determining if and how many times a substring exists in the original sequence. In addition, certain extensions to BWT make it so that the algorithm ...
 
  * can identify where found substrings are located in the original sequence. 
- * become tunable such that memory efficiency vs computational efficiency can be balanced_NORM.
+ * become tunable such that memory efficiency vs computational efficiency can be !!balanced!!.
 
 The standard algorithm along with these algorithmic extensions are all detailed in the subsections below.
 
@@ -17998,14 +17998,14 @@ first_indexes_checkpoint_n: 20
    * reverse direction (3' to 5') is called the leading half-strand.
    * forward direction (5' to 3') is called the lagging half-strand.
 
-   This nomenclature has to do with DNA polymerase. Since DNA polymerase can only walk in the reverse direction (3' to 5'), it synthesizes the leading half-strand in one shot. For the lagging half-strand (5' to 3'), multiple DNA polymerases have to used to synthesize DNA, each binding to the lagging strand and walking backwards a small amount to generate a small fragment_NORM of DNA (Okazaki fragment). the process is much slower for the lagging half-strand, that's why it's called lagging.
+   This nomenclature has to do with DNA polymerase. Since DNA polymerase can only walk in the reverse direction (3' to 5'), it synthesizes the leading half-strand in one shot. For the lagging half-strand (5' to 3'), multiple DNA polymerases have to used to synthesize DNA, each binding to the lagging strand and walking backwards a small amount to generate a small !!fragment!! of DNA (Okazaki fragment). the process is much slower for the lagging half-strand, that's why it's called lagging.
 
    ```{note}
    * Leading half-strand is the same as reverse half-strand.
    * Lagging half-strand is the same as forward half-strand.
    ```
 
- * `{bm} Okazaki fragment` - A small fragment_NORM of DNA generated by DNA polymerase for forward half-strands. DNA synthesis for the forward half-strands can only happen in small pieces. As the fork open ups every ~2000 nucleotides, DNA polymerase attaches to the end of the fork on the forward half-strand and walks in reverse to generate that small segment (DNA polymerase can only walk in the reverse direction).
+ * `{bm} Okazaki fragment` - A small !!fragment!! of DNA generated by DNA polymerase for forward half-strands. DNA synthesis for the forward half-strands can only happen in small pieces. As the fork open ups every ~2000 nucleotides, DNA polymerase attaches to the end of the fork on the forward half-strand and walks in reverse to generate that small segment (DNA polymerase can only walk in the reverse direction).
 
  * `{bm} DNA ligase` - An enzyme that sews together short segments of DNA called Okazaki fragments by binding the phosphate group on the end of one strand with the deoxyribose group on the other strand.
 
@@ -18242,7 +18242,7 @@ first_indexes_checkpoint_n: 20
 
  * `{bm} sequencing/(sequencing|sequenced)/i` - The process of determining which nucleotides are assigned to which positions in a strand of DNA or RNA.
 
-   The machinery used for DNA sequencing is called a sequencer. A sequencer takes multiple copies of the same DNA, breaks that DNA up into smaller fragment_NORMs, and scans in those fragment_SEQs. Each fragment_SEQ is typically the same length but has a unique starting offset. Because the starting offsets are all different, the original larger DNA sequence can be guessed at by finding fragment_SEQ with overlapping regions and stitching them together.
+   The machinery used for DNA sequencing is called a sequencer. A sequencer takes multiple copies of the same DNA, breaks that DNA up into smaller !!fragments!!, and scans in those fragment_SEQs. Each fragment_SEQ is typically the same length but has a unique starting offset. Because the starting offsets are all different, the original larger DNA sequence can be guessed at by finding fragment_SEQ with overlapping regions and stitching them together.
 
    |             |0|1|2|3|4|5|6|7|8|9|
    |-------------|-|-|-|-|-|-|-|-|-|-|
@@ -18920,11 +18920,7 @@ first_indexes_checkpoint_n: 20
    N --> Q --> Y 
    ```
 
- * `{bm} subpeptide` - A peptide derived taking some contiguous piece of a larger peptide.
- 
-   A subpeptide can have a length == 1 where a peptide must have a length > 1. As such, in the case where the subpeptide has a length ...
-    * == 1, it isn't considered a peptide.
-    * \> 1, it is considered a peptide.
+ * `{bm} subpeptide` - A peptide derived taking some contiguous piece of a larger peptide. A subpeptide can have a length == 1 where a peptide must have a length > 1.
 
  * `{bm} central dogma of molecular biology` - The overall concept of transcription and translation: Instructions for making a protein are copied from DNA to RNA, then RNA feeds into the ribosome to make that protein (DNA → RNA → Protein).
 
@@ -18979,19 +18975,19 @@ first_indexes_checkpoint_n: 20
 
    As such, these plots aren't exact.
 
- * `{bm} experimental spectrum` - List of potential fragment_NORM masses derived from a spectrum_MS. That is, the molecules fed into the mass spectrometer were randomly fragment_NORMed and each fragment_NORM had its mass-to-charge ratio measured. From there, each mass-to-charge ratio was converted to a set of potential masses.
+ * `{bm} experimental spectrum` - List of potential !!fragment!! masses derived from a spectrum_MS. That is, the molecules fed into the mass spectrometer were randomly !!fragmented!! and each !!fragment!! had its mass-to-charge ratio measured. From there, each mass-to-charge ratio was converted to a set of potential masses.
  
    The masses in an experimental spectrum ...
 
-    * may not capture all possible fragment_NORMs for the intended molecule (missing masses).
-    * may capture fragment_NORMs from unintended molecules (faulty masses).
+    * may not capture all possible !!fragments!! for the intended molecule (missing masses).
+    * may capture !!fragments!! from unintended molecules (faulty masses).
     * will likely contain noise.
 
-    In the context of peptides, the mass spectrometer is expected to fragment_NORM based on the bonds holding the individual amino acids together. For example, given the linear peptide NQY, the experimental spectrum may include the masses for [N, Q, ?, ?, QY, ?, NQY] (? indicate faulty masses, Y and NQ missing).
+    In the context of peptides, the mass spectrometer is expected to !!fragment!! based on the bonds holding the individual amino acids together. For example, given the linear peptide NQY, the experimental spectrum may include the masses for [N, Q, ?, ?, QY, ?, NQY] (? indicate faulty masses, Y and NQ missing).
 
- * `{bm} theoretical spectrum` - List of all of possible fragment_NORM masses for a molecule in addition to 0 and the mass of the entire molecule. This is what the experimental spectrum would be in a perfect world: no missing masses, no faulty masses, no noise, only a single possible mass for each mass-to-charge ratio.
+ * `{bm} theoretical spectrum` - List of all of possible !!fragment!! masses for a molecule in addition to 0 and the mass of the entire molecule. This is what the experimental spectrum would be in a perfect world: no missing masses, no faulty masses, no noise, only a single possible mass for each mass-to-charge ratio.
 
-   In the context of peptides, the mass spectrometer is expected to fragment_NORM based on the bonds holding the individual amino acids together. For example, given the linear peptide NQY, the theoretical spectrum will include the masses for [0, N, Q, Y, NQ, QY, NQY]. It shouldn't include masses for partial amino acids. For example, it shouldn't include NQY breaking into 2 pieces by splitting Q, such that one half has N and part of Q, and the other has the remaining part of Q with Y.
+   In the context of peptides, the mass spectrometer is expected to !!fragment!! based on the bonds holding the individual amino acids together. For example, given the linear peptide NQY, the theoretical spectrum will include the masses for [0, N, Q, Y, NQ, QY, NQY]. It shouldn't include masses for partial amino acids. For example, it shouldn't include NQY breaking into 2 pieces by splitting Q, such that one half has N and part of Q, and the other has the remaining part of Q with Y.
 
  * `{bm} spectrum convolution` - An operation used to derive amino acid masses that probably come from the peptide used to generate that experimental spectrum. That is, it generates a list of amino acid masses that could have been for the peptide that generated the experimental spectrum.
  
@@ -20019,7 +20015,7 @@ first_indexes_checkpoint_n: 20
    All representations above are equivalent.
 
    ```{note}
-   See Algorithms/Synteny/Reversal Path/Breakpoint List Algorithm_TOPIC for a full explanation of how to read_NORM permutation_GRs / how to convert from and to breakpoint graph_GRs.
+   See Algorithms/Synteny/Reversal Path/Breakpoint List Algorithm_TOPIC for a full explanation of how to !!read!! permutation_GRs / how to convert from and to breakpoint graph_GRs.
    ```
 
  * `{bm} fusion/(\bfusion|\bfuse)/i` - Joining two or more things together to form a single entity. For example, two chromosomes may join together to form a single chromosome (genome rearrangement).
@@ -20063,7 +20059,7 @@ first_indexes_checkpoint_n: 20
 
    In the example above, cat and lion are descendants of some shared ancestor species. Likewise, that ancestor and bears are likely descendants from some other higher up species.
 
- * `{bm} phylogenetic tree/(phylogenetic tree|phylogeny tree|phylogenies|evolutionary tree)/i` - A tree showing the degree_NORM in which biological species or entities (e.g. viruses) are related. Such trees help infer relationships such as common ancestry or which animal a virus jumped to humans from (e.g. virus A and B are related but A is only present in bats while B just showed up in humans).
+ * `{bm} phylogenetic tree/(phylogenetic tree|phylogeny tree|phylogenies|evolutionary tree)/i` - A tree showing the !!degree!! in which biological species or entities (e.g. viruses) are related. Such trees help infer relationships such as common ancestry or which animal a virus jumped to humans from (e.g. virus A and B are related but A is only present in bats while B just showed up in humans).
 
    ```{svgbob}
                +--- "Mycoplasma mobile"
@@ -20449,7 +20445,7 @@ first_indexes_checkpoint_n: 20
     A         C
    ```
 
- * `{bm} four point condition/(four points? condition|four point theorem)/i` - An algorithm for determining if a distance matrix is an additive distance matrix. Given four leaf nodes, the algorithm checks different permutation_NORMs of those leaf nodes to see if any pass a test, where that test builds node pairings from the quartet and checks their distances to see if they meet a specific condition...
+ * `{bm} four point condition/(four points? condition|four point theorem)/i` - An algorithm for determining if a distance matrix is an additive distance matrix. Given four leaf nodes, the algorithm checks different !!permutations!! of those leaf nodes to see if any pass a test, where that test builds node pairings from the quartet and checks their distances to see if they meet a specific condition...
 
    ```python
    for a, b, c, d in permutations(quartet, r=4):  # find one perm that passes the following test
@@ -21115,7 +21111,7 @@ first_indexes_checkpoint_n: 20
 
  * `{bm} member/(membership|member)_CLUSTER/i` - An object assigned to a cluster is said to be a member_CLUSTER of that cluster.
 
- * `{bm} k-centers clustering/(k-centers? clustering|\d+-centers? clustering|k-centers?|\d+-centers?)/i` - A form of clustering where a point, called a center, defines cluster membership_NORM. k different centers are chosen (one for each cluster), and the points closest to each center (euclidean distance) make up member_CLUSTERs of that cluster. The goal is to choose centers such that, out of all possible cluster center to member_CLUSTER distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.
+ * `{bm} k-centers clustering/(k-centers? clustering|\d+-centers? clustering|k-centers?|\d+-centers?)/i` - A form of clustering where a point, called a center, defines cluster !!membership!!. k different centers are chosen (one for each cluster), and the points closest to each center (euclidean distance) make up member_CLUSTERs of that cluster. The goal is to choose centers such that, out of all possible cluster center to member_CLUSTER distances, the farthest distance is the minimum it could possibly be out of all possible choices for centers.
 
    In terms of a scoring function, the score being minimized is ...
 
@@ -21208,7 +21204,7 @@ first_indexes_checkpoint_n: 20
    +--------------------------------------          +--------------------------------------          +--------------------------------------
    ```
 
- * `{bm} k-means clustering/(k-means?|\d+-means?|squared error distortion)/i` - A form of clustering where a point, called a center, defines cluster membership_NORM. k different centers are chosen (one for each cluster), and the points closest to each center (euclidean distance) make up member_CLUSTERs of that cluster. The goal is to choose centers such that, out of all possible cluster center to member_CLUSTER distances, the formula below is the minimum it could possibly be out of all possible choices for centers.
+ * `{bm} k-means clustering/(k-means?|\d+-means?|squared error distortion)/i` - A form of clustering where a point, called a center, defines cluster !!membership!!. k different centers are chosen (one for each cluster), and the points closest to each center (euclidean distance) make up member_CLUSTERs of that cluster. The goal is to choose centers such that, out of all possible cluster center to member_CLUSTER distances, the formula below is the minimum it could possibly be out of all possible choices for centers.
  
    The formula below is referred to as squared error distortion.
 
@@ -22197,38 +22193,29 @@ first_indexes_checkpoint_n: 20
    ```
 
 
+`{bm-ignore} !!([\w\-]+?)!!/i`
 
-`{bm-ignore} \b(read)_NORM/i`
-`{bm-error} Apply suffix _NORM or _SEQ/\b(read)/i`
+`{bm-error} Wrap in !! or apply suffix _SEQ/\b(read)/i`
 
-`{bm-ignore} \b(membership|member)_NORM/i`
-`{bm-error} Apply suffix _NORM, _MOTIF, or _CLUSTER/\b(membership|member)/i`
+`{bm-error} Wrap in !! or apply suffix _MOTIF or _CLUSTER/\b(membership|member)/i`
 
-`{bm-ignore} (balanced)_NORM/i`
-`{bm-error} Apply suffix _NORM, _GRAPH, or _NODE/(balanced)/i`
+`{bm-error} Wrap in !! or apply suffix _GRAPH or _NODE/(balanced)/i`
 
-`{bm-ignore} (coverage)_NORM/i`
-`{bm-error} Apply suffix _NORM or _SEQ/(coverage)/i`
+`{bm-error} Wrap in !! or apply suffix _SEQ/(coverage)/i`
 
-`{bm-ignore} (fragment)_NORM/i`
-`{bm-error} Apply suffix _NORM or _SEQ/(fragment)/i`
+`{bm-error} Wrap in !! or apply suffix _SEQ/(fragment)/i`
 
-`{bm-ignore} (Eulerian)_NORM/i`
-`{bm-error} Apply suffix _PATH, _CYCLE, _GRAPH, or _NORM/(Eulerian)/i`
+`{bm-error} Wrap in !! or apply suffix _PATH, _CYCLE, or _GRAPH/(Eulerian)/i`
 `{bm-error} Don't use a suffix here/(eulerian_PATH path|eulerian_CYCLE cycle|eulerian_GRAPH graph)/i`
 
-`{bm-ignore} (spectrum)_NORM/i`
-`{bm-error} Apply suffix _NORM or _MS/(spectrum)/i`
+`{bm-error} Wrap in !! or apply suffix _MS/(spectrum)/i`
 
-`{bm-ignore} (adjacent|adjacency|adjacencies|breakpoint)_NORM/i`
-`{bm-error} Apply suffix _NORM or _GR/(adjacent|adjacency|adjacencies|breakpoint)/i`
+`{bm-error} Wrap in !! or apply suffix _GR/(adjacent|adjacency|adjacencies|breakpoint)/i`
 `{bm-error} Use breakpoint graph_GR instead/(breakpoint_GR graph)/i`
 
-`{bm-ignore} (permutation)_NORM/i`
-`{bm-error} Apply suffix _NORM or _GR/(permutation)/i`
+`{bm-error} Wrap in !! or apply suffix _GR/(permutation)/i`
 
-`{bm-ignore} (degree)_NORM/i`
-`{bm-error} Apply suffix _NORM or _GRAPH/(degree)/i`
+`{bm-error} Wrap in !! or apply suffix _GRAPH/(degree)/i`
 
 `{bm-error} Did you mean central dogma of molecular biology? You wrote microbiology./(central dogma of microbiology)/i`
 
