@@ -1,0 +1,350 @@
+<svg class="bob" font-family="arial" font-size="14" height="368" width="392" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="triangle" markerHeight="8" markerWidth="8" orient="auto" refX="4" refY="2" viewBox="0 0 8 4">
+<polygon class="fg_fill" points="0,0 0,4 8,2 0,0"/>
+</marker>
+<marker id="clear_triangle" markerHeight="10" markerWidth="10" orient="auto" refX="1" refY="7" viewBox="0 0 20 14">
+<polygon class="bg_fill" points="2,2 2,12 18,7 2,2"/>
+</marker>
+<marker id="circle" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<circle class="fg_fill" cx="10" cy="10" r="8"/>
+</marker>
+<marker id="square" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<rect class="fg_fill" height="20" width="20" x="0" y="0"/>
+</marker>
+<marker id="open_circle" markerHeight="10" markerWidth="10" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<circle class="bg_fill" cx="10" cy="10" r="4"/>
+</marker>
+<marker id="big_open_circle" markerHeight="20" markerWidth="20" orient="auto" refX="20" refY="20" viewBox="0 0 40 40">
+<circle class="bg_fill" cx="20" cy="20" r="6"/>
+</marker>
+</defs>
+<style type="text/css">
+
+rect.backdrop {
+    fill: white;
+}
+text{
+    fill: black;
+}
+
+circle {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+}
+
+line {
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    stroke-linecap: round;
+    stroke-linejoin: miter;
+}
+
+path {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    stroke-linecap: round;
+    stroke-linejoin: miter;
+}
+
+line.dashed {
+    stroke-dasharray: 5;
+}
+
+.fg_fill {
+    fill: black;
+}
+
+
+.bg_fill {
+    fill: white;
+    stroke: black;
+    stroke-width: 2;
+}
+
+tspan.head{
+    fill: none;
+    stroke: none;
+}
+    
+</style>
+<rect class="backdrop" height="368" width="392" x="0" y="0"/>
+<g>
+<line x1="4" x2="4" y1="184" y2="216"/>
+<line x1="4" x2="52" y1="184" y2="184"/>
+<line x1="4" x2="68" y1="216" y2="216"/>
+<line x1="52" x2="52" y1="184" y2="176"/>
+<line x1="52" x2="68" y1="184" y2="184"/>
+<line x1="68" x2="68" y1="184" y2="176"/>
+<line x1="68" x2="92" y1="184" y2="184"/>
+<line x1="68" x2="68" y1="216" y2="224"/>
+<line x1="68" x2="124" y1="216" y2="216"/>
+<line x1="92" x2="92" y1="156" y2="184"/>
+<line x1="92" x2="108" y1="184" y2="184"/>
+<line x1="108" x2="108" y1="172" y2="184"/>
+<line x1="108" x2="124" y1="184" y2="184"/>
+<line x1="124" x2="124" y1="184" y2="216"/>
+<line class="dashed" x1="52" x2="52" y1="32" y2="176"/>
+<line class="dashed" x1="68" x2="68" y1="112" y2="176"/>
+<line class="dashed" x1="68" x2="68" y1="224" y2="336"/>
+<path d="M 96 152 A 4 4 0 0 0 92 156"/>
+<path d="M 112 168 A 4 4 0 0 0 108 172"/>
+</g>
+<g>
+<line x1="52" x2="52" y1="28" y2="32"/>
+<path d="M 56 24 A 4 4 0 0 0 52 28"/>
+</g>
+<g>
+<line x1="68" x2="68" y1="108" y2="112"/>
+<path d="M 72 104 A 4 4 0 0 0 68 108"/>
+</g>
+<g>
+<line x1="68" x2="68" y1="340" y2="336"/>
+<path d="M 68 340 A 4 4 0 0 0 72 344"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="92" x2="92" y1="240" y2="228"/>
+<line x1="92" x2="92" y1="240" y2="276"/>
+<path d="M 92 276 A 4 4 0 0 0 96 280"/>
+</g>
+<g>
+<line x1="96" x2="296" y1="152" y2="152"/>
+<path d="M 300 156 A 4 4 0 0 0 296 152"/>
+</g>
+<g>
+<line x1="96" x2="296" y1="280" y2="280"/>
+<path d="M 296 280 A 4 4 0 0 0 300 276"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="108" x2="108" y1="240" y2="228"/>
+<line x1="108" x2="108" y1="240" y2="260"/>
+<path d="M 108 260 A 4 4 0 0 0 112 264"/>
+</g>
+<g>
+<line x1="112" x2="136" y1="168" y2="168"/>
+<path d="M 140 172 A 4 4 0 0 0 136 168"/>
+</g>
+<g>
+<line x1="112" x2="136" y1="264" y2="264"/>
+<path d="M 136 264 A 4 4 0 0 0 140 260"/>
+</g>
+<g>
+<line x1="140" x2="140" y1="172" y2="260"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="160" x2="164" y1="24" y2="24"/>
+<line class="dashed" x1="56" x2="160" y1="24" y2="24"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="160" x2="164" y1="104" y2="104"/>
+<line class="dashed" x1="72" x2="160" y1="104" y2="104"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="160" x2="164" y1="344" y2="344"/>
+<line class="dashed" x1="72" x2="160" y1="344" y2="344"/>
+</g>
+<g>
+<line x1="172" x2="172" y1="8" y2="16"/>
+<line x1="172" x2="176" y1="8" y2="8"/>
+<line class="dashed" x1="172" x2="172" y1="16" y2="32"/>
+<line class="dashed" x1="176" x2="232" y1="8" y2="8"/>
+</g>
+<g>
+<line x1="172" x2="172" y1="40" y2="32"/>
+<line x1="172" x2="176" y1="40" y2="40"/>
+<line class="dashed" x1="176" x2="232" y1="40" y2="40"/>
+</g>
+<g>
+<line x1="172" x2="172" y1="88" y2="96"/>
+<line x1="172" x2="176" y1="88" y2="88"/>
+<line class="dashed" x1="172" x2="172" y1="96" y2="112"/>
+<line class="dashed" x1="176" x2="232" y1="88" y2="88"/>
+</g>
+<g>
+<line x1="172" x2="172" y1="120" y2="112"/>
+<line x1="172" x2="176" y1="120" y2="120"/>
+<line class="dashed" x1="176" x2="232" y1="120" y2="120"/>
+</g>
+<g>
+<line x1="172" x2="172" y1="328" y2="336"/>
+<line x1="172" x2="176" y1="328" y2="328"/>
+<line class="dashed" x1="172" x2="172" y1="336" y2="352"/>
+<line class="dashed" x1="176" x2="232" y1="328" y2="328"/>
+</g>
+<g>
+<line x1="172" x2="172" y1="360" y2="352"/>
+<line x1="172" x2="176" y1="360" y2="360"/>
+<line class="dashed" x1="176" x2="232" y1="360" y2="360"/>
+</g>
+<g>
+<line x1="236" x2="232" y1="8" y2="8"/>
+<line x1="236" x2="236" y1="8" y2="16"/>
+<line class="dashed" x1="236" x2="236" y1="16" y2="32"/>
+</g>
+<g>
+<line x1="236" x2="232" y1="40" y2="40"/>
+<line x1="236" x2="236" y1="40" y2="32"/>
+</g>
+<g>
+<line x1="236" x2="232" y1="88" y2="88"/>
+<line x1="236" x2="236" y1="88" y2="96"/>
+<line class="dashed" x1="236" x2="236" y1="96" y2="112"/>
+</g>
+<g>
+<line x1="236" x2="232" y1="120" y2="120"/>
+<line x1="236" x2="236" y1="120" y2="112"/>
+</g>
+<g>
+<line x1="236" x2="232" y1="328" y2="328"/>
+<line x1="236" x2="236" y1="328" y2="336"/>
+<line class="dashed" x1="236" x2="236" y1="336" y2="352"/>
+</g>
+<g>
+<line x1="236" x2="232" y1="360" y2="360"/>
+<line x1="236" x2="236" y1="360" y2="352"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="248" x2="244" y1="24" y2="24"/>
+<line class="dashed" x1="248" x2="336" y1="24" y2="24"/>
+<path d="M 340 28 A 4 4 0 0 0 336 24"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="248" x2="244" y1="104" y2="104"/>
+<line class="dashed" x1="248" x2="320" y1="104" y2="104"/>
+<path d="M 324 108 A 4 4 0 0 0 320 104"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="248" x2="244" y1="344" y2="344"/>
+<line class="dashed" x1="248" x2="320" y1="344" y2="344"/>
+<path d="M 320 344 A 4 4 0 0 0 324 340"/>
+</g>
+<g>
+<line x1="252" x2="252" y1="172" y2="260"/>
+<path d="M 252 260 A 4 4 0 0 0 256 264"/>
+<path d="M 256 168 A 4 4 0 0 0 252 172"/>
+</g>
+<g>
+<line x1="256" x2="280" y1="168" y2="168"/>
+<path d="M 284 172 A 4 4 0 0 0 280 168"/>
+</g>
+<g>
+<line x1="256" x2="280" y1="264" y2="264"/>
+<path d="M 280 264 A 4 4 0 0 0 284 260"/>
+</g>
+<g>
+<line x1="268" x2="268" y1="184" y2="216"/>
+<line x1="268" x2="284" y1="184" y2="184"/>
+<line x1="268" x2="300" y1="216" y2="216"/>
+<line x1="284" x2="284" y1="172" y2="184"/>
+<line x1="284" x2="324" y1="184" y2="184"/>
+<line x1="300" x2="300" y1="216" y2="276"/>
+<line x1="300" x2="324" y1="216" y2="216"/>
+<line x1="324" x2="324" y1="184" y2="176"/>
+<line x1="324" x2="340" y1="184" y2="184"/>
+<line x1="324" x2="324" y1="216" y2="224"/>
+<line x1="324" x2="388" y1="216" y2="216"/>
+<line x1="340" x2="340" y1="184" y2="176"/>
+<line x1="340" x2="388" y1="184" y2="184"/>
+<line x1="388" x2="388" y1="184" y2="216"/>
+<line class="dashed" x1="324" x2="324" y1="112" y2="176"/>
+<line class="dashed" x1="324" x2="324" y1="224" y2="336"/>
+<line class="dashed" x1="340" x2="340" y1="32" y2="176"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="284" x2="284" y1="240" y2="228"/>
+<line x1="284" x2="284" y1="240" y2="260"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="300" x2="300" y1="156" y2="172"/>
+</g>
+<g>
+<line x1="324" x2="324" y1="108" y2="112"/>
+</g>
+<g>
+<line x1="324" x2="324" y1="340" y2="336"/>
+</g>
+<g>
+<line x1="340" x2="340" y1="28" y2="32"/>
+</g>
+<g>
+<text x="17" y="204">
+hitter bat
+</text>
+</g>
+<g>
+<text x="89" y="12">
+0.75
+</text>
+</g>
+<g>
+<text x="97" y="92">
+0.1
+</text>
+</g>
+<g>
+<text x="113" y="332">
+0.15
+</text>
+</g>
+<g>
+<text x="145" y="220">
+0.9
+</text>
+</g>
+<g>
+<text x="185" y="108">
+miss
+</text>
+</g>
+<g>
+<text x="185" y="172">
+0.1
+</text>
+</g>
+<g>
+<text x="185" y="268">
+0.1
+</text>
+</g>
+<g>
+<text x="185" y="348">
+foul
+</text>
+</g>
+<g>
+<text x="193" y="28">
+hit
+</text>
+</g>
+<g>
+<text x="225" y="220">
+0.9
+</text>
+</g>
+<g>
+<text x="257" y="332">
+0.4
+</text>
+</g>
+<g>
+<text x="281" y="12">
+0.5
+</text>
+</g>
+<g>
+<text x="281" y="92">
+0.1
+</text>
+</g>
+<g>
+<text x="281" y="204">
+fouler bat
+</text>
+</g>
+</svg>

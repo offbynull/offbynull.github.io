@@ -294,7 +294,7 @@ This isn't trivial to accurately compute because the occurrences of a k-mer with
 
 **ALGORITHM**:
 
-This algorithm tries every possible combination of sequence to find the probability. It falls over once the length of the sequence extends into the double digits. It's intended to help conceptualize what's going on.
+This algorithm !!tries!! every possible combination of sequence to find the probability. It falls over once the length of the sequence extends into the double digits. It's intended to help conceptualize what's going on.
 
 ```{output}
 ch1_code/src/BruteforceProbabilityOfKmerInArbitrarySequence.py
@@ -316,7 +316,7 @@ ACTG
 The explanation in the comments below are a bastardization of "1.13 Detour: Probabilities of Patterns in a String" in the Pevzner book...
 ```
 
-This algorithm tries estimating the probability by ignoring the fact that the occurrences of a k-mer in a sequence may overlap. For example, searching for the 2-mer AA in the sequence AAAT yields 2 instances of AA:
+This algorithm !!tries!! estimating the probability by ignoring the fact that the occurrences of a k-mer in a sequence may overlap. For example, searching for the 2-mer AA in the sequence AAAT yields 2 instances of AA:
 
  * \[AA\]AT
  * A\[AA\]T
@@ -2972,7 +2972,7 @@ linear
 ```{note}
 This was the version of the algorithm used to solve chapter 4's final assignment (sequence a real experimental spectrum for some unknown variant of Tyrocidine). Note how the parameters into sequence_peptide take an initial leaderboard. This initial leaderboard was primed with subpeptide sequences from other Tyrocidine variants discusses in chapter 4. The problem wasn't solvable without these subpeptide sequences. More information on this can be found in the Python file for the final assignment.
 
-Before coming up with the above solution, I came up with another heuristic that I tried: Use basic genetic algorithms / evolutionary algorithms as the heuristic to move forward peptides. This performed even worse than leaderboard: If the mutation rate is too low, the candidates converge to a local optima and can't break out. If the mutation rate is too high, the candidates never converge to a solution. As such, it was removed from the code.
+Before coming up with the above solution, I came up with another heuristic that I !!tried!!: Use basic genetic algorithms / evolutionary algorithms as the heuristic to move forward peptides. This performed even worse than leaderboard: If the mutation rate is too low, the candidates converge to a local optima and can't break out. If the mutation rate is too high, the candidates never converge to a solution. As such, it was removed from the code.
 ```
 
 ## Sequence Alignment
@@ -11416,7 +11416,7 @@ sequence_phylogeny.NearestNeighbourInterchange main_nn_swap
 i0-i1
 ```
 
-Given a tree, this algorithm goes over each internal edge and tries all possible neighbour swaps on that edge in the hopes of driving down the parsimony score. After all possible swaps are performed on every internal edge, the swap that produced the lowest parsimony score is chosen. If that parsimony score is lower than the parsimony score for the original tree, the swap is applied to the original and the process repeats.
+Given a tree, this algorithm goes over each internal edge and !!tries!! all possible neighbour swaps on that edge in the hopes of driving down the parsimony score. After all possible swaps are performed on every internal edge, the swap that produced the lowest parsimony score is chosen. If that parsimony score is lower than the parsimony score for the original tree, the swap is applied to the original and the process repeats.
 
 ```{output}
 ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py
@@ -18180,7 +18180,7 @@ first_indexes_checkpoint_n: 20
    
    The idea is that once the experimental cDNA is introduced to that region, it should bind to the control cDNA that's been printed to form double-stranded DNA. The color emitted in a region should correspond to the amount of gene expression for the gene that region represents. For example, if a region on the sheet is fully yellow, it means that the gene expression for that gene is roughly equal (red mixed with green is yellow).
 
- * `{bm} greedy algorithm` - An algorithm that tries to speed things up by taking the locally optimal choice at each step. That is, the algorithm doesn't look more than 1 step ahead.
+ * `{bm} greedy algorithm` - An algorithm that !!tries!! to speed things up by taking the locally optimal choice at each step. That is, the algorithm doesn't look more than 1 step ahead.
  
    For example, imagine a chess playing AI that had a strategy of trying to eliminate the other player's most valuable piece at each turn. It would be considered greedy because it only looks 1 move ahead before taking action. Normal chess AIs / players look many moves ahead before taking action. As such, the greedy AI may be fast but it would very likely lose most matches. 
   
@@ -22191,6 +22191,173 @@ first_indexes_checkpoint_n: 20
      ● C        ●      ( T T )
      ● ●      ( G )    ( T T )
    ```
+
+ * `{bm} retrovirus` - A virus that inserts a DNA copy of its RNA genome into the DNA of the host cell that it invades.
+
+ * `{bm} antiviral/(anti[\-]?viral|anti[\-]?retroviral)/i` - A class of medication used for treating viral infections.
+
+   ```{note}
+   The term antiretroviral therapy is commonly used to refer to HIV treatments, although retroviruses other than HIV exist (e.g. human T-lymphotropic virus)
+   ```
+
+ * `{bm} surface protein` - Protein embedded into a cell surface or viral envelope. See glycoprotein / glycan.
+
+ * `{bm} envelope protein/(viral envelope|viral envelope protein|envelope protein)/i` - One of the proteins making up the outermost layer of a virus, called the viral envelope.
+
+   A viral envelope often has one or more spikes which facilitate the entry of the virus's genetic material into the host cell.
+
+ * `{bm} glycoprotein` - A protein containing glycans.
+
+ * `{bm} glycan` - A carbohydrate portion of some glycoconjugate (e.g. glycoprotein or glycolipid). Cells have a dense coating of glycans on their surface, which are used for modulating interactions with other cells and biological entities (e.g. communication between the cells of a human, interactions between bacterial cells and human cells, interactions between a human cells and viruses, etc..). 
+
+   Glycans may also coat viral envelope proteins, which can make those viruses invisible to the human immune system (e.g. HIV).
+
+ * `{bm} glycosylation` - A modification to a protein, applied after it's already been translated out of the ribosome, that turns it into a glycoprotein.
+
+ * `{bm} Red Queen effect/(Red Queen effect|Red Queen hypothesis)/i` - The hypothesis that organisms must constantly evolve in order to survive due to predator-prey dynamics within an environment. The name comes from Lewis Carroll's novel Through the Look-Glass, where the Red Queen tells Alice "Now, here, you see, it takes all the running you can do, to keep in the same place."
+
+ * `{bm} syncytium/(syncytium|symplasm)/i` - A cytoplasmic mass containing several nuclei formed by the fusion of multiple cells. Certain HIV phenotypes embed their viral envelope proteins into the host cell's surface upon infection, which ends up causing neighbouring cells to fuse into a non-functional syncytium.
+
+ * `{bm} Chō-Han` - A Japanese gambling game where the dealer rolls two dice and the player gambles on whether the sum will be even or odd. The name Chō-Han literally translates to even-odd.
+
+ * `{bm} odds ratio/(odds[\-\s]ratio)/i` - A measure of the chance of success, defined as the probability of some event occurring divided by the probability that event doesn't occur. For example, given a based coin, a fair coin, and a sequence of flips, the probability the sequence of flips was generated by the ...
+ 
+   * the fair coin is stated as `{kt} Pr_F(flips)`.
+   * the biased coin is stated as `{kt} Pr_B(flips)`.
+
+   The odds ratio that the flips were generated by the fair coin is `{kt} \frac{Pr_F(flips)}{Pr_B(flips)}`. Likewise, the odds ratio that the flips were generated by the biased coin is `{kt} \frac{Pr_B(flips)}{Pr_F(flips)}`.
+
+   The result of an odds ratio is how much more likely the top of the fraction is vs the bottom. For example, if the odds ratio for `{kt} \frac{Pr_F(flips)}{Pr_B(flips)}` results in 2, it means that it's two times more likely for the fair coin to have been used vs the biased coin.
+
+ * `{bm} log-odds ratio/(log[-\s]?odds[-\s]?ratio)/i` - The logarithm of the odds ratio: `{kt} log_2(\frac{Pr_B(flips)}{Pr_F(flips)})`. Log-odds ratio is just another representation of odds ratio, typically used in cases when odds ratio generates a very small / large result.
+
+   |    odds ratio   | log-odds ratio | 
+   |-----------------|----------------|
+   | 0.015625 (1/64) | -6             |
+   | 0.03125  (1/32) | -5             |
+   | 0.0625   (1/16) | -4             |
+   | 0.125    (1/8)  | -3             |
+   | 0.25     (1/4)  | -2             |
+   | 0.5      (1/2)  | -1             |
+   | 1               | 0              |
+   | 2               | 1              |
+   | 4               | 2              |
+   | 8               | 3              |
+   | 16              | 4              |
+   | 32              | 5              |
+   | 64              | 6              |
+
+ * `{bm} methylation` - The addition of a methyl group (CH3) to a cystine or guanine nucleotide.
+
+   DNA methylation is an important part of cell development. Specifically, when a stem cell converts into a specialized cell (cell differentiation), DNA methylation is an important factor in the change:
+   
+   * DNA methylation often alters the expression of nearby genes.
+   * When a gene's upstream regions become highly methylated, its expression is suppressed.
+   
+   DNA methylation is typically permanent (specialized cell cannot convert back to stem cell) and inherited during cell division, except in the case of zygote formation. Also, various cancers have been linked to both DNA hypermethylation and DNA hypomethylation.
+
+   When cystine goes through DNA methylation, it has a tendency to deaminate to thymine. However, DNA methylation is often suppressed in areas of DNA dubbed CG-islands, where CG appears more frequently than the rest of the genome.
+
+ * `{bm} Hidden Markov Model` `{bm} /(HMM)/` - A model of a machine that outputs symbols one after the other (in a sequence).
+
+   ```{svgbob}
+         .---------. "moving right outputting a sequence"
+         | Machine | ------>
+         '---. .---' 
+             | |
+             ' '
+    G G A C A T
+   ```
+ 
+   The model is defined by four pieces of information:
+
+   * Set of symbols that it can emit.
+   * Set of hidden states it can be in.
+   * Matrix of state-state transition probabilities.
+   * Matrix of state-symbol emission probabilities.
+
+   For example, imagine a batter in a baseball game modeled as a HMM. Each swing at the ball may result in either a hit, a miss, or a foul ball. The batter has two bats he can use, both look the exact same (spectators can't tell the difference but he can): hitter vs fouler.
+   
+   * The hitter bat has the following probabilities: 0.75 hit, 0.1 miss, and 0.15 foul
+   * The fouler bat has the following probabilities: 0.5 hit, 0.1 miss, amd 0.4 foul
+
+   After each swing, he has a 0.1 probability of switching to a different bat vs 0.9 probability of keeping the same bat.
+
+   The batter modeled as a HMM:
+
+   * Set of symbols that it can emit: {Hit, Miss, Foul}
+
+   * Set of hidden states it can be in: {Hitter Bat, Fouler Bat}
+
+   * Matrix of state-state transition probabilities:
+
+     |            | hitter bat | fouler bat |
+     |------------|------------|------------|
+     | hitter bat |    0.9     |     0.1    |
+     | fouler bat |    0.1     |     0.9    |
+  
+   * Matrix of state-symbol emission probabilities:
+
+     |            | hit  | miss | foul |
+     |------------|------|------|------|
+     | hitter bat | 0.75 | 0.1  | 0.15 |
+     | fouler bat | 0.5  | 0.1  | 0.4  |
+
+   ```{note}
+   For both matrixes above, each row must sum to 1.0.
+
+   * `sum(state_state_transitions[state, s] for s in states) == 1.0`
+   * `sum(state_symbol_emissions[state, s] for s in symbols) == 1.0`
+   ```
+   
+   Given a sequence of swings by the batter (emitted symbols), the goal of HMM is to estimate the probability of which bat was used for each swing in that sequence (hidden state).
+
+ * `{bm} Hidden Markov Model diagram` `{bm} /(HMM diagram|HMM Diagram)/` - A visualization of an HMM as a directed graph.
+ 
+   * Solid nodes represent states.
+   * Solid edges represent state-state transitions.
+   * Dashed nodes represent symbols.
+   * Dashed edges represent state-symbol emissions.
+
+   Edges are labeled with the the probability of the state-state transmission / state-symbol emission happening.
+   
+   ```{svgbob}
+              0.75      +- - - -+     0.5
+         .- - - - - - ->:  hit  :<- - - - - -.
+         :              +- - - -+            :
+         :                                   :
+         :                                   :
+         :     0.1      +- - - -+     0.1    :
+         : .- - - - - ->: miss  :<- - - - -. :
+         : :            +- - - -+          : :
+         : :                               : :
+         : :  .-------------------------.  : :
+         : :  | .---.     0.1     .---. v  : :
+   +-----+-+--+-+-+ |             | +-+----+-+-----+
+   | "hitter bat" | |             | | "fouler bat" |
+   +-------+------+ |0.9       0.9| +---+--+-------+
+           :  ^ ^   |             |   ^ |  :
+           :  | |   |             |   | |  :
+           :  | '---'     0.1     '---' |  :
+           :  '-------------------------'  :
+           :                               :
+           :                               :
+           :     0.15   +- - - -+  0.4     :
+           '- - - - - ->: foul  :<- - - - -'
+                        +- - - -+
+   ```
+
+TODO: continue 10.5 step 3 of 8
+
+TODO: continue 10.5 step 3 of 8
+
+TODO: continue 10.5 step 3 of 8
+
+TODO: continue 10.5 step 3 of 8
+
+TODO: continue 10.5 step 3 of 8
+
+TODO: continue 10.5 step 3 of 8
 
 
 `{bm-ignore} !!([\w\-]+?)!!/i`

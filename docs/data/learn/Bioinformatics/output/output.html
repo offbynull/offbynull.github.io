@@ -652,7 +652,7 @@
 <p><strong>WHY</strong>: When a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> is found within a <a href="#BM_(sequence)%2Fi">sequence</a>, knowing the probability of that <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> being found within an arbitrary <a href="#BM_(sequence)%2Fi">sequence</a> of the same length hints at the significance of the find. For example, if some <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">10-mer</a> has a 0.2 chance of appearing in an arbitrary <a href="#BM_(sequence)%2Fi">sequence</a> of length 50, that's too high of a chance to consider it a significant find -- 0.2 means 1 in 5 chance that the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">10-mer</a> just randomly happens to appear.</p>
 <a name="H_Bruteforce%20Algorithm"></a><h4>Bruteforce Algorithm</h4>
 <p><strong>ALGORITHM</strong>:</p>
-<p>This algorithm <a href="#BM_(%5Cbtrie)%2Fi">trie</a>s every possible combination of <a href="#BM_(sequence)%2Fi">sequence</a> to find the probability. It falls over once the length of the <a href="#BM_(sequence)%2Fi">sequence</a> extends into the double digits. It's intended to help conceptualize what's going on.</p>
+<p>This algorithm tries every possible combination of <a href="#BM_(sequence)%2Fi">sequence</a> to find the probability. It falls over once the length of the <a href="#BM_(sequence)%2Fi">sequence</a> extends into the double digits. It's intended to help conceptualize what's going on.</p>
 <p><a href="ch1_code/src/BruteforceProbabilityOfKmerInArbitrarySequence.py">ch1_code/src/BruteforceProbabilityOfKmerInArbitrarySequence.py</a> (lines 9 to 39):</p>
 <pre class="hljs"><code><span class="hljs-comment"># Of the X sequence combinations tried, Y had the k-mer. The probability is Y/X.</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">bruteforce_probability</span>(<span class="hljs-params">searchspace_len: <span class="hljs-built_in">int</span>, searchspace_symbol_count: <span class="hljs-built_in">int</span>, search_for: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>], min_occurrence: <span class="hljs-built_in">int</span></span>) -&gt; (<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>):
@@ -697,7 +697,7 @@
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The explanation in the comments below are a bastardization of "1.13 Detour: Probabilities of Patterns in a String" in the Pevzner book...</p>
 </div>
-<p>This algorithm <a href="#BM_(%5Cbtrie)%2Fi">trie</a>s estimating the probability by ignoring the fact that the occurrences of a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> in a <a href="#BM_(sequence)%2Fi">sequence</a> may overlap. For example, searching for the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">2-mer</a> AA in the <a href="#BM_(sequence)%2Fi">sequence</a> AAAT yields 2 instances of AA:</p>
+<p>This algorithm tries estimating the probability by ignoring the fact that the occurrences of a <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">k-mer</a> in a <a href="#BM_(sequence)%2Fi">sequence</a> may overlap. For example, searching for the <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">2-mer</a> AA in the <a href="#BM_(sequence)%2Fi">sequence</a> AAAT yields 2 instances of AA:</p>
 <ul>
 <li>[AA]AT</li>
 <li>A[AA]T</li>
@@ -5674,7 +5674,7 @@ mass[<span class="hljs-string">'P'</span>]    = mass[<span class="hljs-string">'
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This was the version of the algorithm used to solve chapter 4's final assignment (<a href="#BM_(sequence)%2Fi">sequence</a> a real <a href="#BM_(experimental%20spectrum)%2Fi">experimental spectrum</a> for some unknown variant of Tyrocidine). Note how the parameters into <a href="#BM_(sequence)%2Fi">sequence</a>_<a href="#BM_(peptide)%2Fi">peptide</a> take an initial leaderboard. This initial leaderboard was primed with <a href="#BM_(subpeptide)%2Fi">subpeptide</a> <a href="#BM_(sequence)%2Fi">sequence</a>s from other Tyrocidine variants discusses in chapter 4. The problem wasn't solvable without these <a href="#BM_(subpeptide)%2Fi">subpeptide</a> <a href="#BM_(sequence)%2Fi">sequence</a>s. More information on this can be found in the Python file for the final assignment.</p>
-<p>Before coming up with the above solution, I came up with another heuristic that I <a href="#BM_(%5Cbtrie)%2Fi">trie</a>d: Use basic genetic algorithms / evolutionary algorithms as the heuristic to move forward <a href="#BM_(peptide)%2Fi">peptide</a>s. This performed even worse than leaderboard: If the mutation rate is too low, the candidates converge to a local optima and can't break out. If the mutation rate is too high, the candidates never converge to a solution. As such, it was removed from the code.</p>
+<p>Before coming up with the above solution, I came up with another heuristic that I tried: Use basic genetic algorithms / evolutionary algorithms as the heuristic to move forward <a href="#BM_(peptide)%2Fi">peptide</a>s. This performed even worse than leaderboard: If the mutation rate is too low, the candidates converge to a local optima and can't break out. If the mutation rate is too high, the candidates never converge to a solution. As such, it was removed from the code.</p>
 </div>
 <a name="H_Sequence%20Alignment"></a><h2>Sequence Alignment</h2>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Alignment)_TOPIC%2F"></a><strong></strong></p>
@@ -15699,7 +15699,7 @@ n4_val = <span class="hljs-built_in">min</span>(
 <p><img src="dot_618f5a59247efef5120ce07be88aa291.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
-<p>Given a <a href="#BM_(tree)%2Fi">tree</a>, this algorithm goes over each internal edge and <a href="#BM_(%5Cbtrie)%2Fi">trie</a>s all possible <a href="#BM_(neighbour)%2Fi">neighbour</a> swaps on that edge in the hopes of driving down the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. After all possible swaps are performed on every internal edge, the swap that produced the lowest <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is chosen. If that <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is lower than the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> for the original <a href="#BM_(tree)%2Fi">tree</a>, the swap is applied to the original and the process repeats.</p>
+<p>Given a <a href="#BM_(tree)%2Fi">tree</a>, this algorithm goes over each internal edge and tries all possible <a href="#BM_(neighbour)%2Fi">neighbour</a> swaps on that edge in the hopes of driving down the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a>. After all possible swaps are performed on every internal edge, the swap that produced the lowest <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is chosen. If that <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> is lower than the <a href="#BM_(parsimony%20score)%2Fi">parsimony score</a> for the original <a href="#BM_(tree)%2Fi">tree</a>, the swap is applied to the original and the process repeats.</p>
 <p><a href="ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py">ch7_code/src/sequence_phylogeny/NearestNeighbourInterchange.py</a> (lines 145 to 250):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">nn_interchange</span>(<span class="hljs-params">
         tree: Graph[N, ND, E, ED],
@@ -25590,7 +25590,7 @@ first_indexes_checkpoint_n: 20
 <p>The idea is that once the experimental <a href="#BM_(cDNA)%2F">cDNA</a> is introduced to that region, it should bind to the control <a href="#BM_(cDNA)%2F">cDNA</a> that's been printed to form <a href="#BM_(double%20stranded%20DNA%7Cdouble-stranded%20DNA)%2Fi">double-stranded DNA</a>. The color emitted in a region should correspond to the amount of <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for the <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> that region represents. For example, if a region on the sheet is fully yellow, it means that the <a href="#BM_(gene%20expression)%2Fi">gene expression</a> for that <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> is roughly equal (red mixed with green is yellow).</p>
 </li>
 <li>
-<p><a name="BM_(greedy%20algorithm)%2Fi"></a><strong>greedy algorithm</strong> - An algorithm that <a href="#BM_(%5Cbtrie)%2Fi">trie</a>s to speed things up by taking the locally optimal choice at each step. That is, the algorithm doesn't look more than 1 step ahead.</p>
+<p><a name="BM_(greedy%20algorithm)%2Fi"></a><strong>greedy algorithm</strong> - An algorithm that tries to speed things up by taking the locally optimal choice at each step. That is, the algorithm doesn't look more than 1 step ahead.</p>
 <p>For example, imagine a chess playing AI that had a strategy of trying to eliminate the other player's most valuable piece at each turn. It would be considered greedy because it only looks 1 move ahead before taking action. Normal chess AIs / players look many moves ahead before taking action. As such, the greedy AI may be fast but it would very likely lose most matches.</p>
 </li>
 <li>
@@ -29941,7 +29941,230 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p>It's impossible for d mismatches to exist across d + 1 <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s. There are more <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s than there are mismatches — at least one of the <a href="#BM_(seed%20extension%7Cseed)%2Fi">seed</a>s must match exactly.</p>
 <p><img src="svgbob_27be0ab62d6a6964135cfc8727e10d7ede8f2e5f.svg" alt="Kroki diagram output"></p>
 </li>
+<li>
+<p><a name="BM_(retrovirus)%2Fi"></a><strong>retrovirus</strong> - A virus that inserts a DNA copy of its RNA <a href="#BM_(genome)%2Fi">genome</a> into the DNA of the host cell that it invades.</p>
+</li>
+<li>
+<p><a name="BM_(anti%5B%5C-%5D%3Fviral%7Canti%5B%5C-%5D%3Fretroviral)%2Fi"></a><strong>antiviral</strong> - A class of medication used for treating viral infections.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The term <a href="#BM_(anti%5B%5C-%5D%3Fviral%7Canti%5B%5C-%5D%3Fretroviral)%2Fi">antiretroviral</a> therapy is commonly used to refer to <a href="#BM_(HIV%7CAIDS)%2F">HIV</a> treatments, although <a href="#BM_(retrovirus)%2Fi">retrovirus</a>es other than <a href="#BM_(HIV%7CAIDS)%2F">HIV</a> exist (e.g. human T-lymphotropic virus)</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(surface%20protein)%2Fi"></a><strong>surface protein</strong> - Protein embedded into a cell surface or <a href="#BM_(viral%20envelope%7Cviral%20envelope%20protein%7Cenvelope%20protein)%2Fi">viral envelope</a>. See <a href="#BM_(glycoprotein)%2Fi">glycoprotein</a> / <a href="#BM_(glycan)%2Fi">glycan</a>.</p>
+</li>
+<li>
+<p><a name="BM_(viral%20envelope%7Cviral%20envelope%20protein%7Cenvelope%20protein)%2Fi"></a><strong>envelope protein</strong> - One of the proteins making up the outermost layer of a virus, called the <a href="#BM_(viral%20envelope%7Cviral%20envelope%20protein%7Cenvelope%20protein)%2Fi">viral envelope</a>.</p>
+<p>A <a href="#BM_(viral%20envelope%7Cviral%20envelope%20protein%7Cenvelope%20protein)%2Fi">viral envelope</a> often has one or more spikes which facilitate the entry of the virus's genetic material into the host cell.</p>
+</li>
+<li>
+<p><a name="BM_(glycoprotein)%2Fi"></a><strong>glycoprotein</strong> - A protein containing <a href="#BM_(glycan)%2Fi">glycan</a>s.</p>
+</li>
+<li>
+<p><a name="BM_(glycan)%2Fi"></a><strong>glycan</strong> - A carbohydrate portion of some glycoconjugate (e.g. <a href="#BM_(glycoprotein)%2Fi">glycoprotein</a> or glycolipid). Cells have a dense coating of <a href="#BM_(glycan)%2Fi">glycan</a>s on their surface, which are used for modulating interactions with other cells and biological entities (e.g. communication between the cells of a human, interactions between bacterial cells and human cells, interactions between a human cells and viruses, etc..).</p>
+<p><a href="#BM_(glycan)%2Fi">Glycan</a>s may also coat <a href="#BM_(viral%20envelope%7Cviral%20envelope%20protein%7Cenvelope%20protein)%2Fi">viral envelope</a> proteins, which can make those viruses invisible to the human immune system (e.g. <a href="#BM_(HIV%7CAIDS)%2F">HIV</a>).</p>
+</li>
+<li>
+<p><a name="BM_(glycosylation)%2Fi"></a><strong>glycosylation</strong> - A modification to a protein, applied after it's already been <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translated</a> out of the ribosome, that turns it into a <a href="#BM_(glycoprotein)%2Fi">glycoprotein</a>.</p>
+</li>
+<li>
+<p><a name="BM_(Red%20Queen%20effect%7CRed%20Queen%20hypothesis)%2Fi"></a><strong>Red Queen effect</strong> - The hypothesis that organisms must constantly evolve in order to survive due to predator-prey dynamics within an environment. The name comes from Lewis Carroll's novel Through the Look-Glass, where the Red Queen tells Alice "Now, here, you see, it takes all the running you can do, to keep in the same place."</p>
+</li>
+<li>
+<p><a name="BM_(syncytium%7Csymplasm)%2Fi"></a><strong>syncytium</strong> - A cytoplasmic mass containing several nuclei formed by the <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fusion</a> of multiple cells. Certain <a href="#BM_(HIV%7CAIDS)%2F">HIV</a> phenotypes embed their <a href="#BM_(viral%20envelope%7Cviral%20envelope%20protein%7Cenvelope%20protein)%2Fi">viral envelope</a> proteins into the host cell's surface upon infection, which ends up causing <a href="#BM_(neighbour)%2Fi">neighbour</a>ing cells to <a href="#BM_(%5Cbfusion%7C%5Cbfuse)%2Fi">fuse</a> into a non-functional <a href="#BM_(syncytium%7Csymplasm)%2Fi">syncytium</a>.</p>
+</li>
+<li>
+<p><a name="BM_(Ch%C5%8D-Han)%2Fi"></a><strong>Chō-Han</strong> - A Japanese gambling game where the dealer rolls two dice and the player gambles on whether the sum will be even or odd. The name <a href="#BM_(Ch%C5%8D-Han)%2Fi">Chō-Han</a> literally <a href="#BM_(translation%7Ctranslated%7Ctranslate)%2Fi">translate</a>s to even-odd.</p>
+</li>
+<li>
+<p><a name="BM_(odds%5B%5C-%5Cs%5Dratio)%2Fi"></a><strong>odds ratio</strong> - A measure of the chance of success, defined as the probability of some event occurring divided by the probability that event doesn't occur. For example, given a based coin, a fair coin, and a <a href="#BM_(sequence)%2Fi">sequence</a> of flips, the probability the <a href="#BM_(sequence)%2Fi">sequence</a> of flips was generated by the ...</p>
+<ul>
+<li>the fair coin is stated as <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><msub><mi>r</mi><mi>F</mi></msub><mo stretchy="false">(</mo><mi>f</mi><mi>l</mi><mi>i</mi><mi>p</mi><mi>s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Pr_F(flips)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">F</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">i</span><span class="mord mathnormal">p</span><span class="mord mathnormal">s</span><span class="mclose">)</span></span></span></span>.</li>
+<li>the biased coin is stated as <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><msub><mi>r</mi><mi>B</mi></msub><mo stretchy="false">(</mo><mi>f</mi><mi>l</mi><mi>i</mi><mi>p</mi><mi>s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Pr_B(flips)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">i</span><span class="mord mathnormal">p</span><span class="mord mathnormal">s</span><span class="mclose">)</span></span></span></span>.</li>
 </ul>
+<p>The <a href="#BM_(odds%5B%5C-%5Cs%5Dratio)%2Fi">odds ratio</a> that the flips were generated by the fair coin is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>P</mi><msub><mi>r</mi><mi>F</mi></msub><mo stretchy="false">(</mo><mi>f</mi><mi>l</mi><mi>i</mi><mi>p</mi><mi>s</mi><mo stretchy="false">)</mo></mrow><mrow><mi>P</mi><msub><mi>r</mi><mi>B</mi></msub><mo stretchy="false">(</mo><mi>f</mi><mi>l</mi><mi>i</mi><mi>p</mi><mi>s</mi><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{Pr_F(flips)}{Pr_B(flips)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.53em;vertical-align:-0.52em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.01em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3567071428571427em;margin-left:-0.02778em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.14329285714285717em;"><span></span></span></span></span></span></span><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">p</span><span class="mord mathnormal mtight">s</span><span class="mclose mtight">)</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.485em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3567071428571427em;margin-left:-0.02778em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">F</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.14329285714285717em;"><span></span></span></span></span></span></span><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">p</span><span class="mord mathnormal mtight">s</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.52em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>. Likewise, the <a href="#BM_(odds%5B%5C-%5Cs%5Dratio)%2Fi">odds ratio</a> that the flips were generated by the biased coin is <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>P</mi><msub><mi>r</mi><mi>B</mi></msub><mo stretchy="false">(</mo><mi>f</mi><mi>l</mi><mi>i</mi><mi>p</mi><mi>s</mi><mo stretchy="false">)</mo></mrow><mrow><mi>P</mi><msub><mi>r</mi><mi>F</mi></msub><mo stretchy="false">(</mo><mi>f</mi><mi>l</mi><mi>i</mi><mi>p</mi><mi>s</mi><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{Pr_B(flips)}{Pr_F(flips)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.53em;vertical-align:-0.52em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.01em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3567071428571427em;margin-left:-0.02778em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">F</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.14329285714285717em;"><span></span></span></span></span></span></span><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">p</span><span class="mord mathnormal mtight">s</span><span class="mclose mtight">)</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.485em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3567071428571427em;margin-left:-0.02778em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.14329285714285717em;"><span></span></span></span></span></span></span><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">p</span><span class="mord mathnormal mtight">s</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.52em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span>.</p>
+<p>The result of an <a href="#BM_(odds%5B%5C-%5Cs%5Dratio)%2Fi">odds ratio</a> is how much more likely the top of the fraction is vs the bottom. For example, if the <a href="#BM_(odds%5B%5C-%5Cs%5Dratio)%2Fi">odds ratio</a> for <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>P</mi><msub><mi>r</mi><mi>F</mi></msub><mo stretchy="false">(</mo><mi>f</mi><mi>l</mi><mi>i</mi><mi>p</mi><mi>s</mi><mo stretchy="false">)</mo></mrow><mrow><mi>P</mi><msub><mi>r</mi><mi>B</mi></msub><mo stretchy="false">(</mo><mi>f</mi><mi>l</mi><mi>i</mi><mi>p</mi><mi>s</mi><mo stretchy="false">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{Pr_F(flips)}{Pr_B(flips)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.53em;vertical-align:-0.52em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.01em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3567071428571427em;margin-left:-0.02778em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.14329285714285717em;"><span></span></span></span></span></span></span><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">p</span><span class="mord mathnormal mtight">s</span><span class="mclose mtight">)</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.485em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3567071428571427em;margin-left:-0.02778em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">F</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.14329285714285717em;"><span></span></span></span></span></span></span><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">p</span><span class="mord mathnormal mtight">s</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.52em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span> results in 2, it means that it's two times more likely for the fair coin to have been used vs the biased coin.</p>
+</li>
+<li>
+<p><a name="BM_(log%5B-%5Cs%5D%3Fodds%5B-%5Cs%5D%3Fratio)%2Fi"></a><strong>log-odds ratio</strong> - The logarithm of the <a href="#BM_(odds%5B%5C-%5Cs%5Dratio)%2Fi">odds ratio</a>: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mi>o</mi><msub><mi>g</mi><mn>2</mn></msub><mo stretchy="false">(</mo><mfrac><mrow><mi>P</mi><msub><mi>r</mi><mi>B</mi></msub><mo stretchy="false">(</mo><mi>f</mi><mi>l</mi><mi>i</mi><mi>p</mi><mi>s</mi><mo stretchy="false">)</mo></mrow><mrow><mi>P</mi><msub><mi>r</mi><mi>F</mi></msub><mo stretchy="false">(</mo><mi>f</mi><mi>l</mi><mi>i</mi><mi>p</mi><mi>s</mi><mo stretchy="false">)</mo></mrow></mfrac><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">log_2(\frac{Pr_B(flips)}{Pr_F(flips)})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.53em;vertical-align:-0.52em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.01em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3567071428571427em;margin-left:-0.02778em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">F</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.14329285714285717em;"><span></span></span></span></span></span></span><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">p</span><span class="mord mathnormal mtight">s</span><span class="mclose mtight">)</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.485em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">P</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3567071428571427em;margin-left:-0.02778em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.14329285714285717em;"><span></span></span></span></span></span></span><span class="mopen mtight">(</span><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">p</span><span class="mord mathnormal mtight">s</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.52em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span></span></span></span>. <a href="#BM_(log%5B-%5Cs%5D%3Fodds%5B-%5Cs%5D%3Fratio)%2Fi">Log-odds ratio</a> is just another representation of <a href="#BM_(odds%5B%5C-%5Cs%5Dratio)%2Fi">odds ratio</a>, typically used in cases when <a href="#BM_(odds%5B%5C-%5Cs%5Dratio)%2Fi">odds ratio</a> generates a very small / large result.</p>
+<table>
+<thead>
+<tr>
+<th><a href="#BM_(odds%5B%5C-%5Cs%5Dratio)%2Fi">odds ratio</a></th>
+<th><a href="#BM_(log%5B-%5Cs%5D%3Fodds%5B-%5Cs%5D%3Fratio)%2Fi">log-odds ratio</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.015625 (1/64)</td>
+<td>-6</td>
+</tr>
+<tr>
+<td>0.03125  (1/32)</td>
+<td>-5</td>
+</tr>
+<tr>
+<td>0.0625   (1/16)</td>
+<td>-4</td>
+</tr>
+<tr>
+<td>0.125    (1/8)</td>
+<td>-3</td>
+</tr>
+<tr>
+<td>0.25     (1/4)</td>
+<td>-2</td>
+</tr>
+<tr>
+<td>0.5      (1/2)</td>
+<td>-1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+</tr>
+<tr>
+<td>8</td>
+<td>3</td>
+</tr>
+<tr>
+<td>16</td>
+<td>4</td>
+</tr>
+<tr>
+<td>32</td>
+<td>5</td>
+</tr>
+<tr>
+<td>64</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><a name="BM_(methylation)%2Fi"></a><strong>methylation</strong> - The addition of a methyl group (CH3) to a cystine or guanine nucleotide.</p>
+<p>DNA <a href="#BM_(methylation)%2Fi">methylation</a> is an important part of cell development. Specifically, when a stem cell converts into a specialized cell (cell differentiation), DNA <a href="#BM_(methylation)%2Fi">methylation</a> is an important factor in the change:</p>
+<ul>
+<li>DNA <a href="#BM_(methylation)%2Fi">methylation</a> often alters the expression of nearby <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a>.</li>
+<li>When a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>'s <a href="#BM_(upstream%20region)%2Fi">upstream region</a>s become highly methylated, its expression is suppressed.</li>
+</ul>
+<p>DNA <a href="#BM_(methylation)%2Fi">methylation</a> is typically permanent (specialized cell cannot convert back to stem cell) and inherited during cell division, except in the case of zygote formation. Also, various cancers have been linked to both DNA hyper<a href="#BM_(methylation)%2Fi">methylation</a> and DNA hypo<a href="#BM_(methylation)%2Fi">methylation</a>.</p>
+<p>When cystine goes through DNA <a href="#BM_(methylation)%2Fi">methylation</a>, it has a tendency to deaminate to thymine. However, DNA <a href="#BM_(methylation)%2Fi">methylation</a> is often suppressed in areas of DNA dubbed CG-islands, where CG appears more frequently than the rest of the <a href="#BM_(genome)%2Fi">genome</a>.</p>
+</li>
+<li>
+<p><a name="BM_(Hidden%20Markov%20Model)%2Fi"></a><strong>Hidden Markov Model</strong> <a name="BM_(HMM)%2F"></a><strong></strong> - A model of a machine that outputs symbols one after the other (in a <a href="#BM_(sequence)%2Fi">sequence</a>).</p>
+<p><img src="svgbob_1b85dba6b2e5054c30423fb3fdfe17c1abf1ea80.svg" alt="Kroki diagram output"></p>
+<p>The model is defined by four pieces of information:</p>
+<ul>
+<li>Set of symbols that it can emit.</li>
+<li>Set of hidden states it can be in.</li>
+<li>Matrix of state-state transition probabilities.</li>
+<li>Matrix of state-symbol emission probabilities.</li>
+</ul>
+<p>For example, imagine a batter in a baseball game modeled as a <a href="#BM_(HMM)%2F">HMM</a>. Each swing at the ball may result in either a hit, a miss, or a foul ball. The batter has two bats he can use, both look the exact same (spectators can't tell the difference but he can): hitter vs fouler.</p>
+<ul>
+<li>The hitter bat has the following probabilities: 0.75 hit, 0.1 miss, and 0.15 foul</li>
+<li>The fouler bat has the following probabilities: 0.5 hit, 0.1 miss, amd 0.4 foul</li>
+</ul>
+<p>After each swing, he has a 0.1 probability of switching to a different bat vs 0.9 probability of keeping the same bat.</p>
+<p>The batter modeled as a <a href="#BM_(HMM)%2F">HMM</a>:</p>
+<ul>
+<li>
+<p>Set of symbols that it can emit: {Hit, Miss, Foul}</p>
+</li>
+<li>
+<p>Set of hidden states it can be in: {Hitter Bat, Fouler Bat}</p>
+</li>
+<li>
+<p>Matrix of state-state transition probabilities:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>hitter bat</th>
+<th>fouler bat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hitter bat</td>
+<td>0.9</td>
+<td>0.1</td>
+</tr>
+<tr>
+<td>fouler bat</td>
+<td>0.1</td>
+<td>0.9</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Matrix of state-symbol emission probabilities:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>hit</th>
+<th>miss</th>
+<th>foul</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hitter bat</td>
+<td>0.75</td>
+<td>0.1</td>
+<td>0.15</td>
+</tr>
+<tr>
+<td>fouler bat</td>
+<td>0.5</td>
+<td>0.1</td>
+<td>0.4</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>For both matrixes above, each row must sum to 1.0.</p>
+<ul>
+<li><code>sum(state_state_transitions[state, s] for s in states) == 1.0</code></li>
+<li><code>sum(state_symbol_emissions[state, s] for s in symbols) == 1.0</code></li>
+</ul>
+</div>
+<p>Given a <a href="#BM_(sequence)%2Fi">sequence</a> of swings by the batter (emitted symbols), the goal of <a href="#BM_(HMM)%2F">HMM</a> is to estimate the probability of which bat was used for each swing in that <a href="#BM_(sequence)%2Fi">sequence</a> (hidden state).</p>
+</li>
+<li>
+<p><a name="BM_(Hidden%20Markov%20Model%20diagram)%2Fi"></a><strong>Hidden Markov Model diagram</strong> <a name="BM_(HMM%20diagram%7CHMM%20Diagram)%2F"></a><strong></strong> - A visualization of an <a href="#BM_(HMM)%2F">HMM</a> as a directed graph.</p>
+<ul>
+<li>Solid nodes represent states.</li>
+<li>Solid edges represent state-state transitions.</li>
+<li>Dashed nodes represent symbols.</li>
+<li>Dashed edges represent state-symbol emissions.</li>
+</ul>
+<p>Edges are labeled with the the probability of the state-state transmission / state-symbol emission happening.</p>
+<p><img src="svgbob_d392287d91f234aec32c63fbe448cfa53d88f905.svg" alt="Kroki diagram output"></p>
+</li>
+</ul>
+<p>TODO: continue 10.5 step 3 of 8</p>
+<p>TODO: continue 10.5 step 3 of 8</p>
+<p>TODO: continue 10.5 step 3 of 8</p>
+<p>TODO: continue 10.5 step 3 of 8</p>
+<p>TODO: continue 10.5 step 3 of 8</p>
+<p>TODO: continue 10.5 step 3 of 8</p>
 <p></p>
 <p></p>
 <p></p>
