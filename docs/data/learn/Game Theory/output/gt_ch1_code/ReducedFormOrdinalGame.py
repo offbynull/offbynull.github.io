@@ -70,6 +70,8 @@ class ReducedFormOrdinalGame(ABC):
     # MARKDOWN_STRICT_DOMINANCE_TOTAL
     def strictly_dominates_overall(self, player: int, strategy: str) -> bool:
         for other_strategy in self.strategies[player]:
+            if strategy == other_strategy:
+                continue
             if not self.strictly_dominates_other(player, strategy, other_strategy):
                 return False
         return True
@@ -78,11 +80,31 @@ class ReducedFormOrdinalGame(ABC):
     # MARKDOWN_WEAK_DOMINANCE_TOTAL
     def weakly_dominates_overall(self, player: int, strategy: str) -> bool:
         for other_strategy in self.strategies[player]:
+            if strategy == other_strategy:
+                continue
             if not self.weakly_dominates_other(player, strategy, other_strategy) \
                     and not self.equivalent_to_other(player, strategy, other_strategy):
                 return False
         return True
     # MARKDOWN_WEAK_DOMINANCE_TOTAL
+
+    # MARKDOWN_STRICTLY_DOMINANT_STRATEGY_EQUILIBRIUM
+    def strictly_dominant_strategy_equilibrium(self, strategy_profile: list[str]):
+        for i, _ in enumerate(self.players):
+            if not self.strictly_dominates_overall(i, strategy_profile[i]):
+                return False
+        return True
+    # MARKDOWN_STRICTLY_DOMINANT_STRATEGY_EQUILIBRIUM
+
+    # MARKDOWN_WEAKLY_DOMINANT_STRATEGY_EQUILIBRIUM
+    def weakly_dominant_strategy_equilibrium(self, strategy_profile: list[str]):
+        found_strict_dom = False
+        for i, _ in enumerate(self.players):
+            if not self.weakly_dominates_overall(i, strategy_profile[i]):
+                return False
+            found_strict_dom = self.strictly_dominates_overall(i, strategy_profile[i])
+        return found_strict_dom
+    # MARKDOWN_WEAKLY_DOMINANT_STRATEGY_EQUILIBRIUM
 
 class MappedPreferencesOrdinalGame(ReducedFormOrdinalGame):
     def __init__(
@@ -124,8 +146,8 @@ if __name__ == '__main__':
             }
         }
     )
-    print(f'{og.strictly_dominates_overall(0)}')
-    print(f'{og.strictly_dominates_overall(1)}')
+    print(f'{og.strictly_dominant_strategy_equilibrium(["Lie", "Lie"])}')
+    print(f'{og.weakly_dominant_strategy_equilibrium(["Lie", "Lie"])}')
     # print(f'{og.is_weakly_dominant(0, "Get Violent", "Lie")}')
     # print(f'{og.is_weakly_dominant(0, "Get Violent", "Stay Silent")}')
     # print(f'{og.is_weakly_dominant(0, "Lie", "Stay Silent")}')

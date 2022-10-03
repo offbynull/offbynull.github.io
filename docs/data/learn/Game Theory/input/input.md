@@ -287,7 +287,7 @@
    ```{output}
    gt_ch1_code/ReducedFormOrdinalGame.py
    python
-   # MARKDOWN_STRICT_DOMINANCE\s*\n([\s\S]+)\n\s*# MARKDOWN_STRICT_DOMINANCE
+   # MARKDOWN_STRICT_DOMINANCE\s*\n([\s\S]+?)\n\s*# MARKDOWN_STRICT_DOMINANCE
    ```
    
    For example, Alice and Bob are the players in a game. The strategies for ...
@@ -345,7 +345,7 @@
    ```{output}
    gt_ch1_code/ReducedFormOrdinalGame.py
    python
-   # MARKDOWN_WEAK_DOMINANCE\s*\n([\s\S]+)\n\s*# MARKDOWN_WEAK_DOMINANCE
+   # MARKDOWN_WEAK_DOMINANCE\s*\n([\s\S]+?)\n\s*# MARKDOWN_WEAK_DOMINANCE
    ```
    
    For example, Alice and Bob are the players in a game. The strategies for ...
@@ -383,7 +383,7 @@
    ```{output}
    gt_ch1_code/ReducedFormOrdinalGame.py
    python
-   # MARKDOWN_STRICT_DOMINANCE_TOTAL\s*\n([\s\S]+)\n\s*# MARKDOWN_STRICT_DOMINANCE_TOTAL
+   # MARKDOWN_STRICT_DOMINANCE_TOTAL\s*\n([\s\S]+?)\n\s*# MARKDOWN_STRICT_DOMINANCE_TOTAL
    ```
 
  * `{bm} weakly dominant` - Given strategy `A` for a player in a game, `A` is said to be weakly dominant if, for every other strategy that player has, `A` is either equivalent or `A` weakly dominates it. `{ref} gt:p26`
@@ -391,24 +391,46 @@
    ```{output}
    gt_ch1_code/ReducedFormOrdinalGame.py
    python
-   # MARKDOWN_WEAK_DOMINANCE_TOTAL\s*\n([\s\S]+)\n\s*# MARKDOWN_WEAK_DOMINANCE_TOTAL
+   # MARKDOWN_WEAK_DOMINANCE_TOTAL\s*\n([\s\S]+?)\n\s*# MARKDOWN_WEAK_DOMINANCE_TOTAL
    ```
 
    By definition, if a strategy is strictly dominant, it's also weakly dominant. To disambiguate, in most cases weakly dominant is interpreted as "weakly dominant but not strictly dominant". `{ref} gt:p27`
 
-TODO: pg27 start from definition 2.2.3
+ * `{bm} strictly dominant-strategy equilibrium` - A strategy profile where the strategy for each player is strictly dominant.  `{ref} gt:p27`
 
-TODO: pg27 start from definition 2.2.3
+   ```{output}
+   gt_ch1_code/ReducedFormOrdinalGame.py
+   python
+   # MARKDOWN_STRICTLY_DOMINANT_STRATEGY_EQUILIBRIUM\s*\n([\s\S]+?)\n\s*# MARKDOWN_STRICTLY_DOMINANT_STRATEGY_EQUILIBRIUM
+   ```
 
-TODO: pg27 start from definition 2.2.3
+ * `{bm} weakly dominant-strategy equilibrium/(weakly dominant-strategy equilibrium|dominant-strategy equilibrium)/i` - A strategy profile where the strategy ...
+ 
+   * for each player is weakly dominant.
+   * for at least one player, is not strictly dominant.  `{ref} gt:p27`
+   
+   ```{output}
+   gt_ch1_code/ReducedFormOrdinalGame.py
+   python
+   # MARKDOWN_WEAKLY_DOMINANT_STRATEGY_EQUILIBRIUM\s*\n([\s\S]+?)\n\s*# MARKDOWN_WEAKLY_DOMINANT_STRATEGY_EQUILIBRIUM
+   ```
 
-TODO: pg27 start from definition 2.2.3
 
-TODO: pg27 start from definition 2.2.3
+TODO: pg28 top of page, make code example for prisoner dilemma
 
-TODO: pg27 start from definition 2.2.3
+TODO: pg28 top of page, make code example for prisoner dilemma
 
-TODO: pg27 start from definition 2.2.3
+TODO: pg28 top of page, make code example for prisoner dilemma
+
+TODO: pg28 top of page, make code example for prisoner dilemma
+
+TODO: pg28 top of page, make code example for prisoner dilemma
+
+TODO: pg28 top of page, make code example for prisoner dilemma
+
+TODO: pg28 top of page, make code example for prisoner dilemma
+
+TODO: pg28 top of page, make code example for prisoner dilemma
 
 # Exercises
 
