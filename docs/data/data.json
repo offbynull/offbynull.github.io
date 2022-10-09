@@ -12,11 +12,17 @@
         {
             "name": "C++",
             "notesUrl": "data/learn/Cpp/output/output.html",
-            "source": {
-                "type": "book",
-                "isbn": "978-1593278885",
-                "url": "https://ccc.codes/"
-            }
+            "source": []
+        },
+        {
+            "name": "Kubernetes",
+            "notesUrl": "data/learn/Kubernetes/output/output.html",
+            "source": []
+        },
+        {
+            "name": "Game Theory",
+            "notesUrl": "data/learn/Game%20Theory/output/output.html",
+            "source": []
         },
         {
             "name": "Prealgebra",

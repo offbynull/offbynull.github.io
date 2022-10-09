@@ -10,6 +10,21 @@
             }
         },
         {
+            "name": "C++",
+            "notesUrl": "data/learn/Cpp/output/output.html",
+            "source": []
+        },
+        {
+            "name": "Kubernetes",
+            "notesUrl": "data/learn/Kubernetes/output/output.html",
+            "source": []
+        },
+        {
+            "name": "Game Theory",
+            "notesUrl": "data/learn/Game%20Theory/output/output.html",
+            "source": []
+        },
+        {
             "name": "Prealgebra",
             "notesUrl": "data/learn/Math/output/output.html",
             "source": {
@@ -79,8 +94,8 @@
         },
         {
             "year": 2017,
-            "name": "CUDA Parallel Algorithms",
-            "notesUrl": "data/learn/CUDA.pdf",
+            "name": "CUDA 4 Parallel Algorithms",
+            "notesUrl": "data/learn/CUDA%20Parallel%20Algorithms.pdf",
             "source": {
                 "type": "course",
                 "url": "https://developer.nvidia.com/udacity-cs344-intro-parallel-programming"
@@ -162,6 +177,14 @@
     ],
     "pendingStudyList": [
         {
+            "name": "Handbook of Graph Drawing and Visualization",
+            "source": {
+                "type": "book",
+                "isbn": "9781138034242",
+                "url": "https://news.ycombinator.com/item?id=29734063"
+            }
+        },
+        {
             "name": "The Algorithm Design Manual 3rd Edition",
             "source": {
                 "type": "book",
@@ -204,20 +227,6 @@
             "source": {
                 "type": "document",
                 "url": "http://dmitrysoshnikov.com/courses/essentials-of-garbage-collectors/"
-            }
-        },
-        {
-            "name": "US Army Field Manual (FM) 6-22 Leader Development",
-            "source": {
-                "type": "document",
-                "url": "https://armypubs.army.mil/epubs/DR_pubs/DR_a/pdf/web/fm6_22.pdf"
-            }
-        },
-        {
-            "name": "US Army Army Doctrine Publication (ADP) 6-22 Army Leadership and the Profession",
-            "source": {
-                "type": "document",
-                "url": "https://fas.org/irp/doddir/army/adp6_22.pdf"
             }
         },
         {
