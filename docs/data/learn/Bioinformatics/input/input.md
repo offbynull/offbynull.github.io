@@ -21362,11 +21362,17 @@ first_indexes_checkpoint_n: 20
 
  * `{bm} conditional probability` - The probability of an event occurring given that another event has already occurred.
 
-   The notation for conditional probability is Pr(B|A), where B is the event occurring and A is the event that's already occurred.
-   
-   If B and A are...
-    * independent events, Pr(B|A) is simply Pr(B).
-    * dependent events, Pr(B|A) is calculated as the probability that both B and A happen divided by the probability that just A happens: Pr(A∩B) / Pr(A).
+   The notation for conditional probability is Pr(A|B), where A is the is event that will occurr and B is the event that already occurred. If A and B are...
+
+    * independent events, Pr(A|B) is simply Pr(A).
+    * dependent events, Pr(A|B) is calculated as the probability that both B and A happen divided by the probability that just A happens: Pr(A∩B) / Pr(A).
+  
+   For example, given two six-sided dice, the probability that those dies rolled together results in an even sum and that sum is greater than 10 can rewritten as a conditional probability: The probability that the sum is even (A) given that it's greater than 10 (B).
+
+    * Pr(A) - Probability that sum is even (A) is 18/36: Half of all possible sums will be even.
+    * Pr(B) - Probability that sum is greater than 10 (B) is 3/36: Possible outcomes are [(5, 6), (6, 5), (6, 6)].
+    * Pr(A∩B) - Probability that sum is even (A) and greater than 10 (B) is 1/36: Of all possible sums, only (6, 6) is even and greater than 10.
+    * Pr(A∩B) / Pr(A) - Probability that sum is even (A) given that it's greater than 10 (B) is 1/3: Of the 3 sums greater than 10, only (6, 6) is even.
 
  * `{bm} similarity metric` - A metric used to measure how similar a pair of entities are to each other. Whereas a distance metric must start at 0 for total similarity and grows based on how different the entities are, a similarity metric has no requirements for bounds on similarity or dissimilarity. Examples of similarity metrics include ...
 
@@ -22346,18 +22352,58 @@ first_indexes_checkpoint_n: 20
            '- - - - - ->: foul  :<- - - - -'
                         +- - - -+
    ```
+  
+ * `{bm} hidden path` - A sequence of states that a HMM passes through. For example, in the HMM diagram below, one possible hidden path could be as follows.
 
-TODO: continue 10.5 step 3 of 8
+   ```{svgbob}
+              0.75      +- - - -+     0.5
+         .- - - - - - ->:  hit  :<- - - - - -.
+         :              +- - - -+            :
+         :                                   :
+         :                                   :
+         :     0.1      +- - - -+     0.1    :
+         : .- - - - - ->: miss  :<- - - - -. :
+         : :            +- - - -+          : :
+         : :                               : :
+         : :  .-------------------------.  : :
+         : :  | .---.     0.1     .---. v  : :
+   +-----+-+--+-+-+ |             | +-+----+-+-----+
+   | "hitter bat" | |             | | "fouler bat" |
+   +-------+------+ |0.9       0.9| +---+--+-------+
+           :  ^ ^   |             |   ^ |  :
+           :  | |   |             |   | |  :
+           :  | '---'     0.1     '---' |  :
+           :  '-------------------------'  :
+           :                               :
+           :                               :
+           :     0.15   +- - - -+  0.4     :
+           '- - - - - ->: foul  :<- - - - -'
+                        +- - - -+
+   ```
 
-TODO: continue 10.5 step 3 of 8
+   |                      |     |    0   |     |    1   |     |    2   |     |    3   |     |    4   |     |    5   |     |    6   |
+   |----------------------|-----|--------|-----|--------|-----|--------|-----|--------|-----|--------|-----|--------|-----|--------|
+   | emitted symbols (X)  |     | foul   |     | hit    |     | hit    |     | miss   |     | hit    |     | hit    |     | hit    |
+   | hidden path     (P)  |     | fouler |     | hitter |     | hitter |     | hitter |     | hitter |     | hitter |     | hitter |
+   | Pr(Pi→Pi+1)          | 0.5 |        | 0.1 |        | 0.9 |        | 0.9 |        | 0.9 |        | 0.9 |        | 0.9 |        |
+   | Pr(Xi\|Pi)           |     |  0.4   |     |  0.75  |     |  0.75  |     |  0.1   |     |  0.75  |     |  0.75  |     |  0.75  |
 
-TODO: continue 10.5 step 3 of 8
+   ```{note}
+   * Pr(Pi→Pi+1) denotes the probability of transitioning from one hidden state to the next. For example, the transition between 0 and 1 is Pr(fouler→hitter), which is 0.1. At the beginning, even before 0, the probability is set to 0.5 because there's a 50/50 chance of starting off with either hitter or fouler.
+   * Pr(Xi|Pi) denotes the conditional probability that the symbol will be emitted given the current hidden state. For example, at 0, the probability that foul is emitted given the hidden state is set to fouler is 0.4.
+   ```
 
-TODO: continue 10.5 step 3 of 8
+TODO: continue 10.6 step 2
 
-TODO: continue 10.5 step 3 of 8
+TODO: continue 10.6 step 2
 
-TODO: continue 10.5 step 3 of 8
+TODO: continue 10.6 step 2
+
+TODO: continue 10.6 step 2
+
+TODO: continue 10.6 step 2
+
+TODO: continue 10.6 step 2
 
 
 `{bm-ignore} !!([\w\-]+?)!!/i`

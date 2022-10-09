@@ -28991,11 +28991,17 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </li>
 <li>
 <p><a name="BM_(conditional%20probability)%2Fi"></a><strong>conditional probability</strong> - The probability of an event occurring given that another event has already occurred.</p>
-<p>The notation for <a href="#BM_(conditional%20probability)%2Fi">conditional probability</a> is Pr(B|A), where B is the event occurring and A is the event that's already occurred.</p>
-<p>If B and A are...</p>
+<p>The notation for <a href="#BM_(conditional%20probability)%2Fi">conditional probability</a> is Pr(A|B), where A is the is event that will occurr and B is the event that already occurred. If A and B are...</p>
 <ul>
-<li>independent events, Pr(B|A) is simply Pr(B).</li>
-<li>dependent events, Pr(B|A) is calculated as the probability that both B and A happen divided by the probability that just A happens: Pr(A∩B) / Pr(A).</li>
+<li>independent events, Pr(A|B) is simply Pr(A).</li>
+<li>dependent events, Pr(A|B) is calculated as the probability that both B and A happen divided by the probability that just A happens: Pr(A∩B) / Pr(A).</li>
+</ul>
+<p>For example, given two six-sided dice, the probability that those dies rolled together results in an even sum and that sum is greater than 10 can rewritten as a <a href="#BM_(conditional%20probability)%2Fi">conditional probability</a>: The probability that the sum is even (A) given that it's greater than 10 (B).</p>
+<ul>
+<li>Pr(A) - Probability that sum is even (A) is 18/36: Half of all possible sums will be even.</li>
+<li>Pr(B) - Probability that sum is greater than 10 (B) is 3/36: Possible outcomes are [(5, 6), (6, 5), (6, 6)].</li>
+<li>Pr(A∩B) - Probability that sum is even (A) and greater than 10 (B) is 1/36: Of all possible sums, only (6, 6) is even and greater than 10.</li>
+<li>Pr(A∩B) / Pr(A) - Probability that sum is even (A) given that it's greater than 10 (B) is 1/3: Of the 3 sums greater than 10, only (6, 6) is even.</li>
 </ul>
 </li>
 <li>
@@ -30158,13 +30164,115 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p>Edges are labeled with the the probability of the state-state transmission / state-symbol emission happening.</p>
 <p><img src="svgbob_d392287d91f234aec32c63fbe448cfa53d88f905.svg" alt="Kroki diagram output"></p>
 </li>
+<li>
+<p><a name="BM_(hidden%20path)%2Fi"></a><strong>hidden path</strong> - A <a href="#BM_(sequence)%2Fi">sequence</a> of states that a <a href="#BM_(HMM)%2F">HMM</a> passes through. For example, in the <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> below, one possible <a href="#BM_(hidden%20path)%2Fi">hidden path</a> could be as follows.</p>
+<p><img src="svgbob_d392287d91f234aec32c63fbe448cfa53d88f905.svg" alt="Kroki diagram output"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th>0</th>
+<th></th>
+<th>1</th>
+<th></th>
+<th>2</th>
+<th></th>
+<th>3</th>
+<th></th>
+<th>4</th>
+<th></th>
+<th>5</th>
+<th></th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>emitted symbols (X)</td>
+<td></td>
+<td>foul</td>
+<td></td>
+<td>hit</td>
+<td></td>
+<td>hit</td>
+<td></td>
+<td>miss</td>
+<td></td>
+<td>hit</td>
+<td></td>
+<td>hit</td>
+<td></td>
+<td>hit</td>
+</tr>
+<tr>
+<td><a href="#BM_(hidden%20path)%2Fi">hidden path</a>     (P)</td>
+<td></td>
+<td>fouler</td>
+<td></td>
+<td>hitter</td>
+<td></td>
+<td>hitter</td>
+<td></td>
+<td>hitter</td>
+<td></td>
+<td>hitter</td>
+<td></td>
+<td>hitter</td>
+<td></td>
+<td>hitter</td>
+</tr>
+<tr>
+<td>Pr(Pi→Pi+1)</td>
+<td>0.5</td>
+<td></td>
+<td>0.1</td>
+<td></td>
+<td>0.9</td>
+<td></td>
+<td>0.9</td>
+<td></td>
+<td>0.9</td>
+<td></td>
+<td>0.9</td>
+<td></td>
+<td>0.9</td>
+<td></td>
+</tr>
+<tr>
+<td>Pr(Xi|Pi)</td>
+<td></td>
+<td>0.4</td>
+<td></td>
+<td>0.75</td>
+<td></td>
+<td>0.75</td>
+<td></td>
+<td>0.1</td>
+<td></td>
+<td>0.75</td>
+<td></td>
+<td>0.75</td>
+<td></td>
+<td>0.75</td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<ul>
+<li>Pr(Pi→Pi+1) denotes the probability of transitioning from one hidden state to the next. For example, the transition between 0 and 1 is Pr(fouler→hitter), which is 0.1. At the beginning, even before 0, the probability is set to 0.5 because there's a 50/50 chance of starting off with either hitter or fouler.</li>
+<li>Pr(Xi|Pi) denotes the <a href="#BM_(conditional%20probability)%2Fi">conditional probability</a> that the symbol will be emitted given the current hidden state. For example, at 0, the probability that foul is emitted given the hidden state is set to fouler is 0.4.</li>
 </ul>
-<p>TODO: continue 10.5 step 3 of 8</p>
-<p>TODO: continue 10.5 step 3 of 8</p>
-<p>TODO: continue 10.5 step 3 of 8</p>
-<p>TODO: continue 10.5 step 3 of 8</p>
-<p>TODO: continue 10.5 step 3 of 8</p>
-<p>TODO: continue 10.5 step 3 of 8</p>
+</div>
+</li>
+</ul>
+<p>TODO: continue 10.6 step 2</p>
+<p>TODO: continue 10.6 step 2</p>
+<p>TODO: continue 10.6 step 2</p>
+<p>TODO: continue 10.6 step 2</p>
+<p>TODO: continue 10.6 step 2</p>
+<p>TODO: continue 10.6 step 2</p>
 <p></p>
 <p></p>
 <p></p>
