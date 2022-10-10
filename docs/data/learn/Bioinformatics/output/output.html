@@ -30072,8 +30072,8 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><img src="svgbob_1b85dba6b2e5054c30423fb3fdfe17c1abf1ea80.svg" alt="Kroki diagram output"></p>
 <p>The model is defined by four pieces of information:</p>
 <ul>
-<li>Set of symbols that it can emit.</li>
-<li>Set of hidden states it can be in.</li>
+<li>Set of symbols that the machine can emit.</li>
+<li>Set of hidden states the machine can be in.</li>
 <li>Matrix of state-state transition probabilities.</li>
 <li>Matrix of state-symbol emission probabilities.</li>
 </ul>
@@ -30086,10 +30086,10 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p>The batter modeled as a <a href="#BM_(HMM)%2F">HMM</a>:</p>
 <ul>
 <li>
-<p>Set of symbols that it can emit: {Hit, Miss, Foul}</p>
+<p>Set of symbols that it can emit: {hit, miss, foul}</p>
 </li>
 <li>
-<p>Set of hidden states it can be in: {Hitter Bat, Fouler Bat}</p>
+<p>Set of hidden states it can be in: {hitter bat, fouler bat}</p>
 </li>
 <li>
 <p>Matrix of state-state transition probabilities:</p>
@@ -30165,7 +30165,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><img src="svgbob_d392287d91f234aec32c63fbe448cfa53d88f905.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(hidden%20path)%2Fi"></a><strong>hidden path</strong> - A <a href="#BM_(sequence)%2Fi">sequence</a> of states that a <a href="#BM_(HMM)%2F">HMM</a> passes through. For example, in the <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> below, one possible <a href="#BM_(hidden%20path)%2Fi">hidden path</a> could be as follows.</p>
+<p><a name="BM_(hidden%20path)%2Fi"></a><strong>hidden path</strong> - A <a href="#BM_(sequence)%2Fi">sequence</a> of hidden states that a <a href="#BM_(HMM)%2F">HMM</a> passes through. For example, in the <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> below, one possible <a href="#BM_(hidden%20path)%2Fi">hidden path</a> could be as follows.</p>
 <p><img src="svgbob_d392287d91f234aec32c63fbe448cfa53d88f905.svg" alt="Kroki diagram output"></p>
 <table>
 <thead>
@@ -30265,6 +30265,109 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>Pr(Xi|Pi) denotes the <a href="#BM_(conditional%20probability)%2Fi">conditional probability</a> that the symbol will be emitted given the current hidden state. For example, at 0, the probability that foul is emitted given the hidden state is set to fouler is 0.4.</li>
 </ul>
 </div>
+</li>
+<li>
+<p><a name="BM_(Viterbi%20graph%7CViterbi)%2Fi"></a><strong>Viterbi graph</strong> - A directed graph representing all possible hidden state transitions that resulted in a <a href="#BM_(sequence)%2Fi">sequence</a> of emitted symbols in an <a href="#BM_(HMM)%2F">HMM</a>. In the <a href="#BM_(Viterbi%20graph%7CViterbi)%2Fi">Viterbi graph</a>, ...</p>
+<ul>
+<li>hidden states are represented as nodes.</li>
+<li>emitted symbols are represents as edges, where an edge's weight is the probability that the symbol it represents was emitted given a hidden state transition.</li>
+</ul>
+<p>Consider a <a href="#BM_(HMM)%2F">HMM</a> that has two possible hidden states [hitter bat, fouler bat] and emits the symbols [foul, hit, miss, hit, hit], represented as the <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> below.</p>
+<p><img src="svgbob_d392287d91f234aec32c63fbe448cfa53d88f905.svg" alt="Kroki diagram output"></p>
+<p>The probability that some symbol was emitted (e.g. hit) after some state transition occurrs (e.g. fouler bat → hitter bat) is as follows: Pr(symbol|state-transition) = Pr(state-transition) * Pr(symbol). For example, Pr(fouler bat → hitter bat) is 0.1 in the <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> above, and Pr(hit) once entered into the hitter bat state is 0.75, so Pr(hit|fouler bat → hitter bat) = 0.1 * 0.75 = 0.075.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>hit</th>
+<th>miss</th>
+<th>foul</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pr(hitter bat → hitter bat)</td>
+<td>0.9 * 0.75 = 0.675</td>
+<td>0.9 * 0.1 = 0.09</td>
+<td>0.9 * 0.15 = 0.135</td>
+</tr>
+<tr>
+<td>Pr(hitter bat → fouler bat)</td>
+<td>0.1 * 0.5  = 0.05</td>
+<td>0.1 * 0.1 = 0.01</td>
+<td>0.1 * 0.4  = 0.04</td>
+</tr>
+<tr>
+<td>Pr(fouler bat → hitter bat)</td>
+<td>0.1 * 0.75 = 0.075</td>
+<td>0.1 * 0.1 = 0.01</td>
+<td>0.1 * 0.15 = 0.015</td>
+</tr>
+<tr>
+<td>Pr(fouler bat → fouler bat)</td>
+<td>0.9 * 0.5  = 0.45</td>
+<td>0.9 * 0.1 = 0.09</td>
+<td>0.9 * 0.4  = 0.36</td>
+</tr>
+<tr>
+<td>Pr(SOURCE     → hitter bat)</td>
+<td>0.5 * 0.75 = 0.375</td>
+<td>0.5 * 0.1 = 0.05</td>
+<td>0.5 * 0.15 = 0.075</td>
+</tr>
+<tr>
+<td>Pr(SOURCE     → fouler bat)</td>
+<td>0.5 * 0.5  = 0.25</td>
+<td>0.5 * 0.1 = 0.05</td>
+<td>0.5 * 0.4  = 0.2</td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The last two rows are for the initial selection of a state: The probability is set to 0.5 because there's a 50/50 chance of starting off with either the hitter bat or fouler bat.</p>
+</div>
+<p>The <a href="#BM_(Viterbi%20graph%7CViterbi)%2Fi">Viterbi graph</a> for the <a href="#BM_(sequence)%2Fi">sequence</a> [foul, hit, miss, hit, hit] is displayed below. Each node represents a state and each edge represents a symbol being emitted from that state, where edge weights are the probability calculations in the matrix above.</p>
+<p><img src="svgbob_ebef27b83f1c42ee79504f679c28677e5a26dae6.svg" alt="Kroki diagram output"></p>
+<p>The goal with a <a href="#BM_(Viterbi%20graph%7CViterbi)%2Fi">Viterbi graph</a> is to determine the most likely set of hidden state transitions that resulted in the emitted symbols, which is the path from source to sink with the highest product (multiplication) of edge weights. In the example above, that path is 1.0 * 0.2 * 0.45 * 0.1 * 0.675 * 0.675 = 0.0041.</p>
+<table>
+<thead>
+<tr>
+<th>SOURCE</th>
+<th>→</th>
+<th>fouler bat</th>
+<th>→</th>
+<th>fouler bat</th>
+<th>→</th>
+<th>fouler bat</th>
+<th>→</th>
+<th>hitter bat</th>
+<th>→</th>
+<th>hitter bat</th>
+<th>→</th>
+<th>SINK</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>1.0</td>
+<td></td>
+<td>0.2</td>
+<td></td>
+<td>0.45</td>
+<td></td>
+<td>0.1</td>
+<td></td>
+<td>0.675</td>
+<td></td>
+<td>0.675</td>
+<td></td>
+<td>Product: 0.0041</td>
+</tr>
+</tbody>
+</table>
 </li>
 </ul>
 <p>TODO: continue 10.6 step 2</p>

@@ -22277,8 +22277,8 @@ first_indexes_checkpoint_n: 20
  
    The model is defined by four pieces of information:
 
-   * Set of symbols that it can emit.
-   * Set of hidden states it can be in.
+   * Set of symbols that the machine can emit.
+   * Set of hidden states the machine can be in.
    * Matrix of state-state transition probabilities.
    * Matrix of state-symbol emission probabilities.
 
@@ -22291,9 +22291,9 @@ first_indexes_checkpoint_n: 20
 
    The batter modeled as a HMM:
 
-   * Set of symbols that it can emit: {Hit, Miss, Foul}
+   * Set of symbols that it can emit: {hit, miss, foul}
 
-   * Set of hidden states it can be in: {Hitter Bat, Fouler Bat}
+   * Set of hidden states it can be in: {hitter bat, fouler bat}
 
    * Matrix of state-state transition probabilities:
 
@@ -22353,7 +22353,7 @@ first_indexes_checkpoint_n: 20
                         +- - - -+
    ```
   
- * `{bm} hidden path` - A sequence of states that a HMM passes through. For example, in the HMM diagram below, one possible hidden path could be as follows.
+ * `{bm} hidden path` - A sequence of hidden states that a HMM passes through. For example, in the HMM diagram below, one possible hidden path could be as follows.
 
    ```{svgbob}
               0.75      +- - - -+     0.5
@@ -22392,6 +22392,95 @@ first_indexes_checkpoint_n: 20
    * Pr(Pi→Pi+1) denotes the probability of transitioning from one hidden state to the next. For example, the transition between 0 and 1 is Pr(fouler→hitter), which is 0.1. At the beginning, even before 0, the probability is set to 0.5 because there's a 50/50 chance of starting off with either hitter or fouler.
    * Pr(Xi|Pi) denotes the conditional probability that the symbol will be emitted given the current hidden state. For example, at 0, the probability that foul is emitted given the hidden state is set to fouler is 0.4.
    ```
+
+ * `{bm} Viterbi graph/(Viterbi graph|Viterbi)/i` - A directed graph representing all possible hidden state transitions that resulted in a sequence of emitted symbols in an HMM. In the Viterbi graph, ...
+ 
+   * hidden states are represented as nodes.
+   * emitted symbols are represents as edges, where an edge's weight is the probability that the symbol it represents was emitted given a hidden state transition.
+   
+   Consider a HMM that has two possible hidden states [hitter bat, fouler bat] and emits the symbols [foul, hit, miss, hit, hit], represented as the HMM diagram below.
+
+   ```{svgbob}
+              0.75      +- - - -+     0.5
+         .- - - - - - ->:  hit  :<- - - - - -.
+         :              +- - - -+            :
+         :                                   :
+         :                                   :
+         :     0.1      +- - - -+     0.1    :
+         : .- - - - - ->: miss  :<- - - - -. :
+         : :            +- - - -+          : :
+         : :                               : :
+         : :  .-------------------------.  : :
+         : :  | .---.     0.1     .---. v  : :
+   +-----+-+--+-+-+ |             | +-+----+-+-----+
+   | "hitter bat" | |             | | "fouler bat" |
+   +-------+------+ |0.9       0.9| +---+--+-------+
+           :  ^ ^   |             |   ^ |  :
+           :  | |   |             |   | |  :
+           :  | '---'     0.1     '---' |  :
+           :  '-------------------------'  :
+           :                               :
+           :                               :
+           :     0.15   +- - - -+  0.4     :
+           '- - - - - ->: foul  :<- - - - -'
+                        +- - - -+
+   ```
+
+   The probability that some symbol was emitted (e.g. hit) after some state transition occurrs (e.g. fouler bat → hitter bat) is as follows: Pr(symbol|state-transition) = Pr(state-transition) * Pr(symbol). For example, Pr(fouler bat → hitter bat) is 0.1 in the HMM diagram above, and Pr(hit) once entered into the hitter bat state is 0.75, so Pr(hit|fouler bat → hitter bat) = 0.1 * 0.75 = 0.075.
+
+   |                             |         hit        |        miss      |        foul        |
+   |-----------------------------|--------------------|------------------|--------------------|
+   | Pr(hitter bat → hitter bat) | 0.9 * 0.75 = 0.675 | 0.9 * 0.1 = 0.09 | 0.9 * 0.15 = 0.135 |
+   | Pr(hitter bat → fouler bat) | 0.1 * 0.5  = 0.05  | 0.1 * 0.1 = 0.01 | 0.1 * 0.4  = 0.04  |
+   | Pr(fouler bat → hitter bat) | 0.1 * 0.75 = 0.075 | 0.1 * 0.1 = 0.01 | 0.1 * 0.15 = 0.015 |
+   | Pr(fouler bat → fouler bat) | 0.9 * 0.5  = 0.45  | 0.9 * 0.1 = 0.09 | 0.9 * 0.4  = 0.36  |
+   | Pr(SOURCE     → hitter bat) | 0.5 * 0.75 = 0.375 | 0.5 * 0.1 = 0.05 | 0.5 * 0.15 = 0.075 |
+   | Pr(SOURCE     → fouler bat) | 0.5 * 0.5  = 0.25  | 0.5 * 0.1 = 0.05 | 0.5 * 0.4  = 0.2   |
+
+   ```{note}
+   The last two rows are for the initial selection of a state: The probability is set to 0.5 because there's a 50/50 chance of starting off with either the hitter bat or fouler bat.
+   ```
+
+   The Viterbi graph for the sequence [foul, hit, miss, hit, hit] is displayed below. Each node represents a state and each edge represents a symbol being emitted from that state, where edge weights are the probability calculations in the matrix above.
+
+   ```{svgbob}
+                                                                  | "probability of hit after ..."  
+                      | "probability of hit after ..."            | "hitter bat to hitter bat: 0.675"
+                      | "hitter bat to hitter bat: 0.675"         | "hitter bat to fouler bat: 0.05" 
+                      | "hitter bat to fouler bat: 0.05"          | "fouler bat to hitter bat: 0.075"
+                      | "fouler bat to hitter bat: 0.075"         | "fouler bat to fouler bat: 0.45" 
+                      | "fouler bat to fouler bat: 0.45"          '----------------------------------------.
+                      '------------------------------------.                                               |
+                                                           |                                               |     
+                                                      .----+----.                                     .----+----.     
+                    +--------+       0.075 +--------+       0.675 +---------+        0.09  +--------+       0.675 +--------+  0.675
+                1.0 | hitter +------------>| hitter +------------>| hitter  +------------->| hitter +------------>| hitter +----------.
+              .---->| bat    +.     .----->| bat    +.     .----->| bat     +.     .------>| bat    +.     .----->| bat    +--------. |
+              |     +--------+ \   / 0.2   +--------+ \   / 0.075 +---------+ \   /  0.1   +--------+ \   / 0.075 +--------+  0.075 | |
+   +--------+ |                 \ /                    \ /                     \ /                     \ /                          | |  +------+
+   | SOURCE +-+                  X   foul               X   hit                 X    miss               X   hit               hit   +-+->| SINK |
+   +--------+ |                 / \                    / \                     / \                     / \                          | |  +------+
+              |     +--------+ /   \ 0.075 +--------+ /   \ 0.05  +---------+ /   \  0.1   +--------+ /   \ 0.05  +--------+  0.05  | |
+              '---->| fouler +'     '----->| fouler +'     '----->| fouler  +'     '------>| fouler +'     '----->| fouler +--------' |
+                1.0 | bat    +------------>| bat    +------------>| bat     +------------->| bat    +------------>| bat    +----------'
+                    +--------+       0.2   +--------+       0.45  +---------+        0.09  +--------+       0.45  +--------+  0.45  
+                               '----+----'                                    '-----+----'                                   '---+---'
+                                    |                                               |                                            |
+     .------------------------------'                                               |                                            |
+     | "probability of foul after ..."           .----------------------------------'                                            |
+     | "SOURCE to hitter bat: 0.075"             | "probability of miss after ..."                          .--------------------'
+     | "SOURCE to fouler bat: 0.2"               | "hitter bat to hitter bat: 0.09"                         | "probability of hit after ..." 
+                                                 | "hitter bat to fouler bat: 0.01"                         | "hitter bat to hitter bat: 0.675" 
+                                                 | "fouler bat to hitter bat: 0.01"                         | "hitter bat to fouler bat: 0.05" 
+                                                 | "fouler bat to fouler bat: 0.09"                         | "fouler bat to hitter bat: 0.075"
+                                                                                                            | "fouler bat to fouler bat: 0.45"
+   ```
+
+   The goal with a Viterbi graph is to determine the most likely set of hidden state transitions that resulted in the emitted symbols, which is the path from source to sink with the highest product (multiplication) of edge weights. In the example above, that path is 1.0 * 0.2 * 0.45 * 0.1 * 0.675 * 0.675 = 0.0041.
+   
+   | SOURCE |  →  | fouler bat |  →  | fouler bat |   →  | fouler bat |  →  | hitter bat |   →   | hitter bat |   →   | SINK |                 |
+   |--------|-----|------------|-----|------------|------|------------|-----|------------|-------|------------|-------|------|-----------------|
+   |        | 1.0 |            | 0.2 |            | 0.45 |            | 0.1 |            | 0.675 |            | 0.675 |      | Product: 0.0041 |     
 
 TODO: continue 10.6 step 2
 
