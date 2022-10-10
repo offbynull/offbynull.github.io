@@ -106,6 +106,25 @@ class ReducedFormOrdinalGame(ABC):
         return found_strict_dom
     # MARKDOWN_WEAKLY_DOMINANT_STRATEGY_EQUILIBRIUM
 
+    def to_html_table(self) -> str:
+        ret = '<table>'
+        ret += f'<tr><th colspan="{len(self.players)}">Strategy profile</th><th colspan="{len(self.players)}">Payoff</th></tr>'
+        ret += '<tr>'
+        for p in self.players:
+            ret += f'<th>{p}</th>'
+        for p in self.players:
+            ret += f'<th>{p}</th>'
+        ret += '</tr>'
+        for sp in self.strategy_profiles():
+            ret += '<tr>'
+            for s in sp:
+                ret += f'<td>{s}</td>'
+            for i, _ in enumerate(self.players):
+                ret += f'<td>{self.player_strategy_profile_preference(i, tuple(sp))}</td>'
+            ret += '</tr>'
+        ret += '</table>'
+        return ret
+
 class MappedPreferencesOrdinalGame(ReducedFormOrdinalGame):
     def __init__(
             self,
@@ -146,8 +165,9 @@ if __name__ == '__main__':
             }
         }
     )
-    print(f'{og.strictly_dominant_strategy_equilibrium(["Lie", "Lie"])}')
-    print(f'{og.weakly_dominant_strategy_equilibrium(["Lie", "Lie"])}')
+    print(f'{og.to_html_table()}')
+    # print(f'{og.strictly_dominant_strategy_equilibrium(["Lie", "Lie"])}')
+    # print(f'{og.weakly_dominant_strategy_equilibrium(["Lie", "Lie"])}')
     # print(f'{og.is_weakly_dominant(0, "Get Violent", "Lie")}')
     # print(f'{og.is_weakly_dominant(0, "Get Violent", "Stay Silent")}')
     # print(f'{og.is_weakly_dominant(0, "Lie", "Stay Silent")}')
