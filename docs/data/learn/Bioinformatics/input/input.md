@@ -22393,7 +22393,7 @@ first_indexes_checkpoint_n: 20
    * Pr(Xi|Pi) denotes the conditional probability that the symbol will be emitted given the current hidden state. For example, at 0, the probability that foul is emitted given the hidden state is set to fouler is 0.4.
    ```
 
- * `{bm} Viterbi graph/(Viterbi graph|Viterbi)/i` - A directed graph representing all possible hidden state transitions that resulted in a sequence of emitted symbols in an HMM. In the Viterbi graph, ...
+ * `{bm} Viterbi graph/(Viterbi graph|Viterbi algorithm|Viterbi)/i` - A directed graph representing all possible hidden state transitions that resulted in a sequence of emitted symbols in an HMM. In the Viterbi graph, ...
  
    * hidden states are represented as nodes.
    * emitted symbols are represents as edges, where an edge's weight is the probability that the symbol it represents was emitted given a hidden state transition.
@@ -22453,34 +22453,34 @@ first_indexes_checkpoint_n: 20
                       '------------------------------------.                                               |
                                                            |                                               |     
                                                       .----+----.                                     .----+----.     
-                    +--------+       0.075 +--------+       0.675 +---------+        0.09  +--------+       0.675 +--------+  0.675
-                1.0 | hitter +------------>| hitter +------------>| hitter  +------------->| hitter +------------>| hitter +----------.
-              .---->| bat    +.     .----->| bat    +.     .----->| bat     +.     .------>| bat    +.     .----->| bat    +--------. |
-              |     +--------+ \   / 0.2   +--------+ \   / 0.075 +---------+ \   /  0.1   +--------+ \   / 0.075 +--------+  0.075 | |
-   +--------+ |                 \ /                    \ /                     \ /                     \ /                          | |  +------+
-   | SOURCE +-+                  X   foul               X   hit                 X    miss               X   hit               hit   +-+->| SINK |
-   +--------+ |                 / \                    / \                     / \                     / \                          | |  +------+
-              |     +--------+ /   \ 0.075 +--------+ /   \ 0.05  +---------+ /   \  0.1   +--------+ /   \ 0.05  +--------+  0.05  | |
-              '---->| fouler +'     '----->| fouler +'     '----->| fouler  +'     '------>| fouler +'     '----->| fouler +--------' |
-                1.0 | bat    +------------>| bat    +------------>| bat     +------------->| bat    +------------>| bat    +----------'
-                    +--------+       0.2   +--------+       0.45  +---------+        0.09  +--------+       0.45  +--------+  0.45  
-                               '----+----'                                    '-----+----'                                   '---+---'
-                                    |                                               |                                            |
-     .------------------------------'                                               |                                            |
-     | "probability of foul after ..."           .----------------------------------'                                            |
-     | "SOURCE to hitter bat: 0.075"             | "probability of miss after ..."                          .--------------------'
-     | "SOURCE to fouler bat: 0.2"               | "hitter bat to hitter bat: 0.09"                         | "probability of hit after ..." 
-                                                 | "hitter bat to fouler bat: 0.01"                         | "hitter bat to hitter bat: 0.675" 
-                                                 | "fouler bat to hitter bat: 0.01"                         | "hitter bat to fouler bat: 0.05" 
-                                                 | "fouler bat to fouler bat: 0.09"                         | "fouler bat to hitter bat: 0.075"
-                                                                                                            | "fouler bat to fouler bat: 0.45"
+                    +--------+       0.075 +--------+       0.675 +---------+        0.09  +--------+       0.675 +--------+       0.675 +--------+
+                1.0 | hitter +------------>| hitter +------------>| hitter  +------------->| hitter +------------>| hitter +------------>| hitter | 1.0
+              .---->| bat    +.     .----->| bat    +.     .----->| bat     +.     .------>| bat    +.     .----->| bat    +.     .----->| bat    +-----. 
+              |     +--------+ \   / 0.2   +--------+ \   / 0.075 +---------+ \   /  0.1   +--------+ \   / 0.075 +--------+ \   / 0.075 +--------+     | 
+   +--------+ |                 \ /                    \ /                     \ /                     \ /                    \ /                       |  +------+
+   | SOURCE +-+                  X   foul               X   hit                 X    miss               X   hit                X   hit                  +->| SINK |
+   +--------+ |                 / \                    / \                     / \                     / \                    / \                       |  +------+
+              |     +--------+ /   \ 0.075 +--------+ /   \ 0.05  +---------+ /   \  0.1   +--------+ /   \ 0.05  +--------+ /   \ 0.05  +--------+     |
+              '---->| fouler +'     '----->| fouler +'     '----->| fouler  +'     '------>| fouler +'     '----->| fouler +'     '----->| fouler +-----'
+                1.0 | bat    +------------>| bat    +------------>| bat     +------------->| bat    +------------>| bat    +------------>| bat    | 1.0
+                    +--------+       0.2   +--------+       0.45  +---------+        0.09  +--------+       0.45  +--------+       0.45  +--------+
+                               '----+----'                                    '-----+----'                                   '----+----'
+                                    |                                               |                                             |
+     .------------------------------'                                               |                                             |
+     | "probability of foul after ..."      .---------------------------------------'                                             |
+     | "SOURCE to hitter bat: 0.075"        | "probability of miss after ..."              .--------------------------------------'
+     | "SOURCE to fouler bat: 0.2"          | "hitter bat to hitter bat: 0.09"             | "probability of hit after ..." 
+                                            | "hitter bat to fouler bat: 0.01"             | "hitter bat to hitter bat: 0.675" 
+                                            | "fouler bat to hitter bat: 0.01"             | "hitter bat to fouler bat: 0.05" 
+                                            | "fouler bat to fouler bat: 0.09"             | "fouler bat to hitter bat: 0.075"
+                                                                                           | "fouler bat to fouler bat: 0.45"
    ```
 
    The goal with a Viterbi graph is to determine the most likely set of hidden state transitions that resulted in the emitted symbols, which is the path from source to sink with the highest product (multiplication) of edge weights. In the example above, that path is 1.0 * 0.2 * 0.45 * 0.1 * 0.675 * 0.675 = 0.0041.
    
-   | SOURCE |  →  | fouler bat |  →  | fouler bat |   →  | fouler bat |  →  | hitter bat |   →   | hitter bat |   →   | SINK |                 |
-   |--------|-----|------------|-----|------------|------|------------|-----|------------|-------|------------|-------|------|-----------------|
-   |        | 1.0 |            | 0.2 |            | 0.45 |            | 0.1 |            | 0.675 |            | 0.675 |      | Product: 0.0041 |     
+   | SOURCE |  →  | fouler bat |  →  | fouler bat |   →  | fouler bat |  →  | hitter bat |   →   | hitter bat |   →   | hitter at |  →  | SINK |                 |
+   |--------|-----|------------|-----|------------|------|------------|-----|------------|-------|------------|-------|-----------|-----|------|-----------------|
+   |        | 1.0 |            | 0.2 |            | 0.45 |            | 0.1 |            | 0.675 |            | 0.675 |           | 1.0 |      | Product: 0.0041 |     
 
 TODO: continue 10.6 step 2
 

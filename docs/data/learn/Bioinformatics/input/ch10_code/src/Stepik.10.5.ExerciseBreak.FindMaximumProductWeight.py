@@ -87,12 +87,5 @@ for from_state, to_state in product(hidden_states, hidden_states):
 
 print(f'{to_dot(g)}')
 
-# LOOKS LIKE THIS IS ALL BIAS COINS: THE CALC IS ...
+# From the graph produced, it looks like the path with the top product weight goes through all Fs: The answer is FFFF.
 print(f'{1.0*0.45*0.45*0.45*0.45=}')
-
-THIS SITE ISNT ACCEPTING THIS ANSWER. FIX FIX FIX FIX
-THIS SITE ISNT ACCEPTING THIS ANSWER. FIX FIX FIX FIX
-THIS SITE ISNT ACCEPTING THIS ANSWER. FIX FIX FIX FIX
-THIS SITE ISNT ACCEPTING THIS ANSWER. FIX FIX FIX FIX
-THIS SITE ISNT ACCEPTING THIS ANSWER. FIX FIX FIX FIX
-THIS SITE ISNT ACCEPTING THIS ANSWER. FIX FIX FIX FIX
