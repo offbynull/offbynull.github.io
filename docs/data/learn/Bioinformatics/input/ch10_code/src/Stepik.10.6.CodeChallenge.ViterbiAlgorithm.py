@@ -5,7 +5,7 @@ import find_max_path.FindMaxPath_DPBacktrack
 from graph import DirectedGraph
 from helpers.Utils import slide_window
 
-with open('/home/user/Downloads/test.txt') as f:
+with open('/home/user/Downloads/dataset_240400_7.txt') as f:
     lines = f.read().splitlines(keepends=False)
 emitted_symbols = lines[0]
 symbols = set(lines[2].split())
@@ -67,6 +67,12 @@ for to_state in hidden_states:
         1.0
     )
 
+for e in list(g.get_edges()):
+    weight = g.get_edge_data(e)
+    if weight == 0.0:
+        continue
+    log_weight = log(weight)
+    g.update_edge_data(e, log_weight)
 find_max_path.FindMaxPath_DPBacktrack.populate_weights_and_backtrack_pointers(
     g,
     'SOURCE',
@@ -74,12 +80,6 @@ find_max_path.FindMaxPath_DPBacktrack.populate_weights_and_backtrack_pointers(
     lambda n: g.get_node_data(n),
     lambda e: g.get_edge_data(e),
 )
-for n in g.get_nodes():
-    weight, e = g.get_node_data(n)
-    if weight == 0.0:
-        continue
-    log_weight = log(weight)
-    g.update_node_data(n, (log_weight, e))
 final_weight, _ = g.get_node_data('SINK')
 edges = find_max_path.FindMaxPath_DPBacktrack.backtrack(
     g,
@@ -91,20 +91,8 @@ for e in edges:
     to_node = g.get_edge_to(e)
     alignment.append(to_node[:1])
 alignment = alignment[:-1]  # snip off sink node
-print(f'{"".join(alignment)}')
+print(f'{"".join(alignment[1:])}')
 
-THIS IS WRONG. THE LOG FUNCTION MIGHT NOT BE BEING APPLIED CORRECTLY.
-THIS IS WRONG. THE LOG FUNCTION MIGHT NOT BE BEING APPLIED CORRECTLY.
-THIS IS WRONG. THE LOG FUNCTION MIGHT NOT BE BEING APPLIED CORRECTLY.
-THIS IS WRONG. THE LOG FUNCTION MIGHT NOT BE BEING APPLIED CORRECTLY.
-THIS IS WRONG. THE LOG FUNCTION MIGHT NOT BE BEING APPLIED CORRECTLY.
-THIS IS WRONG. THE LOG FUNCTION MIGHT NOT BE BEING APPLIED CORRECTLY.
-THIS IS WRONG. THE LOG FUNCTION MIGHT NOT BE BEING APPLIED CORRECTLY.
-THIS IS WRONG. THE LOG FUNCTION MIGHT NOT BE BEING APPLIED CORRECTLY.
-THIS IS WRONG. THE LOG FUNCTION MIGHT NOT BE BEING APPLIED CORRECTLY.
-THIS IS WRONG. THE LOG FUNCTION MIGHT NOT BE BEING APPLIED CORRECTLY.
-THIS IS WRONG. THE LOG FUNCTION MIGHT NOT BE BEING APPLIED CORRECTLY.
-THIS IS WRONG. THE LOG FUNCTION MIGHT NOT BE BEING APPLIED CORRECTLY.
 
 
 def to_dot(g: DirectedGraph.Graph) -> str:
@@ -122,5 +110,5 @@ def to_dot(g: DirectedGraph.Graph) -> str:
     return ret
 
 
-print(f'{to_dot(g)}')
+# print(f'{to_dot(g)}')
 
