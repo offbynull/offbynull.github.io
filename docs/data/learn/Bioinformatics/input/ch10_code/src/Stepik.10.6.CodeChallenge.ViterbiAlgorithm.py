@@ -69,10 +69,9 @@ for to_state in hidden_states:
 
 for e in list(g.get_edges()):
     weight = g.get_edge_data(e)
-    if weight == 0.0:
-        continue
     log_weight = log(weight)
     g.update_edge_data(e, log_weight)
+
 find_max_path.FindMaxPath_DPBacktrack.populate_weights_and_backtrack_pointers(
     g,
     'SOURCE',
@@ -90,10 +89,8 @@ alignment = []
 for e in edges:
     to_node = g.get_edge_to(e)
     alignment.append(to_node[:1])
-alignment = alignment[:-1]  # snip off sink node
-print(f'{"".join(alignment[1:])}')
-
-
+alignment = alignment[1:-1]  # snip off sink node
+print(f'{"".join(alignment)}')
 
 def to_dot(g: DirectedGraph.Graph) -> str:
     ret = 'digraph G {\n'
