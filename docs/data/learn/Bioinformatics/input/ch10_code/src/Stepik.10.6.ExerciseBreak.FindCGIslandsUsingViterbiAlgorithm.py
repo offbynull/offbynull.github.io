@@ -30,10 +30,10 @@ hidden_state_transition_probs = {
     ('N', 'N'): 0.9999,
 }
 state_symbol_emission_probs = {
-    ('Y', 'T'): 0.90,
-    ('Y', 'F'): 0.1,
-    ('N', 'T'): 0.1,
-    ('N', 'F'): 0.90,
+    ('Y', 'T'): 0.99,
+    ('Y', 'F'): 0.01,
+    ('N', 'T'): 0.25,
+    ('N', 'F'): 0.75,
 }
 
 hidden_state_transition_to_emission_probs = {}
