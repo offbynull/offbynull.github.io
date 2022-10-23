@@ -12,8 +12,8 @@ import find_max_path.FindMaxPath_DPBacktrack
 # non-CG-islands to CG-islands are even more rare, occurring with probability 0.0001. How many CG-islands do you find?
 
 
-# MY ANSWER
-# ---------
+# MY ANSWER: My answer below gives about 50? I had to guess the symbol emission probabilities (it wasn't given in the
+#            problem statement)
 with lzma.open('chrX_first_million.txt.xz', 'r') as f:
     seq = f.read().decode().upper()
 seq_is_cg = ''
@@ -30,10 +30,10 @@ hidden_state_transition_probs = {
     ('N', 'N'): 0.9999,
 }
 state_symbol_emission_probs = {
-    ('Y', 'T'): 0.99,
-    ('Y', 'F'): 0.01,
-    ('N', 'T'): 0.25,
-    ('N', 'F'): 0.75,
+    ('Y', 'T'): 0.3,
+    ('Y', 'F'): 0.7,
+    ('N', 'T'): 0.01,
+    ('N', 'F'): 0.99,
 }
 
 hidden_state_transition_to_emission_probs = {}
