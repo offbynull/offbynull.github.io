@@ -30267,7 +30267,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </div>
 </li>
 <li>
-<p><a name="BM_(Viterbi%20graph%7CViterbi)%2Fi"></a><strong>Viterbi graph</strong> - A directed graph representing all possible hidden state transitions that resulted in a <a href="#BM_(sequence)%2Fi">sequence</a> of emitted symbols in an <a href="#BM_(HMM)%2F">HMM</a>. In the <a href="#BM_(Viterbi%20graph%7CViterbi)%2Fi">Viterbi graph</a>, ...</p>
+<p><a name="BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi"></a><strong>Viterbi graph</strong> - A directed graph representing all possible hidden state transitions that resulted in a <a href="#BM_(sequence)%2Fi">sequence</a> of emitted symbols in an <a href="#BM_(HMM)%2F">HMM</a>. In the <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a>, ...</p>
 <ul>
 <li>hidden states are represented as nodes.</li>
 <li>emitted symbols are represents as edges, where an edge's weight is the probability that the symbol it represents was emitted given a hidden state transition.</li>
@@ -30327,9 +30327,9 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The last two rows are for the initial selection of a state: The probability is set to 0.5 because there's a 50/50 chance of starting off with either the hitter bat or fouler bat.</p>
 </div>
-<p>The <a href="#BM_(Viterbi%20graph%7CViterbi)%2Fi">Viterbi graph</a> for the <a href="#BM_(sequence)%2Fi">sequence</a> [foul, hit, miss, hit, hit] is displayed below. Each node represents a state and each edge represents a symbol being emitted from that state, where edge weights are the probability calculations in the matrix above.</p>
-<p><img src="svgbob_ebef27b83f1c42ee79504f679c28677e5a26dae6.svg" alt="Kroki diagram output"></p>
-<p>The goal with a <a href="#BM_(Viterbi%20graph%7CViterbi)%2Fi">Viterbi graph</a> is to determine the most likely set of hidden state transitions that resulted in the emitted symbols, which is the path from source to sink with the highest product (multiplication) of edge weights. In the example above, that path is 1.0 * 0.2 * 0.45 * 0.1 * 0.675 * 0.675 = 0.0041.</p>
+<p>The <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a> for the <a href="#BM_(sequence)%2Fi">sequence</a> [foul, hit, miss, hit, hit] is displayed below. Each node represents a state and each edge represents a symbol being emitted from that state, where edge weights are the probability calculations in the matrix above.</p>
+<p><img src="svgbob_d7152c1f93b23c8e7d6f285e63e392af8af62227.svg" alt="Kroki diagram output"></p>
+<p>The goal with a <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a> is to determine the most likely set of hidden state transitions that resulted in the emitted symbols, which is the path from source to sink with the highest product (multiplication) of edge weights. In the example above, that path is 1.0 * 0.2 * 0.45 * 0.1 * 0.675 * 0.675 = 0.0041.</p>
 <table>
 <thead>
 <tr>
@@ -30344,6 +30344,8 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <th>hitter bat</th>
 <th>→</th>
 <th>hitter bat</th>
+<th>→</th>
+<th>hitter at</th>
 <th>→</th>
 <th>SINK</th>
 <th></th>
@@ -30363,6 +30365,8 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <td>0.675</td>
 <td></td>
 <td>0.675</td>
+<td></td>
+<td>1.0</td>
 <td></td>
 <td>Product: 0.0041</td>
 </tr>
