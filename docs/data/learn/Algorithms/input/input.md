@@ -112,10 +112,35 @@
    Note that a polylogarithm is a function in the form log(n)^a.
    ```
 
- * `{bm} bruteforce/(brute force|exhaustive search)/i` - 
+ * `{bm} bruteforce/(bruteforce|brute force|exhaustive search)/i` - An algorithm design strategy that examines all possible options. Bruteforce algorithms are often simple to design, but are typically too slow to be useful for larger inputs.
 
- * `{bm} branch-and-bound/(brand[\s\-]and[\s\-]bound)/i` - 
+ * `{bm} branch-and-bound/(branch[\s\-]and[\s\-]bound)/i` - An algorithm design strategy that explores by branching into only viable options. This algorithm design strategy explores outward (branches), and as the exploration leads to further exploration options, those exploration options are tested for viability (bound) before being considered.
 
+ * `{bm} greedy` - An algorithm design strategy that explores by branching into the locally optimal choice (most attractive choice) at each step. This algorithm design strategy often used to produce a "good enough" answer where as an exact answer would take much longer. However, sometimes the greedy approach will produce an exact answer.
+
+ * `{bm} dynamic programming` - An algorithm design strategy that breaks down a problem into sub-problems. Those sub-problems, once solved, go on to construct the solution to the original problem.
+
+   The difference between dynamic programming and divide-and-conquer is that dynamic programming typically has overlapping sub-problems. For a problem, the number of sub-problems produced is typically very large and the same sub-problem may appear more than once. Dynamic programming organizes computations such that those repeating sub-problems only need to be solved once.
+
+   In addition, the sub-problems are for divide-and-conquer are just smaller sized instances of the original problem. This may not be the case with dynamic programming.
+
+ * `{bm} divide-and-conquer/(divide[\s\-]and[\s-]conquer)/i` - An algorithm design strategy that splits a problem into smaller sub-problems. Those sub-problems, once solved, are combined to construct the solution to the original problem.
+
+   The difference between dynamic programming and divide-and-conquer is that dynamic programming typically has overlapping sub-problems. With divide-and-conquer, the sub-problems typically don't overlap. In addition, the sub-problems are for divide-and-conquer are just smaller sized instances of the original problem.
+
+ * `{bm} recursive/(recursive|recursion)/i` - An algorithm design strategy where the algorithm runs itself to solve a problem. Each self invocation typically runs on a smaller instances of the same problem, effectively a sub-problem.
+
+   The difference between recursive algorithms and divide-and-conquer is mostly the self-invocation (recursion). Many recursive algorithms can be written as divide-and-conquer and vice-versa.
+
+   ```{note}
+   Not every recursive algorithm can be converted to divide-and-conquer. See [here](https://stackoverflow.com/a/53796319).
+   ```
+
+ * `{bm} randomized/(random|las vegas|monte carlo)/i` - An algorithm design strategy that uses a source of randomness as part of its logic (non-deterministic). Randomized algorithms come in two forms:
+ 
+   * Las Vegas algorithm - A randomized algorithm that delivers a guaranteed exact solution. That is, even though the algorithm makes random decisions it is guaranteed to converge on the exact solution to the problem its trying to solve (not an approximate solution).
+
+   * Monte Carlo algorithm - A randomized algorithm that delivers an approximate solution. Because these algorithms are quick, they're typically run many times. The approximation considered the best out of all runs is the one that gets chosen as the solution.
 
 `{bm-error} Missing topic reference/(_TOPIC)/i`
 `{bm-error} Use you instead of we/\b(we)\b/i`
