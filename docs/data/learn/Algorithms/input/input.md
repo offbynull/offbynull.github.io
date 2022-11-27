@@ -3,6 +3,14 @@
 ```{toc}
 ```
 
+TODO: Explain big-O, both worst and average and best cases
+
+TODO: Explain algorithm design patterns: bruteforce, greedy, branch-and-bound, dynamic programming, divide-and-conquer, recursive, randomized (las vegas and monte carlo), etc..
+
+TODO: Explain algorithm testing patterns: stress testing, what else?
+
+TODO: Modulo trick -- "when you need to compute the result of a sequence of arithmetic operations modulo m, take the result of every single operation modulo m". See section 5.3 of book. Why is this the case? Go to your breakdown of division to maybe try and try to reason about it?
+
 # Terminology
 
  * `{bm} algorithm` - A sequence of instructions that are performed to solve some unambiguous problem. Unambiguous means that the problem's description leaves no room for misinterpretation. As such, these problem descriptions are often specified in terms of inputs and outputs.
@@ -141,6 +149,18 @@
    * Las Vegas algorithm - A randomized algorithm that delivers a guaranteed exact solution. That is, even though the algorithm makes random decisions it is guaranteed to converge on the exact solution to the problem its trying to solve (not an approximate solution).
 
    * Monte Carlo algorithm - A randomized algorithm that delivers an approximate solution. Because these algorithms are quick, they're typically run many times. The approximation considered the best out of all runs is the one that gets chosen as the solution.
+
+ * `{bm} stress test` - When designing a more efficient algorithm to solve a problem, a stress test is a battery of randomized tests that compares the output of your more efficient algorithm against the output of the naive algorithm. If implemented correctly, the more efficient algorithm should always produce the same output as the naive algorithm.
+
+   1. Implement the efficient algorithm
+   2. Implement the naive algorithm
+   3. Implement a random test generator (creates random inputs to throw into both algorithms)
+   4. Run the test generator in an infinite loop, feeding the generated inputs into both algorithms and ensuring the results match.
+
+ * `{bm} memoization/(memoization|memoize|memoizing)/i` - An optimization technique where the inputs and outputs of an expensive function call are cached. Should that function be invoked again with inputs that have already been cached, the cached outputs for those inputs are returned rather than performing the entire computation again.
+ 
+   Memoization is a specific form of caching where function results are stored and re-used. Other forms of caching such as buffering and operating system paging don't qualify as memoization because function invocations aren't involved.
+
 
 `{bm-error} Missing topic reference/(_TOPIC)/i`
 `{bm-error} Use you instead of we/\b(we)\b/i`
