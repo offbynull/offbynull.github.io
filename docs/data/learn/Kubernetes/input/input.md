@@ -522,18 +522,22 @@ spec:
         claimName: my-data-pv-claim
 ```
 
-### Image Pull Policy
+### Images
 
-`{bm} /(Resource\/Pods\/Image Pull Policy)_TOPIC/`
+`{bm} /(Resource\/Pods\/Images)_TOPIC/`
 
-Image pull policy is the policy Kubernetes uses for downloading a pod's images. It's controlled via the `spec.containers[].imagePullPolicy` manifest paths ...
+```{prereq}
+Resources/Secrets_TOPIC
+```
+
+Each container in a pod has to reference an image to use. How Kubernetes loads a container's image is dependent on that container's image pull policy.
 
 ```yaml
 spec:
   containers:
-  - ...
-    imagePullPolicy: IfNotPresent
-  ...
+    - name: my-container
+      image: my-image:1.0.1
+      imagePullPolicy: IfNotPresent  # Only download if the image isn't present
 ```
 
 A value of ...
@@ -542,7 +546,36 @@ A value of ...
  * `Always` always downloads the image.
  * `Never` never downloads the image (will fail if image does not exist locally).
 
-If unset, the pull policy differs based on the image tag. Not specifying a tag or specifying `latest` as the tag will always pull the image. Otherwise, the image will be pulled only if it isn't present.
+If unset, the image pull policy differs based on the image tag. Not specifying a tag or specifying `latest` as the tag will always pull the image. Otherwise, the image will be pulled only if it isn't present.
+
+Images that sit in private container registries require credentials to pull. Private container registry credentials are stored in secret objects of type `kubernetes.io/dockerconfigjson` in the format of Docker's `config.json` file.
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-docker-creds
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: ... # base64 encoded ~/.docker/config.json goes here
+```
+
+```{note}
+If you don't want to supply the above manifest, you can also use `kubectl` to create a secret object with the appropriate credentials: `kubectl create secret docker-registry secret-tiger-docker --docker-email=tiger@acme.example --docker-username=tiger --docker-password=pass1234 --docker-server=my-registry.example:5000`.
+```
+
+Those secret objects are then referenced in the pod's image pull secrets list.
+
+```yaml
+spec:
+  # Place secret here. This is a list, so you can have many container registry credentials
+  # here.
+  imagePullSecrets:
+    - name: my-docker-creds
+  containers:
+    - name: my-container
+      image: my-registry.example/tiger/my-container:1.0.1  # Image referencea registry.
+```
 
 ### Restart Policy
 
@@ -572,124 +605,216 @@ The top one is typically used when running servers that should always be up (e.g
 
 ```{prereq}
 Resources/Configuration Maps_TOPIC
+Resources/Secrets_TOPIC
 Resources/Pods/Volumes_TOPIC
 ```
 
-```{note}
-Do **NOT** use this for storing secrets such as tokens, certificates, or passwords. See Pods/Secrets_TOPIC.
-```
+Configuration can come from both config maps and secrets. A config map's key-value pairs can be accessed by a container via environment variables, command-line arguments, or volume mounts. To set a ...
 
-Configuring the applications running under a pod is done through either command-line arguments, environment variables, files, or a mix of the three. Each has a different configuration method.
-
-```yaml
-spec:
-  containers:
-    - ...
-      command:
-        - "/my-app.sh"
-        - "$(PARAM1)"
-      env:
-        - name: PARAM2
-          valueFrom:
-            configMapKeyRef:
-              name: my-config
-              key: key1
-        - name: PARAM3
-          valueFrom:
-            configMapKeyRef:
-              name: my-config
-              key: key2
-      volumeMounts:
-        - name: config-volume
-          mountPath: /config
-  volumes:
-    - name: config-volume
-      configMap:
-        name: my-config
-```
-
-To set a ...
-
- * environment variable to a ConfigMap key, use the following `valueFrom` stanza in `spec.containers[].env[]` ...
+ * environment variable:
  
    ```yaml
-   name: ENV_VAR_NAME
-   valueFrom:
-     configMapKeyRef:
-       name: my-config
-       key: CONFIG_MAP_KEY_HERE
+   spec:
+     containers:
+       - ...
+         # Under each "env" entry to come from a config map, add a "valueFrom" that contains
+         # the config map to pull an entry from and the key for the config map entry to pull.
+         env:
+           - name: ENV_VAR_NAME1  # Env var to assign value to.
+             valueFrom:
+               configMapKeyRef:
+                 name: my-config       # Config map to pull from
+                 key: CONFIG_MAP_KEY1  # Config map entry to get value from
+           - name: ENV_VAR_NAME2
+             valueFrom:
+               configMapKeyRef:
+                 name: my-config
+                 key: CONFIG_MAP_KEY2
    ```
 
- * command-line argument to a ConfigMap key, first set ito an environment variable, then set the argument to that environment variable by setting in `spec.containers[].command[]` using `${ENV_VAR_NAME}`.
+   In certain cases, you may want to map all entries within a config map directly as a set of environment variables. This is useful when many entries of a config map are required for configuration, so many that becomes tedious and error-prone to map them all to environment variables by hand.
+   
+   ```yaml
+   spec:
+     containers:
+       - ...
+         # "envFrom" maps all entries of a config map as env vars.
+         envFrom:
+           - prefix: CONFIG_    # Prefix to tack on to each config map entry (optional).
+             configMapRef:
+               name: my-config
+   ```
+   
+   ```{note}
+   If a config map name can't map to an environment variable, it's silently omitted. For example, env names can't contain dashes.
+   ```
 
- * file to a ConfigMap key (value is file's contents), create a `configMap` type volume and mount it to the container ...
+ * command-line argument:
 
    ```yaml
    spec:
      containers:
        - ...
-         volumeMounts:
-           - name: config-volume
-             mountPath: /config
+         # You can't pass in config map entries directly as command-line arguments, but what
+         # you can do is load them up first as environment variables and then reference the
+         # environment variables in the "command" (or "args") field.
+         env:
+           - name: ENV_VAR_NAME1
+             valueFrom:
+               configMapKeyRef:
+                 name: my-config
+                 key: CONFIG_MAP_KEY1
+           - name: ENV_VAR_NAME2
+             valueFrom:
+               configMapKeyRef:
+                 name: my-config
+                 key: CONFIG_MAP_KEY2
+         command:
+           - "/my-app.sh"
+           - "$(ENV_VAR_NAME1)"
+           - "$(ENV_VAR_NAME2)"
+   ```
+
+ * volume mount:
+
+   ```yaml
+   spec:
+     # Place a "configMap" type volume into the pod.
      volumes:
        - name: config-volume
          configMap:
-           name: CONFIG_MAP_KEY_HERE
+           name: my-config
+           # "items" lists out specific config map entries to include and mounts each as
+           # a specific filename. If you don't include this, all config map entries will
+           # be included (filenames will map to config map entry names).
+           items:
+             - key: CONFIG_MAP_KEY1
+               path: file1.cfg
+             - key: CONFIG_MAP_KEY2
+               path: file2.cfg
+     # In the container, mount that volume to whichever containers you want.
+     containers:
+       - ...
+         volumeMounts:
+           - name: config-volume
+             mountPath: /config
+             readOnly: true       # Make the mount read-only (optional).
+             defaultMode: "6600"  # File access permissions of mounted files (optional).
    ```
 
-TODO: start from 7.4.4
+   If the directory you're mounting to already exists on the container, that existing directory is entirely replaced. In the example above, if the container already has a "/config" directory, it'll get replaced entirely with the config map mount (this is bad because the container's "/config" might have other necessary files required for the container to work). A workaround to this is to use the volume mount's "subPath" property, which allows you to mount a single file / directory from a volume.
 
-TODO: start from 7.4.4
+   ```yaml
+   spec:
+     volumes:
+       - name: config-volume
+         configMap:
+           name: my-config
+     containers:
+       - ...
+         # The use of "subPath" here ensures that that original "/config" directory on the
+         # container doesn't go away. It remains in place, and files / directories are just
+         # added to it.
+         volumeMounts:
+           - name: config-volume
+             mountPath: /config/file1.cfg  # Destination file to mount to.
+             subPath: CONFIG_MAP_KEY1      # Source config map entry name.
+           - name: config-volume
+             mountPath: /config/file2.cfg  # Destination file to mount to.
+             subPath: CONFIG_MAP_KEY2      # Source config map entry name.
+   ```
 
-TODO: start from 7.4.4
+A secret object's key-value pairs can be accessed in almost exactly the same way with almost exactly the same set of options and restrictions. To set a ...
 
-TODO: start from 7.4.4
+ * environment variable:
+ 
+   ```yaml
+   spec:
+     containers:
+       - ...
+         env:
+           - name: ENV_VAR_NAME1
+             valueFrom:
+               secretKeyRef:  # This has been changed from "configMapKeyRef" to "secretKeyRef".
+                 name: my-secret
+                 key: SECRET_KEY1
+           - name: ENV_VAR_NAME2
+             valueFrom:
+               secretKeyRef:  # This has been changed from "configMapKeyRef" to "secretKeyRef".
+                 name: my-secret
+                 key: SECRET_KEY2
+   ```
 
-TODO: start from 7.4.4
+ * command-line argument:
 
-TODO: start from 7.4.4
+   ```yaml
+   spec:
+     containers:
+       - ...
+         env:
+           - name: ENV_VAR_NAME1
+             valueFrom:
+               secretKeyRef:  # This has been changed from "configMapKeyRef" to "secretKeyRef".
+                 name: my-secret
+                 key: SECRET_KEY1
+           - name: ENV_VAR_NAME2
+             valueFrom:
+               secretKeyRef:  # This has been changed from "configMapKeyRef" to "secretKeyRef".
+                 name: my-secret
+                 key: SECRET_KEY2
+         command:
+           - "/my-app.sh"
+           - "$(ENV_VAR_NAME1)"
+           - "$(ENV_VAR_NAME2)"
+   ```
 
-TODO: start from 7.4.4
+ * volume mount:
 
-TODO: start from 7.4.4
+   ```yaml
+   spec:
+     volumes:
+       - name: secret-volume
+         secret:  # This has been changed from "configMap" to "secret"
+           name: my-secret
+     containers:
+       - ...
+         volumeMounts:
+           - name: secret-volume
+             mountPath: /secrets
+             readOnly: true
+   ```
 
-TODO: start from 7.4.4
+Both config maps and secret objects can be dynamically updated. If a running pod is running when an update gets issued, it may or may not receive those updates depending on the configuration usage method:
 
-TODO: start from 7.4.4
+ * environment variables *don't* receive updates.
+ * command-line arguments *don't* receive updates.
+ * individual volume mounts *don't* receive updates.
+ * whole volume mounts do receive updates.
 
-TODO: start from 7.4.4
+Command-line arguments and environment variables don't update because an application's command-line arguments and environment variables can't be changed from the outside once a process launches. Individual files/directories mounted from a volume don't update because of technical limitations related to how Linux filesystems work (see [https://github.com/kubernetes/kubernetes/issues/50345#issuecomment-656947594](here)). Whole volume mounts *do* update files under the mount, but it's up to the application to detect and reload those changed files.
 
-TODO: start from 7.4.4
+```{note}
+All files in a volume mount get updated at once. This is possible because of symlinks. New directory get loaded in and the symlink is updated to use that new directory.
+```
 
-TODO: start from 7.4.4
+```{note}
+For individual files/directories mounted from a volume, one workaround to receiving updates is to use symlinks. Essentially, mount the whole volume to path that doesn't conflict with an existing path in the container. Then, as a part of the container's start-up process, add symlinks to the whole volume mount wherever needed.
 
-TODO: start from 7.4.4
+For example, if the application requires a configuration file at /etc/my_config.conf, you can mount all configurations to /config and then symlink /etc/my_config.conf to /config/my_config.conf. That way, you can still receive updates.
+```
 
-TODO: start from 7.4.4
+The typical workaround to config map dynamic updates is to use deployments. In deployments, secret objects / config maps and pods are bound together as a single unit, meaning that all pods restart automatically on any change.
 
-TODO: start from 7.4.4
-
-TODO: start from 7.4.4
-
-TODO: start from 7.4.4
-
-TODO: start from 7.4.4
-
-TODO: start from 7.4.4
+```{seealso}
+Resources/Deployments_TOPIC
+```
 
 ### Secrets
 
 `{bm} /(Pods\/Secrets)_TOPIC/`
 
 ```{prereq}
-Resources/Pods/Configuration_TOPIC
-Resources/Pods/Volumes_TOPIC
-```
-
-Secrets are the standard way of storing application configurations related to security in Kubernetes (e.g. access tokens, passwords, certificates). Secrets can't be added through manifests or configuration maps. Instead, they must be added using kubectl. For example, ...
-
-```
-kubectl create secret generic my-tls-cert --from-file=a.crt --from-file=a.key
+Resources/Secrets_TOPIC
 ```
 
 To use secrets in a pod, a specialized `secret` volume type must be used and mounted. For example, the following volume mounts the secrets created in the example command above ..
@@ -708,9 +833,6 @@ spec:
         secretName: my-tls-cert
 ```
 
-```{note}
-Why not use ConfigMaps for secrets? Apparently there's some extra work going on to make sure this secrets volume is secure / transient.
-```
 
 ### Service Discovery
 
@@ -783,11 +905,57 @@ For example, to query for the IP of service `serviceA` in namespace `ns1` within
 
 Compared to environment variable service discovery, using DNS to discover services won't include information about ports.
 
+### Metadata
+
+`{bm} /(Pods\/Metadata Access)_TOPIC/`
+
+```{prereq}
+Resources/Pods/Resources_TOPIC
+```
+
+Metadata such as a pod's name, IP, which node it's running on node, what namespace it's under, container resource restrictions, etc.. can all be accessed via either a file system mount or environment variables.
+
+TODO: START FROM CH8
+
+TODO: START FROM CH8
+
+TODO: START FROM CH8
+
+TODO: START FROM CH8
+
+TODO: START FROM CH8
+
+TODO: START FROM CH8
+
+TODO: START FROM CH8
+
+TODO: START FROM CH8
+
+TODO: START FROM CH8
+
+TODO: START FROM CH8
+
+TODO: START FROM CH8
+
+TODO: START FROM CH8
+
+TODO: START FROM CH8
+
+TODO: START FROM CH8
+
+TODO: START FROM CH8
+
+TODO: START FROM CH8
+
+TODO: START FROM CH8
+
+TODO: START FROM CH8
+
 ## Configuration Maps
 
 `{bm} /(Resources\/Configuration Maps)_TOPIC/`
 
-A Configuration map is a type of resource comprised of key-value pairs intended to configure the main application of a container (or many containers). By decoupling configurations from the containers themselves, the same configuration map (or parts of it) could be used to configure multiple containers within Kubernetes.
+A configuration map is a type of resource comprised of key-value pairs intended to configure the main application of a container (or many containers). By decoupling configurations from the containers themselves, the same configuration map (or parts of it) could be used to configure multiple containers within Kubernetes.
 
 ```{note}
 Do **NOT** use this for storing secrets such as tokens, certificates, or passwords. See Resources/Secrets_TOPIC instead.
@@ -807,22 +975,38 @@ data:
     ket1 = value2
 ```
 
-The key-value pairs of a Configuration map resource typically get exposed to a container either as environment variables, files, or command-line arguments. Keys are limited to certain characters: alphabet, numbers, dashes, underscores, and dots.
-
-```{note}
-These are also typically created via command-line: `kubectl create configmap my-config --from-file=my-config.ini=myconfig.init --from-literal=param1=another-value --from-literal=param2=extra-value`
-
-The option `--from-file` can also point to a directory, in which case an entry will get created for each file in the directory provided that the filenames don't have any disalowed characters.
-```
+The key-value pairs of a configuration map resource typically get exposed to a container either as environment variables, files, or command-line arguments. Keys are limited to certain characters: alphabet, numbers, dashes, underscores, and dots.
 
 ## Secrets
 
 `{bm} /(Resources\/Secrets)_TOPIC/`
 
-```{note}
-These are also typically created via command-line: `kubectl create secret generic my-tls-cert --from-file=a.crt --from-file=a.key`
+```{prereq}
+Resources/Configuration Maps_TOPIC
 ```
 
+A secret object is a type of resource comprised of key-value pairs, similar to a config map, but oriented towards security rather than just configuration (e.g. for storing things like access tokens, passwords, certificates). As opposed to a config map, Kubernetes takes extra precautions to ensure that a secret object is stored and used in a secure manner.
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysecret
+type: Opaque  # "Opaque" is the default type (can be omitted)
+# Both text and binary data are supported. To insert a text entry, place it under
+# "stringData". To insert a binary entry, base64 the value and place it under "data". 
+stringData:
+  username: admin
+  password: pepsi_one
+data:
+  key_file: eWFiYmFkYWJiYWRvbw==  
+```
+
+Many types of secrets exist. Each type either does some level of verification on the entries and / or acts as a tag to convey what data is contained within (e.g. SSH data, TLS data, etc..). In general `Opaque` is the secret type used by most applications.
+
+```{note}
+Certain sources are claiming that a secret object can be 1 megabyte at most.
+```
 
 ## Nodes
 
@@ -2179,6 +2363,10 @@ When referencing objects, the ...
 
  * `kubectl create configmap {CONFIGMAP} --from-file=my-config.txt --from-literal=key1=value1 --from-literal=key2=value2`
 
+```{note}
+The option `--from-file` can also point to a directory, in which case an entry will get created for each file in the directory provided that the filenames don't have any disallowed characters.
+```
+
 `secret` allows you to create a security related configuration for applications running in pods.
 
  * `kubectl create secret generic my-tls-cert --from-file=a.crt --from-file=a.key`
@@ -2248,6 +2436,10 @@ Original guide can be found [here](https://docs.aws.amazon.com/eks/latest/usergu
 ```
 
 https://aws-controllers-k8s.github.io/community/docs/tutorials/rds-example/
+
+# Security Tips
+
+SEE section 7.5.2 -- disable implicit binding of k8s api tokens into the system if you don't need to access k8s api (automountService-AccountToken)
 
 # Terminology
 

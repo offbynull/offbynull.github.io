@@ -3,7 +3,6 @@
 <strong>↩PREREQUISITES↩</strong>
 
  * Resources/Configuration Maps_TOPIC
- * Resources/Pods/Volumes_TOPIC
 
 </div>
 
