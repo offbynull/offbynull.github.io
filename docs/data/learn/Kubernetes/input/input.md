@@ -78,9 +78,50 @@ OCIs and OCRs are also the basis for container engines, tools that are responsib
 
 `{bm} /(Introduction\/Objects)_TOPIC/i`
 
-Kubernetes breaks down its orchestration as a set of objects. Each object is of a specific type (referred to as resource) and those objects coordinate and manage each other through linkages (described in Introduction/Labels_TOPIC). For example, a load balancer object is an instance of resource Service and each copy of a running application it pipes requests to is an instance of resource Pod, and the load balancer is decides which pods it to route to by searching for pods with a specific label.
+Kubernetes breaks down its orchestration as a set of objects. Each object is of a specific type, referred to as kind. The main kinds are ...
 
-This is in contrast to a hierarchal setup where objects have ownership or are inherited from others. There is no ownership or parent-child relationship here, only loosely coupled linkages.
+ * Node: A physical worker machine that runs containers.
+ * Pod: A set of containers tightly coupled to run in unison on a single node.
+ * Volume: A storage mechanism that lets pods persist and / or share data.
+ * Service: A load balancer that routes traffic to pods.
+ * Configuration Map - A configuration mechanism for applications running within pods (non-security related configurations).
+ * Secret - A security configuration mechanism for applications running within pods (e.g. passwords as certificates).
+ * Ingress - A access point in which traffic comes in from the outside world to the internal Kubernetes network.
+
+Of these kinds, the two main ones are nodes and pods. Nodes, pods, and other important kinds are discussed in this document.
+
+```{note}
+The terminology here is a bit wishy-washy. Some places call them kinds, other places call them resources, other places call them classes, and yet other places call them straight-up objects (in this case, they mean kind but they're saying object). None of it seems consistent, which is why it's been difficult piecing together how Kubernetes works.
+
+I'm using kind to refer to the different types of objects, and object to refer to an instance of a kind.
+```
+
+## Labels
+
+`{bm} /(Introduction\/Labels)_TOPIC/i`
+
+```{prereq}
+Introduction/Objects_TOPIC
+```
+
+An object can have two types of key-value pairs associated with it:
+
+ * Labels - These key-value pairs organize objects into logical groups, such that those groups can be targeted as a whole (e.g. give me all pods designed by the SRE team).
+ * Annotations - These key-value pairs allow tools to gather and share information about an object (e.g. when was this object created).
+
+Finding objects based on labels is done via label selectors, described in the following table.
+
+| Operator                          | Description                                             |
+|-----------------------------------|---------------------------------------------------------|
+| `key=value`                       | `key` is set to `value`                                 |
+| `key!=value`                      | `key` is not set to `value`                             |
+| `key in (value1, value2, ...)`    | `key` is either `value1`, `value2`, ...                 |
+| `key notin (value1, value2, ...)` | `key` is neither `value1`, `value2`, ...                |
+| `key`                             | a value is set for `key`                                |
+| `!key`                            | a value not set for `key`                               |
+| `key1=value1,key2=value2`         | `key1` is set to `value1` and `key2` is set to `value2` |
+
+Kubernetes uses labels to orchestrate. Labels allow objects to have loosely-coupled linkages to each other as opposed to tightly-coupled parent-child / hierarchy relationships. For example, a load balancer decides which pods it routes requests to by searching for pods using label selector.
 
 ```{svgbob}
  .-------.
@@ -100,36 +141,6 @@ This is in contrast to a hierarchal setup where objects have ownership or are in
  '-------'                           '-------------'
 ```
 
-## Labels
-
-`{bm} /(Introduction\/Labels)_TOPIC/i`
-
-Objects within Kubernetes may be assigned key-value pairs. Two types of key-value pair assignments exist:
-
- * Labels - key-value assignments for logical grouping of Kubernetes objects. These allow for organizing objects into groups, such that users can target a group as a whole (e.g. give me all pods designed by the SRE team).
- * Annotations - key-value assignments for metadata on Kubernetes objects. These allow tools and libraries to gather ancillary information about the object, such that they can perform some task.
-
-In other words, labels are used to identity objects while annotations are not. For example if you have different classes of worker nodes in your cluster, it may be a good idea to label each node with its class. That way, if you wanted to deprecate a specific class, you'd be able to targe them as a group and shut them down.
-
-Labels are targeted using a simple language called label selectors.
-
-| Operator                          | Description                                             |
-|-----------------------------------|---------------------------------------------------------|
-| `key=value`                       | `key` is set to `value`                                 |
-| `key!=value`                      | `key` is not set to `value`                             |
-| `key in (value1, value2, ...)`    | `key` is either `value1`, `value2`, ...                 |
-| `key notin (value1, value2, ...)` | `key` is neither `value1`, `value2`, ...                |
-| `key`                             | a value is set for `key`                                |
-| `!key`                            | a value not set for `key`                               |
-| `key1=value1,key2=value2`         | `key1` is set to `value1` and `key2` is set to `value2` |
-
-Kubernetes uses labels for many of its internal services. For example, label selectors are used for deciding ...
-
- * the pods which a service routes traffic to.
- * which pods are allowed to communicate with each other over the internal network.
- * the nodes which a pod can be scheduled on.
- * etc..
-
 If there are a large number of keys / annotations, either because the organization set them directly or because they're being set by external tools, the chance of a collision increases. To combat this, keys for labels and annotations can optionally include a prefix (separated by a slash) that maps to a DNS subdomain to help disambiguate it. For example, `company.com/my_key` rather than just having `my_key`.
 
 ```{note}
@@ -145,7 +156,7 @@ Objects can either be accessed and mutated through a standard command-line inter
  * imperative configuration - the mutations to perform on the object (via kubectl invocations).
 
    ```
-   kubectl run my_pod --image=gcr.io/my_company/my_pod:v1
+   kubectl run my_pod --image=my-image:1.0
    kubectl set pods my_pod --requests='cpu=500m,memory=128Mi'
    ```
 
@@ -155,11 +166,11 @@ Objects can either be accessed and mutated through a standard command-line inter
    apiVersion: v1
    kind: Pod
    metadata:
-     name: my_pod
+     name: my-pod
    spec:
      containers:
-       - image: gcr.io/my_company/my_pod:v1
-         name: my_pod
+       - image: my-image:1.0
+         name: my-container
          resources:
            requests:
              cpu: "500m"
@@ -173,9 +184,9 @@ Objects can either be accessed and mutated through a standard command-line inter
 
 Generally, declarative configurations are preferred over imperative configurations. When a declarative configuration is submitted, Kubernetes runs a reconciliation loop in the background to automatically mutate the state of the object to the one in the manifest. Contrast this to the imperative configuration method, where the mutations have to be manually submitted by the user one by one.
 
-# Resources
+# Kinds
 
-`{bm} /(Resources)_TOPIC/`
+`{bm} /(Kinds)_TOPIC/`
 
 ```{prereq}
 Introduction_TOPIC
@@ -183,7 +194,11 @@ Introduction/Configuration_TOPIC
 Introduction/Labels_TOPIC
 ```
 
-The following sub-sections gives a overview of the main Kubernetes resources and example manifests. All manifests, regardless of the resource require the following fields...
+The following sub-sections gives a overview of kinds and example manifests. All manifests, regardless of the kind, require the following fields ...
+
+ * `apiVersion`: API version.
+ * `kind`: Class of object (kind).
+ * `metadata.name`: Name of object.
 
 ```yaml
 apiVersion: v1
@@ -197,13 +212,13 @@ metadata:
     app_server: jetty
 ```
 
-... where `version` is the API version, `kind` is the resource (e.g. `Pod`), and `metadata.name` is the name of the object. In addition, the `metadata` section can contain labels and annotations to assign to the object via the `metadata.labels` and `metadata.annotations` manifest paths respectively.
+In addition, the `metadata.labels` and `metadata.annotations` manifest paths contain the object's labels and annotations (respective).
 
-## Pods
+## Pod
 
-`{bm} /(Resources\/Pods)_TOPIC/i`
+`{bm} /(Kinds\/Pod)_TOPIC/i`
 
-Containers are deployed in Kubernetes via pods. A pod is is a set of containers grouped together, often containers that are so tightly coupled or are required to work in close proximity of each other (e.g. on the same host).
+Containers are deployed in Kubernetes via pods. A pod is is a set of containers grouped together, often containers that are tightly coupled and / or are required to work in close proximity of each other (e.g. on the same host).
 
 ```{svgbob}
 .--------------------------------.
@@ -218,48 +233,19 @@ Containers are deployed in Kubernetes via pods. A pod is is a set of containers 
 '--------------------------------'
 ```
 
-Many copies of a pod may be running on the cluster at the same time, often in an effort to distribute load and / or provide redundancy.
-
-```{svgbob}
-.-----.                .--------------.
-| pod +----------------+ pod template |
-'-----' 1+           1 '--------------'
-```
-
-```{svgbob}
-                      .---------.
-                      |  podA   |
-                      +---------+
-                      | imageA  |    pod template
-                      | imageB  |
-                      | imageC  |
-                      '----+----'
-                           |
-      .--------------------+-------------------.
-      |                    |                   |
-      v                    v                   v
-.------------.      .------------.      .------------.
-|    podA    |      |    podA    |      |    podA    |
-+------------+      +------------+      +------------+
-| containerA |      | containerA |      | containerA |     "running instances"
-| containerB |      | containerB |      | containerB |
-| containerC |      | containerC |      | containerC |
-'------------'      '------------'      '------------'
-```
-
 Containers within a pod are isolated in terms of their resource requirements (e.g. CPU, memory, and disk), but they share the same ...
 
  * network (containers within a pod have the same IP, same host, and share the port space).
  * IPC bus (containers within a pod can communicate with each other over POSIX message queues / System V IPC channels).
  * volumes (containers within a pod may have shared storage assigned to them in addition to their isolated storage).
 
-Kubernetes orchestrates containers over a cluster of machines. The containers for a pod are guaranteed to all be running on the same machine. As such, pods are usually structured in a way that their containers are tightly coupled and scale together. For example, a pod with two containers, a WordPress server and its required MySQL database server, is a bad usage example because those two ...
+While the point of Kubernetes is to orchestrate containers over a set of nodes, the containers for a pod are all guaranteed to run on the same node. As such, pods are usually structured in a way where their containers are tightly coupled and uniformly scale together. For example, imagine a pod with comprised of a container running a WordPress server and a container running the MySQL database for that WordPress server. This would be a poor example of a pod because the two containers within it ...
 
- 1. don't scale uniformly (e.g. you'll likely need to scale the database up before the WordPress server).
+ 1. don't scale uniformly (e.g. you may need to scale the database up before the WordPress server, or vice versa).
  2. don't communicate over anything other than the network (e.g. they don't need a shared volume).
  3. are intended to be distributed (e.g. it's okay for them to be running on separate machines).
 
-Contrast that to an example of a pod with two containers, an application server and an associated log watcher. This is a good example because the two containers ...
+Contrast that to a pod with a container running a WordPress server and a container that pushes that WordPress server's logs to a monitoring service. This would be a good example of a pod because the two containers within ...
 
  1. communicate over the filesystem (e.g. application server is writing logs to a shared volume and the log watcher is tailing them).
  2. aren't intended to be distributed (e.g. log watcher is intended for locally produced logs).
@@ -271,11 +257,11 @@ Example manifest:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: my_pod
+  name: my-pod
 spec:
   containers:
-    - image: gcr.io/my_company/my_pod:v1
-      name: my_pod
+    - image: my-image:1.0
+      name: my_container
       resources:
         requests:
           cpu: "500m"
@@ -285,7 +271,7 @@ spec:
           memory: "256Mi"
       volumeMounts:
         - mountPath: "/data"
-          name: "kuard-data"
+          name: "my_data"
       ports:
         - containerPort: 8080
           name: http
@@ -309,230 +295,43 @@ spec:
   volumes:
     - name: "my_data"
       hostPath:
-        path: "/var/lib/my_data"  # literally mounts a path from the worker node? not persistant if node modes
+        path: "/var/lib/my_data"  # literally mounts a path from the worker node? not persistent if node modes
     - name: "my_data_nfs"
       nfs:
         server: nfs.server.location
         path: "/path/on/nfs"
 ```
 
-### Resources
-
-`{bm} /(Resources\/Pods\/Resources)_TOPIC/`
-
-`{bm-disable} resource`
-
-Pod resources are controlled via the `spec.containers[].resources` manifest path.
-
-```yaml
-spec:
-  containers:
-    - ...
-      resources:
-        requests:
-          cpu: "500m"
-          memory: "128Mi"
-        limits:
-          cpu: "1000m"
-          memory: "256Mi"
-    ...
-```
-
-`requests` are the minimum resources the pod needs to operate while `limits` are the maximum it can have. Some resources are dynamically adjustable while others require the pod to restart. For example, a pod ...
-
- * can have its CPU usage dynamically adjusted because Kubernetes can just ask the operating system's CPU scheduler to give it less/more timer.
- * can't have its memory usage dynamically adjusted because if it loses access to a block of memory the applications running within the pod won't know and will likely crash.
-
-The example above lists out CPU and memory as viable resource types. The unit of measurement for ...
-
- * cpu is either in ...
-   * whole cores: no suffix
-   * millicpus: suffix of m (1 core is equivalent to 1000m -- e.g. 0.5 = 5000m).
- * memory is either in ...
-   * bytes: no suffix
-   * 1000 scale: suffix of k = 1000, M = 1,000,000, G = 1,000,000,000
-   * power of two scale: suffix of k = 1024, M = 1,048,576, G = 1,073,741,824
-
-`{bm-enable} resource`
-
-### Ports
-
-`{bm} /(Resources\/Pods\/Ports)_TOPIC/`
-
-Pod port exposures are controlled via the `spec.containers[].ports[]` manifest path.
-
-```yaml
-spec:
-  containers:
-    - ...
-      ports:
-        - containerPort: 8080
-          name: http
-          protocol: TCP
-    ...
-```
-
-The example above exposes port 8080 to the rest of the cluster (not the outside world). Even with the port exposed, other entities on the cluster don't have a built-in way to discover the pod's IP / host or the fact that it has this specific port open. For that, services are required (see Resources/Services_TOPIC).
-
-### Arguments
-
-`{bm} /(Resources\/Pods\/Arguments)_TOPIC/`
-
-The container image's default entrypoint (process that gets started) can be updated via the `spec.containers[].command[]` manifest path. Likewise, the default command line arguments that hte container image starts with can be updated via `spec.containers[].args[]`.
-
-```yaml
-spec:
-  containers:
-    - image: gcr.io/my_company/my_pod:v1
-      command: [/opt/app/my-app]
-      args: [--no-logging, --dry-run]
-```
-
-```{note}
-The Dockerfile used to create the image had an `ENTRYPOINT` and a `CMD`. `command` essentially overrides the Dockerfile `ENTRYPOINT` and `args` overrides the Dockerfile's `CMD`.
-```
-
-### Environment Variables
-
-`{bm} /(Resources\/Pods\/Environment Variables)_TOPIC/`
-
-```{prereq}
-Resources/Pods/Environment Variables_TOPIC
-```
-
-Environment variables can be hardcoded via the `spec.containers[].env[]` manifest path.
-
-```yaml
-spec:
-  containers:
-    - image: gcr.io/my_company/my_pod:v1
-      env:
-        - name: LOG_LEVEL
-          value: "OFF"
-        - name: DRY_RUN
-          value: "true"
-```
-
-Once defined, an environment variables value can be used in other parts of the manifest using the syntax `$(VAR_NAME)`. For example, an environment variable's value may be placed directly within an argument.
-
-```yaml
-spec:
-  containers:
-    - image: gcr.io/my_company/my_pod:v1
-      env:
-        - name: LOG_LEVEL
-          value: "OFF"
-      args: [--logging_telemetry=$(LOG_LEVEL)]
-```
-
-### Probes
-
-`{bm} /(Resources\/Pods\/Probes)_TOPIC/`
-
-Probes are a way for Kubernetes to check the state of a pod (e.g. alive, ready, started, etc..). The pod exposes some interfaces to determine state. Kubernetes periodically pings those interfaces to determine what actions to take (e.g. restarting a downed service.
-
-Probes are controlled via the `spec.containers[].livenessProbe` and `spec.containers[].readinessProbe` manifest paths.
-
-```yaml
-spec:
-  containers:
-    - ...
-      livenessProbe:
-        httpGet:
-          path: /healthy
-          port: 8080
-        initialDelaySeconds: 5
-        timeoutSeconds: 1
-        periodSeconds: 10
-        failureThreshold: 3
-      readinessProbe:
-        httpGet:
-          path: /ready
-          port: 8080
-        initialDelaySeconds: 5
-        timeoutSeconds: 1
-        periodSeconds: 10
-        failureThreshold: 3
-  ...
-```
-
-Different types of probes exists. A ...
-
- * liveness probe is something that Kubernetes pings to check if a pod is alive and responsive. If a pod fails its liveness check, Kubernetes deems it dead and restarts it.
- * readiness probe is something that Kubernetes pings to check if the pod is able to process requests. If a pod fails its readiness check, Kubernetes will stop routing requests to it until a readiness subsequent check passes.
-
-In the example above, each of the probes check a HTTP server within the pod at port 8080 but at different paths. The field ...
-
- * `initialDelaySeconds` is the number of seconds to wait before performing the first probe.
- * `timeoutSeconds` is the number of seconds to wait before timing out.
- * `periodSeconds` is the number of seconds to wait before performing a probe.
- * `failureThreshold` is the maximum number of successive failure before Kubernetes considers the probe failed.
- * `successThreshold` is the maximum number of successive successes before Kubernetes considers the probe passed.
- 
-There are types of probes other than `httpGet`. A probe of type `tcpSocket` will simply test to see if a `tcpSocket` is empty and a probe of type `exec` will run a command on the container and fail if it gets a non-zero exit code.
-
-```yaml
-spec:
-  containers:
-    - ...
-      readinessProbe:
-        exec:
-          command:
-          - cat
-          - /tmp/some_file_here
-        initialDelaySeconds: 5
-        timeoutSeconds: 1
-        periodSeconds: 10
-        failureThreshold: 3
-```
-
-### Volumes
-
-`{bm} /(Resources\/Pods\/Volumes)_TOPIC/`
-
-```{prereq}
-Resources/Volumes_TOPIC
-```
-
-Volumes are controlled through `spec.volumes[]` and `spec.containers[].volumneMounts` ...
-
-```yaml
-spec:
-  containers:
-    - ...
-      volumeMounts:
-        - mountPath: /data
-          name: my-data
-      ...
-  volumes:
-    - name: my-data
-      hostPath:
-        path: "/var/lib/my_data"
-```
-
-`spec.volumes[]` defines a list of volumes, and those volumes can then go on to be mounted on the individual containers that make up the pod through `spec.containers[].volumneMounts`. Each entry in `spec.volumes[]` can either directly refer to a volume type and its parameters or it can refer to a persistent volume claim.
-
-In the example above, a volume type is used directly within the pod (`hostPath`). This is discouraged because it binds the pod to a specific volume type and parameters, thereby making the volume and the pod tightly coupled. The better way to use volumes within the pod is to use persistent volumes and persistent volume claims. Assuming that you have a persistent volume claim already created, it can be referenced in `spec.volumes[]` by using the `persistentVolumeClaim` as the volume type.
-
-```yaml
-spec:
-  volumes:
-    - name: my-data
-      persistentVolumeClaim:
-        claimName: my-data-pv-claim
-```
-
 ### Images
 
-`{bm} /(Resource\/Pods\/Images)_TOPIC/`
+`{bm} /(Kinds\/Pod\/Images)_TOPIC/`
 
-```{prereq}
-Resources/Secrets_TOPIC
+Each container within a pod must have an image associated with. Images are specified in the Docker image specification format, where a name and a tag are separated by a colon (e.g. `my-image:1.0.1`).
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: my-container1
+      image: my-image:1.0.1
+    - name: my-container2
+      image: my-image:2.4
 ```
+
+#### Pull Policy
+
+`{bm} /(Kinds\/Pod\/Images\/Pull Policy)_TOPIC/`
 
 Each container in a pod has to reference an image to use. How Kubernetes loads a container's image is dependent on that container's image pull policy.
 
 ```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
 spec:
   containers:
     - name: my-container
@@ -542,11 +341,19 @@ spec:
 
 A value of ...
 
- * `IfNotPresent` only downloads the image if its not already locally present.
+ * `IfNotPresent` only downloads the image if its not already locally present on the node.
  * `Always` always downloads the image.
- * `Never` never downloads the image (will fail if image does not exist locally).
+ * `Never` never downloads the image (will fail if image does not exist locally on the node).
 
 If unset, the image pull policy differs based on the image tag. Not specifying a tag or specifying `latest` as the tag will always pull the image. Otherwise, the image will be pulled only if it isn't present.
+
+#### Private Container Registries
+
+`{bm} /(Kinds\/Pod\/Images\/Private Container Registries)_TOPIC/`
+
+```{prereq}
+Kinds/Secret_TOPIC
+```
 
 Images that sit in private container registries require credentials to pull. Private container registry credentials are stored in secret objects of type `kubernetes.io/dockerconfigjson` in the format of Docker's `config.json` file.
 
@@ -567,6 +374,10 @@ If you don't want to supply the above manifest, you can also use `kubectl` to cr
 Those secret objects are then referenced in the pod's image pull secrets list.
 
 ```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
 spec:
   # Place secret here. This is a list, so you can have many container registry credentials
   # here.
@@ -574,49 +385,178 @@ spec:
     - name: my-docker-creds
   containers:
     - name: my-container
-      image: my-registry.example/tiger/my-container:1.0.1  # Image referencea registry.
+      image: my-registry.example/tiger/my-container:1.0.1  # Image references registry.
 ```
 
-### Restart Policy
+### Resources
 
-`{bm} /(Resources\/Pods\/Restart Policy)_TOPIC/`
+`{bm} /(Kinds\/Pod\/Resources)_TOPIC/`
 
-Restart policy is the policy Kubernetes uses for determining when a pod should be restarted. Its controlled via the `spec.containers[].restartPolicy` manifest paths ...
+Each container within a pod can optionally declare a ...
+
+ * minimum set of resources that it needs to operate,
+ * maximum set of resources that it will ever need to operate.
+ 
+Setting these options allows Kubernetes to choose a node with enough available resources to run that pod.
 
 ```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
 spec:
   containers:
-  - ...
-    restartPolicy: Always
-  ...
+    - name: my-container
+      image: my-image:1.0.1
+      resources:
+        requests:  # Minimum CPU and memory for this container
+          cpu: "500m"
+          memory: "128Mi"
+        limits:    # Maximum CPU and memory for this container
+          cpu: "1000m"
+          memory: "256Mi"
 ```
 
-A value of ...
+`requests` are the minimum resources the container needs to operate while `limits` are the maximum resources the container can have. Some resources are dynamically adjustable while others require the pod to restart. For example, a pod ...
 
- * `Always` always restarts the pod regardless of how it exists (default).
- * `OnFailure` only restarts the pod only if it failed execution.
- * `Never` never restarts the pod.
+ * can have its CPU usage dynamically adjusted because Kubernetes can just ask the operating system's CPU scheduler to give it less/more time.
+ * can't have its memory usage dynamically adjusted because if it loses access to a block of memory, the applications running within the pod won't know and will likely crash.
 
-The top one is typically used when running servers that should always be up (e.g. http server) while the latter two are typically used for one-off jobs.
+The example above lists out CPU and memory as viable resource types. The unit of measurement for ...
+
+ * cpu is either in ...
+   * whole cores: no suffix
+   * millicpus: suffix of m (1 core is equivalent to 1000m -- e.g. 0.5 = 5000m).
+ * memory is either in ...
+   * bytes: no suffix
+   * 1000 scale: suffix of k = 1000, M = 1,000,000, G = 1,000,000,000
+   * power of two scale: suffix of k = 1024, M = 1,048,576, G = 1,073,741,824
+
+### Ports
+
+`{bm} /(Kinds\/Pod\/Ports)_TOPIC/`
+
+Each container within a pod can expose ports to the cluster.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: my-container
+      image: my-image:1.0.1
+      ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+```
+
+The example above exposes port 8080 to the rest of the cluster (not to the outside world). Even with the port exposed, other entities on the cluster don't have a built-in way to discover the pod's IP / host or the fact that it has this specific port open. For that, services are required.
+
+```{seealso}
+Kinds/Service_TOPIC (Exposing pods to the outside world)
+```
+
+A pod can have many containers within it, and since all containers within a pod share the same IP, the ports exposed by those containers can't conflict. For example, only one container within the pod expose port 8080.
+
+### Command-line Arguments
+
+`{bm} /(Kinds\/Pod\/Command-line Arguments)_TOPIC/`
+
+An image typically provides a default entrypoint (process that gets started) and default set of arguments to run with. Each container within a pod can override these defaults.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - image: my-image:1.0
+      command: [/opt/app/my-app]
+      args: [--no-logging, --dry-run]
+```
+
+```{note}
+The Dockerfile used to create the image had an `ENTRYPOINT` and a `CMD`. `command` essentially overrides the Dockerfile `ENTRYPOINT` and `args` overrides the Dockerfile's `CMD`.
+```
+
+### Environment Variables
+
+`{bm} /(Kinds\/Pod\/Environment Variables)_TOPIC/`
+
+```{prereq}
+Kinds/Pod/Command-line Arguments_TOPIC
+```
+
+Each container within a pod can be assigned a set of environment variables.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: my-container
+      image: my-image:1.0.1
+      env:
+        - name: LOG_LEVEL
+          value: "OFF"
+        - name: DRY_RUN
+          value: "true"
+```
+
+Once defined, an environment variables value can be used in other parts of the manifest using the syntax `$(VAR_NAME)`. For example, an environment variable's value may be placed directly within an argument.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: my-container
+      image: my-image:1.0.1
+      env:
+        - name: LOG_LEVEL
+          value: "OFF"
+      args: [--logging_telemetry=$(LOG_LEVEL)]
+```
+
+```{seealso}
+Kinds/Pod/Configuration_TOPIC (Set configurations to environment variables)
+Kinds/Pod/Metadata_TOPIC (Set pod details to environment variables)
+Kinds/Pod/Service Discovery/Environment Variables_TOPIC (Find services using environment variables)
+```
 
 ### Configuration
 
-`{bm} /(Resources\/Pods\/Configuration)_TOPIC/`
+`{bm} /(Kinds\/Pod\/Configuration)_TOPIC/`
 
 ```{prereq}
-Resources/Configuration Maps_TOPIC
-Resources/Secrets_TOPIC
-Resources/Pods/Volumes_TOPIC
+Kinds/Configuration Map_TOPIC
+Kinds/Secret_TOPIC
+Kinds/Pod/Environment Variables_TOPIC
+Kinds/Pod/Command-line Arguments_TOPIC
+Kinds/Pod/Volume Mounts_TOPIC
 ```
 
-Configuration can come from both config maps and secrets. A config map's key-value pairs can be accessed by a container via environment variables, command-line arguments, or volume mounts. To set a ...
+A container's configuration can come from both config maps and secrets. For config maps, a config map's key-value pairs can be accessed by a container via environment variables, command-line arguments, or volume mounts. To set a ...
 
  * environment variable:
  
    ```yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: my-pod
    spec:
      containers:
-       - ...
+       - name: my-container
+         image: my-image:1.0.1
          # Under each "env" entry to come from a config map, add a "valueFrom" that contains
          # the config map to pull an entry from and the key for the config map entry to pull.
          env:
@@ -635,9 +575,14 @@ Configuration can come from both config maps and secrets. A config map's key-val
    In certain cases, you may want to map all entries within a config map directly as a set of environment variables. This is useful when many entries of a config map are required for configuration, so many that becomes tedious and error-prone to map them all to environment variables by hand.
    
    ```yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: my-pod
    spec:
      containers:
-       - ...
+       - name: my-container
+         image: my-image:1.0.1
          # "envFrom" maps all entries of a config map as env vars.
          envFrom:
            - prefix: CONFIG_    # Prefix to tack on to each config map entry (optional).
@@ -652,9 +597,14 @@ Configuration can come from both config maps and secrets. A config map's key-val
  * command-line argument:
 
    ```yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: my-pod
    spec:
      containers:
-       - ...
+       - name: my-container
+         image: my-image:1.0.1
          # You can't pass in config map entries directly as command-line arguments, but what
          # you can do is load them up first as environment variables and then reference the
          # environment variables in the "command" (or "args") field.
@@ -678,6 +628,10 @@ Configuration can come from both config maps and secrets. A config map's key-val
  * volume mount:
 
    ```yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: my-pod
    spec:
      # Place a "configMap" type volume into the pod.
      volumes:
@@ -694,7 +648,8 @@ Configuration can come from both config maps and secrets. A config map's key-val
                path: file2.cfg
      # In the container, mount that volume to whichever containers you want.
      containers:
-       - ...
+       - name: my-container
+         image: my-image:1.0.1
          volumeMounts:
            - name: config-volume
              mountPath: /config
@@ -705,13 +660,18 @@ Configuration can come from both config maps and secrets. A config map's key-val
    If the directory you're mounting to already exists on the container, that existing directory is entirely replaced. In the example above, if the container already has a "/config" directory, it'll get replaced entirely with the config map mount (this is bad because the container's "/config" might have other necessary files required for the container to work). A workaround to this is to use the volume mount's "subPath" property, which allows you to mount a single file / directory from a volume.
 
    ```yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: my-pod
    spec:
      volumes:
        - name: config-volume
          configMap:
            name: my-config
      containers:
-       - ...
+       - name: my-container
+         image: my-image:1.0.1
          # The use of "subPath" here ensures that that original "/config" directory on the
          # container doesn't go away. It remains in place, and files / directories are just
          # added to it.
@@ -724,14 +684,19 @@ Configuration can come from both config maps and secrets. A config map's key-val
              subPath: CONFIG_MAP_KEY2      # Source config map entry name.
    ```
 
-A secret object's key-value pairs can be accessed in almost exactly the same way with almost exactly the same set of options and restrictions. To set a ...
+For secrets, a secret object's key-value pairs can be accessed in almost exactly the same way as config maps with almost exactly the same set of options and restrictions. To set a ...
 
  * environment variable:
  
    ```yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: my-pod
    spec:
      containers:
-       - ...
+       - name: my-container
+         image: my-image:1.0.1
          env:
            - name: ENV_VAR_NAME1
              valueFrom:
@@ -748,9 +713,14 @@ A secret object's key-value pairs can be accessed in almost exactly the same way
  * command-line argument:
 
    ```yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: my-pod
    spec:
      containers:
-       - ...
+       - name: my-container
+         image: my-image:1.0.1
          env:
            - name: ENV_VAR_NAME1
              valueFrom:
@@ -771,20 +741,25 @@ A secret object's key-value pairs can be accessed in almost exactly the same way
  * volume mount:
 
    ```yaml
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: my-pod
    spec:
      volumes:
        - name: secret-volume
          secret:  # This has been changed from "configMap" to "secret"
            name: my-secret
      containers:
-       - ...
+       - name: my-container
+         image: my-image:1.0.1
          volumeMounts:
            - name: secret-volume
              mountPath: /secrets
              readOnly: true
    ```
 
-Both config maps and secret objects can be dynamically updated. If a running pod is running when an update gets issued, it may or may not receive those updates depending on the configuration usage method:
+Both config maps and secrets can be dynamically updated. If a pod is running when an update gets issued, it may or may not receive those updates depending on the configurations are exposed to the container:
 
  * environment variables *don't* receive updates.
  * command-line arguments *don't* receive updates.
@@ -803,58 +778,207 @@ For individual files/directories mounted from a volume, one workaround to receiv
 For example, if the application requires a configuration file at /etc/my_config.conf, you can mount all configurations to /config and then symlink /etc/my_config.conf to /config/my_config.conf. That way, you can still receive updates.
 ```
 
-The typical workaround to config map dynamic updates is to use deployments. In deployments, secret objects / config maps and pods are bound together as a single unit, meaning that all pods restart automatically on any change.
+The typical workaround to config map dynamic updates is to use deployments. In deployments, secrets / config maps and pods are bound together as a single unit, meaning that all pods restart automatically on any change.
 
 ```{seealso}
-Resources/Deployments_TOPIC
+Kinds/Deployment_TOPIC
 ```
 
-### Secrets
+### Volume Mounts
 
-`{bm} /(Pods\/Secrets)_TOPIC/`
+`{bm} /(Kinds\/Pod\/Volume Mounts)_TOPIC/`
 
 ```{prereq}
-Resources/Secrets_TOPIC
+Kinds/Volume_TOPIC
 ```
 
-To use secrets in a pod, a specialized `secret` volume type must be used and mounted. For example, the following volume mounts the secrets created in the example command above ..
+A pod is able to supply multiple volumes, where those volumes may be mounted to different containers within that pod.
 
 ```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
 spec:
-  containers:
-    - ...
-      volumeMounts:
-      - name: my-secrets
-        mountPath: "/tls"
-        readOnly: true
+  # Volumes supplied are listed here.
   volumes:
-    - name: my-secrets
-      secret:
-        secretName: my-tls-cert
+    - name: my-data1
+      hostPath:
+        path: "/var/lib/my_data1"
+    - name: my-data2
+      hostPath:
+        path: "/var/lib/my_data2"
+  # Each container in the pod can mount any of the above volumes by referencing its name.
+  containers:
+    - name: my-container
+      image: my-image:1.0.1
+      volumeMounts:
+        # Mount "my-data1" volume to /data1 in the container's filesystem.
+        - mountPath: /data1
+          name: my-data1
+        # Mount "my-data2" volume to /data2 in the container's filesystem.
+        - mountPath: /data2
+          name: my-data2
 ```
 
+In the example above, the two volumes supplied by the pod are both of type `hostPath`. `hostPath` volume types reference a directory on the node that the pod is running on, meaning that if two containers within the same pod are assigned the same `hostPath` volume, they see each other's changes on that volume. The type of volume supplied defines the characteristics of that volume. Depending on the volume type, data on that volume ...
+
+ * may be shared across pods, shared across containers within a single pod, or not shared at all
+ * may be encrypted or unencrypted
+ * if shared, may have delayed and / or unreliable read-write consistency
+ * if not shared, may be transient or persistent across pod or container restarts
+ * if not shared, may be transient or persistent when a pod is moved to a new node
+ * etc..
+
+Each supplied volume within a pod can either reference a direct piece of storage or it can reference a persistent volume claim. In most cases, directly referencing a piece of storage (as done in the above example) is discouraged because it tightly couples the pod to that storage and its parameters. The better way is to use persistent volume claims, where volumes are assigned from a pool (or dynamically created and assigned) to pods as required. Assuming that you have a persistent volume claim already created, it can be referenced by using `persistentVolumeClaim` as the volume type.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  volumes:
+    - name: my-data
+      persistentVolumeClaim:  # Volume type of "persistentVolumeClaim"
+        claimName: my-data-pv-claim
+  containers:
+    - name: my-container
+      image: my-image:1.0.1
+      volumeMounts:
+        - mountPath: /data
+          name: my-data
+```
+
+### Probes
+
+`{bm} /(Kinds\/Pod\/Probes)_TOPIC/`
+
+Probes are a way for Kubernetes to check the state of a pod. Containers within the pod expose interfaces which Kubernetes periodically pings to determine what actions to take (e.g. restarting a non-responsive pod).
+
+Different types of probes exists. A ...
+
+ * liveness probe is something that Kubernetes pings to check if a container is alive and responsive (typical action on failure: restart pod).
+ * readiness probe is something that Kubernetes pings to check if a container is able to accept traffic (typical action on failure: stop traffic until readiness probes on all containers pass).
+ * startup probe is something that Kubernetes pings to check if a container has started (typical action on failure: retry until startup probes on all containers pass before allowing liveness and readiness probes).
+
+```{seealso}
+Kinds/Service_TOPIC (Readiness probes are used by services for routing traffic).
+```
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: my-container
+      image: my-image:1.0.1
+      # Probe to check if a container is alive or dead. Performs an HTTP GET with path
+      # /healthy at port 8080.
+      livenessProbe: 
+        httpGet:
+          path: /healthy
+          port: 8080
+        initialDelaySeconds: 5
+        timeoutSeconds: 1
+        periodSeconds: 10
+        failureThreshold: 3
+      # Probe to check if a container is able to service requests. Performs an HTTP GET
+      # with path /ready at port 8080.
+      readinessProbe:
+        httpGet:
+          path: /ready
+          port: 8080
+        initialDelaySeconds: 5
+        timeoutSeconds: 1
+        periodSeconds: 10
+        failureThreshold: 3
+  ...
+```
+
+In the example above, each of the probes check a HTTP server within the container at port 8080 but at different paths. The field ...
+
+ * `initialDelaySeconds` is the number of seconds to wait before performing the first probe.
+ * `timeoutSeconds` is the number of seconds to wait before timing out.
+ * `periodSeconds` is the number of seconds to wait before performing a probe.
+ * `failureThreshold` is the maximum number of successive failure before Kubernetes considers the probe failed.
+ * `successThreshold` is the maximum number of successive successes before Kubernetes considers the probe passed.
+ 
+There are types of probes other than `httpGet`. A probe of type ...
+
+ * `httpGet` will perform an HTTP GET operation to a server on the container and fail it its non-responsive.
+ * `tcpSocket` will attempt to connect a TCP socket to the container and  fail if the container doesn't accept.
+ * `exec` will run a command on the container and fail if it gets a non-zero exit code.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: my-container
+      image: my-image:1.0.1
+      readinessProbe:
+        exec:
+          command:
+            - cat
+            - /tmp/some_file_here
+        initialDelaySeconds: 5
+        timeoutSeconds: 1
+        periodSeconds: 10
+        failureThreshold: 3
+```
+
+### Restart Policy
+
+`{bm} /(Kinds\/Pod\/Restart Policy)_TOPIC/`
+
+Restart policy is the policy Kubernetes uses for determining when a pod should be restarted.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  restartPolicy: Always
+  containers:
+    - name: my-container
+      image: my-image:1.0.1
+```
+
+A value of ...
+
+ * `Always` always restarts the pod regardless of how it exists (default).
+ * `OnFailure` only restarts the pod only if it failed execution.
+ * `Never` never restarts the pod.
+
+`Always` is typically used when running servers that should always be up (e.g. http server) while the others are typically used for one-off jobs.
+
+```{seealso}
+Kinds/Job_TOPIC
+```
 
 ### Service Discovery
 
-`{bm} /(Pods\/Service Discovery)_TOPIC/`
+`{bm} /(Kinds\/Pod\/Service Discovery)_TOPIC/`
 
 ```{prereq}
-Resources/Services_TOPIC
+Kinds/Service_TOPIC
 ```
 
-For a pod to be able to communicate with other pods in the cluster, it needs to be able to discover the IPs of those other pods / services first. The mechanism for this is services, and there's two ways in which a pod can discover services in the cluster: environment variables and DNS.
+For a pod to communicate with services, it needs to be able to discover the IP(s) of those services. The mechanisms for discovering services within a pod are environment variables and DNS.
 
 These service discovery mechanisms are details in the subsections below.
 
 #### Environment Variables
 
-`{bm} /(Pods\/Service Discovery\/Environment Variables)_TOPIC/`
+`{bm} /(Kinds\/Pod\/Service Discovery\/Environment Variables)_TOPIC/`
 
-```{prereq}
-Resources/Pods/Environment Variables_TOPIC
-```
-
-When a pod launches, all IP and port combinations for services within the same namespace are stored as environment variables which the container(s) within the pod can query. A service's  The environment variable names are in the format `{SVCNAME}_SERVICE_HOST` / `{SVCNAME}_SERVICE_PORT`, where `{SVCNAME}` is the service converted to uppercase and dashes swapped with underscores. For example, two services `service-a` and `service-b` as environment variables:
+When a pod launches, all services within the same namespace have their IP and port combinations added as environment variables within the pod's containers. The environment variable names are in the format `{SVCNAME}_SERVICE_HOST` / `{SVCNAME}_SERVICE_PORT`, where `{SVCNAME}` is the service converted to uppercase and dashes swapped with underscores. For example, `service-a` would get converted to `SERVICE_A`.
 
 ```
 SERVICE_A_SERVICE_HOST=10.111.240.1
@@ -863,30 +987,37 @@ SERVICE_B_SERVICE_HOST=10.111.249.153
 SERVICE_B_SERVICE_PORT=80
 ```
 
-If a service exposes multiple ports, only the first port goes in `{SVCNAME}_SERVICE_PORT`. When multiple ports are present, additional environment variables get created in the format  `{SVCNAME}_SERVICE_PORT_{PORTNAME}`, where `{PORTNAME}` is the name of service's port modified the same way that `{SVCNAME}` is. For example, the service `service-c` exposes two ports named `web-1` and `metrics-1`:
+If a service exposes multiple ports, only the first port goes in `{SVCNAME}_SERVICE_PORT`. When multiple ports are present, additional environment variables get created in the format `{SVCNAME}_SERVICE_PORT_{PORTNAME}`, where `{PORTNAME}` is the name of service's port modified the same way that `{SVCNAME}` is. For example, `service-c` with two exposed ports named `web-1` and `metrics-1` would get converted to `SERVICE_C_SERVICE_PORT_WEB_1` and `SERVICE_C_SERVICE_PORT_METRICS_1` respectively.
 
 ```
-SERVICE_A_SERVICE_HOST=10.111.240.1
-SERVICE_A_SERVICE_PORT=443
-SERVICE_A_SERVICE_PORT_WEB_1=443
-SERVICE_A_SERVICE_PORT_METRICS_1=8080
+SERVICE_C_SERVICE_HOST=10.111.240.1
+SERVICE_C_SERVICE_PORT=443
+SERVICE_C_SERVICE_PORT_WEB_1=443
+SERVICE_C_SERVICE_PORT_METRICS_1=8080
 ```
 
 ```{note}
 Looking at the k8s code, it looks like for a service port needs to be named for it as an environment variable. Service ports that don't have a name won't show up as environment variables. See [here](https://github.com/kubernetes/kubernetes/blob/master/pkg/kubelet/envvars/envvars.go#L51-L55).
 ```
 
-Aside from the only listing services within the same namespace and potential naming conflicts that happen during name normalization (uppercase-ing and dash to underscore -- e.g. `My-name` and `my_namE` both end up as `MY_NAME`), another problem with using environment variables for service discovery is that the services required by a pod need to be active before the pod starts. The reason for this is that environment variables can only be set prior to the launch of a container process. If a process launches and a service comes up afterwards, that process's environment variables won't include that service's host and port.
+Using environment variables for service discovery has the following pitfalls:
+
+ * Services outside of the pod's namespace aren't provided.
+ * Services added to the namespace after the pod launches won't be picked up (env vars can only be changed prior to the launch of a container process).
+ * Services removed from the name after the pod launches won't be picked up (env vars can only be changed prior to the launch of a container process).
+ * Service naming conflicts can happen during normalization (e.g. uppercase-ing and converting dashes to underscores can cause conflict: `My-name` and `my_namE` both end up as `MY_NAME`).
+
+On the plus side, inspecting environment variables within a container essentially enumerates all services within the pod's namespace. Enumerating services isn't possible when using DNS for service discovery, discussed in the next section.
 
 #### DNS
 
-`{bm} /(Pods\/Service Discovery\/DNS)_TOPIC/`
+`{bm} /(Kinds\/Pod\/Service Discovery\/DNS)_TOPIC/`
 
 ```{prereq}
-Resources/Pods/Service Discovery/DNS_TOPIC
+Kinds/Pod/Service Discovery/Environment Variables_TOPIC
 ```
 
-Kubernetes provides a DNS server which is used for service discovery. Each pod in the cluster is automatically configured to use this DNS server and simply has to query it for a service's name. If the queried service is present in the cluster, the DNS server will return the stable IP for the service.
+Kubernetes provides a global DNS server which is used for service discovery. Each pod is automatically configured to use this DNS server and simply has to query it for a service's name. If the queried service is present, the DNS server will return the stable IP of that service.
 
 ```{note}
 The DNS server runs as an internal Kubernetes application called 'coredns` or `kube-dns`. This is usually in the `kube-system` namespace. Recall that the IP of a service is stable for the entire lifetime of the service, meaning that service restarts and DNS caching by the application and / or OS isn't an issue here.
@@ -898,67 +1029,267 @@ The general domain query format is `{SVCNAME}.{NAMESPACE}.svc.{CLUSTERDOMAIN}`, 
  * `{NAMESPACE}` is the name of the namespace that `{SVCNAME}` is in.
  * `{CLUSTERDOMAIN}` is the cluster domain suffix of the cluster that `{SVCNAME}` and `{NAMESPACE}` are in.
 
-For example, to query for the IP of service `serviceA` in namespace `ns1` within a cluster with the domain name suffix `cluster.local`, the domain name to query is `serviceA.ns1.svc.cluster.local`. Alternatively, if the pod doing the querying is ...
+For example, to query for the IP of service `serviceA` in namespace `ns1` within a cluster that has the domain name suffix `cluster.local`, the domain name to query is `serviceA.ns1.svc.cluster.local`. Alternatively, if the pod doing the querying is ...
 
  * within the same cluster, the cluster domain suffix can be omitted: `serviceA.ns1`.
  * within the same cluster and namespace, both the namespace and the cluster domain suffix can be omitted: `serviceA`.
 
-Compared to environment variable service discovery, using DNS to discover services won't include information about ports.
+Using DNS for service discovery has the following pitfalls:
+
+ * Service port information isn't included in queries.
+ * Enumerating services isn't possible with DNS.
+
+On the plus side, DNS queries can extend outside the pod's namespace and services started after a container launches are queryable. These aren't possible when using environment variables for service discovery, discussed in the previous section.
 
 ### Metadata
 
-`{bm} /(Pods\/Metadata Access)_TOPIC/`
+`{bm} /(Kinds\/Pod\/Metadata)_TOPIC/`
 
 ```{prereq}
-Resources/Pods/Resources_TOPIC
+Kinds/Pod/Resources_TOPIC
+Kinds/Pod/Environment Variables_TOPIC
+Kinds/Pod/Volume Mounts_TOPIC
 ```
 
-Metadata such as a pod's name, IP, which node it's running on node, what namespace it's under, container resource restrictions, etc.. can all be accessed via either a file system mount or environment variables.
+Information about a pod and its containers such as ...
 
-TODO: START FROM CH8
+ * pod name,
+ * pod labels and annotations,
+ * pod IP,
+ * pod namespace,
+ * node running the pod,
+ * container resource limits,
+ * etc..
 
-TODO: START FROM CH8
+... can all be accessed within the container via either a file system mount or environment variables.
 
-TODO: START FROM CH8
+#### Environment Variables
 
-TODO: START FROM CH8
+`{bm} /(Pods\/Metadata Access\/Environment Variables)_TOPIC/`
 
-TODO: START FROM CH8
+All pod information except for labels and annotations can be assigned to environment variables. The reason for this is that a running pod can have its labels and annotations updated but the environment variables within a running container can't be updated once that container starts (updated labels / annotations won't show up to the container).
 
-TODO: START FROM CH8
+```{note}
+CPU resources can also be dynamically updated without restarting the pod / container process. The environment variable for this likely won't update either, but it isn't restricted like labels / annotations are. There may be other reasons that labels / annotations aren't allowed. Maybe Linux has a cap on how large a environment variable can be, and there's a realistic possibility that labels / annotations can exceed that limit?
+```
 
-TODO: START FROM CH8
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - image: my-image:1.0
+      name: my-container
+      resources:
+        requests:
+          cpu: 15m
+          memory: 100Ki
+        limits:
+          cpu: 100m
+          memory: 4Mi
+      env:
+        # These entries reference values that would normal be "fields" under a running pod
+        # in Kubernetes. That is, these entries reference paths that you would normally see
+        # when you inspect a pod in Kubernetes by dumping out its YAML/JSON. For example,
+        # by running "kubectl get pod my_pod -o yaml" -- it produces a manifest but with
+        # many more fields (dynamically assigned fields and fields with default values
+        # filled out).
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name  # Pulls in "my_pod".
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace  # Pulls in the default namespace supplied by Kubernetes.
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP  # Pulls in the pod's IP.
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName  # Pulls in the name of the node that the pod's running on.
+        # When referencing resource requests / limits for a container, if you're requesting those
+        # for a different container than the one the container you're assigning the env var to,
+        # you'll need to supply a "containerName" field. Otherwise, you can omit the
+        # "containerName" field.
+        #
+        # Resource requests / limits by optionally be provided a "divisor" field, which will
+        # divide the value before assigning it.
+        - name: CPU_REQUEST
+          valueFrom:
+            resourceFieldRef:
+              resource: requests.cpu
+              containerName: my-container  # If you omit this, it'll default to "my-container" anyways.
+              divisor: 5m  # Divide by 5 millicores before assigning (15millicores/5millicores=3)
+        - name: CPU_LIMIT
+          valueFrom:
+            resourceFieldRef:
+              resource: limits.cpu
+              containerName: my-container  # If you omit this, it'll default to "my-container" anyways.
+              divisor: 5m  # Divide by 5 millicores before assigning (100millicores/5millicores=20)
+        - name: MEM_REQUEST
+          valueFrom:
+            resourceFieldRef:
+              resource: requests.memory
+              containerName: my-container  # If you omit this, it'll default to "my-container" anyways.
+              divisor: 1Ki  # Divide by 1 kibibyte before assigning (100Kebibytes/1Kibibyte=100)
+        - name: MEM_LIMIT
+          valueFrom:
+            resourceFieldRef:
+              resource: limits.memory
+              containerName: my-container  # If you omit this, it'll default to "my-container" anyways.
+              divisor: 1Ki  # Divide by 1 kibibyte before assigning (4Mebibytes/1Kibibyte=4096)
+```
 
-TODO: START FROM CH8
+#### Volume Mount
 
-TODO: START FROM CH8
+`{bm} /(Pods\/Metadata Access\/Volume Mount)_TOPIC/`
 
-TODO: START FROM CH8
+```{prereq}
+Pods/Metadata Access/Environment Variables_TOPIC
+```
 
-TODO: START FROM CH8
+All pod information can be exposed as a volume mount, where files in that mount map to pieces of information. Unlike with environment variables, a volume mount can contain labels and annotations. If those labels and annotations are updated, the relevant files within the mount update to reflect the changes. It's up to the application running within the container to detect and reload those updated files.
 
-TODO: START FROM CH8
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+  labels:
+    drink: Pepsi
+    car: Volvo
+  annotations:
+    key1: value1
+    key2: |
+      Good morning,
+      Today is Sunday.
+spec:
+  volumes:
+    # A volume of type downwardAPI will populate with files, where each file contains the
+    # value for a specific field. Fields are specified in a similar manner to the
+    # environment variable version above.
+    #
+    # Each "path" under "items" is file within the volume.
+    - name: downward_vol
+      downwardAPI:
+        items:
+          - path: podName
+            fieldRef:
+              fieldPath: metadata.name
+          - path: podNamespace
+            fieldRef:
+              fieldPath: metadata.namespace
+          - path: podIp
+            fieldRef:
+              fieldPath: status.podIP
+          - path: nodeName
+            fieldRef:
+              fieldPath: spec.nodeName
+          - path: cpuRequest
+            resourceFieldRef:
+              resource: requests.cpu
+              containerName: my-container  # MUST BE INCLUDED, otherwise it's impossible to know which container.
+              divisor: 5m
+          - path: cpuLimit
+            resourceFieldRef:
+              resource: limits.cpu
+              containerName: my-container  # MUST BE INCLUDED, otherwise it's impossible to know which container.
+              divisor: 5m
+          - path: memRequest
+            resourceFieldRef:
+              resource: requests.memory
+              containerName: my-container  # MUST BE INCLUDED, otherwise it's impossible to know which container.
+              divisor: 1Ki
+          - path: memLimit
+            resourceFieldRef:
+              resource: limits.memory
+              containerName: my-container  # MUST BE INCLUDED, otherwise it's impossible to know which container.
+              divisor: 1Ki
+          # The following two entries supplies labels and annotations. Note that, if labels
+          # or annotations change for the pod, the files in this volume will be updated to
+          # reflect those changes.
+          #
+          # Each file below will contain multiple key-value entries. One key-value entry per line, where
+          # the key and value are delimited by an equal sign (=). Values are escaped, so the new lines in
+          # the multiline example annotation in this pod (see key2, where the value is a good morning
+          # message) will be appropriately escaped.
+          - path: "labels"
+            fieldRef:
+              fieldPath: metadata.labels
+          - path: "annotations"
+            fieldRef:
+              fieldPath: metadata.annotations
+  containers:
+    - image: my-image:1.0
+      name: my-container
+      resources:
+        requests:
+          cpu: 15m
+          memory: 100Ki
+        limits:
+          cpu: 100m
+          memory: 4Mi
+      # Mount the volume declared above into the container. The application in the container
+      # will be able to access the metadata as files within the volume mount.
+      volumeMounts:
+        - name: downward_vol
+          mountPath: /metadata
+```
 
-TODO: START FROM CH8
+### API Access
 
-TODO: START FROM CH8
+`{bm} /(Kinds\/Pod\/API Access)_TOPIC/`
 
-TODO: START FROM CH8
+```{prereq}
+Kinds/Pod/Service Discovery_TOPIC
+Kinds/Pod/Configuration_TOPIC
+```
 
-TODO: START FROM CH8
+Containers within a pod can access the Kubernetes API server via a service called `kubernetes`, typically found on the default namespace. Communicating with this service requires a certificate check (to verify server isn't a man-in-the-middle box) as well as an access token (to authentication with the service). By default, containers have a secret object mounted as a volume at `/var/run/secrets/kubernetes.io/serviceaccount` that contains both these pieces of data as files:
 
-TODO: START FROM CH8
+ * `ca.crt` - certificate used for verifying the server's identity.
+ * `token` - bearer token used for authenticating with the server.
+ * `namespace` - namespace of the *pod* itself (not the namespace of the `kubernetes` service).
 
-TODO: START FROM CH8
+In most cases, the credentials provided likely won't provide unfettered access to the Kubernetes API.
 
-## Configuration Maps
+```{note}
+See [here](https://stackoverflow.com/a/25843058) for an explanation of bearer tokens. You typically just need to include a HTTP header with the token in it.
 
-`{bm} /(Resources\/Configuration Maps)_TOPIC/`
+Third-party libraries that interface with Kubernetes are available for various languages (e.g. Python, Java, etc..), meaning you don't have to do direct HTTP requests and do things like fiddle with headers.
+```
+
+It's possible to prevent these authentication details from being mounted to an individual container within a pod.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: my-container
+      image: my-image:1.0
+      automountServiceAccountToken: false  # Prevent auth details from mounting on this container
+```
+
+```{note}
+It doesn't look like it's possible to prevent these authentication details from being mounted to a single container within a pod, but it is possible to override it by mounting something else to `/var/run/secrets/kubernetes.io/serviceaccount` (e.g. maybe a tmp file system).
+```
+
+## Configuration Map
+
+`{bm} /(Kinds\/Configuration Map)_TOPIC/`
 
 A configuration map is a type of resource comprised of key-value pairs intended to configure the main application of a container (or many containers). By decoupling configurations from the containers themselves, the same configuration map (or parts of it) could be used to configure multiple containers within Kubernetes.
 
-```{note}
-Do **NOT** use this for storing secrets such as tokens, certificates, or passwords. See Resources/Secrets_TOPIC instead.
+```{seealso}
+Kinds/Secret_TOPIC (Do **NOT** use config maps for storing secrets such as tokens, certificates, or password).
 ```
 
 ```yaml
@@ -977,12 +1308,12 @@ data:
 
 The key-value pairs of a configuration map resource typically get exposed to a container either as environment variables, files, or command-line arguments. Keys are limited to certain characters: alphabet, numbers, dashes, underscores, and dots.
 
-## Secrets
+## Secret
 
-`{bm} /(Resources\/Secrets)_TOPIC/`
+`{bm} /(Kinds\/Secret)_TOPIC/`
 
 ```{prereq}
-Resources/Configuration Maps_TOPIC
+Kinds/Configuration Map_TOPIC
 ```
 
 A secret object is a type of resource comprised of key-value pairs, similar to a config map, but oriented towards security rather than just configuration (e.g. for storing things like access tokens, passwords, certificates). As opposed to a config map, Kubernetes takes extra precautions to ensure that a secret object is stored and used in a secure manner.
@@ -1008,15 +1339,15 @@ Many types of secrets exist. Each type either does some level of verification on
 Certain sources are claiming that a secret object can be 1 megabyte at most.
 ```
 
-## Nodes
+## Node
 
-`{bm} /(Resources\/Nodes)_TOPIC/i`
+`{bm} /(Kinds\/Node)_TOPIC/i`
 
 ```{prereq}
-Resources/Pods_TOPIC
+Kinds/Pod_TOPIC
 ```
 
-Nodes are the machines that pods run on. A Kubernetes cluster often contains multiple nodes, each with a certain amount of resources. Pods get assigned to nodes based on their resource requirements. For example, if a pod A requires 2gb of memory and node C has 24 gigs available, that node may get assigned to run that pod.
+Nodes are the machines that pods run on. A Kubernetes environment often contains multiple nodes, each with a certain amount of resources. Pods get assigned to nodes based on their resource requirements. For example, if a pod A requires 2gb of memory and node C has 24 gigs available, that node may get assigned to run that pod.
 
 ```{svgbob}
 .-------.    .-------.    .-------.
@@ -1061,9 +1392,9 @@ Kubernetes has a leader-follower architecture, meaning that of the nodes a small
 
 A master node can still run pods just like the worker nodes, but some of its resources will be tied up for the purpose of managing worker nodes.
 
-## Volumes
+## Volume
 
-`{bm} /(Resources\/Volumes)_TOPIC/i`
+`{bm} /(Kinds\/Volume)_TOPIC/i`
 
 Volumes are disks where data can be persisted across container restarts. Normally, Kubernetes resets a container's filesystem each time that container restarts (e.g. after a crash or a pod getting moved to a different node). While that works for some types of applications, other application types such as database servers need to retain state across restarts.
 
@@ -1162,7 +1493,7 @@ parameters:
 
 ### Capacity
 
-`{bm} /(Resources\/Volumes\/Capacity)_TOPIC/i`
+`{bm} /(Kinds\/Volume\/Capacity)_TOPIC/i`
 
 The capacity of a persistent volume is set through `spec.capacity.storage`.
 
@@ -1185,7 +1516,7 @@ spec:
 
 ### Access Modes
 
-`{bm} /(Resources\/Volumes\/Access Modes)_TOPIC/i`
+`{bm} /(Kinds\/Volume\/Access Modes)_TOPIC/i`
 
 A persistent volume can support multiple access modes:
 
@@ -1221,7 +1552,7 @@ Not all persistent volume types support all access modes. Types are discussed fu
 
 ### Reclaim Policy
 
-`{bm} /(Resources\/Volumes\/Reclaim Policy)_TOPIC/i`
+`{bm} /(Kinds\/Volume\/Reclaim Policy)_TOPIC/i`
 
 A persistent volume claim, once released, may or may not make the persistent volume claimable again depending on what `spec.persistentVolumeReclaimPolicy` was set to.
 
@@ -1250,7 +1581,7 @@ Not all persistent volume types support all reclaim policies. Types are discusse
 
 ### Types
 
-`{bm} /(Resources\/Volumes\/Types)_TOPIC/i`
+`{bm} /(Kinds\/Volume\/Types)_TOPIC/i`
 
 A persistent volume needs to come from somewhere, either via a cloud provider or using some internally networked (or even local) disks. There are many volume types: AWS elastic block storage, Azure file, Azure Disk, GCE persistent disk, etc.. Each type has its own set of restrictions such as what access modes it supports or the types of nodes it can be mounted.
 
@@ -1296,11 +1627,11 @@ spec:
 
 ### Storage Classes
 
-`{bm} /(Resources\/Volumes\/Storage Classes)_TOPIC/i`
+`{bm} /(Kinds\/Volume\/Storage Classes)_TOPIC/i`
 
 ```{prereq}
-Resources/Volumes/Reclaim Policy_TOPIC
-Resources/Volumes/Types_TOPIC
+Kinds/Volume/Reclaim Policy_TOPIC
+Kinds/Volume/Types_TOPIC
 ```
 
 Defining a storage class allows for dynamic provisioning of persistent volumes per persistent volume claim.
@@ -1376,9 +1707,9 @@ volumeBindingMode: WaitForFirstConsumer
 
 ## Endpoints
 
-`{bm} /(Resources\/Endpoints)_TOPIC/i`
+`{bm} /(Kinds\/Endpoints)_TOPIC/i`
 
-Endpoints (plural) is a Kubernetes resource that simply holds a list of IP addresses and ports. It's used by higher-level Kubernetes resources to simplify routing. For example, an endpoints resource may direct to all the nodes that make up a sharded database server.
+Endpoints (plural) is a kind that simply holds a list of IP addresses and ports. It's used by higher-level kinds to simplify routing. For example, an endpoints resource may direct to all the nodes that make up a sharded database server.
 
 Example manifest:
 
@@ -1406,11 +1737,18 @@ subsets:
         name: pg2
 ```
 
-The endpoints in the example YAML above points to [10.10.1.1:5432, 10.10.1.2:5432, 10.10.1.3:5432, 10.13.4.101:12345, 10.13.4.102:12345, 10.13.4.103:12345].
+The endpoints example above points to ...
 
-## Services
+ * `10.10.1.1:5432`
+ * `10.10.1.2:5432`
+ * `10.10.1.3:5432`
+ * `10.13.4.101:12345`
+ * `10.13.4.102:12345`
+ * `10.13.4.103:12345`
 
-`{bm} /(Resources\/Services)_TOPIC/i`
+## Service
+
+`{bm} /(Kinds\/Service)_TOPIC/i`
 
 Services are a discovery and load balancing mechanism. A service exposes a set of pods under a single fixed unified hostname and IP, routing traffic to that set by load balancing incoming requests across the set. Any external application would need to use a service's hostname because the IP / host of the single pod instances aren't fixed, exposed, or known. That is, pods are transient and aren't guaranteed to always reside on the same node. As they shutdown, come up, restart, move between nodes, etc.., there's no implicit mechanism that requestors can use to route their requests accordingly.
 
@@ -1459,11 +1797,11 @@ Internally, an EndPoints object is used to track pods. When you create a service
 
 ### Routing
 
-`{bm} /(Resources\/Services\/Routing)_TOPIC/i`
+`{bm} /(Kinds\/Service\/Routing)_TOPIC/i`
 
 ```{prereq}
 Introduction/Labels_TOPIC
-Resources/Endpoints_TOPIC
+Kinds/Endpoints_TOPIC
 ```
 
 A service determines which pods it should route traffic to via the `spec.selector` manifest path. This manifest path contains key-value mappings, where these key-value mappings are labels that a pod needs before being considered for this service's traffic ...
@@ -1511,11 +1849,11 @@ If not set, `spec.type` defaults to `ClusterIP`. That's the type used when selec
 
 ### Ports
 
-`{bm} /(Resources\/Services\/Ports)_TOPIC/i`
+`{bm} /(Kinds\/Service\/Ports)_TOPIC/i`
 
 ```{prereq}
-Resources/Pods/Ports_TOPIC
-Resources/Services/Routing_TOPIC
+Kinds/Pod/Ports_TOPIC
+Kinds/Service/Routing_TOPIC
 ```
 
 A service can listen on multiple ports, controlled via the `spec.ports` manifest path.
@@ -1554,7 +1892,7 @@ Ports may also reference the names of ports in a pod manifest. For example, imag
 apiVersion: v1
 kind: Pod
 metadata:
-  name: my_pod
+  name: my-pod
 spec:
   containers:
     - ...
@@ -1594,11 +1932,11 @@ Maybe this isn't possible with Kubernetes?
 
 ### Health
 
-`{bm} /(Resources\/Services\/Health)_TOPIC/i`
+`{bm} /(Kinds\/Service\/Health)_TOPIC/i`
 
 ```{prereq}
-Resources/Pods/Probes_TOPIC
-Resources/Services/Routing_TOPIC
+Kinds/Pod/Probes_TOPIC
+Kinds/Service/Routing_TOPIC
 ```
 
 The service periodically probes the status of each pod to determine if it can handle requests or not. Two types of probes are performed:
@@ -1626,11 +1964,11 @@ Recall that, when a service has selectors assigned, Kubernetes internally mainta
 
 ### Headless
 
-`{bm} /(Resources\/Services\/Headless)_TOPIC/i`
+`{bm} /(Kinds\/Service\/Headless)_TOPIC/i`
 
 ```{prereq}
-Resources/Services/Routing_TOPIC
-Resources/Services/Health_TOPIC
+Kinds/Service/Routing_TOPIC
+Kinds/Service/Health_TOPIC
 ```
 
 A service that's headless is one which there is no load balancer forwarding requests to pods / endpoints. Instead, the domain for the service will resolve a list of ready IPs for the pods (or endpoints) that the service is for. 
@@ -1646,7 +1984,7 @@ Generally, headless services shouldn't be used because DNS queries are typically
 
 ### Session Affinity
 
-`{bm} /(Resources\/Services\/Session Affinity)_TOPIC/i`
+`{bm} /(Kinds\/Service\/Session Affinity)_TOPIC/i`
 
 How a service decides to forward incoming requests to the pod instances assigned to it is controlled via `spec.sessionAffinity` manifest path. Assigning a value of ...
 
@@ -1673,7 +2011,7 @@ The book mentions that because services work on the TCP/UDP level and not at HTT
 
 ### Exposure
 
-`{bm} /(Resources\/Services\/Exposure)_TOPIC/i`
+`{bm} /(Kinds\/Service\/Exposure)_TOPIC/i`
 
 The service type defines where and how a service gets exposed, controlled via the `spec.type` manifest path. For example, a service may only be accessible within the cluster, to specific parts of the cluster, to an external network, or to the public Internet.
 
@@ -1681,10 +2019,10 @@ If not specified, the `spec.type` of a resource is `ClusterIP`, meaning that it'
 
 #### Local
 
-`{bm} /(Resources\/Services\/Exposure\/Local)_TOPIC/i`
+`{bm} /(Kinds\/Service\/Exposure\/Local)_TOPIC/i`
 
 ```{prereq}
-Resources/Services/Routing_TOPIC
+Kinds/Service/Routing_TOPIC
 ```
 
 Services of type `ClusterIP` / `ExternalName` are only accessible from within the cluster. The hostname of such services are broken down as follows: NAME.NAMESPACE.svc.CLUSTER
@@ -1713,7 +2051,7 @@ spec:
 
 #### Node Port
 
-`{bm} /(Resources\/Services\/Exposure\/Node Port)_TOPIC/i`
+`{bm} /(Kinds\/Service\/Exposure\/Node Port)_TOPIC/i`
 
 Services of type `NodePort` are accessible from outside the cluster. Every worker node opens a port (either user-defined or assigned by the system) that routes requests to the service. Since nodes are transient, there is no single point of access to the service.
 
@@ -1732,7 +2070,7 @@ spec:
 
 #### Load Balancer
 
-`{bm} /(Resources\/Services\/Exposure\/Load Balancer)_TOPIC/i`
+`{bm} /(Kinds\/Service\/Exposure\/Load Balancer)_TOPIC/i`
 
 Services of type `LoadBalancer` are accessible from outside the cluster. When the `LoadBalancer` type is used, the cloud provider running the cluster assigns their version of a load balancer to route external HTTP requests to the Kubernetes Ingress component. Ingress then determines what service that request should be routed to based on details within the HTTP parameters (e.g. Host).
 
@@ -1776,10 +2114,10 @@ The book says that a load balancer type is a special case of node port type.
 
 ## Ingress
 
-`{bm} /(Resources\/Ingress)_TOPIC/i`
+`{bm} /(Kinds\/Ingress)_TOPIC/i`
 
 ```{prereq}
-Resources/Services_TOPIC
+Kinds/Service_TOPIC
 ```
 
 Similar to a service of type `LoadBalancer`, An Ingress object is a load balancer with a publicly exposed IP. However, rather than load balancing at the TCP/UDP level, an Ingress object acts as a load balancing HTTP proxy server. An HTTP request coming into an Ingress object gets routed to one of many existing services based on host and path HTTP headers. This is useful because the cluster can expose several services under a single public IP address.
@@ -1855,7 +2193,7 @@ According to the book, most if not all implementations of Ingress simply query t
 
 ### Hosts
 
-`{bm} /(Resources\/Ingress\/Hosts)_TOPIC/i`
+`{bm} /(Kinds\/Ingress\/Hosts)_TOPIC/i`
 
 The host in each rule can be either an exact host or it could contain wildcards (e.g. `*.api.myhost.com`). Each name in the host (split by dot) intended for a wildcard should explicitly have an asterisk in its place. The portion the asterisk is in must exist and it only covers that name. For example, the rule below will match `ONE.api.myhost.com`, but not `TWO.THREE.api.myhost.com` or `api.myhost.com`.
 
@@ -1903,12 +2241,10 @@ What about `ImplementationSpecific`? There are different types of Ingress contro
 
 ### TLS Traffic
 
-`{bm} /(Resources\/Ingress\/TLS Traffic)_TOPIC/i`
-
-`{bm} /(Ingress\/TLS Traffic)_TOPIC/i`
+`{bm} /(Kinds\/Ingress\/TLS Traffic)_TOPIC/i`
 
 ```{prereq}
-Resources/Pods/Secrets_TOPIC
+Kinds/Pod/Configuration_TOPIC
 ```
 
 Assuming you have a TLS certificate and key files for the host configured on the Ingress resource, you can add those into Kubernetes as a secret and configure the Ingress resource to make use of it.
@@ -1951,14 +2287,14 @@ From the k8s website:
 ```
 
 ```{note}
-The book mentions that `CertificateSigningRequest` is a special type of Kubernetes resource that will sign certificates for you, if it was set up. You can issue requests via `kubectl certificate approve csr_name` and it'll either automate it somehow or a human will process it? Not sure exactly what's going on here.
+The book mentions that `CertificateSigningRequest` is a special type of kind that will sign certificates for you, if it was set up. You can issue requests via `kubectl certificate approve csr_name` and it'll either automate it somehow or a human will process it? Not sure exactly what's going on here.
 ```
 
 ## Namespace
 
-`{bm} /(Resources\/Namespace)_TOPIC/i`
+`{bm} /(Kinds\/Namespace)_TOPIC/i`
 
-A namespace is a Kubernetes resource used to avoid resource naming conflicts. For example, it's typical for a Kubernetes cluster to be split up into development, testing, and production namespaces. Each namespace can have resources with the same names as those in the other two namespaces.
+A namespace is a kind used to avoid resource naming conflicts. For example, it's typical for a Kubernetes cluster to be split up into development, testing, and production namespaces. Each namespace can have resources with the same names as those in the other two namespaces.
 
 ```yaml
 apiVersion: v1
@@ -1994,12 +2330,17 @@ spec:
 
 If a namespace-level resource doesn't set a namespace, the namespace defaults to `default`.
 
-## Replica Sets
+## Replica Set
 
-`{bm} /(Resources\/Replica Sets)_TOPIC/i`
+`{bm} /(Kinds\/Replica Set)_TOPIC/i`
 
 ```{prereq}
-Resources/Pods_TOPIC
+Kinds/Pod_TOPIC
+Kinds/Volume_TOPIC
+```
+
+```{note}
+Replica sets deprecate a replication controllers.
 ```
 
 A replica set is an abstraction that's used to ensure a certain number of copies of some pod are always up and running. Typical scenarios where replica sets are used include ...
@@ -2008,235 +2349,776 @@ A replica set is an abstraction that's used to ensure a certain number of copies
  * scale (e.g. microservices that scale horizontally).
  * redundancy (e.g. leader-follower architectures such as Redis-style replica servers).
 
-Example manifest:
-
 ```yaml
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
   name: my-replicaset
 spec:
-  replicas: 2
+  replicas: 2  # Number of pod copies to run.
+  # Selectors are label selectors used to identify pods, which match the key-value pairs
+  # used for pod template labels further down.
+  selector:
+    matchLabels:
+      app: my-app
+  # A template of the pod to launch when there aren't enough copies currently running.
+  # Everything under "template" is essentially a pod manifest, except the "apiVersion" and
+  # "kind" aren't included.
   template:
     metadata:
+      name: my-pod
+      # These labels are how this replicate set will determine how many copies are running. It
+      # will look around for pods with this set of labels.
       labels:
         app: my-app
-        version: v1.0.1
     spec:
       containers:
       - name: my-container
         image: nginx
 ```
 
-### Replication
+Recall that, to link objects together, Kubernetes uses loosely coupled linkages via labels rather than hierarchial parent-child relationships. As such, the pod template should have a unique set of labels assigned that the replica set can look for to determine how many instances are running. Regardless of how those instances were launched (via the replica set or something else), the replica set will account for them. In the example above, the replica set determines pod instances it's responsible for by looking for the label named `app` and ensuring its set to `my-app`.
 
-A replica set determines how many replicas it needs via the `spec.replicas` manifest path, and it determines how to create missing replicas using the `spec.template` manifest path.
+```{note}
+According to the k8s docs, it may be a parent-child relationship. Apparently looking for labels is just a initial step to permanently bringing pods under the control of a specific replica set:
 
-```yaml
-spec:
-  replicas: 2
-  template:
-    metadata:
-      labels:
-        app: my-app
-        version: v1.0.1
-    spec:
-      containers:
-      - name: my-container
-        image: nginx
+> A ReplicaSet is linked to its Pods via the Pods' metadata.ownerReferences field, which specifies what resource the current object is owned by. All Pods acquired by a ReplicaSet have their owning ReplicaSet's identifying information within their ownerReferences field. It's through this link that the ReplicaSet knows of the state of the Pods it is maintaining and plans accordingly.
+
+What happens when two replica sets try "owning" the same pod?
 ```
 
-Recall that, to link objects together, Kubernetes uses loosely coupled linkages via labels rather than hierarchial parent-child relationships. As such, the pod template should have a unique set of labels assigned that the replica set can look for to determine how many instances are running. Regardless of how those instances were launched (via the replica set or something else), the replica set will account for them.
+A replica set's job is to ensure that a certain number of copies of a pod template are running. It won't retain state between its copies or do any advanced orchestration. Specifically, a replica set ...
+
+ * won't retain pod IPs / hostnames across time. Each launched pod will have its own unique IP / hostname, even if it's replacing a downed pod (it won't inherit that downed pod's IP / hostname). 
+ * will force all pods to use a single persistent volume claim (if one was specified in the pod template), meaning all pods will use a single volume. For horizontally scalable applications (e.g. microservices, databases, etc..), each running instance of an application typically needs its own persistent storage.
 
 ```{note}
 You can distinguish a pod created by a replica set vs one created manually by checking the annotation key `kubernetes.io/create-by` on the pod.
 
-If deleting a replica set, use `--cascade=false` in kubectl if you don't want the pods created by the replica set to get deleted as well.
+If deleting a replica set, use `--cascade=false` in `kubectl` if you don't want the pods created by the replica set to get deleted as well.
 ```
 
-A replica set doesn't have to use the labels in the pod template. It can have its own set of labels that it looks for via the `spec.selector.matchLabels` manifest path.
+```{seealso}
+Kinds/Deployment_TOPIC (Like replica sets but supports rolling updates of an application)
+Kinds/Stateful Set_TOPIC (Like replica sets but supports individual persistent volume claims)
+```
+
+## Deployment
+
+`{bm} /(Kinds\/Deployment)_TOPIC/i`
+
+```{prereq}
+Kinds/Replica Set_TOPIC
+```
+
+Deployment are similar to replica sets but make it easy to do rolling updates, where the update happens while the application remains online and still services requests. Old pods are transitioned to new pods as a stream instead of all at once, ensuring that the application is responsive throughout the upgrade process. Likewise, they allow for rolling back should an update encounter any problems.
 
 ```yaml
-spec:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment
+# The manifest for a deployment builds off the manifest for a replica set. Most replica set
+# fields are present: Number of copies, label selectors, pod template, etc... In addition,
+# it supports several other fields specific to doing updates.
+spec: 
+  replicas: 2
   selector:
     matchLabels:
       app: my-app
+  template:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: my_container
+          image: my-image:1.0
+  strategy: RollingUpdate  # How the deployment should perform updates (default value)
 ```
 
-## Deployments
+A deployment provides mechanisms to control how an update happens (e.g. all at once vs gradual), if an update is deemed successful (e.g. maximum amount of time a rollout can take), fail-fast for bad updates, and rollbacks to revert to previous versions. These features are discussed in the subsections below. 
 
-`{bm} /(Resources\/Deployments)_TOPIC/i`
+```{note}
+The same gotchas with replica sets also apply to deployments: all pods will use the same persistent volume claim and IPs / hosts aren't retained when pods are replaced.
+
+Like with replica set, you might have to use `--cascade=false` in `kubectl` if you don't want the pods created by the deployment to get deleted as well (unsure about this).
+```
+
+```{seealso}
+Kinds/Stateful Set_TOPIC (Like replica sets but supports individual persistent volume claims)
+```
+
+### Updates
+
+`{bm} /(Kinds\/Deployment\/Updates)_TOPIC/i`
 
 ```{prereq}
-Resources/Services_TOPIC
-Resources/Replica Sets_TOPIC
+Kinds/Pod/Probes_TOPIC
 ```
 
-A deployment is an abstraction used to bring together pods, replica sets, and services under a single umbrella. It's intended to represent a single version of some application being deployed on Kubernetes. All of the pieces required for that application to run are housed under one roof.
+A deployment can support one of the two update strategies:
 
-Deployments make it easy to upgrade between versions of the applications they represent via a rolling upgrade that keeps the application online during the upgrade. Old pods are transitioned to new pods as a stream instead of all at once, ensuring that the application is responsive throughout the upgrade process. Likewise, they allow for rolling back an update should it have any problems.
+ * `RollingUpdate` - updates pods piecemeal (default).
+ * `Recreate` - updates by first bringing down all old pods then bringing up all the new pods.
 
-The manifest for a deployment builds of the manifest for a replica set (same fields used). Example manifest:
+`Recreate` is simple but results in down (a period of time where no pods are running). Most enterprise applications have up-time guarantees and as such require `RollingUpdate`. `RollingUpdate` has several options that control the flow and timing of how pods go down and come up, documented in the example below.
 
 ```yaml
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: my-deployment
 spec:
+  replicas: 10
   selector:
     matchLabels:
-      app: my-app 
-  replicas: 1
+      app: my-app
   template:
       labels:
         app: my-app
-        version: v1.0.1
     spec:
       containers:
         - name: my_container
-          image: "gcr.io/my_container:v1"
+          image: my-image:1.0
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      # "maxUnavailable" - During an update, this is the number (or percentage) of pods
+      # that can be unavailable relative to the number of replicas. Since this deployment
+      # has 10 replicas, the parameter below is instructing that the number of replicas
+      # can't go below 8 during an update (at most 2 pods may be unavailable).
+      #
+      # If between 0 and 1, this is treated as a percentage of pods (e.g. 0.25 means 25
+      # percent of pods may be unavailable during an update). 
+      maxUnavailable: 2
+      # "maxSurge" - During an update, this is the number (or percentage) of excess pods
+      # that can be available relative to the number of replicas. Since this deployment
+      # has 10 replicas, the parameter below is instructing that the number of replicas
+      # can't go above 12 during an update (at most 2 pods extra pods may be running).
+      #
+      # If between 0 and 1, this is treated as a percentage of pods (e.g. 0.25 means 25
+      # percent of pods may be unavailable during an update). 
+      maxSurge: 2
+      # "minReadySeconds" - Once all of the readiness probes of a new pod succeed, this
+      # is the number of seconds to wait before the deployment deems that the pod has
+      # been successfully brought up. If any readiness probes within the pod fail during
+      # this wait, the update is blocked.
+      #
+      # This is useful to prevent scenarios where pods initially report as ready but
+      # revert to un-ready soon after receiving traffic.
+      minReadySeconds: 10
+      # "progressDeadlineSeconds" - This is the maximum number of seconds that is allowed
+      # before progress is made. If this is exceeded, the deployment is considered stalled.
+      #
+      # Default value is 600 (10 minutes).
+      progressDeadlineSeconds: 300
 ```
 
-### Upgrade Strategy
+It's common for deployments to fail or get stuck for several reasons:
 
-TODO: `spec/strategy` defines the way rollouts should occur.
+* Insufficient node resources.
+* Problems pulling images.
+* Probe failures (startup probes / readiness probes).
+* etc..
 
-TODO: discuss the recreate strategy + add yaml -- one-shot update, everything shuts down and restarts
+### Rollbacks
 
-TODO: discuss the rolling update strategy + add yaml --
+`{bm} /(Kinds\/Deployment\/Rollbacks)_TOPIC/i`
 
-maxUnavailable (num or percent of pods that can be down during rollout) / maxSurge (num or percent of EXTRA pods that can be running during the rollout) -- so if you set unavail to 0% and surge to >0% (it'll bring up x% new pods first then shut down x% old pods, repeat until all updated), it'll rollout faster vs if you set unavail to > 0% and surge to 0% (it'll shutdown x% old pods first then bring up x% new pods, repeat until all updated)
+A deployment retains update history in case it needs to rollback. The mechanism used for this is replica sets: For each update, a deployment launches a new replica set. The replica set for the old version ramps down the number of pods while the replica set for the new version ramps up the number of pods. Once all pods have been transitioned to the new version, the old replica set (now empty of pods) is kept online.
 
-for rolling, it'll always wait till the current iterations new pods probes report healthy + ready before moving to next iteration -- you should have defined these probes otherwise deployments are blind
+It's good practice to limit the number of revisions kept in a deployments update history because it limits the number of replica sets kept alive.
 
-minReadySeconds -- waits at least n seconds till the readiness probe reports okay before continuing -- an extra wait to make sure nothing's immediately crashing
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment
+spec:
+  revisionHistoryLimit: 5  # Keep the 5 latest revisions
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: my_container
+          image: my-image:1.0
+```
 
-progressDeadlineSeconds -- if any stage of the rollout waits for this long, the rollout is marked as failed. each time pods are brought down / up, it's a stage
+```{note}
+You can inspect previous versions via `kubectl rollout history deployment my-deployment`. For each update, it's good practice to set the `kubernetes.io/change-cause` annotation a custom message describing what was updated / why it was updated -- this shows up in the history.
 
-### Undo
+You can a rollback via `kubectl rollout undo deployments my-deployment --to-revision=12345`.
+```
 
-TODO: discuss kubectl rollout undo deployments {DEPLOYMENT} command to roll back
+## Stateful Set
 
-TODO: set spec/revisionHistoryLimit to limit the number of revisions kept for undo -- useful when many frequent updates are happening
-
-### Change Cause
-
-TODO: add `kubernetes.io/change-cause` annotation to add a custom message for the deployment, viewable when browing the history of the rollout
-
-## Daemon Sets
-
-`{bm} /(Resources\/Daemon Sets)_TOPIC/i`
+`{bm} /(Kinds\/Stateful Set)_TOPIC/i`
 
 ```{prereq}
-Resources/Replica Sets_TOPIC
-Resources/Deployments_TOPIC
+Kinds/Replica Set_TOPIC
+Kinds/Deployment_TOPIC
+Kinds/Volume_TOPIC
+Kinds/Service/Headless_TOPIC
 ```
 
-A daemon set is an abstraction that's used to ensure that a set of nodes each have a copy of some pod always up and running. Typical scenarios where a daemon set is used include ...
+A stateful set is similar to a deployment but the pods it creates are guaranteed to have a stable identity and each pod is able to have its own dedicated storage volumes. In the context of stateful sets, ...
+
+ * stable identity means that if a pod goes down, the stateful set responsible for it will replace it with a new pod has the exact same identification information (same name, IP, etc..). Contrast that to deployments, where replacement pods have completely new identities.
+ * dedicated storage volume means that each stable identity can have its own unique persistent volume claims. Contrast that to deployments, where persistent volume claims are shared across all pods.
+
+```{note}
+"Stable identity" doesn't imply that a replacement pod will be scheduled on the same node. The replacement may end up on another node.
+```
+
+A stateful set requires three separate pieces of information:
+
+ 1. a headless service, which acts as a gateway to a stateful set's pods (referred to as a governing service).
+ 2. a volume claim template, which templates persistent volume claims for a stateful set's pods.
+ 3. a pod template, which templates pods similar to pod template for a deployment.
+
+These three pieces are represented as two separate objects: the governing service and the stateful set itself.
+
+```yaml
+# Manifest #1: Headless service for the stateful set's pods (governing service).
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  clusterIP: None
+  # Routes traffic to pods based on the following label selectors, which are the same
+  # key-value pairs used for pod template labels of the the stateful set further down.
+  selector:
+    app: my-app
+  ports:
+    - name: http
+      port: 80
+----
+# Manifest #2: The stateful set itself, which contains both the pod template and the
+# volume claim template.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: my-stateful-set
+spec:
+  # Selectors are label selectors used to identify pods, which match the key-value pairs
+  # used for pod template labels further down.
+  selector:
+    matchLabels:
+      app: my-app
+  serviceName: my-service  # Name of headless service for stateful set (governing service).
+  replicas: 3              # Number of replicas for the stateful set.
+  # Persistent volume claims will be created based on the following template.
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        resources:
+          requests:
+             storage: 1Mi
+        accessModes:
+          - ReadWriteOnce
+  # Pod's will be created based on the following template. Note that the volume mount
+  # references the persistent volume claim template described above.
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: my-container
+          image: my-image:1.0
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - name: data
+              mountPath: /var/data
+  # Similar to deployments, stateful sets also support updating / rollback mechanisms exist,
+  # but not exactly the same ones.
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+   # Once all of the readiness probes of a new pod succeed, this is the number of seconds to
+   # wait before the stateful set deems the pod to be available. No readiness probes within
+   # the pod can fail during this wait.
+  minReadySeconds: 10
+```
+
+The example above creates a stateful set that manages three pod replicas and a governing service for those pods. The pods created by the stateful set are numbered starting from 0: `my-stateful-set-0`, `my-stateful-set-1`, and `my-stateful-set-2`. In addition, each pod gets its own persistent volume claim mounted at `/data` containing a modest amount of storage space. That persistent volume claim will have the format `data-my-stateful-set-N` (where `N` is the ordinal suffix)
+
+```{svgbob}
+                    .--> "my-stateful-set-0 with PVC data-my-stateful-set-0"
+                    |
+my-stateful-set ----+--> "my-stateful-set-1 with PVC data-my-stateful-set-1"
+                    |
+                    '--> "my-stateful-set-2 with PVC data-my-stateful-set-2"
+```
+
+The ordinal suffixes of a stateful set's pods are part of their stable identity. If a pod were to die, the volume for that stable identity will be re-bound to its replacement. Stateful sets take great care to ensure that no more than one pod will ever be running with the same stable identity so as to prevent race conditions (e.g. conflicts regarding IP / host, multiple pods using the same volume, etc..). In many cases, that means a pod won't be replaced until the stateful set is absolutely sure that it has died.
+
+```{seealso}
+Kinds/Stateful Set/Scaling_TOPIC (Scaling via ordinal suffixes and race condition prevention)
+Kinds/Stateful Set/Updates_TOPIC (Race condition prevention on pod updates)
+```
+
+### Scaling
+
+`{bm} /(Kinds\/Stateful Set\/Scaling)_TOPIC/i`
+
+Because of stable identity guarantees and the fact that each stable identity can have its own distinct volumes, stateful sets have different scaling behavior than deployments. A stateful set scales pods based on the ordinal suffix of its pod names. When the number of replicas is ...
+
+ * decreased, the stateful set brings down the pods with the highest ordinal suffixes first (decrementing).
+ * increased, the stateful set brings up new pods with the next unused ordinal suffixes (incrementing).
+
+For example, given the stateful set `my-stateful-set` with 3 replicas (those replicas being pods `my-stateful-set-0`, `my-stateful-set-1`, and `my-stateful-set-2`), ...
+
+ * decrementing the replica count to 1 is guaranteed to shut down pods `my-stateful-set-2` and `my-stateful-set-1` (in that order).
+ * incrementing the replica count to 5 is guaranteed to spin up pods `my-stateful-set-4` and `my-stateful-set-5` (in that order).
+
+The scaling behavior makes the stable identities of the pods being removed / added known beforehand. In contrast, a deployment's scaling behavior makes no guarantees as to which replicas get removed / added and in what order.
+
+```{svgbob}
+                    .--> "my-stateful-set-0 with PVC data-my-stateful-set-0"
+                    |
+my-stateful-set ----+--> "my-stateful-set-1 with PVC data-my-stateful-set-1"
+                    |
+                    '--> "my-stateful-set-2 with PVC data-my-stateful-set-2 (scale from here)"
+```
+
+Stateful sets scale one pod at a time to avoid race conditions that are sometimes present in distributed applications (e.g. which database server is the primary vs which database server is the replica). When scaling down, the persistent volumes for a pod won't be removed along with the pod. This is to avoid permanently deleting data in the event of an accidental scale down. Likewise, when scaling up, if a volume for that stable identity is already present, that volume gets attached instead of creating a new volume.
+
+For example, given the same 3 replica `my-stateful-set` example above, changing the number of replicas to 1 will leave the volumes for `my-stateful-set-1` and `my-stateful-set-2` lingering undeleted.
+
+```{svgbob}
+                    .--> "my-stateful-set-0 with PVC data-my-stateful-set-0"
+                    |
+my-stateful-set ----+    "unassigned PVC data-my-stateful-set-1"
+                    
+                         "unassigned PVC data-my-stateful-set-2"
+```
+
+Changing the number of replicas back to 3 will then recreate `my-stateful-set-1` and `my-stateful-set-2`, but those new pods will be assigned the lingering undeleted volumes from before rather than being assigned new volumes (all previous data will be present).
+
+```{svgbob}
+                    .--> "my-stateful-set-0 with PVC data-my-stateful-set-0"
+                    |
+my-stateful-set ----+--> "my-stateful-set-1 with PVC data-my-stateful-set-1 (PVC contains previous data)"
+                    |
+                    '--> "my-stateful-set-2 with PVC data-my-stateful-set-2 (PVC contains previous data)"
+```
+
+A stateful set will not proceed with scaling until all preceding pods (ordinal suffix) are in a healthy running state. The reason for this is that, if a pod is unhealthy and the stateful set gets scaled down, it's effectively lost two members at once. This goes against the "only one pod can go down at a time" stateful set scaling behavior.
+
+For example, given the same 3 replica `my-stateful-set` example above, scaling down to 1 replica will first shut down pod `my-stateful-set-2` and then pod `my-stateful-set-1`. If `my-stateful-set-2` shuts down but then `my-stateful-set-0` enters into an unhealthy state, `my-stateful-set-1` won't shut down until `my-stateful-set-0` recovers. Likewise, if `my-stateful-set-0` enters into an an unknown state (e.g. the node running it temporarily lost communication with the control plane), `my-stateful-set-1` won't shut down until `my-stateful-set-0` is known and healthy.
+
+```{note}
+The scaling guarantees described here can be relaxed through `spec.podManagementPolicy`. By default, this value is set to `OrderedReady`, which enables the behavior described in this section. If it were instead set to `Parallel`, the stateful set's scaling will launch / terminate pods in parallel and won't wait for preceding pods to be healthy.
+```
+
+### Updates
+
+`{bm} /(Kinds\/Stateful Set\/Updates)_TOPIC/i`
+
+```{prereq}
+Kinds/Deployment/Updates_TOPIC
+Kinds/Volume/Storage Classes_TOPIC
+Kinds/Stateful Set/Scaling_TOPIC
+```
+
+There are two templates in a stable set: a pod template and a volume claim template.
+
+A pod template has two different update strategies:
+
+ * `RollingUpdate` - updates pods piecemeal (default).
+ * `OnDelete` - user must manually bring down each pod and the stateful set will replace it with updated version.
+
+`OnDelete` is simple but requires user intervention to shutdown pods. `RollingUpdate` is similar to the `RollingUpdate` strategy for deployments, but it supports less parameters and its behavior is slightly different. Specifically, rolling updates for stateful sets support two parameters.
+
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: my-ss
+spec:
+  selector:
+    matchLabels:
+      app: my-app
+  serviceName: my-service
+  replicas: 10
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: my-container
+          image: my-image:1.0
+  # Rolling update strategy.
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      # "maxUnavailable" - During an update, this is the number (or percentage) of pods
+      # that can be unavailable relative to the number of replicas. Since this deployment
+      # has 10 replicas, the parameter below is instructing that the number of replicas
+      # can't go below 8 during an update (at most 2 pods may be unavailable).
+      #
+      # If between 0 and 1, this is treated as a percentage of pods (e.g. 0.25 means 25
+      # percent of pods may be unavailable during an update). 
+      maxUnavailable: 1
+      # "partition" - Only pods with suffix ordinals that are >= to this number will
+      # receive updates. All other pods will remain un-updated. For this stateful set,
+      # that means only "my-ss-5", "my-ss-6", "my-ss-7", "my-ss-8", "my-ss-9", and
+      # "my-ss-10" get updated. 
+      #
+      # This is a useful feature for gradual / phased roll outs.
+      partition: 5
+```
+
+```{note}
+Deployments also supported the rolling update parameter `minReadySeconds`. There's a similar feature for stateful sets but it goes under the path `spec.minReadySeconds` (it isn't specific to rolling updates).
+```
+
+Rolling updates performed with a pod management policy of `OrderedReady` (the default) may get into a broken state which requires manual intervention to roll back. If an update results in a pod entering into an unhealthy state, the rolling update will pause. Reverting the pod template won't work because it goes against the "only one pod can go down at a time" behavior of stateful sets.
+
+```{seealso}
+Kinds/Stateful Set/Scaling_TOPIC (Discussion of pod management policy and only one pod can go down at a time" behavior)
+```
+
+A volume claim template cannot be updated. The system will reject an updated stateful set if its volume claim template differs from the original. As such, users have devised various manual strategies for modifying volumes in a stateful set:
+ 
+ * Expanding the volumes for a stateful set's pods is documented [here](https://serverfault.com/a/989665). The idea is to manually edit each persistent volume claim then re-create the stateful set without deleting any of its pods.
+
+   ```sh
+   kubectl edit pvc <name> # for each PVC in the StatefulSet, to increase its capacity.
+   kubectl delete sts --cascade=orphan <name> # to delete the StatefulSet and leave its pods.
+   kubectl apply -f <name> # to recreate the StatefulSet.
+   kubectl rollout restart sts <name> # to restart the pods, one at a time. During restart, the pod's PVC will be resized.
+   ```
+
+   ```{note}
+   For this to work, I think the volume type / storage class needs to support expanding volumes (`allowVolumeExpansion` is `true`)?
+   ```
+
+```{note}
+What about shrinking a volume? I imagine what you need to do is, starting with the last ordinal to the first (current pod denoted N), ...
+
+1. delete stateful set without deleting its pods (`kubectl delete sts --cascade=orphan <name>`).
+1. delete pod N.
+1. create a temporary volume with the new desired size.
+1. create a temporary pod with both the pod N's volume and the temporary volume attached.
+1. use the temporary pod to copy pod N's volume to the temporary volume.
+1. delete the temporary pod.
+1. delete pod N's volume.
+1. re-create pod N's volume with the new desired size (same name).
+1. create a temporary pod with both the pod N's volume and the temporary volume attached.
+1. use the temporary pod to copy the temporary volume to pod N's volume.
+1. re-create the stateful set (`kubectl apply -f <name>`).
+1. trigger the stateful set to restart pods one at a time (`kubectl rollout restart sts <name>`).
+
+The last step should restart the deleted pod, and that deleted pod will attach the updated volume.
+
+These same steps may work for expanding volumes when `allowVolumeExpansion` isn't set to `true`.
+```
+
+### Peer Discovery
+
+`{bm} /(Kinds\/Stateful Set\/Peer Discovery)_TOPIC/i`
+
+A stateful set's governing service allows for its pods to discover each other (peer discovery). For each pod in a stateful set, that pod will have a sub-domain within that stateful set's governing service. For example, a stateful set with the name `my-ss` in the namespace `apple` within the cluster will expose its pods as ...
+
+ * `my-ss-0.my-ss.apple.svc.cluster.local`
+ * `my-ss-1.my-ss.apple.svc.cluster.local`
+ * `my-ss-2.my-ss.apple.svc.cluster.local`
+ * ...
+
+... , where each sub-domain points to one of the stable identities.
+
+A governing service allows for enumerating all pods within its stateful set via DNS service records (SRV). In the example above, performing an SRV lookup on `my-ss.apple.svc.cluster.local` will list out the sub-domains and IPs for all `my-ss` pods.
+
+```{note}
+If you have access to `dig`, you can do `dig SRV my-ss.apple.svc.cluster.local` and it'll list out all available sub-domains and their IPs for you.
+```
+
+```{note}
+If polling for the IP of a peer that hasn't come up yet, DNS negative caching might cause a small delay to discovering the IP when that peer actually comes up.
+```
+
+## Job
+
+`{bm} /(Kinds\/Job)_TOPIC/i`
+
+```{prereq}
+Kinds/Pod_TOPIC
+Kinds/Pod/Restart Policy_TOPIC
+Kinds/Stateful Set_TOPIC
+```
+
+A job launches one or more pods to perform one-off tasks. Once those one-off tasks complete, the job is effectively over. Typical job use-cases include ...
+
+ * database migration
+ * database compaction
+ * log file removal
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: my-job
+spec:
+  parallelism: 5  # Num of pods that can run at the same time (default is 1).
+  completions: 10 # Num of pods that must successfully finish for job to end (default is 1).
+  backoffLimit: 4 # Max num of retries of a failed pod before failing job (default is 6).
+  activeDeadlineSeconds: 99 # Max secs before job forcibly fails, killing all pods.
+  # Completion mode, when set to "Indexed", provides an ordinal suffix / stable identity to
+  # each launched pod, similar to how a stateful set provides its pods with a stable identity.
+  # This is useful in cases where the pods of a job need to communicate with each other (e.g.
+  # distributed work-queue processing), but a service will likely also need to be provided.
+  #
+  # In most cases, this should be set to "NonIndexed" (default value).
+  completionMode: NonIndexed
+  # Pod template describing job's pods.
+  template:
+    spec:
+      containers:
+        - name: my-container
+          image: my-image:1.0
+      # Restart policy of the launched pods. For jobs, this must be set to either
+      # "OnFailure" or "Never".
+      restartPolicy: OnFailure
+```
+
+The example job attempts to runs 10 pods to successful completion, keeping up to 5 concurrently running at any one time. If a pod fails, the job will retry it up to 4 times before failing the job entirely. Similarly, the job itself runs no more than 99 seconds before failing entirely.
+
+Common gotchas with jobs:
+
+ * *Lingering finished jobs*: By default, neither a job nor its pods are cleaned up after the job ends (regardless of success or failure). This can end up cluttering the Kubernetes servers.
+
+   ```{seealso}
+   Kinds/Job/Cleanup (Job cleanup strategies)
+   ```
+
+ * *No communication between pods*: By default, a job will automatically pick pod labels and set its label selectors so as not to conflict with other pods in the system. Without consistent labels, the pods of a job can't communicate with each other.
+
+   ```{seealso}
+   Kinds/Job/User-defined Labels (Job cleanup strategies)
+   ```
+
+ * *Unexpected concurrency*: Even if `spec.concurrency` and `spec.completions` are both set to 1, there are cases where a job may launch more than once. As such, a job's pods should be tolerant of concurrency.
+
+ * *`activeDeadlineSeconds` confusion*: There's an `activeDeadlineSeconds` that can go in the pod template as well which is different from the job's `activeDeadlineSeconds`. Don't confuse the two.
+
+### Cleanup
+
+`{bm} /(Kinds\/Job\/Cleanup)_TOPIC/i`
+
+One common problem with jobs is resource cleanup. With the exception of failed pods that have been retried (`spec.backoffLimit`), a completed job won't delete its pods by default. Those pods are kept around in a non-running state so that their logs can be examined if needed. Likewise, the job itself isn't deleted on completion either.
+
+```{note}
+This became a problem for me when using Amazon EKS with Amazon Fargate to run the job's pods. The Fargate nodes were never removed from the cluster because the job's pods were never deleted?
+```
+
+The problem with letting jobs and pods linger around in the system is that it causes clutter, putting pressure on the Kubernetes servers. Typically, it's up to the user to delete a job (deleting a job will also deletes any lingering pods). However, there are other mechanisms that can automate the deletion of jobs:
+
+ * There's a higher-level kind called cron job that has cleanup policies for ended jobs.
+
+   ```{seealso}
+   Kinds/Cron Job_TOPIC ("Job history limit" fields)
+   ```
+
+ * There's a time-to-live mechanism that can be used to automatically deletes jobs that have ended (regardless of success or failure) after some duration.
+
+   ```yaml
+   apiVersion: batch/v1
+   kind: Job
+   metadata:
+     name: my-job
+   spec:
+     # The number of seconds have the job has ended before the job is eligible to be
+     # deleted. If this is 0, the job will be deleted immediately after ending.
+     ttlSecondsAfterFinished: 100
+     template:
+       spec:
+         containers:
+           - name: my-container
+             image: my-image:1.0
+      restartPolicy: Never
+   ```
+
+### User-defined Labels
+
+`(bm} /(Kinds\/Job\/User-defined Labels`
+
+```{prereq}
+Kinds/Stateful Set/Peer Discovery_TOPIC
+```
+
+By default, a job automatically picks out a unique label to identify its pods (such that it definitively knows which pods in the system belong to it). However, it's possible to give custom labels to a job's pods / give custom label selectors to a job. This is useful is cases where a job's pods need to communicate with each other: A headless service can target a job's pods based on its labels, which is similar to how a stateful set's pods can communicate with and discover each other (governing service).
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: my-job
+spec:
+  parallelism: 5  # Num of pods that can run at the same time (default is 1).
+  completions: 10 # Num of pods that must successfully finish for job to end (default is 1).
+  backoffLimit: 4 # Max num of retries of a failed pod before failing job (default is 6).
+  activeDeadlineSeconds: 99 # Max secs before job forcibly fails, killing all pods.
+  # Completion mode, when set to "Indexed", provides an ordinal suffix / stable identity to
+  # each launched pod, similar to how a stateful set provides its pods with a stable identity.
+  # This is useful in cases where the pods of a job need to communicate with each other (e.g.
+  # distributed work-queue processing), but a service will likely also need to be provided.
+  #
+  # In most cases, this should be set to "NonIndexed" (default value).
+  completionMode: NonIndexed
+  # Selectors are label selectors used to identify pods, which match the key-value pairs
+  # used for pod template labels further down.
+  #
+  # In most cases, you shouldn't need to specify this (or the labels in the pod template
+  # below). When not present, the system will automatically pick labels / label selectors
+  # that won't conflict with other jobs / pods.
+  selector:
+    matchLabels:
+      app: my-app
+  # Pod template describing job's pods.
+  template:
+    spec:
+      containers:
+        - name: my-container
+          image: my-image:1.0
+      # Restart policy of the launched pods. For jobs, this must be set to either
+      # "OnFailure" or "Never".
+      restartPolicy: OnFailure
+```
+
+## Cron Job
+
+`{bm} /(Kinds\/Cron Job)_TOPIC/i`
+
+```{prereq}
+Kinds/Job_TOPIC
+```
+
+A cron job launches a job periodically on a schedule, defined in [cron format](https://en.wikipedia.org/wiki/Cron#Overview).
+
+```yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: my-cronjob
+spec:
+  schedule: "0 * * * *"  # Schedule of the job in cron format (launches every hour)
+  # How much tolerance to have (in seconds) for a scheduled run of a job that's been missed.
+  # If a scheduled run gets missed for any reason but is identified within this window,
+  # it'll run anyways. If it's past the window, it'll count as a failed job.
+  #
+  # This is an optional field. If not set, there is no deadline (infinite tolerance).
+  startingDeadlineSeconds: 200
+  # How should a job launch be treated if the previously launched job is still running.
+  # If this is set to ...
+  #  * "Allow", it allows the jobs to run concurrently (default value).
+  #  * "Forbid", it skips the new job launch, meaning concurrently running jobs not allowed.
+  #  * "Replace", it replaces the previously running job with the new job.
+  concurrencyPolicy: Forbid
+  # How many ended successful/failed jobs should remain in Kubernetes. If set to 0, a job and
+  # its corresponding pods are removed immediately after ending. If  > 0, the last N jobs and
+  # their pods will remain in Kubernetes (useful for inspection of logs).
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 0
+  # Job template that describes the job that a cron job launches. This is effectively a job
+  # definition without "apiVersion", "kind", and "metadata" fields.
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: my-container
+              image: my-image:1.0
+          restartPolicy: OnFailure
+```
+
+```{note}
+There is no stable support for timezones. The timezone used by all cron jobs is whatever the timezone of the controller manager is (other parts of the doc say unspecified timezone). There currently is a beta feature that's gated off that lets you specify a timezone by setting `spec.timeZone` (e.g. setting it to `Etc/UTC` will use UTC time).
+```
+
+Common gotchas with cron jobs:
+
+ * *Unexpected concurrency*: There are cases where a cron job may launch more than once. As such, a job's pods should be tolerant of concurrency.
+
+ * *Unexpected misses*: There are cases where a cron job may not launch even though it's supposed to.
+
+## Daemon Set
+
+`{bm} /(Kinds\/Daemon Set)_TOPIC/i`
+
+```{prereq}
+Kinds/Replica Set_TOPIC
+Kinds/Deployment_TOPIC
+Kinds/Stateful Set_TOPIC
+```
+
+A daemon set ensures that a set of nodes each have a copy of some pod always up and running. Typical scenarios where a daemon set is used include ...
 
  * node log collection (e.g. logstash agent).
  * node monitoring (e.g. zabbix agent).
 
 The above scenarios are ones which break container / pod isolation. That is, a daemon set is intended to run pods that are coupled to nodes and sometimes those pods will do things such as mount the node's root filesystem and run commands to either install software or gather information.
 
-Similar to how a replica set has a corresponding deployment that helps with upgrades, a daemon set has a daemon sets object that helps manage its upgrades.
-
-## Jobs
-
-`{bm} /(Resources\/Jobs)_TOPIC/i`
-
-```{prereq}
-Resources/Pods_TOPIC
-Resources/Deployments_TOPIC
-```
-
-A job is an abstraction that's used to run a set of pods performing a one-off task. Unlike a deployment, the pods running under a job don't need the same level of management (e.g. multiple replicas, upgrade strategies, etc..). Once a job completes, it's over.
-
-Typical scenarios where a job is used include ...
-
- * database migration
- * database compaction
- * log file removal
-
-Jobs can also be scheduled to run at specific intervals / times.
-
-# Daemon Set
-
 ```yaml
-apiVersion: v1
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: my-ds
 spec:
+  # Selectors are label selectors used to identify pods, which match the key-value pairs
+  # used for pod template labels further down.
+  selector:
+    matchLabels:
+      app: my-app
+  # Pod template describing daemon set's pods.
   template:
+    metadata:
+      name: my-pod
+      # These labels are how this daemon set will determine if the pod is running on a node.
+      # It will look around for pods with this set of labels.
+      labels:
+        app: my-app
     spec:
+      # Put copies of this pod only on nodes that have these labels. There is also a
+      # "nodeAffinity" field and "tolerations" field, which allow for more elaborate logic
+      # / soft logic for node selection (too vast to cover here).
+      #
+      # If neither "nodeSelector" nor "nodeAffinity" is set, copies of this pod will run on
+      # all nodes.
       nodeSelector:
-        node_label_key1: value1
-        node_label_key1: value2
+        type: my-node-type
       containers:
-      - name: my-app
-        image: my-app/my-app:v1
-        resources:
-          limits:
-            cpu: 100m
-            memory: 200Mi
-        volumeMounts:
-        - name: varlog
-          mountPath: /var/log
-          readOnly: true
-      terminationGracePeriodSeconds: 30
+        - name: my-container
+          image: my-image:1.0
+          resources:
+            limits:
+              cpu: 100m
+              memory: 200Mi
+          volumeMounts:
+            - name: varlog
+              mountPath: /host_log
+              readOnly: true
       volumes:
-      - name: varlog
-        hostPath:
-          path: /var/log
+        - name: varlog
+          hostPath:
+            path: /var/log
 ```
 
-TODO: spec/template/spec/nodeSelector defines the node labels to target
+The example above runs a copy of the pod template on each node that has the label `type=my-node-type` and mounts the host's `/var/log` directory to `/host_log` in the container. Most daemon sets are used for some form of monitoring or manipulation of nodes, so it's common to have volumes of the type `hostPath`, which mounts a directory that's directly on the node itself.
 
-TODO: notice how volumes are using hostPath, which goes into the node directly
-
-# Daemon Sets
-
-TODO: this is the equivalent of deployment for daemon set, it has rollingupdates just like a deployment does
-
-# Job
-
-```yaml
-apiVersion: v1
-kind: Job
-metadata:
-  name: my-job
-spec:
-  parallelism: 5
-  completions: 10
-  template:
-    spec:
-      containers:
-      - name: my-app
-        image: gcr.io/my-app:v1
-        imagePullPolicy: Always
-        args:
-        - "--arg1"
-        - "--arg2"
-      restartPolicy: OnFailure   # restart pod if it didn't complete successfully, can also be Never
-```
-
-TODO: for one-off tasks, defined using pod templates
-
-TODO: parallelism defines how many of the pods run at once, completion is how many need to complete
-
-TODO: kubectl is the easiest way to run jobs? looks confusing see ch12. job needs to be explicitly deleted once it's finished
-
-TODO: don't use labels, because people create lots of jobs and if you start labeling pods and there's a naming conflict bad/unexpected things happen (ch12)
-
-TODO: don't set restartPolicy to never, because what happens is that the internal component responsible for restarts won't restart it and as such the job will see it hasn't restarted and restart it itself. this causes a lot of junk in the cluster.
-
-TODO: liveness probes can be used to detect if the a pod is dead in a job as well
-
-TODO: use CronJob type to have it be scheduled by time
-
-# Autoscaling
+Unlike deployments and stateful sets, daemon sets don't have support for rolling updates. On any change to a daemon set's pod template on node selection criteria, old pods are deleted and updated pods are brought up in their place.
 
 ## Horizontal Pod Autoscaling
 
@@ -2261,6 +3143,64 @@ TODO: figure this out
 ## Cluster Autoscaler
 
 TODO: it looks like this is an external component? if not enough resources to run a pod, provision more nodes from the cloud provider
+
+# Custom Kinds
+
+TODO: write an example python controller here and talk about how to deploy it + ch 18
+
+TODO: write an example python controller here and talk about how to deploy it + ch 18
+
+TODO: write an example python controller here and talk about how to deploy it + ch 18
+
+TODO: write an example python controller here and talk about how to deploy it + ch 18
+
+TODO: write an example python controller here and talk about how to deploy it + ch 18
+
+TODO: write an example python controller here and talk about how to deploy it + ch 18
+
+TODO: write an example python controller here and talk about how to deploy it + ch 18
+
+# Security
+
+SEE section 7.5.2 -- disable implicit binding of k8s api tokens into the system if you don't need to access k8s api (automountService-AccountToken)
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
+
+TODO: ch 12 + 13
 
 # Kubectl Cheatsheet
 
@@ -2417,37 +3357,17 @@ The option `--from-file` can also point to a directory, in which case an entry w
  * `kubectl top nodes` - view node resource usages.
  * `kubectl top pods` - view pod resource usages.
 
-# Amazon
-
-The managed Kubernetes service on Amazon Web Services (AWS) is called Elastic Kubernetes Service (EKS). The quickest way to get an EKS instance running on AWS is to use the third-party `eksctl` tool, which uses AWS's CloudFormation service to set up all required networking, VMs, roles, etc.. to get EKS up and running. Assuming you're working in AWS region `us-east-2` and you want your cluster to be called `my-cluster`, the command to create a new cluster is ...
-
-```
-eksctl create cluster --name my-cluster --region us-east-2 --fargate
-
-eksctl create cluster --name my-cluster --region us-east-2 --fargate
-
-
-
-```
-
-
-```{note}
-Original guide can be found [here](https://docs.aws.amazon.com/eks/latest/userguide/eks-ug.pdf#getting-started-eksctl)
-```
-
-https://aws-controllers-k8s.github.io/community/docs/tutorials/rds-example/
-
-# Security Tips
-
-SEE section 7.5.2 -- disable implicit binding of k8s api tokens into the system if you don't need to access k8s api (automountService-AccountToken)
-
 # Terminology
 
- * `{bm} resource` - A class of Kubernetes object (e.g. pod, replica set, deployment, etc..). 
+ * `{bm} kind/(\bkind)s?\b/i/true/true` - A class of object within Kubernetes (e.g. pod, service, secret, replica set, deployment, etc..).
 
- * `{bm} image` - An application (or set of applications) packaged with all of its dependencies as an immutable and isolated filesystem. The filesystem typically contains all dependencies required for the application(s) run sealed at their correct version.
+ * `{bm} object` - An entity orchestrated / managed by Kubernetes, such as a running pod or service.
 
-   Images also typically include metadata describing its needs and operational standards (e.g. memory requirements).
+ * `{bm} manifest` - A declarative configuration (either YAML or JSON) that describes an object. This is effectively a blueprint for an object, similar to how an image is a blueprint for a container.
+
+ * `{bm} image` - An application packaged as an immutable and isolated filesystem. The filesystem typically contains all library dependencies required for the application to run in an isolated and reproducible manner (e.g. library dependencies are the versions expected by the application).
+
+   Images also typically include metadata describing its needs and operational standards (e.g. memory requirements for the application).
 
  * `{bm} container` - An instance of an image. A container creates an isolated copy of the image's filesystem, isolates the resources required for that image, and launches the entrypoint application for that image. That container can't see or access anything outside of the container unless explicitly allowed to by the user. For example, opening a port 8080 on a container won't open port 8080 on the host running it, but the user can explicitly ask that port 8080 in the container map to some port on the host.
 
@@ -2474,11 +3394,11 @@ SEE section 7.5.2 -- disable implicit binding of k8s api tokens into the system 
 
  * `{bm} node` - A host that Kubernetes uses to run the containers its orchestrating.
 
- * `{bm} master node` - A node responsible for the managing the cluster (scheduling, API server, etc..).
+ * `{bm} master node` - A node responsible for the managing the cluster (control plane).
 
  * `{bm} worker node` - A node responsible for running application containers.
 
- * `{bm} pod/\b(pod)s?\b/i` - A set of containers all bundled together as a single unit, where all containers in that bundle are intended to run on the same node.
+ * `{bm} pod/\b(pod)s?\b/i/false/true` - A set of containers all bundled together as a single unit, where all containers in that bundle are intended to run on the same node.
 
  * `{bm} pod template` - The blueprint for creating pods.
 
@@ -2514,8 +3434,6 @@ SEE section 7.5.2 -- disable implicit binding of k8s api tokens into the system 
 
  * `{bm} imperative configuration` - A form of configuring where the configuration is submitted as a set of instructions and the system runs those instructions.
 
- * `{bm} pod manifest` - A declarative configuration for a pod, listing out things like images required and resource mappings (e.g. ports). This is effectively a blueprint for a pod, similar to how an image is a blueprint for a container.
-
  * `{bm} health check` - A Kubernetes mechanism that checks the state of pods and performs corrective action if it deems necessary. This includes both ensuring that the main container process is running, liveness probes, and readiness probes.
 
  * `{bm} liveness probe` - A user-defined task that Kubernetes runs to ensure that a pod is running correctly. For example, an HTTP server that stalls when for more than 15 seconds before returning a response may be deemed as no longer live.
@@ -2536,11 +3454,18 @@ SEE section 7.5.2 -- disable implicit binding of k8s api tokens into the system 
 
  * `{bm} service` - A set of pods exposed under a single named network service. Requests coming in to the service and are load balanced across the set of pods.
 
- * `{bm} endpoints` - A low-level object that's used by Kubernetes to map a service to the pods it routes to. In other words, an endpoints (note the plural) object is an abstraction that references a pod.
+ * `{bm} endpoints` - A low-level kind that's used to map a service to the pods it routes to. In other words, an endpoints (note the plural) object is an abstraction that references a pod.
 
- * `{bm} ingress` - A Kubernetes resource that acts as an HTTP-based frontend that routes and load balances incoming external requests to the correct service. This resource is an interface without an implementation, meaning that Kubernetes doesn't have anything built-in to handle ingress. Implementations of this interfaces are referred to as Ingress controllers and are provided by third-parties.
+ * `{bm} ingress` - A kind that acts as an HTTP-based frontend that routes and load balances incoming external requests to the correct service. This kind is an interface without an implementation, meaning that Kubernetes doesn't have anything built-in to handle ingress. Implementations of this interfaces are referred to as Ingress controllers and are provided by third-parties.
 
- * `{bm} replica set` `{bm} /(ReplicaSet)/` - A Kubernetes resource that ensures a pod has a certain number of instances running at any time.
+ * `{bm} replica set` - A kind that ensures a certain number of copies of some pod template are running at any time.
+
+ * `{bm} deployment` - A kind that has the same functionality as a replica set but also provides functionality for updating pods to a new version and rolling them back to previous versions.
+
+ * `{bm} stateful set/(stateful set|stable identity)/i` - A kind that has similar functionality to a deployment but also allows its pods to retain a stable identity and dedicated persistent storage.
+   
+   * Stable identity means that, if a pod dies, it gets replaced with a new pod that has the same identity information (same name, same IP, etc..)
+   * Dedicated persistent storage means that each stable identity can have persistent volume claims unique to it (not shared between other pods within the stateful set).
 
  * `{bm} reconciliation loop` - A loop that continually observes state and attempts to reconcile it to some desired state if it deviates. See declarative configuration.
 
@@ -2550,20 +3475,30 @@ SEE section 7.5.2 -- disable implicit binding of k8s api tokens into the system 
 
  * `{bm} cluster autoscaler` - A component that automatically scales the number of nodes in a cluster based on need.
 
- * `{bm} deployment` - A Kubernetes resource that is similar to a replica set but provides extra functionality for gracefully updating pods to a new version and rolling them back to previous versions.
+ * `{bm} daemon set` - A kind that ensures a set of nodes always have an instance of some pod running.
 
- * `{bm} daemon set` `{bm} /(DaemonSet)/` - A Kubernetes resource that ensures a set of nodes always have an instance of some pod running.
+ * `{bm} job` - A kind that launches as a pod to perform some one-off task.
 
- * `{bm} job` - A Kubernetes resource that launches as a pod to perform some one-of task.
+ * `{bm} cron job` - A kind that launches jobs on a repeating schedule.
 
- * `{bm} ConfigMap` - A Kubernetes resource for configuring the applications running in a pod.
+ * `{bm} configuration map/(config map|configuration map)/i` - A kind for configuring the containers running in a pod.
+
+ * `{bm} secret` - A kind for security-related configurations of the containers running in a pod.
 
  * `{bm} millicpu/(millicpu|millicore)/i` - A millicpu is 0.001 CPU cores (e.g. 1000 millicpu = 1 core).
 
- * `{bm} persistent volume` - A Kubernetes resource that represents non-ephemeral disk space.
+ * `{bm} persistent volume` - A kind that represents non-ephemeral disk space.
 
- * `{bm} persistent volume claim` - A Kubernetes resource that claims a persistent volume, essentially acting as a marker that the persistent volume is claimed and ready to use by containers within the cluster.
+ * `{bm} persistent volume claim` - A kind that claims a persistent volume, essentially acting as a marker that the persistent volume is claimed and ready to use by containers within the cluster.
+
+ * `{bm} governing service` - A headless service for a stateful set that lets the pods of that stateful set to discover each other (peer discovery).
+
+ * `{bm} control plane` - The distributed software that controls and makes up the functionality of a Kubernetes cluster, including the API server and scheduler used for assigning pods to worker nodes.
+
+  * `{bm} controller` - A piece of software running on the control plane that provides some functionality. This includes doing the work of reconciling observed state to desired state (reconciliation loop) and / or supporting new kinds. Kinds such as pods, stateful sets, nodes, etc.. all have controllers backing them, and custom controllers can be written and deployed by users.
 
 `{bm-error} Did you mean endpoints?/(endpoint)/i`
+
+`{bm-error} Use the proper version (e.g. DaemonSet should be Daemon set)/(ConfigMap|ReplicaSetStatefulSet|CronJob)/`
 
 `{bm-error} Missing topic reference/(_TOPIC)/i`
