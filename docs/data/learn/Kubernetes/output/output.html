@@ -93,12 +93,17 @@
 </ul>
 <li><a href="#H_Cron%20Job">Cron Job</a></li>
 <li><a href="#H_Daemon%20Set">Daemon Set</a></li>
-<li><a href="#H_Horizontal%20Pod%20Autoscaling">Horizontal Pod Autoscaling</a></li>
-<li><a href="#H_Vertical%20Pod%20Autoscaling">Vertical Pod Autoscaling</a></li>
+<li><a href="#H_Service%20Account">Service Account</a></li>
+<li><a href="#H_Horizontal%20Pod%20Autoscaler">Horizontal Pod Autoscaler</a></li>
 <li><a href="#H_Cluster%20Autoscaler">Cluster Autoscaler</a></li>
+<li><a href="#H_Pod%20Disruption%20Budget">Pod Disruption Budget</a></li>
 </ul>
 <li><a href="#H_Custom%20Kinds">Custom Kinds</a></li>
-<li><a href="#H_Security">Security</a></li>
+<li><a href="#H_API%20Security">API Security</a></li>
+<ul>
+<li><a href="#H_Role-based%20Access%20Control">Role-based Access Control</a></li>
+<li><a href="#H_Disable%20Credentials">Disable Credentials</a></li>
+</ul>
 <li><a href="#H_Kubectl%20Cheatsheet">Kubectl Cheatsheet</a></li>
 <ul>
 <li><a href="#H_CRUD">CRUD</a></li>
@@ -429,6 +434,12 @@ kubectl delete -f obj.yaml
     <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">my-container</span>
       <span class="hljs-attr">image:</span> <span class="hljs-string">my-registry.example/tiger/my-container:1.0.1</span>  <span class="hljs-comment"># Image references registry.</span>
 </code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Kinds%5C%2FService%20Account)_TOPIC%2Fi">Kinds/Service Account</a> (<a href="#BM_(image)%2Fi">Image</a> pull <a href="#BM_(secret)%2Fi">secret</a>s may be assigned to <a href="#BM_(service%20account)%2Fi">service account</a>s, where any <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> using that <a href="#BM_(service%20account)%2Fi">service account</a> inherits them)</li>
+</ul>
+</div>
 <a name="H_Resources"></a><h3>Resources</h3>
 <p><a name="BM_(Kinds%5C%2FPod%2FResources)_TOPIC%2F"></a><strong></strong></p>
 <p>Each <a href="#BM_(container)%2Fi">container</a> within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can optionally declare a ...</p>
@@ -784,7 +795,7 @@ kubectl delete -f obj.yaml
 <li>individual volume mounts <em>don't</em> receive updates.</li>
 <li>whole volume mounts do receive updates.</li>
 </ul>
-<p>Command-line arguments and environment variables don't update because an application's command-line arguments and environment variables can't be changed from the outside once a process launches. Individual files/directories mounted from a volume don't update because of technical limitations related to how Linux filesystems work (see <a href="here">https://github.com/</a><a href="#BM_(Kubernetes)%2Fi">kubernetes</a>/<a href="#BM_(Kubernetes)%2Fi">kubernetes</a>/issues/50345#issuecomment-656947594). Whole volume mounts <em>do</em> update files under the mount, but it's up to the application to detect and reload those changed files.</p>
+<p>Command-line arguments and environment variables don't update because an application's command-line arguments and environment variables can't be changed from the outside once a process launches. Individual files/directories mounted from a volume don't update because of technical limitations related to how Linux filesystems work (see <a href="https://github.com/kubernetes/kubernetes/issues/50345#issuecomment-656947594%5D">here</a>). Whole volume mounts <em>do</em> update files under the mount, but it's up to the application to detect and reload those changed files.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>All files in a volume mount get updated at once. This is possible because of symlinks. New directory get loaded in and the symlink is updated to use that new directory.</p>
@@ -990,7 +1001,7 @@ SERVICE_C_SERVICE_PORT_METRICS_1=8080
 </code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Looking at the k8s code, it looks like for a <a href="#BM_(service)%2Fi">service</a> port needs to be named for it as an environment variable. <a href="#BM_(service)%2Fi">Service</a> ports that don't have a name won't show up as environment variables. See <a href="https://github.com/kubernetes/kubernetes/blob/master/pkg/kubelet/envvars/envvars.go#L51-L55">here</a>.</p>
+<p>Looking at the k8s code, it looks like for a <a href="#BM_(service)%2Fi">service</a> port needs to be named for it as an environment variable. <a href="#BM_(service)%2Fi">Service</a> ports that don't have a name won't show up as environment variables. See (here)[https://github.com/<a href="#BM_(Kubernetes)%2Fi">kubernetes</a>/<a href="#BM_(Kubernetes)%2Fi">kubernetes</a>/blob/master/pkg/kubelet/envvars/envvars.go#L51-L55].</p>
 </div>
 <p>Using environment variables for <a href="#BM_(service)%2Fi">service</a> discovery has the following pitfalls:</p>
 <ul>
@@ -1242,20 +1253,12 @@ SERVICE_C_SERVICE_PORT_METRICS_1=8080
 <p>See <a href="https://stackoverflow.com/a/25843058">here</a> for an explanation of bearer tokens. You typically just need to include a HTTP header with the token in it.</p>
 <p>Third-party libraries that interface with <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> are available for various languages (e.g. Python, Java, etc..), meaning you don't have to do direct HTTP requests and do things like fiddle with headers.</p>
 </div>
-<p>It's possible to prevent these authentication details from being mounted to an individual <a href="#BM_(container)%2Fi">container</a> within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</p>
-<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
-<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
-<span class="hljs-attr">metadata:</span>
-  <span class="hljs-attr">name:</span> <span class="hljs-string">my-pod</span>
-<span class="hljs-attr">spec:</span>
-  <span class="hljs-attr">containers:</span>
-    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">my-container</span>
-      <span class="hljs-attr">image:</span> <span class="hljs-string">my-image:1.0</span>
-      <span class="hljs-attr">automountServiceAccountToken:</span> <span class="hljs-literal">false</span>  <span class="hljs-comment"># Prevent auth details from mounting on this container</span>
-</code></pre>
 <div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>It doesn't look like it's possible to prevent these authentication details from being mounted to a single <a href="#BM_(container)%2Fi">container</a> within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>, but it is possible to override it by mounting something else to <code>/var/run/secrets/kubernetes.io/serviceaccount</code> (e.g. maybe a tmp file system).</p>
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Kinds%5C%2FService%20Account)_TOPIC%2Fi">Kinds/Service Account</a> (Credentials map to a <a href="#BM_(service%20account)%2Fi">service account</a>)</li>
+<li><a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">Kind</a>s/<a href="#BM_(API%20Security%5C%2FDisable%20Credentials)_TOPIC%2Fi">API Security/Disable Credentials</a> (Disable mounting of credentials within <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>)</li>
+</ul>
 </div>
 <a name="H_Configuration%20Map"></a><h2>Configuration Map</h2>
 <p><a name="BM_(Kinds%5C%2FConfiguration%20Map)_TOPIC%2F"></a><strong></strong></p>
@@ -2772,22 +2775,253 @@ kubectl rollout restart sts &lt;name&gt; <span class="hljs-comment"># to restart
 </code></pre>
 <p>The example above runs a copy of the <a href="#BM_(pod%20template)%2Fi">pod template</a> on each <a href="#BM_(node)%2Fi">node</a> that has the <a href="#BM_(label)%2Fi">label</a> <code>type=my-node-type</code> and mounts the host's <code>/var/log</code> directory to <code>/host_log</code> in the <a href="#BM_(container)%2Fi">container</a>. Most <a href="#BM_(daemon%20set)%2Fi">daemon set</a>s are used for some form of monitoring or manipulation of <a href="#BM_(node)%2Fi">node</a>s, so it's common to have volumes of the type <code>hostPath</code>, which mounts a directory that's directly on the <a href="#BM_(node)%2Fi">node</a> itself.</p>
 <p>Unlike <a href="#BM_(deployment)%2Fi">deployment</a>s and <a href="#BM_(stateful%20set%7Cstable%20identity)%2Fi">stateful set</a>s, <a href="#BM_(daemon%20set)%2Fi">daemon set</a>s don't have support for rolling updates. On any change to a <a href="#BM_(daemon%20set)%2Fi">daemon set</a>'s <a href="#BM_(pod%20template)%2Fi">pod template</a> on <a href="#BM_(node)%2Fi">node</a> selection criteria, old <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s are deleted and updated <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s are brought up in their place.</p>
-<a name="H_Horizontal%20Pod%20Autoscaling"></a><h2>Horizontal Pod Autoscaling</h2>
-<p>TODO: TALK ABOUT HORIZONTAL AUTOSCALING + yaml</p>
-<p>The number of replicas in a <a href="#BM_(replica%20set)%2Fi">replica set</a> can be automatically scaled up an down through <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>'s <a href="#BM_(horizontal%20pod%20autoscaling)%2Fi">horizontal pod autoscaling</a> component. Replicas are scaled based on some user-defined criteria (e.g. high cpu usage).</p>
+<a name="H_Service%20Account"></a><h2>Service Account</h2>
+<p><a name="BM_(Kinds%5C%2FService%20Account)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Kinds%5C%2FNamespace)_TOPIC%2Fi">Kinds/Namespace</a></li>
+<li><a href="#BM_(Kinds%5C%2FSecret)_TOPIC%2F">Kinds/Secret</a></li>
+<li><a href="#BM_(Kinds%5C%2FPod%2FAPI%20Access)_TOPIC%2F">Kinds/Pod/API Access</a></li>
+<li><a href="#BM_(Kinds%5C%2FPod%2FImages%2FPrivate%20Container%20Registries)_TOPIC%2F">Kinds/Pod/Images/Private Container Registries</a></li>
+</ul>
+</div>
+<p>A <a href="#BM_(service%20account)%2Fi">service account</a> is a set of credentials that applications within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> use to communicate with the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API server. <a href="#BM_(service%20account)%2Fi">Service account</a>s also provide an aggregation point for <a href="#BM_(image)%2Fi">image</a> pull <a href="#BM_(secret)%2Fi">secret</a>s and other security-related features.</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">ServiceAccount</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-service-account</span>
+<span class="hljs-comment"># A list of image pull secrets to use with private container registries. When this service</span>
+<span class="hljs-comment"># account is applied to a pod, all image pull secrets in the service account get added to</span>
+<span class="hljs-comment"># the pod.</span>
+<span class="hljs-attr">imagePullSecrets:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">my-dockerhub-secret</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">my-aws-ecr-secret</span>
+<span class="hljs-comment"># API access credentials will never be mounted to any pod that uses this service account.</span>
+<span class="hljs-attr">automountServiceAccountToken:</span> <span class="hljs-literal">false</span>
+</code></pre>
+<p>By default, each <a href="#BM_(namespace)%2Fi">namespace</a> comes with its own <a href="#BM_(service%20account)%2Fi">service account</a> which <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s in that <a href="#BM_(namespace)%2Fi">namespace</a> automatically use. The <a href="#BM_(service%20account)%2Fi">service account</a> used by a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can be overridden to another <a href="#BM_(service%20account)%2Fi">service account</a>.</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-pod</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-comment"># Custom service account to use. This can't be changed once the pod's been creatd.</span>
+  <span class="hljs-attr">serviceAccountName:</span> <span class="hljs-string">my-service-account</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">my-container</span>
+      <span class="hljs-attr">image:</span> <span class="hljs-string">my-registry.example/tiger/my-container:1.0.1</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(API%20Security)_TOPIC%2Fi">API Security</a> (<a href="#BM_(role%5B-%5Cs%5Dbased%20access%20control)%2Fi">Role-based access control</a> to limit a <a href="#BM_(service%20account)%2Fi">service account</a>'s access to the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API)</li>
+</ul>
+</div>
+<a name="H_Horizontal%20Pod%20Autoscaler"></a><h2>Horizontal Pod Autoscaler</h2>
+<p><a name="BM_(Kinds%5C%2FHorizontal%20Pod%20Autoscaler)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Kinds%5C%2FReplica%20Set)_TOPIC%2Fi">Kinds/Replica Set</a></li>
+<li><a href="#BM_(Kinds%5C%2FDeployment)_TOPIC%2Fi">Kinds/Deployment</a></li>
+<li><a href="#BM_(Kinds%5C%2FStateful%20Set)_TOPIC%2Fi">Kinds/Stateful Set</a></li>
+<li><a href="#BM_(Kinds%5C%2FIngress)_TOPIC%2Fi">Kinds/Ingress</a></li>
+</ul>
+</div>
+<p>A <a href="#BM_(horizontal%20pod%20autoscaler%7Chorizontal%20pod%20autoscaling)%2Fi">horizontal pod autoscaler</a> (<a href="#BM_%5Cb(HPA)%5Cb%2F">HPA</a>) periodically measures how much work a set of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> replicas are doing so that it can appropriately adjust the number of replicas on that <a href="#BM_(replica%20set)%2Fi">replica set</a>, <a href="#BM_(deployment)%2Fi">deployment</a>, or <a href="#BM_(stateful%20set%7Cstable%20identity)%2Fi">stateful set</a>. If the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> replicas ...</p>
+<ul>
+<li>aren't doing enough work, the numbers of replicas is decreased.</li>
+<li>are doing too much work, the number of replicas is increased.</li>
+</ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>This feature depends on a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> called heapster that tracks metrics. Most <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> installations include it by default.</p>
+<p>This feature depends on a "metrics server" that should be running on <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> by default.</p>
 </div>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">autoscaling/v2</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">HorizontalPodAutoscaler</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-hpa</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-comment"># What kind and name are being targeted for autoscaling? Is it a replica set, deployment,</span>
+  <span class="hljs-comment"># stateful set, or something else?</span>
+  <span class="hljs-attr">scaleTargetRef:</span>
+    <span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+    <span class="hljs-attr">kind:</span> <span class="hljs-string">StatefulSet</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">my-ss</span>
+  <span class="hljs-comment"># What are the minimum and maximum replicas that this HPA will scale to? At the time of</span>
+  <span class="hljs-comment"># writing, the minimum number of replicas must be 1 or more (it can't be 0).</span>
+  <span class="hljs-attr">minReplicas:</span> <span class="hljs-number">2</span>
+  <span class="hljs-attr">maxReplicas:</span> <span class="hljs-number">10</span>
+  <span class="hljs-comment"># What type of metrics are being collected? In this example, on average across all active</span>
+  <span class="hljs-comment"># pod replicas, we want the CPU load to be 50%. If the average is more than 50%, scale</span>
+  <span class="hljs-comment"># down the number of replicas. If it's more, scale up the number of replicas.</span>
+  <span class="hljs-comment">#</span>
+  <span class="hljs-comment"># The average utilization is referring to the amount of resource requested by the pod. In</span>
+  <span class="hljs-comment"># this example, this is 50% of the CPU resource AS REQUESTED BY THE POD (via the pod's</span>
+  <span class="hljs-comment"># spec.containers[].resources.requests for CPU).</span>
+  <span class="hljs-comment">#</span>
+  <span class="hljs-comment"># Instead of doing average percentage, you can also do absolute values by changing</span>
+  <span class="hljs-comment"># target.type to AverageValue and replacing target.averageUtilization with</span>
+  <span class="hljs-comment"># target.averageValue.</span>
+  <span class="hljs-attr">metrics:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">Resource</span>
+      <span class="hljs-attr">resource:</span>
+        <span class="hljs-attr">name:</span> <span class="hljs-string">cpu</span>
+        <span class="hljs-attr">target:</span>
+          <span class="hljs-attr">type:</span> <span class="hljs-string">Utilization</span>
+          <span class="hljs-attr">averageUtilization:</span> <span class="hljs-number">50</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Kinds%5C%2FPod%2FResources)_TOPIC%2F">Kinds/Pod/Resources</a> (Refresher on <a href="#BM_(resource%20request)%2Fi">resource request</a>s)</li>
+</ul>
+</div>
+<p>In the example above, if the average CPU usage of the <a href="#BM_(stateful%20set%7Cstable%20identity)%2Fi">stateful set</a> <code>my-ss</code> replicas is</p>
+<ul>
+<li>less than 50% that of the CPU <a href="#BM_(resource%20request)%2Fi">resource request</a>ed, the replicas will scale down until there are 2 replicas or until the CPU usage reaches 50%.</li>
+<li>more than 50% that of the CPU <a href="#BM_(resource%20request)%2Fi">resource request</a>ed, the replicas will scale up until there are 10 replicas or until the CPU usage reaches 50%.</li>
+</ul>
+<p>The <a href="#BM_%5Cb(HPA)%5Cb%2F">HPA</a> will at-most double the the number of replicas on each iteration. Each scaling iteration has an intentional waiting period. Specifically, scaling ...</p>
+<ul>
+<li>up will only occur if no previous scaling has occurred in the past 3 mins.</li>
+<li>down will only occur if no previous scaling has occured in the past 5 mins.</li>
+</ul>
+<p>The example above tracked a single metric (CPU <a href="#BM_(utilization)%2Fi">utilization</a>), but multiple metrics can be tracked by a single <a href="#BM_%5Cb(HPA)%5Cb%2F">HPA</a>. Metrics can be one of three types:</p>
+<ul>
+<li><code>Resource</code> metrics cover CPU and memory metrics of the replicas.</li>
+<li><code>Pods</code> metrics cover other metrics of the replicas (e.g. custom user-defined metrics).</li>
+<li><code>Object</code> are metrics related to some other <a href="#BM_(object)%2Fi">object</a> in the same <a href="#BM_(namespace)%2Fi">namespace</a>.</li>
+</ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The book warns about setting replicas manual and setting replicas using <a href="#BM_%5Cb(HPA)%5Cb%2F">HPA</a> -- they fight with each other.</p>
+<p>How do you implement custom user-defined metrics? I would imagine you need to do API calls to the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API server (or to the metrics server) from the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> replicas.</p>
 </div>
-<p>TODO: talk about vertical autoscaling + yaml -- it looks like this is in beta?</p>
-<a name="H_Vertical%20Pod%20Autoscaling"></a><h2>Vertical Pod Autoscaling</h2>
-<p>TODO: figure this out</p>
+<p>If there are multiple metrics being tracked by an <a href="#BM_%5Cb(HPA)%5Cb%2F">HPA</a>, as in the example below, that <a href="#BM_%5Cb(HPA)%5Cb%2F">HPA</a> calculates the replica counts for each metric and then chooses the one with the highest.</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">autoscaling/v2</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">HorizontalPodAutoscaler</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-hpa</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">scaleTargetRef:</span>
+    <span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+    <span class="hljs-attr">kind:</span> <span class="hljs-string">StatefulSet</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">my-ss</span>
+  <span class="hljs-attr">minReplicas:</span> <span class="hljs-number">2</span>
+  <span class="hljs-attr">maxReplicas:</span> <span class="hljs-number">10</span>
+  <span class="hljs-attr">metrics:</span>
+    <span class="hljs-comment"># Target an average of 50% CPU utilization across all replicas</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">Resource</span>
+      <span class="hljs-attr">resource:</span>
+        <span class="hljs-attr">name:</span> <span class="hljs-string">cpu</span>
+        <span class="hljs-attr">target:</span>
+          <span class="hljs-attr">type:</span> <span class="hljs-string">Utilization</span>
+          <span class="hljs-attr">averageUtilization:</span> <span class="hljs-number">50</span>
+    <span class="hljs-comment"># Target an average of 1000 queries-per-second across all replicas.</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">Pods</span>
+      <span class="hljs-attr">pods:</span>
+        <span class="hljs-attr">metric:</span>
+          <span class="hljs-attr">name:</span> <span class="hljs-string">queries-per-second</span>
+        <span class="hljs-attr">target:</span>
+          <span class="hljs-attr">type:</span> <span class="hljs-string">AverageValue</span>
+          <span class="hljs-attr">averageValue:</span> <span class="hljs-number">1000</span>
+    <span class="hljs-comment"># Target an average of 1000 queries-per-second across all replicas.</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">Object</span>
+      <span class="hljs-attr">object:</span>
+        <span class="hljs-attr">metric:</span>
+          <span class="hljs-attr">name:</span> <span class="hljs-string">requests-per-second</span>
+        <span class="hljs-attr">describedObject:</span>
+          <span class="hljs-attr">apiVersion:</span> <span class="hljs-string">extensions/v1</span>
+          <span class="hljs-attr">kind:</span> <span class="hljs-string">Ingress</span>
+          <span class="hljs-attr">name:</span> <span class="hljs-string">my-ingress</span>
+        <span class="hljs-attr">target:</span>
+          <span class="hljs-attr">type:</span> <span class="hljs-string">Value</span>
+          <span class="hljs-attr">averageValue:</span> <span class="hljs-number">2000</span>
+</code></pre>
+<p>Common gotchas with HPAs:</p>
+<ul>
+<li>
+<p><em>Scale to zero</em>: Setting the number of minimum replicas to zero isn't supported. See <a href="https://github.com/kubernetes/kubernetes/issues/69687">here</a>.</p>
+</li>
+<li>
+<p><em>Scaling memory</em>: It's easy to autoscale based on CPU, but be careful with autoscaling based on memory. If the number of replicas scale up, the existing replicas need to somehow "release" memory, which can't really be done without killing the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s and starting them back up again.</p>
+</li>
+<li>
+<p><em>Scaling on non-linear scaling metrics</em>: Be careful with scaling based on metrics that don't linearly scale. For example, if you double the number of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s, the value of that metric should cut in half. This may end up becoming an issue when scaling based off of poorly designed custom user-defined metrics.</p>
+</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>In addition to <a href="#BM_(horizontal%20pod%20autoscaler%7Chorizontal%20pod%20autoscaling)%2Fi">horizontal pod autoscaler</a>, there's a <a href="#BM_(vertical%20pod%20autoscaler%7Cvertical%20pod%20autoscaling)%2Fi">vertical pod autoscaler</a> (<a href="#BM_%5Cb(VPA)%5Cb%2F">VPA</a>). A <a href="#BM_%5Cb(VPA)%5Cb%2F">VPA</a> will scale a single <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> based on metrics and its <a href="#BM_(resource%20request)%2Fi">resource request</a>s / <a href="#BM_(resource%20limit)%2Fi">resource limit</a>s.</p>
+<p>The <a href="#BM_%5Cb(VPA)%5Cb%2F">VPA</a> <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> doesn't come built-in with <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>. It's provided as an add-on package found <a href="https://github.com/kubernetes/autoscaler">here</a>.</p>
+</div>
 <a name="H_Cluster%20Autoscaler"></a><h2>Cluster Autoscaler</h2>
-<p>TODO: it looks like this is an external component? if not enough resources to run a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>, provision more <a href="#BM_(node)%2Fi">node</a>s from the cloud provider</p>
+<p><a name="BM_(Kinds%5C%2FCluster%20Autoscaler)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Kinds%5C%2FPod)_TOPIC%2Fi">Kinds/Pod</a></li>
+<li><a href="#BM_(Kinds%5C%2FNode)_TOPIC%2Fi">Kinds/Node</a></li>
+</ul>
+</div>
+<p>A <a href="#BM_(cluster%20autoscaler%7Ccluster%20autoscaling)%2Fi">cluster autoscaler</a> is a component that scales a <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> cluster on a public cloud by adding and removing <a href="#BM_(node)%2Fi">node</a>s as needed. Each public could has its own implementation of a <a href="#BM_(cluster%20autoscaler%7Ccluster%20autoscaling)%2Fi">cluster autoscaler</a>. In some clouds, the implementation is exposed as a <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> / set of <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s. In other clouds, the implementation is exposed as a web interface or a command-line interface.</p>
+<p>In most cases, <a href="#BM_(node)%2Fi">node</a>s and added and removed to predefined groups called <a href="#BM_(node)%2Fi">node</a> pools. Each <a href="#BM_(node)%2Fi">node</a> pool has <a href="#BM_(node)%2Fi">node</a>s of the same type (same resources and features). For example, a specific <a href="#BM_(node)%2Fi">node</a> pool of machines with the same CPU, networking gear, and same amount and type of RAM.</p>
+<p>If a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> is scheduled to run but none of the <a href="#BM_(node)%2Fi">node</a>s have enough resources to run it, the <a href="#BM_(cluster%20autoscaler%7Ccluster%20autoscaling)%2Fi">cluster autoscaler</a> will increase the number of <a href="#BM_(node)%2Fi">node</a>s in one of the <a href="#BM_(node)%2Fi">node</a> pools that has the capability to run the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>. Likewise, the <a href="#BM_(cluster%20autoscaler%7Ccluster%20autoscaling)%2Fi">cluster autoscaler</a> will decrease the number of <a href="#BM_(node)%2Fi">node</a>s if <a href="#BM_(node)%2Fi">node</a>s aren't being utilized enough by actively running <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>It doesn't seem to be consistent so there isn't much else to put about <a href="#BM_(cluster%20autoscaler%7Ccluster%20autoscaling)%2Fi">cluster autoscaling</a>. See the <a href="#BM_(cluster%20autoscaler%7Ccluster%20autoscaling)%2Fi">cluster autoscaler</a> section on <a href="https://github.com/kubernetes/autoscaler">this website</a> and navigate to whatever public cloud you're using.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Kinds%5C%2FPod%20Disruption%20Budget)_TOPIC%2Fi">Kinds/Pod Disruption Budget</a> (Prevent rapid killing of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s on scale down)</li>
+</ul>
+</div>
+<a name="H_Pod%20Disruption%20Budget"></a><h2>Pod Disruption Budget</h2>
+<p><a name="BM_(Kinds%5C%2FPod%20Disruption%20Budget)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Kinds%5C%2FCluster%20Autoscaler)_TOPIC%2Fi">Kinds/Cluster Autoscaler</a></li>
+<li><a href="#BM_(Kinds%5C%2FReplica%20Set)_TOPIC%2Fi">Kinds/Replica Set</a></li>
+<li><a href="#BM_(Kinds%5C%2FDeployment)_TOPIC%2Fi">Kinds/Deployment</a></li>
+<li><a href="#BM_(Kinds%5C%2FStateful%20Set)_TOPIC%2Fi">Kinds/Stateful Set</a></li>
+</ul>
+</div>
+<p>A <a href="#BM_(pod%20disruption%20budget)%2Fi">pod disruption budget</a> (<a href="#BM_%5Cb(PDB)%5Cb%2F">PDB</a>) specifies the number of downed <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> replicas that a <a href="#BM_(replica%20set)%2Fi">replica set</a>, <a href="#BM_(deployment)%2Fi">deployment</a>, or <a href="#BM_(stateful%20set%7Cstable%20identity)%2Fi">stateful set</a> can tolerate relative to its expected replica count. In this case, a disrupted <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> is one that's brought down via ...</p>
+<ul>
+<li>voluntary disruptions (e.g. manually removing a <a href="#BM_(node)%2Fi">node</a> from the cluster).</li>
+<li>involuntary disruptions (e.g. kernel panic on a <a href="#BM_(node)%2Fi">node</a>).</li>
+<li>rolling updates (<a href="#BM_(deployment)%2Fi">deployment</a>s and <a href="#BM_(stateful%20set%7Cstable%20identity)%2Fi">stateful set</a>).</li>
+</ul>
+<p>Once a <a href="#BM_%5Cb(PDB)%5Cb%2F">PDB</a> has reached its downed <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> replica limit, it prevents further downing of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> replicas via voluntary disruptions. It cannot prevent further downing of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> replicas via involuntary disruptions or rolling updates (these downed <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s will still be accounted for within the <a href="#BM_%5Cb(PDB)%5Cb%2F">PDB</a>).</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This has something to do with an "Eviction API". Haven't had a chance to read about this yet.</p>
+</div>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">policy/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">PodDisruptionBudget</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-pdb</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-comment"># Selector for pod replicas within the stateful set.</span>
+  <span class="hljs-attr">selector:</span>
+    <span class="hljs-attr">matchLabels:</span>
+      <span class="hljs-attr">app:</span> <span class="hljs-string">my-ss-pods</span>
+  <span class="hljs-comment"># Max number of pods that can be unavailable at one time.</span>
+  <span class="hljs-comment">#</span>
+  <span class="hljs-comment"># Instead of "maxUnavailable", this can also be "minAvailable", which is the min number of</span>
+  <span class="hljs-comment"># pods must be available at all times.</span>
+  <span class="hljs-attr">maxUnavailable:</span> <span class="hljs-number">3</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The <a href="#BM_(manifest)%2Fi">manifest</a> is using <a href="#BM_(label%20selector)%2Fi">label selector</a>s are being used to identify <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s. How does it know what the replica count is for the <a href="#BM_(replica%20set)%2Fi">replica set</a> / <a href="#BM_(deployment)%2Fi">deployment</a> / or <a href="#BM_(stateful%20set%7Cstable%20identity)%2Fi">stateful set</a>? According to the docs:</p>
+<blockquote>
+<p>The "intended" number of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s is computed from the .spec.replicas of the workload resource that is managing those <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s. The <a href="#BM_(control%20plane)%2Fi">control plane</a> discovers the owning workload resource by examining the .metadata.ownerReferences of the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">Pod</a>.</p>
+</blockquote>
+</div>
 <a name="H_Custom%20Kinds"></a><h1>Custom Kinds</h1>
 <p>TODO: write an example python <a href="#BM_(controller)%2Fi">controller</a> here and talk about how to deploy it + ch 18</p>
 <p>TODO: write an example python <a href="#BM_(controller)%2Fi">controller</a> here and talk about how to deploy it + ch 18</p>
@@ -2796,27 +3030,320 @@ kubectl rollout restart sts &lt;name&gt; <span class="hljs-comment"># to restart
 <p>TODO: write an example python <a href="#BM_(controller)%2Fi">controller</a> here and talk about how to deploy it + ch 18</p>
 <p>TODO: write an example python <a href="#BM_(controller)%2Fi">controller</a> here and talk about how to deploy it + ch 18</p>
 <p>TODO: write an example python <a href="#BM_(controller)%2Fi">controller</a> here and talk about how to deploy it + ch 18</p>
-<a name="H_Security"></a><h1>Security</h1>
-<p>SEE section 7.5.2 -- disable implicit binding of k8s api tokens into the system if you don't need to access k8s api (automount<a href="#BM_(service)%2Fi">Service</a>-AccountToken)</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
-<p>TODO: ch 12 + 13</p>
+<a name="H_API%20Security"></a><h1>API Security</h1>
+<p><a name="BM_(API%20Security)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Kinds%5C%2FPod%2FAPI%20Access)_TOPIC%2F">Kinds/Pod/API Access</a></li>
+<li><a href="#BM_(Kinds%5C%2FService%20Account)_TOPIC%2Fi">Kinds/Service Account</a></li>
+</ul>
+</div>
+<p>Access control to the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API is modeled using accounts and groups, where an account can be associated with many groups and each group grants a certain set of permissions to its users. Two types of accounts are provided:</p>
+<ul>
+<li>users, which are accounts for human access.</li>
+<li><a href="#BM_(service%20account)%2Fi">service account</a>s, which are accounts for programmatic access.</li>
+</ul>
+<p><img src="svgbob_ec0249d0405268594cd75de6c2486b390fb6c27b.svg" alt="Kroki diagram output"></p>
+<p><a href="#BM_(service%20account)%2Fi">Service account</a>s are what get used when a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> needs access to the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API. <a href="#BM_(container)%2Fi">Container</a>s within that <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> have a volume mounted with certificates and credentials that the applications within can use to authenticate and communicate with the API server.</p>
+<p>Each <a href="#BM_(namespace)%2Fi">namespace</a> gets created with a default <a href="#BM_(service%20account)%2Fi">service account</a> (named <code>default</code>). By default, <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s created under a <a href="#BM_(namespace)%2Fi">namespace</a> will be assigned the default <a href="#BM_(service%20account)%2Fi">service account</a> for that <a href="#BM_(namespace)%2Fi">namespace</a>. A <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can be configured to use a custom <a href="#BM_(service%20account)%2Fi">service account</a> that has more or less access rights than the default <a href="#BM_(service%20account)%2Fi">service account</a>. A <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can also forgo volume mounting the credentials of a <a href="#BM_(service%20account)%2Fi">service account</a> entirely if the applications within it don't need access to the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API.</p>
+<p><img src="svgbob_cd1a5ca68efdcbb4d31b3e68e6cb9aeaef5f6566.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Kinds%5C%2FService%20Account)_TOPIC%2Fi">Kinds/Service Account</a> (Creating <a href="#BM_(service%20account)%2Fi">service account</a>s)</li>
+<li><a href="#BM_(API%20Security%5C%2FDisable%20Credentials)_TOPIC%2Fi">API Security/Disable Credentials</a> (Disable volume mounting <a href="#BM_(service%20account)%2Fi">service account</a> credentials)</li>
+</ul>
+</div>
+<p>How access rights are defined depends on how <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> has been set up. By default, <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> is set up to use <a href="#BM_(role%5B-%5Cs%5Dbased%20access%20control)%2Fi">role-based access control</a> (<a href="#BM_(RBAC)%2F">RBAC</a>), which tightly maps to the REST semantics of the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API server. <a href="#BM_(RBAC)%2F">RBAC</a> limits what actions can be performed on which <a href="#BM_(object)%2Fi">object</a>s: <a href="#BM_(object)%2Fi">Object</a>s map to REST resources (paths on the REST server) and manipulations of <a href="#BM_(object)%2Fi">object</a>s map to REST actions (verbs such as <code>DELETE</code>, <code>GET</code>, <code>PUT</code>, etc.. on those REST server paths).</p>
+<p>The subsections below detail <a href="#BM_(RBAC)%2F">RBAC</a> as well as other API security related topics.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Other types of access control mechanisms exist as well, such as attribute-based access control (ABAC).</p>
+</div>
+<a name="H_Role-based%20Access%20Control"></a><h2>Role-based Access Control</h2>
+<p><a name="BM_(API%20Security%5C%2FRole-based%20Access%20Control)_TOPIC%2Fi"></a><strong></strong></p>
+<p><a href="#BM_(RBAC)%2F">RBAC</a> tightly maps to the REST semantics of the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API server by limiting what actions can be performed on which <a href="#BM_(object)%2Fi">object</a>s: <a href="#BM_(object)%2Fi">Object</a>s map to REST resources (paths on the REST server) and manipulations of <a href="#BM_(object)%2Fi">object</a>s map to REST actions (verbs such as <code>DELETE</code>, <code>GET</code>, <code>PUT</code>, etc.. on those REST server paths). <a href="#BM_(RBAC)%2F">RBAC</a> is configured using two sets of <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s:</p>
+<ul>
+<li><code>Role</code> and <code>ClusterRole</code> specify which actions can be performed on which <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s / in which <a href="#BM_(namespace)%2Fi">namespace</a>.</li>
+<li><code>RoleBinding</code> and <code>ClusterRoleBinding</code> specify which <a href="#BM_(cluster%20role%7Crole)%2Fi">role</a>s bind to which users, groups, or <a href="#BM_(service%20account)%2Fi">service account</a>s.</li>
+</ul>
+<p>A <a href="#BM_(role%20binding%7Ccluster%20role%20binding)%2Fi">role binding</a> always maps a single <a href="#BM_(cluster%20role%7Crole)%2Fi">role</a> to many users, groups, and <a href="#BM_(service%20account)%2Fi">service account</a>s.</p>
+<p><img src="svgbob_b8d9436c1457523d139017b64ab3ce5cfa6d21f9.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Recall that a ...</p>
+<ul>
+<li><a href="#BM_(namespace)%2Fi">namespace</a>-level <a href="#BM_(object)%2Fi">object</a> / <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> is one that comes under the umbrella of a <a href="#BM_(namespace)%2Fi">namespace</a>: <a href="#BM_(service)%2Fi">Service</a>s, <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s, <a href="#BM_(config%20map%7Cconfiguration%20map)%2Fi">config map</a>s, etc..</li>
+<li>cluster-level <a href="#BM_(object)%2Fi">object</a> / <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> is one that comes under the umbrella of the entire cluster (it's cluster-wide, not tied to a <a href="#BM_(namespace)%2Fi">namespace</a>): <a href="#BM_(node)%2Fi">Node</a>s, <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a>s, etc...</li>
+</ul>
+</div>
+<p><code>ClusterRole</code> and <code>ClusterRoleBinding</code> are cluster-level <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s while <code>Role</code> and <code>RoleBinding</code> are <a href="#BM_(namespace)%2Fi">namespace</a>-level <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s. <a href="#BM_(RBAC)%2F">RBAC</a> provides provides different permissions based on which <a href="#BM_(cluster%20role%7Crole)%2Fi">role</a> variant (<code>ClusterRole</code> vs <code>Role</code>) gets used with which <a href="#BM_(role%20binding%7Ccluster%20role%20binding)%2Fi">role binding</a> variant (<code>ClusterRoleBinding</code> vs <code>RoleBinding</code>):</p>
+<table>
+<thead>
+<tr>
+<th><a href="#BM_(cluster%20role%7Crole)%2Fi">Role</a></th>
+<th>Binding</th>
+<th>Permission Granted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Role</code></td>
+<td><code>RoleBinding</code></td>
+<td>Allow access to <a href="#BM_(namespace)%2Fi">namespace</a>-level <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s in that <a href="#BM_(cluster%20role%7Crole)%2Fi">role</a> / <a href="#BM_(role%20binding%7Ccluster%20role%20binding)%2Fi">role binding</a>'s <a href="#BM_(namespace)%2Fi">namespace</a>.</td>
+</tr>
+<tr>
+<td><code>ClusterRole</code></td>
+<td><code>ClusterRoleBinding</code></td>
+<td>Allows access to <a href="#BM_(namespace)%2Fi">namespace</a>-level <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s in all <a href="#BM_(namespace)%2Fi">namespace</a>s, cluster-level <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s, and arbitrary URL paths on the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API server.</td>
+</tr>
+<tr>
+<td><code>ClusterRole</code></td>
+<td><code>RoleBinding</code></td>
+<td>Allow access to <a href="#BM_(namespace)%2Fi">namespace</a>-level <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s in all <a href="#BM_(namespace)%2Fi">namespace</a>s, cluster-level <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s, and arbitrary URL paths on the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API server. But, that access is only permitted from within the <a href="#BM_(namespace)%2Fi">namespace</a> of the <a href="#BM_(role%20binding%7Ccluster%20role%20binding)%2Fi">role binding</a>.</td>
+</tr>
+<tr>
+<td><code>Role</code></td>
+<td><code>ClusterRoleBinding</code></td>
+<td>Invalid. It's allowed but it <em>does nothing</em> (it won't cause an error).</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p><code>Role</code> and <code>RoleBinding</code>: Allow access to <a href="#BM_(namespace)%2Fi">namespace</a>-level <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s in that <a href="#BM_(cluster%20role%7Crole)%2Fi">role</a> / <a href="#BM_(role%20binding%7Ccluster%20role%20binding)%2Fi">role binding</a>'s <a href="#BM_(namespace)%2Fi">namespace</a>.</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Role</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-role</span>
+  <span class="hljs-comment"># Namespace of this role. Permissions are for THIS namespace only. If omitted, the current</span>
+  <span class="hljs-comment"># namespace is used.</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">my-ns</span>
+<span class="hljs-attr">rules:</span>  <span class="hljs-comment"># List of kinds and actions go here</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">apiGroups:</span> [<span class="hljs-string">""</span>]
+    <span class="hljs-attr">resources:</span> [<span class="hljs-string">services</span>]
+    <span class="hljs-attr">verbs:</span> [<span class="hljs-string">get</span>, <span class="hljs-string">list</span>]
+<span class="hljs-string">----</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">RoleBinding</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-role-binding</span>
+  <span class="hljs-comment"># Namespace of this role binding. This must be the same as the role being bound (otherwise,</span>
+  <span class="hljs-comment"># the role binding won't be able to see the role as its in another namespace?). If omitted,</span>
+  <span class="hljs-comment"># the current namespace is used.</span>
+  <span class="hljs-attr">namespace:</span>  <span class="hljs-string">my-ns</span>
+<span class="hljs-comment"># The role that's being bound.</span>
+<span class="hljs-attr">roleRef:</span>
+  <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span>
+  <span class="hljs-attr">kind:</span> <span class="hljs-string">Role</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-role</span>
+<span class="hljs-comment"># The users/groups/service accounts that the role is being bound to.</span>
+<span class="hljs-attr">subjects:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">kind:</span> <span class="hljs-string">ServiceAccount</span>
+    <span class="hljs-attr">namespace:</span> <span class="hljs-string">my-other-ns</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">default</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span>
+    <span class="hljs-attr">kind:</span> <span class="hljs-string">Group</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">system:authenticated</span>
+</code></pre>
+</li>
+<li>
+<p><code>ClusterRole</code> and <code>ClusterRoleBinding</code>: Allow access to <a href="#BM_(namespace)%2Fi">namespace</a>-level <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s in all <a href="#BM_(namespace)%2Fi">namespace</a>s, cluster-level <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s, and arbitrary URL paths on the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API server.</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">ClusterRole</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-cluster-role</span>
+<span class="hljs-attr">rules:</span>  <span class="hljs-comment"># List of kinds and actions go here</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">apiGroups:</span> [<span class="hljs-string">""</span>]
+    <span class="hljs-attr">resources:</span> [<span class="hljs-string">nodes</span>]
+    <span class="hljs-attr">verbs:</span> [<span class="hljs-string">get</span>, <span class="hljs-string">list</span>]
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">nonResourceURLs:</span>  <span class="hljs-comment"># List of server paths to allow go under here.</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">/api</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">/api/*</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">/apis</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">/apis/*</span>
+<span class="hljs-string">----</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">ClusterRoleBinding</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-cluster-role-binding</span>
+<span class="hljs-comment"># The role that's being bound.</span>
+<span class="hljs-attr">roleRef:</span>
+  <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span>
+  <span class="hljs-attr">kind:</span> <span class="hljs-string">ClusterRole</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-cluster-role</span>
+<span class="hljs-comment"># The users/groups/service accounts that the role is being bound to.</span>
+<span class="hljs-attr">subjects:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">kind:</span> <span class="hljs-string">ServiceAccount</span>
+    <span class="hljs-attr">namespace:</span> <span class="hljs-string">my-ns</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">default</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span>
+    <span class="hljs-attr">kind:</span> <span class="hljs-string">Group</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">system:authenticated</span>
+</code></pre>
+</li>
+<li>
+<p><code>ClusterRole</code> and <code>RoleBinding</code>: Allow access to <a href="#BM_(namespace)%2Fi">namespace</a>-level <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s in all <a href="#BM_(namespace)%2Fi">namespace</a>s, cluster-level <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s, and arbitrary URL paths on the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API server. But, that access is only permitted from within the <a href="#BM_(namespace)%2Fi">namespace</a> of the <a href="#BM_(role%20binding%7Ccluster%20role%20binding)%2Fi">role binding</a>.</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">ClusterRole</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-cluster-role</span>
+<span class="hljs-attr">rules:</span>  <span class="hljs-comment"># List of kinds and actions go here</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">apiGroups:</span> [<span class="hljs-string">""</span>]
+    <span class="hljs-attr">resources:</span> [<span class="hljs-string">services</span>]
+    <span class="hljs-attr">verbs:</span> [<span class="hljs-string">get</span>, <span class="hljs-string">list</span>]
+<span class="hljs-string">----</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">RoleBinding</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-role-binding</span>
+  <span class="hljs-comment"># Namespace of this role binding. Although the cluster role being bound to this role binding</span>
+  <span class="hljs-comment"># allows access to everything (all namespaces and at the cluster-level), access must happen</span>
+  <span class="hljs-comment"># from within this namespace.</span>
+  <span class="hljs-attr">namespace:</span>  <span class="hljs-string">my-ns</span>
+<span class="hljs-comment"># The role that's being bound.</span>
+<span class="hljs-attr">roleRef:</span>
+  <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span>
+  <span class="hljs-attr">kind:</span> <span class="hljs-string">Role</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-role</span>
+<span class="hljs-comment"># The users/groups/service accounts that the role is being bound to. If the group is pointing</span>
+<span class="hljs-comment"># to a service account, is that service account required to be in the same namespace as this</span>
+<span class="hljs-comment"># role binding for access to be allowed? (Unsure at this point)</span>
+<span class="hljs-attr">subjects:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">kind:</span> <span class="hljs-string">ServiceAccount</span>
+    <span class="hljs-attr">namespace:</span> <span class="hljs-string">my-other-ns</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">default</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span>
+    <span class="hljs-attr">kind:</span> <span class="hljs-string">Group</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">system:authenticated</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>I'm still confused as to what this actually does. The example above gives permissions to the default <a href="#BM_(service%20account)%2Fi">service account</a> in the <code>my-other-ns</code> <a href="#BM_(namespace)%2Fi">namespace</a>, but the <code>RoleBinding</code> is in the <code>my-ns</code> <a href="#BM_(namespace)%2Fi">namespace</a>. Does that mean the <a href="#BM_(service%20account)%2Fi">service account</a> won't get permissions because it's in another <a href="#BM_(namespace)%2Fi">namespace</a>?</p>
+</div>
+</li>
+<li>
+<p><code>Role</code> and <code>ClusterRoleBinding</code>: Invalid. It's allowed but it <em>does nothing</em> (it won't cause an error).</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Role</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-role</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">my-ns</span>
+<span class="hljs-attr">rules:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">apiGroups:</span> [<span class="hljs-string">""</span>]
+    <span class="hljs-attr">resources:</span> [<span class="hljs-string">services</span>]
+    <span class="hljs-attr">verbs:</span> [<span class="hljs-string">get</span>, <span class="hljs-string">list</span>]
+<span class="hljs-string">----</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">ClusterRoleBinding</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-cluster-role-binding</span>
+<span class="hljs-attr">roleRef:</span>
+  <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span>
+  <span class="hljs-attr">kind:</span> <span class="hljs-string">Role</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-role</span>
+<span class="hljs-attr">subjects:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">kind:</span> <span class="hljs-string">ServiceAccount</span>
+    <span class="hljs-attr">namespace:</span> <span class="hljs-string">my-ns</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">default</span>
+</code></pre>
+</li>
+</ul>
+<p><a href="#BM_(cluster%20role%7Crole)%2Fi">Role</a>s / <a href="#BM_(cluster%20role%7Crole)%2Fi">cluster role</a>s define a set of rules, where each rule grants access to a specific part of the API. Each rule requires three pieces of information:</p>
+<ul>
+<li><code>resources</code>: The <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s to allow (e.g. <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s, <a href="#BM_(service)%2Fi">service</a>s, <a href="#BM_(node)%2Fi">node</a>s, etc.., note these are plurals).</li>
+<li><code>verbs</code>: The actions to allow (e.g. <code>GET</code>, <code>DELETE</code>, etc..).</li>
+<li><code>apiGroups</code>: The APIs of the <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s, which roughly maps to the <code>apiVersion</code> field used within a <a href="#BM_(manifest)%2Fi">manifest</a> for that <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>. For core APIs such as <a href="#BM_(service)%2Fi">service</a>s and <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s, this should be an empty string.</li>
+</ul>
+<p>In addition, <a href="#BM_(cluster%20role%7Crole)%2Fi">cluster role</a>s take in a set of paths, where each path grants access to a specific path on the API server. This is useful in scenarios where the path being accessed doesn't represent a <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> (meaning it can't be represented with rules as described above -- e.g. querying the health information of the cluster).</p>
+<p>All of the fields discussed above can use wildcards via <code>*</code>.</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">ClusterRole</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-cluster-role</span>
+<span class="hljs-attr">rules:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">apiGroups:</span> [<span class="hljs-string">"*"</span>]
+    <span class="hljs-attr">resources:</span> [<span class="hljs-string">"*"</span>]
+    <span class="hljs-attr">verbs:</span> [<span class="hljs-string">"*"</span>]
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">nonResourceURLs:</span> [<span class="hljs-string">"/api/*"</span>, <span class="hljs-string">"/apis/*"</span>]
+</code></pre>
+<p><a href="#BM_(role%20binding%7Ccluster%20role%20binding)%2Fi">Role binding</a>s / <a href="#BM_(role%20binding%7Ccluster%20role%20binding)%2Fi">cluster role binding</a>s associate a set of subjects (users, groups, and / or <a href="#BM_(service%20account)%2Fi">service account</a>s) with a <a href="#BM_(cluster%20role%7Crole)%2Fi">role</a> / <a href="#BM_(cluster%20role%7Crole)%2Fi">cluster role</a> with, granting each subject the permissions defined by that <a href="#BM_(cluster%20role%7Crole)%2Fi">role</a> / <a href="#BM_(cluster%20role%7Crole)%2Fi">cluster role</a>. Each subject needs to be either a ...</p>
+<ul>
+<li><a href="#BM_(service%20account)%2Fi">service account</a>, requiring that <a href="#BM_(service%20account)%2Fi">service account</a>'s name and <a href="#BM_(namespace)%2Fi">namespace</a>.</li>
+<li>group, requiring that group's name.</li>
+<li>user, requiring that user's name.</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">ClusterRoleBinding</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-cluster-role-binding</span>
+<span class="hljs-attr">roleRef:</span>
+  <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span>
+  <span class="hljs-attr">kind:</span> <span class="hljs-string">Role</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-role</span>
+<span class="hljs-attr">subjects:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">kind:</span> <span class="hljs-string">ServiceAccount</span>
+    <span class="hljs-attr">namespace:</span> <span class="hljs-string">my-ns</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">default</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span>
+    <span class="hljs-attr">kind:</span> <span class="hljs-string">Group</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">system:authenticated</span>  <span class="hljs-comment"># case-sensitive</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span>
+    <span class="hljs-attr">kind:</span> <span class="hljs-string">User</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">dave</span>  <span class="hljs-comment"># case-sensitive</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>I suspect that users and groups are cluster-level resources, hence the lack of <a href="#BM_(namespace)%2Fi">namespace</a>. Haven't been able to verify this.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>What exactly is the <code>system:authenticated</code> group in the examples above? According to the book, there are several groups internal to <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> that help identify an account:</p>
+<ul>
+<li><code>system:unauthenticated</code> - Group assigned when authentication failed.</li>
+<li><code>system:authenticated</code> - Group assigned when authentication succeeded.</li>
+<li><code>system:serviceaccounts</code> - Group assigned to <a href="#BM_(service%20account)%2Fi">service account</a>s.</li>
+<li><code>system:serviceaccounts:&lt;NAMESPACE&gt;</code> - Group assigned to <a href="#BM_(service%20account)%2Fi">service account</a>s under a specific <a href="#BM_(namespace)%2Fi">namespace</a>.</li>
+</ul>
+</div>
+<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> comes with several predefined <a href="#BM_(cluster%20role%7Crole)%2Fi">cluster role</a>s that can be used as needed:</p>
+<ul>
+<li><code>cluster-admin</code>: Full-access to everything in the cluster.</li>
+<li><code>admin</code>: Access to almost everything in the cluster (resource quotas and <a href="#BM_(namespace)%2Fi">namespace</a>s excluded).</li>
+<li><code>view</code>: Access to view most <a href="#BM_(object)%2Fi">object</a>s in the cluster (<a href="#BM_(cluster%20role%7Crole)%2Fi">role</a>s and <a href="#BM_(role%20binding%7Ccluster%20role%20binding)%2Fi">role binding</a>s excluded).</li>
+<li><code>edit</code>: Access to edit most <a href="#BM_(object)%2Fi">object</a>s in the cluster (<a href="#BM_(cluster%20role%7Crole)%2Fi">role</a>s and <a href="#BM_(role%20binding%7Ccluster%20role%20binding)%2Fi">role binding</a>s excluded).</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><code>edit</code> also excludes access to resource quotes and <a href="#BM_(namespace)%2Fi">namespace</a>s? Unsure.</p>
+</div>
+<a name="H_Disable%20Credentials"></a><h2>Disable Credentials</h2>
+<p><a name="BM_(API%20Security%5C%2FDisable%20Credentials)_TOPIC%2Fi"></a><strong></strong></p>
+<p>By default, a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> will mount its <a href="#BM_(service%20account)%2Fi">service account</a>'s credentials to <code>/var/run/secrets/kubernetes.io/serviceaccount</code> within its <a href="#BM_(container)%2Fi">container</a>s. Unless access to the API is required, it's good practice to disable the mounting of credentials entirely. This can be done via the <a href="#BM_(service%20account)%2Fi">service account</a> <a href="#BM_(object)%2Fi">object</a> or the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> <a href="#BM_(object)%2Fi">object</a>.</p>
+<pre class="hljs"><code><span class="hljs-comment"># Disable on service account</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">ServiceAccount</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-service-account</span>
+  <span class="hljs-attr">automountServiceAccountToken:</span> <span class="hljs-literal">false</span> <span class="hljs-comment"># Don't mount creds into pods using this service account</span>
+<span class="hljs-string">----</span>
+<span class="hljs-comment"># Disable on pod</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-pod</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">serviceAccountName:</span> <span class="hljs-string">my-service-account</span>
+  <span class="hljs-attr">automountServiceAccountToken:</span> <span class="hljs-literal">false</span>  <span class="hljs-comment"># Prevent auth details from mounting to containers in pod</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">my-container</span>
+      <span class="hljs-attr">image:</span> <span class="hljs-string">my-image:1.0</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Recall that it's also possible to disable auto-mounting on individual <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s. Auto-mounting can't be disabled on individual <a href="#BM_(container)%2Fi">container</a>s, but it is possible to override the <code>/var/run/secrets/kubernetes.io/serviceaccount</code> mount on those <a href="#BM_(container)%2Fi">container</a>s with something like tmpfs (empty directory).</p>
+</div>
 <a name="H_Kubectl%20Cheatsheet"></a><h1>Kubectl Cheatsheet</h1>
 <p><a href="#BM_(kubectl)%2Fi">kubectl</a> commands are typically organized into <a href="#BM_(context)%2Fi">context</a>s, where each <a href="#BM_(context)%2Fi">context</a> is defines <a href="#BM_(context)%2Fi">context</a>ual information about the cluster: cluster location, cluster authentication, and default <a href="#BM_(namespace)%2Fi">namespace</a>. To ...</p>
 <ul>
@@ -3111,15 +3638,6 @@ kubectl rollout restart sts &lt;name&gt; <span class="hljs-comment"># to restart
 <p><a name="BM_(reconciliation%20loop)%2Fi"></a><strong>reconciliation loop</strong> - A loop that continually observes state and attempts to reconcile it to some desired state if it deviates. See <a href="#BM_(declarative%20configuration)%2Fi">declarative configuration</a>.</p>
 </li>
 <li>
-<p><a name="BM_(horizontal%20pod%20autoscaling)%2Fi"></a><strong>horizontal pod autoscaling</strong> <a name="BM_%5Cb(HPA)%5Cb%2F"></a><strong></strong> - A feature that automatically scales the number of replicas in a <a href="#BM_(replica%20set)%2Fi">replica set</a>s based on user-defined criteria.</p>
-</li>
-<li>
-<p><a name="BM_(vertical%20pod%20autoscaling)%2Fi"></a><strong>vertical pod autoscaling</strong> <a name="BM_%5Cb(VPA)%5Cb%2F"></a><strong></strong> - A feature that automatically scales up the resource requirements for some <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> based on user-defined criteria.</p>
-</li>
-<li>
-<p><a name="BM_(cluster%20autoscaler)%2Fi"></a><strong>cluster autoscaler</strong> - A component that automatically scales the number of <a href="#BM_(node)%2Fi">node</a>s in a cluster based on need.</p>
-</li>
-<li>
 <p><a name="BM_(daemon%20set)%2Fi"></a><strong>daemon set</strong> - A <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> that ensures a set of <a href="#BM_(node)%2Fi">node</a>s always have an instance of some <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> running.</p>
 </li>
 <li>
@@ -3151,6 +3669,30 @@ kubectl rollout restart sts &lt;name&gt; <span class="hljs-comment"># to restart
 </li>
 <li>
 <p><a name="BM_(controller)%2Fi"></a><strong>controller</strong> - A piece of software running on the <a href="#BM_(control%20plane)%2Fi">control plane</a> that provides some functionality. This includes doing the work of reconciling observed state to desired state (<a href="#BM_(reconciliation%20loop)%2Fi">reconciliation loop</a>) and / or supporting new <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s. <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">Kind</a>s such as <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s, <a href="#BM_(stateful%20set%7Cstable%20identity)%2Fi">stateful set</a>s, <a href="#BM_(node)%2Fi">node</a>s, etc.. all have <a href="#BM_(controller)%2Fi">controller</a>s backing them, and custom <a href="#BM_(controller)%2Fi">controller</a>s can be written and deployed by users.</p>
+</li>
+<li>
+<p><a name="BM_(service%20account)%2Fi"></a><strong>service account</strong> - A <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> used for authenticating <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s with the <a href="#BM_(control%20plane)%2Fi">control plane</a>.</p>
+</li>
+<li>
+<p><a name="BM_(role%5B-%5Cs%5Dbased%20access%20control)%2Fi"></a><strong>role-based access control</strong> <a name="BM_(RBAC)%2F"></a><strong></strong> - The default security mechanism in <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>, which uses <a href="#BM_(cluster%20role%7Crole)%2Fi">role</a>s to limit what users (and <a href="#BM_(service%20account)%2Fi">service account</a>s) can access via the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API.</p>
+</li>
+<li>
+<p><a name="BM_(cluster%20role%7Crole)%2Fi"></a><strong>role</strong> - A <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> specific to <a href="#BM_(RBAC)%2F">RBAC</a> that defines a set of permissions.</p>
+</li>
+<li>
+<p><a name="BM_(role%20binding%7Ccluster%20role%20binding)%2Fi"></a><strong>role binding</strong> - A <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> specific to <a href="#BM_(RBAC)%2F">RBAC</a> that binds a <a href="#BM_(cluster%20role%7Crole)%2Fi">role</a> to a set of users, groups, and / or <a href="#BM_(service%20account)%2Fi">service account</a>s.</p>
+</li>
+<li>
+<p><a name="BM_(horizontal%20pod%20autoscaler%7Chorizontal%20pod%20autoscaling)%2Fi"></a><strong>horizontal pod autoscaler</strong> <a name="BM_%5Cb(HPA)%5Cb%2F"></a><strong></strong> - A <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> that automatically scales the number of replicas in a <a href="#BM_(deployment)%2Fi">deployment</a>, <a href="#BM_(stateful%20set%7Cstable%20identity)%2Fi">stateful set</a>, or <a href="#BM_(replica%20set)%2Fi">replica set</a> based on how much load existing replicas are under.</p>
+</li>
+<li>
+<p><a name="BM_(vertical%20pod%20autoscaler%7Cvertical%20pod%20autoscaling)%2Fi"></a><strong>vertical pod autoscaler</strong> <a name="BM_%5Cb(VPA)%5Cb%2F"></a><strong></strong> - A <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> that automatically scales the resource requirements for some <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> based on how much load existing replicas are under.</p>
+</li>
+<li>
+<p><a name="BM_(cluster%20autoscaler%7Ccluster%20autoscaling)%2Fi"></a><strong>cluster autoscaler</strong> - A component that automatically scales the number of <a href="#BM_(node)%2Fi">node</a>s in a cluster based on need.</p>
+</li>
+<li>
+<p><a name="BM_(pod%20disruption%20budget)%2Fi"></a><strong>pod disruption budget</strong> <a name="BM_%5Cb(PDB)%5Cb%2F"></a><strong></strong> - A <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> that defines the minimum number of available <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s / maximum number of unavailable <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s can be during a cluster resizing event (e.g. when <a href="#BM_(cluster%20autoscaler%7Ccluster%20autoscaling)%2Fi">cluster autoscaler</a> is scaling up or down <a href="#BM_(node)%2Fi">node</a>s).</p>
 </li>
 </ul>
 <p></p>

@@ -388,6 +388,10 @@ spec:
       image: my-registry.example/tiger/my-container:1.0.1  # Image references registry.
 ```
 
+```{seealso}
+Kinds/Service Account_TOPIC (Image pull secrets may be assigned to service accounts, where any pod using that service account inherits them)
+```
+
 ### Resources
 
 `{bm} /(Kinds\/Pod\/Resources)_TOPIC/`
@@ -766,7 +770,7 @@ Both config maps and secrets can be dynamically updated. If a pod is running whe
  * individual volume mounts *don't* receive updates.
  * whole volume mounts do receive updates.
 
-Command-line arguments and environment variables don't update because an application's command-line arguments and environment variables can't be changed from the outside once a process launches. Individual files/directories mounted from a volume don't update because of technical limitations related to how Linux filesystems work (see [https://github.com/kubernetes/kubernetes/issues/50345#issuecomment-656947594](here)). Whole volume mounts *do* update files under the mount, but it's up to the application to detect and reload those changed files.
+Command-line arguments and environment variables don't update because an application's command-line arguments and environment variables can't be changed from the outside once a process launches. Individual files/directories mounted from a volume don't update because of technical limitations related to how Linux filesystems work (see [here](https://github.com/kubernetes/kubernetes/issues/50345#issuecomment-656947594])). Whole volume mounts *do* update files under the mount, but it's up to the application to detect and reload those changed files.
 
 ```{note}
 All files in a volume mount get updated at once. This is possible because of symlinks. New directory get loaded in and the symlink is updated to use that new directory.
@@ -997,7 +1001,7 @@ SERVICE_C_SERVICE_PORT_METRICS_1=8080
 ```
 
 ```{note}
-Looking at the k8s code, it looks like for a service port needs to be named for it as an environment variable. Service ports that don't have a name won't show up as environment variables. See [here](https://github.com/kubernetes/kubernetes/blob/master/pkg/kubelet/envvars/envvars.go#L51-L55).
+Looking at the k8s code, it looks like for a service port needs to be named for it as an environment variable. Service ports that don't have a name won't show up as environment variables. See (here)[https://github.com/kubernetes/kubernetes/blob/master/pkg/kubelet/envvars/envvars.go#L51-L55].
 ```
 
 Using environment variables for service discovery has the following pitfalls:
@@ -1264,22 +1268,9 @@ See [here](https://stackoverflow.com/a/25843058) for an explanation of bearer to
 Third-party libraries that interface with Kubernetes are available for various languages (e.g. Python, Java, etc..), meaning you don't have to do direct HTTP requests and do things like fiddle with headers.
 ```
 
-It's possible to prevent these authentication details from being mounted to an individual container within a pod.
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: my-pod
-spec:
-  containers:
-    - name: my-container
-      image: my-image:1.0
-      automountServiceAccountToken: false  # Prevent auth details from mounting on this container
-```
-
-```{note}
-It doesn't look like it's possible to prevent these authentication details from being mounted to a single container within a pod, but it is possible to override it by mounting something else to `/var/run/secrets/kubernetes.io/serviceaccount` (e.g. maybe a tmp file system).
+```{seealso}
+Kinds/Service Account_TOPIC (Credentials map to a service account)
+Kinds/API Security/Disable Credentials_TOPIC (Disable mounting of credentials within pod)
 ```
 
 ## Configuration Map
@@ -3120,29 +3111,259 @@ The example above runs a copy of the pod template on each node that has the labe
 
 Unlike deployments and stateful sets, daemon sets don't have support for rolling updates. On any change to a daemon set's pod template on node selection criteria, old pods are deleted and updated pods are brought up in their place.
 
-## Horizontal Pod Autoscaling
+## Service Account
 
-TODO: TALK ABOUT HORIZONTAL AUTOSCALING + yaml
+`{bm} /(Kinds\/Service Account)_TOPIC/i`
 
-The number of replicas in a replica set can be automatically scaled up an down through Kubernetes's horizontal pod autoscaling component. Replicas are scaled based on some user-defined criteria (e.g. high cpu usage).
-
-```{note}
-This feature depends on a pod called heapster that tracks metrics. Most Kubernetes installations include it by default.
+```{prereq}
+Kinds/Namespace_TOPIC
+Kinds/Secret_TOPIC
+Kinds/Pod/API Access_TOPIC
+Kinds/Pod/Images/Private Container Registries_TOPIC
 ```
 
-```{note}
-The book warns about setting replicas manual and setting replicas using HPA -- they fight with each other.
+A service account is a set of credentials that applications within a pod use to communicate with the Kubernetes API server. Service accounts also provide an aggregation point for image pull secrets and other security-related features.
+
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: my-service-account
+# A list of image pull secrets to use with private container registries. When this service
+# account is applied to a pod, all image pull secrets in the service account get added to
+# the pod.
+imagePullSecrets:
+  - name: my-dockerhub-secret
+  - name: my-aws-ecr-secret
+# API access credentials will never be mounted to any pod that uses this service account.
+automountServiceAccountToken: false
 ```
 
-TODO: talk about vertical autoscaling + yaml -- it looks like this is in beta?
+By default, each namespace comes with its own service account which pods in that namespace automatically use. The service account used by a pod can be overridden to another service account.
 
-## Vertical Pod Autoscaling
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  # Custom service account to use. This can't be changed once the pod's been creatd.
+  serviceAccountName: my-service-account
+  containers:
+    - name: my-container
+      image: my-registry.example/tiger/my-container:1.0.1
+```
 
-TODO: figure this out
+```{seealso}
+API Security_TOPIC (Role-based access control to limit a service account's access to the Kubernetes API)
+```
+
+## Horizontal Pod Autoscaler
+
+`{bm} /(Kinds\/Horizontal Pod Autoscaler)_TOPIC/i`
+
+```{prereq}
+Kinds/Replica Set_TOPIC
+Kinds/Deployment_TOPIC
+Kinds/Stateful Set_TOPIC
+Kinds/Ingress_TOPIC
+```
+
+A horizontal pod autoscaler (HPA) periodically measures how much work a set of pod replicas are doing so that it can appropriately adjust the number of replicas on that replica set, deployment, or stateful set. If the pod replicas ...
+
+* aren't doing enough work, the numbers of replicas is decreased.
+* are doing too much work, the number of replicas is increased.
+
+```{note}
+This feature depends on a "metrics server" that should be running on Kubernetes by default.
+```
+
+```yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: my-hpa
+spec:
+  # What kind and name are being targeted for autoscaling? Is it a replica set, deployment,
+  # stateful set, or something else?
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: my-ss
+  # What are the minimum and maximum replicas that this HPA will scale to? At the time of
+  # writing, the minimum number of replicas must be 1 or more (it can't be 0).
+  minReplicas: 2
+  maxReplicas: 10
+  # What type of metrics are being collected? In this example, on average across all active
+  # pod replicas, we want the CPU load to be 50%. If the average is more than 50%, scale
+  # down the number of replicas. If it's more, scale up the number of replicas.
+  #
+  # The average utilization is referring to the amount of resource requested by the pod. In
+  # this example, this is 50% of the CPU resource AS REQUESTED BY THE POD (via the pod's
+  # spec.containers[].resources.requests for CPU).
+  #
+  # Instead of doing average percentage, you can also do absolute values by changing
+  # target.type to AverageValue and replacing target.averageUtilization with
+  # target.averageValue.
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+```
+
+```{seealso}
+Kinds/Pod/Resources_TOPIC (Refresher on resource requests)
+```
+
+In the example above, if the average CPU usage of the stateful set `my-ss` replicas is 
+
+* less than 50% that of the CPU resource requested, the replicas will scale down until there are 2 replicas or until the CPU usage reaches 50%.
+* more than 50% that of the CPU resource requested, the replicas will scale up until there are 10 replicas or until the CPU usage reaches 50%.
+
+The HPA will at-most double the the number of replicas on each iteration. Each scaling iteration has an intentional waiting period. Specifically, scaling ...
+
+ * up will only occur if no previous scaling has occurred in the past 3 mins.
+ * down will only occur if no previous scaling has occured in the past 5 mins.
+
+The example above tracked a single metric (CPU utilization), but multiple metrics can be tracked by a single HPA. Metrics can be one of three types:
+
+ * `Resource` metrics cover CPU and memory metrics of the replicas.
+ * `Pods` metrics cover other metrics of the replicas (e.g. custom user-defined metrics).
+ * `Object` are metrics related to some other object in the same namespace.
+
+```{note}
+How do you implement custom user-defined metrics? I would imagine you need to do API calls to the Kubernetes API server (or to the metrics server) from the pod replicas.
+```
+
+If there are multiple metrics being tracked by an HPA, as in the example below, that HPA calculates the replica counts for each metric and then chooses the one with the highest.
+
+```yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: my-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: my-ss
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    # Target an average of 50% CPU utilization across all replicas
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+    # Target an average of 1000 queries-per-second across all replicas.
+    - type: Pods
+      pods:
+        metric:
+          name: queries-per-second
+        target:
+          type: AverageValue
+          averageValue: 1000
+    # Target an average of 1000 queries-per-second across all replicas.
+    - type: Object
+      object:
+        metric:
+          name: requests-per-second
+        describedObject:
+          apiVersion: extensions/v1
+          kind: Ingress
+          name: my-ingress
+        target:
+          type: Value
+          averageValue: 2000
+```
+
+Common gotchas with HPAs:
+
+* *Scale to zero*: Setting the number of minimum replicas to zero isn't supported. See [here](https://github.com/kubernetes/kubernetes/issues/69687).
+
+ * *Scaling memory*: It's easy to autoscale based on CPU, but be careful with autoscaling based on memory. If the number of replicas scale up, the existing replicas need to somehow "release" memory, which can't really be done without killing the pods and starting them back up again.
+
+ * *Scaling on non-linear scaling metrics*: Be careful with scaling based on metrics that don't linearly scale. For example, if you double the number of pods, the value of that metric should cut in half. This may end up becoming an issue when scaling based off of poorly designed custom user-defined metrics.
+
+```{note}
+In addition to horizontal pod autoscaler, there's a vertical pod autoscaler (VPA). A VPA will scale a single pod based on metrics and its resource requests / resource limits.
+
+The VPA kind doesn't come built-in with Kubernetes. It's provided as an add-on package found [here](https://github.com/kubernetes/autoscaler).
+```
 
 ## Cluster Autoscaler
 
-TODO: it looks like this is an external component? if not enough resources to run a pod, provision more nodes from the cloud provider
+`{bm} /(Kinds\/Cluster Autoscaler)_TOPIC/i`
+
+```{prereq}
+Kinds/Pod_TOPIC
+Kinds/Node_TOPIC
+```
+
+A cluster autoscaler is a component that scales a Kubernetes cluster on a public cloud by adding and removing nodes as needed. Each public could has its own implementation of a cluster autoscaler. In some clouds, the implementation is exposed as a kind / set of kinds. In other clouds, the implementation is exposed as a web interface or a command-line interface.
+
+In most cases, nodes and added and removed to predefined groups called node pools. Each node pool has nodes of the same type (same resources and features). For example, a specific node pool of machines with the same CPU, networking gear, and same amount and type of RAM.
+
+If a pod is scheduled to run but none of the nodes have enough resources to run it, the cluster autoscaler will increase the number of nodes in one of the node pools that has the capability to run the pod. Likewise, the cluster autoscaler will decrease the number of nodes if nodes aren't being utilized enough by actively running pods.
+
+```{note}
+It doesn't seem to be consistent so there isn't much else to put about cluster autoscaling. See the cluster autoscaler section on [this website](https://github.com/kubernetes/autoscaler) and navigate to whatever public cloud you're using.
+```
+
+```{seealso}
+Kinds/Pod Disruption Budget_TOPIC (Prevent rapid killing of pods on scale down)
+```
+
+## Pod Disruption Budget
+
+`{bm} /(Kinds\/Pod Disruption Budget)_TOPIC/i`
+
+```{prereq}
+Kinds/Cluster Autoscaler_TOPIC
+Kinds/Replica Set_TOPIC
+Kinds/Deployment_TOPIC
+Kinds/Stateful Set_TOPIC
+```
+
+A pod disruption budget (PDB) specifies the number of downed pod replicas that a replica set, deployment, or stateful set can tolerate relative to its expected replica count. In this case, a disrupted pod is one that's brought down via ...
+
+ * voluntary disruptions (e.g. manually removing a node from the cluster).
+ * involuntary disruptions (e.g. kernel panic on a node).
+ * rolling updates (deployments and stateful set).
+
+Once a PDB has reached its downed pod replica limit, it prevents further downing of pod replicas via voluntary disruptions. It cannot prevent further downing of pod replicas via involuntary disruptions or rolling updates (these downed pods will still be accounted for within the PDB).
+
+```{note}
+This has something to do with an "Eviction API". Haven't had a chance to read about this yet.
+```
+
+```yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: my-pdb
+spec:
+  # Selector for pod replicas within the stateful set.
+  selector:
+    matchLabels:
+      app: my-ss-pods
+  # Max number of pods that can be unavailable at one time.
+  #
+  # Instead of "maxUnavailable", this can also be "minAvailable", which is the min number of
+  # pods must be available at all times.
+  maxUnavailable: 3
+```
+
+```{note}
+The manifest is using label selectors are being used to identify pods. How does it know what the replica count is for the replica set / deployment / or stateful set? According to the docs:
+
+> The "intended" number of pods is computed from the .spec.replicas of the workload resource that is managing those pods. The control plane discovers the owning workload resource by examining the .metadata.ownerReferences of the Pod.
+```
 
 # Custom Kinds
 
@@ -3160,47 +3381,346 @@ TODO: write an example python controller here and talk about how to deploy it + 
 
 TODO: write an example python controller here and talk about how to deploy it + ch 18
 
-# Security
+# API Security
 
-SEE section 7.5.2 -- disable implicit binding of k8s api tokens into the system if you don't need to access k8s api (automountService-AccountToken)
+`{bm} /(API Security)_TOPIC/i`
 
-TODO: ch 12 + 13
+```{prereq}
+Kinds/Pod/API Access_TOPIC
+Kinds/Service Account_TOPIC
+```
 
-TODO: ch 12 + 13
+Access control to the Kubernetes API is modeled using accounts and groups, where an account can be associated with many groups and each group grants a certain set of permissions to its users. Two types of accounts are provided:
 
-TODO: ch 12 + 13
+ * users, which are accounts for human access.
+ * service accounts, which are accounts for programmatic access.
 
-TODO: ch 12 + 13
+```{svgbob}
+groupA
+     '-----.
+           +-- userA
+     .-----'
+groupB
+     '-----.
+           +-- serviceAccountA
+     .-----'
+groupC
 
-TODO: ch 12 + 13
+* "userA is both in groupA and groupB"
+* "serviceAccountA is both in groupB and groupC"
+```
 
-TODO: ch 12 + 13
+Service accounts are what get used when a pod needs access to the Kubernetes API. Containers within that pod have a volume mounted with certificates and credentials that the applications within can use to authenticate and communicate with the API server.
 
-TODO: ch 12 + 13
+Each namespace gets created with a default service account (named `default`). By default, pods created under a namespace will be assigned the default service account for that namespace. A pod can be configured to use a custom service account that has more or less access rights than the default service account. A pod can also forgo volume mounting the credentials of a service account entirely if the applications within it don't need access to the Kubernetes API.
 
-TODO: ch 12 + 13
+```{svgbob}
+             .----- "my-service-account"
+namespaceA --+----- "my-other-service-account"
+             '----- "default"
 
-TODO: ch 12 + 13
+             .----- "yet-another-service-account"
+namespaceB --+----- "default"
 
-TODO: ch 12 + 13
+* "two namespaces, both have a default service account"
+```
 
-TODO: ch 12 + 13
+```{seealso}
+Kinds/Service Account_TOPIC (Creating service accounts)
+API Security/Disable Credentials_TOPIC (Disable volume mounting service account credentials)
+```
 
-TODO: ch 12 + 13
+How access rights are defined depends on how Kubernetes has been set up. By default, Kubernetes is set up to use role-based access control (RBAC), which tightly maps to the REST semantics of the Kubernetes API server. RBAC limits what actions can be performed on which objects: Objects map to REST resources (paths on the REST server) and manipulations of objects map to REST actions (verbs such as `DELETE`, `GET`, `PUT`, etc.. on those REST server paths).
 
-TODO: ch 12 + 13
+The subsections below detail RBAC as well as other API security related topics.
 
-TODO: ch 12 + 13
+```{note}
+Other types of access control mechanisms exist as well, such as attribute-based access control (ABAC).
+```
 
-TODO: ch 12 + 13
+## Role-based Access Control
 
-TODO: ch 12 + 13
+`{bm} /(API Security\/Role-based Access Control)_TOPIC/i`
 
-TODO: ch 12 + 13
+RBAC tightly maps to the REST semantics of the Kubernetes API server by limiting what actions can be performed on which objects: Objects map to REST resources (paths on the REST server) and manipulations of objects map to REST actions (verbs such as `DELETE`, `GET`, `PUT`, etc.. on those REST server paths). RBAC is configured using two sets of kinds:
 
-TODO: ch 12 + 13
+ * `Role` and `ClusterRole` specify which actions can be performed on which kinds / in which namespace.
+ * `RoleBinding` and `ClusterRoleBinding` specify which roles bind to which users, groups, or service accounts.
 
-TODO: ch 12 + 13
+A role binding always maps a single role to many users, groups, and service accounts.
+
+```{svgbob}
+RoleA ---- RoleBinding1 ----- userA
+                              | |
+RoleB ---- RoleBinding2 ------' |
+                           .----'
+RoleC ---- RoleBinding3 ---+
+                           '--.
+RoleD ---- RoleBinding4 ----- serviceAccountB
+```
+
+```{note}
+Recall that a ...
+
+* namespace-level object / kind is one that comes under the umbrella of a namespace: Services, pods, config maps, etc..
+* cluster-level object / kind is one that comes under the umbrella of the entire cluster (it's cluster-wide, not tied to a namespace): Nodes, persistent volumes, etc...
+```
+
+`ClusterRole` and `ClusterRoleBinding` are cluster-level kinds while `Role` and `RoleBinding` are namespace-level kinds. RBAC provides provides different permissions based on which role variant (`ClusterRole` vs `Role`) gets used with which role binding variant (`ClusterRoleBinding` vs `RoleBinding`):
+
+| Role          | Binding              | Permission Granted |
+|---------------|----------------------|--------------------|
+| `Role`        | `RoleBinding`        | Allow access to namespace-level kinds in that role / role binding's namespace. |
+| `ClusterRole` | `ClusterRoleBinding` | Allows access to namespace-level kinds in all namespaces, cluster-level kinds, and arbitrary URL paths on the Kubernetes API server. |
+| `ClusterRole` | `RoleBinding`        | Allow access to namespace-level kinds in all namespaces, cluster-level kinds, and arbitrary URL paths on the Kubernetes API server. But, that access is only permitted from within the namespace of the role binding. |
+| `Role`        | `ClusterRoleBinding` | Invalid. It's allowed but it *does nothing* (it won't cause an error). |
+
+
+ * `Role` and `RoleBinding`: Allow access to namespace-level kinds in that role / role binding's namespace.
+
+   ```yaml
+   apiVersion: rbac.authorization.k8s.io/v1
+   kind: Role
+   metadata:
+     name: my-role
+     # Namespace of this role. Permissions are for THIS namespace only. If omitted, the current
+     # namespace is used.
+     namespace: my-ns
+   rules:  # List of kinds and actions go here
+     - apiGroups: [""]
+       resources: [services]
+       verbs: [get, list]
+   ----
+   apiVersion: rbac.authorization.k8s.io/v1
+   kind: RoleBinding
+   metadata:
+     name: my-role-binding
+     # Namespace of this role binding. This must be the same as the role being bound (otherwise,
+     # the role binding won't be able to see the role as its in another namespace?). If omitted,
+     # the current namespace is used.
+     namespace:  my-ns
+   # The role that's being bound.
+   roleRef:
+     apiGroup: rbac.authorization.k8s.io
+     kind: Role
+     name: my-role
+   # The users/groups/service accounts that the role is being bound to.
+   subjects:
+     - kind: ServiceAccount
+       namespace: my-other-ns
+       name: default
+     - apiGroup: rbac.authorization.k8s.io
+       kind: Group
+       name: system:authenticated
+   ```
+
+ * `ClusterRole` and `ClusterRoleBinding`: Allow access to namespace-level kinds in all namespaces, cluster-level kinds, and arbitrary URL paths on the Kubernetes API server.
+
+   ```yaml
+   apiVersion: rbac.authorization.k8s.io/v1
+   kind: ClusterRole
+   metadata:
+     name: my-cluster-role
+   rules:  # List of kinds and actions go here
+     - apiGroups: [""]
+       resources: [nodes]
+       verbs: [get, list]
+     - nonResourceURLs:  # List of server paths to allow go under here.
+       - /api
+       - /api/*
+       - /apis
+       - /apis/*
+   ----
+   apiVersion: rbac.authorization.k8s.io/v1
+   kind: ClusterRoleBinding
+   metadata:
+     name: my-cluster-role-binding
+   # The role that's being bound.
+   roleRef:
+     apiGroup: rbac.authorization.k8s.io
+     kind: ClusterRole
+     name: my-cluster-role
+   # The users/groups/service accounts that the role is being bound to.
+   subjects:
+     - kind: ServiceAccount
+       namespace: my-ns
+       name: default
+     - apiGroup: rbac.authorization.k8s.io
+       kind: Group
+       name: system:authenticated
+   ```
+
+ * `ClusterRole` and `RoleBinding`: Allow access to namespace-level kinds in all namespaces, cluster-level kinds, and arbitrary URL paths on the Kubernetes API server. But, that access is only permitted from within the namespace of the role binding.
+
+   ```yaml
+   apiVersion: rbac.authorization.k8s.io/v1
+   kind: ClusterRole
+   metadata:
+     name: my-cluster-role
+   rules:  # List of kinds and actions go here
+     - apiGroups: [""]
+       resources: [services]
+       verbs: [get, list]
+   ----
+   apiVersion: rbac.authorization.k8s.io/v1
+   kind: RoleBinding
+   metadata:
+     name: my-role-binding
+     # Namespace of this role binding. Although the cluster role being bound to this role binding
+     # allows access to everything (all namespaces and at the cluster-level), access must happen
+     # from within this namespace.
+     namespace:  my-ns
+   # The role that's being bound.
+   roleRef:
+     apiGroup: rbac.authorization.k8s.io
+     kind: Role
+     name: my-role
+   # The users/groups/service accounts that the role is being bound to. If the group is pointing
+   # to a service account, is that service account required to be in the same namespace as this
+   # role binding for access to be allowed? (Unsure at this point)
+   subjects:
+     - kind: ServiceAccount
+       namespace: my-other-ns
+       name: default
+     - apiGroup: rbac.authorization.k8s.io
+       kind: Group
+       name: system:authenticated
+   ```
+
+   ```{note}
+   I'm still confused as to what this actually does. The example above gives permissions to the default service account in the `my-other-ns` namespace, but the `RoleBinding` is in the `my-ns` namespace. Does that mean the service account won't get permissions because it's in another namespace?
+   ```
+
+ * `Role` and `ClusterRoleBinding`: Invalid. It's allowed but it *does nothing* (it won't cause an error).
+
+   ```yaml
+   apiVersion: rbac.authorization.k8s.io/v1
+   kind: Role
+   metadata:
+     name: my-role
+     namespace: my-ns
+   rules:
+     - apiGroups: [""]
+       resources: [services]
+       verbs: [get, list]
+   ----
+   apiVersion: rbac.authorization.k8s.io/v1
+   kind: ClusterRoleBinding
+   metadata:
+     name: my-cluster-role-binding
+   roleRef:
+     apiGroup: rbac.authorization.k8s.io
+     kind: Role
+     name: my-role
+   subjects:
+     - kind: ServiceAccount
+       namespace: my-ns
+       name: default
+   ```
+
+Roles / cluster roles define a set of rules, where each rule grants access to a specific part of the API. Each rule requires three pieces of information:
+
+ * `resources`: The kinds to allow (e.g. pods, services, nodes, etc.., note these are plurals).
+ * `verbs`: The actions to allow (e.g. `GET`, `DELETE`, etc..).
+ * `apiGroups`: The APIs of the kinds, which roughly maps to the `apiVersion` field used within a manifest for that kind. For core APIs such as services and pods, this should be an empty string.
+
+In addition, cluster roles take in a set of paths, where each path grants access to a specific path on the API server. This is useful in scenarios where the path being accessed doesn't represent a kind (meaning it can't be represented with rules as described above -- e.g. querying the health information of the cluster).
+
+All of the fields discussed above can use wildcards via `*`.
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: my-cluster-role
+rules:
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
+  - nonResourceURLs: ["/api/*", "/apis/*"]
+```
+
+Role bindings / cluster role bindings associate a set of subjects (users, groups, and / or service accounts) with a role / cluster role with, granting each subject the permissions defined by that role / cluster role. Each subject needs to be either a ...
+
+ * service account, requiring that service account's name and namespace.
+ * group, requiring that group's name.
+ * user, requiring that user's name.
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: my-cluster-role-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: my-role
+subjects:
+  - kind: ServiceAccount
+    namespace: my-ns
+    name: default
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: system:authenticated  # case-sensitive
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: dave  # case-sensitive
+```
+
+```{note}
+I suspect that users and groups are cluster-level resources, hence the lack of namespace. Haven't been able to verify this.
+```
+
+```{note}
+What exactly is the `system:authenticated` group in the examples above? According to the book, there are several groups internal to Kubernetes that help identify an account:
+
+ * `system:unauthenticated` - Group assigned when authentication failed.
+ * `system:authenticated` - Group assigned when authentication succeeded.
+ * `system:serviceaccounts` - Group assigned to service accounts.
+ * `system:serviceaccounts:<NAMESPACE>` - Group assigned to service accounts under a specific namespace.
+```
+
+Kubernetes comes with several predefined cluster roles that can be used as needed:
+
+ * `cluster-admin`: Full-access to everything in the cluster.
+ * `admin`: Access to almost everything in the cluster (resource quotas and namespaces excluded).
+ * `view`: Access to view most objects in the cluster (roles and role bindings excluded).
+ * `edit`: Access to edit most objects in the cluster (roles and role bindings excluded).
+
+```{note}
+`edit` also excludes access to resource quotes and namespaces? Unsure.
+```
+
+## Disable Credentials
+
+`{bm} /(API Security\/Disable Credentials)_TOPIC/i`
+
+By default, a pod will mount its service account's credentials to `/var/run/secrets/kubernetes.io/serviceaccount` within its containers. Unless access to the API is required, it's good practice to disable the mounting of credentials entirely. This can be done via the service account object or the pod object.
+
+```yaml
+# Disable on service account
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: my-service-account
+  automountServiceAccountToken: false # Don't mount creds into pods using this service account
+----
+# Disable on pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  serviceAccountName: my-service-account
+  automountServiceAccountToken: false  # Prevent auth details from mounting to containers in pod
+  containers:
+    - name: my-container
+      image: my-image:1.0
+```
+
+```{note}
+Recall that it's also possible to disable auto-mounting on individual pods. Auto-mounting can't be disabled on individual containers, but it is possible to override the `/var/run/secrets/kubernetes.io/serviceaccount` mount on those containers with something like tmpfs (empty directory).
+```
 
 # Kubectl Cheatsheet
 
@@ -3469,12 +3989,6 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} reconciliation loop` - A loop that continually observes state and attempts to reconcile it to some desired state if it deviates. See declarative configuration.
 
- * `{bm} horizontal pod autoscaling` `{bm} /\b(HPA)\b/` - A feature that automatically scales the number of replicas in a replica sets based on user-defined criteria.
-
- * `{bm} vertical pod autoscaling` `{bm} /\b(VPA)\b/` - A feature that automatically scales up the resource requirements for some pod based on user-defined criteria.
-
- * `{bm} cluster autoscaler` - A component that automatically scales the number of nodes in a cluster based on need.
-
  * `{bm} daemon set` - A kind that ensures a set of nodes always have an instance of some pod running.
 
  * `{bm} job` - A kind that launches as a pod to perform some one-off task.
@@ -3495,10 +4009,26 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} control plane` - The distributed software that controls and makes up the functionality of a Kubernetes cluster, including the API server and scheduler used for assigning pods to worker nodes.
 
-  * `{bm} controller` - A piece of software running on the control plane that provides some functionality. This includes doing the work of reconciling observed state to desired state (reconciliation loop) and / or supporting new kinds. Kinds such as pods, stateful sets, nodes, etc.. all have controllers backing them, and custom controllers can be written and deployed by users.
+ * `{bm} controller` - A piece of software running on the control plane that provides some functionality. This includes doing the work of reconciling observed state to desired state (reconciliation loop) and / or supporting new kinds. Kinds such as pods, stateful sets, nodes, etc.. all have controllers backing them, and custom controllers can be written and deployed by users.
+
+ * `{bm} service account` - A kind used for authenticating pods with the control plane.
+
+ * `{bm} role-based access control/(role[-\s]based access control)/i` `{bm} /(RBAC)/` - The default security mechanism in Kubernetes, which uses roles to limit what users (and service accounts) can access via the Kubernetes API.
+
+ * `{bm} role/(cluster role|role)/i` - A kind specific to RBAC that defines a set of permissions.
+
+ * `{bm} role binding/(role binding|cluster role binding)/i` - A kind specific to RBAC that binds a role to a set of users, groups, and / or service accounts.
+
+* `{bm} horizontal pod autoscaler/(horizontal pod autoscaler|horizontal pod autoscaling)/i` `{bm} /\b(HPA)\b/` - A kind that automatically scales the number of replicas in a deployment, stateful set, or replica set based on how much load existing replicas are under.
+
+ * `{bm} vertical pod autoscaler/(vertical pod autoscaler|vertical pod autoscaling)/i` `{bm} /\b(VPA)\b/` - A kind that automatically scales the resource requirements for some pod based on how much load existing replicas are under.
+
+ * `{bm} cluster autoscaler/(cluster autoscaler|cluster autoscaling)/i` - A component that automatically scales the number of nodes in a cluster based on need.
+
+ * `{bm} pod disruption budget` `{bm} /\b(PDB)\b/` - A kind that defines the minimum number of available pods / maximum number of unavailable pods can be during a cluster resizing event (e.g. when cluster autoscaler is scaling up or down nodes).
 
 `{bm-error} Did you mean endpoints?/(endpoint)/i`
 
-`{bm-error} Use the proper version (e.g. DaemonSet should be Daemon set)/(ConfigMap|ReplicaSetStatefulSet|CronJob)/`
+`{bm-error} Use the proper version (e.g. DaemonSet should be Daemon set)/(ConfigMap|ReplicaSetStatefulSet|CronJob|ServiceAccount)/`
 
 `{bm-error} Missing topic reference/(_TOPIC)/i`
