@@ -88,7 +88,29 @@ Kubernetes breaks down its orchestration as a set of objects. Each object is of 
  * Secret - A security configuration mechanism for applications running within pods (e.g. passwords as certificates).
  * Ingress - A access point in which traffic comes in from the outside world to the internal Kubernetes network.
 
-Of these kinds, the two main ones are nodes and pods. Nodes, pods, and other important kinds are discussed in this document.
+Of these kinds, the two main ones are nodes and pods.
+
+```{svgbob}
+.----------------------------------------------------------.  .---------------------.
+|                         node1                            |  |        node2        |
+|                                                          |  |                     |
+| .--------------------------------.   .----------------.  |  | .----------------.  |
+| |               podA             |   |      podB      |  |  | |      podC      |  |
+| |  .------------.                |   | .------------. |  |  | | .------------. |  |
+| |  | containerA | .------------. |   | | containerD | |  |  | | | containerF | |  |
+| |  '------------' | containerB | |   | '------------' |  |  | | '------------' |  |
+| | .------------.  '------------' |   | .------------. |  |  | '----------------'  |
+| | | containerC |                 |   | | containerE | |  |  '---------------------'
+| | '------------'                 |   | '------------' |  |
+| '--------------------------------'   '----------------'  |
+'----------------------------------------------------------'
+```
+
+Nodes, pods, and other important kinds are discussed further on this document.
+
+```{seealso}
+Kinds_TOPIC (Discussion of common kinds)
+```
 
 ```{note}
 The terminology here is a bit wishy-washy. Some places call them kinds, other places call them resources, other places call them classes, and yet other places call them straight-up objects (in this case, they mean kind but they're saying object). None of it seems consistent, which is why it's been difficult piecing together how Kubernetes works.
@@ -194,7 +216,7 @@ Introduction/Configuration_TOPIC
 Introduction/Labels_TOPIC
 ```
 
-The following sub-sections gives a overview of kinds and example manifests. All manifests, regardless of the kind, require the following fields ...
+The following sub-sections gives a overview of the most-used kinds and example manifests for those kinds. All manifests, regardless of the kind, require the following fields ...
 
  * `apiVersion`: API version.
  * `kind`: Class of object (kind).
@@ -212,7 +234,7 @@ metadata:
     app_server: jetty
 ```
 
-In addition, the `metadata.labels` and `metadata.annotations` manifest paths contain the object's labels and annotations (respective).
+In addition, the `metadata.labels` and `metadata.annotations` contain the object's labels and annotations (respective).
 
 ## Pod
 
@@ -233,7 +255,7 @@ Containers are deployed in Kubernetes via pods. A pod is is a set of containers 
 '--------------------------------'
 ```
 
-Containers within a pod are isolated in terms of their resource requirements (e.g. CPU, memory, and disk), but they share the same ...
+By default, containers within a pod are isolated from each other  (e.g. isolated process IDs) except for sharing the same ...
 
  * network (containers within a pod have the same IP, same host, and share the port space).
  * IPC bus (containers within a pod can communicate with each other over POSIX message queues / System V IPC channels).
@@ -463,7 +485,13 @@ The example above exposes port 8080 to the rest of the cluster (not to the outsi
 Kinds/Service_TOPIC (Exposing pods to the outside world)
 ```
 
-A pod can have many containers within it, and since all containers within a pod share the same IP, the ports exposed by those containers can't conflict. For example, only one container within the pod expose port 8080.
+A pod can have many containers within it, and since all containers within a pod share the same IP, the ports exposed by those containers must be unique. For example, only one container within the pod expose port 8080.
+
+```{note}
+By default, network access is allowed to all pods within the cluster. You can change this using a special kind of pod called `NetworkPolicy` (as long as your Kubernetes environment supports it -- may or may not depending on the container networking interface used). `NetworkPolicy` lets you limit network access such that it's only allowed by pods that need it. This is done via label selectors.
+
+If you're aware of endpoints, service, and ingress kinds, I'm not sure how this network policy stuff plays with those kinds.
+```
 
 ### Command-line Arguments
 
@@ -899,7 +927,6 @@ spec:
         timeoutSeconds: 1
         periodSeconds: 10
         failureThreshold: 3
-  ...
 ```
 
 In the example above, each of the probes check a HTTP server within the container at port 8080 but at different paths. The field ...
@@ -934,6 +961,139 @@ spec:
         timeoutSeconds: 1
         periodSeconds: 10
         failureThreshold: 3
+```
+
+### Graceful Termination
+
+`{bm} /(Kinds\/Pod\/Graceful Termination)_TOPIC/`
+
+Kubernetes terminates pods by sending a `SIGTERM` to each container's main process, waiting a predefined amount of time, then forcefully sending a `SIGKILL` to that same process if the process hasn't shut itself down. The predefined waiting time is called the termination grace period, and it's provided so the application can perform cleanup tasks after it's received `SIGTERM` (e.g. emptying queues).
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  restartPolicy: Always
+  terminationGracePeriodSeconds: 60  # Default to 30
+  containers:
+    - name: my-container
+      image: my-image:1.0.1
+```
+
+```{note}
+If you have a pre-stop pod lifecycle hook (described in another section), note that this termination grace period starts as soon as the hook gets invoked (not after it finishes).
+```
+
+On termination (either via `SIGTERM` or voluntarily), a pod's container can write a message to a special file regarding the reason for its termination. The contents of this file be visible in the pod container's "last state" property.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  restartPolicy: Always
+  containers:
+    - name: my-container
+      image: my-image:1.0.1
+      terminationMessagePath: /var/exit-message  # Defaults to /dev/termination-log
+```
+
+```{note}
+A pod container's "last state" property is visible when you describe the pod via `kubectl`.
+```
+
+### Lifecycle Hooks
+
+`{bm} /(Kinds\/Pod\/Lifecycle Hooks)_TOPIC/`
+
+```{prereq}
+Kinds/Pod/Probes_TOPIC
+Kinds/Pod/Graceful Termination_TOPIC
+```
+
+Lifecycle hooks are a way for Kubernetes to notify a container of when ...
+
+* it's been brought up, called a post-start hook.
+* it's about to be brought down, called a pre-stop hook.
+
+Similar to probes, containers within the pod expose interfaces which Kubernetes invokes. A lifecycle hook interface is similar to a probe interface in that it can be one of multiple types: `httpGet`, `tcpSocket`, and `exec`.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - name: my-container
+      image: my-image:1.0.1
+      lifecycle:
+        # Hook to invoke once the container's main process starts running. This hook runs
+        # along-side the main process (not before it launches), but Kubernetes will treat
+        # the container as if it's waiting for it to still be created until this hook
+        # completes.
+        #
+        # A pod will be a "Pending" state until all each of its container post-start hooks
+        # complete.
+        postStart:
+          exec:
+            command: [sh, sleep 15]  # Artificial sleep
+        # Hook to invoke just before the container is voluntarily terminated (e.g. its
+        # moving to a new node). This hook runs first and once it's finished, a SIGTERM is
+        # sent to the main container process, followed by a SIGKILL if the container's
+        # main process hasn't terminated itself.
+        #
+        # It's important to note that the termination grace period begins as soon as the
+        # pre-stop hook gets invoked, not after the pre-stop hook finishes.
+        preStop:
+          httpGet:
+            path: /shutdown
+            port: 8080
+```
+
+A post-start hook is useful when some form on initialization needs to occur but it's impossible to do that initialization within the container (e.g. initialization doesn't happen on container start and you don't have access to re-create / re-deploy the container image to add support for it). Likewise, a pre-stop hook is useful when some form of graceful shutdown needs to occur but it's impossible to do that shutdown within the container (e.g. shutdown procedures don't happen on `SIGTERM` and you don't have access to re-create / re-deploy the container image to add support for it)
+
+```{note}
+According to the book, it's difficult to tell if / why a hook failed. Its output doesn't go anywhere. You'll just see something like `FailedPostStartHook` / `FailedPreStopHook` somewhere in the pod's event log.
+
+According to the book, many applications use pre-stop hook to manually send a `SIGTERM` to their app because, even though `SIGTERM` is being sent by Kubernetes, it's getting gobbled up and discarded by some parent process (e.g. running your app via `sh`).
+```
+
+### Init Containers
+
+`{bm} /(Kinds\/Pod\/Init Containers)_TOPIC/`
+
+```{prereq}
+Kinds/Pod/Command-line Arguments
+```
+
+Init containers are pod containers that run prior to a pod's actual containers. Their purpose is to initialize the pod in some way (e.g. writing startup data to some shared volume) or delay the start of the pod until some other !!service!! is detected as being online (e.g. database).
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  # Init containers are defined similarly to main containers, but they're run before main containers, one after the other in the order they're defined. After the last init container successfully completes, the main containers for the pod start.
+  initContainers:
+    - name: my-initA
+      image: my-init-imageA:1.0
+    - name: my-initB
+      image: my-initB-image:1.0
+      command: ['launchB', '--arg1']
+  containers:
+    - name: my-container
+      image: my-image:1.0.1
+```
+
+```{note}
+Important note from the docs:
+
+> Because init containers can be restarted, retried, or re-executed, init container code should be idempotent. In particular, code that writes to files on EmptyDirs should be prepared for the possibility that an output file already exists.
 ```
 
 ### Restart Policy
@@ -1069,7 +1229,7 @@ Information about a pod and its containers such as ...
 
 #### Environment Variables
 
-`{bm} /(Pods\/Metadata Access\/Environment Variables)_TOPIC/`
+`{bm} /(Kinds\/Pod\/Metadata Access\/Environment Variables)_TOPIC/`
 
 All pod information except for labels and annotations can be assigned to environment variables. The reason for this is that a running pod can have its labels and annotations updated but the environment variables within a running container can't be updated once that container starts (updated labels / annotations won't show up to the container).
 
@@ -1151,10 +1311,10 @@ spec:
 
 #### Volume Mount
 
-`{bm} /(Pods\/Metadata Access\/Volume Mount)_TOPIC/`
+`{bm} /(Kinds\/Pod\/Metadata Access\/Volume Mount)_TOPIC/`
 
 ```{prereq}
-Pods/Metadata Access/Environment Variables_TOPIC
+Kinds/Pod/Metadata Access/Environment Variables_TOPIC
 ```
 
 All pod information can be exposed as a volume mount, where files in that mount map to pieces of information. Unlike with environment variables, a volume mount can contain labels and annotations. If those labels and annotations are updated, the relevant files within the mount update to reflect the changes. It's up to the application running within the container to detect and reload those updated files.
@@ -1245,6 +1405,264 @@ spec:
           mountPath: /metadata
 ```
 
+### Node Affinity
+
+`{bm} /(Kinds\/Pod\/Node Affinity)_TOPIC/`
+
+TODO: fill me in
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - image: my-image:1.0
+      name: my-container
+  tolerations:
+    - key: node-type
+      Operator: Equal
+      value: production
+      effect: NoSchedule
+```
+
+TODO: 16.1.4 (just the intro paragraph, "configuring how long after a node failure a pod is rescheduled)
+
+### Pod Affinity
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - image: my-image:1.0
+      name: my-container
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - topologyKey: kubernetes.io/hostname
+            labelSelector:
+              matchLabels:
+                app: backend
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 80
+          podAffinityTerm:
+            - topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchLabels:
+                    app: backend
+    podAntiAffinity:
+      ...
+```
+
+SAME AVAILABILITY ZONE: topologyKey property to failure-domain.beta.kubernetes.io/zone
+
+SAME GEOGRAPHICAL REGION: topologyKey would be set to failure-domain.beta.kubernetes.io/region
+
+TODO: CH16.5? The three keys mentioned aren’t special. You can use your own topologyKey (e.g. "rack") to have pods scheduled onto same server rack. But, you need to add a "rack" label to your nodes
+
+```{note}
+The scheduler has its own preferences as well that it adds to the mix, such as how "spread out" certain groups of pods are across the set of nodes (called `SelectorSpreadPriority`).
+```
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - image: my-image:1.0
+      name: my-container
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: gpu
+                operator: In
+                values:
+                  - "true"
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 80
+          preference:
+            matchExpressions:
+              - key: availability-zone
+                operator: In
+                values:
+                  - US-East
+        - weight: 20
+          preference:
+            matchExpressions:
+              - key: cpu-brand
+                operator: In
+                values:
+                  - Intel Xeon
+```
+
+### Security Context
+
+`{bm} /(Kinds\/Pod\/Security Context)_TOPIC/`
+
+```{prereq}
+Kinds/Pod/Node Access_TOPIC
+```
+
+```{note}
+**EVERYTHING DISCUSSED HERE MAY BE DISABLED BY THE CLUSTER ADMINISTRATOR**. The cluster admin can use a kind called `PodSecurityPolicy` to define security related features that a pod can and can't use.
+```
+
+A pod and it's containers can have security-related features configured via a security context.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - image: my-image:1.0
+      name: my-container
+      securityContext:
+        # When set, the default user of the container is updated to use be this user ID
+        # (note that this is a user ID, not a user name). This is useful if multiple
+        # applications are reading / writing to the sane shared volume (no permission
+        # problems if they're are read/writing as the same UID?).
+        runAsUser: 99 
+        # When set, the group of the default user of the container is updated to use be this
+        # group ID (there are multiple group IDs here, 123 is the main one used when
+        # creating files and directories). This is useful if multiple applications are
+        # reading / writing to the sane shared volume (no permission problems if they're are
+        # read/writing as the same GID? -- if file permissions allow).
+        fsGroup: 123
+        supplementalGroups: [456, 789]
+        # When set to true, the container will run as a non-root user. This is useful if
+        # the pod breaks isolation by exposing the internals of the node to some of its
+        # containers.
+        runAsNonRoot: true
+        # When set to true, the container runs in "privileged mode" (full access to the
+        # Linux kernel). This is useful in cases where the pod manages the node somehow
+        # (e.g. modified iptables).
+        privileged: true
+        # An alternative to giving a container "privileged" access (shown above) is to
+        # instead provide the container with fine-grained permissions to the kernel.
+        # This can also be used to revoke fine-grained permissions that are provided
+        # by default (e.g. remove the ability to change ownership of a dir).
+        capabilities:
+          add:
+            - SYS_TIME
+          drop:
+            - CHOWN
+        # When set to true, the container is unable to write to its own filesystem. It
+        # can only read from it. Any writing it needs to do has to be done on a mounted
+        # volume.
+        readOnlyRootFilesystem: true
+        #
+        # Not all features are listed here. There are many others.
+        #
+```
+
+These security-related features can also be used at the pod-level rather than the container-level. When used at the pod level, the features are applied as defaults for all containers (containers can override them if needed).
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  # Pod-level security context. This gets applied as a default for all container in the pod.
+  securityContext:
+    runAsUser: 99 
+    runAsNonRoot: true
+    privileged: true
+    capabilities:
+      add:
+        - SYS_TIME
+      drop:
+        - CHOWN
+    readOnlyRootFilesystem: true
+  containers:
+    - image: my-image1:1.0
+      name: my-container1
+    - image: my-image2:1.0
+      name: my-container2
+      securityContext:
+        privileged: false  # Override the default "privileged" security context option.
+```
+
+### Node Access
+
+`{bm} /(Kinds\/Pod\/Node Access)_TOPIC/`
+
+```{prereq}
+Kinds/Pod/Ports_TOPIC
+```
+
+```{note}
+**EVERYTHING DISCUSSED HERE MAY BE DISABLED BY THE CLUSTER ADMINISTRATOR**. The cluster admin can use a kind called `PodSecurityPolicy` to define security related features that a pod can and can't use.
+```
+
+A pod's isolation guarantees can be relaxed so that it has access to the internals of the node it's running on. This is important for in certain system-level scenarios, such as pods that collect node performance metrics.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - image: my-image:1.0
+      name: my-container
+  # By default, all containers within a pod share the same IP and port space (unique to that
+  # pod. However, when this property is set to true, the node's default "network namespace"
+  # is shared with the containers of the pod (network interfaces are exposed to the pod).
+  hostNetwork: true
+  # By default, each container within a pod has its own isolated process ID space. However,
+  # when this property is set to true, the node's default "process ID namespace" is used for
+  # each pod container's processes.
+  hostPID: true
+  # By default, each container within a pod has its own isolated IPC space. However, when
+  # this property is set to true, the node's default "IPC namespace" is used for each pod
+  # container's processes.
+  hostIPC: true
+```
+
+```{seealso}
+Kinds/Daemon Set_TOPIC (Daemon sets are used for running a single instance of a pod across a set of nodes)
+```
+
+If the only requirement is that requests from a node's port get forwarded to a container's port, that node's network interfaces don't need to be exposed to the pod. Instead, a container can also simply ask that the node running it directly map a node port to it.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - image: my-image:1.0
+      name: my-container
+      ports:
+        # Map port 9999 on the node that this pod runs to port 8080 on this pod's container.
+        #
+        # Note that the Kubernetes scheduler ensures that a node has port 9999 available
+        # before scheduling this pod to run on it.
+        - containerPort: 8080
+          hostPort: 9999
+          protocol: TCP
+```
+
+```{note}
+If you already know about services, the `NodePort` service isn't the same thing as what's going on here. This is opening up a port on the node that the pod is running on and forwarding requests to the container. `NodePort` opens the same port on *all* nodes and forwards requests to a random pod (not necessarily the pod running on the same node that the request came in to).
+```
+
+```{seealso}
+Kinds/Service/Exposure/Node Port_TOPIC
+```
+
 ### API Access
 
 `{bm} /(Kinds\/Pod\/API Access)_TOPIC/`
@@ -1277,7 +1695,7 @@ Kinds/API Security/Disable Credentials_TOPIC (Disable mounting of credentials wi
 
 `{bm} /(Kinds\/Configuration Map)_TOPIC/`
 
-A configuration map is a type of resource comprised of key-value pairs intended to configure the main application of a container (or many containers). By decoupling configurations from the containers themselves, the same configuration map (or parts of it) could be used to configure multiple containers within Kubernetes.
+A configuration map is a set of key-value pairs intended to configure the main application of a container (or many containers). By decoupling configurations from the containers themselves, the same configuration map (or parts of it) could be used to configure multiple containers within Kubernetes.
 
 ```{seealso}
 Kinds/Secret_TOPIC (Do **NOT** use config maps for storing secrets such as tokens, certificates, or password).
@@ -1297,7 +1715,7 @@ data:
     ket1 = value2
 ```
 
-The key-value pairs of a configuration map resource typically get exposed to a container either as environment variables, files, or command-line arguments. Keys are limited to certain characters: alphabet, numbers, dashes, underscores, and dots.
+The key-value pairs of a configuration map typically get exposed to a container either as environment variables, files, or command-line arguments. Keys are limited to certain characters: alphabet, numbers, dashes, underscores, and dots.
 
 ## Secret
 
@@ -1307,7 +1725,7 @@ The key-value pairs of a configuration map resource typically get exposed to a c
 Kinds/Configuration Map_TOPIC
 ```
 
-A secret object is a type of resource comprised of key-value pairs, similar to a config map, but oriented towards security rather than just configuration (e.g. for storing things like access tokens, passwords, certificates). As opposed to a config map, Kubernetes takes extra precautions to ensure that a secret object is stored and used in a secure manner.
+A secret object is a set of key-value pairs, similar to a config map, but oriented towards security rather than just configuration (e.g. for storing things like access tokens, passwords, certificates). As opposed to a config map, Kubernetes takes extra precautions to ensure that a secret object is stored and used in a secure manner.
 
 ```yaml
 apiVersion: v1
@@ -1383,6 +1801,40 @@ Kubernetes has a leader-follower architecture, meaning that of the nodes a small
 
 A master node can still run pods just like the worker nodes, but some of its resources will be tied up for the purpose of managing worker nodes.
 
+### Taints
+
+`{bm} /(Kinds\/Node\/Taints)_TOPIC/i`
+
+```{prereq}
+Kinds/Pod/Node Affinity_TOPIC
+```
+
+A node taint is a property that repels a set of pods from a node, either as a preference or as a hard requirement. Taints are defined as a key-value pair along with an effect that defines how the taint works (formatted as `key=value:effect`). Given a pod that doesn't have a toleration for a node's taint, how that pod gets repelled depends on the effect of that taint:
+
+ * `NoSchedule` - Pods won't be scheduled on the node but already running pods will keep running.
+ * `NoExecute` - Pod won't be scheduled on the node and already running pods will be evicted.
+ * `PreferNoSchedule` - Pod can be scheduled on the node but that node will be avoided if possible.
+
+Node taints can be added and removed via command-line.
+
+```sh
+kubectl taint node my-staging-node-1 environment-type=production:NoExecute  # Add taint
+kubectl taint node my-staging-node-1 environment-type=production:NoExecute- # Remove taint (note the - at the end)
+```
+
+```{note}
+Can this be done via a manifest as well? Probably, but it seems like the primary way to handle this is either through kubectl or via whatever cloud provider's managed Kubernetes web interface.
+```
+
+Multiple taints on a node repel pods based on each taint. For a pod to be scheduled on a node, that pod ... 
+
+ * needs tolerations for any taints with effect `NoSchedule` or `NoExecute`.
+ * can have tolerations for any taints with effect `PreferNoSchedule` (having tolerations increases odds that pod gets scheduled on that node).
+
+```{note}
+The multiple taints paragraph is speculation. I think this is how it works.
+```
+
 ## Volume
 
 `{bm} /(Kinds\/Volume)_TOPIC/i`
@@ -1417,7 +1869,7 @@ The idea is that a persistent volume itself is just a floating block of disk spa
 In the example above, there are 4 volumes in total but only 3 of those volumes are claimed. podA latches on to claim1 and claim2 while podB latches on to claim3 and claim2 (both pods can access the volume claimed in claim2).
 
 ```{note}
-Persistent volumes themselves are cluster-level resources while persistent volume claims are namespace-level resources. All volumes are available for claims regardless of the namespace that claim is in. Maybe you can limit which volumes can be claimed by using labels / label selectors?
+Persistent volumes themselves are cluster-level kinds while persistent volume claims are namespace-level kinds. All volumes are available for claims regardless of the namespace that claim is in. Maybe you can limit which volumes can be claimed by using labels / label selectors?
 ```
 
 ```{note}
@@ -1437,8 +1889,8 @@ spec:
   capacity:
     storage: 10Gi
   accessModes:
-  - ReadWriteOnce
-  - ReadOnlyMany
+    - ReadWriteOnce
+    - ReadOnlyMany
   persistentVolumeReclaimPolicy: Recycle  # once a claim on this volume is given up, delete the files on disk
   awsElasticBlockStore:
     volumeID: volume-id
@@ -1457,7 +1909,7 @@ spec:
     requests:
       storage: 1Gi  # volume must have at least this much space
   accessModes:
-  - ReadWriteOnce  # volume must have this access mode
+    - ReadWriteOnce  # volume must have this access mode
   storageClassName: ""  # MUST BE EMPTY STRING to claim test-vol described above (if set, uses dynamic provisioning)
 ```
 
@@ -1470,7 +1922,7 @@ There are two types of volume provisioning available:
 * static provisioning - a claim is assigned a pre-created persistent volume.
 * dynamic provisioning - a claim triggers a new persistent volume to get created and is assigned to it.
 
-Dynamic provisioning only requires that you make a persistent volume claim with a specific `spec.storageClassName`. The administrator is responsible for ensuring a provisioner exists for that storage class and it automatically creates a volume of that type when a claim comes in. Each storage class can have different characteristics such as volume type (e.g. HDD vs SSD), volume read/write speeds, backup policies, etc.
+Dynamic provisioning only requires that you make a persistent volume claim with a specific storage class name. The administrator is responsible for ensuring a provisioner exists for that storage class and it automatically creates a volume of that type when a claim comes in. Each storage class can have different characteristics such as volume type (e.g. HDD vs SSD), volume read/write speeds, backup policies, etc.
 
 ```yaml
 apiVersion: storage.k8s.io/v1
@@ -1486,23 +1938,31 @@ parameters:
 
 `{bm} /(Kinds\/Volume\/Capacity)_TOPIC/i`
 
-The capacity of a persistent volume is set through `spec.capacity.storage`.
+Each persistent volume has a storage capacity.
 
 ```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: test-vol
 spec:
   capacity:
-    storage: 10Gi
+    storage: 10Gi  # Capacity of the persistent volume.
 ```
 
-A persistent volume claim can then be set to require a specific amount of capacity via `spec.resources.request.storage`. Specifically, `requests` defines the minimum required capacity and `limits` defines the maximum required capacity.
+A persistent volume claim can then be set to a capacity within some range.
 
 ```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: test-vol-claim
 spec:
   resources:
     requests:
-      storage: 1Gi  # volume must have at least this much space
+      storage: 1Gi  # Minimum capacity that the persistent volume should have.
     limits:
-      storage: 5Gi  # volume can't have more than this much space
+      storage: 5Gi  # Maximum capacity that the persistent volume should have.
 ```
 
 ### Access Modes
@@ -1516,21 +1976,34 @@ A persistent volume can support multiple access modes:
 * `ReadWriteMany` - volume is mountable by many nodes in read-write mode.
 * `ReadOnlyMany` - volume is mountable by many nodes in read-only mode.
 
-The available access modes of a persistent volume is set through `spec.accessModes`.
-
 ```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: test-vol
 spec:
+  # Access modes for the persistent volume listed here.
   accessModes:
-  - ReadWriteOnce
-  - ReadOnlyMany
+    - ReadWriteOnce
+    - ReadOnlyMany
+  capacity:
+    storage: 10Gi
 ```
 
-A persistent volume claim can then be set to target on or more access modes.
+A persistent volume claim can then be set to target one or more access modes.
 
 ```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: test-vol-claim
 spec:
+  # Persistent volume selected must have these access modes
   accessModes:
-  - ReadWriteOnce  # volume must have this access mode
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
 ```
 
 ```{note}
@@ -1545,18 +2018,23 @@ Not all persistent volume types support all access modes. Types are discussed fu
 
 `{bm} /(Kinds\/Volume\/Reclaim Policy)_TOPIC/i`
 
-A persistent volume claim, once released, may or may not make the persistent volume claimable again depending on what `spec.persistentVolumeReclaimPolicy` was set to.
-
-```yaml
-spec:
-  persistentVolumeReclaimPolicy: Recycle 
-```
-
-The options available are ...
+A persistent volume claim, once released, may or may not make the persistent volume claimable again depending on the volume reclaim policy. The options available are ...
 
 * `Retain` - keep all existing data on the persistent volume and prevent a new persistent volume claim from claiming it again.
 * `Recycle` - delete all existing data on the persistent volume and allow a new persistent volume claim to claim it again.
 * `Delete` - delete the persistent volume object itself.
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: test-vol-claim
+spec:
+  persistentVolumeReclaimPolicy: Recycle  # Recycle the persistent volume once released
+  resources:
+    requests:
+      storage: 1Gi
+```
 
 If the data on disk is critical to operations, the option to choose will likely be `Retain`.
 
@@ -1576,7 +2054,7 @@ Not all persistent volume types support all reclaim policies. Types are discusse
 
 A persistent volume needs to come from somewhere, either via a cloud provider or using some internally networked (or even local) disks. There are many volume types: AWS elastic block storage, Azure file, Azure Disk, GCE persistent disk, etc.. Each type has its own set of restrictions such as what access modes it supports or the types of nodes it can be mounted.
 
-The configuration for each type is unique and goes directly under `spec`. The following are sample configurations for popular types...
+The configuration for each type is unique. The following are sample configurations for popular types...
 
 ```{note}
 The documentation says that a lot of these types are deprecated and being moved over to something called CSI (container storage interface), so these examples may need to be updated in the future
@@ -1584,6 +2062,10 @@ The documentation says that a lot of these types are deprecated and being moved 
 
 ```yaml
 # Amazon Elastic Block Storage
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: test-vol
 spec:
   awsElasticBlockStore:
     volumeID: volume-id  # a volume with this ID must already exist in AWS
@@ -1592,6 +2074,10 @@ spec:
 
 ```yaml
 # Google Compute Engine Persistent Disk
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: test-vol
 spec:
   gcePersistentDisk:
     pdName: test-vol  # a disk with this name must already exist in GCE
@@ -1600,6 +2086,10 @@ spec:
 
 ```yaml
 # Azure Disk
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: test-vol
 spec:
   azureDisk:
     # a volume with this name and URI must already exist in Azure
@@ -1611,6 +2101,10 @@ spec:
 # Host path
 #   -- this is a path on the node that the pod gets scheduled on, useful
 #      for debugging purposes.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: test-vol
 spec:
   hostPath:
     path: /data
@@ -1632,14 +2126,27 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: standard
+# The two fields below ("provisioner" and "parameters" define how persistent volumes are to
+# be created and are unique to each volume type. In this example, the storage class
+# provisions new persistent volumes on AWS. Any persistent volume claim with storage class
+# name set to `standard` will call out to this AWS elastic store provisioner to create a
+# persistent volume of type "awsElasticBlockStore" which gets assigned to it.
 provisioner: kubernetes.io/aws-ebs
 parameters:
   type: gp2
+# This field ("reclaimPolicy") maps to a persistent volume's
+# "persistentVolumeReclaimPolicy", except that "Recycle" isn't one of the allowed options:
+# Only "Delete" and "Retain" are allowed. This example uses "Retain". If unset, the reclaim
+# policy of a dynamically provisioned persistent volume is "Delete". 
 reclaimPolicy: Retain
+# When this field ("allowVolumeExpansion") is set to true, the persistent volume can be
+# resized by editing the persistent volume claim object. Only some volume types support
+# volume expansion. This example will work because AWS elastic block store volume types do
+# support volume expansion.
 allowVolumeExpansion: true
 ```
 
-`provisioner` and `parameters` define how persistent volumes are to be created and are unique to each volume type. In the example above, the storage class is named `standard` and it provisions new persistent volumes on AWS. Any persistent volume claim with `spec.storageClassName` set to `standard` will call out to this AWS elastic store provisioner to create a persistent volume of type `awsElasticBlockStore` which gets assigned to it.
+To use a storage class in a persistent volume claim, supply the name of that storage class.
 
 ```yaml
 apiVersion: v1
@@ -1647,29 +2154,28 @@ kind: PersistentVolumeClaim
 metadata:
   name: test-vol-claim
 spec:
+  storageClassName: standard  # Use the storage class defined above for this claim
   resources:
     requests:
       storage: 1Gi
   accessModes:
     - ReadWriteOnce
-  storageClassName: standard  # use the storage class described above for this claim
 ```
-
-If `allowVolumeExpansion` is set to `true`, the persistent volume can be resized by editing the persistent volume claim object. Only some volume types support volume expansion. The example above will work because AWS elastic block store volume types do support volume expansion.
-
-`reclaimPolicy` maps to a persistent volume's `spec.persistentVolumeReclaimPolicy`, except that `Recycle` isn't one of the allowed options: only `Delete` and `Retain` are allowed.If unset, the reclaim policy of a dynamically provisioned persistent volume is `Delete`. The example above overrides the reclaim policy to `Retain`.
 
 ```{note}
 Since these persistent volumes are being dynamically provisioned, it doesn't make sense to have `Recycle`. You can just `Delete` and if a new claim comes in it'll automatically provision a new volume. It's essentially the same thing as `Recycle`.
 ```
 
-If a persistent volume claim leaves `spec.storageClassName` unset, the persistent volume claim will use whatever storage class Kubernetes has set as its default. Recall that leaving `spec.storageClassName` unset is *not* the same as leaving it as an empty string. To leave unset means to keep it out of the declaration entirely. If `spec.storageClassName` is ...
+If a persistent volume claim provides no storage class name, that persistent volume claim will use whatever storage class Kubernetes has set as its default. Recall that leaving the storage class name unset is *not* the same as leaving it as an empty string. To leave unset means to keep it out of the declaration entirely. If the storage class name is ...
 
 * set to an empty string, it tells Kubernetes to find any _existing_ persistent volume for the persistent volume claim.
 * set to a non-empty string, it tells Kubernetes to use that storage class to dynamically provision a persistent volume for the persistent volume claim.
 * unset, it tells Kubernetes to use the default storage class to dynamically provision a persistent volume for the persistent volume claim.
 
 Most Kubernetes installations have a default storage class available, identified by the storage class having the annotation `storageclass.kubernetes.io/is-default-class=true`.
+
+````{note}
+The following example shows the default storage class on microk8s.
 
 ```
 # kubectl get sc
@@ -1695,12 +2201,13 @@ provisioner: microk8s.io/hostpath
 reclaimPolicy: Delete
 volumeBindingMode: WaitForFirstConsumer
 ```
+````
 
 ## Endpoints
 
 `{bm} /(Kinds\/Endpoints)_TOPIC/i`
 
-Endpoints (plural) is a kind that simply holds a list of IP addresses and ports. It's used by higher-level kinds to simplify routing. For example, an endpoints resource may direct to all the nodes that make up a sharded database server.
+Endpoints (plural) is a kind that simply holds a list of IP addresses and ports. It's used by higher-level kinds to simplify routing. For example, an endpoints object may direct to all the nodes that make up a sharded database server.
 
 Example manifest:
 
@@ -1795,14 +2302,24 @@ Introduction/Labels_TOPIC
 Kinds/Endpoints_TOPIC
 ```
 
-A service determines which pods it should route traffic to via the `spec.selector` manifest path. This manifest path contains key-value mappings, where these key-value mappings are labels that a pod needs before being considered for this service's traffic ...
+A service determines which pods it should route traffic to via label selectors.
 
 ```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
 spec:
+  # Label selectors that pick out the pods this service routes to.
   selector:
     key1: value1
     key2: value2
     key3: value3
+  ports:
+    - name: webapp-port
+      protocol: TCP
+      port: 80
+      targetPort: 9376
 ```
 
 Internally, the service creates and manages an endpoints object containing the IP and port for each pod captured by the selector. If no selectors are present, the service expects an endpoints object with the same name to exist, where that endpoints object contains the list of IP and port pairs that the service should route to.
@@ -1811,7 +2328,7 @@ Internally, the service creates and manages an endpoints object containing the I
 apiVersion: v1
 kind: Endpoints
 metadata:
-  name: database  # must be same name as the service
+  name: database  # Must be same name as the service
 subsets: 
   - addresses:
       - ip: 10.10.1.1
@@ -1821,12 +2338,16 @@ subsets:
       - port: 5432
 ```
 
-If no selectors are present but `spec.type` is set to `ExternalName`, the service will route to the host specified in `spec.externalName`. This is useful for situations where you want to hide the destination, such as an external API that you also want to mock for development / testing.
+If no label selectors are present but service's type is set to `ExternalName`, the service will route to some user-defined host. This is useful for situations where you want to hide the destination, such as an external API that you also want to mock for development / testing.
 
 ```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
 spec:
   type: ExternalName
-  externalName: api.externalcompany.com
+  externalName: api.externalcompany.com  # Route to this host
   ports:
     - name: api-port
       protocol: TCP
@@ -1847,10 +2368,21 @@ Kinds/Pod/Ports_TOPIC
 Kinds/Service/Routing_TOPIC
 ```
 
-A service can listen on multiple ports, controlled via the `spec.ports` manifest path.
+A service can listen on multiple ports.
 
 ```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
 spec:
+  # In most cases, each port entry has ...
+  #
+  #  * "name", which is a friendly name to identify the port (optional)
+  #  * "protocol", which is either `TCP` or `UDP` (defaults to `TCP`).
+  #  * "port", which is the port that the service listens on.
+  #  * "targetPort", which  is the port that requests are forwarded to on the pod (defaults
+  #     to value set for "port").
   ports:
     - name: webapp-port
       protocol: TCP
@@ -1860,13 +2392,7 @@ spec:
       protocol: TCP
       port: 8080
       targetPort: 1111
-    ...
 ```
-
- * `name` is a friendly name to identify the port (optional)
- * `protocol` is either `TCP` or `UDP` (defaults to `TCP`).
- * `port` is the port that the service listens on.
- * `targetPort` is the port that requests are forwarded to on the pod  (defaults to value set for `port`).
 
 ```{note}
 Not having a name makes it more difficult for pods to discover a service. Discussed further in the service discovery section.
@@ -1877,7 +2403,7 @@ The example above forwards requests on two ports. Requests on port ...
  * 80 of the service get forwarded to port 9376 of a pod assigned to that service.
  * 8080 of the service get forwarded to port 1111 of a pod assigned to that service.
 
-Ports may also reference the names of ports in a pod manifest. For example, imagine the pod manifest for a pod assigned to a service provides names for its ports.
+Ports may also reference the names of ports in a pod. For example, the following pod provides names for its ports.
 
 ```yaml
 apiVersion: v1
@@ -1886,15 +2412,15 @@ metadata:
   name: my-pod
 spec:
   containers:
-    - ...
+    - name: my-container
+      image: my-image:1.0.1
       ports:
-        - containerPort: 8080
-          name: my-http-port
+        - name: my-http-port  # Name for the port
+          containerPort: 8080
           protocol: TCP
-      ...
 ```
 
-In the service for that targets this pod manifest, you can use `my_http_port` as a `targetPort`.
+In the service targeting that pod, you can use `my-http-port` as a target port.
 
 ```yaml
 apiVersion: v1
@@ -1908,7 +2434,7 @@ spec:
     - name: webapp-port
       protocol: TCP
       port: 80
-      targetPort: my-http-port
+      targetPort: my-http-port  # The name of the port in the pod
 ```
 
 ```{note}
@@ -1964,11 +2490,20 @@ Kinds/Service/Health_TOPIC
 
 A service that's headless is one which there is no load balancer forwarding requests to pods / endpoints. Instead, the domain for the service will resolve a list of ready IPs for the pods (or endpoints) that the service is for. 
 
-To create a headless service, set `spec.clusterIP` manifest path to `None`.
-
 ```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
 spec:
+  # When this field ("clusterIP") is set to "None", the service is a "headless service".
   clusterIP: None
+  selector:
+    app: MyApp
+  ports:
+    - name: webapp-port
+      protocol: TCP
+      port: 80
 ```
 
 Generally, headless services shouldn't be used because DNS queries are typically cached by the operating system. If the IPs that a service forwards to change, apps that have recently queried the service's DNS will continue to use the old (cached) set of IPs until the operating system purges its DNS cache.
@@ -1977,19 +2512,31 @@ Generally, headless services shouldn't be used because DNS queries are typically
 
 `{bm} /(Kinds\/Service\/Session Affinity)_TOPIC/i`
 
-How a service decides to forward incoming requests to the pod instances assigned to it is controlled via `spec.sessionAffinity` manifest path. Assigning a value of ...
+How a service decides to forward incoming requests to the pod instances assigned to it is controlled via a session affinity field. Assigning a value of ...
 
  * `None` forwards each request to a randomly selected pod instance (default behaviour).
  * `ClientIP` forwards each request originating from the same IP to the same pod instance.
 
-When using `ClientIP`, you may also provide a maximum session "sticky time" via the manifest path `spec.sessionAffinityConfig.clientIP.timeoutSeconds`. By default, this value is set to 108300 (around 3 hours).
+When using `ClientIP`, a maximum session "sticky time" may also be provided.
 
 ```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
 spec:
+  # The two fields below ("sessionAffinity" and "sessionAffinityConfig") define how session
+  # affinity works.
   sessionAffinity: ClientIP
   sessionAffinityConfig:
     clientIP:
-      timeoutSeconds: 10000
+      timeoutSeconds: 10000  # Defaults value is 108300, which is around 3 hours
+  selector:
+    app: MyApp
+  ports:
+    - name: webapp-port
+      protocol: TCP
+      port: 80
 ```
 
 ```{note}
@@ -2004,9 +2551,24 @@ The book mentions that because services work on the TCP/UDP level and not at HTT
 
 `{bm} /(Kinds\/Service\/Exposure)_TOPIC/i`
 
-The service type defines where and how a service gets exposed, controlled via the `spec.type` manifest path. For example, a service may only be accessible within the cluster, to specific parts of the cluster, to an external network, or to the public Internet.
+The service type defines where and how a service gets exposed. For example, a service may only be accessible within the cluster, to specific parts of the cluster, to an external network, or to the public Internet.
 
-If not specified, the `spec.type` of a resource is `ClusterIP`, meaning that it's exposed only locally within the cluster.
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  type: ClusterIP  # Service type
+  selector:
+    app: MyApp
+  ports:
+    - name: webapp-port
+      protocol: TCP
+      port: 80
+```
+
+If not specified, the type is `ClusterIP`, meaning that it's exposed only locally within the cluster.
 
 #### Local
 
@@ -2036,8 +2598,18 @@ Internally, a `ClusterIP` service uses kube-proxy to route requests to relevant 
 ```
 
 ```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
 spec:
-  type: ClusterIP
+  type: ClusterIP  # ClusterIP service type
+  selector:
+    app: MyApp
+  ports:
+    - name: webapp-port
+      protocol: TCP
+      port: 80
 ```
 
 #### Node Port
@@ -2046,28 +2618,41 @@ spec:
 
 Services of type `NodePort` are accessible from outside the cluster. Every worker node opens a port (either user-defined or assigned by the system) that routes requests to the service. Since nodes are transient, there is no single point of access to the service.
 
-When `NodePort` is used as the type, the manifest path `spec.ports[].nodePort` defines the port on the worker node to open.
-
 ```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
 spec:
-  type: NodePort
+  type: NodePort  # Nodeport service type
+  selector:
+    app: MyApp
   ports:
+    # When "NodePor"` is used as the type, each port should have "nodePort" field that
+    # defines the port on the worker nodes to open.
     - protocol: TCP
       port: 80
       targetPort: 9376
       nodePort: 8080
-    ...
+```
+
+```{seealso}
+Kinds/Pod/Node Access_TOPIC (Somewhat similar `hostPort` feature of container port mapping)
 ```
 
 #### Load Balancer
 
 `{bm} /(Kinds\/Service\/Exposure\/Load Balancer)_TOPIC/i`
 
-Services of type `LoadBalancer` are accessible from outside the cluster. When the `LoadBalancer` type is used, the cloud provider running the cluster assigns their version of a load balancer to route external HTTP requests to the Kubernetes Ingress component. Ingress then determines what service that request should be routed to based on details within the HTTP parameters (e.g. Host).
+Services of type `LoadBalancer` are accessible from outside the cluster. When the `LoadBalancer` type is used, the cloud provider running the cluster assigns their version of a load balancer to route external HTTP requests to the Kubernetes ingress component. Ingress then determines what service that request should be routed to based on details within the HTTP parameters (e.g. Host).
 
-There is no built-in Kubernetes implementation of Ingress. Kubernetes provides the interface but someone must provide the implementation, called an Ingress controller, for the functionality to be there. The reason for this is that load balancers come in multiple forms: software load balancers, cloud provider load balancers, and hardware load balancers. When used directly, each has a unique way it needs to be configured, but the Ingress implementation abstracts that out.
+There is no built-in Kubernetes implementation of ingress. Kubernetes provides the interface but someone must provide the implementation, called an ingress controller, for the functionality to be there. The reason for this is that load balancers come in multiple forms: software load balancers, cloud provider load balancers, and hardware load balancers. When used directly, each has a unique way it needs to be configured, but the ingress implementation abstracts that out.
 
 ```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
 spec:
   type: LoadBalancer
   ports:
@@ -2078,9 +2663,10 @@ spec:
     ...
 ```
 
-Once provisioned, the object will have the manifest path `status.loadBalancer.ingress.ip[]` added to it, which states the IP of the load balancer forwarding requests to this service.
+Once provisioned, the object will have the field `status.loadBalancer.ingress.ip` added to it, which states the IP of the load balancer forwarding requests to this service.
 
 ```yaml
+# <REMOVED PREAMBLE>
 spec:
   type: LoadBalancer
   ports:
@@ -2088,7 +2674,6 @@ spec:
       port: 80
       targetPort: 9376
       nodePort: 8080
-    ...
 status:
   loadBalancer:
     ingress:
@@ -2111,7 +2696,7 @@ The book says that a load balancer type is a special case of node port type.
 Kinds/Service_TOPIC
 ```
 
-Similar to a service of type `LoadBalancer`, An Ingress object is a load balancer with a publicly exposed IP. However, rather than load balancing at the TCP/UDP level, an Ingress object acts as a load balancing HTTP proxy server. An HTTP request coming into an Ingress object gets routed to one of many existing services based on host and path HTTP headers. This is useful because the cluster can expose several services under a single public IP address.
+Similar to a service of type `LoadBalancer`, An ingress object is a load balancer with a publicly exposed IP. However, rather than load balancing at the TCP/UDP level, an ingress object acts as a load balancing HTTP proxy server. An HTTP request coming into an ingress object gets routed to one of many existing services based on host and path HTTP headers. This is useful because the cluster can expose several services under a single public IP address.
 
 ```{svgbob}
                                                                            +---------------------------------+
@@ -2179,7 +2764,7 @@ spec:
 ```
 
 ```{note}
-According to the book, most if not all implementations of Ingress simply query the service for its endpoints and directly load balance across them vs forwarding the request through that service. Note that the port in the example above is still the port that the *service* is listening on, not the port of the pod is listening on.
+According to the book, most if not all implementations of ingress simply query the service for its endpoints and directly load balance across them vs forwarding the request through that service. Note that the port in the example above is still the port that the *service* is listening on, not the port of the pod is listening on.
 ```
 
 ### Hosts
@@ -2189,6 +2774,10 @@ According to the book, most if not all implementations of Ingress simply query t
 The host in each rule can be either an exact host or it could contain wildcards (e.g. `*.api.myhost.com`). Each name in the host (split by dot) intended for a wildcard should explicitly have an asterisk in its place. The portion the asterisk is in must exist and it only covers that name. For example, the rule below will match `ONE.api.myhost.com`, but not `TWO.THREE.api.myhost.com` or `api.myhost.com`.
 
 ```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
 spec:
   rules:
   - host: "*.api.myhost.com"
@@ -2207,9 +2796,13 @@ Each rule entry should have a path type associated with it. It can be set to any
 
  * `Exact` - Matches the URL path exactly (case sensitive).
  * `Prefix` - Matches the URL path prefix (case sensitive).
- * `ImplementationSpecific` - Based on the class of the Ingress resource.
+ * `ImplementationSpecific` - Based on the class of the ingress object.
 
 ```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
 spec:
   rules:
   - host: api.myhost.com
@@ -2227,7 +2820,7 @@ spec:
 The most common path type is `Prefix`. A type of `Prefix` splits the path using `/` and matches the rule if the incoming request's path starts with the same path elements as the rule's path. Trailing slashes are ignored (e.g. `/p1/p2/p3/` and `/p1/p2/p3` are equivalent).
 
 ```{note}
-What about `ImplementationSpecific`? There are different types of Ingress controllers, each of which has its own configuration options. An Ingress class is something you can put into your Ingress resource that contains "configuration including the name of the controller that should implement the class." It seems like an advanced topic and I don't know enough to write about it. Probably not something you have to pat attention to if you're doing basic cloud stuff.
+What about `ImplementationSpecific`? There are different types of ingress controllers, each of which has its own configuration options. An ingress class is something you can put into your ingress object that contains "configuration including the name of the controller that should implement the class." It seems like an advanced topic and I don't know enough to write about it. Probably not something you have to pat attention to if you're doing basic cloud stuff.
 ```
 
 ### TLS Traffic
@@ -2238,7 +2831,7 @@ What about `ImplementationSpecific`? There are different types of Ingress contro
 Kinds/Pod/Configuration_TOPIC
 ```
 
-Assuming you have a TLS certificate and key files for the host configured on the Ingress resource, you can add those into Kubernetes as a secret and configure the Ingress resource to make use of it.
+Assuming you have a TLS certificate and key files for the host configured on the ingress object, you can add those into Kubernetes as a secret and configure the ingress object to make use of it.
 
 ```yaml
 # openssl genrsa -out tls.key 2048
@@ -2254,20 +2847,28 @@ data:
   tls.key: base64 encoded key
 ```
 
-For each certificate secret intended to be used by the Ingress resource, there should be an array entry under the `spec.tls[]` manifest path. The certificate secret name must be placed under `secretName` and the domain(s) supported by that certificate must be listed under `hosts`. Hosts must match hosts explicitly listed un the Ingress resource's rules.
+Each certificate secret used by an ingress object has its own entry that contains the hosts it supports.
 
 ```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
 spec:
+  # TLS certificates are listed here. Each entry has a certificate secret name under
+  # "secretName" and the domain(s) supported by that certificate under "hosts". Hosts must
+  # match hosts explicitly listed in the ingress object's rules.
   tls:
-    - hosts:
+    - secretName: my-api-tls
+      hosts:                
         - api.myhost.com
-      secretName: my-api-tls
-    - hosts:
+    - secretName: my-stats-tls
+      hosts:
         - stats.myhost.com
-      secretName: my-stats-tls
+      
 ```
 
-Once an encrypted request comes in to the Ingress controller, it's decrypted. That decrypted request then gets forwarded to the service it was intended for.
+Once an encrypted request comes in to the ingress controller, it's decrypted. That decrypted request then gets forwarded to the service it was intended for.
 
 ```{note}
 From the k8s website: 
@@ -2285,7 +2886,7 @@ The book mentions that `CertificateSigningRequest` is a special type of kind tha
 
 `{bm} /(Kinds\/Namespace)_TOPIC/i`
 
-A namespace is a kind used to avoid resource naming conflicts. For example, it's typical for a Kubernetes cluster to be split up into development, testing, and production namespaces. Each namespace can have resources with the same names as those in the other two namespaces.
+A namespace is a kind used to avoid naming conflicts. For example, it's typical for a Kubernetes cluster to be split up into development, testing, and production namespaces. Each namespace can have objects with the same names as those in the other two namespaces.
 
 ```yaml
 apiVersion: v1
@@ -2294,10 +2895,10 @@ metadata:
   name: production
 ```
 
-Namespaces are cluster-level resources. This is contrary to most other resource types in Kubernetes, which are namespace-level resources, meaning that a namespace can be used to disambiguate resources of that type with the same name...
+Namespaces are cluster-level objects. This is contrary to most other kinds in Kubernetes, which are namespace-level objects, meaning that a namespace can be used to disambiguate objects of that type with the same name...
 
 ```yaml
-# These are namespace-level resources
+# These are namespace-level objects
 apiVersion: v1
 kind: Pod
 metadata:
@@ -2319,7 +2920,7 @@ spec:
     image: my_image:v1
 ```
 
-If a namespace-level resource doesn't set a namespace, the namespace defaults to `default`.
+If a namespace-level object doesn't set a namespace, the namespace defaults to `default`.
 
 ## Replica Set
 
@@ -2773,7 +3374,7 @@ spec:
 ```
 
 ```{note}
-Deployments also supported the rolling update parameter `minReadySeconds`. There's a similar feature for stateful sets but it goes under the path `spec.minReadySeconds` (it isn't specific to rolling updates).
+Deployments also supported the rolling update parameter `minReadySeconds`. There's a similar feature for stateful sets but it goes under the field `spec.minReadySeconds` (it isn't specific to rolling updates).
 ```
 
 Rolling updates performed with a pod management policy of `OrderedReady` (the default) may get into a broken state which requires manual intervention to roll back. If an update results in a pod entering into an unhealthy state, the rolling update will pause. Reverting the pod template won't work because it goes against the "only one pod can go down at a time" behavior of stateful sets.
@@ -2901,7 +3502,7 @@ Common gotchas with jobs:
    Kinds/Job/User-defined Labels (Job cleanup strategies)
    ```
 
- * *Unexpected concurrency*: Even if `spec.concurrency` and `spec.completions` are both set to 1, there are cases where a job may launch more than once. As such, a job's pods should be tolerant of concurrency.
+ * *Unexpected concurrency*: Even if `concurrency` and `completions` fields are both set to 1, there are cases where a job may launch more than once. As such, a job's pods should be tolerant of concurrency.
 
  * *`activeDeadlineSeconds` confusion*: There's an `activeDeadlineSeconds` that can go in the pod template as well which is different from the job's `activeDeadlineSeconds`. Don't confuse the two.
 
@@ -2909,7 +3510,7 @@ Common gotchas with jobs:
 
 `{bm} /(Kinds\/Job\/Cleanup)_TOPIC/i`
 
-One common problem with jobs is resource cleanup. With the exception of failed pods that have been retried (`spec.backoffLimit`), a completed job won't delete its pods by default. Those pods are kept around in a non-running state so that their logs can be examined if needed. Likewise, the job itself isn't deleted on completion either.
+One common problem with jobs is resource cleanup. With the exception of failed pods that have been retried (`backoffLimit` field), a completed job won't delete its pods by default. Those pods are kept around in a non-running state so that their logs can be examined if needed. Likewise, the job itself isn't deleted on completion either.
 
 ```{note}
 This became a problem for me when using Amazon EKS with Amazon Fargate to run the job's pods. The Fargate nodes were never removed from the cluster because the job's pods were never deleted?
@@ -3284,7 +3885,7 @@ spec:
 
 Common gotchas with HPAs:
 
-* *Scale to zero*: Setting the number of minimum replicas to zero isn't supported. See [here](https://github.com/kubernetes/kubernetes/issues/69687).
+ * *Scale to zero*: Setting the number of minimum replicas to zero isn't supported. See [here](https://github.com/kubernetes/kubernetes/issues/69687).
 
  * *Scaling memory*: It's easy to autoscale based on CPU, but be careful with autoscaling based on memory. If the number of replicas scale up, the existing replicas need to somehow "release" memory, which can't really be done without killing the pods and starting them back up again.
 
@@ -3316,7 +3917,7 @@ It doesn't seem to be consistent so there isn't much else to put about cluster a
 ```
 
 ```{seealso}
-Kinds/Pod Disruption Budget_TOPIC (Prevent rapid killing of pods on scale down)
+Kinds/Pod Disruption Budget_TOPIC (Prevent rapid killing of pods on cluster autoscaler scale down)
 ```
 
 ## Pod Disruption Budget
@@ -3362,7 +3963,7 @@ spec:
 ```{note}
 The manifest is using label selectors are being used to identify pods. How does it know what the replica count is for the replica set / deployment / or stateful set? According to the docs:
 
-> The "intended" number of pods is computed from the .spec.replicas of the workload resource that is managing those pods. The control plane discovers the owning workload resource by examining the .metadata.ownerReferences of the Pod.
+> The "intended" number of pods is computed from the spec.replicas of the workload resource that is managing those pods. The control plane discovers the owning workload resource by examining the metadata.ownerReferences of the Pod.
 ```
 
 # Custom Kinds
@@ -3668,7 +4269,7 @@ subjects:
 ```
 
 ```{note}
-I suspect that users and groups are cluster-level resources, hence the lack of namespace. Haven't been able to verify this.
+I suspect that users and groups are cluster-level kinds, hence the lack of namespace. Haven't been able to verify this.
 ```
 
 ```{note}
@@ -3750,10 +4351,10 @@ Kubernetes API is exposed as a RESTful interface, meaning everything is represen
 
 ## CRUD
 
-`get` / `describe` allows you to get details on a specific objects and resources. To get an overview of a ...
+`get` / `describe` allows you to get details on a specific objects and kinds. To get an overview of a ...
 
- * list of all objects of a specific resource type using `kubectl get {RES}`.
- * a specific object of a specific resource type using `kubectl get {RES} {OBJ}`.
+ * list of all objects of a specific kind using `kubectl get {KIND}`.
+ * a specific object of a specific kind using `kubectl get {KIND} {OBJ}`.
 
 `describe` provides more in-depth information vs `get`.
 
@@ -3976,7 +4577,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} endpoints` - A low-level kind that's used to map a service to the pods it routes to. In other words, an endpoints (note the plural) object is an abstraction that references a pod.
 
- * `{bm} ingress` - A kind that acts as an HTTP-based frontend that routes and load balances incoming external requests to the correct service. This kind is an interface without an implementation, meaning that Kubernetes doesn't have anything built-in to handle ingress. Implementations of this interfaces are referred to as Ingress controllers and are provided by third-parties.
+ * `{bm} ingress` - A kind that acts as an HTTP-based frontend that routes and load balances incoming external requests to the correct service. This kind is an interface without an implementation, meaning that Kubernetes doesn't have anything built-in to handle ingress. Implementations of this interfaces are referred to as ingress controllers and are provided by third-parties.
 
  * `{bm} replica set` - A kind that ensures a certain number of copies of some pod template are running at any time.
 
@@ -4026,6 +4627,14 @@ The option `--from-file` can also point to a directory, in which case an entry w
  * `{bm} cluster autoscaler/(cluster autoscaler|cluster autoscaling)/i` - A component that automatically scales the number of nodes in a cluster based on need.
 
  * `{bm} pod disruption budget` `{bm} /\b(PDB)\b/` - A kind that defines the minimum number of available pods / maximum number of unavailable pods can be during a cluster resizing event (e.g. when cluster autoscaler is scaling up or down nodes).
+
+ * `{bm} node affinity` - A property of pods that attracts them to a set of nodes, either as a preference or as a hard requirement.
+
+ * `{bm} node taint/(node taint|taint)/i` - A property of nodes that repels a set of pods, either as a preference or as a hard requirement.
+
+ * `{bm} pod toleration/(pod toleration|toleration)/i` - A set of node taints that a pod can tolerate.
+
+`{bm-ignore} !!([\w\-]+?)!!/i`
 
 `{bm-error} Did you mean endpoints?/(endpoint)/i`
 

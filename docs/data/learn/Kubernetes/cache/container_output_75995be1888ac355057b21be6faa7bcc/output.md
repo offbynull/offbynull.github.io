@@ -2,7 +2,7 @@
 
 <strong>🔍SEE ALSO🔍</strong>
 
- * Kinds/Pod Disruption Budget_TOPIC (Prevent rapid killing of pods on scale down)
+ * Kinds/Service/Exposure/Node Port_TOPIC
 
 </div>
 

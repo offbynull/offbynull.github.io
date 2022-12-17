@@ -2,7 +2,7 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Pods/Metadata Access/Environment Variables_TOPIC
+ * Kinds/Pod/Node Affinity_TOPIC
 
 </div>
 
