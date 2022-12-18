@@ -40,8 +40,8 @@ In the context of containers, an ...
    Images also typically include metadata describing its needs and operational standards. For example, the metadata may stipulate that the image ...
    
    * launches by running /opt/my_app/run.sh
-   * stops by signalling SIGTERM
-   * requires 4gb of memory, 1.5 CPU cores, etc..A container is an instance of an application requires that services be exposed as container images. An image is 
+   * requires 4gb of memory, 1.5 CPU cores
+   * etc..
 
  * container is an instance of an image. A container creates an isolated copy of the image's filesystem, isolates the resources required for that image, and launches the entrypoint application for that image. That container can't see or access anything outside of the container unless explicitly allowed to by the user. For example, opening a port 8080 on a container won't open port 8080 on the host running it, but the user can explicitly ask that port 8080 in the container map to some port on the host.
 
@@ -328,7 +328,7 @@ spec:
 
 `{bm} /(Kinds\/Pod\/Images)_TOPIC/`
 
-Each container within a pod must have an image associated with. Images are specified in the Docker image specification format, where a name and a tag are separated by a colon (e.g. `my-image:1.0.1`).
+Each container within a pod must have an image associated with. Images are specified in the Docker image specification format, where a name and a tag are separated by a colon (e.g. `my-image:1.0`).
 
 ```yaml
 apiVersion: v1
@@ -338,7 +338,7 @@ metadata:
 spec:
   containers:
     - name: my-container1
-      image: my-image:1.0.1
+      image: my-image:1.0
     - name: my-container2
       image: my-image:2.4
 ```
@@ -357,7 +357,7 @@ metadata:
 spec:
   containers:
     - name: my-container
-      image: my-image:1.0.1
+      image: my-image:1.0
       imagePullPolicy: IfNotPresent  # Only download if the image isn't present
 ```
 
@@ -407,7 +407,7 @@ spec:
     - name: my-docker-creds
   containers:
     - name: my-container
-      image: my-registry.example/tiger/my-container:1.0.1  # Image references registry.
+      image: my-registry.example/tiger/my-container:1.0  # Image references registry.
 ```
 
 ```{seealso}
@@ -433,7 +433,7 @@ metadata:
 spec:
   containers:
     - name: my-container
-      image: my-image:1.0.1
+      image: my-image:1.0
       resources:
         requests:  # Minimum CPU and memory for this container
           cpu: "500m"
@@ -472,7 +472,7 @@ metadata:
 spec:
   containers:
     - name: my-container
-      image: my-image:1.0.1
+      image: my-image:1.0
       ports:
         - containerPort: 8080
           name: http
@@ -488,7 +488,7 @@ Kinds/Service_TOPIC (Exposing pods to the outside world)
 A pod can have many containers within it, and since all containers within a pod share the same IP, the ports exposed by those containers must be unique. For example, only one container within the pod expose port 8080.
 
 ```{note}
-By default, network access is allowed to all pods within the cluster. You can change this using a special kind of pod called `NetworkPolicy` (as long as your Kubernetes environment supports it -- may or may not depending on the container networking interface used). `NetworkPolicy` lets you limit network access such that it's only allowed by pods that need it. This is done via label selectors.
+By default, network access is allowed to all pods within the cluster. You can change this using a special kind of pod called `NetworkPolicy` (as long as your Kubernetes environment supports it -- may or may not depending on the container networking interface used). `NetworkPolicy` lets you limit network access such that only pods that should talk togetehr can talk together (a pod can't send a request to another random pod in the system). This is done via label selectors.
 
 If you're aware of endpoints, service, and ingress kinds, I'm not sure how this network policy stuff plays with those kinds.
 ```
@@ -533,7 +533,7 @@ metadata:
 spec:
   containers:
     - name: my-container
-      image: my-image:1.0.1
+      image: my-image:1.0
       env:
         - name: LOG_LEVEL
           value: "OFF"
@@ -551,7 +551,7 @@ metadata:
 spec:
   containers:
     - name: my-container
-      image: my-image:1.0.1
+      image: my-image:1.0
       env:
         - name: LOG_LEVEL
           value: "OFF"
@@ -588,7 +588,7 @@ A container's configuration can come from both config maps and secrets. For conf
    spec:
      containers:
        - name: my-container
-         image: my-image:1.0.1
+         image: my-image:1.0
          # Under each "env" entry to come from a config map, add a "valueFrom" that contains
          # the config map to pull an entry from and the key for the config map entry to pull.
          env:
@@ -614,7 +614,7 @@ A container's configuration can come from both config maps and secrets. For conf
    spec:
      containers:
        - name: my-container
-         image: my-image:1.0.1
+         image: my-image:1.0
          # "envFrom" maps all entries of a config map as env vars.
          envFrom:
            - prefix: CONFIG_    # Prefix to tack on to each config map entry (optional).
@@ -636,7 +636,7 @@ A container's configuration can come from both config maps and secrets. For conf
    spec:
      containers:
        - name: my-container
-         image: my-image:1.0.1
+         image: my-image:1.0
          # You can't pass in config map entries directly as command-line arguments, but what
          # you can do is load them up first as environment variables and then reference the
          # environment variables in the "command" (or "args") field.
@@ -681,7 +681,7 @@ A container's configuration can come from both config maps and secrets. For conf
      # In the container, mount that volume to whichever containers you want.
      containers:
        - name: my-container
-         image: my-image:1.0.1
+         image: my-image:1.0
          volumeMounts:
            - name: config-volume
              mountPath: /config
@@ -703,7 +703,7 @@ A container's configuration can come from both config maps and secrets. For conf
            name: my-config
      containers:
        - name: my-container
-         image: my-image:1.0.1
+         image: my-image:1.0
          # The use of "subPath" here ensures that that original "/config" directory on the
          # container doesn't go away. It remains in place, and files / directories are just
          # added to it.
@@ -728,7 +728,7 @@ For secrets, a secret object's key-value pairs can be accessed in almost exactly
    spec:
      containers:
        - name: my-container
-         image: my-image:1.0.1
+         image: my-image:1.0
          env:
            - name: ENV_VAR_NAME1
              valueFrom:
@@ -752,7 +752,7 @@ For secrets, a secret object's key-value pairs can be accessed in almost exactly
    spec:
      containers:
        - name: my-container
-         image: my-image:1.0.1
+         image: my-image:1.0
          env:
            - name: ENV_VAR_NAME1
              valueFrom:
@@ -784,7 +784,7 @@ For secrets, a secret object's key-value pairs can be accessed in almost exactly
            name: my-secret
      containers:
        - name: my-container
-         image: my-image:1.0.1
+         image: my-image:1.0
          volumeMounts:
            - name: secret-volume
              mountPath: /secrets
@@ -843,7 +843,7 @@ spec:
   # Each container in the pod can mount any of the above volumes by referencing its name.
   containers:
     - name: my-container
-      image: my-image:1.0.1
+      image: my-image:1.0
       volumeMounts:
         # Mount "my-data1" volume to /data1 in the container's filesystem.
         - mountPath: /data1
@@ -876,15 +876,47 @@ spec:
         claimName: my-data-pv-claim
   containers:
     - name: my-container
-      image: my-image:1.0.1
+      image: my-image:1.0
       volumeMounts:
         - mountPath: /data
           name: my-data
 ```
 
-### Probes
+### Lifecycle
 
-`{bm} /(Kinds\/Pod\/Probes)_TOPIC/`
+`{bm} /(Kinds\/Pod\/Lifecycle)_TOPIC/`
+
+A pod's lifecycle goes through several phases:
+
+ * **Pending** - Pod is waiting to run. This could be either because it hasn't been scheduled on a node yet or because it has been scheduled on a node but some of its containers aren't ready to run yet (e.g. images for those containers are still being downloaded).
+ * **Running** - Pod is running. It's been scheduled on a node, all of its containers are ready to run, and at least one of those containers is either running, starting, or restarting.
+ * **Success** - Pod's containers all finished successfully.
+ * **Failed** - Pod's container all finished, some unsuccessfully. This could be either because some containers terminated with an error or because Kubernetes itself terminated those containers for some reason.
+ * **Unknown** - Special marker indicating that the state of a pod couldn't be obtained (e.g. from a network outage).
+
+```{svgbob}
+     Pending
+        |
+        |
+        v
+     Running
+       / \
+      /   \
+     v     v
+ Success  Failed
+```
+
+Each container in a pod can be in one of several states:
+
+ * **Waiting** - Container is performing operations it needs to run (e.g. downloading image for the container).
+ * **Running** - Container is running.
+ * **Terminated** - Container has terminated.
+
+The following sub-sections detail various lifecycle-related configurations of a pod and its containers.
+
+#### Probes
+
+`{bm} /(Kinds\/Pod\/Lifecycle\/Probes)_TOPIC/`
 
 Probes are a way for Kubernetes to check the state of a pod. Containers within the pod expose interfaces which Kubernetes periodically pings to determine what actions to take (e.g. restarting a non-responsive pod).
 
@@ -906,7 +938,7 @@ metadata:
 spec:
   containers:
     - name: my-container
-      image: my-image:1.0.1
+      image: my-image:1.0
       # Probe to check if a container is alive or dead. Performs an HTTP GET with path
       # /healthy at port 8080.
       livenessProbe: 
@@ -951,7 +983,7 @@ metadata:
 spec:
   containers:
     - name: my-container
-      image: my-image:1.0.1
+      image: my-image:1.0
       readinessProbe:
         exec:
           command:
@@ -963,9 +995,9 @@ spec:
         failureThreshold: 3
 ```
 
-### Graceful Termination
+#### Graceful Termination
 
-`{bm} /(Kinds\/Pod\/Graceful Termination)_TOPIC/`
+`{bm} /(Kinds\/Pod\/Lifecycle\/Graceful Termination)_TOPIC/`
 
 Kubernetes terminates pods by sending a `SIGTERM` to each container's main process, waiting a predefined amount of time, then forcefully sending a `SIGKILL` to that same process if the process hasn't shut itself down. The predefined waiting time is called the termination grace period, and it's provided so the application can perform cleanup tasks after it's received `SIGTERM` (e.g. emptying queues).
 
@@ -979,7 +1011,7 @@ spec:
   terminationGracePeriodSeconds: 60  # Default to 30
   containers:
     - name: my-container
-      image: my-image:1.0.1
+      image: my-image:1.0
 ```
 
 ```{note}
@@ -997,7 +1029,7 @@ spec:
   restartPolicy: Always
   containers:
     - name: my-container
-      image: my-image:1.0.1
+      image: my-image:1.0
       terminationMessagePath: /var/exit-message  # Defaults to /dev/termination-log
 ```
 
@@ -1005,13 +1037,31 @@ spec:
 A pod container's "last state" property is visible when you describe the pod via `kubectl`.
 ```
 
-### Lifecycle Hooks
+#### Maximum Runtime
 
-`{bm} /(Kinds\/Pod\/Lifecycle Hooks)_TOPIC/`
+`{bm} /(Kinds\/Pod\/Lifecycle\/Maximum Runtime)_TOPIC/`
+
+The runtime of a pod can be limited such that, if continues to run for more than some duration of time, Kubernetes will forcefully terminate it and mark it as failed.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  activeDeadlineSeconds: 3600  # When set, pod can't run for more than this many seconds
+  containers:
+    - name: my-container
+      image: my-image:1.0
+```
+
+#### Lifecycle Hooks
+
+`{bm} /(Kinds\/Pod\/Lifecycle\/Lifecycle Hooks)_TOPIC/`
 
 ```{prereq}
-Kinds/Pod/Probes_TOPIC
-Kinds/Pod/Graceful Termination_TOPIC
+Kinds/Pod/Lifecycle/Probes_TOPIC
+Kinds/Pod/Lifecycle/Graceful Termination_TOPIC
 ```
 
 Lifecycle hooks are a way for Kubernetes to notify a container of when ...
@@ -1029,7 +1079,7 @@ metadata:
 spec:
   containers:
     - name: my-container
-      image: my-image:1.0.1
+      image: my-image:1.0
       lifecycle:
         # Hook to invoke once the container's main process starts running. This hook runs
         # along-side the main process (not before it launches), but Kubernetes will treat
@@ -1054,7 +1104,11 @@ spec:
             port: 8080
 ```
 
-A post-start hook is useful when some form on initialization needs to occur but it's impossible to do that initialization within the container (e.g. initialization doesn't happen on container start and you don't have access to re-create / re-deploy the container image to add support for it). Likewise, a pre-stop hook is useful when some form of graceful shutdown needs to occur but it's impossible to do that shutdown within the container (e.g. shutdown procedures don't happen on `SIGTERM` and you don't have access to re-create / re-deploy the container image to add support for it)
+A post-start hook is useful when some form on initialization needs to occur but it's impossible to do that initialization within the container (e.g. initialization doesn't happen on container start and you don't have access to re-create / re-deploy the container image to add support for it). Likewise, a pre-stop hook is useful when some form of graceful shutdown needs to occur but it's impossible to do that shutdown within the container (e.g. shutdown procedures don't happen on `SIGTERM` and you don't have access to re-create / re-deploy the container image to add support for it).
+
+```{note}
+Recall that a container has three possible states: waiting, running, and terminated. The docs says that a container executing a post-start hook is still in the waiting state.
+```
 
 ```{note}
 According to the book, it's difficult to tell if / why a hook failed. Its output doesn't go anywhere. You'll just see something like `FailedPostStartHook` / `FailedPreStopHook` somewhere in the pod's event log.
@@ -1062,9 +1116,9 @@ According to the book, it's difficult to tell if / why a hook failed. Its output
 According to the book, many applications use pre-stop hook to manually send a `SIGTERM` to their app because, even though `SIGTERM` is being sent by Kubernetes, it's getting gobbled up and discarded by some parent process (e.g. running your app via `sh`).
 ```
 
-### Init Containers
+#### Init Containers
 
-`{bm} /(Kinds\/Pod\/Init Containers)_TOPIC/`
+`{bm} /(Kinds\/Pod\/Lifecycle\/Init Containers)_TOPIC/`
 
 ```{prereq}
 Kinds/Pod/Command-line Arguments
@@ -1087,7 +1141,7 @@ spec:
       command: ['launchB', '--arg1']
   containers:
     - name: my-container
-      image: my-image:1.0.1
+      image: my-image:1.0
 ```
 
 ```{note}
@@ -1096,9 +1150,9 @@ Important note from the docs:
 > Because init containers can be restarted, retried, or re-executed, init container code should be idempotent. In particular, code that writes to files on EmptyDirs should be prepared for the possibility that an output file already exists.
 ```
 
-### Restart Policy
+#### Restart Policy
 
-`{bm} /(Kinds\/Pod\/Restart Policy)_TOPIC/`
+`{bm} /(Kinds\/Pod\/Lifecycle\/Restart Policy)_TOPIC/`
 
 Restart policy is the policy Kubernetes uses for determining when a pod should be restarted.
 
@@ -1111,7 +1165,7 @@ spec:
   restartPolicy: Always
   containers:
     - name: my-container
-      image: my-image:1.0.1
+      image: my-image:1.0
 ```
 
 A value of ...
@@ -1121,6 +1175,14 @@ A value of ...
  * `Never` never restarts the pod.
 
 `Always` is typically used when running servers that should always be up (e.g. http server) while the others are typically used for one-off jobs.
+
+When a container within a pod fails, that entire pod is marked as failed and may restart depending on this property. Kubernetes exponentially delays restarts so that, if the restart is happening due to an error, there's some time in between restarts for the error to get resolved (e.g. wait for some pending network resource required by the pod comes online). The delay increases exponentially (10 seconds, 20 seconds, 40 seconds, 80 seconds, etc..) until it caps out at 5 minutes. The delay resets once a restarted pod is executing for more than 10 minutes without issue.
+
+```{note}
+"When a container within a pod fails, that entire pod is marked as failed" -- Is this actually true?
+
+The delay may also reset if the pod moves to another node. The documentation seems unclear.
+```
 
 ```{seealso}
 Kinds/Job_TOPIC
@@ -1405,11 +1467,30 @@ spec:
           mountPath: /metadata
 ```
 
-### Node Affinity
+### Node Placement
 
-`{bm} /(Kinds\/Pod\/Node Affinity)_TOPIC/`
+`{bm} /(Kinds\/Pod\/Node Placement)_TOPIC/`
 
-TODO: fill me in
+A pod can have soft / hard requirements as to which nodes it can run on. It's common to segregate which nodes a pod can / can't run when dealing with...
+ 
+ * multiple environments in the same cluster (e.g. testing nodes vs staging nodes vs production nodes)
+ * multiple zones in the same cluster (e.g. eastern US vs western US).
+ * specific hardware requirements (e.g. node that has a specific type of SSD, CPU, or GPU).
+ * etc..
+
+Three different mechanisms are used to define these requirements:
+
+ * node selectors: hard requirements for which nodes a pod can run on.
+ * node taints: hard and soft requirements for which nodes a pod *can't* run on.
+ * node affinity: hard and soft requirements for where which nodes a pod *can* and *can't* run on.
+
+These mechanisms are documented in further detail in the sub-sections below. 
+
+#### Node Selectors
+
+`{bm} /(Kinds\/Pod\/Node Placement\/Node Selectors)_TOPIC/`
+
+A node selector forces a pod to run on nodes that have a specific set of node labels.
 
 ```yaml
 apiVersion: v1
@@ -1417,19 +1498,69 @@ kind: Pod
 metadata:
   name: my-pod
 spec:
+  # This pod can only run on nodes that have the labels disk=ssd and cpu=IntelXeon.
+  nodeSelector:
+    disk: ssd
+    cpu: IntelXeon
   containers:
-    - image: my-image:1.0
-      name: my-container
+    - name: my-container
+      image: my-image:1.0
+```
+
+#### Taints and Tolerations
+
+`{bm} /(Kinds\/Pod\/Node Placement\/Taints and Tolerations)_TOPIC/`
+
+```{prereq}
+Kinds/Node/Taints_TOPIC
+```
+
+A taint is a node property, structured as a key-value pair and effect, that repels pods. For a pod to be scheduled / executed on a node with taints, it needs tolerations for those taints. Specifically, that pod ... 
+
+ * needs tolerations for any taints with effect `NoSchedule` or `NoExecute`.
+ * can have tolerations for any taints with effect `PreferNoSchedule` (having tolerations increases odds that pod gets scheduled on that node).
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  # This pod can only run on nodes that have the taints "environment=production:NoExecute" and
+  # "environment=excess-capacity:NoExecute". The example below uses the "Equal" operator, but
+  # there's also an "Exists" operator which will match any value ("value" field shouldn't be
+  # set if "Exists" is used).
   tolerations:
-    - key: node-type
-      Operator: Equal
+    - key: environment
+      operator: Equal
       value: production
       effect: NoSchedule
+    - key: environment
+      operator: Equal
+      value: excess-capacity
+      effect: NoSchedule
+  containers:
+    - name: my-container
+      image: my-image:1.0
 ```
 
-TODO: 16.1.4 (just the intro paragraph, "configuring how long after a node failure a pod is rescheduled)
+```{seealso}
+Kinds/Pod Disruption Budget_TOPIC (Controls how quickly pods are evicted when `NoExecute` used)
+```
 
-### Pod Affinity
+#### Node Affinity
+
+`{bm} /(Kinds\/Pod\/Node Placement\/Node Affinity)_TOPIC/`
+
+```{prereq}
+Kinds/Pod/Node Placement/Node Selectors_TOPIC
+Kinds/Pod/Node Placement/Taints and Tolerations_TOPIC
+```
+
+Node affinity is a set of rules defined on a pod that repels / attracts it to nodes tagged with certain labels, either as soft or hard requirements. 
+
+ * For hard requirements, a set of label selectors need to be specified.
+ * For soft requirements, a set of label selectors need to be specified along with weights that define the desirability of those selectors.
 
 ```yaml
 apiVersion: v1
@@ -1437,82 +1568,199 @@ kind: Pod
 metadata:
   name: my-pod
 spec:
-  containers:
-    - image: my-image:1.0
-      name: my-container
-  affinity:
-    podAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - topologyKey: kubernetes.io/hostname
-            labelSelector:
-              matchLabels:
-                app: backend
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 80
-          podAffinityTerm:
-            - topologyKey: kubernetes.io/hostname
-                labelSelector:
-                  matchLabels:
-                    app: backend
-    podAntiAffinity:
-      ...
-```
-
-SAME AVAILABILITY ZONE: topologyKey property to failure-domain.beta.kubernetes.io/zone
-
-SAME GEOGRAPHICAL REGION: topologyKey would be set to failure-domain.beta.kubernetes.io/region
-
-TODO: CH16.5? The three keys mentioned aren’t special. You can use your own topologyKey (e.g. "rack") to have pods scheduled onto same server rack. But, you need to add a "rack" label to your nodes
-
-```{note}
-The scheduler has its own preferences as well that it adds to the mix, such as how "spread out" certain groups of pods are across the set of nodes (called `SelectorSpreadPriority`).
-```
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: my-pod
-spec:
-  containers:
-    - image: my-image:1.0
-      name: my-container
   affinity:
     nodeAffinity:
+      # This field lists the hard requirements for node labels. The possible operators
+      # allowed are ...
+      #
+      #  * "In" / "NotIn" - Tests key has (or doesn't have) one of many possible values.
+      #  * "Exists" / "DoesNotExist" - Tests key exists (or doesn't exist), value ignored.
+      #  * "Gt" / "Lt" - Tests key's value is grater than / less than.
+      #
+      # Use "In" / "Exists" for attraction and "NotIn" / "DoesNotExist" for repulsion.
+      #
+      # In this example, it's requiring that the CPU be one of two specific Intel models and
+      # the disk not be a hard-drive (e.g. it could be a solid-state drive instead).
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
           - matchExpressions:
-              - key: gpu
-                operator: In
-                values:
-                  - "true"
+            - key: cpu
+              operator: In
+              values: [intel-raptor-lake, intel-alder-lake]
+            - key: disk-type
+              operator: NotIn
+              values: [hdd]
+      # This field lists out the soft requirements for node labels and weights those
+      # requirements. Each requirement uses the same types of expressions / operators as the
+      # hard requirements shown above, but it also has a weight that defines the
+      # desirability of that requirement. Each weight must be between 1 to 100.
+      #
+      # In this example, the first preference outweighs the second by a ratio of 10:2 (5x
+      # more preferred).
       preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 80
+        - weight: 100
           preference:
-            matchExpressions:
-              - key: availability-zone
+            - matchExpressions:
+              - key: ram-speed
+                operator: gt
+                values: [3600]
+              - key: ram-type
                 operator: In
-                values:
-                  - US-East
+                values: [ddr4]
         - weight: 20
           preference:
-            matchExpressions:
-              - key: cpu-brand
+            - matchExpressions:
+              - key: ram-speed
+                operator: lt
+                values: [3601]  # This is <, 3601 means speed needs to be <= 3600.
+              - key: ram-type
                 operator: In
-                values:
-                  - Intel Xeon
-```
-
-### Security Context
-
-`{bm} /(Kinds\/Pod\/Security Context)_TOPIC/`
-
-```{prereq}
-Kinds/Pod/Node Access_TOPIC
+                values: [ddr4]
+  containers:
+    - name: my-container
+      image: my-image:1.0
 ```
 
 ```{note}
-**EVERYTHING DISCUSSED HERE MAY BE DISABLED BY THE CLUSTER ADMINISTRATOR**. The cluster admin can use a kind called `PodSecurityPolicy` to define security related features that a pod can and can't use.
+The scheduler will try to enforce these preferences, but it isn't guaranteed as there could be other competing scheduling requirements (e.g. the admin have set something up to spread out pods more / less across nodes).
+```
+
+```{note}
+The "5x more preferred" comment above is speculation. I've tried to look online to see how weights work but haven't been able to find much. Does it scale by whatever the highest weight is? So if the example above's first preference was 10 instead of 100, would it be preferred 0.5x as much (10:20 ratio)?
+```
+
+Unlike ...
+
+ * node selectors, ...
+     * the requirements for node affinity can be soft requirements.
+     * the requirements for node affinity can repel as well as attract.
+     * the requirements for node affinity has more ways to specify label selection criteria (more expressive).
+ * node taints,
+     * the requirements for node affinity are attracting / repulsing based on node labels, not repulsing based on lack of pod tolerations.
+     * node affinity can't evict running pods from a node where as taints with a `NoExecute` effect which will cause evictions.
+
+```{note}
+Note that `requiredDuringSchedulingIgnoredDuringExecution` and `preferredDuringSchedulingIgnoredDuringExecution` both end with "ignored during execution". This basically says that a pod won't get scheduled on a node but it also won't get evicted if that pod is already running on that node. This is in contrast to node taints, where a taint having an effect of `NoExecute` will force evictions of running pods.
+
+The book hints that the ability to evict running pods may be added sometime in the future.
+```
+
+#### Pod Affinity
+
+`{bm} /(Kinds\/Pod\/Node Placement\/Pod Affinity)_TOPIC/`
+
+```{prereq}
+Kinds/Pod/Node Placement/Node Affinity_TOPIC
+```
+
+Pod affinity is a set of rules defined on a pod that repels / attracts it to the vicinity of other pods tagged with certain labels. Vicinity is determined via a topology key, which is a label placed on nodes to define where they live. For example, nodes within the same ...
+
+ * rack can have a "rack" label (e.g. nodes on rack 15 have label `rack=15`, nodes on rack 16 have label `rack=16`, ...)..
+ * data center can have a "dc" label (e.g. nodes in data center 1 have label `dc=1`, nodes in data center 2 have label `dc=2`, ...).
+ * geographic region can have a "geo" label (e.g. nodes in Texas have label `geo=Texas`, nodes in Ohio have label `geo=Ohio`, ...).
+
+Pod affinity defines pod attraction / repulsion by looking for pod labels and a topology key. For example, it's possible to use pod affinity to ensure that a pod gets scheduled on the same rack (via topology key) as another pod with the label `app=api-server`. There could be multiple pods with the label `app=api-server`, in which case the scheduler will pick one, figure out which rack it lives on, and place the new pod on that same rack.
+
+Similar to node affinity, pod affinity can have hard and soft requirements, where soft requirements have weights that define the desirability of attraction / repulsion. Selector expressions and weights for pod affinity are defined similarly to those for node affinity.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+    - image: my-image:1.0
+      name: my-container
+  affinity:
+    # This field defines the rules specifically for **attraction**. Like with node affinity,
+    # pod affinity uses ...
+    #
+    #  * "requiredDuringSchedulingIgnoredDuringExecution" for hard requirements.
+    #  * "preferredDuringSchedulingIgnoredDuringExecution" for soft requirement.
+    #  * the same selector operators as node affinity ("In", "NotIn", "Exists",
+    #    "DoesNotExist", "Gt", and "Lt").
+    #  * the same weight requirements as node affinity (range between 1 to 100 per soft
+    #    requirement).
+    #
+    # Unlike with node affinity, the negation operators ("NotIn" / "DoesNotExist") don't
+    # define repulsion, they just attract to pods that don't have something. For example,
+    # here we're looking to have affinity to pods that don't have the labels
+    # "stability-level=alpha" and "stability-level=alpha". In addition, it strongly
+    # prefers to live on the same rack as pods with label "app=api-server" and less strongly
+    # prefers to live on the same rack as pods with label "app=db-server".
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - topologyKey: rack
+          labelSelector:
+            matchExpressions:
+              - key: stability-level
+                operator: NotIn
+                values: [alpha, beta]
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            - topologyKey: rack
+              labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values: [api-server]
+        - weight: 20
+          podAffinityTerm:
+            - topologyKey: rack
+              labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values: [db-server]
+    # This field defines the rules specifically for **repulsion**. It set up exactly the
+    # same way as the field for attraction shown above, but the criteria here repulses away.
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - topologyKey: data-center
+          labelSelector:
+            matchExpressions:
+              - key: security-context
+                operator: NotIn
+                values: [privileged-pod]
+```
+
+```{note}
+The scheduler will try to enforce these preferences, but it isn't guaranteed as there could be other competing scheduling requirements (e.g. the admin have set something up to spread out pods more / less across nodes).
+```
+
+```{note}
+I've tried to look online to see how weights work but haven't been able to find much. Does it scale by whatever the highest weight is? So if the example above's first preference was 10 instead of 100, would it be preferred 0.5x as much (10:20 ratio)?
+```
+
+Kubernetes comes with pre-define topology keys:
+
+ * Same node: `kubernetes.io/hostname`
+ * Same availability zone: `topology.kubernetes.io/zone`
+ * Same geographical region: `topology.kubernetes.io/region`
+
+### Container Isolation
+
+`{bm} /(Kinds\/Pod\/Container Isolation)_TOPIC/`
+
+The isolation guarantees of the containers within a pod can be modified. Specifically, a pod can ask that its containers get ...
+
+ * access to parts of the node that it's running on (e.g. share node's network interfaces).
+ * updated container isolation parameters, potentially giving it access to more / less / different features (e.g. change user ID running the main container process).
+
+The following sub-sections document these mechanisms in further detail. 
+
+```{seealso}
+Security/Pod Security Admission_TOPIC (Everything discussed here may be disabled by the cluster admin)
+```
+
+#### Security Context
+
+`{bm} /(Kinds\/Pod\/Container Isolation\/Security Context)_TOPIC/`
+
+```{prereq}
+Kinds/Pod/Container Isolation/Node Access_TOPIC
 ```
 
 A pod and it's containers can have security-related features configured via a security context.
@@ -1562,7 +1810,6 @@ spec:
         readOnlyRootFilesystem: true
         #
         # Not all features are listed here. There are many others.
-        #
 ```
 
 These security-related features can also be used at the pod-level rather than the container-level. When used at the pod level, the features are applied as defaults for all containers (containers can override them if needed).
@@ -1593,16 +1840,12 @@ spec:
         privileged: false  # Override the default "privileged" security context option.
 ```
 
-### Node Access
+#### Node Access
 
-`{bm} /(Kinds\/Pod\/Node Access)_TOPIC/`
+`{bm} /(Kinds\/Pod\/Container Isolation\/Node Access)_TOPIC/`
 
 ```{prereq}
 Kinds/Pod/Ports_TOPIC
-```
-
-```{note}
-**EVERYTHING DISCUSSED HERE MAY BE DISABLED BY THE CLUSTER ADMINISTRATOR**. The cluster admin can use a kind called `PodSecurityPolicy` to define security related features that a pod can and can't use.
 ```
 
 A pod's isolation guarantees can be relaxed so that it has access to the internals of the node it's running on. This is important for in certain system-level scenarios, such as pods that collect node performance metrics.
@@ -1688,7 +1931,7 @@ Third-party libraries that interface with Kubernetes are available for various l
 
 ```{seealso}
 Kinds/Service Account_TOPIC (Credentials map to a service account)
-Kinds/API Security/Disable Credentials_TOPIC (Disable mounting of credentials within pod)
+Security/API Access Control/Disable Credentials_TOPIC (Disable mounting of credentials within pod)
 ```
 
 ## Configuration Map
@@ -1752,10 +1995,6 @@ Certain sources are claiming that a secret object can be 1 megabyte at most.
 
 `{bm} /(Kinds\/Node)_TOPIC/i`
 
-```{prereq}
-Kinds/Pod_TOPIC
-```
-
 Nodes are the machines that pods run on. A Kubernetes environment often contains multiple nodes, each with a certain amount of resources. Pods get assigned to nodes based on their resource requirements. For example, if a pod A requires 2gb of memory and node C has 24 gigs available, that node may get assigned to run that pod.
 
 ```{svgbob}
@@ -1805,17 +2044,23 @@ A master node can still run pods just like the worker nodes, but some of its res
 
 `{bm} /(Kinds\/Node\/Taints)_TOPIC/i`
 
-```{prereq}
-Kinds/Pod/Node Affinity_TOPIC
+A taint is a node property that repels pods, either as a preference or as a hard requirement. Each taint defined as a key-value pair along with an effect that defines how it works (value can be null, leaving just a key and effect). An effect can be either ...
+
+ * `NoSchedule`, which means pods won't be scheduled on the node but already running pods will keep running.
+ * `NoExecute`, which means pod won't be scheduled on the node and already running pods will be evicted.
+ * `PreferNoSchedule`, which means pod can be scheduled on the node but that node will be avoided if possible.
+
+```{seealso}
+Kinds/Pod/Node Placement/Taints and Tolerations_TOPIC (Running pods on nodes with taints)
 ```
 
-A node taint is a property that repels a set of pods from a node, either as a preference or as a hard requirement. Taints are defined as a key-value pair along with an effect that defines how the taint works (formatted as `key=value:effect`). Given a pod that doesn't have a toleration for a node's taint, how that pod gets repelled depends on the effect of that taint:
+Multiple taints on a node repel pods based on each taint.
 
- * `NoSchedule` - Pods won't be scheduled on the node but already running pods will keep running.
- * `NoExecute` - Pod won't be scheduled on the node and already running pods will be evicted.
- * `PreferNoSchedule` - Pod can be scheduled on the node but that node will be avoided if possible.
+```{note}
+The multiple taints paragraph is speculation. I think this is how it works.
+```
 
-Node taints can be added and removed via command-line.
+A taint is formatted as `key=value:effect` Node taints can be added and removed via command-line.
 
 ```sh
 kubectl taint node my-staging-node-1 environment-type=production:NoExecute  # Add taint
@@ -1824,15 +2069,6 @@ kubectl taint node my-staging-node-1 environment-type=production:NoExecute- # Re
 
 ```{note}
 Can this be done via a manifest as well? Probably, but it seems like the primary way to handle this is either through kubectl or via whatever cloud provider's managed Kubernetes web interface.
-```
-
-Multiple taints on a node repel pods based on each taint. For a pod to be scheduled on a node, that pod ... 
-
- * needs tolerations for any taints with effect `NoSchedule` or `NoExecute`.
- * can have tolerations for any taints with effect `PreferNoSchedule` (having tolerations increases odds that pod gets scheduled on that node).
-
-```{note}
-The multiple taints paragraph is speculation. I think this is how it works.
 ```
 
 ## Volume
@@ -2413,7 +2649,7 @@ metadata:
 spec:
   containers:
     - name: my-container
-      image: my-image:1.0.1
+      image: my-image:1.0
       ports:
         - name: my-http-port  # Name for the port
           containerPort: 8080
@@ -2452,7 +2688,7 @@ Maybe this isn't possible with Kubernetes?
 `{bm} /(Kinds\/Service\/Health)_TOPIC/i`
 
 ```{prereq}
-Kinds/Pod/Probes_TOPIC
+Kinds/Pod/Lifecycle/Probes_TOPIC
 Kinds/Service/Routing_TOPIC
 ```
 
@@ -2637,7 +2873,7 @@ spec:
 ```
 
 ```{seealso}
-Kinds/Pod/Node Access_TOPIC (Somewhat similar `hostPort` feature of container port mapping)
+Kinds/Pod/Container Isolation/Node Access_TOPIC (Somewhat similar `hostPort` feature of container port mapping)
 ```
 
 #### Load Balancer
@@ -2985,6 +3221,10 @@ A replica set's job is to ensure that a certain number of copies of a pod templa
  * will force all pods to use a single persistent volume claim (if one was specified in the pod template), meaning all pods will use a single volume. For horizontally scalable applications (e.g. microservices, databases, etc..), each running instance of an application typically needs its own persistent storage.
 
 ```{note}
+If one of the replicas is an a loop where its constantly crashing and restarting, that replica will stay as-is in the replica set. It won't automatically get moved to some other node / forcefully removed and re-added as a new replica.
+```
+
+```{note}
 You can distinguish a pod created by a replica set vs one created manually by checking the annotation key `kubernetes.io/create-by` on the pod.
 
 If deleting a replica set, use `--cascade=false` in `kubectl` if you don't want the pods created by the replica set to get deleted as well.
@@ -3031,6 +3271,10 @@ spec:
 A deployment provides mechanisms to control how an update happens (e.g. all at once vs gradual), if an update is deemed successful (e.g. maximum amount of time a rollout can take), fail-fast for bad updates, and rollbacks to revert to previous versions. These features are discussed in the subsections below. 
 
 ```{note}
+If one of the replicas is an a loop where its constantly crashing and restarting, that replica will stay as-is in the deployment. It won't automatically get moved to some other node / forcefully removed and re-added as a new replica.
+```
+
+```{note}
 The same gotchas with replica sets also apply to deployments: all pods will use the same persistent volume claim and IPs / hosts aren't retained when pods are replaced.
 
 Like with replica set, you might have to use `--cascade=false` in `kubectl` if you don't want the pods created by the deployment to get deleted as well (unsure about this).
@@ -3045,7 +3289,7 @@ Kinds/Stateful Set_TOPIC (Like replica sets but supports individual persistent v
 `{bm} /(Kinds\/Deployment\/Updates)_TOPIC/i`
 
 ```{prereq}
-Kinds/Pod/Probes_TOPIC
+Kinds/Pod/Lifecycle/Probes_TOPIC
 ```
 
 A deployment can support one of the two update strategies:
@@ -3255,6 +3499,10 @@ my-stateful-set ----+--> "my-stateful-set-1 with PVC data-my-stateful-set-1"
 
 The ordinal suffixes of a stateful set's pods are part of their stable identity. If a pod were to die, the volume for that stable identity will be re-bound to its replacement. Stateful sets take great care to ensure that no more than one pod will ever be running with the same stable identity so as to prevent race conditions (e.g. conflicts regarding IP / host, multiple pods using the same volume, etc..). In many cases, that means a pod won't be replaced until the stateful set is absolutely sure that it has died.
 
+```{note}
+If one of the replicas is an a loop where its constantly crashing and restarting, that replica will stay as-is in the stateful set. It won't automatically get moved to some other node / forcefully removed and re-added as a new replica.
+```
+
 ```{seealso}
 Kinds/Stateful Set/Scaling_TOPIC (Scaling via ordinal suffixes and race condition prevention)
 Kinds/Stateful Set/Updates_TOPIC (Race condition prevention on pod updates)
@@ -3448,7 +3696,7 @@ If polling for the IP of a peer that hasn't come up yet, DNS negative caching mi
 
 ```{prereq}
 Kinds/Pod_TOPIC
-Kinds/Pod/Restart Policy_TOPIC
+Kinds/Pod/Lifecycle/Restart Policy_TOPIC
 Kinds/Stateful Set_TOPIC
 ```
 
@@ -3490,6 +3738,12 @@ The example job attempts to runs 10 pods to successful completion, keeping up to
 
 Common gotchas with jobs:
 
+ * *`activeDeadlineSeconds` confusion*: There's an `activeDeadlineSeconds` that can go in the pod template as well which is different from the job's `activeDeadlineSeconds`. Don't confuse the two.
+
+   ```{seealso}
+   Kinds/Pod/Lifecycle/Maximum Runtime_TOPIC
+   ```
+
  * *Lingering finished jobs*: By default, neither a job nor its pods are cleaned up after the job ends (regardless of success or failure). This can end up cluttering the Kubernetes servers.
 
    ```{seealso}
@@ -3503,8 +3757,6 @@ Common gotchas with jobs:
    ```
 
  * *Unexpected concurrency*: Even if `concurrency` and `completions` fields are both set to 1, there are cases where a job may launch more than once. As such, a job's pods should be tolerant of concurrency.
-
- * *`activeDeadlineSeconds` confusion*: There's an `activeDeadlineSeconds` that can go in the pod template as well which is different from the job's `activeDeadlineSeconds`. Don't confuse the two.
 
 ### Cleanup
 
@@ -3540,12 +3792,12 @@ The problem with letting jobs and pods linger around in the system is that it ca
          containers:
            - name: my-container
              image: my-image:1.0
-      restartPolicy: Never
+     restartPolicy: Never
    ```
 
 ### User-defined Labels
 
-`(bm} /(Kinds\/Job\/User-defined Labels`
+`{bm} /(Kinds\/Job\/User-defined Labels)_TOPIC/`
 
 ```{prereq}
 Kinds/Stateful Set/Peer Discovery_TOPIC
@@ -3752,11 +4004,11 @@ spec:
   serviceAccountName: my-service-account
   containers:
     - name: my-container
-      image: my-registry.example/tiger/my-container:1.0.1
+      image: my-registry.example/tiger/my-image:1.0
 ```
 
 ```{seealso}
-API Security_TOPIC (Role-based access control to limit a service account's access to the Kubernetes API)
+Security/API Access Control_TOPIC (Role-based access control to limit a service account's access to the Kubernetes API)
 ```
 
 ## Horizontal Pod Autoscaler
@@ -3835,8 +4087,8 @@ The example above tracked a single metric (CPU utilization), but multiple metric
  * `Pods` metrics cover other metrics of the replicas (e.g. custom user-defined metrics).
  * `Object` are metrics related to some other object in the same namespace.
 
-```{note}
-How do you implement custom user-defined metrics? I would imagine you need to do API calls to the Kubernetes API server (or to the metrics server) from the pod replicas.
+```{seealso}
+Extensions/User-defined Metrics_TOPIC (Collecting user-defined metrics for an HPA to scale on)
 ```
 
 If there are multiple metrics being tracked by an HPA, as in the example below, that HPA calculates the replica counts for each metric and then chooses the one with the highest.
@@ -3929,6 +4181,7 @@ Kinds/Cluster Autoscaler_TOPIC
 Kinds/Replica Set_TOPIC
 Kinds/Deployment_TOPIC
 Kinds/Stateful Set_TOPIC
+Kinds/Pod/Node Placement_TOPIC
 ```
 
 A pod disruption budget (PDB) specifies the number of downed pod replicas that a replica set, deployment, or stateful set can tolerate relative to its expected replica count. In this case, a disrupted pod is one that's brought down via ...
@@ -3966,25 +4219,221 @@ The manifest is using label selectors are being used to identify pods. How does 
 > The "intended" number of pods is computed from the spec.replicas of the workload resource that is managing those pods. The control plane discovers the owning workload resource by examining the metadata.ownerReferences of the Pod.
 ```
 
-# Custom Kinds
+# Security
 
-TODO: write an example python controller here and talk about how to deploy it + ch 18
+`{bm} /(Security)_TOPIC/i`
 
-TODO: write an example python controller here and talk about how to deploy it + ch 18
+Kubernetes comes with several features to enhance cluster security. These include gating off intra-cluster networking, gating off how containers can break isolation, and providing access control mechanisms to the API.
 
-TODO: write an example python controller here and talk about how to deploy it + ch 18
+The subsections below detail various security related topics.
 
-TODO: write an example python controller here and talk about how to deploy it + ch 18
+## Network Policy
 
-TODO: write an example python controller here and talk about how to deploy it + ch 18
+`{bm} /(Security\/Network Policy)_TOPIC/i`
 
-TODO: write an example python controller here and talk about how to deploy it + ch 18
+```{prereq}
+Kinds/Pod/API Access_TOPIC
+Kinds/Service Account_TOPIC
+```
 
-TODO: write an example python controller here and talk about how to deploy it + ch 18
+```{note}
+For this feature to work, Kubernetes needs to be using a network plugin that supports it.
+```
 
-# API Security
+Network policies restricts pods from communicating with other network entities (e.g. services, endpoints, other pods, etc..). Restrictions can be for either inbound connections, outbound connections, or both.
 
-`{bm} /(API Security)_TOPIC/i`
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: my-np
+  namespace: my-ns
+spec:
+  # Which pods this network policy applies to is defined via pod labels. The pods have to be
+  # in the same namespace as the network policy.
+  podSelector:
+    matchLabels:
+      app: backend
+  # Which directions is this network policy? Possible options include "Ingress" is for
+  # inbound connections, "Egress" is for outbound connections, or both. If empty, it'll
+  # default to just "Ingress" and "Egress" will also be set if there are any egress rules
+  # below.
+  policyTypes: [Ingress, Egress]
+  # Inbound connection rules go here. Rules can be for IP blocks (CIDR), namespaces
+  # (identified via labels), or pods (identified via labels). Each rule is for a specific
+  # port.
+  ingress:
+    - from:
+        # Allow all pods from another namespace.
+        - namespaceSelector:
+            matchLabels:
+              project: my-company
+        # Allow all pods in this namespace that have a particular set of labels.
+        - podSelector:
+            matchLabels:
+              app: frontend
+        # Allow all pods from another namespace that have a particular set of labels. Note
+        # that this is a SINGLE ENTRY, not two separate entries (there is no dash before
+        # "podSelector" like the "podSelector" above has).
+        - namespaceSelector:
+            matchLabels:
+              project: my-company
+          podSelector:
+            matchLabels:
+              app: frontend
+        # Allow all pods from an IP block (with exceptions).
+        - ipBlock:
+            cidr: 172.17.0.0/16
+            except:
+              - 172.17.99.0/24
+      ports:
+        - protocol: TCP
+          port: 8080
+  # Outbound connection rules go here. This is specified in exactly the same way as the
+  # rules for inbound connections, but the rules apply to outbound connections.
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 10.0.0.0/24
+      ports:
+        - protocol: TCP
+          port: 8888
+```
+
+```{note}
+The pod selectors should still apply when communicating to pods over a service. Will they still apply when communicating to pods without using a service (e.g. raw)?
+```
+
+The following are commonly used patterns for network policies.
+
+```yaml
+# DENY ALL INGRESS TRAFFIC
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+spec:
+  podSelector: {}
+  policyTypes: [Ingress]
+----
+# ALLOW ALL INGRESS TRAFFIC
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-ingress
+spec:
+  podSelector: {}
+  ingress:
+  - {}
+  policyTypes: [Ingress]
+----
+# DENY ALL EGRESS TRAFFIC
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-egress
+spec:
+  podSelector: {}
+  policyTypes: [Egress]
+----
+# ALLOW ALL EGRESS TRAFFIC
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-egress
+spec:
+  podSelector: {}
+  ingress:
+  - {}
+  policyTypes: [Egress]
+----
+# DENY ALL INGRESS AND EGRESS TRAFFIC
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]
+```
+
+## Pod Security Admission
+
+`{bm} /(Security\/Pod Security Admission)_TOPIC/i`
+
+```{prereq}
+Kinds/Pod/Container Isolation_TOPIC
+```
+
+```{note}
+There was a feature called pod security policy that this deprecates. Pod security policies are no longer a thing.
+```
+
+Pod security admissions are used to restrict the security context of pods using policy groups that define up-to-date best practices. Restricting requires two pieces of information: policy and mode. Specifically, ...
+
+ * policy defines the level of privileges to grant to pods, which can be either ...
+
+   * `privileged`: Unrestricted usage (default).
+   * `baseline`: Minimally restricted usage, based on known privilege escalations.
+   * `restricted`: Maximally restricted usage, based on best practices of hardening pods.
+
+   Note that the description above doesn't explicitly define what it is that's being restricted (it just says minimally restricted / maximally restricted). The definition of minimal / maximal are based on up-to-date best practices and update with different releases of Kubernetes. As such, to help keep things consistent, a policy can be pinned to use the definitions from a specific version of Kubernetes (e.g. apply definitions from Kubernetes v1.22 even though the version of Kubernetes being run is v1.25).
+
+ * mode defines what to do when a policy violation is detected, which can be either ...
+
+   * `enforce`: Violating pods are rejected.
+   * `audit`: Violating pods are not rejected, but a message will be recorded in the audit logs.
+   * `warn`: Violating pods are not rejected, but a warning message will be shown to the user.
+
+For example, setting ...
+
+ * `warn` to `baseline` means that pods will run but also warn if they're breaking minimal set of restrictions.
+ * `enforce` to `privileged` means that pods won't run if they're unrestricted.
+
+To apply to all pods cluster-wide, use the following object.
+
+```yaml
+apiVersion: apiserver.config.k8s.io/v1
+kind: AdmissionConfiguration
+plugins:
+  - name: PodSecurity
+    configuration:
+      apiVersion: pod-security.admission.config.k8s.io/v1
+      kind: PodSecurityConfiguration
+      defaults:
+        enforce: privileged
+        enforce-version: latest
+        audit: restricted
+        audit-version: "1.25"
+        warn: baseline
+        warn-version: "1.22"
+      exemptions:
+        usernames: []             # Usernames to exempt
+        runtimeClasses: []        # Runtime class names to exempt
+        namespaces: [kube-system] # Namespaces to exempt
+```
+
+```{seealso}
+Security/API Access Control_TOPIC (Usernames and groups)
+```
+
+To apply to all pods in a specific namespace, use the following namespace label templates.
+
+ * policy, use `pod-security.kubernetes.io/<MODE>:<POLICY>`.
+ * version, use `pod-security.kubernetes.io/<MODE>-version:<VERSION>` (defaults to `latest` if omitted).
+
+```
+pod-security.kubernetes.io/warn=baseline
+pod-security.kubernetes.io/warn-version=1.22
+pod-security.kubernetes.io/audit=restricted
+pod-security.kubernetes.io/audit-version=1.25
+pod-security.kubernetes.io/enforce=privileged
+pod-security.kubernetes.io/enforce-version=latest
+```
+
+## API Access Control
+
+`{bm} /(Security\/API Access Control)_TOPIC/i`
 
 ```{prereq}
 Kinds/Pod/API Access_TOPIC
@@ -4028,7 +4477,7 @@ namespaceB --+----- "default"
 
 ```{seealso}
 Kinds/Service Account_TOPIC (Creating service accounts)
-API Security/Disable Credentials_TOPIC (Disable volume mounting service account credentials)
+Security/API Access Control/Disable Credentials_TOPIC (Disable volume mounting service account credentials)
 ```
 
 How access rights are defined depends on how Kubernetes has been set up. By default, Kubernetes is set up to use role-based access control (RBAC), which tightly maps to the REST semantics of the Kubernetes API server. RBAC limits what actions can be performed on which objects: Objects map to REST resources (paths on the REST server) and manipulations of objects map to REST actions (verbs such as `DELETE`, `GET`, `PUT`, etc.. on those REST server paths).
@@ -4039,9 +4488,9 @@ The subsections below detail RBAC as well as other API security related topics.
 Other types of access control mechanisms exist as well, such as attribute-based access control (ABAC).
 ```
 
-## Role-based Access Control
+### Role-based Access Control
 
-`{bm} /(API Security\/Role-based Access Control)_TOPIC/i`
+`{bm} /(Security\/API Access Control\/Role-based Access Control)_TOPIC/i`
 
 RBAC tightly maps to the REST semantics of the Kubernetes API server by limiting what actions can be performed on which objects: Objects map to REST resources (paths on the REST server) and manipulations of objects map to REST actions (verbs such as `DELETE`, `GET`, `PUT`, etc.. on those REST server paths). RBAC is configured using two sets of kinds:
 
@@ -4292,9 +4741,9 @@ Kubernetes comes with several predefined cluster roles that can be used as neede
 `edit` also excludes access to resource quotes and namespaces? Unsure.
 ```
 
-## Disable Credentials
+### Disable Credentials
 
-`{bm} /(API Security\/Disable Credentials)_TOPIC/i`
+`{bm} /(Security\/API Access Control\/Disable Credentials)_TOPIC/i`
 
 By default, a pod will mount its service account's credentials to `/var/run/secrets/kubernetes.io/serviceaccount` within its containers. Unless access to the API is required, it's good practice to disable the mounting of credentials entirely. This can be done via the service account object or the pod object.
 
@@ -4323,7 +4772,357 @@ spec:
 Recall that it's also possible to disable auto-mounting on individual pods. Auto-mounting can't be disabled on individual containers, but it is possible to override the `/var/run/secrets/kubernetes.io/serviceaccount` mount on those containers with something like tmpfs (empty directory).
 ```
 
-# Kubectl Cheatsheet
+# Extensions
+
+`{bm} /(Extensions)_TOPIC/i`
+
+Kubernetes can be automated / extended through user supplied code and third-party software packages. The subsections below detail various automation related topics.
+
+## User-defined Kinds
+
+`{bm} /(Extensions\/User-defined Kinds)_TOPIC/i`
+
+```{prereq}
+Kinds/Pod/API Access_TOPIC
+Kinds/Deployment_TOPIC
+Kinds/Service Account_TOPIC
+Security/API Access Control_TOPIC
+```
+
+Kubernetes allows user-defined kinds. User-defined kinds typically build on existing kinds, either to ...
+
+ * wrap them (e.g. multiple objects of different kinds under a single umbrella, where that umbrella controls and manages those objects).
+ * automate them (e.g. take care of custom maintenance tasks on objects or automate audits of objects).
+ * extend them (e.g. wrap an existing kind and add new features on-top of it, like how cron job does with job).
+
+Each user-defined kind first requires a custom resource definition (CRD), which tells Kubernetes how a user-defined kind is defined. Given a CRD for a user-defined kind, the Kubernetes API server will store, allow access, and perform basic validation on objects of that kind.
+
+```yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: cars.my-corp.com  # Must be set to <spec.names.plural>.<spec.group>.
+spec:
+  # The different naming variations of the kind that this CRD is adding.
+  names:
+    plural: cars     # Plural variant, used for API path (discussed further below).
+    singular: car    # Singular variant, used as alias for kubectl and for display.
+    kind: Car        # CamelCased singular variant, used by manifests.
+    shortNames: [cr] # Shorter variants, used by kubectl.
+  # Is this a namespace-level kind (objects associated with a namespace) or a cluster-level
+  # kind (objects are cluster-wide). Use either "Namespaced" or "Cluster".
+  scope: Namespaced
+  # The REST API path is specified using the two fields below ("group" and "version") along
+  # with the plural name defined above. There's only one group but there can be multiple
+  # versions for that group. Each version gets its own REST API path in the format
+  # /apis/<group>/<version>/<plural>. 
+  #
+  # In this example, only one version exists. Its REST API path is /api/my-corp.com/v1/vars.
+  group: my-corp.com
+  versions:
+    - name: v1
+      served: true  # Setting this to false disables this version.
+      storage: true # Given multiple version, exactly one must be marked for storage.
+      # Each version can have some validation performed via a schema. The following OpenAPI
+      # schema ensures several fields exist on the object and those objects are of the
+      # correct type.
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                model: {type: string}
+                year: {type: integer}
+                doorCount: {type: integer}
+```
+
+To process objects of a user-defined kind, a special pod needs to be written with access to the Kubernetes API. This pod, called a controller, needs use to the Kubernetes API to watch for object events and process those events in whatever way is appropriate. To provide redundancy, it's common for multiple instances of such a pod to be running at once (e.g. deployment), possibly coordinating with each other (e.g. shared database).
+
+```python
+# This is a naive implementation of a controller. It shouldn't have multiple instances
+# running on the cluster because those instances get into race conditions and trip over each
+# other.
+
+# Import Kubernetes API client for Python.
+import kubernetes.config
+from kubernetes.client import V1Pod
+from kubernetes.client import V1PodSpec
+from kubernetes.client import V1Container
+from kubernetes.client import V1ObjectMeta
+from kubernetes.client import V1Service
+from kubernetes.client import V1ServiceSpec
+from kubernetes.client import V1ServicePort
+
+# Load the credentials mounted within the pod. Make sure a service account is associated
+# with the pod and that service account has the necessary permissions to watch, add/delete
+# pods, and add/delete services.
+#
+# If this is running locally rather than within a pod, use load_kube_config() instead.
+kubernetes.config.load_incluster_config()
+
+v1 = kubernetes.client.CoreV1Api()
+custom_v1 = kubernetes.client.CustomObjectsApi()
+
+# An added car should result in a new pod and a new service for that pod.
+def create_car(car_name):
+    pod_name = car_name + '-pod'
+    pod_labels = {'app': 'car'}
+    pod_spec = V1PodSpec(containers=[V1Container(name='car', image='my-image:1.0')])
+    pod = V1Pod(metadata=V1ObjectMeta(name=pod_name, labels=pod_labels), spec=pod_spec)
+    v1.create_namespaced_pod(namespace='default', body=pod)
+    
+    service_name = car_name + '-service'
+    service_labels = {'app': 'car'}
+    service_spec = V1ServiceSpec(selector=pod_labels, ports=[V1ServicePort(protocol='TCP', port=80)])
+    service = V1Service(metadata=V1ObjectMeta(name=service_name, labels=service_labels), spec=service_spec)
+    v1.create_namespaced_service(namespace='default', body=service)
+
+# A deleted car should result in pod and service associated with it to be deleted as well.
+def delete_car(car_name):
+    pod_name = car_name + '-pod'
+    v1.delete_namespaced_pod(name=pod_name, namespace='default')
+    
+    service_name = car_name + '-service'
+    v1.delete_namespaced_service(name=service_name, namespace='default')
+
+# Watch the API server for changes to "cars"
+w = kubernetes.watch.Watch()
+for event in w.stream(custom_v1.list_cluster_custom_object, 'my-corp.com', 'v1', 'cars', watch=True):
+    car = event['object']
+    if event['type'] == 'ADDED':
+        create_car(car['metadata']['name'])
+    elif event['type'] == 'DELETED':
+        delete_car(car['metadata']['name'])
+```
+
+Note that, when a CRD is deleted, all of its objects are deleted as well. Those deleted objects will cause `DELETED` events. For example, deleting the CRD example above will cause the controller example above to receive `DELETED` events for objects that were taken out by that CRD's deletion.
+
+```{note}
+In addition to doing it manually like this, there's also a handy framework to take a lot of the boilerplate out called Kubernetes Operators Framework (Kopf).
+```
+
+```{note}
+There's also another much more complicated mechanism of adding your own kind called: API server aggregation. In this method, you create your own API server that handles requests, storage, and management your kind. The Kubernetes API sever then proxies to your API server via an aggregation layer.
+```
+
+## User-defined Metrics
+
+`{bm} /(Extensions\/User-defined Metrics)_TOPIC/i`
+
+```{prereq}
+Kinds/Horizontal Pod Autoscaler_TOPIC
+Kinds/Service Account_TOPIC
+Security/API Access Control_TOPIC
+```
+
+TODO: fill me in
+
+## Helm
+
+`{bm} /(Extensions\/Helm)_TOPIC/i`
+
+TODO: fill me in
+
+# Guides
+
+`{bm} /(Guides)/`
+
+The following sub-sections are guides to various aspects of Kubernetes.
+
+## Pod Design
+
+`{bm} /(Guides\/Pod Design)/`
+
+```{prereq}
+Kinds_TOPIC
+Security_TOPIC
+Extensions_TOPIC
+```
+
+Designing a pod appropriately requires ...
+
+ * benchmarking and performance metrics.
+ * mapping out what resources the pod needs access to and how it accesses those shared volume (e.g. read-only access to shared volumes)
+ * mapping out what network entities it can communicate with and how it communicates with those network entities.
+
+The following subsections detail various aspects of pod design.
+
+### Security
+
+`{bm} /(Guides\/Pod Design\/Security)/`
+
+```{prereq}
+Kinds/Pod_TOPIC
+Kinds/Volume_TOPIC
+Kinds/Service Account_TOPIC
+Kinds/Secret_TOPIC
+Kinds/Configuration Map_TOPIC
+Security_TOPIC
+```
+
+There are several aspects to hardening the security of a pod.
+
+ * **Harden container isolation** 
+ 
+   Unless a container explicitly requires it, ...
+
+   * turn off access to kernel capabilities. Bugs in the kernel are discovered from time-to-time, and when the container has privileged access to the kernel / has certain kernel capabilities enabled, it could lead to an attacker breaking out of container isolation and compromising the node itself.
+
+   ```{note}
+   How would you know which kernel capabilities you need? Can you stress test and log which capabilities were used? Then restrict the pod to just those capabilities?
+   ```
+    
+   * don't run container processes as the root user (UID 0). For example, imagine a container running as root that has a volume mounted to a directory on the node that's running it. If that container were comprised by an attacker, the attacker could write to files with executable permissions as root, potentially leading to the node itself being compromised.
+
+   ```{note}
+   How would you know if the application won't crash if you used a user other than root? Stress test with a non-root user and see what happens?
+   ```
+
+   * don't expose aspects of the node to the container. Exposing aspects such as the node's networking interfaces, file system, incoming ports, or process IDs can leak information to an attacker as well as provide vectors of attack to the node.
+
+   ```{seealso}
+   Kinds/Pod/Container Isolation/Security Context_TOPIC (Pod isolation configurations)
+   Kinds/Pod/Container Isolation/Node Access_TOPIC (Pod isolation configurations)
+   Security/Pod Security Admission_TOPIC (Global pod isolation configurations)
+   ```
+
+ * **Harden network isolation**
+    
+   A pod typically doesn't require unrestricted network access to pods / endpoints across the entire cluster. For example, imagine an application broken up into three sets of pods: frontend, backend, and database. The ...
+
+   * frontend pods receive requests from the outside world and send requests to the backend pods.
+   * backend pods receive requests from the frontend pods and send requests to the database pods.
+   * database pods receive requests from the backend pods.
+
+   The three sets of pods above can have their networking restricted based on the expected flow of requests. That way, an attacker that compromises a frontend pod doesn't immediately have network access to a database pod (or some other unknown pod in the cluster).
+
+   ```{seealso}
+   Security/Network Policy_TOPIC (Pod network isolation)
+   ```
+
+ * **Harden API access**
+ 
+   Unless a container explicitly requires it, turn off the mounting of credentials for the Kubernetes API server. For example, if an attacker compromises a container that has these credentials mounted, it gives them a leg up to compromising the Kubernetes API server itself.
+ 
+   If access to the Kubernetes API server is required by the container, the credentials mounted should be for a service account that's restricted to only the required parts of the API (e.g. via RBAC).
+
+   ```{seealso}
+   Kinds/Pod/API Access_TOPIC (Pod credential mounting)
+   Kinds/Security/API Access Control/Role-based Access Control_TOPIC (Restricting API access via service accounts)
+   Kinds/Security/API Access Control/Disable Credentials_TOPIC (Preventing API credentials from being mounted to pod)
+   ```
+
+ * **Harden volume access**
+ 
+   Unless a container explicitly requires write access to a volume, mount that volume in read-only mode. For example, imagine a pod containing a sidecar which collects the main container's logs. The sidecar gets access to the main container's log files via a volume, where that shared volume is used by the main container to store logs, configurations, and data.
+ 
+   If the sidecar isn't restricted to just reading that shared volume, an attacker could first compromise the sidecar and use it to compromise the main container by writing malicious configurations and data on that shared volume.
+
+   ```{seealso}
+   Kinds/Volume/Access Modes_TOPIC (Access modes of volumes)
+   ```
+
+ * **Sensitive credential storage**
+
+   All security-related configurations should be stored using secrets rather than config maps. Secrets are encrypted by default and extra care is taken to ensure they don't leak.
+
+   When using secrets, mount as a volume if possible rather than dumping into environment variables. The volumes used for secrets are similar to a RAM disk in that no bits are actually being written to disk, providing an extra level of security against leaks. For example, if secrets were being written to disk, an attacker could look through blocks on the disk and potentially extract the contents of the deleted files (even if those deleted -- deleting a file doesn't necessarily wipe the data used by that file).
+
+   ```{seealso}
+   Kinds/Secret_TOPIC (Secret should be used for sensitive configurations)
+   ```
+
+### Configuration
+
+`{bm} /(Guides\/Pod Design\/Configuration)/`
+
+```{prereq}
+Kinds/Pod/Images_TOPIC
+Kinds/Pod/Environment Variables_TOPIC
+Kinds/Pod/Metadata_TOPIC
+Kinds/Pod/Service Discovery_TOPIC
+```
+
+A pod's configuration can make use of several features to ensure that it functions well.
+
+ * **Image**
+
+   * Should not use `latest`: Containers using `latest` may encounter inconsistent behavior across the cluster due to the fact that `latest` is a tag that constantly updates.
+   * Should not update non-`latest`: Kubernetes caches images, meaning that if an image is cached but then updated again, nodes may run inconsistent images.
+
+ * **Metadata**
+
+   * Should declare sensitive configurations in secrets: Containers needing sensitive configurations (e.g. passwords, certificates, etc..) should use secrets to access those credentials instead of config maps.
+   * Should declare non-sensitive configurations in config maps: Containers needing sensitive configurations (e.g. passwords, certificates, etc..) should use secrets instead of config maps.
+   * Should use volume mounts for metadata: Containers access various metadata and configurations via either environment variables or volumes (e.g. service IPs, pod labels, config map entries, etc..). Volumes are preferred over environment variables because, as data gets updated, volumes will reflect the updated data while environment variables won't.
+
+ * **Resources**
+
+   * Should declare resource requirements: Containers should declare resource requests and resource limits.
+   * May declare hardware requirements: Pods can use node selectors, node affinity, and taints / tolerations to direct pods towards perfered hardware (e.g. prefer Intel CPUs over AMD CPUs).
+
+### Lifecycle
+
+`{bm} /(Guides\/Pod Design\/Lifecycle)/`
+
+```{prereq}
+Kinds/Pod/Lifecycle_TOPIC
+```
+
+A pod's lifecycle can make use of several features to ensure that it functions well.
+
+ * **Startup**
+ 
+   * Should define startup probes: Startup probes signal to Kubernetes that the pod has correctly started.
+   * May define startup tasks: Init containers and post-start hooks can be used to do certain initialization tasks when the pod designer doesn't have the ability to change up the main containers in a pod (e.g. it isn't possible to re-create the main container so that it performs the initialization tasks itself). 
+
+ * **Shutdown**
+ 
+   * Should gracefully shutdown: A container that receives `SIGTERM` should begin gracefully shutting itself down (e.g. clearing queues) but *should not stop processing incoming requests*.
+   * Should define a termination grace period: A container's graceful shutdown process must complete within the pod's `terminationGraceSeconds`, otherwise the container will be forcefully killed via `SIGKILL`.
+   * May define shutdown tasks: Pre-stop hooks can be used to do certain shutdown tasks when the pod designer doesn't have the ability to change up the main containers in a pod (e.g. write something to a database).
+
+   ```{note}
+   As to the first point -- why should not stop accepting requests? See [here](https://twitter.com/thockin/status/1560398974929973248?t=aDSdlxfgH_ijhmJWH6c_Qg&s=19). The book also mentioned that you should have a delay before you stop accepting requests so things can sync up (via pre-stop hooks).
+   ```
+
+ * **Running**
+
+   * Should define readiness probes: Readiness probes signal to Kubernetes that a pod is currently not ready to receive requests (e.g. some required resource has temporarily locked up).
+   * Should define liveness probes: Liveness probes signal to Kubernetes that a pod is no longer operational (e.g. something unrecoverable has happened).
+   * May define a maximum lifetime: A container's lifetime can't exceed the pod's `activeDeadlineSeconds`, otherwise the container will forcefully killed.
+   * Should define a restart policy: Pods that are running servers should always restart when their main process terminates, while pods that are running under jobs should likely only restart on failure.
+
+### Performance
+
+`{bm} /(Guides\/Pod Design\/Performance)/`
+
+```{prereq}
+Kinds/Pod/Node Placement_TOPIC
+Kinds/Horizontal Pod Autoscaler_TOPIC
+Kinds/Cluster Autoscaler_TOPIC
+Extensions/User-defined Metrics_TOPIC
+```
+
+There are several aspects to ensure that pods perform well and pod replicas scale well. Before applying and performance features, a bare-bones pod should be placed on a staging environment and load tested to determine its performance characteristics.
+
+ * **Scaling**
+
+   * Should use pod replicas: Pods that scale horizontally should use replica sets, deployments, or stateful sets.
+   * Should scale pod replicas: Pods under a replica sets, deployments, or stateful sets can automatically scale up/down their replicas based on metrics (e.g. CPU utilization) via a horizontal pod autoscaler.
+   * Should scale nodes: A cluster can scale up/down the number of nodes it has based on the number of scheduled pods via a cluster autoscaler.
+   * May use custom scaling metrics: Pods under a replica sets, deployments, or stateful sets can first be stress tested in a staging environment to measure performance characteristics. For example, certain pods will encounter bottleneck on IO rather than CPU utilization. In these cases, pods may define their own metrics (e.g. IO rate) and horizontal pod autoscalers can make use of them to scale.
+
+ * **Node Placement**
+
+   * May use pod affinity: Pods that perform better when in the vicinity of each other (e.g. faster communication if on same data center rack) can request to be placed in that same vicinity using pod affinity.
+   * May use node affinity: Pods that perform better when on specific hardware (e.g. optimized for Intel Xeon) can request to be placed on nodes with that hardware using node affinity.
+
+## Command-line Interface
+
+`{bm} /(Guides\/Command-line Interface)/`
 
 kubectl commands are typically organized into contexts, where each context is defines contextual information about the cluster: cluster location, cluster authentication, and default namespace. To ...
 
@@ -4349,7 +5148,9 @@ Kubernetes API is exposed as a RESTful interface, meaning everything is represen
  * get YAML output `-o yaml`
  * get JSON output isolated to a specific field or fields `-o jsonpath --template={TEMPLATE}`, where the template is a JSONPath expression.
 
-## CRUD
+### CRUD
+
+`{bm} /(Guides\/Command-line Interface\/CRUD)/`
 
 `get` / `describe` allows you to get details on a specific objects and kinds. To get an overview of a ...
 
@@ -4409,7 +5210,9 @@ When referencing objects, the ...
  * `--selector` flag can be fed in a label selector that filters those objects.
  * `--all` flag can target everything.
 
-## Deployment
+### Deployment
+
+`{bm} /(Guides\/Command-line Interface\/Deployment)/`
 
 `rollout` allows you to monitor and control deployment rollouts.
 
@@ -4432,13 +5235,17 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `kubectl create secret generic my-tls-cert --from-file=a.crt --from-file=a.key`
 
-## Proxy
+### Proxy
+
+`{bm} /(Guides\/Command-line Interface\/Proxy)/`
 
 `proxy` allows you to launch a proxy that lets you talk internally with the Kubernetes API server.
 
  * `kubectl proxy`
 
-## Debug
+### Debug
+
+`{bm} /(Guides\/Command-line Interface\/Debug)/`
 
 `logs` allows you to view outputs of a container.
 
@@ -4492,7 +5299,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} container` - An instance of an image. A container creates an isolated copy of the image's filesystem, isolates the resources required for that image, and launches the entrypoint application for that image. That container can't see or access anything outside of the container unless explicitly allowed to by the user. For example, opening a port 8080 on a container won't open port 8080 on the host running it, but the user can explicitly ask that port 8080 in the container map to some port on the host.
 
- * `{bm} registry` - A service for storing and retrieving images.
+ * `{bm} registry/(registry|registries)/i` - A service for storing and retrieving images.
 
  * `{bm} multistage image/(multistage build|multistage image|multistage container image)/i` - A container image produced by merging portions of other container images together. For example, to build a multistage image that contains Java as well as compiled C++ binaries, ...
 
@@ -4523,11 +5330,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} pod template` - The blueprint for creating pods.
 
- * `{bm} namespace` - A user-defined category for objects in a cluster (e.g. pods), allowing Kubernetes do things such as apply isolation and access control. By default, the kubectl command uses the namespace `default` if no namespace is specified.
-
-   ```{note}
-   The book tells you to think of it like it's a folder.
-   ```
+ * `{bm} namespace` - A user-defined category for objects in a cluster (e.g. pods), similar to a folder on a filesystem. Namespaces allow Kubernetes do things such as apply isolation and access control.
 
  * `{bm} kube-system` - A namespace for internal cluster components (pods) that Kubernetes runs for itself. For example, Kubernetes's DNS service, Kubernetes's proxy service, etc.. all run under the kube-system namespace.
 
@@ -4543,11 +5346,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} label` - User-defined key-value pairs assigned to Kubernetes objects to group those objects together. Labeling objects makes it so they can be accessed as a set (e.g. target all pods with authoring team set to SRE). Unlike annotations, labels aren't for assigning metadata to objects.
 
- * `{bm} label selector` - An expression language used to find objects with labels. For example...
-
-   * `key=value`
-   * `key!=value`
-   * `key in (value1, value2)`
+ * `{bm} label selector` - An expression language used to find objects with labels. For example `key=value`, `key!=value`, and `key in (value1, value2)`.
 
  * `{bm} annotation/(annotation|annotate)/i` - User-defined key-value pairs assigned to Kubernetes objects that acts as metadata for other tools and libraries. Unlike labels, annotations aren't for grouping objects together.
 
@@ -4579,7 +5378,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} ingress` - A kind that acts as an HTTP-based frontend that routes and load balances incoming external requests to the correct service. This kind is an interface without an implementation, meaning that Kubernetes doesn't have anything built-in to handle ingress. Implementations of this interfaces are referred to as ingress controllers and are provided by third-parties.
 
- * `{bm} replica set` - A kind that ensures a certain number of copies of some pod template are running at any time.
+ * `{bm} replica set` - A kind that ensures a certain number of pod replicas are running at any time.
 
  * `{bm} deployment` - A kind that has the same functionality as a replica set but also provides functionality for updating pods to a new version and rolling them back to previous versions.
 
@@ -4588,9 +5387,11 @@ The option `--from-file` can also point to a directory, in which case an entry w
    * Stable identity means that, if a pod dies, it gets replaced with a new pod that has the same identity information (same name, same IP, etc..)
    * Dedicated persistent storage means that each stable identity can have persistent volume claims unique to it (not shared between other pods within the stateful set).
 
- * `{bm} reconciliation loop` - A loop that continually observes state and attempts to reconcile it to some desired state if it deviates. See declarative configuration.
+ * `{bm} reconciliation loop/(reconciliation loop|control loop)/i` - A loop that continually observes state and attempts to reconcile it to some desired state if it deviates. See declarative configuration.
 
  * `{bm} daemon set` - A kind that ensures a set of nodes always have an instance of some pod running.
+
+ * `{bm} replica/(pod replica|replica)/i` - A pod under a replica set, deployment, or stateful set. Replicas typically created using the replica set, deployment, or stateful set's pod template.
 
  * `{bm} job` - A kind that launches as a pod to perform some one-off task.
 
@@ -4610,7 +5411,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} control plane` - The distributed software that controls and makes up the functionality of a Kubernetes cluster, including the API server and scheduler used for assigning pods to worker nodes.
 
- * `{bm} controller` - A piece of software running on the control plane that provides some functionality. This includes doing the work of reconciling observed state to desired state (reconciliation loop) and / or supporting new kinds. Kinds such as pods, stateful sets, nodes, etc.. all have controllers backing them, and custom controllers can be written and deployed by users.
+ * `{bm} controller` - Software that implements a control loop. Kinds such as pods, stateful sets, nodes, etc.. all have controllers backing them. Custom controllers can be written and deployed by for user-defined kinds as well.
 
  * `{bm} service account` - A kind used for authenticating pods with the control plane.
 
@@ -4620,23 +5421,45 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} role binding/(role binding|cluster role binding)/i` - A kind specific to RBAC that binds a role to a set of users, groups, and / or service accounts.
 
-* `{bm} horizontal pod autoscaler/(horizontal pod autoscaler|horizontal pod autoscaling)/i` `{bm} /\b(HPA)\b/` - A kind that automatically scales the number of replicas in a deployment, stateful set, or replica set based on how much load existing replicas are under.
+* `{bm} horizontal pod autoscaler/(horizontal pod autoscaler|horizontal pod autoscaling)/i` `{bm} /\b(HPA)s?\b//false/true` - A kind that automatically scales the number of replicas in a deployment, stateful set, or replica set based on how much load existing replicas are under.
 
- * `{bm} vertical pod autoscaler/(vertical pod autoscaler|vertical pod autoscaling)/i` `{bm} /\b(VPA)\b/` - A kind that automatically scales the resource requirements for some pod based on how much load existing replicas are under.
+ * `{bm} vertical pod autoscaler/(vertical pod autoscaler|vertical pod autoscaling)/i` `{bm} /\b(VPA)s?\b//false/true` - A kind that automatically scales the resource requirements for some pod based on how much load existing replicas are under.
 
  * `{bm} cluster autoscaler/(cluster autoscaler|cluster autoscaling)/i` - A component that automatically scales the number of nodes in a cluster based on need.
 
- * `{bm} pod disruption budget` `{bm} /\b(PDB)\b/` - A kind that defines the minimum number of available pods / maximum number of unavailable pods can be during a cluster resizing event (e.g. when cluster autoscaler is scaling up or down nodes).
+ * `{bm} pod disruption budget` `{bm} /\b(PDB)s?\b//false/true` - A kind that defines the minimum number of available pods / maximum number of unavailable pods can be during a cluster resizing event (e.g. when cluster autoscaler is scaling up or down nodes).
 
- * `{bm} node affinity` - A property of pods that attracts them to a set of nodes, either as a preference or as a hard requirement.
+ * `{bm} node selector` - A property of pods that forces them to be scheduled on a specific set of nodes.
+
+ * `{bm} node affinity` - A property of pods that attracts them to or repels them from to a set of nodes, either as a preference or as a hard requirement.
 
  * `{bm} node taint/(node taint|taint)/i` - A property of nodes that repels a set of pods, either as a preference or as a hard requirement.
 
- * `{bm} pod toleration/(pod toleration|toleration)/i` - A set of node taints that a pod can tolerate.
+ * `{bm} pod toleration/(pod toleration|toleration)/i` - A property of pods that defines a set of acceptable node taints, where those pods are allowed to be scheduled on nodes with those taints.
+
+ * `{bm} pod affinity/(pod affinity|pod anti-affinity)/i` - A property of pods that attracts them to or repels them from the vicinity of other pods (e.g. pods on the same node, same rack, etc..), either as a preference or as a hard requirement.
+
+ * `{bm} topology key` - A label placed on nodes that defines their vicinity. For example, nodes can define which rack they're on via a label with the key `rack`, where the value would be the same for all nodes on the same rack (e.g. nodes on rack 15 would have the label `rack=15`, nodes on rack 16 would have the label `rack=16`, etc..).
+
+ * `{bm} image pull secret` - A special type of secret used for storing the credentials of a private image registry.
+
+ * `{bm} container network interface/(container network interface|container networking interface|network plugin)/i` `{bm} /\b(CNI)s?\b//false/true` - A Kubernetes plugin responsible for inserting a network interface into the container (e.g. virtual ethernet) and making necessary changes on the node to bridge that network interface to the rest of the cluster.
+
+ * `{bm} network policy/(network policy|network policies)/i` - A kind that restricts how pods can communicate with each other and with other network entities.
+
+ * `{bm} namespace-level kind/(namespace-level kind|namespace-level object)/i` - A kind that comes under the umbrella of a namespace (e.g. service, pod, config map, etc..).
+
+ * `{bm} cluster-level kind/(cluster-level kind|cluster-level object)/i` - A kind is one that comes under the umbrella of the entire cluster rather than a specific namespace (e.g. node, persistent volume, etc...).
+
+ * `{bm} custom resource definition` `{bm} /\b(CRD)s?\b//false/true` - A kind that defines another user-defined kind.
+
+ * `{bm} sidecar` - A container within a pod that performs helper tasks for the other more important containers in that pod (e.g. collecting application logs and sending them to a database).
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 
 `{bm-error} Did you mean endpoints?/(endpoint)/i`
+
+`{bm-error} Did you mean sidecar?/(side-car|side car)/i`
 
 `{bm-error} Use the proper version (e.g. DaemonSet should be Daemon set)/(ConfigMap|ReplicaSetStatefulSet|CronJob|ServiceAccount)/`
 
