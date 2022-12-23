@@ -2,7 +2,7 @@
 
 <strong>🔍SEE ALSO🔍</strong>
 
- * Extensions/User-defined Metrics_TOPIC (Collecting user-defined metrics for an HPA to scale on)
+ * Extensions/Prometheus_TOPIC (Scaling replicas based on user-defined metrics)
 
 </div>
 

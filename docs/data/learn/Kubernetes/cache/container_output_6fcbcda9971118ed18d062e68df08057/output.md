@@ -2,9 +2,10 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
+ * Kinds/Pod/Node Placement_TOPIC
  * Kinds/Horizontal Pod Autoscaler_TOPIC
- * Kinds/Service Account_TOPIC
- * Security/API Access Control_TOPIC
+ * Kinds/Cluster Autoscaler_TOPIC
+ * Extensions/Prometheus_TOPIC
 
 </div>
 

@@ -30,7 +30,7 @@ Kubernetes is structured around containers.
 
 In the context of containers, an ...
 
- * image is an application (or set of applications) packaged with all of its dependencies as an immutable and isolated filesystem. The filesystem typically contains all dependencies required for the application(s) run sealed at their correct version:
+ * image is an application (or set of applications) packaged with all of its dependencies as an immutable and isolated filesystem. The filesystem typically contains all dependencies required for the application(s) to run sealed at their correct version:
  
    * libraries (e.g. correct version of libssh),
    * applications (e.g. correct version bash and Python),
@@ -106,7 +106,7 @@ Of these kinds, the two main ones are nodes and pods.
 '----------------------------------------------------------'
 ```
 
-Nodes, pods, and other important kinds are discussed further on this document.
+Nodes, pods, and other important kinds are discussed further on in this document.
 
 ```{seealso}
 Kinds_TOPIC (Discussion of common kinds)
@@ -143,7 +143,7 @@ Finding objects based on labels is done via label selectors, described in the fo
 | `!key`                            | a value not set for `key`                               |
 | `key1=value1,key2=value2`         | `key1` is set to `value1` and `key2` is set to `value2` |
 
-Kubernetes uses labels to orchestrate. Labels allow objects to have loosely-coupled linkages to each other as opposed to tightly-coupled parent-child / hierarchy relationships. For example, a load balancer decides which pods it routes requests to by searching for pods using label selector.
+Kubernetes uses labels to orchestrate. Labels allow objects to have loosely coupled linkages to each other as opposed to tightly coupled parent-child / hierarchy relationships. For example, a load balancer decides which pods it routes requests to by searching for pods using label selector.
 
 ```{svgbob}
  .-------.
@@ -216,7 +216,7 @@ Introduction/Configuration_TOPIC
 Introduction/Labels_TOPIC
 ```
 
-The following sub-sections gives a overview of the most-used kinds and example manifests for those kinds. All manifests, regardless of the kind, require the following fields ...
+The following sub-sections give an overview of the most-used kinds and example manifests for those kinds. All manifests, regardless of the kind, require the following fields ...
 
  * `apiVersion`: API version.
  * `kind`: Class of object (kind).
@@ -240,7 +240,7 @@ In addition, the `metadata.labels` and `metadata.annotations` contain the object
 
 `{bm} /(Kinds\/Pod)_TOPIC/i`
 
-Containers are deployed in Kubernetes via pods. A pod is is a set of containers grouped together, often containers that are tightly coupled and / or are required to work in close proximity of each other (e.g. on the same host).
+Containers are deployed in Kubernetes via pods. A pod is a set of containers grouped together, often containers that are tightly coupled and / or are required to work in close proximity of each other (e.g. on the same host).
 
 ```{svgbob}
 .--------------------------------.
@@ -352,7 +352,7 @@ Each container in a pod has to reference an image to use. How Kubernetes loads a
 ```yaml
 apiVersion: v1
 kind: Pod
-metadata:
+metadata:F
   name: my-pod
 spec:
   containers:
@@ -363,7 +363,7 @@ spec:
 
 A value of ...
 
- * `IfNotPresent` only downloads the image if its not already locally present on the node.
+ * `IfNotPresent` only downloads the image if it's not already locally present on the node.
  * `Always` always downloads the image.
  * `Never` never downloads the image (will fail if image does not exist locally on the node).
 
@@ -488,7 +488,7 @@ Kinds/Service_TOPIC (Exposing pods to the outside world)
 A pod can have many containers within it, and since all containers within a pod share the same IP, the ports exposed by those containers must be unique. For example, only one container within the pod expose port 8080.
 
 ```{note}
-By default, network access is allowed to all pods within the cluster. You can change this using a special kind of pod called `NetworkPolicy` (as long as your Kubernetes environment supports it -- may or may not depending on the container networking interface used). `NetworkPolicy` lets you limit network access such that only pods that should talk togetehr can talk together (a pod can't send a request to another random pod in the system). This is done via label selectors.
+By default, network access is allowed to all pods within the cluster. You can change this using a special kind of pod called `NetworkPolicy` (as long as your Kubernetes environment supports it -- may or may not depending on the container networking interface used). `NetworkPolicy` lets you limit network access such that only pods that should talk together can talk together (a pod can't send a request to another random pod in the system). This is done via label selectors.
 
 If you're aware of endpoints, service, and ingress kinds, I'm not sure how this network policy stuff plays with those kinds.
 ```
@@ -604,7 +604,7 @@ A container's configuration can come from both config maps and secrets. For conf
                  key: CONFIG_MAP_KEY2
    ```
 
-   In certain cases, you may want to map all entries within a config map directly as a set of environment variables. This is useful when many entries of a config map are required for configuration, so many that becomes tedious and error-prone to map them all to environment variables by hand.
+   In certain cases, you may want to map all entries within a config map directly as a set of environment variables. This is useful when many entries of a config map are required for configuration, so many that it becomes tedious and error-prone to map them all to environment variables manually.
    
    ```yaml
    apiVersion: v1
@@ -805,7 +805,7 @@ All files in a volume mount get updated at once. This is possible because of sym
 ```
 
 ```{note}
-For individual files/directories mounted from a volume, one workaround to receiving updates is to use symlinks. Essentially, mount the whole volume to path that doesn't conflict with an existing path in the container. Then, as a part of the container's start-up process, add symlinks to the whole volume mount wherever needed.
+For individual files/directories mounted from a volume, one workaround to receiving updates is to use symlinks. Essentially, mount the whole volume to a path that doesn't conflict with an existing path in the container. Then, as a part of the container's start-up process, add symlinks to the whole volume mount wherever needed.
 
 For example, if the application requires a configuration file at /etc/my_config.conf, you can mount all configurations to /config and then symlink /etc/my_config.conf to /config/my_config.conf. That way, you can still receive updates.
 ```
@@ -961,7 +961,7 @@ spec:
         failureThreshold: 3
 ```
 
-In the example above, each of the probes check a HTTP server within the container at port 8080 but at different paths. The field ...
+In the example above, each of the probes check an HTTP server within the container at port 8080 but at different paths. The field ...
 
  * `initialDelaySeconds` is the number of seconds to wait before performing the first probe.
  * `timeoutSeconds` is the number of seconds to wait before timing out.
@@ -971,8 +971,8 @@ In the example above, each of the probes check a HTTP server within the containe
  
 There are types of probes other than `httpGet`. A probe of type ...
 
- * `httpGet` will perform an HTTP GET operation to a server on the container and fail it its non-responsive.
- * `tcpSocket` will attempt to connect a TCP socket to the container and  fail if the container doesn't accept.
+ * `httpGet` will perform an HTTP GET operation to a server on the container and fail it if it's non-responsive.
+ * `tcpSocket` will attempt to connect a TCP socket to the container and fail if the container doesn't accept.
  * `exec` will run a command on the container and fail if it gets a non-zero exit code.
 
 ```yaml
@@ -1104,10 +1104,10 @@ spec:
             port: 8080
 ```
 
-A post-start hook is useful when some form on initialization needs to occur but it's impossible to do that initialization within the container (e.g. initialization doesn't happen on container start and you don't have access to re-create / re-deploy the container image to add support for it). Likewise, a pre-stop hook is useful when some form of graceful shutdown needs to occur but it's impossible to do that shutdown within the container (e.g. shutdown procedures don't happen on `SIGTERM` and you don't have access to re-create / re-deploy the container image to add support for it).
+A post-start hook is useful when some form of initialization needs to occur but it's impossible to do that initialization within the container (e.g. initialization doesn't happen on container start and you don't have access to re-create / re-deploy the container image to add support for it). Likewise, a pre-stop hook is useful when some form of graceful shutdown needs to occur but it's impossible to do that shutdown within the container (e.g. shutdown procedures don't happen on `SIGTERM` and you don't have access to re-create / re-deploy the container image to add support for it).
 
 ```{note}
-Recall that a container has three possible states: waiting, running, and terminated. The docs says that a container executing a post-start hook is still in the waiting state.
+Recall that a container has three possible states: waiting, running, and terminated. The docs say that a container executing a post-start hook is still in the waiting state.
 ```
 
 ```{note}
@@ -1171,7 +1171,7 @@ spec:
 A value of ...
 
  * `Always` always restarts the pod regardless of how it exists (default).
- * `OnFailure` only restarts the pod only if it failed execution.
+ * `OnFailure` only restarts the pod if it failed execution.
  * `Never` never restarts the pod.
 
 `Always` is typically used when running servers that should always be up (e.g. http server) while the others are typically used for one-off jobs.
@@ -1228,9 +1228,9 @@ Looking at the k8s code, it looks like for a service port needs to be named for 
 
 Using environment variables for service discovery has the following pitfalls:
 
- * Services outside of the pod's namespace aren't provided.
- * Services added to the namespace after the pod launches won't be picked up (env vars can only be changed prior to the launch of a container process).
- * Services removed from the name after the pod launches won't be picked up (env vars can only be changed prior to the launch of a container process).
+ * Services outside the pod's namespace aren't provided.
+ * Services added to the namespace after the pod launches won't be picked up (env vars can only be changed before the launch of a container process).
+ * Services removed from the name after the pod launches won't be picked up (env vars can only be changed before the launch of a container process).
  * Service naming conflicts can happen during normalization (e.g. uppercase-ing and converting dashes to underscores can cause conflict: `My-name` and `my_namE` both end up as `MY_NAME`).
 
 On the plus side, inspecting environment variables within a container essentially enumerates all services within the pod's namespace. Enumerating services isn't possible when using DNS for service discovery, discussed in the next section.
@@ -1296,7 +1296,7 @@ Information about a pod and its containers such as ...
 All pod information except for labels and annotations can be assigned to environment variables. This is because a running pod can have its labels and annotations updated but the environment variables within a running container can't be updated once that container starts (updated labels / annotations won't show up to the container).
 
 ```{note}
-CPU resources can also be dynamically updated without restarting the pod / container process. The environment variable for this likely won't update either, but it isn't restricted like labels / annotations are. There may be other reasons that labels / annotations aren't allowed. Maybe Linux has a cap on how large a environment variable can be, and there's a realistic possibility that labels / annotations can exceed that limit?
+CPU resources can also be dynamically updated without restarting the pod / container process. The environment variable for this likely won't update either, but it isn't restricted like labels / annotations are. There may be other reasons that labels / annotations aren't allowed. Maybe Linux has a cap on how large an environment variable can be, and there's a realistic possibility that labels / annotations can exceed that limit?
 ```
 
 ```yaml
@@ -1482,7 +1482,7 @@ Three different mechanisms are used to define these requirements:
 
  * node selectors: hard requirements for which nodes a pod can run on.
  * node taints: hard and soft requirements for which nodes a pod *can't* run on.
- * node affinity: hard and soft requirements for where which nodes a pod *can* and *can't* run on.
+ * node affinity: hard and soft requirements for which nodes a pod *can* and *can't* run on.
 
 These mechanisms are documented in further detail in the sub-sections below. 
 
@@ -1637,7 +1637,7 @@ Unlike ...
      * the requirements for node affinity has more ways to specify label selection criteria (more expressive).
  * node taints,
      * the requirements for node affinity are attracting / repulsing based on node labels, not repulsing based on lack of pod tolerations.
-     * node affinity can't evict running pods from a node where as taints with a `NoExecute` effect which will cause evictions.
+     * node affinity can't evict running pods from a node whereas taints with a `NoExecute` effect which will cause evictions.
 
 ```{note}
 Note that `requiredDuringSchedulingIgnoredDuringExecution` and `preferredDuringSchedulingIgnoredDuringExecution` both end with "ignored during execution". This basically says that a pod won't get scheduled on a node but it also won't get evicted if that pod is already running on that node. This is in contrast to node taints, where a taint having an effect of `NoExecute` will force evictions of running pods.
@@ -1655,7 +1655,7 @@ Kinds/Pod/Node Placement/Node Affinity_TOPIC
 
 Pod affinity is a set of rules defined on a pod that repels / attracts it to the vicinity of other pods tagged with certain labels. Vicinity is determined via a topology key, which is a label placed on nodes to define where they live. For example, nodes within the same ...
 
- * rack can have a "rack" label (e.g. nodes on rack 15 have label `rack=15`, nodes on rack 16 have label `rack=16`, ...)..
+ * rack can have a "rack" label (e.g. nodes on rack 15 have label `rack=15`, nodes on rack 16 have label `rack=16`, ...).
  * data center can have a "dc" label (e.g. nodes in data center 1 have label `dc=1`, nodes in data center 2 have label `dc=2`, ...).
  * geographic region can have a "geo" label (e.g. nodes in Texas have label `geo=Texas`, nodes in Ohio have label `geo=Ohio`, ...).
 
@@ -1763,7 +1763,7 @@ Security/Pod Security Admission_TOPIC (Everything discussed here may be disabled
 Kinds/Pod/Container Isolation/Node Access_TOPIC
 ```
 
-A pod and it's containers can have security-related features configured via a security context.
+A pod and its containers can have security-related features configured via a security context.
 
 ```yaml
 apiVersion: v1
@@ -1915,7 +1915,7 @@ Kinds/Pod/Service Discovery_TOPIC
 Kinds/Pod/Configuration_TOPIC
 ```
 
-Containers within a pod can access the Kubernetes API server via a service called `kubernetes`, typically found on the default namespace. Communicating with this service requires a certificate check (to verify server isn't a man-in-the-middle box) as well as an access token (to authentication with the service). By default, containers have a secret object mounted as a volume at `/var/run/secrets/kubernetes.io/serviceaccount` that contains both these pieces of data as files:
+Containers within a pod can access the Kubernetes API server via a service called `kubernetes`, typically found on the default namespace. Communicating with this service requires a certificate check (to verify the server isn't a man-in-the-middle box) as well as an access token (to authentication with the service). By default, containers have a secret object mounted as a volume at `/var/run/secrets/kubernetes.io/serviceaccount` that contains both these pieces of data as files:
 
  * `ca.crt` - certificate used for verifying the server's identity.
  * `token` - bearer token used for authenticating with the server.
@@ -1924,7 +1924,7 @@ Containers within a pod can access the Kubernetes API server via a service calle
 In most cases, the credentials provided likely won't provide unfettered access to the Kubernetes API.
 
 ```{note}
-See [here](https://stackoverflow.com/a/25843058) for an explanation of bearer tokens. You typically just need to include a HTTP header with the token in it.
+See [here](https://stackoverflow.com/a/25843058) for an explanation of bearer tokens. You typically just need to include an HTTP header with the token in it.
 
 Third-party libraries that interface with Kubernetes are available for various languages (e.g. Python, Java, etc..), meaning you don't have to do direct HTTP requests and do things like fiddle with headers.
 ```
@@ -1968,7 +1968,7 @@ The key-value pairs of a configuration map typically get exposed to a container 
 Kinds/Configuration Map_TOPIC
 ```
 
-A secret object is a set of key-value pairs, similar to a config map, but oriented towards security rather than just configuration (e.g. for storing things like access tokens, passwords, certificates). As opposed to a config map, Kubernetes takes extra precautions to ensure that a secret object is stored and used in a secure manner.
+A secret object is a set of key-value pairs, similar to a config map, but oriented towards security rather than just configuration (e.g. for storing things like access tokens, passwords, certificates). As opposed to a config map, Kubernetes takes extra precautions to ensure that a secret object is stored and used securely.
 
 ```yaml
 apiVersion: v1
@@ -2014,7 +2014,7 @@ Nodes are the machines that pods run on. A Kubernetes environment often contains
 
 Kubernetes typically attempts to schedule multiple instances of the same pod on different nodes, such that a downed node won't take out all instances of the service that pod runs. In the example above, pod instances of the same type are spread out across the 3 nodes.
 
-Kubernetes has a leader-follower architecture, meaning that of the nodes a small subset is chosen to lead / manage the others. The leaders are referred to as master nodes while the followers are referred to as worker nodes.
+Kubernetes has a leader-follower architecture, meaning that of the nodes, a small subset is chosen to lead / manage the others. The leaders are referred to as master nodes while the followers are referred to as worker nodes.
 
 ```{svgbob}
 .---------.      .---------.
@@ -2082,7 +2082,7 @@ Volumes in Kubernetes are broken down into "persistent volumes" and "persistent 
 * persistent volume is the volume itself.
 * persistent volume claim is the assignment of a volume.
 
-The idea is that a persistent volume itself is just a floating block of disk space. Only when its claimed does it have an assignment. Pods can then latch on to those assignments.
+The idea is that a persistent volume itself is just a floating block of disk space. Only when it's claimed does it have an assignment. Pods can then latch on to those assignments.
 
 ```{svgbob}
  .------.      .------.     .------.     .------. 
@@ -2109,9 +2109,9 @@ Persistent volumes themselves are cluster-level kinds while persistent volume cl
 ```
 
 ```{note}
-Part of the reasoning for doing it like this is decoupling: volumes are independent from pods and a volume can be have shared access across pods.
+Part of the reasoning for doing it like this is decoupling: volumes are independent from pods and a volume can be shared access across pods.
 
-Another reasons is that a developer should only be responsible for claiming a volume while the cluster administrator should be responsible for setting up those volumes and dealing with backend details like the specifics of the volume type and how large each volume is. As a developer, you only have to make a "claim" while the administrator is responsible for ensuring those resources exist.
+Another reason is that a developer should only be responsible for claiming a volume while the cluster administrator should be responsible for setting up those volumes and dealing with backend details like the specifics of the volume type and how large each volume is. As a developer, you only have to make a "claim" while the administrator is responsible for ensuring those resources exist.
 ```
 
 Example persistent volume manifest:
@@ -2158,7 +2158,7 @@ There are two types of volume provisioning available:
 * static provisioning - a claim is assigned a pre-created persistent volume.
 * dynamic provisioning - a claim triggers a new persistent volume to get created and is assigned to it.
 
-Dynamic provisioning only requires that you make a persistent volume claim with a specific storage class name. The administrator is responsible for ensuring a provisioner exists for that storage class and it automatically creates a volume of that type when a claim comes in. Each storage class can have different characteristics such as volume type (e.g. HDD vs SSD), volume read/write speeds, backup policies, etc.
+Dynamic provisioning only requires that you make a persistent volume claim with a specific storage class name. The administrator is responsible for ensuring a provisioner exists for that storage class and that provisioner automatically creates a volume of that type when a claim comes in. Each storage class can have different characteristics such as volume type (e.g. HDD vs SSD), volume read/write speeds, backup policies, etc.
 
 ```yaml
 apiVersion: storage.k8s.io/v1
@@ -2275,7 +2275,7 @@ spec:
 If the data on disk is critical to operations, the option to choose will likely be `Retain`.
 
 ```{note}
-For retain specifically, once the existing persistent volume claim is released, the persistent volume itself goes into "Released" status. If it were available reclamation, it would go into "Available" status. The book mentions that there is no way to "recycle" a persistent volume that's in "Released" status without destroying and recreating it.
+For retain specifically, once the existing persistent volume claim is released, the persistent volume itself goes into "Released" status. If it were available for reclamation, it would go into "Available" status. The book mentions that there is no way to "recycle" a persistent volume that's in "Released" status without destroying and recreating it.
 
 According to the k8s docs, this is the way it is so that users have a chance to manually pull out data considered precious before it gets destroyed.
 ```
@@ -4081,15 +4081,97 @@ The HPA will at-most double the number of replicas on each iteration. Each scali
  * up will only occur if no previous scaling has occurred in the past 3 mins.
  * down will only occur if no previous scaling has occurred in the past 5 mins.
 
-The example above tracked a single metric (CPU utilization), but multiple metrics can be tracked by a single HPA. Metrics can be one of three types:
+Common gotchas with HPAs:
+
+ * *Scale to zero*: Setting the number of minimum replicas to zero isn't supported. See [here](https://github.com/kubernetes/kubernetes/issues/69687).
+
+ * *Scaling memory*: It's easy to autoscale based on CPU, but be careful with autoscaling based on memory. If the number of replicas scale up, the existing replicas need to somehow "release" memory, which can't really be done without killing the pods and starting them back up again.
+
+ * *Scaling on non-linear scaling metrics*: Be careful with scaling based on metrics that don't linearly scale. For example, if you double the number of pods, the value of that metric should cut in half. This may end up becoming an issue when scaling based off poorly designed custom user-defined metrics.
+
+```{note}
+In addition to horizontal pod autoscaler, there's a vertical pod autoscaler (VPA). A VPA will scale a single pod based on metrics and its resource requests / resource limits.
+
+The VPA kind doesn't come built-in with Kubernetes. It's provided as an add-on package found [here](https://github.com/kubernetes/autoscaler).
+```
+
+### Scaling Behavior
+
+`{bm} /(Kinds\/Horizontal Pod Autoscaler\/Scaling Behavior)_TOPIC/i`
+
+How an HPA scales up / down can be controlled through policies. It's common to control scaling behavior to reduce problems such as trashing of replicas (constantly introducing and evicting replicas).
+
+```yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: my-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: my-ss
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+  # Scaling behavior is defined through policies. Both scaling up and scaling down have
+  # their own list of policies to select from. When a list contains more than one policy,
+  # the one selected is defined by "spec.selectPolicy" (next field after this one).
+  #
+  # In addition to policies, scaling up and scaling down both have their own "stabilization
+  # window" which is used to prevent thrasing of replicas (constantly introducing / evicting
+  # replicas). The window tracks the highest replica count in the past n seconds and won't
+  # let policies go through with setting it to a smaller value (e.g. use the highest
+  # computed replica count over the past 5 mins).
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+        - type: Pods # Allow at most 4 pod replicas to be added in a span of 1 min
+          value: 4
+          periodSeconds: 60 
+        - type: Percent # Allow at most a 10% increase of pod replicas in a span of 1 min
+          value: 10
+          periodSeconds: 60
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+        - type: Pods  # Allow at most 3 pod replicas to be removed in a span of 2 mins
+          value: 3
+          periodSeconds: 120
+        - type: Percent  # Allow at most a 10% decrease of pod replicas in a span of 5 mins
+          value: 10
+          periodSeconds: 300
+  # When many policies are present for a scale up / down, the policy chosen can be either
+  # the one causing the ...
+  #
+  #  * most change (e.g. most pods added), set by using "Max" as the value.
+  #  * least change (e.g. least pods removed), set by using "Min" as the value.
+  selectPolicy: Max
+```
+
+```{note}
+Default scaling behavior is defined [here](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#default-behavior).
+```
+
+### Metric Types
+
+`{bm} /(Kinds\/Horizontal Pod Autoscaler\/Metric Types)_TOPIC/i`
+
+Metrics can be one of the following types types:
 
  * `Resource` metrics cover CPU and memory metrics of the replicas.
- * `Pods` metrics cover other metrics of the replicas (e.g. custom user-defined metrics).
+ * `Pods` metrics cover other metrics of the replicas.
  * `Object` are metrics related to some other object in the same namespace.
+ * `External` are metrics related to something other than Kubernetes.
 
-```{seealso}
-Extensions/User-defined Metrics_TOPIC (Collecting user-defined metrics for an HPA to scale on)
-```
+`Resource` is set directly by Kubernetes while `Pods`, `Object`, and `External` are for custom / user-defined metrics.
 
 If multiple metrics being tracked by an HPA, as in the example below, that HPA calculates the replica counts for each metric and then chooses the one with the highest.
 
@@ -4135,18 +4217,14 @@ spec:
           averageValue: 2000
 ```
 
-Common gotchas with HPAs:
-
- * *Scale to zero*: Setting the number of minimum replicas to zero isn't supported. See [here](https://github.com/kubernetes/kubernetes/issues/69687).
-
- * *Scaling memory*: It's easy to autoscale based on CPU, but be careful with autoscaling based on memory. If the number of replicas scale up, the existing replicas need to somehow "release" memory, which can't really be done without killing the pods and starting them back up again.
-
- * *Scaling on non-linear scaling metrics*: Be careful with scaling based on metrics that don't linearly scale. For example, if you double the number of pods, the value of that metric should cut in half. This may end up becoming an issue when scaling based off poorly designed custom user-defined metrics.
-
 ```{note}
-In addition to horizontal pod autoscaler, there's a vertical pod autoscaler (VPA). A VPA will scale a single pod based on metrics and its resource requests / resource limits.
+I've spent hours trying to figure out how replicas can send custom metrics that an HPA can scale on. There is barely any documentation on this and zero examples online. The closest thing I could find to a source is [here](https://medium.com/swlh/building-your-own-custom-metrics-api-for-kubernetes-horizontal-pod-autoscaler-277473dea2c1).
 
-The VPA kind doesn't come built-in with Kubernetes. It's provided as an add-on package found [here](https://github.com/kubernetes/autoscaler).
+The simplest solution here seems to be to use a third-party software package called Prometheus.
+```
+
+```{seealso}
+Extensions/Prometheus_TOPIC (Scaling replicas based on user-defined metrics)
 ```
 
 ## Cluster Autoscaler
@@ -4776,11 +4854,16 @@ Recall that it's also possible to disable auto-mounting on individual pods. Auto
 
 `{bm} /(Extensions)_TOPIC/i`
 
+```{prereq}
+Kinds_TOPIC
+Security_TOPIC
+```
+
 Kubernetes can be automated / extended through user supplied code and third-party software packages. The subsections below detail various automation related topics.
 
-## User-defined Kinds
+## Custom Kinds
 
-`{bm} /(Extensions\/User-defined Kinds)_TOPIC/i`
+`{bm} /(Extensions\/Custom Kinds)_TOPIC/i`
 
 ```{prereq}
 Kinds/Pod/API Access_TOPIC
@@ -4836,6 +4919,16 @@ spec:
                 model: {type: string}
                 year: {type: integer}
                 doorCount: {type: integer}
+----
+# An example object created using the definition above
+apiVersion: cars.my-corp.com/v1
+kind: Car
+metadata:
+  name: my-car
+spec:
+  model: Jetta
+  year: 2005
+  doorCount: 4
 ```
 
 To process objects of a user-defined kind, a special pod needs to be written with access to the Kubernetes API. This pod, called a controller, needs to use the Kubernetes API to watch for object events and process those events in whatever way is appropriate. To provide redundancy, it's common for multiple instances of such a pod to be running at once (e.g. deployment), possibly coordinating with each other (e.g. shared database).
@@ -4907,23 +5000,32 @@ In addition to doing it manually like this, there's also a handy framework to ta
 There's also another much more complicated mechanism of adding your own kind called: API server aggregation. In this method, you create your own API server that handles requests, storage, and management of your kind. The Kubernetes API sever then proxies to your API server via an aggregation layer.
 ```
 
-## User-defined Metrics
-
-`{bm} /(Extensions\/User-defined Metrics)_TOPIC/i`
+## Helm
 
 ```{prereq}
-Kinds/Horizontal Pod Autoscaler_TOPIC
-Kinds/Service Account_TOPIC
-Security/API Access Control_TOPIC
+Kinds_TOPIC
+Security_TOPIC
 ```
-
-TODO: fill me in
-
-## Helm
 
 `{bm} /(Extensions\/Helm)_TOPIC/i`
 
-TODO: fill me in
+Helm is a package manager for Kubernetes. It installs and uninstalls software quickly, taking care of much of the configuration details. This could be software that's internal to Kubernetes (e.g. helps manage or extend Kubernetes in some way) or software that runs on top of Kubernetes (e.g. install a cluster of Redis pods for your application to use).
+
+## Prometheus
+
+`{bm} /(Extensions\/Prometheus)_TOPIC/i`
+
+```{prereq}
+Kinds/Horizontal Pod Autoscaler_TOPIC
+```
+
+Prometheus is a monitoring system that can integrate with Kubernetes to support custom metrics. These custom metrics, which Prometheus grabs by scraping endpoints, provide better visibility into the system and can be used to scale replicas via an HPA / VPA.
+
+Any HPA can scale by using an object's values as metrics. Imagine a user-defined kind (CRD) whose objects store a specific value (e.g. request rate).
+
+TODO: discuss installing through helm
+
+TODO: discuss exposing endpoints to scrape metrics, and scale on those metrics
 
 # Guides
 
@@ -4985,7 +5087,7 @@ There are several aspects to hardening the security of a pod.
    ```{seealso}
    Kinds/Pod/Container Isolation/Security Context_TOPIC (Pod isolation configurations)
    Kinds/Pod/Container Isolation/Node Access_TOPIC (Pod isolation configurations)
-   Security/Pod Security Admission_TOPIC (Global pod isolation configurations)
+   Security/Pod Security Admission_TOPIC (Pod isolation restrictions)
    ```
 
  * **Harden network isolation**
@@ -5010,8 +5112,8 @@ There are several aspects to hardening the security of a pod.
 
    ```{seealso}
    Kinds/Pod/API Access_TOPIC (Pod credential mounting)
-   Kinds/Security/API Access Control/Role-based Access Control_TOPIC (Restricting API access via service accounts)
-   Kinds/Security/API Access Control/Disable Credentials_TOPIC (Preventing API credentials from being mounted to pod)
+   Security/API Access Control/Role-based Access Control_TOPIC (Restricting API access via service accounts)
+   Security/API Access Control/Disable Credentials_TOPIC (Preventing API credentials from being mounted to pod)
    ```
 
  * **Harden volume access**
@@ -5103,7 +5205,7 @@ A pod's lifecycle can make use of several features to ensure that it functions w
 Kinds/Pod/Node Placement_TOPIC
 Kinds/Horizontal Pod Autoscaler_TOPIC
 Kinds/Cluster Autoscaler_TOPIC
-Extensions/User-defined Metrics_TOPIC
+Extensions/Prometheus_TOPIC
 ```
 
 There are several aspects to ensure that pods perform well and pod replicas scale well. Before applying performance features, a bare-bones pod should be placed on a staging environment and load tested to determine its performance characteristics.
@@ -5453,7 +5555,9 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} custom resource definition` `{bm} /\b(CRD)s?\b//false/true` - A kind that defines another user-defined kind.
 
- * `{bm} sidecar` - A container within a pod that performs helper tasks for the other more important containers in that pod (e.g. collecting application logs and sending them to a database).
+ * `{bm} sidecar/(sidecar container|sidecar)/i` - A container within a pod that performs helper tasks for the other more important containers in that pod (e.g. collecting application logs and sending them to a database).
+
+ * `{bm} custom metrics adapter/(custom metrics? adapter)/i` - A pod (or pod replicas) that accesses some other pod's metrics via a shared resource (e.g. shared volume) and places it into Kubernetes via CRDs for the purpose of scaling replicas via an HPA.
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 

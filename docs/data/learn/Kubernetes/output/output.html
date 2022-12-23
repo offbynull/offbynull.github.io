@@ -117,6 +117,10 @@
 <li><a href="#H_Daemon%20Set">Daemon Set</a></li>
 <li><a href="#H_Service%20Account">Service Account</a></li>
 <li><a href="#H_Horizontal%20Pod%20Autoscaler">Horizontal Pod Autoscaler</a></li>
+<ul>
+<li><a href="#H_Scaling%20Behavior">Scaling Behavior</a></li>
+<li><a href="#H_Metric%20Types">Metric Types</a></li>
+</ul>
 <li><a href="#H_Cluster%20Autoscaler">Cluster Autoscaler</a></li>
 <li><a href="#H_Pod%20Disruption%20Budget">Pod Disruption Budget</a></li>
 </ul>
@@ -132,9 +136,9 @@
 </ul>
 <li><a href="#H_Extensions">Extensions</a></li>
 <ul>
-<li><a href="#H_User-defined%20Kinds">User-defined Kinds</a></li>
-<li><a href="#H_User-defined%20Metrics">User-defined Metrics</a></li>
+<li><a href="#H_Custom%20Kinds">Custom Kinds</a></li>
 <li><a href="#H_Helm">Helm</a></li>
+<li><a href="#H_Prometheus">Prometheus</a></li>
 </ul>
 <li><a href="#H_Guides">Guides</a></li>
 <ul>
@@ -174,7 +178,7 @@
 <p>In the <a href="#BM_(context)%2Fi">context</a> of <a href="#BM_(container)%2Fi">container</a>s, an ...</p>
 <ul>
 <li>
-<p><a href="#BM_(image)%2Fi">image</a> is an application (or set of applications) packaged with all of its dependencies as an immutable and isolated filesystem. The filesystem typically contains all dependencies required for the application(s) run sealed at their correct version:</p>
+<p><a href="#BM_(image)%2Fi">image</a> is an application (or set of applications) packaged with all of its dependencies as an immutable and isolated filesystem. The filesystem typically contains all dependencies required for the application(s) to run sealed at their correct version:</p>
 <ul>
 <li>libraries (e.g. correct version of libssh),</li>
 <li>applications (e.g. correct version bash and Python),</li>
@@ -216,7 +220,7 @@
 </ul>
 <p>Of these <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s, the two main ones are <a href="#BM_(node)%2Fi">node</a>s and <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s.</p>
 <p><img src="svgbob_9639c1c0bd51761a766d2364fac5a4771ecb4cd7.svg" alt="Kroki diagram output"></p>
-<p><a href="#BM_(node)%2Fi">Node</a>s, <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s, and other important <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s are discussed further on this document.</p>
+<p><a href="#BM_(node)%2Fi">Node</a>s, <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s, and other important <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s are discussed further on in this document.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
@@ -280,7 +284,7 @@
 </tr>
 </tbody>
 </table>
-<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> uses <a href="#BM_(label)%2Fi">label</a>s to orchestrate. <a href="#BM_(label)%2Fi">Label</a>s allow <a href="#BM_(object)%2Fi">object</a>s to have loosely-coupled linkages to each other as opposed to tightly-coupled parent-child / hierarchy relationships. For example, a load balancer decides which <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s it routes requests to by searching for <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s using <a href="#BM_(label%20selector)%2Fi">label selector</a>.</p>
+<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> uses <a href="#BM_(label)%2Fi">label</a>s to orchestrate. <a href="#BM_(label)%2Fi">Label</a>s allow <a href="#BM_(object)%2Fi">object</a>s to have loosely coupled linkages to each other as opposed to tightly coupled parent-child / hierarchy relationships. For example, a load balancer decides which <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s it routes requests to by searching for <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s using <a href="#BM_(label%20selector)%2Fi">label selector</a>.</p>
 <p><img src="svgbob_d1e778081e8cdf9a5a337a08f8f517ac030d2200.svg" alt="Kroki diagram output"></p>
 <p>If there are a large number of keys / <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s, either because the organization set them directly or because they're being set by external tools, the chance of a collision increases. To combat this, keys for <a href="#BM_(label)%2Fi">label</a>s and <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s can optionally include a prefix (separated by a slash) that maps to a DNS subdomain to help disambiguate it. For example, <code>company.com/my_key</code> rather than just having <code>my_key</code>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -328,7 +332,7 @@ kubectl delete -f obj.yaml
 <li><a href="#BM_(Introduction%5C%2FLabels)_TOPIC%2Fi">Introduction/Labels</a></li>
 </ul>
 </div>
-<p>The following sub-sections gives a overview of the most-used <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s and example <a href="#BM_(manifest)%2Fi">manifest</a>s for those <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s. All <a href="#BM_(manifest)%2Fi">manifest</a>s, regardless of the <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>, require the following fields ...</p>
+<p>The following sub-sections give an overview of the most-used <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s and example <a href="#BM_(manifest)%2Fi">manifest</a>s for those <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s. All <a href="#BM_(manifest)%2Fi">manifest</a>s, regardless of the <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>, require the following fields ...</p>
 <ul>
 <li><code>apiVersion</code>: API version.</li>
 <li><code>kind</code>: Class of <a href="#BM_(object)%2Fi">object</a> (<a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>).</li>
@@ -347,7 +351,7 @@ kubectl delete -f obj.yaml
 <p>In addition, the <code>metadata.labels</code> and <code>metadata.annotations</code> contain the <a href="#BM_(object)%2Fi">object</a>'s <a href="#BM_(label)%2Fi">label</a>s and <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s (respective).</p>
 <a name="H_Pod"></a><h2>Pod</h2>
 <p><a name="BM_(Kinds%5C%2FPod)_TOPIC%2Fi"></a><strong></strong></p>
-<p><a href="#BM_(container)%2Fi">Container</a>s are deployed in <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> via <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s. A <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> is is a set of <a href="#BM_(container)%2Fi">container</a>s grouped together, often <a href="#BM_(container)%2Fi">container</a>s that are tightly coupled and / or are required to work in close proximity of each other (e.g. on the same host).</p>
+<p><a href="#BM_(container)%2Fi">Container</a>s are deployed in <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> via <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s. A <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> is a set of <a href="#BM_(container)%2Fi">container</a>s grouped together, often <a href="#BM_(container)%2Fi">container</a>s that are tightly coupled and / or are required to work in close proximity of each other (e.g. on the same host).</p>
 <p><img src="svgbob_e74b52a9043c79551911fcf4f001af764adce0b0.svg" alt="Kroki diagram output"></p>
 <p>By default, <a href="#BM_(container)%2Fi">container</a>s within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> are isolated from each other  (e.g. isolated process IDs) except for sharing the same ...</p>
 <ul>
@@ -434,7 +438,7 @@ kubectl delete -f obj.yaml
 <p>Each <a href="#BM_(container)%2Fi">container</a> in a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> has to reference an <a href="#BM_(image)%2Fi">image</a> to use. How <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> loads a <a href="#BM_(container)%2Fi">container</a>'s <a href="#BM_(image)%2Fi">image</a> is dependent on that <a href="#BM_(container)%2Fi">container</a>'s <a href="#BM_(image)%2Fi">image</a> pull policy.</p>
 <pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
-<span class="hljs-attr">metadata:</span>
+<span class="hljs-string">metadata:F</span>
   <span class="hljs-attr">name:</span> <span class="hljs-string">my-pod</span>
 <span class="hljs-attr">spec:</span>
   <span class="hljs-attr">containers:</span>
@@ -444,7 +448,7 @@ kubectl delete -f obj.yaml
 </code></pre>
 <p>A value of ...</p>
 <ul>
-<li><code>IfNotPresent</code> only downloads the <a href="#BM_(image)%2Fi">image</a> if its not already locally present on the <a href="#BM_(node)%2Fi">node</a>.</li>
+<li><code>IfNotPresent</code> only downloads the <a href="#BM_(image)%2Fi">image</a> if it's not already locally present on the <a href="#BM_(node)%2Fi">node</a>.</li>
 <li><code>Always</code> always downloads the <a href="#BM_(image)%2Fi">image</a>.</li>
 <li><code>Never</code> never downloads the <a href="#BM_(image)%2Fi">image</a> (will fail if <a href="#BM_(image)%2Fi">image</a> does not exist locally on the <a href="#BM_(node)%2Fi">node</a>).</li>
 </ul>
@@ -561,7 +565,7 @@ kubectl delete -f obj.yaml
 <p>A <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can have many <a href="#BM_(container)%2Fi">container</a>s within it, and since all <a href="#BM_(container)%2Fi">container</a>s within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> share the same IP, the ports exposed by those <a href="#BM_(container)%2Fi">container</a>s must be unique. For example, only one <a href="#BM_(container)%2Fi">container</a> within the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> expose port 8080.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>By default, network access is allowed to all <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s within the cluster. You can change this using a special <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> called <code>NetworkPolicy</code> (as long as your <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> environment supports it -- may or may not depending on the <a href="#BM_(container%20network%20interface%7Ccontainer%20networking%20interface%7Cnetwork%20plugin)%2Fi">container networking interface</a> used). <code>NetworkPolicy</code> lets you limit network access such that only <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s that should talk togetehr can talk together (a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can't send a request to another random <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> in the system). This is done via <a href="#BM_(label%20selector)%2Fi">label selector</a>s.</p>
+<p>By default, network access is allowed to all <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s within the cluster. You can change this using a special <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> called <code>NetworkPolicy</code> (as long as your <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> environment supports it -- may or may not depending on the <a href="#BM_(container%20network%20interface%7Ccontainer%20networking%20interface%7Cnetwork%20plugin)%2Fi">container networking interface</a> used). <code>NetworkPolicy</code> lets you limit network access such that only <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s that should talk together can talk together (a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can't send a request to another random <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> in the system). This is done via <a href="#BM_(label%20selector)%2Fi">label selector</a>s.</p>
 <p>If you're aware of <a href="#BM_(endpoints)%2Fi">endpoints</a>, <a href="#BM_(service)%2Fi">service</a>, and <a href="#BM_(ingress)%2Fi">ingress</a> <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s, I'm not sure how this <a href="#BM_(network%20policy%7Cnetwork%20policies)%2Fi">network policy</a> stuff plays with those <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s.</p>
 </div>
 <a name="H_Command-line%20Arguments"></a><h3>Command-line Arguments</h3>
@@ -664,7 +668,7 @@ kubectl delete -f obj.yaml
               <span class="hljs-attr">name:</span> <span class="hljs-string">my-config</span>
               <span class="hljs-attr">key:</span> <span class="hljs-string">CONFIG_MAP_KEY2</span>
 </code></pre>
-<p>In certain cases, you may want to map all entries within a <a href="#BM_(config%20map%7Cconfiguration%20map)%2Fi">config map</a> directly as a set of environment variables. This is useful when many entries of a <a href="#BM_(config%20map%7Cconfiguration%20map)%2Fi">config map</a> are required for configuration, so many that becomes tedious and error-prone to map them all to environment variables by hand.</p>
+<p>In certain cases, you may want to map all entries within a <a href="#BM_(config%20map%7Cconfiguration%20map)%2Fi">config map</a> directly as a set of environment variables. This is useful when many entries of a <a href="#BM_(config%20map%7Cconfiguration%20map)%2Fi">config map</a> are required for configuration, so many that it becomes tedious and error-prone to map them all to environment variables manually.</p>
 <pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
 <span class="hljs-attr">metadata:</span>
@@ -857,7 +861,7 @@ kubectl delete -f obj.yaml
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>For individual files/directories mounted from a volume, one workaround to receiving updates is to use symlinks. Essentially, mount the whole volume to path that doesn't conflict with an existing path in the <a href="#BM_(container)%2Fi">container</a>. Then, as a part of the <a href="#BM_(container)%2Fi">container</a>'s start-up process, add symlinks to the whole volume mount wherever needed.</p>
+<p>For individual files/directories mounted from a volume, one workaround to receiving updates is to use symlinks. Essentially, mount the whole volume to a path that doesn't conflict with an existing path in the <a href="#BM_(container)%2Fi">container</a>. Then, as a part of the <a href="#BM_(container)%2Fi">container</a>'s start-up process, add symlinks to the whole volume mount wherever needed.</p>
 <p>For example, if the application requires a configuration file at /etc/my_config.conf, you can mount all configurations to /config and then symlink /etc/my_config.conf to /config/my_config.conf. That way, you can still receive updates.</p>
 </div>
 <p>The typical workaround to <a href="#BM_(config%20map%7Cconfiguration%20map)%2Fi">config map</a> dynamic updates is to use <a href="#BM_(deployment)%2Fi">deployment</a>s. In <a href="#BM_(deployment)%2Fi">deployment</a>s, <a href="#BM_(secret)%2Fi">secret</a>s / <a href="#BM_(config%20map%7Cconfiguration%20map)%2Fi">config map</a>s and <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s are bound together as a single unit, meaning that all <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s restart automatically on any change.</p>
@@ -989,7 +993,7 @@ kubectl delete -f obj.yaml
         <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">10</span>
         <span class="hljs-attr">failureThreshold:</span> <span class="hljs-number">3</span>
 </code></pre>
-<p>In the example above, each of the probes check a HTTP server within the <a href="#BM_(container)%2Fi">container</a> at port 8080 but at different paths. The field ...</p>
+<p>In the example above, each of the probes check an HTTP server within the <a href="#BM_(container)%2Fi">container</a> at port 8080 but at different paths. The field ...</p>
 <ul>
 <li><code>initialDelaySeconds</code> is the number of seconds to wait before performing the first probe.</li>
 <li><code>timeoutSeconds</code> is the number of seconds to wait before timing out.</li>
@@ -999,8 +1003,8 @@ kubectl delete -f obj.yaml
 </ul>
 <p>There are types of probes other than <code>httpGet</code>. A probe of type ...</p>
 <ul>
-<li><code>httpGet</code> will perform an HTTP GET operation to a server on the <a href="#BM_(container)%2Fi">container</a> and fail it its non-responsive.</li>
-<li><code>tcpSocket</code> will attempt to connect a TCP socket to the <a href="#BM_(container)%2Fi">container</a> and  fail if the <a href="#BM_(container)%2Fi">container</a> doesn't accept.</li>
+<li><code>httpGet</code> will perform an HTTP GET operation to a server on the <a href="#BM_(container)%2Fi">container</a> and fail it if it's non-responsive.</li>
+<li><code>tcpSocket</code> will attempt to connect a TCP socket to the <a href="#BM_(container)%2Fi">container</a> and fail if the <a href="#BM_(container)%2Fi">container</a> doesn't accept.</li>
 <li><code>exec</code> will run a command on the <a href="#BM_(container)%2Fi">container</a> and fail if it gets a non-zero exit code.</li>
 </ul>
 <pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
@@ -1114,10 +1118,10 @@ kubectl delete -f obj.yaml
             <span class="hljs-attr">path:</span> <span class="hljs-string">/shutdown</span>
             <span class="hljs-attr">port:</span> <span class="hljs-number">8080</span>
 </code></pre>
-<p>A post-start hook is useful when some form on initialization needs to occur but it's impossible to do that initialization within the <a href="#BM_(container)%2Fi">container</a> (e.g. initialization doesn't happen on <a href="#BM_(container)%2Fi">container</a> start and you don't have access to re-create / re-deploy the <a href="#BM_(container)%2Fi">container</a> <a href="#BM_(image)%2Fi">image</a> to add support for it). Likewise, a pre-stop hook is useful when some form of graceful shutdown needs to occur but it's impossible to do that shutdown within the <a href="#BM_(container)%2Fi">container</a> (e.g. shutdown procedures don't happen on <code>SIGTERM</code> and you don't have access to re-create / re-deploy the <a href="#BM_(container)%2Fi">container</a> <a href="#BM_(image)%2Fi">image</a> to add support for it).</p>
+<p>A post-start hook is useful when some form of initialization needs to occur but it's impossible to do that initialization within the <a href="#BM_(container)%2Fi">container</a> (e.g. initialization doesn't happen on <a href="#BM_(container)%2Fi">container</a> start and you don't have access to re-create / re-deploy the <a href="#BM_(container)%2Fi">container</a> <a href="#BM_(image)%2Fi">image</a> to add support for it). Likewise, a pre-stop hook is useful when some form of graceful shutdown needs to occur but it's impossible to do that shutdown within the <a href="#BM_(container)%2Fi">container</a> (e.g. shutdown procedures don't happen on <code>SIGTERM</code> and you don't have access to re-create / re-deploy the <a href="#BM_(container)%2Fi">container</a> <a href="#BM_(image)%2Fi">image</a> to add support for it).</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Recall that a <a href="#BM_(container)%2Fi">container</a> has three possible states: waiting, running, and terminated. The docs says that a <a href="#BM_(container)%2Fi">container</a> executing a post-start hook is still in the waiting state.</p>
+<p>Recall that a <a href="#BM_(container)%2Fi">container</a> has three possible states: waiting, running, and terminated. The docs say that a <a href="#BM_(container)%2Fi">container</a> executing a post-start hook is still in the waiting state.</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -1172,7 +1176,7 @@ kubectl delete -f obj.yaml
 <p>A value of ...</p>
 <ul>
 <li><code>Always</code> always restarts the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> regardless of how it exists (default).</li>
-<li><code>OnFailure</code> only restarts the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> only if it failed execution.</li>
+<li><code>OnFailure</code> only restarts the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> if it failed execution.</li>
 <li><code>Never</code> never restarts the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</li>
 </ul>
 <p><code>Always</code> is typically used when running servers that should always be up (e.g. http server) while the others are typically used for one-off <a href="#BM_(job)%2Fi">job</a>s.</p>
@@ -1218,9 +1222,9 @@ SERVICE_C_SERVICE_PORT_METRICS_1=8080
 </div>
 <p>Using environment variables for <a href="#BM_(service)%2Fi">service</a> discovery has the following pitfalls:</p>
 <ul>
-<li><a href="#BM_(service)%2Fi">Service</a>s outside of the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>'s <a href="#BM_(namespace)%2Fi">namespace</a> aren't provided.</li>
-<li><a href="#BM_(service)%2Fi">Service</a>s added to the <a href="#BM_(namespace)%2Fi">namespace</a> after the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> launches won't be picked up (env vars can only be changed prior to the launch of a <a href="#BM_(container)%2Fi">container</a> process).</li>
-<li><a href="#BM_(service)%2Fi">Service</a>s removed from the name after the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> launches won't be picked up (env vars can only be changed prior to the launch of a <a href="#BM_(container)%2Fi">container</a> process).</li>
+<li><a href="#BM_(service)%2Fi">Service</a>s outside the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>'s <a href="#BM_(namespace)%2Fi">namespace</a> aren't provided.</li>
+<li><a href="#BM_(service)%2Fi">Service</a>s added to the <a href="#BM_(namespace)%2Fi">namespace</a> after the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> launches won't be picked up (env vars can only be changed before the launch of a <a href="#BM_(container)%2Fi">container</a> process).</li>
+<li><a href="#BM_(service)%2Fi">Service</a>s removed from the name after the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> launches won't be picked up (env vars can only be changed before the launch of a <a href="#BM_(container)%2Fi">container</a> process).</li>
 <li><a href="#BM_(service)%2Fi">Service</a> naming conflicts can happen during normalization (e.g. uppercase-ing and converting dashes to underscores can cause conflict: <code>My-name</code> and <code>my_namE</code> both end up as <code>MY_NAME</code>).</li>
 </ul>
 <p>On the plus side, inspecting environment variables within a <a href="#BM_(container)%2Fi">container</a> essentially enumerates all <a href="#BM_(service)%2Fi">service</a>s within the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>'s <a href="#BM_(namespace)%2Fi">namespace</a>. Enumerating <a href="#BM_(service)%2Fi">service</a>s isn't possible when using DNS for <a href="#BM_(service)%2Fi">service</a> discovery, discussed in the next section.</p>
@@ -1280,7 +1284,7 @@ SERVICE_C_SERVICE_PORT_METRICS_1=8080
 <p>All <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> information except for <a href="#BM_(label)%2Fi">label</a>s and <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s can be assigned to environment variables. This is because a running <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can have its <a href="#BM_(label)%2Fi">label</a>s and <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s updated but the environment variables within a running <a href="#BM_(container)%2Fi">container</a> can't be updated once that <a href="#BM_(container)%2Fi">container</a> starts (updated <a href="#BM_(label)%2Fi">label</a>s / <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s won't show up to the <a href="#BM_(container)%2Fi">container</a>).</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>CPU resources can also be dynamically updated without restarting the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> / <a href="#BM_(container)%2Fi">container</a> process. The environment variable for this likely won't update either, but it isn't restricted like <a href="#BM_(label)%2Fi">label</a>s / <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s are. There may be other reasons that <a href="#BM_(label)%2Fi">label</a>s / <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s aren't allowed. Maybe Linux has a cap on how large a environment variable can be, and there's a realistic possibility that <a href="#BM_(label)%2Fi">label</a>s / <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s can exceed that limit?</p>
+<p>CPU resources can also be dynamically updated without restarting the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> / <a href="#BM_(container)%2Fi">container</a> process. The environment variable for this likely won't update either, but it isn't restricted like <a href="#BM_(label)%2Fi">label</a>s / <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s are. There may be other reasons that <a href="#BM_(label)%2Fi">label</a>s / <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s aren't allowed. Maybe Linux has a cap on how large an environment variable can be, and there's a realistic possibility that <a href="#BM_(label)%2Fi">label</a>s / <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s can exceed that limit?</p>
 </div>
 <pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
@@ -1458,7 +1462,7 @@ SERVICE_C_SERVICE_PORT_METRICS_1=8080
 <ul>
 <li><a href="#BM_(node%20selector)%2Fi">node selector</a>s: hard requirements for which <a href="#BM_(node)%2Fi">node</a>s a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can run on.</li>
 <li><a href="#BM_(node%20taint%7Ctaint)%2Fi">node taint</a>s: hard and soft requirements for which <a href="#BM_(node)%2Fi">node</a>s a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> <em>can't</em> run on.</li>
-<li><a href="#BM_(node%20affinity)%2Fi">node affinity</a>: hard and soft requirements for where which <a href="#BM_(node)%2Fi">node</a>s a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> <em>can</em> and <em>can't</em> run on.</li>
+<li><a href="#BM_(node%20affinity)%2Fi">node affinity</a>: hard and soft requirements for which <a href="#BM_(node)%2Fi">node</a>s a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> <em>can</em> and <em>can't</em> run on.</li>
 </ul>
 <p>These mechanisms are documented in further detail in the sub-sections below.</p>
 <a name="H_Node%20Selectors"></a><h4>Node Selectors</h4>
@@ -1609,7 +1613,7 @@ SERVICE_C_SERVICE_PORT_METRICS_1=8080
 <li><a href="#BM_(node%20taint%7Ctaint)%2Fi">node taint</a>s,
 <ul>
 <li>the requirements for <a href="#BM_(node%20affinity)%2Fi">node affinity</a> are attracting / repulsing based on <a href="#BM_(node)%2Fi">node</a> <a href="#BM_(label)%2Fi">label</a>s, not repulsing based on lack of <a href="#BM_(pod%20toleration%7Ctoleration)%2Fi">pod toleration</a>s.</li>
-<li><a href="#BM_(node%20affinity)%2Fi">node affinity</a> can't evict running <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s from a <a href="#BM_(node)%2Fi">node</a> where as <a href="#BM_(node%20taint%7Ctaint)%2Fi">taint</a>s with a <code>NoExecute</code> effect which will cause evictions.</li>
+<li><a href="#BM_(node%20affinity)%2Fi">node affinity</a> can't evict running <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s from a <a href="#BM_(node)%2Fi">node</a> whereas <a href="#BM_(node%20taint%7Ctaint)%2Fi">taint</a>s with a <code>NoExecute</code> effect which will cause evictions.</li>
 </ul>
 </li>
 </ul>
@@ -1628,7 +1632,7 @@ SERVICE_C_SERVICE_PORT_METRICS_1=8080
 </div>
 <p><a href="#BM_(pod%20affinity%7Cpod%20anti-affinity)%2Fi">Pod affinity</a> is a set of rules defined on a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> that repels / attracts it to the vicinity of other <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s tagged with certain <a href="#BM_(label)%2Fi">label</a>s. Vicinity is determined via a <a href="#BM_(topology%20key)%2Fi">topology key</a>, which is a <a href="#BM_(label)%2Fi">label</a> placed on <a href="#BM_(node)%2Fi">node</a>s to define where they live. For example, <a href="#BM_(node)%2Fi">node</a>s within the same ...</p>
 <ul>
-<li>rack can have a "rack" <a href="#BM_(label)%2Fi">label</a> (e.g. <a href="#BM_(node)%2Fi">node</a>s on rack 15 have <a href="#BM_(label)%2Fi">label</a> <code>rack=15</code>, <a href="#BM_(node)%2Fi">node</a>s on rack 16 have <a href="#BM_(label)%2Fi">label</a> <code>rack=16</code>, ...)..</li>
+<li>rack can have a "rack" <a href="#BM_(label)%2Fi">label</a> (e.g. <a href="#BM_(node)%2Fi">node</a>s on rack 15 have <a href="#BM_(label)%2Fi">label</a> <code>rack=15</code>, <a href="#BM_(node)%2Fi">node</a>s on rack 16 have <a href="#BM_(label)%2Fi">label</a> <code>rack=16</code>, ...).</li>
 <li>data center can have a "dc" <a href="#BM_(label)%2Fi">label</a> (e.g. <a href="#BM_(node)%2Fi">node</a>s in data center 1 have <a href="#BM_(label)%2Fi">label</a> <code>dc=1</code>, <a href="#BM_(node)%2Fi">node</a>s in data center 2 have <a href="#BM_(label)%2Fi">label</a> <code>dc=2</code>, ...).</li>
 <li>geographic region can have a "geo" <a href="#BM_(label)%2Fi">label</a> (e.g. <a href="#BM_(node)%2Fi">node</a>s in Texas have <a href="#BM_(label)%2Fi">label</a> <code>geo=Texas</code>, <a href="#BM_(node)%2Fi">node</a>s in Ohio have <a href="#BM_(label)%2Fi">label</a> <code>geo=Ohio</code>, ...).</li>
 </ul>
@@ -1731,7 +1735,7 @@ SERVICE_C_SERVICE_PORT_METRICS_1=8080
 <li><a href="#BM_(Kinds%5C%2FPod%2FContainer%20Isolation%2FNode%20Access)_TOPIC%2F">Kinds/Pod/Container Isolation/Node Access</a></li>
 </ul>
 </div>
-<p>A <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> and it's <a href="#BM_(container)%2Fi">container</a>s can have security-related features configured via a security <a href="#BM_(context)%2Fi">context</a>.</p>
+<p>A <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> and its <a href="#BM_(container)%2Fi">container</a>s can have security-related features configured via a security <a href="#BM_(context)%2Fi">context</a>.</p>
 <pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
 <span class="hljs-attr">metadata:</span>
@@ -1875,7 +1879,7 @@ SERVICE_C_SERVICE_PORT_METRICS_1=8080
 <li><a href="#BM_(Kinds%5C%2FPod%2FConfiguration)_TOPIC%2F">Kinds/Pod/Configuration</a></li>
 </ul>
 </div>
-<p><a href="#BM_(container)%2Fi">Container</a>s within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can access the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API server via a <a href="#BM_(service)%2Fi">service</a> called <code>kubernetes</code>, typically found on the default <a href="#BM_(namespace)%2Fi">namespace</a>. Communicating with this <a href="#BM_(service)%2Fi">service</a> requires a certificate check (to verify server isn't a man-in-the-middle box) as well as an access token (to authentication with the <a href="#BM_(service)%2Fi">service</a>). By default, <a href="#BM_(container)%2Fi">container</a>s have a <a href="#BM_(secret)%2Fi">secret</a> <a href="#BM_(object)%2Fi">object</a> mounted as a volume at <code>/var/run/secrets/kubernetes.io/serviceaccount</code> that contains both these pieces of data as files:</p>
+<p><a href="#BM_(container)%2Fi">Container</a>s within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can access the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API server via a <a href="#BM_(service)%2Fi">service</a> called <code>kubernetes</code>, typically found on the default <a href="#BM_(namespace)%2Fi">namespace</a>. Communicating with this <a href="#BM_(service)%2Fi">service</a> requires a certificate check (to verify the server isn't a man-in-the-middle box) as well as an access token (to authentication with the <a href="#BM_(service)%2Fi">service</a>). By default, <a href="#BM_(container)%2Fi">container</a>s have a <a href="#BM_(secret)%2Fi">secret</a> <a href="#BM_(object)%2Fi">object</a> mounted as a volume at <code>/var/run/secrets/kubernetes.io/serviceaccount</code> that contains both these pieces of data as files:</p>
 <ul>
 <li><code>ca.crt</code> - certificate used for verifying the server's identity.</li>
 <li><code>token</code> - bearer token used for authenticating with the server.</li>
@@ -1884,7 +1888,7 @@ SERVICE_C_SERVICE_PORT_METRICS_1=8080
 <p>In most cases, the credentials provided likely won't provide unfettered access to the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>See <a href="https://stackoverflow.com/a/25843058">here</a> for an explanation of bearer tokens. You typically just need to include a HTTP header with the token in it.</p>
+<p>See <a href="https://stackoverflow.com/a/25843058">here</a> for an explanation of bearer tokens. You typically just need to include an HTTP header with the token in it.</p>
 <p>Third-party libraries that interface with <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> are available for various languages (e.g. Python, Java, etc..), meaning you don't have to do direct HTTP requests and do things like fiddle with headers.</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -1924,7 +1928,7 @@ SERVICE_C_SERVICE_PORT_METRICS_1=8080
 <li><a href="#BM_(Kinds%5C%2FConfiguration%20Map)_TOPIC%2F">Kinds/Configuration Map</a></li>
 </ul>
 </div>
-<p>A <a href="#BM_(secret)%2Fi">secret</a> <a href="#BM_(object)%2Fi">object</a> is a set of key-value pairs, similar to a <a href="#BM_(config%20map%7Cconfiguration%20map)%2Fi">config map</a>, but oriented towards security rather than just configuration (e.g. for storing things like access tokens, passwords, certificates). As opposed to a <a href="#BM_(config%20map%7Cconfiguration%20map)%2Fi">config map</a>, <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> takes extra precautions to ensure that a <a href="#BM_(secret)%2Fi">secret</a> <a href="#BM_(object)%2Fi">object</a> is stored and used in a secure manner.</p>
+<p>A <a href="#BM_(secret)%2Fi">secret</a> <a href="#BM_(object)%2Fi">object</a> is a set of key-value pairs, similar to a <a href="#BM_(config%20map%7Cconfiguration%20map)%2Fi">config map</a>, but oriented towards security rather than just configuration (e.g. for storing things like access tokens, passwords, certificates). As opposed to a <a href="#BM_(config%20map%7Cconfiguration%20map)%2Fi">config map</a>, <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> takes extra precautions to ensure that a <a href="#BM_(secret)%2Fi">secret</a> <a href="#BM_(object)%2Fi">object</a> is stored and used securely.</p>
 <pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Secret</span>
 <span class="hljs-attr">metadata:</span>
@@ -1948,7 +1952,7 @@ SERVICE_C_SERVICE_PORT_METRICS_1=8080
 <p><a href="#BM_(node)%2Fi">Node</a>s are the machines that <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s run on. A <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> environment often contains multiple <a href="#BM_(node)%2Fi">node</a>s, each with a certain amount of resources. <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">Pod</a>s get assigned to <a href="#BM_(node)%2Fi">node</a>s based on their resource requirements. For example, if a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> A requires 2gb of memory and <a href="#BM_(node)%2Fi">node</a> C has 24 gigs available, that <a href="#BM_(node)%2Fi">node</a> may get assigned to run that <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</p>
 <p><img src="svgbob_fc6073ce9dd71ac1b2fa56b7775e45eca6d21eaf.svg" alt="Kroki diagram output"></p>
 <p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> typically attempts to schedule multiple instances of the same <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> on different <a href="#BM_(node)%2Fi">node</a>s, such that a downed <a href="#BM_(node)%2Fi">node</a> won't take out all instances of the <a href="#BM_(service)%2Fi">service</a> that <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> runs. In the example above, <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> instances of the same type are spread out across the 3 <a href="#BM_(node)%2Fi">node</a>s.</p>
-<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> has a leader-follower architecture, meaning that of the <a href="#BM_(node)%2Fi">node</a>s a small subset is chosen to lead / manage the others. The leaders are referred to as <a href="#BM_(master%20node)%2Fi">master node</a>s while the followers are referred to as <a href="#BM_(worker%20node)%2Fi">worker node</a>s.</p>
+<p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> has a leader-follower architecture, meaning that of the <a href="#BM_(node)%2Fi">node</a>s, a small subset is chosen to lead / manage the others. The leaders are referred to as <a href="#BM_(master%20node)%2Fi">master node</a>s while the followers are referred to as <a href="#BM_(worker%20node)%2Fi">worker node</a>s.</p>
 <p><img src="svgbob_90abf3344c1d253481a3a392500782cca41f92fd.svg" alt="Kroki diagram output"></p>
 <p>A <a href="#BM_(master%20node)%2Fi">master node</a> can still run <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s just like the <a href="#BM_(worker%20node)%2Fi">worker node</a>s, but some of its resources will be tied up for the purpose of managing <a href="#BM_(worker%20node)%2Fi">worker node</a>s.</p>
 <a name="H_Taints"></a><h3>Taints</h3>
@@ -1986,7 +1990,7 @@ kubectl taint node my-staging-node-1 environment-type=production:NoExecute- <spa
 <li><a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> is the volume itself.</li>
 <li><a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> is the assignment of a volume.</li>
 </ul>
-<p>The idea is that a <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> itself is just a floating block of disk space. Only when its claimed does it have an assignment. <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">Pod</a>s can then latch on to those assignments.</p>
+<p>The idea is that a <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> itself is just a floating block of disk space. Only when it's claimed does it have an assignment. <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">Pod</a>s can then latch on to those assignments.</p>
 <p><img src="svgbob_245492e803e908f1ed349aac70d29be295b2b5a1.svg" alt="Kroki diagram output"></p>
 <p>In the example above, there are 4 volumes in total but only 3 of those volumes are claimed. podA latches on to claim1 and claim2 while podB latches on to claim3 and claim2 (both <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s can access the volume claimed in claim2).</p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -1995,8 +1999,8 @@ kubectl taint node my-staging-node-1 environment-type=production:NoExecute- <spa
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Part of the reasoning for doing it like this is decoupling: volumes are independent from <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s and a volume can be have shared access across <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s.</p>
-<p>Another reasons is that a developer should only be responsible for claiming a volume while the cluster administrator should be responsible for setting up those volumes and dealing with backend details like the specifics of the volume type and how large each volume is. As a developer, you only have to make a "claim" while the administrator is responsible for ensuring those resources exist.</p>
+<p>Part of the reasoning for doing it like this is decoupling: volumes are independent from <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s and a volume can be shared access across <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s.</p>
+<p>Another reason is that a developer should only be responsible for claiming a volume while the cluster administrator should be responsible for setting up those volumes and dealing with backend details like the specifics of the volume type and how large each volume is. As a developer, you only have to make a "claim" while the administrator is responsible for ensuring those resources exist.</p>
 </div>
 <p>Example <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> <a href="#BM_(manifest)%2Fi">manifest</a>:</p>
 <pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
@@ -2036,7 +2040,7 @@ kubectl taint node my-staging-node-1 environment-type=production:NoExecute- <spa
 <li>static provisioning - a claim is assigned a pre-created <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a>.</li>
 <li>dynamic provisioning - a claim triggers a new <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> to get created and is assigned to it.</li>
 </ul>
-<p>Dynamic provisioning only requires that you make a <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> with a specific storage class name. The administrator is responsible for ensuring a provisioner exists for that storage class and it automatically creates a volume of that type when a claim comes in. Each storage class can have different characteristics such as volume type (e.g. HDD vs SSD), volume read/write speeds, backup policies, etc.</p>
+<p>Dynamic provisioning only requires that you make a <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> with a specific storage class name. The administrator is responsible for ensuring a provisioner exists for that storage class and that provisioner automatically creates a volume of that type when a claim comes in. Each storage class can have different characteristics such as volume type (e.g. HDD vs SSD), volume read/write speeds, backup policies, etc.</p>
 <pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">storage.k8s.io/v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">StorageClass</span>
 <span class="hljs-attr">metadata:</span>
@@ -2131,7 +2135,7 @@ kubectl taint node my-staging-node-1 environment-type=production:NoExecute- <spa
 <p>If the data on disk is critical to operations, the option to choose will likely be <code>Retain</code>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>For retain specifically, once the existing <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> is released, the <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> itself goes into "Released" status. If it were available reclamation, it would go into "Available" status. The book mentions that there is no way to "recycle" a <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> that's in "Released" status without destroying and recreating it.</p>
+<p>For retain specifically, once the existing <a href="#BM_(persistent%20volume%20claim)%2Fi">persistent volume claim</a> is released, the <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> itself goes into "Released" status. If it were available for reclamation, it would go into "Available" status. The book mentions that there is no way to "recycle" a <a href="#BM_(persistent%20volume)%2Fi">persistent volume</a> that's in "Released" status without destroying and recreating it.</p>
 <p>According to the k8s docs, this is the way it is so that users have a chance to manually pull out data considered precious before it gets destroyed.</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -3715,18 +3719,93 @@ kubectl rollout restart sts &lt;name&gt; <span class="hljs-comment"># to restart
 <li>up will only occur if no previous scaling has occurred in the past 3 mins.</li>
 <li>down will only occur if no previous scaling has occurred in the past 5 mins.</li>
 </ul>
-<p>The example above tracked a single metric (CPU <a href="#BM_(utilization)%2Fi">utilization</a>), but multiple metrics can be tracked by a single <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a>. Metrics can be one of three types:</p>
+<p>Common gotchas with <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a>s:</p>
 <ul>
-<li><code>Resource</code> metrics cover CPU and memory metrics of the <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s.</li>
-<li><code>Pods</code> metrics cover other metrics of the <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s (e.g. custom user-defined metrics).</li>
-<li><code>Object</code> are metrics related to some other <a href="#BM_(object)%2Fi">object</a> in the same <a href="#BM_(namespace)%2Fi">namespace</a>.</li>
+<li>
+<p><em>Scale to zero</em>: Setting the number of minimum <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s to zero isn't supported. See <a href="https://github.com/kubernetes/kubernetes/issues/69687">here</a>.</p>
+</li>
+<li>
+<p><em>Scaling memory</em>: It's easy to autoscale based on CPU, but be careful with autoscaling based on memory. If the number of <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s scale up, the existing <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s need to somehow "release" memory, which can't really be done without killing the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s and starting them back up again.</p>
+</li>
+<li>
+<p><em>Scaling on non-linear scaling metrics</em>: Be careful with scaling based on metrics that don't linearly scale. For example, if you double the number of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s, the value of that metric should cut in half. This may end up becoming an issue when scaling based off poorly designed custom user-defined metrics.</p>
+</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>🔍SEE ALSO🔍</strong></p>
-<ul>
-<li><a href="#BM_(Extensions%5C%2FUser-defined%20Metrics)_TOPIC%2Fi">Extensions/User-defined Metrics</a> (Collecting user-defined metrics for an <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a> to scale on)</li>
-</ul>
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>In addition to <a href="#BM_(horizontal%20pod%20autoscaler%7Chorizontal%20pod%20autoscaling)%2Fi">horizontal pod autoscaler</a>, there's a <a href="#BM_(vertical%20pod%20autoscaler%7Cvertical%20pod%20autoscaling)%2Fi">vertical pod autoscaler</a> (<a href="#BM_%5Cb(VPA)s%3F%5Cb%2F">VPA</a>). A <a href="#BM_%5Cb(VPA)s%3F%5Cb%2F">VPA</a> will scale a single <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> based on metrics and its <a href="#BM_(resource%20request)%2Fi">resource request</a>s / <a href="#BM_(resource%20limit)%2Fi">resource limit</a>s.</p>
+<p>The <a href="#BM_%5Cb(VPA)s%3F%5Cb%2F">VPA</a> <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> doesn't come built-in with <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>. It's provided as an add-on package found <a href="https://github.com/kubernetes/autoscaler">here</a>.</p>
 </div>
+<a name="H_Scaling%20Behavior"></a><h3>Scaling Behavior</h3>
+<p><a name="BM_(Kinds%5C%2FHorizontal%20Pod%20Autoscaler%2FScaling%20Behavior)_TOPIC%2Fi"></a><strong></strong></p>
+<p>How an <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a> scales up / down can be controlled through policies. It's common to control scaling behavior to reduce problems such as trashing of <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s (constantly introducing and evicting <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s).</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">autoscaling/v2</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">HorizontalPodAutoscaler</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-hpa</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">scaleTargetRef:</span>
+    <span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+    <span class="hljs-attr">kind:</span> <span class="hljs-string">StatefulSet</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">my-ss</span>
+  <span class="hljs-attr">minReplicas:</span> <span class="hljs-number">2</span>
+  <span class="hljs-attr">maxReplicas:</span> <span class="hljs-number">10</span>
+  <span class="hljs-attr">metrics:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">Resource</span>
+      <span class="hljs-attr">resource:</span>
+        <span class="hljs-attr">name:</span> <span class="hljs-string">cpu</span>
+        <span class="hljs-attr">target:</span>
+          <span class="hljs-attr">type:</span> <span class="hljs-string">Utilization</span>
+          <span class="hljs-attr">averageUtilization:</span> <span class="hljs-number">50</span>
+  <span class="hljs-comment"># Scaling behavior is defined through policies. Both scaling up and scaling down have</span>
+  <span class="hljs-comment"># their own list of policies to select from. When a list contains more than one policy,</span>
+  <span class="hljs-comment"># the one selected is defined by "spec.selectPolicy" (next field after this one).</span>
+  <span class="hljs-comment">#</span>
+  <span class="hljs-comment"># In addition to policies, scaling up and scaling down both have their own "stabilization</span>
+  <span class="hljs-comment"># window" which is used to prevent thrasing of replicas (constantly introducing / evicting</span>
+  <span class="hljs-comment"># replicas). The window tracks the highest replica count in the past n seconds and won't</span>
+  <span class="hljs-comment"># let policies go through with setting it to a smaller value (e.g. use the highest</span>
+  <span class="hljs-comment"># computed replica count over the past 5 mins).</span>
+  <span class="hljs-attr">behavior:</span>
+    <span class="hljs-attr">scaleUp:</span>
+      <span class="hljs-attr">stabilizationWindowSeconds:</span> <span class="hljs-number">0</span>
+      <span class="hljs-attr">policies:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">Pods</span> <span class="hljs-comment"># Allow at most 4 pod replicas to be added in a span of 1 min</span>
+          <span class="hljs-attr">value:</span> <span class="hljs-number">4</span>
+          <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">60</span> 
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">Percent</span> <span class="hljs-comment"># Allow at most a 10% increase of pod replicas in a span of 1 min</span>
+          <span class="hljs-attr">value:</span> <span class="hljs-number">10</span>
+          <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">60</span>
+    <span class="hljs-attr">scaleDown:</span>
+      <span class="hljs-attr">stabilizationWindowSeconds:</span> <span class="hljs-number">300</span>
+      <span class="hljs-attr">policies:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">Pods</span>  <span class="hljs-comment"># Allow at most 3 pod replicas to be removed in a span of 2 mins</span>
+          <span class="hljs-attr">value:</span> <span class="hljs-number">3</span>
+          <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">120</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">Percent</span>  <span class="hljs-comment"># Allow at most a 10% decrease of pod replicas in a span of 5 mins</span>
+          <span class="hljs-attr">value:</span> <span class="hljs-number">10</span>
+          <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">300</span>
+  <span class="hljs-comment"># When many policies are present for a scale up / down, the policy chosen can be either</span>
+  <span class="hljs-comment"># the one causing the ...</span>
+  <span class="hljs-comment">#</span>
+  <span class="hljs-comment">#  * most change (e.g. most pods added), set by using "Max" as the value.</span>
+  <span class="hljs-comment">#  * least change (e.g. least pods removed), set by using "Min" as the value.</span>
+  <span class="hljs-attr">selectPolicy:</span> <span class="hljs-string">Max</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Default scaling behavior is defined <a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#default-behavior">here</a>.</p>
+</div>
+<a name="H_Metric%20Types"></a><h3>Metric Types</h3>
+<p><a name="BM_(Kinds%5C%2FHorizontal%20Pod%20Autoscaler%2FMetric%20Types)_TOPIC%2Fi"></a><strong></strong></p>
+<p>Metrics can be one of the following types types:</p>
+<ul>
+<li><code>Resource</code> metrics cover CPU and memory metrics of the <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s.</li>
+<li><code>Pods</code> metrics cover other metrics of the <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s.</li>
+<li><code>Object</code> are metrics related to some other <a href="#BM_(object)%2Fi">object</a> in the same <a href="#BM_(namespace)%2Fi">namespace</a>.</li>
+<li><code>External</code> are metrics related to something other than <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>.</li>
+</ul>
+<p><code>Resource</code> is set directly by <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> while <code>Pods</code>, <code>Object</code>, and <code>External</code> are for custom / user-defined metrics.</p>
 <p>If multiple metrics being tracked by an <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a>, as in the example below, that <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a> calculates the <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a> counts for each metric and then chooses the one with the highest.</p>
 <pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">autoscaling/v2</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">HorizontalPodAutoscaler</span>
@@ -3768,22 +3847,16 @@ kubectl rollout restart sts &lt;name&gt; <span class="hljs-comment"># to restart
           <span class="hljs-attr">type:</span> <span class="hljs-string">Value</span>
           <span class="hljs-attr">averageValue:</span> <span class="hljs-number">2000</span>
 </code></pre>
-<p>Common gotchas with <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a>s:</p>
-<ul>
-<li>
-<p><em>Scale to zero</em>: Setting the number of minimum <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s to zero isn't supported. See <a href="https://github.com/kubernetes/kubernetes/issues/69687">here</a>.</p>
-</li>
-<li>
-<p><em>Scaling memory</em>: It's easy to autoscale based on CPU, but be careful with autoscaling based on memory. If the number of <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s scale up, the existing <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s need to somehow "release" memory, which can't really be done without killing the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s and starting them back up again.</p>
-</li>
-<li>
-<p><em>Scaling on non-linear scaling metrics</em>: Be careful with scaling based on metrics that don't linearly scale. For example, if you double the number of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s, the value of that metric should cut in half. This may end up becoming an issue when scaling based off poorly designed custom user-defined metrics.</p>
-</li>
-</ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>In addition to <a href="#BM_(horizontal%20pod%20autoscaler%7Chorizontal%20pod%20autoscaling)%2Fi">horizontal pod autoscaler</a>, there's a <a href="#BM_(vertical%20pod%20autoscaler%7Cvertical%20pod%20autoscaling)%2Fi">vertical pod autoscaler</a> (<a href="#BM_%5Cb(VPA)s%3F%5Cb%2F">VPA</a>). A <a href="#BM_%5Cb(VPA)s%3F%5Cb%2F">VPA</a> will scale a single <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> based on metrics and its <a href="#BM_(resource%20request)%2Fi">resource request</a>s / <a href="#BM_(resource%20limit)%2Fi">resource limit</a>s.</p>
-<p>The <a href="#BM_%5Cb(VPA)s%3F%5Cb%2F">VPA</a> <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> doesn't come built-in with <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>. It's provided as an add-on package found <a href="https://github.com/kubernetes/autoscaler">here</a>.</p>
+<p>I've spent hours trying to figure out how <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s can send custom metrics that an <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a> can scale on. There is barely any documentation on this and zero examples online. The closest thing I could find to a source is <a href="https://medium.com/swlh/building-your-own-custom-metrics-api-for-kubernetes-horizontal-pod-autoscaler-277473dea2c1">here</a>.</p>
+<p>The simplest solution here seems to be to use a third-party software package called Prometheus.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Extensions%5C%2FPrometheus)_TOPIC%2Fi">Extensions/Prometheus</a> (Scaling <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s based on user-defined metrics)</li>
+</ul>
 </div>
 <a name="H_Cluster%20Autoscaler"></a><h2>Cluster Autoscaler</h2>
 <p><a name="BM_(Kinds%5C%2FCluster%20Autoscaler)_TOPIC%2Fi"></a><strong></strong></p>
@@ -4371,9 +4444,16 @@ pod-security.kubernetes.io/enforce-version=latest
 </div>
 <a name="H_Extensions"></a><h1>Extensions</h1>
 <p><a name="BM_(Extensions)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Kinds)_TOPIC%2F">Kinds</a></li>
+<li><a href="#BM_(Security)_TOPIC%2Fi">Security</a></li>
+</ul>
+</div>
 <p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> can be automated / extended through user supplied code and third-party software packages. The subsections below detail various automation related topics.</p>
-<a name="H_User-defined%20Kinds"></a><h2>User-defined Kinds</h2>
-<p><a name="BM_(Extensions%5C%2FUser-defined%20Kinds)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Custom%20Kinds"></a><h2>Custom Kinds</h2>
+<p><a name="BM_(Extensions%5C%2FCustom%20Kinds)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -4428,6 +4508,16 @@ pod-security.kubernetes.io/enforce-version=latest
                 <span class="hljs-attr">model:</span> {<span class="hljs-attr">type:</span> <span class="hljs-string">string</span>}
                 <span class="hljs-attr">year:</span> {<span class="hljs-attr">type:</span> <span class="hljs-string">integer</span>}
                 <span class="hljs-attr">doorCount:</span> {<span class="hljs-attr">type:</span> <span class="hljs-string">integer</span>}
+<span class="hljs-string">----</span>
+<span class="hljs-comment"># An example object created using the definition above</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">cars.my-corp.com/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Car</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-car</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">model:</span> <span class="hljs-string">Jetta</span>
+  <span class="hljs-attr">year:</span> <span class="hljs-number">2005</span>
+  <span class="hljs-attr">doorCount:</span> <span class="hljs-number">4</span>
 </code></pre>
 <p>To process <a href="#BM_(object)%2Fi">object</a>s of a user-defined <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>, a special <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> needs to be written with access to the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API. This <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>, called a <a href="#BM_(controller)%2Fi">controller</a>, needs to use the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API to watch for <a href="#BM_(object)%2Fi">object</a> events and process those events in whatever way is appropriate. To provide redundancy, it's common for multiple instances of such a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> to be running at once (e.g. <a href="#BM_(deployment)%2Fi">deployment</a>), possibly coordinating with each other (e.g. shared database).</p>
 <pre class="hljs"><code><span class="hljs-comment"># This is a naive implementation of a controller. It shouldn't have multiple instances</span>
@@ -4494,20 +4584,28 @@ w = kubernetes.watch.Watch()
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>There's also another much more complicated mechanism of adding your own <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> called: API server aggregation. In this method, you create your own API server that handles requests, storage, and management of your <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>. The <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API sever then proxies to your API server via an aggregation layer.</p>
 </div>
-<a name="H_User-defined%20Metrics"></a><h2>User-defined Metrics</h2>
-<p><a name="BM_(Extensions%5C%2FUser-defined%20Metrics)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Helm"></a><h2>Helm</h2>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Kinds)_TOPIC%2F">Kinds</a></li>
+<li><a href="#BM_(Security)_TOPIC%2Fi">Security</a></li>
+</ul>
+</div>
+<p><a name="BM_(Extensions%5C%2FHelm)_TOPIC%2Fi"></a><strong></strong></p>
+<p>Helm is a package manager for <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>. It installs and uninstalls software quickly, taking care of much of the configuration details. This could be software that's internal to <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> (e.g. helps manage or extend <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> in some way) or software that runs on top of <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> (e.g. install a cluster of Redis <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s for your application to use).</p>
+<a name="H_Prometheus"></a><h2>Prometheus</h2>
+<p><a name="BM_(Extensions%5C%2FPrometheus)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Kinds%5C%2FHorizontal%20Pod%20Autoscaler)_TOPIC%2Fi">Kinds/Horizontal Pod Autoscaler</a></li>
-<li><a href="#BM_(Kinds%5C%2FService%20Account)_TOPIC%2Fi">Kinds/Service Account</a></li>
-<li><a href="#BM_(Security%5C%2FAPI%20Access%20Control)_TOPIC%2Fi">Security/API Access Control</a></li>
 </ul>
 </div>
-<p>TODO: fill me in</p>
-<a name="H_Helm"></a><h2>Helm</h2>
-<p><a name="BM_(Extensions%5C%2FHelm)_TOPIC%2Fi"></a><strong></strong></p>
-<p>TODO: fill me in</p>
+<p>Prometheus is a monitoring system that can integrate with <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> to support custom metrics. These custom metrics, which Prometheus grabs by scraping <a href="#BM_(endpoints)%2Fi">endpoints</a>, provide better visibility into the system and can be used to scale <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s via an <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a> / <a href="#BM_%5Cb(VPA)s%3F%5Cb%2F">VPA</a>.</p>
+<p>Any <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a> can scale by using an <a href="#BM_(object)%2Fi">object</a>'s values as metrics. Imagine a user-defined <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> (<a href="#BM_%5Cb(CRD)s%3F%5Cb%2F">CRD</a>) whose <a href="#BM_(object)%2Fi">object</a>s store a specific value (e.g. request rate).</p>
+<p>TODO: discuss installing through helm</p>
+<p>TODO: discuss exposing <a href="#BM_(endpoints)%2Fi">endpoints</a> to scrape metrics, and scale on those metrics</p>
 <a name="H_Guides"></a><h1>Guides</h1>
 <p><a name="BM_(Guides)%2F"></a><strong></strong></p>
 <p>The following sub-sections are guides to various aspects of <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>.</p>
@@ -4568,7 +4666,7 @@ w = kubernetes.watch.Watch()
 <ul>
 <li><a href="#BM_(Kinds%5C%2FPod%2FContainer%20Isolation%2FSecurity%20Context)_TOPIC%2F">Kinds/Pod/Container Isolation/Security Context</a> (<a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">Pod</a> isolation configurations)</li>
 <li><a href="#BM_(Kinds%5C%2FPod%2FContainer%20Isolation%2FNode%20Access)_TOPIC%2F">Kinds/Pod/Container Isolation/Node Access</a> (<a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">Pod</a> isolation configurations)</li>
-<li><a href="#BM_(Security%5C%2FPod%20Security%20Admission)_TOPIC%2Fi">Security/Pod Security Admission</a> (Global <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> isolation configurations)</li>
+<li><a href="#BM_(Security%5C%2FPod%20Security%20Admission)_TOPIC%2Fi">Security/Pod Security Admission</a> (<a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">Pod</a> isolation restrictions)</li>
 </ul>
 </div>
 </li>
@@ -4596,15 +4694,15 @@ w = kubernetes.watch.Watch()
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
 <li><a href="#BM_(Kinds%5C%2FPod%2FAPI%20Access)_TOPIC%2F">Kinds/Pod/API Access</a> (<a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">Pod</a> credential mounting)</li>
-<li><a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">Kind</a>s/<a href="#BM_(Security%5C%2FAPI%20Access%20Control%2FRole-based%20Access%20Control)_TOPIC%2Fi">Security/API Access Control/Role-based Access Control</a> (Restricting API access via <a href="#BM_(service%20account)%2Fi">service account</a>s)</li>
-<li><a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">Kind</a>s/<a href="#BM_(Security%5C%2FAPI%20Access%20Control%2FDisable%20Credentials)_TOPIC%2Fi">Security/API Access Control/Disable Credentials</a> (Preventing API credentials from being mounted to <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>)</li>
+<li><a href="#BM_(Security%5C%2FAPI%20Access%20Control%2FRole-based%20Access%20Control)_TOPIC%2Fi">Security/API Access Control/Role-based Access Control</a> (Restricting API access via <a href="#BM_(service%20account)%2Fi">service account</a>s)</li>
+<li><a href="#BM_(Security%5C%2FAPI%20Access%20Control%2FDisable%20Credentials)_TOPIC%2Fi">Security/API Access Control/Disable Credentials</a> (Preventing API credentials from being mounted to <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>)</li>
 </ul>
 </div>
 </li>
 <li>
 <p><strong>Harden volume access</strong></p>
-<p>Unless a <a href="#BM_(container)%2Fi">container</a> explicitly requires write access to a volume, mount that volume in read-only mode. For example, imagine a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> containing a <a href="#BM_(sidecar)%2Fi">sidecar</a> which collects the main <a href="#BM_(container)%2Fi">container</a>'s logs. The <a href="#BM_(sidecar)%2Fi">sidecar</a> gets access to the main <a href="#BM_(container)%2Fi">container</a>'s log files via a volume, where that shared volume is used by the main <a href="#BM_(container)%2Fi">container</a> to store logs, configurations, and data.</p>
-<p>If the <a href="#BM_(sidecar)%2Fi">sidecar</a> isn't restricted to just reading that shared volume, an attacker could first compromise the <a href="#BM_(sidecar)%2Fi">sidecar</a> and use it to compromise the main <a href="#BM_(container)%2Fi">container</a> by writing malicious configurations and data on that shared volume.</p>
+<p>Unless a <a href="#BM_(container)%2Fi">container</a> explicitly requires write access to a volume, mount that volume in read-only mode. For example, imagine a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> containing a <a href="#BM_(sidecar%20container%7Csidecar)%2Fi">sidecar</a> which collects the main <a href="#BM_(container)%2Fi">container</a>'s logs. The <a href="#BM_(sidecar%20container%7Csidecar)%2Fi">sidecar</a> gets access to the main <a href="#BM_(container)%2Fi">container</a>'s log files via a volume, where that shared volume is used by the main <a href="#BM_(container)%2Fi">container</a> to store logs, configurations, and data.</p>
+<p>If the <a href="#BM_(sidecar%20container%7Csidecar)%2Fi">sidecar</a> isn't restricted to just reading that shared volume, an attacker could first compromise the <a href="#BM_(sidecar%20container%7Csidecar)%2Fi">sidecar</a> and use it to compromise the main <a href="#BM_(container)%2Fi">container</a> by writing malicious configurations and data on that shared volume.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
@@ -4707,7 +4805,7 @@ w = kubernetes.watch.Watch()
 <li><a href="#BM_(Kinds%5C%2FPod%2FNode%20Placement)_TOPIC%2F">Kinds/Pod/Node Placement</a></li>
 <li><a href="#BM_(Kinds%5C%2FHorizontal%20Pod%20Autoscaler)_TOPIC%2Fi">Kinds/Horizontal Pod Autoscaler</a></li>
 <li><a href="#BM_(Kinds%5C%2FCluster%20Autoscaler)_TOPIC%2Fi">Kinds/Cluster Autoscaler</a></li>
-<li><a href="#BM_(Extensions%5C%2FUser-defined%20Metrics)_TOPIC%2Fi">Extensions/User-defined Metrics</a></li>
+<li><a href="#BM_(Extensions%5C%2FPrometheus)_TOPIC%2Fi">Extensions/Prometheus</a></li>
 </ul>
 </div>
 <p>There are several aspects to ensure that <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s perform well and <a href="#BM_(pod%20replica%7Creplica)%2Fi">pod replica</a>s scale well. Before applying performance features, a bare-bones <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> should be placed on a staging environment and load tested to determine its performance characteristics.</p>
@@ -5115,7 +5213,10 @@ w = kubernetes.watch.Watch()
 <p><a name="BM_(custom%20resource%20definition)%2Fi"></a><strong>custom resource definition</strong> <a name="BM_%5Cb(CRD)s%3F%5Cb%2F"></a><strong></strong> - A <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> that defines another user-defined <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>.</p>
 </li>
 <li>
-<p><a name="BM_(sidecar)%2Fi"></a><strong>sidecar</strong> - A <a href="#BM_(container)%2Fi">container</a> within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> that performs helper tasks for the other more important <a href="#BM_(container)%2Fi">container</a>s in that <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (e.g. collecting application logs and sending them to a database).</p>
+<p><a name="BM_(sidecar%20container%7Csidecar)%2Fi"></a><strong>sidecar</strong> - A <a href="#BM_(container)%2Fi">container</a> within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> that performs helper tasks for the other more important <a href="#BM_(container)%2Fi">container</a>s in that <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (e.g. collecting application logs and sending them to a database).</p>
+</li>
+<li>
+<p><a name="BM_(custom%20metrics%3F%20adapter)%2Fi"></a><strong>custom metrics adapter</strong> - A <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (or <a href="#BM_(pod%20replica%7Creplica)%2Fi">pod replica</a>s) that accesses some other <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>'s metrics via a shared resource (e.g. shared volume) and places it into <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> via <a href="#BM_%5Cb(CRD)s%3F%5Cb%2F">CRD</a>s for the purpose of scaling <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s via an <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a>.</p>
 </li>
 </ul>
 <p></p>

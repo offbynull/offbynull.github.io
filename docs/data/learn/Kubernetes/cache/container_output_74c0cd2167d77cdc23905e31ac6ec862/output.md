@@ -4,7 +4,7 @@
 
  * Kinds/Pod/Container Isolation/Security Context_TOPIC (Pod isolation configurations)
  * Kinds/Pod/Container Isolation/Node Access_TOPIC (Pod isolation configurations)
- * Security/Pod Security Admission_TOPIC (Global pod isolation configurations)
+ * Security/Pod Security Admission_TOPIC (Pod isolation restrictions)
 
 </div>
 
