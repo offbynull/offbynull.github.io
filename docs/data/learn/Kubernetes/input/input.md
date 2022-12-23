@@ -43,7 +43,7 @@ In the context of containers, an ...
    * requires 4gb of memory, 1.5 CPU cores
    * etc..
 
- * container is an instance of an image. A container creates an isolated copy of the image's filesystem, isolates the resources required for that image, and launches the entrypoint application for that image. That container can't see or access anything outside of the container unless explicitly allowed to by the user. For example, opening a port 8080 on a container won't open port 8080 on the host running it, but the user can explicitly ask that port 8080 in the container map to some port on the host.
+ * container is an instance of an image. A container creates an isolated copy of the image's filesystem, isolates the resources required for that image, and launches the entry point application for that image. That container can't see or access anything outside of the container unless explicitly allowed to by the user. For example, opening a port 8080 on a container won't open port 8080 on the host running it, but the user can explicitly ask that port 8080 in the container map to some port on the host.
 
 As shown in the entity diagram above, each container is created from a single image, but that same image can be used for to create multiple containers. Another way to think about it is that an image is the blueprint of a factory and a container is the actual factory built from that blueprint. You can build multiple factories from the same blueprint.
 
@@ -497,7 +497,7 @@ If you're aware of endpoints, service, and ingress kinds, I'm not sure how this 
 
 `{bm} /(Kinds\/Pod\/Command-line Arguments)_TOPIC/`
 
-An image typically provides a default entrypoint (process that gets started) and default set of arguments to run with. Each container within a pod can override these defaults.
+An image typically provides a default entry point (process that gets started) and default set of arguments to run with. Each container within a pod can override these defaults.
 
 ```yaml
 apiVersion: v1
@@ -1293,7 +1293,7 @@ Information about a pod and its containers such as ...
 
 `{bm} /(Kinds\/Pod\/Metadata Access\/Environment Variables)_TOPIC/`
 
-All pod information except for labels and annotations can be assigned to environment variables. The reason for this is that a running pod can have its labels and annotations updated but the environment variables within a running container can't be updated once that container starts (updated labels / annotations won't show up to the container).
+All pod information except for labels and annotations can be assigned to environment variables. This is because a running pod can have its labels and annotations updated but the environment variables within a running container can't be updated once that container starts (updated labels / annotations won't show up to the container).
 
 ```{note}
 CPU resources can also be dynamically updated without restarting the pod / container process. The environment variable for this likely won't update either, but it isn't restricted like labels / annotations are. There may be other reasons that labels / annotations aren't allowed. Maybe Linux has a cap on how large a environment variable can be, and there's a realistic possibility that labels / annotations can exceed that limit?
@@ -2526,7 +2526,7 @@ spec:
 ```
 
 ```{note}
-Internally, an EndPoints object is used to track pods. When you create a service, Kubernetes automatically creates an accompanying EndPoints object that the service makes use of.
+Internally, an endpoints object is used to track pods. When you create a service, Kubernetes automatically creates an accompanying endpoints object that the service makes use of.
 ```
 
 ### Routing
@@ -2574,7 +2574,7 @@ subsets:
       - port: 5432
 ```
 
-If no label selectors are present but service's type is set to `ExternalName`, the service will route to some user-defined host. This is useful for situations where you want to hide the destination, such as an external API that you also want to mock for development / testing.
+If no label selectors are present but the service's type is set to `ExternalName`, the service will route to some user-defined host. This is useful for situations where you want to hide the destination, such as an external API that you also want to mock for development / testing.
 
 ```yaml
 apiVersion: v1
@@ -2712,7 +2712,7 @@ These probes are defined directly in the pod manifest.
 ```
 
 ```{note}
-Recall that, when a service has selectors assigned, Kubernetes internally maintains an EndPoints object that contains the addresses of ready and healthy pods. The addresses in this endpoints object is what the service routes to.
+Recall that, when a service has selectors assigned, Kubernetes internally maintains an endpoints object that contains the addresses of ready and healthy pods. The addresses in this endpoints object is what the service routes to.
 ```
 
 ### Headless
@@ -2724,7 +2724,7 @@ Kinds/Service/Routing_TOPIC
 Kinds/Service/Health_TOPIC
 ```
 
-A service that's headless is one which there is no load balancer forwarding requests to pods / endpoints. Instead, the domain for the service will resolve a list of ready IPs for the pods (or endpoints) that the service is for. 
+A headless service is one in which there is no load balancer forwarding requests to pods / endpoints. Instead, the domain for the service will resolve a list of ready IPs for the pods (or endpoints) that the service is for. 
 
 ```yaml
 apiVersion: v1
@@ -2750,7 +2750,7 @@ Generally, headless services shouldn't be used because DNS queries are typically
 
 How a service decides to forward incoming requests to the pod instances assigned to it is controlled via a session affinity field. Assigning a value of ...
 
- * `None` forwards each request to a randomly selected pod instance (default behaviour).
+ * `None` forwards each request to a randomly selected pod instance (default behavior).
  * `ClientIP` forwards each request originating from the same IP to the same pod instance.
 
 When using `ClientIP`, a maximum session "sticky time" may also be provided.
@@ -2776,7 +2776,7 @@ spec:
 ```
 
 ```{note}
-When using `ClientIP`? What happens when the service runs out memory to track client IPs? LRU algorithm to decide which to keep / discard?
+When using `ClientIP`? What happens when the service runs out of memory to track client IPs? LRU algorithm to decide which to keep / discard?
 ```
 
 ```{note}
@@ -2830,7 +2830,7 @@ Depending on what level you're working in, a hostname may be shortened. For exam
 The IP for a `ClusterIP` / `ExternalName` service is stable as well, just like the hostname.
 
 ```{note}
-Internally, a `ClusterIP` service uses kube-proxy to route requests to relevant pods (EndPoints).
+Internally, a `ClusterIP` service uses kube-proxy to route requests to relevant pods (endpoints).
 ```
 
 ```yaml
@@ -2882,7 +2882,7 @@ Kinds/Pod/Container Isolation/Node Access_TOPIC (Somewhat similar `hostPort` fea
 
 Services of type `LoadBalancer` are accessible from outside the cluster. When the `LoadBalancer` type is used, the cloud provider running the cluster assigns their version of a load balancer to route external HTTP requests to the Kubernetes ingress component. Ingress then determines what service that request should be routed to based on details within the HTTP parameters (e.g. Host).
 
-There is no built-in Kubernetes implementation of ingress. Kubernetes provides the interface but someone must provide the implementation, called an ingress controller, for the functionality to be there. The reason for this is that load balancers come in multiple forms: software load balancers, cloud provider load balancers, and hardware load balancers. When used directly, each has a unique way it needs to be configured, but the ingress implementation abstracts that out.
+There is no built-in Kubernetes implementation of ingress. Kubernetes provides the interface but someone must provide the implementation, called an ingress controller, for the functionality to be there. This is because load balancers come in multiple forms: software load balancers, cloud provider load balancers, and hardware load balancers. When used directly, each has a unique way it needs to be configured, but the ingress implementation abstracts that out.
 
 ```yaml
 apiVersion: v1
@@ -3030,8 +3030,8 @@ spec:
 
 Each rule entry should have a path type associated with it. It can be set to any of the following values:
 
- * `Exact` - Matches the URL path exactly (case sensitive).
- * `Prefix` - Matches the URL path prefix (case sensitive).
+ * `Exact` - Matches the URL path exactly (case-sensitive).
+ * `Prefix` - Matches the URL path prefix (case-sensitive).
  * `ImplementationSpecific` - Based on the class of the ingress object.
 
 ```yaml
@@ -3205,10 +3205,10 @@ spec:
         image: nginx
 ```
 
-Recall that, to link objects together, Kubernetes uses loosely coupled linkages via labels rather than hierarchial parent-child relationships. As such, the pod template should have a unique set of labels assigned that the replica set can look for to determine how many instances are running. Regardless of how those instances were launched (via the replica set or something else), the replica set will account for them. In the example above, the replica set determines pod instances it's responsible for by looking for the label named `app` and ensuring its set to `my-app`.
+Recall that, to link objects together, Kubernetes uses loosely coupled linkages via labels rather than hierarchical parent-child relationships. As such, the pod template should have a unique set of labels assigned that the replica set can look for to determine how many instances are running. Regardless of how those instances were launched (via the replica set or something else), the replica set will account for them. In the example above, the replica set determines pod instances it's responsible for by looking for the label named `app` and ensuring its set to `my-app`.
 
 ```{note}
-According to the k8s docs, it may be a parent-child relationship. Apparently looking for labels is just a initial step to permanently bringing pods under the control of a specific replica set:
+According to the k8s docs, it may be a parent-child relationship. Apparently looking for labels is just an initial step to permanently bringing pods under the control of a specific replica set:
 
 > A ReplicaSet is linked to its Pods via the Pods' metadata.ownerReferences field, which specifies what resource the current object is owned by. All Pods acquired by a ReplicaSet have their owning ReplicaSet's identifying information within their ownerReferences field. It's through this link that the ReplicaSet knows of the state of the Pods it is maintaining and plans accordingly.
 
@@ -3221,7 +3221,7 @@ A replica set's job is to ensure that a certain number of copies of a pod templa
  * will force all pods to use a single persistent volume claim (if one was specified in the pod template), meaning all pods will use a single volume. For horizontally scalable applications (e.g. microservices, databases, etc..), each running instance of an application typically needs its own persistent storage.
 
 ```{note}
-If one of the replicas is an a loop where its constantly crashing and restarting, that replica will stay as-is in the replica set. It won't automatically get moved to some other node / forcefully removed and re-added as a new replica.
+If one of the replicas is in a loop where it's constantly crashing and restarting, that replica will stay as-is in the replica set. It won't automatically get moved to some other node / forcefully removed and re-added as a new replica.
 ```
 
 ```{note}
@@ -3271,7 +3271,7 @@ spec:
 A deployment provides mechanisms to control how an update happens (e.g. all at once vs gradual), if an update is deemed successful (e.g. maximum amount of time a rollout can take), fail-fast for bad updates, and rollbacks to revert to previous versions. These features are discussed in the subsections below. 
 
 ```{note}
-If one of the replicas is an a loop where its constantly crashing and restarting, that replica will stay as-is in the deployment. It won't automatically get moved to some other node / forcefully removed and re-added as a new replica.
+If one of the replicas is in a loop where it's constantly crashing and restarting, that replica will stay as-is in the deployment. It won't automatically get moved to some other node / forcefully removed and re-added as a new replica.
 ```
 
 ```{note}
@@ -3388,7 +3388,7 @@ spec:
 ```{note}
 You can inspect previous versions via `kubectl rollout history deployment my-deployment`. For each update, it's good practice to set the `kubernetes.io/change-cause` annotation a custom message describing what was updated / why it was updated -- this shows up in the history.
 
-You can a rollback via `kubectl rollout undo deployments my-deployment --to-revision=12345`.
+You can rollback via `kubectl rollout undo deployments my-deployment --to-revision=12345`.
 ```
 
 ## Stateful Set
@@ -3402,9 +3402,9 @@ Kinds/Volume_TOPIC
 Kinds/Service/Headless_TOPIC
 ```
 
-A stateful set is similar to a deployment but the pods it creates are guaranteed to have a stable identity and each pod is able to have its own dedicated storage volumes. In the context of stateful sets, ...
+A stateful set is similar to a deployment but the pods it creates are guaranteed to have a stable identity and each pod can have its own dedicated storage volumes. In the context of stateful sets, ...
 
- * stable identity means that if a pod goes down, the stateful set responsible for it will replace it with a new pod has the exact same identification information (same name, IP, etc..). Contrast that to deployments, where replacement pods have completely new identities.
+ * stable identity means that if a pod goes down, the stateful set responsible for it will replace it with a new pod has the exact same identification information (same name, IP, etc..). Contrast that to deployments, where replacement pods have entirely new identities.
  * dedicated storage volume means that each stable identity can have its own unique persistent volume claims. Contrast that to deployments, where persistent volume claims are shared across all pods.
 
 ```{note}
@@ -3428,7 +3428,7 @@ metadata:
 spec:
   clusterIP: None
   # Routes traffic to pods based on the following label selectors, which are the same
-  # key-value pairs used for pod template labels of the the stateful set further down.
+  # key-value pairs used for pod template labels of the stateful set further down.
   selector:
     app: my-app
   ports:
@@ -3554,9 +3554,9 @@ my-stateful-set ----+--> "my-stateful-set-1 with PVC data-my-stateful-set-1 (PVC
                     '--> "my-stateful-set-2 with PVC data-my-stateful-set-2 (PVC contains previous data)"
 ```
 
-A stateful set will not proceed with scaling until all preceding pods (ordinal suffix) are in a healthy running state. The reason for this is that, if a pod is unhealthy and the stateful set gets scaled down, it's effectively lost two members at once. This goes against the "only one pod can go down at a time" stateful set scaling behavior.
+A stateful set will not proceed with scaling until all preceding pods (ordinal suffix) are in a healthy running state. This is because, if a pod is unhealthy and the stateful set gets scaled down, it's effectively lost two members at once. This goes against the "only one pod can go down at a time" stateful set scaling behavior.
 
-For example, given the same 3 replica `my-stateful-set` example above, scaling down to 1 replica will first shut down pod `my-stateful-set-2` and then pod `my-stateful-set-1`. If `my-stateful-set-2` shuts down but then `my-stateful-set-0` enters into an unhealthy state, `my-stateful-set-1` won't shut down until `my-stateful-set-0` recovers. Likewise, if `my-stateful-set-0` enters into an an unknown state (e.g. the node running it temporarily lost communication with the control plane), `my-stateful-set-1` won't shut down until `my-stateful-set-0` is known and healthy.
+For example, given the same 3 replica `my-stateful-set` example above, scaling down to 1 replica will first shut down pod `my-stateful-set-2` and then pod `my-stateful-set-1`. If `my-stateful-set-2` shuts down but then `my-stateful-set-0` enters into an unhealthy state, `my-stateful-set-1` won't shut down until `my-stateful-set-0` recovers. Likewise, if `my-stateful-set-0` enters into an unknown state (e.g. the node running it temporarily lost communication with the control plane), `my-stateful-set-1` won't shut down until `my-stateful-set-0` is known and healthy.
 
 ```{note}
 The scaling guarantees described here can be relaxed through `spec.podManagementPolicy`. By default, this value is set to `OrderedReady`, which enables the behavior described in this section. If it were instead set to `Parallel`, the stateful set's scaling will launch / terminate pods in parallel and won't wait for preceding pods to be healthy.
@@ -3579,7 +3579,7 @@ A pod template has two different update strategies:
  * `RollingUpdate` - updates pods piecemeal (default).
  * `OnDelete` - user must manually bring down each pod and the stateful set will replace it with updated version.
 
-`OnDelete` is simple but requires user intervention to shutdown pods. `RollingUpdate` is similar to the `RollingUpdate` strategy for deployments, but it supports less parameters and its behavior is slightly different. Specifically, rolling updates for stateful sets support two parameters.
+`OnDelete` is simple but requires user intervention to shutdown pods. `RollingUpdate` is similar to the `RollingUpdate` strategy for deployments, but it supports fewer parameters and its behavior is slightly different. Specifically, rolling updates for stateful sets support two parameters.
 
 ```yaml
 apiVersion: apps/v1
@@ -3628,7 +3628,7 @@ Deployments also supported the rolling update parameter `minReadySeconds`. There
 Rolling updates performed with a pod management policy of `OrderedReady` (the default) may get into a broken state which requires manual intervention to roll back. If an update results in a pod entering into an unhealthy state, the rolling update will pause. Reverting the pod template won't work because it goes against the "only one pod can go down at a time" behavior of stateful sets.
 
 ```{seealso}
-Kinds/Stateful Set/Scaling_TOPIC (Discussion of pod management policy and only one pod can go down at a time" behavior)
+Kinds/Stateful Set/Scaling_TOPIC (Discussion of pod management policy and "only one pod can go down at a time" behavior)
 ```
 
 A volume claim template cannot be updated. The system will reject an updated stateful set if its volume claim template differs from the original. As such, users have devised various manual strategies for modifying volumes in a stateful set:
@@ -3734,7 +3734,7 @@ spec:
       restartPolicy: OnFailure
 ```
 
-The example job attempts to runs 10 pods to successful completion, keeping up to 5 concurrently running at any one time. If a pod fails, the job will retry it up to 4 times before failing the job entirely. Similarly, the job itself runs no more than 99 seconds before failing entirely.
+The example job  10 pods to successful completion, keeping up to 5 concurrently running at any one time. If a pod fails, the job will retry it up to 4 times before failing the job entirely. Similarly, the job itself runs no more than 99 seconds before failing entirely.
 
 Common gotchas with jobs:
 
@@ -3762,7 +3762,7 @@ Common gotchas with jobs:
 
 `{bm} /(Kinds\/Job\/Cleanup)_TOPIC/i`
 
-One common problem with jobs is resource cleanup. With the exception of failed pods that have been retried (`backoffLimit` field), a completed job won't delete its pods by default. Those pods are kept around in a non-running state so that their logs can be examined if needed. Likewise, the job itself isn't deleted on completion either.
+One common problem with jobs is resource cleanup. Except for failed pods that have been retried (`backoffLimit` field), a completed job won't delete its pods by default. Those pods are kept around in a non-running state so that their logs can be examined if needed. Likewise, the job itself isn't deleted on completion either.
 
 ```{note}
 This became a problem for me when using Amazon EKS with Amazon Fargate to run the job's pods. The Fargate nodes were never removed from the cluster because the job's pods were never deleted?
@@ -4076,10 +4076,10 @@ In the example above, if the average CPU usage of the stateful set `my-ss` repli
 * less than 50% that of the CPU resource requested, the replicas will scale down until there are 2 replicas or until the CPU usage reaches 50%.
 * more than 50% that of the CPU resource requested, the replicas will scale up until there are 10 replicas or until the CPU usage reaches 50%.
 
-The HPA will at-most double the the number of replicas on each iteration. Each scaling iteration has an intentional waiting period. Specifically, scaling ...
+The HPA will at-most double the number of replicas on each iteration. Each scaling iteration has an intentional waiting period. Specifically, scaling ...
 
  * up will only occur if no previous scaling has occurred in the past 3 mins.
- * down will only occur if no previous scaling has occured in the past 5 mins.
+ * down will only occur if no previous scaling has occurred in the past 5 mins.
 
 The example above tracked a single metric (CPU utilization), but multiple metrics can be tracked by a single HPA. Metrics can be one of three types:
 
@@ -4091,7 +4091,7 @@ The example above tracked a single metric (CPU utilization), but multiple metric
 Extensions/User-defined Metrics_TOPIC (Collecting user-defined metrics for an HPA to scale on)
 ```
 
-If there are multiple metrics being tracked by an HPA, as in the example below, that HPA calculates the replica counts for each metric and then chooses the one with the highest.
+If multiple metrics being tracked by an HPA, as in the example below, that HPA calculates the replica counts for each metric and then chooses the one with the highest.
 
 ```yaml
 apiVersion: autoscaling/v2
@@ -4141,7 +4141,7 @@ Common gotchas with HPAs:
 
  * *Scaling memory*: It's easy to autoscale based on CPU, but be careful with autoscaling based on memory. If the number of replicas scale up, the existing replicas need to somehow "release" memory, which can't really be done without killing the pods and starting them back up again.
 
- * *Scaling on non-linear scaling metrics*: Be careful with scaling based on metrics that don't linearly scale. For example, if you double the number of pods, the value of that metric should cut in half. This may end up becoming an issue when scaling based off of poorly designed custom user-defined metrics.
+ * *Scaling on non-linear scaling metrics*: Be careful with scaling based on metrics that don't linearly scale. For example, if you double the number of pods, the value of that metric should cut in half. This may end up becoming an issue when scaling based off poorly designed custom user-defined metrics.
 
 ```{note}
 In addition to horizontal pod autoscaler, there's a vertical pod autoscaler (VPA). A VPA will scale a single pod based on metrics and its resource requests / resource limits.
@@ -4223,7 +4223,7 @@ The manifest is using label selectors are being used to identify pods. How does 
 
 `{bm} /(Security)_TOPIC/i`
 
-Kubernetes comes with several features to enhance cluster security. These include gating off intra-cluster networking, gating off how containers can break isolation, and providing access control mechanisms to the API.
+Kubernetes comes with several features to enhance cluster security. These include gating off inter-cluster networking, gating off how containers can break isolation, and providing access control mechanisms to the API.
 
 The subsections below detail various security related topics.
 
@@ -4240,7 +4240,7 @@ Kinds/Service Account_TOPIC
 For this feature to work, Kubernetes needs to be using a network plugin that supports it.
 ```
 
-Network policies restricts pods from communicating with other network entities (e.g. services, endpoints, other pods, etc..). Restrictions can be for either inbound connections, outbound connections, or both.
+Network policies restrict pods from communicating with other network entities (e.g. services, endpoints, other pods, etc..). Restrictions can be for either inbound connections, outbound connections, or both.
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -4387,7 +4387,7 @@ Pod security admissions are used to restrict the security context of pods using 
 
 For example, setting ...
 
- * `warn` to `baseline` means that pods will run but also warn if they're breaking minimal set of restrictions.
+ * `warn` to `baseline` means that pods will run but also warn if they're breaking the minimal set of restrictions.
  * `enforce` to `privileged` means that pods won't run if they're unrestricted.
 
 To apply to all pods cluster-wide, use the following object.
@@ -4516,7 +4516,7 @@ Recall that a ...
 * cluster-level object / kind is one that comes under the umbrella of the entire cluster (it's cluster-wide, not tied to a namespace): Nodes, persistent volumes, etc...
 ```
 
-`ClusterRole` and `ClusterRoleBinding` are cluster-level kinds while `Role` and `RoleBinding` are namespace-level kinds. RBAC provides provides different permissions based on which role variant (`ClusterRole` vs `Role`) gets used with which role binding variant (`ClusterRoleBinding` vs `RoleBinding`):
+`ClusterRole` and `ClusterRoleBinding` are cluster-level kinds while `Role` and `RoleBinding` are namespace-level kinds. RBAC provides different permissions based on which role variant (`ClusterRole` vs `Role`) gets used with which role binding variant (`ClusterRoleBinding` vs `RoleBinding`):
 
 | Role          | Binding              | Permission Granted |
 |---------------|----------------------|--------------------|
@@ -4769,7 +4769,7 @@ spec:
 ```
 
 ```{note}
-Recall that it's also possible to disable auto-mounting on individual pods. Auto-mounting can't be disabled on individual containers, but it is possible to override the `/var/run/secrets/kubernetes.io/serviceaccount` mount on those containers with something like tmpfs (empty directory).
+Recall that it's also possible to disable auto-mounting on individual pods. Auto-mounting can't be disabled on individual containers, but it is possible to override the `/var/run/secrets/kubernetes.io/serviceaccount` mount on those containers with something like `tmpfs` (empty directory).
 ```
 
 # Extensions
@@ -4838,7 +4838,7 @@ spec:
                 doorCount: {type: integer}
 ```
 
-To process objects of a user-defined kind, a special pod needs to be written with access to the Kubernetes API. This pod, called a controller, needs use to the Kubernetes API to watch for object events and process those events in whatever way is appropriate. To provide redundancy, it's common for multiple instances of such a pod to be running at once (e.g. deployment), possibly coordinating with each other (e.g. shared database).
+To process objects of a user-defined kind, a special pod needs to be written with access to the Kubernetes API. This pod, called a controller, needs to use the Kubernetes API to watch for object events and process those events in whatever way is appropriate. To provide redundancy, it's common for multiple instances of such a pod to be running at once (e.g. deployment), possibly coordinating with each other (e.g. shared database).
 
 ```python
 # This is a naive implementation of a controller. It shouldn't have multiple instances
@@ -4904,7 +4904,7 @@ In addition to doing it manually like this, there's also a handy framework to ta
 ```
 
 ```{note}
-There's also another much more complicated mechanism of adding your own kind called: API server aggregation. In this method, you create your own API server that handles requests, storage, and management your kind. The Kubernetes API sever then proxies to your API server via an aggregation layer.
+There's also another much more complicated mechanism of adding your own kind called: API server aggregation. In this method, you create your own API server that handles requests, storage, and management of your kind. The Kubernetes API sever then proxies to your API server via an aggregation layer.
 ```
 
 ## User-defined Metrics
@@ -5061,7 +5061,7 @@ A pod's configuration can make use of several features to ensure that it functio
  * **Resources**
 
    * Should declare resource requirements: Containers should declare resource requests and resource limits.
-   * May declare hardware requirements: Pods can use node selectors, node affinity, and taints / tolerations to direct pods towards perfered hardware (e.g. prefer Intel CPUs over AMD CPUs).
+   * May declare hardware requirements: Pods can use node selectors, node affinity, and taints / tolerations to direct pods towards preferred hardware (e.g. prefer Intel CPUs over AMD CPUs).
 
 ### Lifecycle
 
@@ -5092,7 +5092,7 @@ A pod's lifecycle can make use of several features to ensure that it functions w
 
    * Should define readiness probes: Readiness probes signal to Kubernetes that a pod is currently not ready to receive requests (e.g. some required resource has temporarily locked up).
    * Should define liveness probes: Liveness probes signal to Kubernetes that a pod is no longer operational (e.g. something unrecoverable has happened).
-   * May define a maximum lifetime: A container's lifetime can't exceed the pod's `activeDeadlineSeconds`, otherwise the container will forcefully killed.
+   * May define a maximum lifetime: A container's lifetime can't exceed the pod's `activeDeadlineSeconds`, otherwise the container will be forcefully killed.
    * Should define a restart policy: Pods that are running servers should always restart when their main process terminates, while pods that are running under jobs should likely only restart on failure.
 
 ### Performance
@@ -5106,7 +5106,7 @@ Kinds/Cluster Autoscaler_TOPIC
 Extensions/User-defined Metrics_TOPIC
 ```
 
-There are several aspects to ensure that pods perform well and pod replicas scale well. Before applying and performance features, a bare-bones pod should be placed on a staging environment and load tested to determine its performance characteristics.
+There are several aspects to ensure that pods perform well and pod replicas scale well. Before applying performance features, a bare-bones pod should be placed on a staging environment and load tested to determine its performance characteristics.
 
  * **Scaling**
 
@@ -5117,7 +5117,7 @@ There are several aspects to ensure that pods perform well and pod replicas scal
 
  * **Node Placement**
 
-   * May use pod affinity: Pods that perform better when in the vicinity of each other (e.g. faster communication if on same data center rack) can request to be placed in that same vicinity using pod affinity.
+   * May use pod affinity: Pods that perform better when in the vicinity of each other (e.g. faster communication if on the same data center rack) can request to be placed in that same vicinity using pod affinity.
    * May use node affinity: Pods that perform better when on specific hardware (e.g. optimized for Intel Xeon) can request to be placed on nodes with that hardware using node affinity.
 
 ## Command-line Interface
@@ -5140,7 +5140,7 @@ kubectl commands that target an object require a namespace. That namespace can e
 
 , ... or through the default namespace set for the current context. If not set explicitly in the context, the namespace will be `default`.
 
-Kubernetes API is exposed as a RESTful interface, meaning everything is represented as an object and accessed / mutated using standard REST verbs (GET, PUT, DELETE, etc..). kubectl uses this interface to access the cluster. For example, accessing https://cluster/api/v1/namespaces/default/pods/obn_pod is equivalent to running `kubectl get pod obj_pod`. The difference between the two is that by default kubectl formats the output in a human friendly manner, often omitting or shortening certain details. That output can be controlled using flags. Specifically, to ...
+Kubernetes API is exposed as a RESTful interface, meaning everything is represented as an object and accessed / mutated using standard REST verbs (GET, PUT, DELETE, etc..). kubectl uses this interface to access the cluster. For example, accessing https://cluster/api/v1/namespaces/default/pods/obn_pod is equivalent to running `kubectl get pod obj_pod`. The difference between the two is that, by default, kubectl formats the output in a human friendly manner, often omitting or shortening certain details. That output can be controlled using flags. Specifically, to ...
 
  * get more detail, use `-o wide`.
  * remove headers such that the output can be more easily piped to other tools like `wc`, use `--no-headers`.
@@ -5163,8 +5163,8 @@ Examples of object access:
 
  * `kubectl get componentstatuses` - basic cluster diagnostics
  * `kubectl get nodes` - list nodes
- * `kubectl get nodes --selector='class=high-mem'` - list nodes that have label class set to high-mem (label selector)
- * `kubectl get nodes --selector='class=high-mem,!gpu'` - list nodes that have label class set to high-mem but label gpu unset (label selector)
+ * `kubectl get nodes --selector='class=high-mem'` - list nodes that have label class set to `high-mem` (label selector)
+ * `kubectl get nodes --selector='class=high-mem,!gpu'` - list nodes that have label class set to `high-mem` but label` gpu` unset (label selector)
  * `kubectl describe nodes {NAME}` - node information
  * `kubectl get daemonSets --namespace={NAMESPACE} {NAME}`
  * `kubectl get deployments --namespace={NAMESPACE} {NAME}`
@@ -5297,7 +5297,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
    Images also typically include metadata describing its needs and operational standards (e.g. memory requirements for the application).
 
- * `{bm} container` - An instance of an image. A container creates an isolated copy of the image's filesystem, isolates the resources required for that image, and launches the entrypoint application for that image. That container can't see or access anything outside of the container unless explicitly allowed to by the user. For example, opening a port 8080 on a container won't open port 8080 on the host running it, but the user can explicitly ask that port 8080 in the container map to some port on the host.
+ * `{bm} container` - An instance of an image. A container creates an isolated copy of the image's filesystem, isolates the resources required for that image, and launches the entry point application for that image. That container can't see or access anything outside the container unless explicitly allowed to by the user. For example, opening a port 8080 on a container won't open port 8080 on the host running it, but the user can explicitly ask that port 8080 in the container map to some port on the host.
 
  * `{bm} registry/(registry|registries)/i` - A service for storing and retrieving images.
 
@@ -5306,7 +5306,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
    1. an image containing the JVM has its Java directory pulled out.
    2. an image containing the GNU Compiler toolchain compiles some C++ code, then those compiled binaries are pulled out.
 
-   The end result is that the multistage build only contains the relevant portions of its "stages" (previous images), leading to a more focused image with smaller size.
+   The result is that the multistage build only contains the relevant portions of its "stages" (previous images), leading to a more focused image with smaller size.
 
  * `{bm} open container initiative runtime/(Open Container Initiative runtime|Open Container Initiative)/i`  `{bm} /\b(OCI runtime|OCI)s?\b//false/true`- A runtime responsible for only creating and launching containers. Examples include runC, rkt, runV, gviso, etc.. Some of these use Linux isolation technology (cgroups and namespaces) while others use virtualization technology.
 
@@ -5320,7 +5320,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} Kubernetes` - A tool for orchestrating multiple containers across a set machines. Provides features such as load balancing, service naming, service discovery, automated service scaling, and automated service recovery.
 
- * `{bm} node` - A host that Kubernetes uses to run the containers its orchestrating.
+ * `{bm} node` - A host that Kubernetes uses to run the containers it's orchestrating.
 
  * `{bm} master node` - A node responsible for the managing the cluster (control plane).
 
@@ -5330,7 +5330,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} pod template` - The blueprint for creating pods.
 
- * `{bm} namespace` - A user-defined category for objects in a cluster (e.g. pods), similar to a folder on a filesystem. Namespaces allow Kubernetes do things such as apply isolation and access control.
+ * `{bm} namespace` - A user-defined category for objects in a cluster (e.g. pods), similar to a folder on a filesystem. Namespaces allow Kubernetes to do things such as apply isolation and access control.
 
  * `{bm} kube-system` - A namespace for internal cluster components (pods) that Kubernetes runs for itself. For example, Kubernetes's DNS service, Kubernetes's proxy service, etc.. all run under the kube-system namespace.
 
@@ -5346,7 +5346,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} label` - User-defined key-value pairs assigned to Kubernetes objects to group those objects together. Labeling objects makes it so they can be accessed as a set (e.g. target all pods with authoring team set to SRE). Unlike annotations, labels aren't for assigning metadata to objects.
 
- * `{bm} label selector` - An expression language used to find objects with labels. For example `key=value`, `key!=value`, and `key in (value1, value2)`.
+ * `{bm} label selector` - An expression language used to find objects with labels (e.g. `key=value`, `key!=value`, and `key in (value1, value2)`).
 
  * `{bm} annotation/(annotation|annotate)/i` - User-defined key-value pairs assigned to Kubernetes objects that acts as metadata for other tools and libraries. Unlike labels, annotations aren't for grouping objects together.
 
@@ -5362,7 +5362,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} readiness probe` - A user-defined task that Kubernetes runs to ensure that a pod is in a position to accept requests. For example, an HTTP server that has all of its worker threads busy processing requests may be deemed as not ready.
 
-   Kubernetes stops routing requests to a pod if its no longer ready (removed from load balancer).
+   Kubernetes stops routing requests to a pod if it's no longer ready (removed from load balancer).
 
  * `{bm} utilization` - A metric that tracks the amount of resources in use vs the amount of resources available.
 
@@ -5376,7 +5376,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} endpoints` - A low-level kind that's used to map a service to the pods it routes to. In other words, an endpoints (note the plural) object is an abstraction that references a pod.
 
- * `{bm} ingress` - A kind that acts as an HTTP-based frontend that routes and load balances incoming external requests to the correct service. This kind is an interface without an implementation, meaning that Kubernetes doesn't have anything built-in to handle ingress. Implementations of this interfaces are referred to as ingress controllers and are provided by third-parties.
+ * `{bm} ingress` - A kind that acts as an HTTP-based frontend that routes and load balances incoming external requests to the correct service. This kind is an interface without an implementation, meaning that Kubernetes doesn't have anything built-in to handle ingress. Implementations of these interfaces are referred to as ingress controllers and are provided by third-parties.
 
  * `{bm} replica set` - A kind that ensures a certain number of pod replicas are running at any time.
 
@@ -5431,7 +5431,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} node selector` - A property of pods that forces them to be scheduled on a specific set of nodes.
 
- * `{bm} node affinity` - A property of pods that attracts them to or repels them from to a set of nodes, either as a preference or as a hard requirement.
+ * `{bm} node affinity` - A property of pods that attracts them to or repels them from a set of nodes, either as a preference or as a hard requirement.
 
  * `{bm} node taint/(node taint|taint)/i` - A property of nodes that repels a set of pods, either as a preference or as a hard requirement.
 

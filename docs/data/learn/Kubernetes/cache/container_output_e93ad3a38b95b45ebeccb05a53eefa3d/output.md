@@ -2,7 +2,7 @@
 
 <strong>⚠️NOTE️️️⚠️</strong>
 
-According to the k8s docs, it may be a parent-child relationship. Apparently looking for labels is just a initial step to permanently bringing pods under the control of a specific replica set:
+According to the k8s docs, it may be a parent-child relationship. Apparently looking for labels is just an initial step to permanently bringing pods under the control of a specific replica set:
 
 > A ReplicaSet is linked to its Pods via the Pods' metadata.ownerReferences field, which specifies what resource the current object is owned by. All Pods acquired by a ReplicaSet have their owning ReplicaSet's identifying information within their ownerReferences field. It's through this link that the ReplicaSet knows of the state of the Pods it is maintaining and plans accordingly.
 
