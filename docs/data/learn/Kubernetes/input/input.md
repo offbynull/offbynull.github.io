@@ -80,13 +80,13 @@ OCIs and OCRs are also the basis for container engines, tools that are responsib
 
 Kubernetes breaks down its orchestration as a set of objects. Each object is of a specific type, referred to as kind. The main kinds are ...
 
- * Node: A physical worker machine that runs containers.
- * Pod: A set of containers tightly coupled to run in unison on a single node.
- * Volume: A storage mechanism that lets pods persist and / or share data.
- * Service: A load balancer that routes traffic to pods.
+ * Node - A physical worker machine that runs containers.
+ * Pod - A set of containers tightly coupled to run in unison on a single node.
+ * Volume - A storage mechanism that lets pods persist and / or share data.
+ * Service - A load balancer that routes traffic to pods.
  * Configuration Map - A configuration mechanism for applications running within pods (non-security related configurations).
  * Secret - A security configuration mechanism for applications running within pods (e.g. passwords as certificates).
- * Ingress - A access point in which traffic comes in from the outside world to the internal Kubernetes network.
+ * Ingress - An access point in which traffic comes in from the outside world to the internal Kubernetes network.
 
 Of these kinds, the two main ones are nodes and pods.
 
@@ -113,7 +113,7 @@ Kinds_TOPIC (Discussion of common kinds)
 ```
 
 ```{note}
-The terminology here is a bit wishy-washy. Some places call them kinds, other places call them resources, other places call them classes, and yet other places call them straight-up objects (in this case, they mean kind but they're saying object). None of it seems consistent, which is why it's been difficult piecing together how Kubernetes works.
+The terminology here is a bit wishy-washy. Some places call them kinds, other places call them resources, other places call them classes, and yet other places call them straight-up objects (in this case, they mean kind but they're saying object). None of it seems consistent and sometimes terms are overloaded, which is why it's been difficult piecing together how Kubernetes works.
 
 I'm using kind to refer to the different types of objects, and object to refer to an instance of a kind.
 ```
@@ -5004,12 +5004,800 @@ There's also another much more complicated mechanism of adding your own kind cal
 
 ```{prereq}
 Kinds_TOPIC
+Extensions/Custom Kinds_TOPIC
 Security_TOPIC
 ```
 
 `{bm} /(Extensions\/Helm)_TOPIC/i`
 
-Helm is a package manager for Kubernetes. It installs and uninstalls software quickly, taking care of much of the configuration details. This could be software that's internal to Kubernetes (e.g. helps manage or extend Kubernetes in some way) or software that runs on top of Kubernetes (e.g. install a cluster of Redis pods for your application to use).
+Helm is an application installer for Kubernetes, similar to package managers on Linux distributions (e.g. apt on Ubuntu). It installs, upgrades, and uninstalls software, taking care of configuration details and applying all the necessary manifests into Kubernetes. This could be software that's internal to Kubernetes (e.g. helps manage or extend Kubernetes in some way) or software that runs on top of Kubernetes (e.g. install a cluster of Redis pods for your application to use).
+
+A chart is a recipe that details how Helm should install a piece of software. Each chart is made up of ...
+
+ 1. manifest templates that render based on user-supplied configurations.
+ 2. default configurations for those manifest templates.
+ 3. dependencies to other charts.
+
+```{svgbob}
+.----------------------------------------.
+|             "MyApp's Chart"            |
+|                                        |
+| "Manifest Templates"                   |
+|   "deployment template"                |
+|   "service template"                   |
+|   "ingress template"                   |
+|   "horizontal pod autoscaler template" |
+|                                        |
+| "Default Configs"                      |
+|   "app.port=8080"                      |
+|   "app.log-retention-size=100mb"       |
+|                                        |
+| "Chart Dependencies"                   |
+|   "postgres"                           |
+|   "redis"                              |
+'----------------------------------------'
+```
+
+Helm can access charts from either ...
+
+ * a chart repository, which is an HTTP server somewhere on the internet that distributes charts.
+ * a container registry, where charts are stored and distributed as if they were containers.
+ * the local file system.
+
+Publicly available charts / chart repositories are commonly listed on [ArtifactHub](https://artifacthub.io/).
+
+```{svgbob}
+             .---------------------------.
+             |     "Chart repository"    |
+.------.     |                           |
+| Helm |<--->| .----------. .----------. |
+'------'     | | Postgres | | WordPres | |
+             | | chart    | | chart    | |
+             | '----------' '----------' |
+             |         .-------.         |
+             |         | MySQL |         |
+             |         | chart |         |
+             |         '-------'         |
+             '---------------------------'
+```
+
+Each chart can be installed multiple times, where each installation has a different name and / or namespace. Helm can update installations in one of two ways: An installation can be updated to ...
+
+ * a newer / older version of a chart.
+ * use a different set of configurations.
+
+Each change to an installation is called a revision. For example, an installation of a Redis chart may go through the following revisions:
+
+ 1. Installed Redis 5 with default configurations.
+ 2. Updated configurations to listen on port 3333.
+ 3. Upgraded Redis 5 to Redis 6.
+ 4. Upgraded Redis 6 to Redis 7 and updated configurations to listen on port 7777.
+ 5. Rolled back to revision 2 (Redis 5 configured to listen on port 3333).
+
+```{svgbob}
+.-------.                .--------------.               .-----------.
+| Chart |----------------| Installation |---------------| Revisions |
+'-------' 1           1+ '--------------' 1          1+ '-----------'
+```
+
+Each revision has a lifecycle, which is stored inside of Kubernetes as a secret of a type `helm.sh/release.v1`.  The steps of that lifecycle are ...
+
+ * `pending-install` - this revision is pending, it's for an installation.
+ * `pending-upgrade` - this revision is pending, it's for an update.
+ * `pending-rollback` - this revision is pending, it's for a rollback.
+ * `deployed` - this revision has deployed.
+ * `superseded` - this revision has been superseded by new revision.
+ * `failed` - this revision failed to deploy.
+
+```{svgbob}
+                              *
+                              |
+             .----------------+----------------.
+             |                |                |
+             v                v                v
+.-----------------.  .-----------------.   .------------------.
+| pending-install |  | pending-upgrade |   | pending-rollback |
+'-----------+--+--'  '-+------+--------'   '--+--+------------'
+            |  |       |      |               |  |
+            |  |       |      v               |  |
+            |  |       \   .--------.         |  |
+            |  '--------]->| failed |<--------'  |
+            |          /   '--------'            |
+            |          |                         |
+            |          v                         |
+            |      .----------.                  |
+            '----->| deployed |<-----------------'
+                   '---+------'
+                       |                    
+                       v
+                  .------------.
+                  | superseded |
+                  '------------'
+```
+
+Helm is used via a CLI of the same name. By default, the Helm CLI uses the same configuration as kubectl to access the cluster, meaning Helm's CLI should work if kubectl works.
+
+```sh
+helm repo add bitnami https://charts.bitnami.com/bitnami  # Add bitnami's repo as "bitnami"
+helm repo update                                          # Update list of charts from repos
+helm install my-db bitnami/mysql                          # Install bitnami's mysql as "my-db"
+```
+
+### Repository References
+
+`{bm} /(Extensions\/Helm\/Repository References)_TOPIC/i`
+
+To add a reference to a chart repository, use `helm repo add`. Each added chart repository is given a local name, such that whenever that chart repository needs to be accessed in the CLI, the local name is used instead of the full URL.
+
+```sh
+# Add a repo as "bitnami".
+helm repo add bitnami https://charts.bitnami.com/bitnami
+# Add a repo as "my-private" using username and password authentication.
+helm repo add my-private https://my-org/repo --username $USERNAME --password $PASSWORD
+# Add a repo as "my-private" using SSL key file.
+helm repo add my-private https://my-org/repo --key-file $SSL_KEY_FILE
+# Add a repo as "my-private" using SSL certificate file.
+helm repo add my-private https://my-org/repo --cert-file $SSL_CERT_FILE
+# Add a repo as "my-private" but skip certificate checks for the server.
+helm repo add my-private https://my-org/repo --insecure-skip-tls-verify
+# Add a repo as "my-private" but use custom CA file to verify server's certificate.
+helm repo add my-private https://my-org/repo --ca-file $CA_FILE
+```
+
+To list all chart repository references, use `helm repo list`.
+
+```sh
+# List all chart repositories.
+helm repo list
+# List all chart repositories as YAML.
+helm repo list --output yaml
+# List all chart repositories as JSON.
+helm repo list --output json
+```
+
+To remove a chart repository reference, use `helm repo remove`.
+
+```sh
+# Remove the repo "bitnami".
+helm repo remove bitnami
+# Update only the repos "bitnami" and "my-private".
+helm repo remove bitnami my-private
+```
+
+Helm caches a chart repository once it's been added. To update an added chart repository's cache, use `helm repo update`.
+
+```sh
+# Update all repos.
+helm repo update
+# Update only the repos "bitnami" and "my-private".
+helm repo update bitnami my-private
+```
+
+To search added chart repositories for charts containing a specific keyword, use `helm search repo`.
+
+```sh
+# Search all repos for charts containing "redis".
+helm search repo redis
+# Search all repos for charts containing "redis", including pre-release versions.
+helm search repo redis --devel
+# Search all repos for charts containing "redis", including prior versions of charts.
+helm search repo redis --versions
+```
+
+```{note}
+Rather than searching just added repositories for "redis", it's possible to search all repositories in [ArtifactHub](https://artifacthub.io/) (or your own instance of it) via `helm search hub redis`.
+```
+
+### Installation Management
+
+`{bm} /(Extensions\/Helm\/Installation Management)_TOPIC/i`
+
+```{prereq}
+Extensions/Helm/Repository References_TOPIC
+```
+
+To install a chart, use `helm install`. Installing a chart requires the chart's name (e.g. `redis`), where to find the chart (e.g. locally vs chart repository), and what to name the installation (e.g. `my-redis-install`). Depending on the chart, some configuration parameters will likely be needed during installation as well.
+
+```{note}
+If installing / upgrading from a chart repository that's been added to Helm, you should update Helm's cache of that chart repository first: `helm repo update`.
+```
+
+```sh
+# Install "my-app" from the directory "./web-server".
+helm install my-app ./web-server
+# Install "redis" from the repo at https://charts.bitnami.com/bitnami.
+helm install my-app https://charts.bitnami.com/bitnami/redis
+# Install "redis" from the repo added as "bitnami".
+helm install my-redis-install bitnami/redis \
+  --namespace $NAMESPACE \  # Namespace to install under (optional, default if omitted)
+  --version $VERSION \      # Version of chart to install (optional, latest if omitted)
+  --values $YAML_FILE       # YAML containing overrides for chart's config defaults (optional)
+# Install "redis" from the repo added as "bitnami" using multiple config files.
+#
+#  * When multiple "--values" exist, the latter's values override former's values.
+helm install my-redis-install bitnami/redis \
+  --namespace $NAMESPACE \  # Namespace to install under (optional, default if omitted)
+  --version $VERSION \      # Version of chart to install (optional, latest if omitted)
+  --values $YAML_FILE_1 \   # YAML file containing config overrides (optional)
+  --values $YAML_FILE_2 \   # YAML file containing config overrides (optional)
+  --values $YAML_FILE_2     # YAML file containing config overrides (optional)
+# Install "redis" from the repo added as "bitnami" using individual configs.
+#
+#  * Individual configs reference paths in a object, similar to YAML/JSON keys.
+helm install my-redis-install bitnami/redis \
+  --namespace $NAMESPACE \  # Namespace to install under (optional, default if omitted)
+  --version $VERSION \      # Version of chart to install (optional, latest if omitted)
+  --set app.port=80 \       # YAML file containing config overrides (optional)
+  --set app.name=app \      # YAML file containing config overrides (optional)
+  --set app.replicas=5      # YAML file containing config overrides (optional)
+# Install "redis" from the repo added as "bitnami" and force creation of namespace if it doesn't
+# exist.
+#
+#  * Forcing namespace creation can result in security issues because the namespace won't have RBAC
+#    set up.
+helm install my-redis-install bitnami/redis \
+  --namespace $NAMESPACE \  # Namespace to install under (optional, default if omitted)
+  --create-namespace        # Create namespace if missing (optional)
+# Install "redis" from the repo added as "bitnami" using a uniquely generated name.
+#
+#  * Generated name will be based on chart's name.
+helm install my-redis-install bitnami/redis --generate-name
+# Install "my-app" but wait until specific objects are in a ready state before marking as success.
+#
+#  * By default, the install command will block only until manifests are submitted to Kubernetes.
+#    It's possible to force the install command to block until certain success criteria have bee
+#    met: pods, persistent vol claims, services, and min pods for deployments/stateful sets/etc..).
+helm install my-app ./web-server --wait \
+  --wait-for-jobs \    # Wait until all jobs have completed as well (optional)
+  --atomic \           # Delete the installation on failure  (optional)
+  --timeout $DURATION  # Max duration to wait before marking as failed (optional, 5m0s if omitted)
+# Simulate install "redis" from the repo added as "bitnami".
+#
+#  * Won't install, but will give the set of changes to be applied.
+helm install my-app ./web-server --dry-run
+```
+
+To list installations, use `helm list`.
+
+```sh
+# List installations.
+helm list \
+  --namespace $NAMESPACE \  # Namespace of installations (optional, default if omitted)
+  --max $MAX_ITEMS \        # Max installations to list (256 is set to 0 -- optional, 256 if omitted)
+  --filter $REGEX           # Perl compatible regex (optional, all listed if omitted)
+# List installations in all namespaces.
+helm list --all-namespaces
+```
+
+To update an installation, use `helm upgrade`. Updating works very similarly to installing, supporting many of the same options. The difference between the two is that, with `helm upgrade`, Helm diffs the current installation's objects with the objects created by the chart to see what it should be update. Only objects that have changes will get submitted to Kubernetes.
+
+When using `helm upgrade`, the configuration values used by the installation aren't re-applied by default. If the previous configuration values aren't supplied by the user or the `--reuse-values` flag isn't set, the upgrade will revert all configurations back to the chart's default values.
+
+```{note}
+The book recommends that you not use `--reuse-values` and instead supply the configurations each time via YAML. It's recommended that you store the YAML somewhere in git (unless it has sensitive information, in which cause you should partition out the sensitive info into another YAML and keep it secure somewhere).
+```
+
+```sh
+# Update "my-app" from the directory "./web-server" with existing config.
+helm upgrade my-app ./web-server --reuse-values \
+  --force                   # Replace object manifests instead of updating them (optional)
+# Update "redis" from the repo added as "bitnami" with existing config.
+helm upgrade my-redis-install bitnami/redis --reuse-values \
+  --force                   # Replace object manifests instead of updating them (optional)
+  --namespace $NAMESPACE \  # Namespace installed under (optional, default if omitted)
+  --version $VERSION \      # Version of chart to update to (optional, latest if omitted)
+# Update "redis" from the repo added as "bitnami" with new YAML config.
+helm upgrade my-redis-install bitnami/redis \
+  --force                   # Replace object manifests instead of updating them (optional)
+  --namespace $NAMESPACE \  # Namespace installed under (optional, default if omitted)
+  --version $VERSION \      # Version of chart to update to (optional, latest if omitted)
+  --values $YAML_FILE       # YAML containing overrides for chart's config defaults (optional)
+# Update "my-app" with existing config, but wait until specific objects are in a ready state before
+# marking as success.
+#
+#  * By default, the install command will block only until manifests are submitted to Kubernetes.
+#    It's possible to force the install command to block until certain success criteria have bee
+#    met: pods, persistent vol claims, services, and min pods for deployments/stateful sets/etc..).
+helm upgrade my-app ./web-server --reuse-values --wait \
+  --cleanup-on-fail \  # Delete new resources inserted by the upgrade on failure (optional)
+  --wait-for-jobs \    # Wait until all jobs have completed as well (optional)
+  --atomic \           # Rollback the update on failure  (optional)
+  --timeout $DURATION  # Max duration to wait before marking as failed (optional, 5m0s if omitted)
+# Simulate update "redis" (with existing config) from the repo added as "bitnami".
+#
+#  * Won't update, but will give the set of changes to be applied.
+helm upgrade my-app ./web-server --reuse-values --dry-run
+```
+
+To update or install (update if it exists / install if it doesn't exist), use `helm upgrade` just as before but also set the `--install` flag.
+
+```sh
+# Update or install "redis" from the repo added as "bitnami".
+helm upgrade my-redis-install bitnami/redis \
+  --install                 # Install rather than upgrade if "my-app" doesn't exist (optional)
+  --namespace $NAMESPACE \  # Namespace installed under (optional, default if omitted)
+  --version $VERSION \      # Version of chart to update to (optional, latest if omitted)
+  --values $YAML_FILE       # YAML containing overrides for chart's config defaults (optional)
+# Update or install "redis" from the repo added as "bitnami", and if installing, force creation of
+# namespace if it doesn't exist.
+#
+#  * Forcing namespace creation can result in security issues because the namespace won't have RBAC
+#    set up.
+helm upgrade my-redis-install bitnami/redis \
+  --install                 # Install rather than upgrade if "my-app" doesn't exist (optional)
+  --namespace $NAMESPACE \  # Namespace installed under (optional, default if omitted)
+  --create-namespace        # Create namespace if missing (optional)
+```
+
+```{note}
+`helm template` will do similar work to `helm upgrade`, but instead of applying updated / created objects to Kuberentes, it simply shows you the manifests for those objects.
+```
+
+Helm retains an installation's update history directly within Kubernetes (stored as secrets). To access the update history of an installation, use `helm history`.
+
+```sh
+# Get revision history for "redis".
+helm history redis
+# Get revision history for "redis" as YAML.
+helm history redis --output yaml
+# Get revision history for "redis" as JSON.
+helm history redis --output json
+```
+
+To rollback to a previous revision of an installation, use `helm rollback`.
+
+```sh
+# Rollback "redis" to revision 3.
+helm rollback redis 3
+# Simulate rollback "redis" to revision 3.
+#
+#  * Won't rollback, but will give the set of changes to be applied.
+helm rollback redis 3 --dry-run
+```
+
+To remove an installation, use `helm uninstall`.
+
+```sh
+# Uninstall "redis".
+helm uninstall redis
+# Uninstall "redis" but keep it's history.
+helm uninstall redis --keep-history
+```
+
+### Custom Charts
+
+`{bm} /(Extensions\/Helm\/Custom Charts)_TOPIC/i`
+
+To create a custom chart, use `helm create $NAME` to first create a skeleton. The directory structure created should have pieces to it:
+
+ * Configurations: The files `Chart.yaml` and `values.yaml` are configurations for the chart.
+ * Templates: The `templates` directory contains manifest templates (and other templates) for the chart.
+ * Tests: The `templates/test` directory contains manifest templates for automated tests of the chart.
+ * Dependencies: The `charts` directory contains other charts that the chart depends on.
+
+The subsections below detail the particulars of each file / directory.
+
+#### Configurations
+
+`{bm} /(Extensions\/Helm\/Custom Charts\/Configurations)_TOPIC/i`
+
+In a chart directory, the files `Chart.yaml` and `values.yaml` make up the configurations for the chart.
+
+`Chart.yaml` contains metadata about the chart (e.g. what it's called, who maintains it, etc..) as well as some control flags.
+
+```yaml
+# [REQUIRED] The chart specification being targeted by this chart. Set this value to "v2" ("v2"
+# charts targets version 3 of Helm, while "v1" targets version 2 of Helm).
+apiVersion: v2
+# [REQUIRED] The name of this chart. This is the name people use when they install / update this
+# chart. This name must conform to the specifications of names for Kubernetes objects (lowercase
+# characters, numbers, dashes, and dots only).
+name: my-app  
+# [OPTIONAL] The annotations associated with this chart. Similar to annotations for Kubernetes
+# objects.
+annotations:
+  development-os: Windows95
+# [OPTIONAL] The description, project URL, source URLs, icons, maintainers, and keywords associated
+# with this chart.
+description: Some text here.
+home: https://chart.github.io
+sources: [https://github.com/organization/chart]
+icon: https://github.com/some_user/chart_home/icon.svg  # This can be a data URL (if you want)
+maintainers:
+  - name: Steve
+    email: steve@gmail.com
+    url: https://steve.com
+  - name: Josh
+    url: https://josh.com
+  - name: George
+keywords: [apple, cars, pepsi]
+# [OPTIONAL] This can be set to either "application" or "library" (default is "application"). An
+# "application" is a chart that installs an application for some user, while a "library" is
+# essentially a chart that provides helper functionality for other charts (it can't be
+# installed).
+type: application
+# [REQUIRED] This is the version of this chart. This should be incremented whenever a change is
+# made to the chart.
+version: 1.0.1
+# [OPTIONAL] This is the version of the application being installed by this chart (must be set if
+# type of this chart is "application"?).
+appVersion: 7.0.1
+```
+
+`values.yaml` contains default configuration values for the chart, which are overridable by the user during installs / updates.
+
+```yaml
+app.port: 8080
+app.service-type: LoadBalancer
+```
+
+#### Templates
+
+`{bm} /(Extensions\/Helm\/Custom Charts\/Templates)_TOPIC/i`
+
+```{prereq}
+Extensions/Helm/Custom Charts/Configurations_TOPIC
+```
+
+In a chart directory, the files inside of the `templates/` directory consist of templates. These templates are mostly for manifests, but can also include macros and templates for other aspects of the chart (e.g. `NOTES.txt` is displayed to the user once it installs).
+
+Helm's templating functionality leverages [Go's text template package](https://pkg.go.dev/text/template). Rendering a template requires an object, where that object's fields are evaluated to fill in various sections of the template. Helm provides this object. The object has ...
+
+ * configuration values under `.Values`.
+ * revision information under `.Release`.
+ * chart information under `.Chart`.
+ * template information under `.Template`.
+ * Kubernetes cluster capabilities under `.Capabilities`.
+ * file access methods under `.Files`.
+
+The object's most commonly accessed fields are...
+
+ * `.Values` - Configuration values. These are from `values.yaml`, where some or all values are overridden by the user.
+ * `.Chart.Name` - Chart's name. Maps to `name` in `Config.yaml`.
+ * `.Chart.Version` - Chart's version.  Maps to `version` in `Config.yaml`.
+ * `.Chart.AppVersion` - Chart's application version.  Maps to `appVersion` in `Config.yaml`.
+ * `.Chart.Annotations` - Chart's annotations.  Maps to `annotations` in `Config.yaml`.
+ * `.Release.Name` - Release name.
+ * `.Release.Namespace` - Release namespace.
+ * `.Release.IsInstall` - `true` if installing.
+ * `.Release.IsUpgrade` - `true` if upgrading or rolling back.
+ * `.Release.Service` - !!Service!! performing the release. Usually it's Helm doing it.
+ * `.Template.Name` - Template file path (relative to chart directory's parent - e.g. `/my-chart/templates/service.yaml`).
+ * `.Template.BaseName` - Template directory path (relative to chart directory's parent - e.g. `/my-chart/templates`).
+ * `.Capabilities.APIVersions` - Supported API versions and kinds.
+ * `.Capabilities.KubeVersion.Version.Major` - Kubernetes major version.
+ * `.Capabilities.KubeVersion.Version.Minor` - Kubernetes minor version.
+
+```{note}
+For `.Chart`, the `Config.yaml` has keys with lowercase first characters. When accessed through the object, you need to uppercase that first character (e.g. `name` becomes `.Chart.Name`).
+```
+
+In the template, evaluations are encapsulated by double squiggly brackets, where inside the brackets are field accesses and control structures. The object provided by Helm is referenced simply with a preceding dot (e.g. `{{.Values.app.name}}`).
+
+```yaml
+# Define template macros
+{{define "name"}}
+name: {{.Values.app.name}}
+{{end}}
+{{define "labels"}}
+app: backend
+version: 3.4.1
+{{end}}
+# Define template
+apiVersion: v1
+kind: Pod
+metadata:
+  {{include "name" . | nident 2}}
+  labels:
+    {{include labels | nident 4}}
+spec:
+  containers:
+    - image: my-image:1.0
+      name: my-container
+```
+
+The rest of this section gives a brief but incomplete overview of templating in Helm. A complete overview of templating is available at the documentation for [Go's template package](https://pkg.go.dev/text/template) and [Helm's templating functions](https://helm.sh/docs/chart_template_guide/function_list/).
+
+Common template evaluations are listed below (e.g. accessing fields, calling functions, if-else, variables, etc..).
+
+ * `{{.Values.app.name}}` - Field access.
+ * `{{printf "%s-%s" "my-app" "v1.0}}` - Function invocation.
+ * `{{trimSuffix "-" (trunc 63 (printf "%s-%s" "my-app" "v1.0))}}` - Chain function invocation.
+ * `{{trimSuffix "-" (trunc 63 (printf "%s-%s" .Values.app.name .Values.app.version))}}` - Chained function invocations and field accesses together.
+ * `{{printf "%s-%s" .Values.app.name .Values.app.version | trunc 63 | trimSuffix "-"}}` - Chained function invocations and field accesses together *as a pipeline*. The result of each command is passed as *last* argument of the next.
+ * `{{$var := .Values.app.name}}` - Variable declaration. Produces no output, but variable may be used further on in the template.
+ * `{{if $var}} not empty {{end}}` - If block. Tests if whatever passed in is truthy (e.g. true if bool, >0 if integer, not null if object, non-empty if collection). The condition passed may be a compound (e.g. chained method invocations).
+ * `{{if $var}} not empty {{else}} empty {{end}}` - If-else block. Similar to above, but with an else block.
+ * `{{if $var1}} not empty1 {{else if $var2}} not empty2 {{else}} empty {{end}}` - If-else block. Similar to above, but with extra conditional checks.
+ * `{{range .Values.my_list}} item={{.}} {{end}}` - Loop over the elements of a list. The current list item is placed in `.`.
+ * `{{range $i,$v := .Values.my_list}} idx={{i}}, idx={{v}} {{end}}` - Loop over the elements of a list using variables. The current list item and its index are placed into variables.
+ * `{{range $k,$v := .Values.my_dict}} key={{k}}, val={{v}} {{end}}` - Loop over the elements of a dict using variables. The current dict key and value are placed into variables.
+ * `{{- .Values.app.name}}` - Ignore preceding whitespace of this block during evaluation. Dash must be followed by whitespace.
+ * `{{.Values.app.name -}}` - Ignore trailing whitespace of this block during evaluation. Whitespace must be before dash.
+ * `{{/* comment here */}}` - Comment (nothing gets rendered). May span multiple lines.
+
+Common template functions are categorized are listed below. Some of these come directly from Go while other are provided by Helm.
+
+```{note}
+Many of these functions have `must` variants (e.g. `toYaml` vs `mustToYaml`) which error out in case it can't perform the expected function.
+```
+
+ * Common
+   * `eq arg1 arg2` - Equals (`arg1 == arg2`).
+   * `ne arg1 arg2` - Not equals (`arg1 != arg2`).
+   * `lt arg1 arg2` - Less than (`arg1 < arg2`).
+   * `le arg1 arg2` - Less than or equal (`arg1 <= arg2`).
+   * `gt arg1 arg2` - Greater than (`arg1 > arg2`).
+   * `ge arg1 arg2` - Greater than or equal (`arg1 >= arg2`).
+   * `and arg1 arg2` - Logical AND (`arg1 and arg2`).
+   * `or arg1 arg2` - Logical OR (`arg1 or arg2`).
+   * `not arg1` - Logical NOT (`not arg1`).
+   * `len arg1` - Length of string, collection, etc..
+   * `print args...` - Go's print function.
+   * `printf args...` - Go's printf function.
+ * Collections
+   * `index arg1 dims...` - Access some index (e.g. `index my_matrix 5 2` is equivalent to `my_matrix[5][2]`).
+   * `list args...` - Create list of arguments (e.g. `list 1 2 3`).
+   * `prepend l1 val` - Prepend value to a list (e.g. `prepend (list 1 2 3) 4`).
+   * `append l1 val` - Prepend value to a list (e.g. `append (list 1 2 3) 4`).
+   * `first l1` - Return first element of list.
+   * `rest l1` - Return all but the first element of list.
+   * `last l1` - Return last element of list.
+   * `initial l1` - Return all but the last element of list.
+   * `concat args...` - Concatenate lists into a single list (e.g. `concat (list 1 2 3) (list 4 5)`).
+   * `dict args...` - Create dict of argument paris (e.g. `dict "key1" "value1" "key2" "value2"`).
+   * `keys d1` - Get all dictionary keys (e.g. `keys (dict "k1" "v1" "k2" "v2")`).
+   * `values d1` - Get all dictionary values (e.g. `keys (dict "k1" "v1" "k2" "v2")`).
+   * `get d1 k` - Get dictionary entry (e.g. `get (dict "k1" "v1" "k2" "v2") "k2"`).
+   * `set d1 k v` - Set dictionary entry (e.g. `set (dict "k1" "v1" "k2" "v2") "k3" "v3"`).
+   * `unset d1 k` - Unset dictionary entry (e.g. `unset (dict "k1" "v1" "k2" "v2") "k2"`).
+   * `hasKey d1 k` - Test if dictionary has key (e.g. `hasKey (dict "k1" "v1" "k2" "v2") "k2"`).
+   * `deepEqual arg1 arg2` - Deep object equality (e.g. `deepEqual (list $obj1, obj2, obj3)  (list $obj4, obj5, obj7)`).
+   * `deepCopy arg1` - Deep object copy (e.g. `deepEqual (list $obj1, obj2, obj3)`).
+ * String
+   * `trim arg` / `trimSuffix arg` / `trimPrefix arg` - Remove whitespace from start and / or end of function.
+   * `nospace arg` - Remove all whitespace.
+   * `contains arg1 arg2` - Test if 1st string is in 2nd string (e.g. `contains "app" "apple"`).
+   * `hasPrefix arg1 arg2` / `hasSuffix arg1 arg2` - Test if 1st string starts / sends with 2nd string (e.g. `hasPrefix "app" "apple"`).
+   * `replace arg1 arg2 arg3` - In the 3rd string, replace all instances of 1st string with the 2nd string (e.g. `replace "p" "t" "happy"`).
+   * `lower arg` / `upper arg` - Convert to lowercase / uppercase.
+   * `title arg` / `untitle arg` - Convert to / from title case.
+   * `snakecase arg` - Convert from camel case to snake case (e.g. `snakecase "HelloWorld"`).
+   * `camelcase arg` - Convert from snake case to camel case (e.g. `camelcase "hello_world"`).
+   * `kebabcase arg` - Convert from camel case to kebab case (e.g. `kebabcase "HelloWorld"`).
+   * `indent num str` - Indent each line by a certain number of spaces (e.g. `indent 4 "hello\nworld"`).
+   * `nindent num str` - Same as above but adds a new line character before indenting (e.g. `nindent 4 "hello\nworld"`).
+ * Regex (FYI: Regex needs to be escaped when used in a string literal, similar to how you have to quote it in Java or Python.)
+   * `regexMatch regex str` - Match regex against a string (e.g. `regexMatch "\\d{5}" "12345"`).
+   * `regexFind regex str` - Find first match of a regex within a string (e.g. `regexFind "[2,4]" "12345"`).
+   * `regexFindAll regex str max` - Find matches of a regex within a string (e.g. `regexFindAll "[1,3,5]" "12345" -1`). Set `max` to the maximum number of matches to return, where -1 means unlimited.
+   * `regexReplaceAll regex str replace` - Replace matches of a regex within a string (e.g. `regexReplaceAll "([1,3,5])" "12345" "!${1}!"`). Set `replace` to the replacement string, where that replacement string uses dollar sign to reference capture groups (similar to Java's regex replacement). The expression `regexReplaceAll "([1,3,5])" "12345" "!${1}!"` generates the replacement `"!1!2!3!4!5!"`.
+   * `regexReplaceAllLiteral regex str replace` - Similar to above, but doesn't replace with capture groups. The expression `regexReplaceAllLiteral "([1,3,5])" "12345" "!${1}!"` generates the replacement `"!${1}!2!${1}!4!${1}!"`.
+   * `regexSplit regex str max` - Split a string using a regex delimiter (e.g. `regexSplit "[1,3,5]" "12345" -1`). Set `max` to the maximum number of substrings to return, where -1 means unlimited.
+ * Random
+   * `shuffle arg` - Shuffles the characters in a string.
+   * `randAlpha c` / `randNumeric c` / `randAlphaNum c` / `randAscii c` - Generate random string of a certain size, containing only letters / numbers / alphanumeric characters / ASCII characters (e.g. `randAlpha 5`).
+   * `uuidv4` - Generate a UUID v4.
+* Utility
+   * `default def arg` - Return a default value if argument is unset.
+   * `semver ver` - Parse semantic version into an object. Object has fields `Major`, `Minor`, `Patch`, `Prerelease`, and `Metadata`.
+   * `semverCompare format ver` - Test if semantic version matches a version constraint (version constraints documented [here](https://github.com/Masterminds/semver#basic-comparisons)).
+   * `toYaml arg` - Dump as YAML.
+   * `toJson arg` - Dump as JSON.
+   * `toPrettyJson arg` - Dump as JSON but pretty-printed.
+   * `b32enc arg` / `b64enc arg` - Encode with Base 32 / 64.
+   * `b32dec arg` / `b64dec arg` - Decode with Base 32 / 64.
+ * Date
+   * `unixEpoch` - Number of seconds since Unix epoch.
+   * `now` / `date fmt` / `dateInZone fmt` - Current time as object. Typically formatted to string via `date` / `dateInZone` (e.g. `now | date`).
+ * Kubernetes
+   * `lookup apiVersion kind namespace name` - Get Kubernetes object. Set `name` to empty string to get all. Set `namespace` to empty string for cluster-level kinds.
+   * `.Capabilities.APIVersions.Has api` - Test if a version and / or kind exists in Kubernetes (e.g. `.Capabilities.APIVersions.Has "apps/v1/Deployment` or `.Capabilities.APIVersions.Has "apps/v1`).
+ * File-access
+   * `.Files.Get path` - Read a file into a string. `path` is a path relative to the chart directory.
+   * `.Files.Lines path` - Read a file as an array of lines. `path` is a path relative to the chart directory.
+   * `.Files.GetBytes path` - Read a file into an array of bytes. `path` is a path relative to the chart directory.
+
+A template can define a set of macros that act similarly to functions. To define a macro, wrap template text in `{{define name}}` and `{{end}}`.
+
+```
+{{define "name"}}
+  name: {{.Values.app.name}}
+{{end}}
+{{define "labels"}}
+    app: backend
+    version: 3.4.1
+{{end}}
+```
+
+To use a macro, use `{{template name scope}}`, where `name` is the name of the template and `scope` is whatever object that template uses when accessing fields and functions. If `scope` is omitted, the render may not be able to access necessary fields or functions to render. For example, in the last macro defined above, `scope` needs to contain the path `app.name`.
+
+```yaml
+# PRE-RENDER
+{{define "name"}}
+  name: {{.Values.app.name}}
+{{end}}
+{{define "labels"}}
+    app: backend
+    version: 3.4.1
+{{end}}
+apiVersion: v1
+kind: Pod
+metadata:
+{{template "name" .}}
+  labels:
+{{template labels}}
+spec:
+  containers:
+    - image: my-image:1.0
+      name: my-container
+----
+# POST-RENDER
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-app
+  labels:
+    app: backend
+    version: 3.4.1
+spec:
+  containers:
+    - image: my-image:1.0
+      name: my-container
+```
+
+One issue with `{{template name scope}}` is inability to control whitespace in the render. For the macros to be truly be reusable, they need to appropriately be indented to align with the section of YAML they're being rendered in. For example, imagine wanting to modify the example above to include the name as label as well. The YAML produced would be incorrect.
+
+```yaml
+# PRE-RENDER
+{{define "name"}}
+  name: {{.Values.app.name}}
+{{end}}
+{{define "labels"}}
+    app: backend
+    version: 3.4.1
+{{end}}
+apiVersion: v1
+kind: Pod
+metadata:
+{{template "name" .}}
+  labels:
+app-{{template "name" .}}
+{{template labels}}
+spec:
+  containers:
+    - image: my-image:1.0
+      name: my-container
+----
+# POST-RENDER
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-app
+  labels:
+app-  name: my-app  # WRONG - should be "app-name: my-app" and indented to be child of "labels:.
+    app: backend
+    version: 3.4.1
+spec:
+  containers:
+    - image: my-image:1.0
+      name: my-container
+```
+
+The typical workaround to this is to use `{{include name scope}}`, which is a special function provided by Helm that, unlike `{{template name scope}}`, can be used in pipeline method invocations. Being usable in a pipeline means that you can pass the macro output to the `indent` / `nindent` function to properly align output.
+ 
+```yaml
+# PRE-RENDER
+{{define "name"}}
+name: {{.Values.app.name}}
+{{end}}
+{{define "labels"}}
+app: backend
+version: 3.4.1
+{{end}}
+apiVersion: v1
+kind: Pod
+metadata:
+  {{include "name" . | nident 2}}
+  labels:
+    # Trim preceding/trailing whitespace from "name" macro output, then add "app- to it, then
+    # indent add a new line to the beginning of it and indent all lines by 4.
+    {{printf "app-%s" trim (include "name" .) | nident 4}}
+    {{include labels | nident 4}}
+spec:
+  containers:
+    - image: my-image:1.0
+      name: my-container
+----
+# POST-RENDER
+apiVersion: v1
+kind: Pod
+metadata:
+
+  name: my-app
+  labels:
+    # Trim preceding/trailing whitespace from "name" macro output, then add "app- to it, then
+    # indent add a new line to the beginning of it and indent all lines by 4.
+
+    app-name: my-app
+
+    app: backend
+    version: 3.4.1
+spec:
+  containers:
+    - image: my-image:1.0
+      name: my-container
+```
+
+#### Tests
+
+`{bm} /(Extensions\/Helm\/Custom Charts\/Tests)_TOPIC/i`
+
+```{prereq}
+Extensions/Helm/Custom Charts/Templates_TOPIC
+```
+
+TODO: TALK ABOUT TESTS HERE
+
+TODO: TALK ABOUT TESTS HERE
+
+TODO: TALK ABOUT TESTS HERE
+
+TODO: TALK ABOUT TESTS HERE
+
+
+#### Dependencies
+
+`{bm} /(Extensions\/Helm\/Custom Charts\/Dependencies)_TOPIC/i`
+
+```{prereq}
+Extensions/Helm/Custom Charts/Templates_TOPIC
+```
+
+TODO: TALK ABOUT CHART DEPS HERE
+
+TODO: TALK ABOUT CHART DEPS HERE
+
+TODO: TALK ABOUT CHART DEPS HERE
+
+TODO: TALK ABOUT CHART DEPS HERE
+
+#### Packaging
+
+To package a chart for distribution, use `helm package $NAME`. Based on the configuration of the chart, Helm will generate an archive with filename `$CHART_NAME-$VERSION.tgz` which encompasses the entire chart. Others can use this file to install the chart.
+
+```sh
+# Package "my-chart".
+helm package my-chart
+# Package "my-chart" but update chart dependencies first.
+helm package my-chart --dependency-update
+# Package "my-chart" to a the directory "/home/user".
+helm package my-chart --destination /home/user
+# Package "my-chart" but automatically update the chart version and the app version.
+helm package my-chart \
+  --app-version $APPVER \ # Override chart's app version (optional, config value used if omitted)
+  --version $CHARTVER     # Override chart's version (optional, config value used if omitted)
+```
+
+The packaging process reads a special file that instructs it on which files and directories to ignore, named `.helmignore`. Files and directories are ignored using glob patterns, similar to `.gitignore` for git and `.Dockerignore` for Docker.
+
+```
+# Patterns to ignore when building packages.
+.git/
+.gitignore
+.vscode/
+*.tmp
+**/temp/
+```
+
+Prior to packaging a chart, it's common to run it through Helm's built-in linter to see if it has any issues (e.g. invalid YAML generated). To link a chart, use `helm lint $NAME`. The linter supports three levels of feedback: informational, warning, and error. Only error causes the process to exit with a non-zero return code.
+
+```sh
+# Lint "my-chart".
+helm lint my-chart
+# Lint "my-chart" but treat warnings as errors.
+helm lint my-chart --strict
+```
 
 ## Prometheus
 
@@ -5017,11 +5805,12 @@ Helm is a package manager for Kubernetes. It installs and uninstalls software qu
 
 ```{prereq}
 Kinds/Horizontal Pod Autoscaler_TOPIC
+Extensions/Helm_TOPIC
 ```
 
-Prometheus is a monitoring system that can integrate with Kubernetes to support custom metrics. These custom metrics, which Prometheus grabs by scraping endpoints, provide better visibility into the system and can be used to scale replicas via an HPA / VPA.
+Prometheus is a monitoring system that can integrate with Kubernetes to support custom metrics. These custom metrics, which Prometheus grabs by scraping files and querying servers, provide better visibility into the system and can be used to scale replicas via an HPA / VPA.
 
-Any HPA can scale by using an object's values as metrics. Imagine a user-defined kind (CRD) whose objects store a specific value (e.g. request rate).
+Any HPA can scale by using an object's values as metrics.
 
 TODO: discuss installing through helm
 
@@ -5401,7 +6190,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} container` - An instance of an image. A container creates an isolated copy of the image's filesystem, isolates the resources required for that image, and launches the entry point application for that image. That container can't see or access anything outside the container unless explicitly allowed to by the user. For example, opening a port 8080 on a container won't open port 8080 on the host running it, but the user can explicitly ask that port 8080 in the container map to some port on the host.
 
- * `{bm} registry/(registry|registries)/i` - A service for storing and retrieving images.
+ * `{bm} registry/(registry|registries)/i` - A server that stores and distributes images.
 
  * `{bm} multistage image/(multistage build|multistage image|multistage container image)/i` - A container image produced by merging portions of other container images together. For example, to build a multistage image that contains Java as well as compiled C++ binaries, ...
 
@@ -5543,7 +6332,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} topology key` - A label placed on nodes that defines their vicinity. For example, nodes can define which rack they're on via a label with the key `rack`, where the value would be the same for all nodes on the same rack (e.g. nodes on rack 15 would have the label `rack=15`, nodes on rack 16 would have the label `rack=16`, etc..).
 
- * `{bm} image pull secret` - A special type of secret used for storing the credentials of a private image registry.
+ * `{bm} image pull secret` - A special type of secret used for storing the credentials of a private container registry.
 
  * `{bm} container network interface/(container network interface|container networking interface|network plugin)/i` `{bm} /\b(CNI)s?\b//false/true` - A Kubernetes plugin responsible for inserting a network interface into the container (e.g. virtual ethernet) and making necessary changes on the node to bridge that network interface to the rest of the cluster.
 
@@ -5555,9 +6344,17 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} custom resource definition` `{bm} /\b(CRD)s?\b//false/true` - A kind that defines another user-defined kind.
 
- * `{bm} sidecar/(sidecar container|sidecar)/i` - A container within a pod that performs helper tasks for the other more important containers in that pod (e.g. collecting application logs and sending them to a database).
+ * `{bm} init container` - A container within a pod that performs initialization tasks for that pod (e.g. writing some files required by the main containers to run).
+
+ * `{bm} sidecar container/(sidecar container|sidecar)/i` - A container within a pod that performs helper tasks for the other more important containers in that pod (e.g. collecting application logs and sending them to a database).
 
  * `{bm} custom metrics adapter/(custom metrics? adapter)/i` - A pod (or pod replicas) that accesses some other pod's metrics via a shared resource (e.g. shared volume) and places it into Kubernetes via CRDs for the purpose of scaling replicas via an HPA.
+
+ * `{bm} Helm` - A tool to define, install, and upgrade applications on Kubernetes. Similar to a package manager for Linux distributions (e.g. apt is used to install, upgrade, and remove software on Ubuntu).
+
+ * `{bm} chart` - A set of files that instructs Helm on how to install, manage, and upgrade some application(s). Each chart is comprised of a set of configurations, templated manifests, and dependencies to other charts.
+
+ * `{bm} chart repository/(chart repository|chart repositories)/i` - A server that stores and distributes charts.
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 

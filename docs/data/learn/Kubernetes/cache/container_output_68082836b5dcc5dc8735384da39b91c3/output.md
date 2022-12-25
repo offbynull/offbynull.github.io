@@ -3,6 +3,7 @@
 <strong>↩PREREQUISITES↩</strong>
 
  * Kinds/Horizontal Pod Autoscaler_TOPIC
+ * Extensions/Helm_TOPIC
 
 </div>
 

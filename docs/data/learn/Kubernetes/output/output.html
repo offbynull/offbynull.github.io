@@ -138,6 +138,18 @@
 <ul>
 <li><a href="#H_Custom%20Kinds">Custom Kinds</a></li>
 <li><a href="#H_Helm">Helm</a></li>
+<ul>
+<li><a href="#H_Repository%20References">Repository References</a></li>
+<li><a href="#H_Installation%20Management">Installation Management</a></li>
+<li><a href="#H_Custom%20Charts">Custom Charts</a></li>
+<ul>
+<li><a href="#H_Configurations">Configurations</a></li>
+<li><a href="#H_Templates">Templates</a></li>
+<li><a href="#H_Tests">Tests</a></li>
+<li><a href="#H_Dependencies">Dependencies</a></li>
+<li><a href="#H_Packaging">Packaging</a></li>
+</ul>
+</ul>
 <li><a href="#H_Prometheus">Prometheus</a></li>
 </ul>
 <li><a href="#H_Guides">Guides</a></li>
@@ -210,13 +222,13 @@
 <p><a name="BM_(Introduction%5C%2FObjects)_TOPIC%2Fi"></a><strong></strong></p>
 <p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> breaks down its orchestration as a set of <a href="#BM_(object)%2Fi">object</a>s. Each <a href="#BM_(object)%2Fi">object</a> is of a specific type, referred to as <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>. The main <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s are ...</p>
 <ul>
-<li><a href="#BM_(node)%2Fi">Node</a>: A physical worker machine that runs <a href="#BM_(container)%2Fi">container</a>s.</li>
-<li><a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">Pod</a>: A set of <a href="#BM_(container)%2Fi">container</a>s tightly coupled to run in unison on a single <a href="#BM_(node)%2Fi">node</a>.</li>
-<li>Volume: A storage mechanism that lets <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s persist and / or share data.</li>
-<li><a href="#BM_(service)%2Fi">Service</a>: A load balancer that routes traffic to <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s.</li>
+<li><a href="#BM_(node)%2Fi">Node</a> - A physical worker machine that runs <a href="#BM_(container)%2Fi">container</a>s.</li>
+<li><a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">Pod</a> - A set of <a href="#BM_(container)%2Fi">container</a>s tightly coupled to run in unison on a single <a href="#BM_(node)%2Fi">node</a>.</li>
+<li>Volume - A storage mechanism that lets <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s persist and / or share data.</li>
+<li><a href="#BM_(service)%2Fi">Service</a> - A load balancer that routes traffic to <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s.</li>
 <li><a href="#BM_(config%20map%7Cconfiguration%20map)%2Fi">Configuration Map</a> - A configuration mechanism for applications running within <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s (non-security related configurations).</li>
 <li><a href="#BM_(secret)%2Fi">Secret</a> - A security configuration mechanism for applications running within <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s (e.g. passwords as certificates).</li>
-<li><a href="#BM_(ingress)%2Fi">Ingress</a> - A access point in which traffic comes in from the outside world to the internal <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> network.</li>
+<li><a href="#BM_(ingress)%2Fi">Ingress</a> - An access point in which traffic comes in from the outside world to the internal <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> network.</li>
 </ul>
 <p>Of these <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s, the two main ones are <a href="#BM_(node)%2Fi">node</a>s and <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s.</p>
 <p><img src="svgbob_9639c1c0bd51761a766d2364fac5a4771ecb4cd7.svg" alt="Kroki diagram output"></p>
@@ -229,7 +241,7 @@
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The terminology here is a bit wishy-washy. Some places call them <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s, other places call them resources, other places call them classes, and yet other places call them straight-up <a href="#BM_(object)%2Fi">object</a>s (in this case, they mean <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> but they're saying <a href="#BM_(object)%2Fi">object</a>). None of it seems consistent, which is why it's been difficult piecing together how <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> works.</p>
+<p>The terminology here is a bit wishy-washy. Some places call them <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s, other places call them resources, other places call them classes, and yet other places call them straight-up <a href="#BM_(object)%2Fi">object</a>s (in this case, they mean <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> but they're saying <a href="#BM_(object)%2Fi">object</a>). None of it seems consistent and sometimes terms are overloaded, which is why it's been difficult piecing together how <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> works.</p>
 <p>I'm using <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> to refer to the different types of <a href="#BM_(object)%2Fi">object</a>s, and <a href="#BM_(object)%2Fi">object</a> to refer to an instance of a <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>.</p>
 </div>
 <a name="H_Labels"></a><h2>Labels</h2>
@@ -1136,7 +1148,7 @@ kubectl delete -f obj.yaml
 <li><a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">Kind</a>s/<a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">Pod</a>/Command-line Arguments</li>
 </ul>
 </div>
-<p>Init <a href="#BM_(container)%2Fi">container</a>s are <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> <a href="#BM_(container)%2Fi">container</a>s that run prior to a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>'s actual <a href="#BM_(container)%2Fi">container</a>s. Their purpose is to initialize the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> in some way (e.g. writing startup data to some shared volume) or delay the start of the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> until some other service is detected as being online (e.g. database).</p>
+<p><a href="#BM_(init%20container)%2Fi">Init container</a>s are <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> <a href="#BM_(container)%2Fi">container</a>s that run prior to a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>'s actual <a href="#BM_(container)%2Fi">container</a>s. Their purpose is to initialize the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> in some way (e.g. writing startup data to some shared volume) or delay the start of the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> until some other service is detected as being online (e.g. database).</p>
 <pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
 <span class="hljs-attr">metadata:</span>
@@ -1157,7 +1169,7 @@ kubectl delete -f obj.yaml
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Important note from the docs:</p>
 <blockquote>
-<p>Because init <a href="#BM_(container)%2Fi">container</a>s can be restarted, retried, or re-executed, init <a href="#BM_(container)%2Fi">container</a> code should be idempotent. In particular, code that writes to files on EmptyDirs should be prepared for the possibility that an output file already exists.</p>
+<p>Because <a href="#BM_(init%20container)%2Fi">init container</a>s can be restarted, retried, or re-executed, <a href="#BM_(init%20container)%2Fi">init container</a> code should be idempotent. In particular, code that writes to files on EmptyDirs should be prepared for the possibility that an output file already exists.</p>
 </blockquote>
 </div>
 <a name="H_Restart%20Policy"></a><h4>Restart Policy</h4>
@@ -4589,22 +4601,684 @@ w = kubernetes.watch.Watch()
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Kinds)_TOPIC%2F">Kinds</a></li>
+<li><a href="#BM_(Extensions%5C%2FCustom%20Kinds)_TOPIC%2Fi">Extensions/Custom Kinds</a></li>
 <li><a href="#BM_(Security)_TOPIC%2Fi">Security</a></li>
 </ul>
 </div>
 <p><a name="BM_(Extensions%5C%2FHelm)_TOPIC%2Fi"></a><strong></strong></p>
-<p>Helm is a package manager for <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>. It installs and uninstalls software quickly, taking care of much of the configuration details. This could be software that's internal to <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> (e.g. helps manage or extend <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> in some way) or software that runs on top of <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> (e.g. install a cluster of Redis <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s for your application to use).</p>
+<p><a href="#BM_(Helm)%2Fi">Helm</a> is an application installer for <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>, similar to package managers on Linux distributions (e.g. apt on Ubuntu). It installs, upgrades, and uninstalls software, taking care of configuration details and applying all the necessary <a href="#BM_(manifest)%2Fi">manifest</a>s into <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>. This could be software that's internal to <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> (e.g. helps manage or extend <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> in some way) or software that runs on top of <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> (e.g. install a cluster of Redis <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s for your application to use).</p>
+<p>A <a href="#BM_(chart)%2Fi">chart</a> is a recipe that details how <a href="#BM_(Helm)%2Fi">Helm</a> should install a piece of software. Each <a href="#BM_(chart)%2Fi">chart</a> is made up of ...</p>
+<ol>
+<li><a href="#BM_(manifest)%2Fi">manifest</a> templates that render based on user-supplied configurations.</li>
+<li>default configurations for those <a href="#BM_(manifest)%2Fi">manifest</a> templates.</li>
+<li>dependencies to other <a href="#BM_(chart)%2Fi">chart</a>s.</li>
+</ol>
+<p><img src="svgbob_b224e0a1f9d0b789d9e4c5f1958cef22bf38cac6.svg" alt="Kroki diagram output"></p>
+<p><a href="#BM_(Helm)%2Fi">Helm</a> can access <a href="#BM_(chart)%2Fi">chart</a>s from either ...</p>
+<ul>
+<li>a <a href="#BM_(chart%20repository%7Cchart%20repositories)%2Fi">chart repository</a>, which is an HTTP server somewhere on the internet that distributes <a href="#BM_(chart)%2Fi">chart</a>s.</li>
+<li>a <a href="#BM_(container)%2Fi">container</a> <a href="#BM_(registry%7Cregistries)%2Fi">registry</a>, where <a href="#BM_(chart)%2Fi">chart</a>s are stored and distributed as if they were <a href="#BM_(container)%2Fi">container</a>s.</li>
+<li>the local file system.</li>
+</ul>
+<p>Publicly available <a href="#BM_(chart)%2Fi">chart</a>s / <a href="#BM_(chart%20repository%7Cchart%20repositories)%2Fi">chart repositories</a> are commonly listed on <a href="https://artifacthub.io/">ArtifactHub</a>.</p>
+<p><img src="svgbob_60be8c0fca1c3833d2b5ee333ec05f2ac98b55eb.svg" alt="Kroki diagram output"></p>
+<p>Each <a href="#BM_(chart)%2Fi">chart</a> can be installed multiple times, where each installation has a different name and / or <a href="#BM_(namespace)%2Fi">namespace</a>. <a href="#BM_(Helm)%2Fi">Helm</a> can update installations in one of two ways: An installation can be updated to ...</p>
+<ul>
+<li>a newer / older version of a <a href="#BM_(chart)%2Fi">chart</a>.</li>
+<li>use a different set of configurations.</li>
+</ul>
+<p>Each change to an installation is called a revision. For example, an installation of a Redis <a href="#BM_(chart)%2Fi">chart</a> may go through the following revisions:</p>
+<ol>
+<li>Installed Redis 5 with default configurations.</li>
+<li>Updated configurations to listen on port 3333.</li>
+<li>Upgraded Redis 5 to Redis 6.</li>
+<li>Upgraded Redis 6 to Redis 7 and updated configurations to listen on port 7777.</li>
+<li>Rolled back to revision 2 (Redis 5 configured to listen on port 3333).</li>
+</ol>
+<p><img src="svgbob_28729296aed6d76405470f90caaa88490d4b0fbc.svg" alt="Kroki diagram output"></p>
+<p>Each revision has a lifecycle, which is stored inside of <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> as a <a href="#BM_(secret)%2Fi">secret</a> of a type <code>helm.sh/release.v1</code>.  The steps of that lifecycle are ...</p>
+<ul>
+<li><code>pending-install</code> - this revision is pending, it's for an installation.</li>
+<li><code>pending-upgrade</code> - this revision is pending, it's for an update.</li>
+<li><code>pending-rollback</code> - this revision is pending, it's for a rollback.</li>
+<li><code>deployed</code> - this revision has deployed.</li>
+<li><code>superseded</code> - this revision has been superseded by new revision.</li>
+<li><code>failed</code> - this revision failed to deploy.</li>
+</ul>
+<p><img src="svgbob_18b93f3951119b290421fc1bd13d3d14ff975b4f.svg" alt="Kroki diagram output"></p>
+<p><a href="#BM_(Helm)%2Fi">Helm</a> is used via a CLI of the same name. By default, the <a href="#BM_(Helm)%2Fi">Helm</a> CLI uses the same configuration as <a href="#BM_(kubectl)%2Fi">kubectl</a> to access the cluster, meaning <a href="#BM_(Helm)%2Fi">Helm</a>'s CLI should work if <a href="#BM_(kubectl)%2Fi">kubectl</a> works.</p>
+<pre class="hljs"><code>helm repo add bitnami https://charts.bitnami.com/bitnami  <span class="hljs-comment"># Add bitnami's repo as "bitnami"</span>
+helm repo update                                          <span class="hljs-comment"># Update list of charts from repos</span>
+helm install my-db bitnami/mysql                          <span class="hljs-comment"># Install bitnami's mysql as "my-db"</span>
+</code></pre>
+<a name="H_Repository%20References"></a><h3>Repository References</h3>
+<p><a name="BM_(Extensions%5C%2FHelm%2FRepository%20References)_TOPIC%2Fi"></a><strong></strong></p>
+<p>To add a reference to a <a href="#BM_(chart%20repository%7Cchart%20repositories)%2Fi">chart repository</a>, use <code>helm repo add</code>. Each added <a href="#BM_(chart%20repository%7Cchart%20repositories)%2Fi">chart repository</a> is given a local name, such that whenever that <a href="#BM_(chart%20repository%7Cchart%20repositories)%2Fi">chart repository</a> needs to be accessed in the CLI, the local name is used instead of the full URL.</p>
+<pre class="hljs"><code><span class="hljs-comment"># Add a repo as "bitnami".</span>
+helm repo add bitnami https://charts.bitnami.com/bitnami
+<span class="hljs-comment"># Add a repo as "my-private" using username and password authentication.</span>
+helm repo add my-private https://my-org/repo --username <span class="hljs-variable">$USERNAME</span> --password <span class="hljs-variable">$PASSWORD</span>
+<span class="hljs-comment"># Add a repo as "my-private" using SSL key file.</span>
+helm repo add my-private https://my-org/repo --key-file <span class="hljs-variable">$SSL_KEY_FILE</span>
+<span class="hljs-comment"># Add a repo as "my-private" using SSL certificate file.</span>
+helm repo add my-private https://my-org/repo --cert-file <span class="hljs-variable">$SSL_CERT_FILE</span>
+<span class="hljs-comment"># Add a repo as "my-private" but skip certificate checks for the server.</span>
+helm repo add my-private https://my-org/repo --insecure-skip-tls-verify
+<span class="hljs-comment"># Add a repo as "my-private" but use custom CA file to verify server's certificate.</span>
+helm repo add my-private https://my-org/repo --ca-file <span class="hljs-variable">$CA_FILE</span>
+</code></pre>
+<p>To list all <a href="#BM_(chart%20repository%7Cchart%20repositories)%2Fi">chart repository</a> references, use <code>helm repo list</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment"># List all chart repositories.</span>
+helm repo list
+<span class="hljs-comment"># List all chart repositories as YAML.</span>
+helm repo list --output yaml
+<span class="hljs-comment"># List all chart repositories as JSON.</span>
+helm repo list --output json
+</code></pre>
+<p>To remove a <a href="#BM_(chart%20repository%7Cchart%20repositories)%2Fi">chart repository</a> reference, use <code>helm repo remove</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment"># Remove the repo "bitnami".</span>
+helm repo remove bitnami
+<span class="hljs-comment"># Update only the repos "bitnami" and "my-private".</span>
+helm repo remove bitnami my-private
+</code></pre>
+<p><a href="#BM_(Helm)%2Fi">Helm</a> caches a <a href="#BM_(chart%20repository%7Cchart%20repositories)%2Fi">chart repository</a> once it's been added. To update an added <a href="#BM_(chart%20repository%7Cchart%20repositories)%2Fi">chart repository</a>'s cache, use <code>helm repo update</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment"># Update all repos.</span>
+helm repo update
+<span class="hljs-comment"># Update only the repos "bitnami" and "my-private".</span>
+helm repo update bitnami my-private
+</code></pre>
+<p>To search added <a href="#BM_(chart%20repository%7Cchart%20repositories)%2Fi">chart repositories</a> for <a href="#BM_(chart)%2Fi">chart</a>s containing a specific keyword, use <code>helm search repo</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment"># Search all repos for charts containing "redis".</span>
+helm search repo redis
+<span class="hljs-comment"># Search all repos for charts containing "redis", including pre-release versions.</span>
+helm search repo redis --devel
+<span class="hljs-comment"># Search all repos for charts containing "redis", including prior versions of charts.</span>
+helm search repo redis --versions
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Rather than searching just added repositories for "redis", it's possible to search all repositories in <a href="https://artifacthub.io/">ArtifactHub</a> (or your own instance of it) via <code>helm search hub redis</code>.</p>
+</div>
+<a name="H_Installation%20Management"></a><h3>Installation Management</h3>
+<p><a name="BM_(Extensions%5C%2FHelm%2FInstallation%20Management)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Extensions%5C%2FHelm%2FRepository%20References)_TOPIC%2Fi">Extensions/Helm/Repository References</a></li>
+</ul>
+</div>
+<p>To install a <a href="#BM_(chart)%2Fi">chart</a>, use <code>helm install</code>. Installing a <a href="#BM_(chart)%2Fi">chart</a> requires the <a href="#BM_(chart)%2Fi">chart</a>'s name (e.g. <code>redis</code>), where to find the <a href="#BM_(chart)%2Fi">chart</a> (e.g. locally vs <a href="#BM_(chart%20repository%7Cchart%20repositories)%2Fi">chart repository</a>), and what to name the installation (e.g. <code>my-redis-install</code>). Depending on the <a href="#BM_(chart)%2Fi">chart</a>, some configuration parameters will likely be needed during installation as well.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>If installing / upgrading from a <a href="#BM_(chart%20repository%7Cchart%20repositories)%2Fi">chart repository</a> that's been added to <a href="#BM_(Helm)%2Fi">Helm</a>, you should update <a href="#BM_(Helm)%2Fi">Helm</a>'s cache of that <a href="#BM_(chart%20repository%7Cchart%20repositories)%2Fi">chart repository</a> first: <code>helm repo update</code>.</p>
+</div>
+<pre class="hljs"><code><span class="hljs-comment"># Install "my-app" from the directory "./web-server".</span>
+helm install my-app ./web-server
+<span class="hljs-comment"># Install "redis" from the repo at https://charts.bitnami.com/bitnami.</span>
+helm install my-app https://charts.bitnami.com/bitnami/redis
+<span class="hljs-comment"># Install "redis" from the repo added as "bitnami".</span>
+helm install my-redis-install bitnami/redis \
+  --namespace <span class="hljs-variable">$NAMESPACE</span> \  <span class="hljs-comment"># Namespace to install under (optional, default if omitted)</span>
+  --version <span class="hljs-variable">$VERSION</span> \      <span class="hljs-comment"># Version of chart to install (optional, latest if omitted)</span>
+  --values <span class="hljs-variable">$YAML_FILE</span>       <span class="hljs-comment"># YAML containing overrides for chart's config defaults (optional)</span>
+<span class="hljs-comment"># Install "redis" from the repo added as "bitnami" using multiple config files.</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment">#  * When multiple "--values" exist, the latter's values override former's values.</span>
+helm install my-redis-install bitnami/redis \
+  --namespace <span class="hljs-variable">$NAMESPACE</span> \  <span class="hljs-comment"># Namespace to install under (optional, default if omitted)</span>
+  --version <span class="hljs-variable">$VERSION</span> \      <span class="hljs-comment"># Version of chart to install (optional, latest if omitted)</span>
+  --values <span class="hljs-variable">$YAML_FILE_1</span> \   <span class="hljs-comment"># YAML file containing config overrides (optional)</span>
+  --values <span class="hljs-variable">$YAML_FILE_2</span> \   <span class="hljs-comment"># YAML file containing config overrides (optional)</span>
+  --values <span class="hljs-variable">$YAML_FILE_2</span>     <span class="hljs-comment"># YAML file containing config overrides (optional)</span>
+<span class="hljs-comment"># Install "redis" from the repo added as "bitnami" using individual configs.</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment">#  * Individual configs reference paths in a object, similar to YAML/JSON keys.</span>
+helm install my-redis-install bitnami/redis \
+  --namespace <span class="hljs-variable">$NAMESPACE</span> \  <span class="hljs-comment"># Namespace to install under (optional, default if omitted)</span>
+  --version <span class="hljs-variable">$VERSION</span> \      <span class="hljs-comment"># Version of chart to install (optional, latest if omitted)</span>
+  --<span class="hljs-built_in">set</span> app.port=80 \       <span class="hljs-comment"># YAML file containing config overrides (optional)</span>
+  --<span class="hljs-built_in">set</span> app.name=app \      <span class="hljs-comment"># YAML file containing config overrides (optional)</span>
+  --<span class="hljs-built_in">set</span> app.replicas=5      <span class="hljs-comment"># YAML file containing config overrides (optional)</span>
+<span class="hljs-comment"># Install "redis" from the repo added as "bitnami" and force creation of namespace if it doesn't</span>
+<span class="hljs-comment"># exist.</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment">#  * Forcing namespace creation can result in security issues because the namespace won't have RBAC</span>
+<span class="hljs-comment">#    set up.</span>
+helm install my-redis-install bitnami/redis \
+  --namespace <span class="hljs-variable">$NAMESPACE</span> \  <span class="hljs-comment"># Namespace to install under (optional, default if omitted)</span>
+  --create-namespace        <span class="hljs-comment"># Create namespace if missing (optional)</span>
+<span class="hljs-comment"># Install "redis" from the repo added as "bitnami" using a uniquely generated name.</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment">#  * Generated name will be based on chart's name.</span>
+helm install my-redis-install bitnami/redis --generate-name
+<span class="hljs-comment"># Install "my-app" but wait until specific objects are in a ready state before marking as success.</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment">#  * By default, the install command will block only until manifests are submitted to Kubernetes.</span>
+<span class="hljs-comment">#    It's possible to force the install command to block until certain success criteria have bee</span>
+<span class="hljs-comment">#    met: pods, persistent vol claims, services, and min pods for deployments/stateful sets/etc..).</span>
+helm install my-app ./web-server --<span class="hljs-built_in">wait</span> \
+  --wait-for-jobs \    <span class="hljs-comment"># Wait until all jobs have completed as well (optional)</span>
+  --atomic \           <span class="hljs-comment"># Delete the installation on failure  (optional)</span>
+  --timeout <span class="hljs-variable">$DURATION</span>  <span class="hljs-comment"># Max duration to wait before marking as failed (optional, 5m0s if omitted)</span>
+<span class="hljs-comment"># Simulate install "redis" from the repo added as "bitnami".</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment">#  * Won't install, but will give the set of changes to be applied.</span>
+helm install my-app ./web-server --dry-run
+</code></pre>
+<p>To list installations, use <code>helm list</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment"># List installations.</span>
+helm list \
+  --namespace <span class="hljs-variable">$NAMESPACE</span> \  <span class="hljs-comment"># Namespace of installations (optional, default if omitted)</span>
+  --max <span class="hljs-variable">$MAX_ITEMS</span> \        <span class="hljs-comment"># Max installations to list (256 is set to 0 -- optional, 256 if omitted)</span>
+  --filter <span class="hljs-variable">$REGEX</span>           <span class="hljs-comment"># Perl compatible regex (optional, all listed if omitted)</span>
+<span class="hljs-comment"># List installations in all namespaces.</span>
+helm list --all-namespaces
+</code></pre>
+<p>To update an installation, use <code>helm upgrade</code>. Updating works very similarly to installing, supporting many of the same options. The difference between the two is that, with <code>helm upgrade</code>, <a href="#BM_(Helm)%2Fi">Helm</a> diffs the current installation's <a href="#BM_(object)%2Fi">object</a>s with the <a href="#BM_(object)%2Fi">object</a>s created by the <a href="#BM_(chart)%2Fi">chart</a> to see what it should be update. Only <a href="#BM_(object)%2Fi">object</a>s that have changes will get submitted to <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>.</p>
+<p>When using <code>helm upgrade</code>, the configuration values used by the installation aren't re-applied by default. If the previous configuration values aren't supplied by the user or the <code>--reuse-values</code> flag isn't set, the upgrade will revert all configurations back to the <a href="#BM_(chart)%2Fi">chart</a>'s default values.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The book recommends that you not use <code>--reuse-values</code> and instead supply the configurations each time via YAML. It's recommended that you store the YAML somewhere in git (unless it has sensitive information, in which cause you should partition out the sensitive info into another YAML and keep it secure somewhere).</p>
+</div>
+<pre class="hljs"><code><span class="hljs-comment"># Update "my-app" from the directory "./web-server" with existing config.</span>
+helm upgrade my-app ./web-server --reuse-values \
+  --force                   <span class="hljs-comment"># Replace object manifests instead of updating them (optional)</span>
+<span class="hljs-comment"># Update "redis" from the repo added as "bitnami" with existing config.</span>
+helm upgrade my-redis-install bitnami/redis --reuse-values \
+  --force                   <span class="hljs-comment"># Replace object manifests instead of updating them (optional)</span>
+  --namespace <span class="hljs-variable">$NAMESPACE</span> \  <span class="hljs-comment"># Namespace installed under (optional, default if omitted)</span>
+  --version <span class="hljs-variable">$VERSION</span> \      <span class="hljs-comment"># Version of chart to update to (optional, latest if omitted)</span>
+<span class="hljs-comment"># Update "redis" from the repo added as "bitnami" with new YAML config.</span>
+helm upgrade my-redis-install bitnami/redis \
+  --force                   <span class="hljs-comment"># Replace object manifests instead of updating them (optional)</span>
+  --namespace <span class="hljs-variable">$NAMESPACE</span> \  <span class="hljs-comment"># Namespace installed under (optional, default if omitted)</span>
+  --version <span class="hljs-variable">$VERSION</span> \      <span class="hljs-comment"># Version of chart to update to (optional, latest if omitted)</span>
+  --values <span class="hljs-variable">$YAML_FILE</span>       <span class="hljs-comment"># YAML containing overrides for chart's config defaults (optional)</span>
+<span class="hljs-comment"># Update "my-app" with existing config, but wait until specific objects are in a ready state before</span>
+<span class="hljs-comment"># marking as success.</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment">#  * By default, the install command will block only until manifests are submitted to Kubernetes.</span>
+<span class="hljs-comment">#    It's possible to force the install command to block until certain success criteria have bee</span>
+<span class="hljs-comment">#    met: pods, persistent vol claims, services, and min pods for deployments/stateful sets/etc..).</span>
+helm upgrade my-app ./web-server --reuse-values --<span class="hljs-built_in">wait</span> \
+  --cleanup-on-fail \  <span class="hljs-comment"># Delete new resources inserted by the upgrade on failure (optional)</span>
+  --wait-for-jobs \    <span class="hljs-comment"># Wait until all jobs have completed as well (optional)</span>
+  --atomic \           <span class="hljs-comment"># Rollback the update on failure  (optional)</span>
+  --timeout <span class="hljs-variable">$DURATION</span>  <span class="hljs-comment"># Max duration to wait before marking as failed (optional, 5m0s if omitted)</span>
+<span class="hljs-comment"># Simulate update "redis" (with existing config) from the repo added as "bitnami".</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment">#  * Won't update, but will give the set of changes to be applied.</span>
+helm upgrade my-app ./web-server --reuse-values --dry-run
+</code></pre>
+<p>To update or install (update if it exists / install if it doesn't exist), use <code>helm upgrade</code> just as before but also set the <code>--install</code> flag.</p>
+<pre class="hljs"><code><span class="hljs-comment"># Update or install "redis" from the repo added as "bitnami".</span>
+helm upgrade my-redis-install bitnami/redis \
+  --install                 <span class="hljs-comment"># Install rather than upgrade if "my-app" doesn't exist (optional)</span>
+  --namespace <span class="hljs-variable">$NAMESPACE</span> \  <span class="hljs-comment"># Namespace installed under (optional, default if omitted)</span>
+  --version <span class="hljs-variable">$VERSION</span> \      <span class="hljs-comment"># Version of chart to update to (optional, latest if omitted)</span>
+  --values <span class="hljs-variable">$YAML_FILE</span>       <span class="hljs-comment"># YAML containing overrides for chart's config defaults (optional)</span>
+<span class="hljs-comment"># Update or install "redis" from the repo added as "bitnami", and if installing, force creation of</span>
+<span class="hljs-comment"># namespace if it doesn't exist.</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment">#  * Forcing namespace creation can result in security issues because the namespace won't have RBAC</span>
+<span class="hljs-comment">#    set up.</span>
+helm upgrade my-redis-install bitnami/redis \
+  --install                 <span class="hljs-comment"># Install rather than upgrade if "my-app" doesn't exist (optional)</span>
+  --namespace <span class="hljs-variable">$NAMESPACE</span> \  <span class="hljs-comment"># Namespace installed under (optional, default if omitted)</span>
+  --create-namespace        <span class="hljs-comment"># Create namespace if missing (optional)</span>
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><code>helm template</code> will do similar work to <code>helm upgrade</code>, but instead of applying updated / created <a href="#BM_(object)%2Fi">object</a>s to Kuberentes, it simply shows you the <a href="#BM_(manifest)%2Fi">manifest</a>s for those <a href="#BM_(object)%2Fi">object</a>s.</p>
+</div>
+<p><a href="#BM_(Helm)%2Fi">Helm</a> retains an installation's update history directly within <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> (stored as <a href="#BM_(secret)%2Fi">secret</a>s). To access the update history of an installation, use <code>helm history</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment"># Get revision history for "redis".</span>
+helm <span class="hljs-built_in">history</span> redis
+<span class="hljs-comment"># Get revision history for "redis" as YAML.</span>
+helm <span class="hljs-built_in">history</span> redis --output yaml
+<span class="hljs-comment"># Get revision history for "redis" as JSON.</span>
+helm <span class="hljs-built_in">history</span> redis --output json
+</code></pre>
+<p>To rollback to a previous revision of an installation, use <code>helm rollback</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment"># Rollback "redis" to revision 3.</span>
+helm rollback redis 3
+<span class="hljs-comment"># Simulate rollback "redis" to revision 3.</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment">#  * Won't rollback, but will give the set of changes to be applied.</span>
+helm rollback redis 3 --dry-run
+</code></pre>
+<p>To remove an installation, use <code>helm uninstall</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment"># Uninstall "redis".</span>
+helm uninstall redis
+<span class="hljs-comment"># Uninstall "redis" but keep it's history.</span>
+helm uninstall redis --keep-history
+</code></pre>
+<a name="H_Custom%20Charts"></a><h3>Custom Charts</h3>
+<p><a name="BM_(Extensions%5C%2FHelm%2FCustom%20Charts)_TOPIC%2Fi"></a><strong></strong></p>
+<p>To create a custom <a href="#BM_(chart)%2Fi">chart</a>, use <code>helm create $NAME</code> to first create a skeleton. The directory structure created should have pieces to it:</p>
+<ul>
+<li>Configurations: The files <code>Chart.yaml</code> and <code>values.yaml</code> are configurations for the <a href="#BM_(chart)%2Fi">chart</a>.</li>
+<li>Templates: The <code>templates</code> directory contains <a href="#BM_(manifest)%2Fi">manifest</a> templates (and other templates) for the <a href="#BM_(chart)%2Fi">chart</a>.</li>
+<li>Tests: The <code>templates/test</code> directory contains <a href="#BM_(manifest)%2Fi">manifest</a> templates for automated tests of the <a href="#BM_(chart)%2Fi">chart</a>.</li>
+<li>Dependencies: The <code>charts</code> directory contains other <a href="#BM_(chart)%2Fi">chart</a>s that the <a href="#BM_(chart)%2Fi">chart</a> depends on.</li>
+</ul>
+<p>The subsections below detail the particulars of each file / directory.</p>
+<a name="H_Configurations"></a><h4>Configurations</h4>
+<p><a name="BM_(Extensions%5C%2FHelm%2FCustom%20Charts%2FConfigurations)_TOPIC%2Fi"></a><strong></strong></p>
+<p>In a <a href="#BM_(chart)%2Fi">chart</a> directory, the files <code>Chart.yaml</code> and <code>values.yaml</code> make up the configurations for the <a href="#BM_(chart)%2Fi">chart</a>.</p>
+<p><code>Chart.yaml</code> contains metadata about the <a href="#BM_(chart)%2Fi">chart</a> (e.g. what it's called, who maintains it, etc..) as well as some control flags.</p>
+<pre class="hljs"><code><span class="hljs-comment"># [REQUIRED] The chart specification being targeted by this chart. Set this value to "v2" ("v2"</span>
+<span class="hljs-comment"># charts targets version 3 of Helm, while "v1" targets version 2 of Helm).</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v2</span>
+<span class="hljs-comment"># [REQUIRED] The name of this chart. This is the name people use when they install / update this</span>
+<span class="hljs-comment"># chart. This name must conform to the specifications of names for Kubernetes objects (lowercase</span>
+<span class="hljs-comment"># characters, numbers, dashes, and dots only).</span>
+<span class="hljs-attr">name:</span> <span class="hljs-string">my-app</span>  
+<span class="hljs-comment"># [OPTIONAL] The annotations associated with this chart. Similar to annotations for Kubernetes</span>
+<span class="hljs-comment"># objects.</span>
+<span class="hljs-attr">annotations:</span>
+  <span class="hljs-attr">development-os:</span> <span class="hljs-string">Windows95</span>
+<span class="hljs-comment"># [OPTIONAL] The description, project URL, source URLs, icons, maintainers, and keywords associated</span>
+<span class="hljs-comment"># with this chart.</span>
+<span class="hljs-attr">description:</span> <span class="hljs-string">Some</span> <span class="hljs-string">text</span> <span class="hljs-string">here.</span>
+<span class="hljs-attr">home:</span> <span class="hljs-string">https://chart.github.io</span>
+<span class="hljs-attr">sources:</span> [<span class="hljs-string">https://github.com/organization/chart</span>]
+<span class="hljs-attr">icon:</span> <span class="hljs-string">https://github.com/some_user/chart_home/icon.svg</span>  <span class="hljs-comment"># This can be a data URL (if you want)</span>
+<span class="hljs-attr">maintainers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Steve</span>
+    <span class="hljs-attr">email:</span> <span class="hljs-string">steve@gmail.com</span>
+    <span class="hljs-attr">url:</span> <span class="hljs-string">https://steve.com</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Josh</span>
+    <span class="hljs-attr">url:</span> <span class="hljs-string">https://josh.com</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">George</span>
+<span class="hljs-attr">keywords:</span> [<span class="hljs-string">apple</span>, <span class="hljs-string">cars</span>, <span class="hljs-string">pepsi</span>]
+<span class="hljs-comment"># [OPTIONAL] This can be set to either "application" or "library" (default is "application"). An</span>
+<span class="hljs-comment"># "application" is a chart that installs an application for some user, while a "library" is</span>
+<span class="hljs-comment"># essentially a chart that provides helper functionality for other charts (it can't be</span>
+<span class="hljs-comment"># installed).</span>
+<span class="hljs-attr">type:</span> <span class="hljs-string">application</span>
+<span class="hljs-comment"># [REQUIRED] This is the version of this chart. This should be incremented whenever a change is</span>
+<span class="hljs-comment"># made to the chart.</span>
+<span class="hljs-attr">version:</span> <span class="hljs-number">1.0</span><span class="hljs-number">.1</span>
+<span class="hljs-comment"># [OPTIONAL] This is the version of the application being installed by this chart (must be set if</span>
+<span class="hljs-comment"># type of this chart is "application"?).</span>
+<span class="hljs-attr">appVersion:</span> <span class="hljs-number">7.0</span><span class="hljs-number">.1</span>
+</code></pre>
+<p><code>values.yaml</code> contains default configuration values for the <a href="#BM_(chart)%2Fi">chart</a>, which are overridable by the user during installs / updates.</p>
+<pre class="hljs"><code><span class="hljs-attr">app.port:</span> <span class="hljs-number">8080</span>
+<span class="hljs-attr">app.service-type:</span> <span class="hljs-string">LoadBalancer</span>
+</code></pre>
+<a name="H_Templates"></a><h4>Templates</h4>
+<p><a name="BM_(Extensions%5C%2FHelm%2FCustom%20Charts%2FTemplates)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Extensions%5C%2FHelm%2FCustom%20Charts%2FConfigurations)_TOPIC%2Fi">Extensions/Helm/Custom Charts/Configurations</a></li>
+</ul>
+</div>
+<p>In a <a href="#BM_(chart)%2Fi">chart</a> directory, the files inside of the <code>templates/</code> directory consist of templates. These templates are mostly for <a href="#BM_(manifest)%2Fi">manifest</a>s, but can also include macros and templates for other aspects of the <a href="#BM_(chart)%2Fi">chart</a> (e.g. <code>NOTES.txt</code> is displayed to the user once it installs).</p>
+<p><a href="#BM_(Helm)%2Fi">Helm</a>'s templating functionality leverages <a href="https://pkg.go.dev/text/template">Go's text template package</a>. Rendering a template requires an <a href="#BM_(object)%2Fi">object</a>, where that <a href="#BM_(object)%2Fi">object</a>'s fields are evaluated to fill in various sections of the template. <a href="#BM_(Helm)%2Fi">Helm</a> provides this <a href="#BM_(object)%2Fi">object</a>. The <a href="#BM_(object)%2Fi">object</a> has ...</p>
+<ul>
+<li>configuration values under <code>.Values</code>.</li>
+<li>revision information under <code>.Release</code>.</li>
+<li><a href="#BM_(chart)%2Fi">chart</a> information under <code>.Chart</code>.</li>
+<li>template information under <code>.Template</code>.</li>
+<li><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> cluster capabilities under <code>.Capabilities</code>.</li>
+<li>file access methods under <code>.Files</code>.</li>
+</ul>
+<p>The <a href="#BM_(object)%2Fi">object</a>'s most commonly accessed fields are...</p>
+<ul>
+<li><code>.Values</code> - Configuration values. These are from <code>values.yaml</code>, where some or all values are overridden by the user.</li>
+<li><code>.Chart.Name</code> - <a href="#BM_(chart)%2Fi">Chart</a>'s name. Maps to <code>name</code> in <code>Config.yaml</code>.</li>
+<li><code>.Chart.Version</code> - <a href="#BM_(chart)%2Fi">Chart</a>'s version.  Maps to <code>version</code> in <code>Config.yaml</code>.</li>
+<li><code>.Chart.AppVersion</code> - <a href="#BM_(chart)%2Fi">Chart</a>'s application version.  Maps to <code>appVersion</code> in <code>Config.yaml</code>.</li>
+<li><code>.Chart.Annotations</code> - <a href="#BM_(chart)%2Fi">Chart</a>'s <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s.  Maps to <code>annotations</code> in <code>Config.yaml</code>.</li>
+<li><code>.Release.Name</code> - Release name.</li>
+<li><code>.Release.Namespace</code> - Release <a href="#BM_(namespace)%2Fi">namespace</a>.</li>
+<li><code>.Release.IsInstall</code> - <code>true</code> if installing.</li>
+<li><code>.Release.IsUpgrade</code> - <code>true</code> if upgrading or rolling back.</li>
+<li><code>.Release.Service</code> - Service performing the release. Usually it's <a href="#BM_(Helm)%2Fi">Helm</a> doing it.</li>
+<li><code>.Template.Name</code> - Template file path (relative to <a href="#BM_(chart)%2Fi">chart</a> directory's parent - e.g. <code>/my-chart/templates/service.yaml</code>).</li>
+<li><code>.Template.BaseName</code> - Template directory path (relative to <a href="#BM_(chart)%2Fi">chart</a> directory's parent - e.g. <code>/my-chart/templates</code>).</li>
+<li><code>.Capabilities.APIVersions</code> - Supported API versions and <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s.</li>
+<li><code>.Capabilities.KubeVersion.Version.Major</code> - <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> major version.</li>
+<li><code>.Capabilities.KubeVersion.Version.Minor</code> - <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> minor version.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>For <code>.Chart</code>, the <code>Config.yaml</code> has keys with lowercase first characters. When accessed through the <a href="#BM_(object)%2Fi">object</a>, you need to uppercase that first character (e.g. <code>name</code> becomes <code>.Chart.Name</code>).</p>
+</div>
+<p>In the template, evaluations are encapsulated by double squiggly brackets, where inside the brackets are field accesses and control structures. The <a href="#BM_(object)%2Fi">object</a> provided by <a href="#BM_(Helm)%2Fi">Helm</a> is referenced simply with a preceding dot (e.g. <code>{{.Values.app.name}}</code>).</p>
+<pre class="hljs"><code><span class="hljs-comment"># Define template macros</span>
+{{<span class="hljs-string">define</span> <span class="hljs-string">"name"</span>}}
+<span class="hljs-attr">name:</span> {{<span class="hljs-string">.Values.app.name</span>}}
+{{<span class="hljs-string">end</span>}}
+{{<span class="hljs-string">define</span> <span class="hljs-string">"labels"</span>}}
+<span class="hljs-attr">app:</span> <span class="hljs-string">backend</span>
+<span class="hljs-attr">version:</span> <span class="hljs-number">3.4</span><span class="hljs-number">.1</span>
+{{<span class="hljs-string">end</span>}}
+<span class="hljs-comment"># Define template</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  {{<span class="hljs-string">include</span> <span class="hljs-string">"name"</span> <span class="hljs-string">.</span> <span class="hljs-string">|</span> <span class="hljs-string">nident</span> <span class="hljs-number">2</span>}}
+  <span class="hljs-attr">labels:</span>
+    {{<span class="hljs-string">include</span> <span class="hljs-string">labels</span> <span class="hljs-string">|</span> <span class="hljs-string">nident</span> <span class="hljs-number">4</span>}}
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">image:</span> <span class="hljs-string">my-image:1.0</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">my-container</span>
+</code></pre>
+<p>The rest of this section gives a brief but incomplete overview of templating in <a href="#BM_(Helm)%2Fi">Helm</a>. A complete overview of templating is available at the documentation for <a href="https://pkg.go.dev/text/template">Go's template package</a> and <a href="https://helm.sh/docs/chart_template_guide/function_list/"></a><a href="#BM_(Helm)%2Fi">Helm</a>'s templating functions.</p>
+<p>Common template evaluations are listed below (e.g. accessing fields, calling functions, if-else, variables, etc..).</p>
+<ul>
+<li><code>{{.Values.app.name}}</code> - Field access.</li>
+<li><code>{{printf "%s-%s" "my-app" "v1.0}}</code> - Function invocation.</li>
+<li><code>{{trimSuffix "-" (trunc 63 (printf "%s-%s" "my-app" "v1.0))}}</code> - Chain function invocation.</li>
+<li><code>{{trimSuffix "-" (trunc 63 (printf "%s-%s" .Values.app.name .Values.app.version))}}</code> - Chained function invocations and field accesses together.</li>
+<li><code>{{printf "%s-%s" .Values.app.name .Values.app.version | trunc 63 | trimSuffix "-"}}</code> - Chained function invocations and field accesses together <em>as a pipeline</em>. The result of each command is passed as <em>last</em> argument of the next.</li>
+<li><code>{{$var := .Values.app.name}}</code> - Variable declaration. Produces no output, but variable may be used further on in the template.</li>
+<li><code>{{if $var}} not empty {{end}}</code> - If block. Tests if whatever passed in is truthy (e.g. true if bool, &gt;0 if integer, not null if <a href="#BM_(object)%2Fi">object</a>, non-empty if collection). The condition passed may be a compound (e.g. chained method invocations).</li>
+<li><code>{{if $var}} not empty {{else}} empty {{end}}</code> - If-else block. Similar to above, but with an else block.</li>
+<li><code>{{if $var1}} not empty1 {{else if $var2}} not empty2 {{else}} empty {{end}}</code> - If-else block. Similar to above, but with extra conditional checks.</li>
+<li><code>{{range .Values.my_list}} item={{.}} {{end}}</code> - Loop over the elements of a list. The current list item is placed in <code>.</code>.</li>
+<li><code>{{range $i,$v := .Values.my_list}} idx={{i}}, idx={{v}} {{end}}</code> - Loop over the elements of a list using variables. The current list item and its index are placed into variables.</li>
+<li><code>{{range $k,$v := .Values.my_dict}} key={{k}}, val={{v}} {{end}}</code> - Loop over the elements of a dict using variables. The current dict key and value are placed into variables.</li>
+<li><code>{{- .Values.app.name}}</code> - Ignore preceding whitespace of this block during evaluation. Dash must be followed by whitespace.</li>
+<li><code>{{.Values.app.name -}}</code> - Ignore trailing whitespace of this block during evaluation. Whitespace must be before dash.</li>
+<li><code>{{/* comment here */}}</code> - Comment (nothing gets rendered). May span multiple lines.</li>
+</ul>
+<p>Common template functions are categorized are listed below. Some of these come directly from Go while other are provided by <a href="#BM_(Helm)%2Fi">Helm</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Many of these functions have <code>must</code> variants (e.g. <code>toYaml</code> vs <code>mustToYaml</code>) which error out in case it can't perform the expected function.</p>
+</div>
+<ul>
+<li>Common
+<ul>
+<li><code>eq arg1 arg2</code> - Equals (<code>arg1 == arg2</code>).</li>
+<li><code>ne arg1 arg2</code> - Not equals (<code>arg1 != arg2</code>).</li>
+<li><code>lt arg1 arg2</code> - Less than (<code>arg1 &lt; arg2</code>).</li>
+<li><code>le arg1 arg2</code> - Less than or equal (<code>arg1 &lt;= arg2</code>).</li>
+<li><code>gt arg1 arg2</code> - Greater than (<code>arg1 &gt; arg2</code>).</li>
+<li><code>ge arg1 arg2</code> - Greater than or equal (<code>arg1 &gt;= arg2</code>).</li>
+<li><code>and arg1 arg2</code> - Logical AND (<code>arg1 and arg2</code>).</li>
+<li><code>or arg1 arg2</code> - Logical OR (<code>arg1 or arg2</code>).</li>
+<li><code>not arg1</code> - Logical NOT (<code>not arg1</code>).</li>
+<li><code>len arg1</code> - Length of string, collection, etc..</li>
+<li><code>print args...</code> - Go's print function.</li>
+<li><code>printf args...</code> - Go's printf function.</li>
+</ul>
+</li>
+<li>Collections
+<ul>
+<li><code>index arg1 dims...</code> - Access some index (e.g. <code>index my_matrix 5 2</code> is equivalent to <code>my_matrix[5][2]</code>).</li>
+<li><code>list args...</code> - Create list of arguments (e.g. <code>list 1 2 3</code>).</li>
+<li><code>prepend l1 val</code> - Prepend value to a list (e.g. <code>prepend (list 1 2 3) 4</code>).</li>
+<li><code>append l1 val</code> - Prepend value to a list (e.g. <code>append (list 1 2 3) 4</code>).</li>
+<li><code>first l1</code> - Return first element of list.</li>
+<li><code>rest l1</code> - Return all but the first element of list.</li>
+<li><code>last l1</code> - Return last element of list.</li>
+<li><code>initial l1</code> - Return all but the last element of list.</li>
+<li><code>concat args...</code> - Concatenate lists into a single list (e.g. <code>concat (list 1 2 3) (list 4 5)</code>).</li>
+<li><code>dict args...</code> - Create dict of argument paris (e.g. <code>dict "key1" "value1" "key2" "value2"</code>).</li>
+<li><code>keys d1</code> - Get all dictionary keys (e.g. <code>keys (dict "k1" "v1" "k2" "v2")</code>).</li>
+<li><code>values d1</code> - Get all dictionary values (e.g. <code>keys (dict "k1" "v1" "k2" "v2")</code>).</li>
+<li><code>get d1 k</code> - Get dictionary entry (e.g. <code>get (dict "k1" "v1" "k2" "v2") "k2"</code>).</li>
+<li><code>set d1 k v</code> - Set dictionary entry (e.g. <code>set (dict "k1" "v1" "k2" "v2") "k3" "v3"</code>).</li>
+<li><code>unset d1 k</code> - Unset dictionary entry (e.g. <code>unset (dict "k1" "v1" "k2" "v2") "k2"</code>).</li>
+<li><code>hasKey d1 k</code> - Test if dictionary has key (e.g. <code>hasKey (dict "k1" "v1" "k2" "v2") "k2"</code>).</li>
+<li><code>deepEqual arg1 arg2</code> - Deep <a href="#BM_(object)%2Fi">object</a> equality (e.g. <code>deepEqual (list $obj1, obj2, obj3)  (list $obj4, obj5, obj7)</code>).</li>
+<li><code>deepCopy arg1</code> - Deep <a href="#BM_(object)%2Fi">object</a> copy (e.g. <code>deepEqual (list $obj1, obj2, obj3)</code>).</li>
+</ul>
+</li>
+<li>String
+<ul>
+<li><code>trim arg</code> / <code>trimSuffix arg</code> / <code>trimPrefix arg</code> - Remove whitespace from start and / or end of function.</li>
+<li><code>nospace arg</code> - Remove all whitespace.</li>
+<li><code>contains arg1 arg2</code> - Test if 1st string is in 2nd string (e.g. <code>contains "app" "apple"</code>).</li>
+<li><code>hasPrefix arg1 arg2</code> / <code>hasSuffix arg1 arg2</code> - Test if 1st string starts / sends with 2nd string (e.g. <code>hasPrefix "app" "apple"</code>).</li>
+<li><code>replace arg1 arg2 arg3</code> - In the 3rd string, replace all instances of 1st string with the 2nd string (e.g. <code>replace "p" "t" "happy"</code>).</li>
+<li><code>lower arg</code> / <code>upper arg</code> - Convert to lowercase / uppercase.</li>
+<li><code>title arg</code> / <code>untitle arg</code> - Convert to / from title case.</li>
+<li><code>snakecase arg</code> - Convert from camel case to snake case (e.g. <code>snakecase "HelloWorld"</code>).</li>
+<li><code>camelcase arg</code> - Convert from snake case to camel case (e.g. <code>camelcase "hello_world"</code>).</li>
+<li><code>kebabcase arg</code> - Convert from camel case to kebab case (e.g. <code>kebabcase "HelloWorld"</code>).</li>
+<li><code>indent num str</code> - Indent each line by a certain number of spaces (e.g. <code>indent 4 "hello\nworld"</code>).</li>
+<li><code>nindent num str</code> - Same as above but adds a new line character before indenting (e.g. <code>nindent 4 "hello\nworld"</code>).</li>
+</ul>
+</li>
+<li>Regex (FYI: Regex needs to be escaped when used in a string literal, similar to how you have to quote it in Java or Python.)
+<ul>
+<li><code>regexMatch regex str</code> - Match regex against a string (e.g. <code>regexMatch "\\d{5}" "12345"</code>).</li>
+<li><code>regexFind regex str</code> - Find first match of a regex within a string (e.g. <code>regexFind "[2,4]" "12345"</code>).</li>
+<li><code>regexFindAll regex str max</code> - Find matches of a regex within a string (e.g. <code>regexFindAll "[1,3,5]" "12345" -1</code>). Set <code>max</code> to the maximum number of matches to return, where -1 means unlimited.</li>
+<li><code>regexReplaceAll regex str replace</code> - Replace matches of a regex within a string (e.g. <code>regexReplaceAll "([1,3,5])" "12345" "!${1}!"</code>). Set <code>replace</code> to the replacement string, where that replacement string uses dollar sign to reference capture groups (similar to Java's regex replacement). The expression <code>regexReplaceAll "([1,3,5])" "12345" "!${1}!"</code> generates the replacement <code>"!1!2!3!4!5!"</code>.</li>
+<li><code>regexReplaceAllLiteral regex str replace</code> - Similar to above, but doesn't replace with capture groups. The expression <code>regexReplaceAllLiteral "([1,3,5])" "12345" "!${1}!"</code> generates the replacement <code>"!${1}!2!${1}!4!${1}!"</code>.</li>
+<li><code>regexSplit regex str max</code> - Split a string using a regex delimiter (e.g. <code>regexSplit "[1,3,5]" "12345" -1</code>). Set <code>max</code> to the maximum number of substrings to return, where -1 means unlimited.</li>
+</ul>
+</li>
+<li>Random
+<ul>
+<li><code>shuffle arg</code> - Shuffles the characters in a string.</li>
+<li><code>randAlpha c</code> / <code>randNumeric c</code> / <code>randAlphaNum c</code> / <code>randAscii c</code> - Generate random string of a certain size, containing only letters / numbers / alphanumeric characters / ASCII characters (e.g. <code>randAlpha 5</code>).</li>
+<li><code>uuidv4</code> - Generate a UUID v4.</li>
+</ul>
+</li>
+<li>Utility
+<ul>
+<li><code>default def arg</code> - Return a default value if argument is unset.</li>
+<li><code>semver ver</code> - Parse semantic version into an <a href="#BM_(object)%2Fi">object</a>. <a href="#BM_(object)%2Fi">Object</a> has fields <code>Major</code>, <code>Minor</code>, <code>Patch</code>, <code>Prerelease</code>, and <code>Metadata</code>.</li>
+<li><code>semverCompare format ver</code> - Test if semantic version matches a version constraint (version constraints documented <a href="https://github.com/Masterminds/semver#basic-comparisons">here</a>).</li>
+<li><code>toYaml arg</code> - Dump as YAML.</li>
+<li><code>toJson arg</code> - Dump as JSON.</li>
+<li><code>toPrettyJson arg</code> - Dump as JSON but pretty-printed.</li>
+<li><code>b32enc arg</code> / <code>b64enc arg</code> - Encode with Base 32 / 64.</li>
+<li><code>b32dec arg</code> / <code>b64dec arg</code> - Decode with Base 32 / 64.</li>
+</ul>
+</li>
+<li>Date
+<ul>
+<li><code>unixEpoch</code> - Number of seconds since Unix epoch.</li>
+<li><code>now</code> / <code>date fmt</code> / <code>dateInZone fmt</code> - Current time as <a href="#BM_(object)%2Fi">object</a>. Typically formatted to string via <code>date</code> / <code>dateInZone</code> (e.g. <code>now | date</code>).</li>
+</ul>
+</li>
+<li><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>
+<ul>
+<li><code>lookup apiVersion kind namespace name</code> - Get <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(object)%2Fi">object</a>. Set <code>name</code> to empty string to get all. Set <code>namespace</code> to empty string for <a href="#BM_(cluster-level%20kind%7Ccluster-level%20object)%2Fi">cluster-level kind</a>s.</li>
+<li><code>.Capabilities.APIVersions.Has api</code> - Test if a version and / or <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> exists in <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> (e.g. <code>.Capabilities.APIVersions.Has "apps/v1/Deployment</code> or <code>.Capabilities.APIVersions.Has "apps/v1</code>).</li>
+</ul>
+</li>
+<li>File-access
+<ul>
+<li><code>.Files.Get path</code> - Read a file into a string. <code>path</code> is a path relative to the <a href="#BM_(chart)%2Fi">chart</a> directory.</li>
+<li><code>.Files.Lines path</code> - Read a file as an array of lines. <code>path</code> is a path relative to the <a href="#BM_(chart)%2Fi">chart</a> directory.</li>
+<li><code>.Files.GetBytes path</code> - Read a file into an array of bytes. <code>path</code> is a path relative to the <a href="#BM_(chart)%2Fi">chart</a> directory.</li>
+</ul>
+</li>
+</ul>
+<p>A template can define a set of macros that act similarly to functions. To define a macro, wrap template text in <code>{{define name}}</code> and <code>{{end}}</code>.</p>
+<pre><code>{{define "name"}}
+  name: {{.Values.app.name}}
+{{end}}
+{{define "labels"}}
+    app: backend
+    version: 3.4.1
+{{end}}
+</code></pre>
+<p>To use a macro, use <code>{{template name scope}}</code>, where <code>name</code> is the name of the template and <code>scope</code> is whatever <a href="#BM_(object)%2Fi">object</a> that template uses when accessing fields and functions. If <code>scope</code> is omitted, the render may not be able to access necessary fields or functions to render. For example, in the last macro defined above, <code>scope</code> needs to contain the path <code>app.name</code>.</p>
+<pre class="hljs"><code><span class="hljs-comment"># PRE-RENDER</span>
+{{<span class="hljs-string">define</span> <span class="hljs-string">"name"</span>}}
+  <span class="hljs-attr">name:</span> {{<span class="hljs-string">.Values.app.name</span>}}
+{{<span class="hljs-string">end</span>}}
+{{<span class="hljs-string">define</span> <span class="hljs-string">"labels"</span>}}
+    <span class="hljs-attr">app:</span> <span class="hljs-string">backend</span>
+    <span class="hljs-attr">version:</span> <span class="hljs-number">3.4</span><span class="hljs-number">.1</span>
+{{<span class="hljs-string">end</span>}}
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+{{<span class="hljs-string">template</span> <span class="hljs-string">"name"</span> <span class="hljs-string">.</span>}}
+  <span class="hljs-attr">labels:</span>
+{{<span class="hljs-string">template</span> <span class="hljs-string">labels</span>}}
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">image:</span> <span class="hljs-string">my-image:1.0</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">my-container</span>
+<span class="hljs-string">----</span>
+<span class="hljs-comment"># POST-RENDER</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-app</span>
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-attr">app:</span> <span class="hljs-string">backend</span>
+    <span class="hljs-attr">version:</span> <span class="hljs-number">3.4</span><span class="hljs-number">.1</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">image:</span> <span class="hljs-string">my-image:1.0</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">my-container</span>
+</code></pre>
+<p>One issue with <code>{{template name scope}}</code> is inability to control whitespace in the render. For the macros to be truly be reusable, they need to appropriately be indented to align with the section of YAML they're being rendered in. For example, imagine wanting to modify the example above to include the name as <a href="#BM_(label)%2Fi">label</a> as well. The YAML produced would be incorrect.</p>
+<pre class="hljs"><code><span class="hljs-comment"># PRE-RENDER</span>
+{{<span class="hljs-string">define</span> <span class="hljs-string">"name"</span>}}
+  <span class="hljs-attr">name:</span> {{<span class="hljs-string">.Values.app.name</span>}}
+{{<span class="hljs-string">end</span>}}
+{{<span class="hljs-string">define</span> <span class="hljs-string">"labels"</span>}}
+    <span class="hljs-attr">app:</span> <span class="hljs-string">backend</span>
+    <span class="hljs-attr">version:</span> <span class="hljs-number">3.4</span><span class="hljs-number">.1</span>
+{{<span class="hljs-string">end</span>}}
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+{{<span class="hljs-string">template</span> <span class="hljs-string">"name"</span> <span class="hljs-string">.</span>}}
+  <span class="hljs-attr">labels:</span>
+<span class="hljs-string">app-{{template</span> <span class="hljs-string">"name"</span> <span class="hljs-string">.}}</span>
+{{<span class="hljs-string">template</span> <span class="hljs-string">labels</span>}}
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">image:</span> <span class="hljs-string">my-image:1.0</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">my-container</span>
+<span class="hljs-string">----</span>
+<span class="hljs-comment"># POST-RENDER</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-app</span>
+  <span class="hljs-attr">labels:</span>
+<span class="hljs-attr">app-  name:</span> <span class="hljs-string">my-app</span>  <span class="hljs-comment"># WRONG - should be "app-name: my-app" and indented to be child of "labels:.</span>
+    <span class="hljs-attr">app:</span> <span class="hljs-string">backend</span>
+    <span class="hljs-attr">version:</span> <span class="hljs-number">3.4</span><span class="hljs-number">.1</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">image:</span> <span class="hljs-string">my-image:1.0</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">my-container</span>
+</code></pre>
+<p>The typical workaround to this is to use <code>{{include name scope}}</code>, which is a special function provided by <a href="#BM_(Helm)%2Fi">Helm</a> that, unlike <code>{{template name scope}}</code>, can be used in pipeline method invocations. Being usable in a pipeline means that you can pass the macro output to the <code>indent</code> / <code>nindent</code> function to properly align output.</p>
+<pre class="hljs"><code><span class="hljs-comment"># PRE-RENDER</span>
+{{<span class="hljs-string">define</span> <span class="hljs-string">"name"</span>}}
+<span class="hljs-attr">name:</span> {{<span class="hljs-string">.Values.app.name</span>}}
+{{<span class="hljs-string">end</span>}}
+{{<span class="hljs-string">define</span> <span class="hljs-string">"labels"</span>}}
+<span class="hljs-attr">app:</span> <span class="hljs-string">backend</span>
+<span class="hljs-attr">version:</span> <span class="hljs-number">3.4</span><span class="hljs-number">.1</span>
+{{<span class="hljs-string">end</span>}}
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  {{<span class="hljs-string">include</span> <span class="hljs-string">"name"</span> <span class="hljs-string">.</span> <span class="hljs-string">|</span> <span class="hljs-string">nident</span> <span class="hljs-number">2</span>}}
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-comment"># Trim preceding/trailing whitespace from "name" macro output, then add "app- to it, then</span>
+    <span class="hljs-comment"># indent add a new line to the beginning of it and indent all lines by 4.</span>
+    {{<span class="hljs-string">printf</span> <span class="hljs-string">"app-%s"</span> <span class="hljs-string">trim</span> <span class="hljs-string">(include</span> <span class="hljs-string">"name"</span> <span class="hljs-string">.)</span> <span class="hljs-string">|</span> <span class="hljs-string">nident</span> <span class="hljs-number">4</span>}}
+    {{<span class="hljs-string">include</span> <span class="hljs-string">labels</span> <span class="hljs-string">|</span> <span class="hljs-string">nident</span> <span class="hljs-number">4</span>}}
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">image:</span> <span class="hljs-string">my-image:1.0</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">my-container</span>
+<span class="hljs-string">----</span>
+<span class="hljs-comment"># POST-RENDER</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-app</span>
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-comment"># Trim preceding/trailing whitespace from "name" macro output, then add "app- to it, then</span>
+    <span class="hljs-comment"># indent add a new line to the beginning of it and indent all lines by 4.</span>
+
+    <span class="hljs-attr">app-name:</span> <span class="hljs-string">my-app</span>
+
+    <span class="hljs-attr">app:</span> <span class="hljs-string">backend</span>
+    <span class="hljs-attr">version:</span> <span class="hljs-number">3.4</span><span class="hljs-number">.1</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">image:</span> <span class="hljs-string">my-image:1.0</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">my-container</span>
+</code></pre>
+<a name="H_Tests"></a><h4>Tests</h4>
+<p><a name="BM_(Extensions%5C%2FHelm%2FCustom%20Charts%2FTests)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Extensions%5C%2FHelm%2FCustom%20Charts%2FTemplates)_TOPIC%2Fi">Extensions/Helm/Custom Charts/Templates</a></li>
+</ul>
+</div>
+<p>TODO: TALK ABOUT TESTS HERE</p>
+<p>TODO: TALK ABOUT TESTS HERE</p>
+<p>TODO: TALK ABOUT TESTS HERE</p>
+<p>TODO: TALK ABOUT TESTS HERE</p>
+<a name="H_Dependencies"></a><h4>Dependencies</h4>
+<p><a name="BM_(Extensions%5C%2FHelm%2FCustom%20Charts%2FDependencies)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Extensions%5C%2FHelm%2FCustom%20Charts%2FTemplates)_TOPIC%2Fi">Extensions/Helm/Custom Charts/Templates</a></li>
+</ul>
+</div>
+<p>TODO: TALK ABOUT <a href="#BM_(chart)%2Fi">CHART</a> DEPS HERE</p>
+<p>TODO: TALK ABOUT <a href="#BM_(chart)%2Fi">CHART</a> DEPS HERE</p>
+<p>TODO: TALK ABOUT <a href="#BM_(chart)%2Fi">CHART</a> DEPS HERE</p>
+<p>TODO: TALK ABOUT <a href="#BM_(chart)%2Fi">CHART</a> DEPS HERE</p>
+<a name="H_Packaging"></a><h4>Packaging</h4>
+<p>To package a <a href="#BM_(chart)%2Fi">chart</a> for distribution, use <code>helm package $NAME</code>. Based on the configuration of the <a href="#BM_(chart)%2Fi">chart</a>, <a href="#BM_(Helm)%2Fi">Helm</a> will generate an archive with filename <code>$CHART_NAME-$VERSION.tgz</code> which encompasses the entire <a href="#BM_(chart)%2Fi">chart</a>. Others can use this file to install the <a href="#BM_(chart)%2Fi">chart</a>.</p>
+<pre class="hljs"><code><span class="hljs-comment"># Package "my-chart".</span>
+helm package my-chart
+<span class="hljs-comment"># Package "my-chart" but update chart dependencies first.</span>
+helm package my-chart --dependency-update
+<span class="hljs-comment"># Package "my-chart" to a the directory "/home/user".</span>
+helm package my-chart --destination /home/user
+<span class="hljs-comment"># Package "my-chart" but automatically update the chart version and the app version.</span>
+helm package my-chart \
+  --app-version <span class="hljs-variable">$APPVER</span> \ <span class="hljs-comment"># Override chart's app version (optional, config value used if omitted)</span>
+  --version <span class="hljs-variable">$CHARTVER</span>     <span class="hljs-comment"># Override chart's version (optional, config value used if omitted)</span>
+</code></pre>
+<p>The packaging process reads a special file that instructs it on which files and directories to ignore, named <code>.helmignore</code>. Files and directories are ignored using glob patterns, similar to <code>.gitignore</code> for git and <code>.Dockerignore</code> for Docker.</p>
+<pre><code># Patterns to ignore when building packages.
+.git/
+.gitignore
+.vscode/
+*.tmp
+**/temp/
+</code></pre>
+<p>Prior to packaging a <a href="#BM_(chart)%2Fi">chart</a>, it's common to run it through <a href="#BM_(Helm)%2Fi">Helm</a>'s built-in linter to see if it has any issues (e.g. invalid YAML generated). To link a <a href="#BM_(chart)%2Fi">chart</a>, use <code>helm lint $NAME</code>. The linter supports three levels of feedback: informational, warning, and error. Only error causes the process to exit with a non-zero return code.</p>
+<pre class="hljs"><code><span class="hljs-comment"># Lint "my-chart".</span>
+helm lint my-chart
+<span class="hljs-comment"># Lint "my-chart" but treat warnings as errors.</span>
+helm lint my-chart --strict
+</code></pre>
 <a name="H_Prometheus"></a><h2>Prometheus</h2>
 <p><a name="BM_(Extensions%5C%2FPrometheus)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Kinds%5C%2FHorizontal%20Pod%20Autoscaler)_TOPIC%2Fi">Kinds/Horizontal Pod Autoscaler</a></li>
+<li><a href="#BM_(Extensions%5C%2FHelm)_TOPIC%2Fi">Extensions/Helm</a></li>
 </ul>
 </div>
-<p>Prometheus is a monitoring system that can integrate with <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> to support custom metrics. These custom metrics, which Prometheus grabs by scraping <a href="#BM_(endpoints)%2Fi">endpoints</a>, provide better visibility into the system and can be used to scale <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s via an <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a> / <a href="#BM_%5Cb(VPA)s%3F%5Cb%2F">VPA</a>.</p>
-<p>Any <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a> can scale by using an <a href="#BM_(object)%2Fi">object</a>'s values as metrics. Imagine a user-defined <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> (<a href="#BM_%5Cb(CRD)s%3F%5Cb%2F">CRD</a>) whose <a href="#BM_(object)%2Fi">object</a>s store a specific value (e.g. request rate).</p>
-<p>TODO: discuss installing through helm</p>
+<p>Prometheus is a monitoring system that can integrate with <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> to support custom metrics. These custom metrics, which Prometheus grabs by scraping files and querying servers, provide better visibility into the system and can be used to scale <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s via an <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a> / <a href="#BM_%5Cb(VPA)s%3F%5Cb%2F">VPA</a>.</p>
+<p>Any <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a> can scale by using an <a href="#BM_(object)%2Fi">object</a>'s values as metrics.</p>
+<p>TODO: discuss installing through <a href="#BM_(Helm)%2Fi">helm</a></p>
 <p>TODO: discuss exposing <a href="#BM_(endpoints)%2Fi">endpoints</a> to scrape metrics, and scale on those metrics</p>
 <a name="H_Guides"></a><h1>Guides</h1>
 <p><a name="BM_(Guides)%2F"></a><strong></strong></p>
@@ -4772,7 +5446,7 @@ w = kubernetes.watch.Watch()
 <p><strong>Startup</strong></p>
 <ul>
 <li>Should define startup probes: Startup probes signal to <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> that the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> has correctly started.</li>
-<li>May define startup tasks: Init <a href="#BM_(container)%2Fi">container</a>s and post-start hooks can be used to do certain initialization tasks when the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> designer doesn't have the ability to change up the main <a href="#BM_(container)%2Fi">container</a>s in a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (e.g. it isn't possible to re-create the main <a href="#BM_(container)%2Fi">container</a> so that it performs the initialization tasks itself).</li>
+<li>May define startup tasks: <a href="#BM_(init%20container)%2Fi">Init container</a>s and post-start hooks can be used to do certain initialization tasks when the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> designer doesn't have the ability to change up the main <a href="#BM_(container)%2Fi">container</a>s in a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (e.g. it isn't possible to re-create the main <a href="#BM_(container)%2Fi">container</a> so that it performs the initialization tasks itself).</li>
 </ul>
 </li>
 <li>
@@ -4995,7 +5669,7 @@ w = kubernetes.watch.Watch()
 <p><a name="BM_(container)%2Fi"></a><strong>container</strong> - An instance of an <a href="#BM_(image)%2Fi">image</a>. A <a href="#BM_(container)%2Fi">container</a> creates an isolated copy of the <a href="#BM_(image)%2Fi">image</a>'s filesystem, isolates the resources required for that <a href="#BM_(image)%2Fi">image</a>, and launches the entry point application for that <a href="#BM_(image)%2Fi">image</a>. That <a href="#BM_(container)%2Fi">container</a> can't see or access anything outside the <a href="#BM_(container)%2Fi">container</a> unless explicitly allowed to by the user. For example, opening a port 8080 on a <a href="#BM_(container)%2Fi">container</a> won't open port 8080 on the host running it, but the user can explicitly ask that port 8080 in the <a href="#BM_(container)%2Fi">container</a> map to some port on the host.</p>
 </li>
 <li>
-<p><a name="BM_(registry%7Cregistries)%2Fi"></a><strong>registry</strong> - A <a href="#BM_(service)%2Fi">service</a> for storing and retrieving <a href="#BM_(image)%2Fi">image</a>s.</p>
+<p><a name="BM_(registry%7Cregistries)%2Fi"></a><strong>registry</strong> - A server that stores and distributes <a href="#BM_(image)%2Fi">image</a>s.</p>
 </li>
 <li>
 <p><a name="BM_(multistage%20build%7Cmultistage%20image%7Cmultistage%20container%20image)%2Fi"></a><strong>multistage image</strong> - A <a href="#BM_(container)%2Fi">container</a> <a href="#BM_(image)%2Fi">image</a> produced by merging portions of other <a href="#BM_(container)%2Fi">container</a> <a href="#BM_(image)%2Fi">image</a>s together. For example, to build a <a href="#BM_(multistage%20build%7Cmultistage%20image%7Cmultistage%20container%20image)%2Fi">multistage image</a> that contains Java as well as compiled C++ binaries, ...</p>
@@ -5195,7 +5869,7 @@ w = kubernetes.watch.Watch()
 <p><a name="BM_(topology%20key)%2Fi"></a><strong>topology key</strong> - A <a href="#BM_(label)%2Fi">label</a> placed on <a href="#BM_(node)%2Fi">node</a>s that defines their vicinity. For example, <a href="#BM_(node)%2Fi">node</a>s can define which rack they're on via a <a href="#BM_(label)%2Fi">label</a> with the key <code>rack</code>, where the value would be the same for all <a href="#BM_(node)%2Fi">node</a>s on the same rack (e.g. <a href="#BM_(node)%2Fi">node</a>s on rack 15 would have the <a href="#BM_(label)%2Fi">label</a> <code>rack=15</code>, <a href="#BM_(node)%2Fi">node</a>s on rack 16 would have the <a href="#BM_(label)%2Fi">label</a> <code>rack=16</code>, etc..).</p>
 </li>
 <li>
-<p><a name="BM_(image%20pull%20secret)%2Fi"></a><strong>image pull secret</strong> - A special type of <a href="#BM_(secret)%2Fi">secret</a> used for storing the credentials of a private <a href="#BM_(image)%2Fi">image</a> <a href="#BM_(registry%7Cregistries)%2Fi">registry</a>.</p>
+<p><a name="BM_(image%20pull%20secret)%2Fi"></a><strong>image pull secret</strong> - A special type of <a href="#BM_(secret)%2Fi">secret</a> used for storing the credentials of a private <a href="#BM_(container)%2Fi">container</a> <a href="#BM_(registry%7Cregistries)%2Fi">registry</a>.</p>
 </li>
 <li>
 <p><a name="BM_(container%20network%20interface%7Ccontainer%20networking%20interface%7Cnetwork%20plugin)%2Fi"></a><strong>container network interface</strong> <a name="BM_%5Cb(CNI)s%3F%5Cb%2F"></a><strong></strong> - A <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> plugin responsible for inserting a network interface into the <a href="#BM_(container)%2Fi">container</a> (e.g. virtual ethernet) and making necessary changes on the <a href="#BM_(node)%2Fi">node</a> to bridge that network interface to the rest of the cluster.</p>
@@ -5213,10 +5887,22 @@ w = kubernetes.watch.Watch()
 <p><a name="BM_(custom%20resource%20definition)%2Fi"></a><strong>custom resource definition</strong> <a name="BM_%5Cb(CRD)s%3F%5Cb%2F"></a><strong></strong> - A <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> that defines another user-defined <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>.</p>
 </li>
 <li>
-<p><a name="BM_(sidecar%20container%7Csidecar)%2Fi"></a><strong>sidecar</strong> - A <a href="#BM_(container)%2Fi">container</a> within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> that performs helper tasks for the other more important <a href="#BM_(container)%2Fi">container</a>s in that <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (e.g. collecting application logs and sending them to a database).</p>
+<p><a name="BM_(init%20container)%2Fi"></a><strong>init container</strong> - A <a href="#BM_(container)%2Fi">container</a> within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> that performs initialization tasks for that <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (e.g. writing some files required by the main <a href="#BM_(container)%2Fi">container</a>s to run).</p>
+</li>
+<li>
+<p><a name="BM_(sidecar%20container%7Csidecar)%2Fi"></a><strong>sidecar container</strong> - A <a href="#BM_(container)%2Fi">container</a> within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> that performs helper tasks for the other more important <a href="#BM_(container)%2Fi">container</a>s in that <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (e.g. collecting application logs and sending them to a database).</p>
 </li>
 <li>
 <p><a name="BM_(custom%20metrics%3F%20adapter)%2Fi"></a><strong>custom metrics adapter</strong> - A <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (or <a href="#BM_(pod%20replica%7Creplica)%2Fi">pod replica</a>s) that accesses some other <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>'s metrics via a shared resource (e.g. shared volume) and places it into <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> via <a href="#BM_%5Cb(CRD)s%3F%5Cb%2F">CRD</a>s for the purpose of scaling <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s via an <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a>.</p>
+</li>
+<li>
+<p><a name="BM_(Helm)%2Fi"></a><strong>Helm</strong> - A tool to define, install, and upgrade applications on <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>. Similar to a package manager for Linux distributions (e.g. apt is used to install, upgrade, and remove software on Ubuntu).</p>
+</li>
+<li>
+<p><a name="BM_(chart)%2Fi"></a><strong>chart</strong> - A set of files that instructs <a href="#BM_(Helm)%2Fi">Helm</a> on how to install, manage, and upgrade some application(s). Each <a href="#BM_(chart)%2Fi">chart</a> is comprised of a set of configurations, templated <a href="#BM_(manifest)%2Fi">manifest</a>s, and dependencies to other <a href="#BM_(chart)%2Fi">chart</a>s.</p>
+</li>
+<li>
+<p><a name="BM_(chart%20repository%7Cchart%20repositories)%2Fi"></a><strong>chart repository</strong> - A server that stores and distributes <a href="#BM_(chart)%2Fi">chart</a>s.</p>
 </li>
 </ul>
 <p></p>
