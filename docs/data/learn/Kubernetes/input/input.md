@@ -63,7 +63,7 @@ Different vendors provide different implementations of each. For example, certai
 '-----+---------------'
 ```
 
-OCIs and OCRs are also the basis for container engines, tools that are responsible for creating and running containers (similar in nature Kubernetes without the orchestration) as well as creating images and other high-level functionality such as local testing of containers. Docker Engine is an example of a container engine.
+OCIs and OCRs are also the basis for container engines. Container engines tools responsible for creating and running containers, creating images, and other high-level functionality such as local testing of containers. Docker Engine is an example of a container engine.
 
 ```{svgbob}
 .---------------------.
@@ -216,7 +216,7 @@ Introduction/Configuration_TOPIC
 Introduction/Labels_TOPIC
 ```
 
-The following sub-sections give an overview of the most-used kinds and example manifests for those kinds. All manifests, regardless of the kind, require the following fields ...
+The following subsections give an overview of the most-used kinds and example manifests for those kinds. All manifests, regardless of the kind, require the following fields ...
 
  * `apiVersion`: API version.
  * `kind`: Class of object (kind).
@@ -912,7 +912,7 @@ Each container in a pod can be in one of several states:
  * **Running** - Container is running.
  * **Terminated** - Container has terminated.
 
-The following sub-sections detail various lifecycle-related configurations of a pod and its containers.
+The following subsections detail various lifecycle-related configurations of a pod and its containers.
 
 #### Probes
 
@@ -1484,7 +1484,7 @@ Three different mechanisms are used to define these requirements:
  * node taints: hard and soft requirements for which nodes a pod *can't* run on.
  * node affinity: hard and soft requirements for which nodes a pod *can* and *can't* run on.
 
-These mechanisms are documented in further detail in the sub-sections below. 
+These mechanisms are documented in further detail in the subsections below. 
 
 #### Node Selectors
 
@@ -1749,7 +1749,7 @@ The isolation guarantees of the containers within a pod can be modified. Specifi
  * access to parts of the node that it's running on (e.g. share node's network interfaces).
  * updated container isolation parameters, potentially giving it access to more / less / different features (e.g. change user ID running the main container process).
 
-The following sub-sections document these mechanisms in further detail. 
+The following subsections document these mechanisms in further detail. 
 
 ```{seealso}
 Security/Pod Security Admission_TOPIC (Everything discussed here may be disabled by the cluster admin)
@@ -5086,7 +5086,7 @@ Each revision has a lifecycle, which is stored inside of Kubernetes as a secret 
  * `pending-upgrade` - this revision is pending, it's for an update.
  * `pending-rollback` - this revision is pending, it's for a rollback.
  * `deployed` - this revision has deployed.
- * `superseded` - this revision has been superseded by new revision.
+ * `superseded` - this revision has been superseded by a new revision.
  * `failed` - this revision failed to deploy.
 
 ```{svgbob}
@@ -5269,12 +5269,12 @@ helm list \
 helm list --all-namespaces
 ```
 
-To update an installation, use `helm upgrade`. Updating works very similarly to installing, supporting many of the same options. The difference between the two is that, with `helm upgrade`, Helm diffs the current installation's objects with the objects created by the chart to see what it should be update. Only objects that have changes will get submitted to Kubernetes.
+To update an installation, use `helm upgrade`. Updating works very similarly to installing, supporting many of the same options. The difference between the two is that, with `helm upgrade`, Helm diffs the current installation's objects with the objects created by the chart to see what it should update. Only objects that have changes will get submitted to Kubernetes.
 
 When using `helm upgrade`, the configuration values used by the installation aren't re-applied by default. If the previous configuration values aren't supplied by the user or the `--reuse-values` flag isn't set, the upgrade will revert all configurations back to the chart's default values.
 
 ```{note}
-The book recommends that you not use `--reuse-values` and instead supply the configurations each time via YAML. It's recommended that you store the YAML somewhere in git (unless it has sensitive information, in which cause you should partition out the sensitive info into another YAML and keep it secure somewhere).
+The book recommends that you not use `--reuse-values` and instead supply the configurations each time via YAML. It's recommended that you store the YAML somewhere in git (unless it has sensitive information, in which case you should partition out the sensitive info into another YAML and keep it secure somewhere).
 ```
 
 ```sh
@@ -5461,7 +5461,7 @@ The object's most commonly accessed fields are...
  * `.Release.Namespace` - Release namespace.
  * `.Release.IsInstall` - `true` if installing.
  * `.Release.IsUpgrade` - `true` if upgrading or rolling back.
- * `.Release.Service` - !!Service!! performing the release. Usually it's Helm doing it.
+ * `.Release.Service` - !!Service!! performing the release. Usually, it's Helm doing it.
  * `.Template.Name` - Template file path (relative to chart directory's parent - e.g. `/my-chart/templates/service.yaml`).
  * `.Template.BaseName` - Template directory path (relative to chart directory's parent - e.g. `/my-chart/templates`).
  * `.Capabilities.APIVersions` - Supported API versions and kinds.
@@ -5516,7 +5516,7 @@ Common template evaluations are listed below (e.g. accessing fields, calling fun
  * `{{.Values.app.name -}}` - Ignore trailing whitespace of this block during evaluation. Whitespace must be before dash.
  * `{{/* comment here */}}` - Comment (nothing gets rendered). May span multiple lines.
 
-Common template functions are categorized are listed below. Some of these come directly from Go while other are provided by Helm.
+Common template functions are categorized are listed below. Some of these come directly from Go while others are provided by Helm.
 
 ```{note}
 Many of these functions have `must` variants (e.g. `toYaml` vs `mustToYaml`) which error out in case it can't perform the expected function.
@@ -5646,7 +5646,7 @@ spec:
       name: my-container
 ```
 
-One issue with `{{template name scope}}` is inability to control whitespace in the render. For the macros to be truly be reusable, they need to appropriately be indented to align with the section of YAML they're being rendered in. For example, imagine wanting to modify the example above to include the name as label as well. The YAML produced would be incorrect.
+One issue with `{{template name scope}}` is inability to control whitespace in the render. For the macros to truly be reusable, they need to appropriately be indented to align with the section of YAML they're being rendered in. For example, imagine wanting to modify the example above to include the name as label as well. The YAML produced would be incorrect.
 
 ```yaml
 # PRE-RENDER
@@ -5820,7 +5820,7 @@ TODO: discuss exposing endpoints to scrape metrics, and scale on those metrics
 
 `{bm} /(Guides)/`
 
-The following sub-sections are guides to various aspects of Kubernetes.
+The following subsections are guides to various aspects of Kubernetes.
 
 ## Pod Design
 
