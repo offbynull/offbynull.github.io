@@ -2,7 +2,7 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Extensions/Helm/Custom Charts/Templates_TOPIC
+ * Extensions/Helm/Custom Charts/Hooks_TOPIC
 
 </div>
 

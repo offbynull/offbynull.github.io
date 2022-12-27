@@ -7,6 +7,8 @@
 
 `{bm} /(Introduction)_TOPIC/i`
 
+`{bm-disable-all}`
+
 Kubernetes is a service orchestration framework that provides many of the plumbing pieces required for running services. These services include ...
 
  * DNS for naming and discovery of services,
@@ -15,6 +17,8 @@ Kubernetes is a service orchestration framework that provides many of the plumbi
  * Automatic scaling when a service comes under load,
  * Password / certificate / secrets management for services,
  * etc..
+
+`{bm-enable-all}`
 
 ## Containers
 
@@ -5188,9 +5192,9 @@ helm search repo redis --versions
 Rather than searching just added repositories for "redis", it's possible to search all repositories in [ArtifactHub](https://artifacthub.io/) (or your own instance of it) via `helm search hub redis`.
 ```
 
-### Installation Management
+### Install Management
 
-`{bm} /(Extensions\/Helm\/Installation Management)_TOPIC/i`
+`{bm} /(Extensions\/Helm\/Install Management)_TOPIC/i`
 
 ```{prereq}
 Extensions/Helm/Repository References_TOPIC
@@ -5251,7 +5255,7 @@ helm install my-app ./web-server --wait \
   --wait-for-jobs \    # Wait until all jobs have completed as well (optional)
   --atomic \           # Delete the installation on failure  (optional)
   --timeout $DURATION  # Max duration to wait before marking as failed (optional, 5m0s if omitted)
-# Simulate install "redis" from the repo added as "bitnami".
+# Simulate install "my-app" from the directory "./web-server".
 #
 #  * Won't install, but will give the set of changes to be applied.
 helm install my-app ./web-server --dry-run
@@ -5303,7 +5307,7 @@ helm upgrade my-app ./web-server --reuse-values --wait \
   --wait-for-jobs \    # Wait until all jobs have completed as well (optional)
   --atomic \           # Rollback the update on failure  (optional)
   --timeout $DURATION  # Max duration to wait before marking as failed (optional, 5m0s if omitted)
-# Simulate update "redis" (with existing config) from the repo added as "bitnami".
+# Simulate update "my-app" from the directory "./web-server".
 #
 #  * Won't update, but will give the set of changes to be applied.
 helm upgrade my-app ./web-server --reuse-values --dry-run
@@ -5330,7 +5334,7 @@ helm upgrade my-redis-install bitnami/redis \
 ```
 
 ```{note}
-`helm template` will do similar work to `helm upgrade`, but instead of applying updated / created objects to Kuberentes, it simply shows you the manifests for those objects.
+`helm template` will do similar work to `helm upgrade`, but instead of applying updated / created objects to Kubernetes, it simply shows you the manifests for those objects.
 ```
 
 Helm retains an installation's update history directly within Kubernetes (stored as secrets). To access the update history of an installation, use `helm history`.
@@ -5368,22 +5372,42 @@ helm uninstall redis --keep-history
 
 `{bm} /(Extensions\/Helm\/Custom Charts)_TOPIC/i`
 
-To create a custom chart, use `helm create $NAME` to first create a skeleton. The directory structure created should have pieces to it:
+To create a chart skeleton, use `helm create`. Helm comes with one standard skeleton, but other skeletons can be made available by placing them in the `starters/` directory. The `starters/` directory gives chart developers different starting points for developing charts. For example, a skeleton could include all the necessary objects for a basic microservice.
 
- * Configurations: The files `Chart.yaml` and `values.yaml` are configurations for the chart.
- * Templates: The `templates` directory contains manifest templates (and other templates) for the chart.
- * Tests: The `templates/test` directory contains manifest templates for automated tests of the chart.
- * Dependencies: The `charts` directory contains other charts that the chart depends on.
+```sh
+# Create "my-chart" chart, using standard skeleton.
+helm create my-chart
+# Create "my-chart" chart, using basic-microservice skeleton.
+helm create --starter basic-microservice my-chart
+```
 
-The subsections below detail the particulars of each file / directory.
+Each created chart will live in its own directory. Once development is complete, it can be packaged up and distributed to others via a chart repository. The subsections below detail the particulars of chart development.
 
-#### Configurations
+#### Configuration
 
-`{bm} /(Extensions\/Helm\/Custom Charts\/Configurations)_TOPIC/i`
+`{bm} /(Extensions\/Helm\/Custom Charts\/Configuration)_TOPIC/i`
 
-In a chart directory, the files `Chart.yaml` and `values.yaml` make up the configurations for the chart.
+```{prereq}
+Extensions/Helm/Repository References_TOPIC
+```
 
-`Chart.yaml` contains metadata about the chart (e.g. what it's called, who maintains it, etc..) as well as some control flags.
+In a chart directory, the paths `values.yaml`, `Chart.yaml`,  and `charts/` make up the configurations for the chart.
+
+`values.yaml` contains a single object that acts as the configuration defaults for installs / updates of the chart. Its field values are used when the user doesn't supply configurations for an install / update.
+
+```yaml
+app:
+  port: 8080
+  extra-annotations: {key1: value1, key2: value2} 
+  service-type: LoadBalancer
+  postgres-enabled: true
+```
+
+```{note}
+A `values.yaml` may have a [JSON Schema](https://json-schema.org) associated with it via `values.schema.json`. Helm will check this schema when it works with the chart.
+```
+
+`Chart.yaml` contains chart metadata, chart dependencies, and some control flags.
 
 ```yaml
 # [REQUIRED] The chart specification being targeted by this chart. Set this value to "v2" ("v2"
@@ -5422,13 +5446,54 @@ version: 1.0.1
 # [OPTIONAL] This is the version of the application being installed by this chart (must be set if
 # type of this chart is "application"?).
 appVersion: 7.0.1
+# [OPTIONAL] This is the dependencies required by the chart. Each dependency requires the field ...
+#
+#  * "name": Chart name.
+#  * "version": Semantic version or a semantic version range (e.g. "~1.1.x" or "^2.15.9").
+#  * "repository": Repository URL or a REFERENCE to a repository URL ("helm repo add ...").
+#
+# Each dependency can optionally have the field ....
+#
+#  * "condition": Configuration that controls whether or not the dependency should be installed. 
+#     This is a configuration supplied by the user / by default ("values.yaml").
+#  * "import-values": List of configurations to pull in from the child. These are configurations
+#     supplied by the child's configuration and remapped to the parent's configuration.
+dependencies:
+  - name: my_dep
+    version: ^4.9.11
+    repository: https://my.org/chart_repo/
+  - name: my_server
+    version: 1.1.3
+    repository: https://my.org/chart_repo/
+    import-values:
+      # Map child's "network-parameters.port" config to parent's "server.port" config.
+      - child: network-parameters.port
+        parent: server.port
+      # Map child's "app.name" config to parent's "server.name" config.
+      - child: app.name
+        parent: server.name
+  - name: postgres
+    version: 13.0.1
+    repository: @local_ref           # Repository reference
+    condition: app.postgres-enabled  # Install only if config property is true
 ```
 
-`values.yaml` contains default configuration values for the chart, which are overridable by the user during installs / updates.
+`charts/` contains a local copy of the chart dependencies that were specified in `Chart.yaml`. To populate this directory, use `helm dependency update .` in the chart directory (period at the end references the current directory).
 
-```yaml
-app.port: 8080
-app.service-type: LoadBalancer
+```sh
+# Download dependencies into "charts/".
+helm dependency update .
+# Download dependencies into "charts/" and verify their signatures.
+helm dependency update . --verify
+```
+
+Running this command also generates a `Chart.lock` file which contains the exact versions of the chart dependencies downloaded. This helps keeps builds reproducible when dependencies in `Chart.yaml` use version ranges instead of exact versions. To re-create `charts/` based on `Chart.lock`, use `helm dependency build .` in the chart directory (period at the end references the current directory).
+
+```sh
+# Download dependencies into "charts/".
+helm dependency build .
+# Download dependencies into "charts/" and verify their signatures.
+helm dependency build . --verify
 ```
 
 #### Templates
@@ -5436,10 +5501,22 @@ app.service-type: LoadBalancer
 `{bm} /(Extensions\/Helm\/Custom Charts\/Templates)_TOPIC/i`
 
 ```{prereq}
-Extensions/Helm/Custom Charts/Configurations_TOPIC
+Extensions/Helm/Custom Charts/Configuration_TOPIC
+Extensions/Custom Kinds_TOPIC
 ```
 
 In a chart directory, the files inside of the `templates/` directory consist of templates. These templates are mostly for manifests, but can also include macros and templates for other aspects of the chart (e.g. `NOTES.txt` is displayed to the user once it installs).
+
+```{note}
+The manifests in `templates/` must be namespace-level objects. It's best to avoid using CRDs if you can. If you must use CRDs, you need to place them in `crds/` instead and none of those CRDs can be templates. Helm will apply those CRDs before it renders and applies templates.
+
+Why should you avoid CRDs? Recall that CRDs are cluster-level objects. That means that if you ...
+
+ * update a CRD, all objects under it will change as well regardless of what namespace they're under.
+ * delete a CRD, all objects under it will delete as well regardless of what namespace they're under.
+
+Imagine having two installs of some chart, where each install is a different version of the chart. Those installs are under their own name and namespace combinations, but they're sharing the same CRDs. If a newer version of a chart modifies / deletes a CRD, installing it may mess up installs of older versions of that chart. For that reason, Helm ignores updates and deletes to CRDs in `/crds`.
+```
 
 Helm's templating functionality leverages [Go's text template package](https://pkg.go.dev/text/template). Rendering a template requires an object, where that object's fields are evaluated to fill in various sections of the template. Helm provides this object. The object has ...
 
@@ -5452,7 +5529,7 @@ Helm's templating functionality leverages [Go's text template package](https://p
 
 The object's most commonly accessed fields are...
 
- * `.Values` - Configuration values. These are from `values.yaml`, where some or all values are overridden by the user.
+ * `.Values` - Configuration values. These are from `values.yaml`, where some or all fields are overridden by the user.
  * `.Chart.Name` - Chart's name. Maps to `name` in `Config.yaml`.
  * `.Chart.Version` - Chart's version.  Maps to `version` in `Config.yaml`.
  * `.Chart.AppVersion` - Chart's application version.  Maps to `appVersion` in `Config.yaml`.
@@ -5472,10 +5549,10 @@ The object's most commonly accessed fields are...
 For `.Chart`, the `Config.yaml` has keys with lowercase first characters. When accessed through the object, you need to uppercase that first character (e.g. `name` becomes `.Chart.Name`).
 ```
 
-In the template, evaluations are encapsulated by double squiggly brackets, where inside the brackets are field accesses and control structures. The object provided by Helm is referenced simply with a preceding dot (e.g. `{{.Values.app.name}}`).
+In a template, evaluations are encapsulated by double squiggly brackets, where inside the brackets is code to be executed and rendered (e.g. `{{action}}`). The object provided by Helm is referenced simply with a preceding dot (e.g. `{{.Values.app.name}}` to print out the `app.name` configuration value).
 
 ```yaml
-# Define template macros
+# Define macros
 {{define "name"}}
 name: {{.Values.app.name}}
 {{end}}
@@ -5483,7 +5560,7 @@ name: {{.Values.app.name}}
 app: backend
 version: 3.4.1
 {{end}}
-# Define template
+# Define manifest
 apiVersion: v1
 kind: Pod
 metadata:
@@ -5496,7 +5573,7 @@ spec:
       name: my-container
 ```
 
-The rest of this section gives a brief but incomplete overview of templating in Helm. A complete overview of templating is available at the documentation for [Go's template package](https://pkg.go.dev/text/template) and [Helm's templating functions](https://helm.sh/docs/chart_template_guide/function_list/).
+The rest of this section gives a brief but incomplete overview of templating in Helm. A complete overview of templating is available at the documentation for Go's [template package](https://pkg.go.dev/text/template) and Helm's [templating functions](https://helm.sh/docs/chart_template_guide/function_list/).
 
 Common template evaluations are listed below (e.g. accessing fields, calling functions, if-else, variables, etc..).
 
@@ -5516,7 +5593,7 @@ Common template evaluations are listed below (e.g. accessing fields, calling fun
  * `{{.Values.app.name -}}` - Ignore trailing whitespace of this block during evaluation. Whitespace must be before dash.
  * `{{/* comment here */}}` - Comment (nothing gets rendered). May span multiple lines.
 
-Common template functions are categorized are listed below. Some of these come directly from Go while others are provided by Helm.
+Common template functions are categorized and listed below. Some of these come directly from Go while others are provided by Helm.
 
 ```{note}
 Many of these functions have `must` variants (e.g. `toYaml` vs `mustToYaml`) which error out in case it can't perform the expected function.
@@ -5729,42 +5806,119 @@ spec:
       name: my-container
 ```
 
+#### Hooks
+
+`{bm} /(Extensions\/Helm\/Custom Charts\/Hooks)_TOPIC/i`
+
+```{prereq}
+Extensions/Helm/Custom Charts/Configuration_TOPIC
+Extensions/Helm/Custom Charts/Templates_TOPIC
+```
+
+A hook allows a chart to run actions before / after a lifecycle stage. These actions run directly on the Kubernetes cluster. For example, a chart may run a container to back up a database before an upgrade is allowed to take place.
+
+The following hooks are allowed:
+
+ * `pre-install` / `post-install` - Hook to run before or after an installation.
+ * `pre-upgrade` / `post-upgrade` - Hook to run before or after an upgrade.
+ * `pre-rollback` / `post-rollback` - Hook to run before or after a rollback.
+ * `pre-delete` / `post-delete` - Hook to run before or after deleting.
+ * `test` - Test execution.
+
+Any templated manifest can identify itself as a hook by having an annotation with key `helm.sh/hook` and a value that's a comma-delimited list of hooks (e.g. `helm.sh/hook=pre-install,pre-upgrade`). In addition, the optional annotation key ...
+
+ * `helm.sh/hook-weight` defines a number that controls the execution order of the hook (default is 0). Hooks are groups together by kind, and those with a smaller weight get executed first.
+ 
+    ```{note}
+    Although the value is a number, that value must be represented as a string type (see example below).
+    ```
+
+ * `helm.sh/hook-delete-policy` defines when the hook should be deleted, represented as a comma-delimited list. A value of ...
+
+   * `before-hook-creation` deletes the previous object before a new hook launches (default).
+   * `hook-succeeded` delete the object after the hook succeeded.
+   * `hook-failed` deletes the object if the hook failed.
+
+    ```{note}
+    The value `before-hook-creation,hook-succeeded` is commonly used because, if it fails, the object isn't deleted. You can look at its logs to figure out what happened.
+    ```
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: database-backup
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "1"  # Must be string, that's why it's "1"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: 3
+  activeDeadlineSeconds: 9999999
+  template:
+    spec:
+      containers:
+        - name: my-container
+          image: my-image:1.0.
+      restartPolicy: OnFailure
+```
+
+```{seealso}
+Extensions/Helm/Custom Charts/Tests_TOPIC (More details on the `test` hook)
+```
+
 #### Tests
 
 `{bm} /(Extensions\/Helm\/Custom Charts\/Tests)_TOPIC/i`
 
 ```{prereq}
-Extensions/Helm/Custom Charts/Templates_TOPIC
+Extensions/Helm/Custom Charts/Hooks_TOPIC
 ```
 
-TODO: TALK ABOUT TESTS HERE
+Helm provides functionality for testing, debugging, and linting a chart.
 
-TODO: TALK ABOUT TESTS HERE
+Testing a chart involves running its `test` hooks. These hooks can check that certain things are properly in place (e.g. test to see if a port is open). `test` hooks are typically placed under the `templates/tests` directory. To test a chart, use `helm test`.
 
-TODO: TALK ABOUT TESTS HERE
+```{note}
+So, it seems like these hooks don't actually test your manifests. They're sanity checking your manifests after they've already been applied? There's a secondary tool called Chart Testing Tool that allows you to do more elaborate tests: different configurations, `Chart.yaml` schema validation, ensuring `Chart.yaml` has its version incremented if using source control, etc...
+```
 
-TODO: TALK ABOUT TESTS HERE
+To debug a chart, two options are available:
 
+ * Run install, upgrade, or rollback command with a `--dry-run` flag. This flag makes it so the command is performed, including all of the verification checks, but the changes it produces aren't pushed to Kubernetes.
 
-#### Dependencies
+   ```sh
+   # Simulate install "my-app" from the repo added as "bitnami".
+   helm install my-app ./web-server --dry-run
+   # Simulate update "my-app" (with existing config) from the repo added as "bitnami".
+   helm upgrade my-app ./web-server --reuse-values --dry-run
+   # Simulate rollback "my-app" to revision 3.
+   helm rollback my-app 3 --dry-run
+   ```
 
-`{bm} /(Extensions\/Helm\/Custom Charts\/Dependencies)_TOPIC/i`
+ * Run `helm template`, which will generate templates but will fake information about the cluster rather than querying Kubernetes for information.
+
+To lint a chart, use `helm lint`. The linter supports three levels of feedback: informational, warning, and error. Only error causes the process to exit with a non-zero return code.
+
+```sh
+# Lint "my-chart".
+helm lint my-chart
+# Lint "my-chart" but treat warnings as errors.
+helm lint my-chart --strict
+```
+
+#### Distribution
+
+`{bm} /(Extensions\/Helm\/Custom Charts\/Distribution)_TOPIC/i`
 
 ```{prereq}
+Extensions/Helm/Repository References_TOPIC
+Extensions/Helm/Install Management_TOPIC
+Extensions/Helm/Custom Charts/Configuration_TOPIC
 Extensions/Helm/Custom Charts/Templates_TOPIC
 ```
 
-TODO: TALK ABOUT CHART DEPS HERE
-
-TODO: TALK ABOUT CHART DEPS HERE
-
-TODO: TALK ABOUT CHART DEPS HERE
-
-TODO: TALK ABOUT CHART DEPS HERE
-
-#### Packaging
-
-To package a chart for distribution, use `helm package $NAME`. Based on the configuration of the chart, Helm will generate an archive with filename `$CHART_NAME-$VERSION.tgz` which encompasses the entire chart. Others can use this file to install the chart.
+To package a chart for distribution, use `helm package`. Based on the configuration of the chart, Helm will generate an archive with filename `$NAME-$VERSION.tgz` which encompasses the entire chart. Others can use this file to install the chart.
 
 ```sh
 # Package "my-chart".
@@ -5775,8 +5929,16 @@ helm package my-chart --dependency-update
 helm package my-chart --destination /home/user
 # Package "my-chart" but automatically update the chart version and the app version.
 helm package my-chart \
-  --app-version $APPVER \ # Override chart's app version (optional, config value used if omitted)
-  --version $CHARTVER     # Override chart's version (optional, config value used if omitted)
+  --app-version 1.2.3 \ # Override chart's app version (optional, config value used if omitted)
+  --version 4.5.6       # Override chart's version (optional, config value used if omitted)
+# Package "my-chart" and sign it with a PGP key.
+helm package my-chart --sign
+  --key 'my-key' \           # Key name
+  --keyring path/to/keyring  # Keyring path
+```
+
+```{note}
+Signing packages is good practice because it ensures to others that it came from you. Use `helm verify my-chart-4.5.6.tgz --keyring public.key` to verify the package's signature. Likewise, most other commands that work with charts (e.g. `helm install`) can take in a `--verify` flag.
 ```
 
 The packaging process reads a special file that instructs it on which files and directories to ignore, named `.helmignore`. Files and directories are ignored using glob patterns, similar to `.gitignore` for git and `.Dockerignore` for Docker.
@@ -5790,13 +5952,17 @@ The packaging process reads a special file that instructs it on which files and 
 **/temp/
 ```
 
-Prior to packaging a chart, it's common to run it through Helm's built-in linter to see if it has any issues (e.g. invalid YAML generated). To link a chart, use `helm lint $NAME`. The linter supports three levels of feedback: informational, warning, and error. Only error causes the process to exit with a non-zero return code.
+To distribute a directory of packaged charts as a chart repository, use `helm repo index`. This generates a `index.yaml` file in the directory. When the directory is placed on a web server, other users can treat it as a chart repository.
 
 ```sh
-# Lint "my-chart".
-helm lint my-chart
-# Lint "my-chart" but treat warnings as errors.
-helm lint my-chart --strict
+# Create a chart repo out of the "charts/" directory.
+helm repo index charts/
+# Add to a chart repo by including the charts in "charts/" directory to the existing "index.yaml".
+helm repo index charts/ --merge charts/index.yaml
+```
+
+```{note}
+Full-fledged chart repository servers already exist. [Here](https://github.com/helm/chartmuseum)'s an example.
 ```
 
 ## Prometheus
@@ -6011,9 +6177,9 @@ There are several aspects to ensure that pods perform well and pod replicas scal
    * May use pod affinity: Pods that perform better when in the vicinity of each other (e.g. faster communication if on the same data center rack) can request to be placed in that same vicinity using pod affinity.
    * May use node affinity: Pods that perform better when on specific hardware (e.g. optimized for Intel Xeon) can request to be placed on nodes with that hardware using node affinity.
 
-## Command-line Interface
+# Command-line Interface
 
-`{bm} /(Guides\/Command-line Interface)/`
+`{bm} /(Command-line Interface)/`
 
 kubectl commands are typically organized into contexts, where each context is defines contextual information about the cluster: cluster location, cluster authentication, and default namespace. To ...
 
@@ -6039,9 +6205,9 @@ Kubernetes API is exposed as a RESTful interface, meaning everything is represen
  * get YAML output `-o yaml`
  * get JSON output isolated to a specific field or fields `-o jsonpath --template={TEMPLATE}`, where the template is a JSONPath expression.
 
-### CRUD
+## CRUD
 
-`{bm} /(Guides\/Command-line Interface\/CRUD)/`
+`{bm} /(Command-line Interface\/CRUD)/`
 
 `get` / `describe` allows you to get details on a specific objects and kinds. To get an overview of a ...
 
@@ -6101,9 +6267,9 @@ When referencing objects, the ...
  * `--selector` flag can be fed in a label selector that filters those objects.
  * `--all` flag can target everything.
 
-### Deployment
+## Deployment
 
-`{bm} /(Guides\/Command-line Interface\/Deployment)/`
+`{bm} /(Command-line Interface\/Deployment)/`
 
 `rollout` allows you to monitor and control deployment rollouts.
 
@@ -6126,17 +6292,17 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `kubectl create secret generic my-tls-cert --from-file=a.crt --from-file=a.key`
 
-### Proxy
+## Proxy
 
-`{bm} /(Guides\/Command-line Interface\/Proxy)/`
+`{bm} /(Command-line Interface\/Proxy)/`
 
 `proxy` allows you to launch a proxy that lets you talk internally with the Kubernetes API server.
 
  * `kubectl proxy`
 
-### Debug
+## Debug
 
-`{bm} /(Guides\/Command-line Interface\/Debug)/`
+`{bm} /(Command-line Interface\/Debug)/`
 
 `logs` allows you to view outputs of a container.
 

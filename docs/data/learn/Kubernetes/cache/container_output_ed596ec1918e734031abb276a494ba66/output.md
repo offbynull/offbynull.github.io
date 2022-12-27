@@ -2,7 +2,8 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Extensions/Helm/Custom Charts/Configurations_TOPIC
+ * Extensions/Helm/Custom Charts/Configuration_TOPIC
+ * Extensions/Custom Kinds_TOPIC
 
 </div>
 
