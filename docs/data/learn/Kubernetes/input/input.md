@@ -62,18 +62,18 @@ Different vendors provide different implementations of each. For example, certai
 .---------------------.
 |      Kubernetes     |
 +---------------------+
-+-----+    OCR        |
++-----+    CRI        |
 | OCI |               |
 '-----+---------------'
 ```
 
-OCIs and OCRs are also the basis for container engines. Container engines tools responsible for creating and running containers, creating images, and other high-level functionality such as local testing of containers. Docker Engine is an example of a container engine.
+OCIs and CRIs are also the basis for container engines. Container engines tools responsible for creating and running containers, creating images, and other high-level functionality such as local testing of containers. Docker Engine is an example of a container engine.
 
 ```{svgbob}
 .---------------------.
 |  "Container Engine" |
 +---------------------+
-+-----+    OCR        |
++-----+    CRI        |
 | OCI |               |
 '-----+---------------'
 ```
@@ -86,7 +86,7 @@ Kubernetes breaks down its orchestration as a set of objects. Each object is of 
 
  * Node - A physical worker machine that runs containers.
  * Pod - A set of containers tightly coupled to run in unison on a single node.
- * Volume - A storage mechanism that lets pods persist and / or share data.
+ * Persistent Volume - A storage mechanism that lets pods persist and / or share data.
  * Service - A load balancer that routes traffic to pods.
  * Configuration Map - A configuration mechanism for applications running within pods (non-security related configurations).
  * Secret - A security configuration mechanism for applications running within pods (e.g. passwords as certificates).
@@ -132,7 +132,7 @@ Introduction/Objects_TOPIC
 
 An object can have two types of key-value pairs associated with it:
 
- * Labels - These key-value pairs organize objects into logical groups, such that those groups can be targeted as a whole (e.g. give me all pods designed by the SRE team).
+ * Labels - These key-value pairs organize objects into logical groups, such that those groups can be targeted as a whole (e.g. give me all pods running Wordpress).
  * Annotations - These key-value pairs allow tools to gather and share information about an object (e.g. when was this object created).
 
 Finding objects based on labels is done via label selectors, described in the following table.
@@ -167,7 +167,7 @@ Kubernetes uses labels to orchestrate. Labels allow objects to have loosely coup
  '-------'                           '-------------'
 ```
 
-If there are a large number of keys / annotations, either because the organization set them directly or because they're being set by external tools, the chance of a collision increases. To combat this, keys for labels and annotations can optionally include a prefix (separated by a slash) that maps to a DNS subdomain to help disambiguate it. For example, `company.com/my_key` rather than just having `my_key`.
+If there are a large number of labels / annotations, either because the organization set them directly or because they're being set by external tools, the chance of a collision increases. To combat this, keys for labels and annotations can optionally include a prefix (separated by a slash) that maps to a DNS subdomain to help disambiguate it. For example, `company.com/my_key` rather than just having `my_key`.
 
 ```{note}
 The book states that key name itself can be at most 63 chars. If a prefix is included, it doesn't get included in that limit. A prefix can be up to 253 chars.
@@ -177,22 +177,27 @@ The book states that key name itself can be at most 63 chars. If a prefix is inc
 
 `{bm} /(Introduction\/Configuration)_TOPIC/i`
 
-Objects can either be accessed and mutated through a standard command-line interface called kubectl or a REST web interface. Manipulations come in two forms:
+Objects can be created, accessed, and modified through either a REST web interface or a standard command-line interface called kubectl. Changes can be supplied in two ways:
 
- * imperative configuration - the mutations to perform on the object (via kubectl invocations).
+ * Imperative configuration - specify which actions to take on which objects (via kubectl).
 
+   ```sh
+   kubectl label pods my_pod unhealthy=true                   # Set label on pod "my_pod"
+   kubectl set pods my_pod --requests='cpu=500m,memory=128Mi' # Set pod "my_pod"'s resource reqs
    ```
-   kubectl run my_pod --image=my-image:1.0
-   kubectl set pods my_pod --requests='cpu=500m,memory=128Mi'
-   ```
 
- * declarative configuration - the overall description of the object, called a manifest (as YAML or JSON via either kubectl or REST).
+ * Declarative configuration - supply the entire object as YAML or JSON, called a manifest (via kubectl or REST).
 
    ```yaml
+   #
+   # obj.yaml
+   #
    apiVersion: v1
    kind: Pod
    metadata:
      name: my-pod
+     labels:
+       unhealthy: true
    spec:
      containers:
        - image: my-image:1.0
@@ -203,12 +208,11 @@ Objects can either be accessed and mutated through a standard command-line inter
              memory: "128Mi"
    ```
 
-   ```
-   kubectl apply -f obj.yaml
-   kubectl delete -f obj.yaml
+   ```sh
+   kubectl apply -f obj.yaml   # Apply object in file "obj.yaml"
    ```
 
-Generally, declarative configurations are preferred over imperative configurations. When a declarative configuration is submitted, Kubernetes runs a reconciliation loop in the background to automatically mutate the state of the object to the one in the manifest. Contrast this to the imperative configuration method, where the mutations have to be manually submitted by the user one by one.
+Generally, declarative configurations are preferred over imperative configurations. When a declarative configuration is submitted, Kubernetes runs a reconciliation loop in the background that changes the object to match the submitted manifest, creating that object if it doesn't already exist. Contrast this to the imperative configuration method, where changes have to be manually submitted by the user one by one.
 
 # Kinds
 
@@ -356,7 +360,7 @@ Each container in a pod has to reference an image to use. How Kubernetes loads a
 ```yaml
 apiVersion: v1
 kind: Pod
-metadata:F
+metadata:
   name: my-pod
 spec:
   containers:
@@ -5974,23 +5978,170 @@ Kinds/Horizontal Pod Autoscaler_TOPIC
 Extensions/Helm_TOPIC
 ```
 
-Prometheus is a monitoring system that can integrate with Kubernetes to support custom metrics. These custom metrics, which Prometheus grabs by scraping files and querying servers, provide better visibility into the system and can be used to scale replicas via an HPA / VPA.
+```{note}
+A full exploration of Prometheus is out of scope here. This is just the basics of how to get it running, scraping metrics, and having HPAs make scaling decisions based on those scraped metrics.
 
-Any HPA can scale by using an object's values as metrics.
+Look into Prometheus more sometime in the future.
+```
 
-TODO: discuss installing through helm
+Prometheus is a monitoring system that can integrate with Kubernetes to support custom metrics. These custom metrics, which Prometheus grabs by scraping files and querying servers, provide better visibility into the system and can be used to scale replicas via an HPA or VPA.
 
-TODO: discuss exposing endpoints to scrape metrics, and scale on those metrics
+The quickest way to install Prometheus on Kubernetes is to use Helm. Specifically, the `prometheus` chart located [here](https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack).
 
-# Guides
+```sh
+# Add repository reference and install prometheus.
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install my-prometheus prometheus-community/prometheus
+# List objects. New Prometheus related objects should have been added by the install.
+kubectl get all
+# Forward 9999 to Prometheus pod's port 80 (access web interface via http://127.0.0.1:9999).
+kubectl port-forward service/my-prometheus-server 9999:80
+```
 
-`{bm} /(Guides)/`
+The Prometheus server will collect metrics from any pod or service so long as it has a set of annotations:
+ 
+ * `prometheus.io/path=/metrics` - HTTP server path that exposes metrics for Prometheus to scrape.
+ * `prometheus.io/port=8080` - HTTP server port that exposes metrics for Prometheus to scrape.
+ * `prometheus.io/scrape=true` - Enable/disable flag - must be `true` for Prometheus to scrape.
 
-The following subsections are guides to various aspects of Kubernetes.
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: "/prometheus-metrics"
+    prometheus.io/port: "8080"
+spec:
+  containers:
+    - name: my-container
+      image: my-image:1.0
+```
+
+The metrics being served by the pod / service must be in Prometheus's text-based format, documented [here](https://prometheus.io/docs/concepts/data_model/). Each line starts with the name of the metric being collected, optionally followed by squiggly brackets encompassing a set of comma-delimited key-value labels, followed by a quantity, and optionally followed by a timestamp (milliseconds since epoch).
+
+```
+http_requests_per_second{pod="pod-name", env="staging"} 133
+http_requests_total{pod="pod-name", env="staging"} 1111442
+some_other_metric_without_labels_and_with_timestamp 123 1483228830000
+```
+
+```{note}
+Timestamps shouldn't be used for dumping in historical data. See [here](https://stackoverflow.com/a/43891477).
+```
+
+Metrics within Prometheus can be exposed to HPAs / VPAs for replica scaling via the `prometheus-adapter` chart located [here](prometheus-adapter). 
+
+```sh
+# Add repository reference and install prometheus-adapter.
+#
+# The installed adapter is set to use the Prometheus instance installed by the "my-prometheus"
+# installation above. This assumes that the "my-prometheus" installation ended up in the default
+# namespace.
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install my-prometheus-adapter prometheus-community/prometheus-adapter \
+  --set "prometheus.url=http://my-prometheus-server.default.svc" \
+  --set "prometheus.port=80"
+```
+
+The adapter will expose Prometheus metrics as objects of kind `custom.metrics.k8s.io` (use kubectl to list: `kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1`). These objects can be referenced in an HPA / VPA for replica scaling.
+
+```yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: my-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: my-ss
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    # Custom metrics (custom.metrics.k8s.io) are accessed via metrics of type "Pod". The metric
+    # below targets an average of 1000 "http_requests_per_second" across all replicas.
+    - type: Pods
+      pods:
+        metric:
+          name: http_requests_per_second
+        target:
+          type: AverageValue
+          averageValue: 1000
+```
+
+# Patterns
+
+`{bm} /(Patterns)_TOPIC/`
+
+The following subsections are guides and patterns related to various aspects of Kubernetes.
+
+## Assistive Containers
+
+`{bm} /(Patterns\/Assistive Containers)_TOPIC/`
+
+```{prereq}
+Kinds/Pod_TOPIC
+```
+
+Often times, a pod can't integrate into a larger ecosystem because it either ...
+
+ * lacks certain features required by that ecosystem (e.g. all pods must push logs to a central database).
+ * doesn't support the communication protocols for that ecosystem (e.g. communications must be in YAML but pod uses JSON).
+
+The typical way to address this is to add or adapt that pod's functionality by adding in assistive containers. Containers that add or adapt a pod's functionality typically fall into the following categories.
+
+ * *Sidecar* - A sidecar container performs helper / maintenance tasks for more important containers within a pod. For example, imagine an organization that requires all applications push their logs to a central database. This log pushing functionality can be added to any pod via a sidecar container. Each container's log directory can be shared with the sidecar container (via a shared volume), where the sidecar container periodically reads those logs and shuttles them to the central database.
+
+   ```{svgbob}
+   .-----------------------------------.
+   |               Pod                 |
+   |                                   |
+   | .-------------.     .-----------. |         .----------.
+   | | Application |     | Sidecar   +-+-------->| Database |
+   | | Container   |     | Container | | send    '----------'
+   | '------+------'     '-----------' |
+   |         \               ^         |
+   |    write \             / read     |
+   |           v           /           |
+   |        .-------------+---.        |
+   |        | "Log directory" |        |
+   |        '-----------------'        |
+   '-----------------------------------'
+   ```
+
+ * *Ambassador* - An ambassador container manipulates outgoing requests from more important containers within a pod. For example, imagine an organization that that requires all applications push their metrics to a central database in JSON format. If a pod pushes metrics in YAML format instead of JSON format, an ambassador container can be used as a go-between to convert that YAML to the expected JSON.
+
+   ```{svgbob}
+   .------------------------------------------.
+   |                    Pod                   |
+   |                                          |
+   | .-------------.          .------------.  |        .----------.
+   | | Application |--------->| Ambassador |--+------->| Database |
+   | | Container   |   send   | Container  |  | send   '----------'
+   | '-------------'   YAML   '------------'  | JSON
+   '------------------------------------------'
+   ```
+
+ * *Adapter* - An adapter container manipulates incoming requests to more important containers within a pod. It does the same thing as an ambassador container, but in the opposite direction. For example, when an incoming request is expected to be in JSON format but the rest of the ecosystem is sending requests in YAML format, an adapter container can be used as go-between to convert between the two.
+
+   ```{svgbob}
+   .------------------------------------------.
+   |                    Pod                   |
+   |                                          |
+   | .-------------.          .------------.  |        .----------.
+   | | Application |<---------| Adapter    |<-+--------| Database |
+   | | Container   |   send   | Container  |  | send   '----------'
+   | '-------------'   JSON   '------------'  | YAML
+   '------------------------------------------'
+   ```
 
 ## Pod Design
 
-`{bm} /(Guides\/Pod Design)/`
+`{bm} /(Patterns\/Pod Design)_TOPIC/`
 
 ```{prereq}
 Kinds_TOPIC
@@ -6008,7 +6159,7 @@ The following subsections detail various aspects of pod design.
 
 ### Security
 
-`{bm} /(Guides\/Pod Design\/Security)/`
+`{bm} /(Patterns\/Pod Design\/Security)_TOPIC/`
 
 ```{prereq}
 Kinds/Pod_TOPIC
@@ -6017,6 +6168,7 @@ Kinds/Service Account_TOPIC
 Kinds/Secret_TOPIC
 Kinds/Configuration Map_TOPIC
 Security_TOPIC
+Patterns/Assistive Containers_TOPIC
 ```
 
 There are several aspects to hardening the security of a pod.
@@ -6071,6 +6223,16 @@ There are several aspects to hardening the security of a pod.
    Security/API Access Control/Disable Credentials_TOPIC (Preventing API credentials from being mounted to pod)
    ```
 
+ * **Harden root filesystem**
+
+   Unless a container explicitly requires write access to the root filesystem, force the root filesystem to be in read-only mode. For example, if an attacker compromises a container's filesystem but not it's processes, it may be able to write malicious configurations and data within the root filesystem to compromise those processes.
+   
+   Containers that need to write (e.g. writing out logs) may be able to do so in a mounted volume instead. While volume mounts live under the root filesystem, they can have their own read/write permissions.
+
+   ```{seealso}
+   Kinds/Pod/Container Isolation/Security Context_TOPIC (`readOnlyRootFilesystem` security context)
+   ```
+
  * **Harden volume access**
  
    Unless a container explicitly requires write access to a volume, mount that volume in read-only mode. For example, imagine a pod containing a sidecar which collects the main container's logs. The sidecar gets access to the main container's log files via a volume, where that shared volume is used by the main container to store logs, configurations, and data.
@@ -6093,7 +6255,7 @@ There are several aspects to hardening the security of a pod.
 
 ### Configuration
 
-`{bm} /(Guides\/Pod Design\/Configuration)/`
+`{bm} /(Patterns\/Pod Design\/Configuration)_TOPIC/`
 
 ```{prereq}
 Kinds/Pod/Images_TOPIC
@@ -6122,7 +6284,7 @@ A pod's configuration can make use of several features to ensure that it functio
 
 ### Lifecycle
 
-`{bm} /(Guides\/Pod Design\/Lifecycle)/`
+`{bm} /(Patterns\/Pod Design\/Lifecycle)_TOPIC/`
 
 ```{prereq}
 Kinds/Pod/Lifecycle_TOPIC
@@ -6154,7 +6316,7 @@ A pod's lifecycle can make use of several features to ensure that it functions w
 
 ### Performance
 
-`{bm} /(Guides\/Pod Design\/Performance)/`
+`{bm} /(Patterns\/Pod Design\/Performance)_TOPIC/`
 
 ```{prereq}
 Kinds/Pod/Node Placement_TOPIC
@@ -6179,7 +6341,7 @@ There are several aspects to ensure that pods perform well and pod replicas scal
 
 # Command-line Interface
 
-`{bm} /(Command-line Interface)/`
+`{bm} /(Command-line Interface)_TOPIC/`
 
 kubectl commands are typically organized into contexts, where each context is defines contextual information about the cluster: cluster location, cluster authentication, and default namespace. To ...
 
@@ -6207,7 +6369,7 @@ Kubernetes API is exposed as a RESTful interface, meaning everything is represen
 
 ## CRUD
 
-`{bm} /(Command-line Interface\/CRUD)/`
+`{bm} /(Command-line Interface\/CRUD)_TOPIC/`
 
 `get` / `describe` allows you to get details on a specific objects and kinds. To get an overview of a ...
 
@@ -6269,7 +6431,7 @@ When referencing objects, the ...
 
 ## Deployment
 
-`{bm} /(Command-line Interface\/Deployment)/`
+`{bm} /(Command-line Interface\/Deployment)_TOPIC/`
 
 `rollout` allows you to monitor and control deployment rollouts.
 
@@ -6294,7 +6456,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
 ## Proxy
 
-`{bm} /(Command-line Interface\/Proxy)/`
+`{bm} /(Command-line Interface\/Proxy)_TOPIC/`
 
 `proxy` allows you to launch a proxy that lets you talk internally with the Kubernetes API server.
 
@@ -6302,7 +6464,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
 ## Debug
 
-`{bm} /(Command-line Interface\/Debug)/`
+`{bm} /(Command-line Interface\/Debug)_TOPIC/`
 
 `logs` allows you to view outputs of a container.
 
@@ -6478,7 +6640,7 @@ The option `--from-file` can also point to a directory, in which case an entry w
 
  * `{bm} role binding/(role binding|cluster role binding)/i` - A kind specific to RBAC that binds a role to a set of users, groups, and / or service accounts.
 
-* `{bm} horizontal pod autoscaler/(horizontal pod autoscaler|horizontal pod autoscaling)/i` `{bm} /\b(HPA)s?\b//false/true` - A kind that automatically scales the number of replicas in a deployment, stateful set, or replica set based on how much load existing replicas are under.
+ * `{bm} horizontal pod autoscaler/(horizontal pod autoscaler|horizontal pod autoscaling)/i` `{bm} /\b(HPA)s?\b//false/true` - A kind that automatically scales the number of replicas in a deployment, stateful set, or replica set based on how much load existing replicas are under.
 
  * `{bm} vertical pod autoscaler/(vertical pod autoscaler|vertical pod autoscaling)/i` `{bm} /\b(VPA)s?\b//false/true` - A kind that automatically scales the resource requirements for some pod based on how much load existing replicas are under.
 
@@ -6513,8 +6675,6 @@ The option `--from-file` can also point to a directory, in which case an entry w
  * `{bm} init container` - A container within a pod that performs initialization tasks for that pod (e.g. writing some files required by the main containers to run).
 
  * `{bm} sidecar container/(sidecar container|sidecar)/i` - A container within a pod that performs helper tasks for the other more important containers in that pod (e.g. collecting application logs and sending them to a database).
-
- * `{bm} custom metrics adapter/(custom metrics? adapter)/i` - A pod (or pod replicas) that accesses some other pod's metrics via a shared resource (e.g. shared volume) and places it into Kubernetes via CRDs for the purpose of scaling replicas via an HPA.
 
  * `{bm} Helm` - A tool to define, install, and upgrade applications on Kubernetes. Similar to a package manager for Linux distributions (e.g. apt is used to install, upgrade, and remove software on Ubuntu).
 

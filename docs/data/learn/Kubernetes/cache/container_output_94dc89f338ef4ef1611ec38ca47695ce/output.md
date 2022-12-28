@@ -8,6 +8,7 @@
  * Kinds/Secret_TOPIC
  * Kinds/Configuration Map_TOPIC
  * Security_TOPIC
+ * Patterns/Assistive Containers_TOPIC
 
 </div>
 

@@ -152,8 +152,9 @@
 </ul>
 <li><a href="#H_Prometheus">Prometheus</a></li>
 </ul>
-<li><a href="#H_Guides">Guides</a></li>
+<li><a href="#H_Patterns">Patterns</a></li>
 <ul>
+<li><a href="#H_Assistive%20Containers">Assistive Containers</a></li>
 <li><a href="#H_Pod%20Design">Pod Design</a></li>
 <ul>
 <li><a href="#H1_Security">Security</a></li>
@@ -217,16 +218,16 @@
 <li><a href="#BM_(container%20runtime%20interface)%2Fi">container runtime interface</a> (<a href="#BM_%5Cb(CRI)s%3F%5Cb%2F">CRI</a>) - A runtime responsible for the high-level management of <a href="#BM_(container)%2Fi">container</a>s and <a href="#BM_(image)%2Fi">image</a>s: <a href="#BM_(image)%2Fi">image</a> management, <a href="#BM_(image)%2Fi">image</a> distribution, <a href="#BM_(container)%2Fi">container</a> mounts / storage, <a href="#BM_(container)%2Fi">container</a> networking, etc..</li>
 </ul>
 <p>Different vendors provide different implementations of each. For example, certain vendors provide an <a href="#BM_%5Cb(OCI%20runtime%7COCI)s%3F%5Cb%2F">OCI runtime</a> that use virtualization technology for isolation instead of standard Linux isolation (e.g. cgroups).</p>
-<p><img src="svgbob_a28730c1c9bb6f382bb8e320a51ca1cfa2db0bb2.svg" alt="Kroki diagram output"></p>
-<p><a href="#BM_%5Cb(OCI%20runtime%7COCI)s%3F%5Cb%2F">OCI</a>s and OCRs are also the basis for <a href="#BM_(container%20engine)%2Fi">container engine</a>s. <a href="#BM_(container%20engine)%2Fi">Container engine</a>s tools responsible for creating and running <a href="#BM_(container)%2Fi">container</a>s, creating <a href="#BM_(image)%2Fi">image</a>s, and other high-level functionality such as local testing of <a href="#BM_(container)%2Fi">container</a>s. Docker Engine is an example of a <a href="#BM_(container%20engine)%2Fi">container engine</a>.</p>
-<p><img src="svgbob_3d4187f5433dd286b08d28526577c57afdc47ec0.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_7a000ec6deb54bb398fec9474a0ccc0130bd731e.svg" alt="Kroki diagram output"></p>
+<p><a href="#BM_%5Cb(OCI%20runtime%7COCI)s%3F%5Cb%2F">OCI</a>s and <a href="#BM_%5Cb(CRI)s%3F%5Cb%2F">CRI</a>s are also the basis for <a href="#BM_(container%20engine)%2Fi">container engine</a>s. <a href="#BM_(container%20engine)%2Fi">Container engine</a>s tools responsible for creating and running <a href="#BM_(container)%2Fi">container</a>s, creating <a href="#BM_(image)%2Fi">image</a>s, and other high-level functionality such as local testing of <a href="#BM_(container)%2Fi">container</a>s. Docker Engine is an example of a <a href="#BM_(container%20engine)%2Fi">container engine</a>.</p>
+<p><img src="svgbob_0ee2ded4048bcacbfd506cf9833993b62671be93.svg" alt="Kroki diagram output"></p>
 <a name="H_Objects"></a><h2>Objects</h2>
 <p><a name="BM_(Introduction%5C%2FObjects)_TOPIC%2Fi"></a><strong></strong></p>
 <p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> breaks down its orchestration as a set of <a href="#BM_(object)%2Fi">object</a>s. Each <a href="#BM_(object)%2Fi">object</a> is of a specific type, referred to as <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>. The main <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s are ...</p>
 <ul>
 <li><a href="#BM_(node)%2Fi">Node</a> - A physical worker machine that runs <a href="#BM_(container)%2Fi">container</a>s.</li>
 <li><a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">Pod</a> - A set of <a href="#BM_(container)%2Fi">container</a>s tightly coupled to run in unison on a single <a href="#BM_(node)%2Fi">node</a>.</li>
-<li>Volume - A storage mechanism that lets <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s persist and / or share data.</li>
+<li><a href="#BM_(persistent%20volume)%2Fi">Persistent Volume</a> - A storage mechanism that lets <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s persist and / or share data.</li>
 <li><a href="#BM_(service)%2Fi">Service</a> - A load balancer that routes traffic to <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s.</li>
 <li><a href="#BM_(config%20map%7Cconfiguration%20map)%2Fi">Configuration Map</a> - A configuration mechanism for applications running within <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s (non-security related configurations).</li>
 <li><a href="#BM_(secret)%2Fi">Secret</a> - A security configuration mechanism for applications running within <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s (e.g. passwords as certificates).</li>
@@ -256,7 +257,7 @@
 </div>
 <p>An <a href="#BM_(object)%2Fi">object</a> can have two types of key-value pairs associated with it:</p>
 <ul>
-<li><a href="#BM_(label)%2Fi">Label</a>s - These key-value pairs organize <a href="#BM_(object)%2Fi">object</a>s into logical groups, such that those groups can be targeted as a whole (e.g. give me all <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s designed by the SRE team).</li>
+<li><a href="#BM_(label)%2Fi">Label</a>s - These key-value pairs organize <a href="#BM_(object)%2Fi">object</a>s into logical groups, such that those groups can be targeted as a whole (e.g. give me all <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s running Wordpress).</li>
 <li><a href="#BM_(annotation%7Cannotate)%2Fi">Annotation</a>s - These key-value pairs allow tools to gather and share information about an <a href="#BM_(object)%2Fi">object</a> (e.g. when was this <a href="#BM_(object)%2Fi">object</a> created).</li>
 </ul>
 <p>Finding <a href="#BM_(object)%2Fi">object</a>s based on <a href="#BM_(label)%2Fi">label</a>s is done via <a href="#BM_(label%20selector)%2Fi">label selector</a>s, described in the following table.</p>
@@ -300,27 +301,32 @@
 </table>
 <p><a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> uses <a href="#BM_(label)%2Fi">label</a>s to orchestrate. <a href="#BM_(label)%2Fi">Label</a>s allow <a href="#BM_(object)%2Fi">object</a>s to have loosely coupled linkages to each other as opposed to tightly coupled parent-child / hierarchy relationships. For example, a load balancer decides which <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s it routes requests to by searching for <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s using <a href="#BM_(label%20selector)%2Fi">label selector</a>.</p>
 <p><img src="svgbob_d1e778081e8cdf9a5a337a08f8f517ac030d2200.svg" alt="Kroki diagram output"></p>
-<p>If there are a large number of keys / <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s, either because the organization set them directly or because they're being set by external tools, the chance of a collision increases. To combat this, keys for <a href="#BM_(label)%2Fi">label</a>s and <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s can optionally include a prefix (separated by a slash) that maps to a DNS subdomain to help disambiguate it. For example, <code>company.com/my_key</code> rather than just having <code>my_key</code>.</p>
+<p>If there are a large number of <a href="#BM_(label)%2Fi">label</a>s / <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s, either because the organization set them directly or because they're being set by external tools, the chance of a collision increases. To combat this, keys for <a href="#BM_(label)%2Fi">label</a>s and <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s can optionally include a prefix (separated by a slash) that maps to a DNS subdomain to help disambiguate it. For example, <code>company.com/my_key</code> rather than just having <code>my_key</code>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The book states that key name itself can be at most 63 chars. If a prefix is included, it doesn't get included in that limit. A prefix can be up to 253 chars.</p>
 </div>
 <a name="H_Configuration"></a><h2>Configuration</h2>
 <p><a name="BM_(Introduction%5C%2FConfiguration)_TOPIC%2Fi"></a><strong></strong></p>
-<p><a href="#BM_(object)%2Fi">Object</a>s can either be accessed and mutated through a standard command-line interface called <a href="#BM_(kubectl)%2Fi">kubectl</a> or a REST web interface. Manipulations come in two forms:</p>
+<p><a href="#BM_(object)%2Fi">Object</a>s can be created, accessed, and modified through either a REST web interface or a standard command-line interface called <a href="#BM_(kubectl)%2Fi">kubectl</a>. Changes can be supplied in two ways:</p>
 <ul>
 <li>
-<p><a href="#BM_(imperative%20configuration)%2Fi">imperative configuration</a> - the mutations to perform on the <a href="#BM_(object)%2Fi">object</a> (via <a href="#BM_(kubectl)%2Fi">kubectl</a> invocations).</p>
-<pre><code>kubectl run my_pod --image=my-image:1.0
-kubectl set pods my_pod --requests='cpu=500m,memory=128Mi'
+<p><a href="#BM_(imperative%20configuration)%2Fi">Imperative configuration</a> - specify which actions to take on which <a href="#BM_(object)%2Fi">object</a>s (via <a href="#BM_(kubectl)%2Fi">kubectl</a>).</p>
+<pre class="hljs"><code>kubectl label pods my_pod unhealthy=<span class="hljs-literal">true</span>                   <span class="hljs-comment"># Set label on pod "my_pod"</span>
+kubectl <span class="hljs-built_in">set</span> pods my_pod --requests=<span class="hljs-string">'cpu=500m,memory=128Mi'</span> <span class="hljs-comment"># Set pod "my_pod"'s resource reqs</span>
 </code></pre>
 </li>
 <li>
-<p><a href="#BM_(declarative%20configuration)%2Fi">declarative configuration</a> - the overall description of the <a href="#BM_(object)%2Fi">object</a>, called a <a href="#BM_(manifest)%2Fi">manifest</a> (as YAML or JSON via either <a href="#BM_(kubectl)%2Fi">kubectl</a> or REST).</p>
-<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<p><a href="#BM_(declarative%20configuration)%2Fi">Declarative configuration</a> - supply the entire <a href="#BM_(object)%2Fi">object</a> as YAML or JSON, called a <a href="#BM_(manifest)%2Fi">manifest</a> (via <a href="#BM_(kubectl)%2Fi">kubectl</a> or REST).</p>
+<pre class="hljs"><code><span class="hljs-comment">#</span>
+<span class="hljs-comment"># obj.yaml</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
 <span class="hljs-attr">metadata:</span>
   <span class="hljs-attr">name:</span> <span class="hljs-string">my-pod</span>
+  <span class="hljs-attr">labels:</span>
+    <span class="hljs-attr">unhealthy:</span> <span class="hljs-literal">true</span>
 <span class="hljs-attr">spec:</span>
   <span class="hljs-attr">containers:</span>
     <span class="hljs-bullet">-</span> <span class="hljs-attr">image:</span> <span class="hljs-string">my-image:1.0</span>
@@ -330,12 +336,11 @@ kubectl set pods my_pod --requests='cpu=500m,memory=128Mi'
           <span class="hljs-attr">cpu:</span> <span class="hljs-string">"500m"</span>
           <span class="hljs-attr">memory:</span> <span class="hljs-string">"128Mi"</span>
 </code></pre>
-<pre><code>kubectl apply -f obj.yaml
-kubectl delete -f obj.yaml
+<pre class="hljs"><code>kubectl apply -f obj.yaml   <span class="hljs-comment"># Apply object in file "obj.yaml"</span>
 </code></pre>
 </li>
 </ul>
-<p>Generally, <a href="#BM_(declarative%20configuration)%2Fi">declarative configuration</a>s are preferred over <a href="#BM_(imperative%20configuration)%2Fi">imperative configuration</a>s. When a <a href="#BM_(declarative%20configuration)%2Fi">declarative configuration</a> is submitted, <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> runs a <a href="#BM_(reconciliation%20loop%7Ccontrol%20loop)%2Fi">reconciliation loop</a> in the background to automatically mutate the state of the <a href="#BM_(object)%2Fi">object</a> to the one in the <a href="#BM_(manifest)%2Fi">manifest</a>. Contrast this to the <a href="#BM_(imperative%20configuration)%2Fi">imperative configuration</a> method, where the mutations have to be manually submitted by the user one by one.</p>
+<p>Generally, <a href="#BM_(declarative%20configuration)%2Fi">declarative configuration</a>s are preferred over <a href="#BM_(imperative%20configuration)%2Fi">imperative configuration</a>s. When a <a href="#BM_(declarative%20configuration)%2Fi">declarative configuration</a> is submitted, <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> runs a <a href="#BM_(reconciliation%20loop%7Ccontrol%20loop)%2Fi">reconciliation loop</a> in the background that changes the <a href="#BM_(object)%2Fi">object</a> to match the submitted <a href="#BM_(manifest)%2Fi">manifest</a>, creating that <a href="#BM_(object)%2Fi">object</a> if it doesn't already exist. Contrast this to the <a href="#BM_(imperative%20configuration)%2Fi">imperative configuration</a> method, where changes have to be manually submitted by the user one by one.</p>
 <a name="H_Kinds"></a><h1>Kinds</h1>
 <p><a name="BM_(Kinds)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -452,7 +457,7 @@ kubectl delete -f obj.yaml
 <p>Each <a href="#BM_(container)%2Fi">container</a> in a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> has to reference an <a href="#BM_(image)%2Fi">image</a> to use. How <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> loads a <a href="#BM_(container)%2Fi">container</a>'s <a href="#BM_(image)%2Fi">image</a> is dependent on that <a href="#BM_(container)%2Fi">container</a>'s <a href="#BM_(image)%2Fi">image</a> pull policy.</p>
 <pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
 <span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
-<span class="hljs-string">metadata:F</span>
+<span class="hljs-attr">metadata:</span>
   <span class="hljs-attr">name:</span> <span class="hljs-string">my-pod</span>
 <span class="hljs-attr">spec:</span>
   <span class="hljs-attr">containers:</span>
@@ -5441,15 +5446,118 @@ helm repo index charts/ --merge charts/index.yaml
 <li><a href="#BM_(Extensions%5C%2FHelm)_TOPIC%2Fi">Extensions/Helm</a></li>
 </ul>
 </div>
-<p>Prometheus is a monitoring system that can integrate with <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> to support custom metrics. These custom metrics, which Prometheus grabs by scraping files and querying servers, provide better visibility into the system and can be used to scale <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s via an <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a> / <a href="#BM_%5Cb(VPA)s%3F%5Cb%2F">VPA</a>.</p>
-<p>Any <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a> can scale by using an <a href="#BM_(object)%2Fi">object</a>'s values as metrics.</p>
-<p>TODO: discuss installing through <a href="#BM_(Helm)%2Fi">helm</a></p>
-<p>TODO: discuss exposing <a href="#BM_(endpoints)%2Fi">endpoints</a> to scrape metrics, and scale on those metrics</p>
-<a name="H_Guides"></a><h1>Guides</h1>
-<p><a name="BM_(Guides)%2F"></a><strong></strong></p>
-<p>The following subsections are guides to various aspects of <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>A full exploration of Prometheus is out of scope here. This is just the basics of how to get it running, scraping metrics, and having <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a>s make scaling decisions based on those scraped metrics.</p>
+<p>Look into Prometheus more sometime in the future.</p>
+</div>
+<p>Prometheus is a monitoring system that can integrate with <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> to support custom metrics. These custom metrics, which Prometheus grabs by scraping files and querying servers, provide better visibility into the system and can be used to scale <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s via an <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a> or <a href="#BM_%5Cb(VPA)s%3F%5Cb%2F">VPA</a>.</p>
+<p>The quickest way to install Prometheus on <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> is to use <a href="#BM_(Helm)%2Fi">Helm</a>. Specifically, the <code>prometheus</code> <a href="#BM_(chart)%2Fi">chart</a> located <a href="https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack">here</a>.</p>
+<pre class="hljs"><code><span class="hljs-comment"># Add repository reference and install prometheus.</span>
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install my-prometheus prometheus-community/prometheus
+<span class="hljs-comment"># List objects. New Prometheus related objects should have been added by the install.</span>
+kubectl get all
+<span class="hljs-comment"># Forward 9999 to Prometheus pod's port 80 (access web interface via http://127.0.0.1:9999).</span>
+kubectl port-forward service/my-prometheus-server 9999:80
+</code></pre>
+<p>The Prometheus server will collect metrics from any <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> or <a href="#BM_(service)%2Fi">service</a> so long as it has a set of <a href="#BM_(annotation%7Cannotate)%2Fi">annotation</a>s:</p>
+<ul>
+<li><code>prometheus.io/path=/metrics</code> - HTTP server path that exposes metrics for Prometheus to scrape.</li>
+<li><code>prometheus.io/port=8080</code> - HTTP server port that exposes metrics for Prometheus to scrape.</li>
+<li><code>prometheus.io/scrape=true</code> - Enable/disable flag - must be <code>true</code> for Prometheus to scrape.</li>
+</ul>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Pod</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-pod</span>
+  <span class="hljs-attr">annotations:</span>
+    <span class="hljs-attr">prometheus.io/scrape:</span> <span class="hljs-string">"true"</span>
+    <span class="hljs-attr">prometheus.io/path:</span> <span class="hljs-string">"/prometheus-metrics"</span>
+    <span class="hljs-attr">prometheus.io/port:</span> <span class="hljs-string">"8080"</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">containers:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">my-container</span>
+      <span class="hljs-attr">image:</span> <span class="hljs-string">my-image:1.0</span>
+</code></pre>
+<p>The metrics being served by the <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> / <a href="#BM_(service)%2Fi">service</a> must be in Prometheus's text-based format, documented <a href="https://prometheus.io/docs/concepts/data_model/">here</a>. Each line starts with the name of the metric being collected, optionally followed by squiggly brackets encompassing a set of comma-delimited key-value <a href="#BM_(label)%2Fi">label</a>s, followed by a quantity, and optionally followed by a timestamp (milliseconds since epoch).</p>
+<pre><code>http_requests_per_second{pod="pod-name", env="staging"} 133
+http_requests_total{pod="pod-name", env="staging"} 1111442
+some_other_metric_without_labels_and_with_timestamp 123 1483228830000
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Timestamps shouldn't be used for dumping in historical data. See <a href="https://stackoverflow.com/a/43891477">here</a>.</p>
+</div>
+<p>Metrics within Prometheus can be exposed to <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a>s / <a href="#BM_%5Cb(VPA)s%3F%5Cb%2F">VPA</a>s for <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a> scaling via the <code>prometheus-adapter</code> <a href="#BM_(chart)%2Fi">chart</a> located <a href="prometheus-adapter">here</a>.</p>
+<pre class="hljs"><code><span class="hljs-comment"># Add repository reference and install prometheus-adapter.</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># The installed adapter is set to use the Prometheus instance installed by the "my-prometheus"</span>
+<span class="hljs-comment"># installation above. This assumes that the "my-prometheus" installation ended up in the default</span>
+<span class="hljs-comment"># namespace.</span>
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install my-prometheus-adapter prometheus-community/prometheus-adapter \
+  --<span class="hljs-built_in">set</span> <span class="hljs-string">"prometheus.url=http://my-prometheus-server.default.svc"</span> \
+  --<span class="hljs-built_in">set</span> <span class="hljs-string">"prometheus.port=80"</span>
+</code></pre>
+<p>The adapter will expose Prometheus metrics as <a href="#BM_(object)%2Fi">object</a>s of <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> <code>custom.metrics.k8s.io</code> (use <a href="#BM_(kubectl)%2Fi">kubectl</a> to list: <code>kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1</code>). These <a href="#BM_(object)%2Fi">object</a>s can be referenced in an <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a> / <a href="#BM_%5Cb(VPA)s%3F%5Cb%2F">VPA</a> for <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a> scaling.</p>
+<pre class="hljs"><code><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">autoscaling/v2</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">HorizontalPodAutoscaler</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-hpa</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">scaleTargetRef:</span>
+    <span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+    <span class="hljs-attr">kind:</span> <span class="hljs-string">StatefulSet</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">my-ss</span>
+  <span class="hljs-attr">minReplicas:</span> <span class="hljs-number">2</span>
+  <span class="hljs-attr">maxReplicas:</span> <span class="hljs-number">10</span>
+  <span class="hljs-attr">metrics:</span>
+    <span class="hljs-comment"># Custom metrics (custom.metrics.k8s.io) are accessed via metrics of type "Pod". The metric</span>
+    <span class="hljs-comment"># below targets an average of 1000 "http_requests_per_second" across all replicas.</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">Pods</span>
+      <span class="hljs-attr">pods:</span>
+        <span class="hljs-attr">metric:</span>
+          <span class="hljs-attr">name:</span> <span class="hljs-string">http_requests_per_second</span>
+        <span class="hljs-attr">target:</span>
+          <span class="hljs-attr">type:</span> <span class="hljs-string">AverageValue</span>
+          <span class="hljs-attr">averageValue:</span> <span class="hljs-number">1000</span>
+</code></pre>
+<a name="H_Patterns"></a><h1>Patterns</h1>
+<p><a name="BM_(Patterns)_TOPIC%2F"></a><strong></strong></p>
+<p>The following subsections are guides and patterns related to various aspects of <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>.</p>
+<a name="H_Assistive%20Containers"></a><h2>Assistive Containers</h2>
+<p><a name="BM_(Patterns%5C%2FAssistive%20Containers)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Kinds%5C%2FPod)_TOPIC%2Fi">Kinds/Pod</a></li>
+</ul>
+</div>
+<p>Often times, a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> can't integrate into a larger ecosystem because it either ...</p>
+<ul>
+<li>lacks certain features required by that ecosystem (e.g. all <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>s must push logs to a central database).</li>
+<li>doesn't support the communication protocols for that ecosystem (e.g. communications must be in YAML but <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> uses JSON).</li>
+</ul>
+<p>The typical way to address this is to add or adapt that <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>'s functionality by adding in assistive <a href="#BM_(container)%2Fi">container</a>s. <a href="#BM_(container)%2Fi">Container</a>s that add or adapt a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>'s functionality typically fall into the following categories.</p>
+<ul>
+<li>
+<p><em><a href="#BM_(sidecar%20container%7Csidecar)%2Fi">Sidecar</a></em> - A <a href="#BM_(sidecar%20container%7Csidecar)%2Fi">sidecar container</a> performs helper / maintenance tasks for more important <a href="#BM_(container)%2Fi">container</a>s within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>. For example, imagine an organization that requires all applications push their logs to a central database. This log pushing functionality can be added to any <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> via a <a href="#BM_(sidecar%20container%7Csidecar)%2Fi">sidecar container</a>. Each <a href="#BM_(container)%2Fi">container</a>'s log directory can be shared with the <a href="#BM_(sidecar%20container%7Csidecar)%2Fi">sidecar container</a> (via a shared volume), where the <a href="#BM_(sidecar%20container%7Csidecar)%2Fi">sidecar container</a> periodically reads those logs and shuttles them to the central database.</p>
+<p><img src="svgbob_186e69aedb5c3915e9ea82ca9f3c7131f754709a.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><em>Ambassador</em> - An ambassador <a href="#BM_(container)%2Fi">container</a> manipulates outgoing requests from more important <a href="#BM_(container)%2Fi">container</a>s within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>. For example, imagine an organization that that requires all applications push their metrics to a central database in JSON format. If a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> pushes metrics in YAML format instead of JSON format, an ambassador <a href="#BM_(container)%2Fi">container</a> can be used as a go-between to convert that YAML to the expected JSON.</p>
+<p><img src="svgbob_27a34eb576fe76b4db1a23b80ce3738f84adfbe7.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><em>Adapter</em> - An adapter <a href="#BM_(container)%2Fi">container</a> manipulates incoming requests to more important <a href="#BM_(container)%2Fi">container</a>s within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>. It does the same thing as an ambassador <a href="#BM_(container)%2Fi">container</a>, but in the opposite direction. For example, when an incoming request is expected to be in JSON format but the rest of the ecosystem is sending requests in YAML format, an adapter <a href="#BM_(container)%2Fi">container</a> can be used as go-between to convert between the two.</p>
+<p><img src="svgbob_5612a1a69fd387fbf5f5e973ecf55ebdd5df51fc.svg" alt="Kroki diagram output"></p>
+</li>
+</ul>
 <a name="H_Pod%20Design"></a><h2>Pod Design</h2>
-<p><a name="BM_(Guides%5C%2FPod%20Design)%2F"></a><strong></strong></p>
+<p><a name="BM_(Patterns%5C%2FPod%20Design)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -5466,7 +5574,7 @@ helm repo index charts/ --merge charts/index.yaml
 </ul>
 <p>The following subsections detail various aspects of <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> design.</p>
 <a name="H1_Security"></a><h3>Security</h3>
-<p><a name="BM_(Guides%5C%2FPod%20Design%2FSecurity)%2F"></a><strong></strong></p>
+<p><a name="BM_(Patterns%5C%2FPod%20Design%2FSecurity)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -5476,6 +5584,7 @@ helm repo index charts/ --merge charts/index.yaml
 <li><a href="#BM_(Kinds%5C%2FSecret)_TOPIC%2F">Kinds/Secret</a></li>
 <li><a href="#BM_(Kinds%5C%2FConfiguration%20Map)_TOPIC%2F">Kinds/Configuration Map</a></li>
 <li><a href="#BM_(Security)_TOPIC%2Fi">Security</a></li>
+<li><a href="#BM_(Patterns%5C%2FAssistive%20Containers)_TOPIC%2F">Patterns/Assistive Containers</a></li>
 </ul>
 </div>
 <p>There are several aspects to hardening the security of a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</p>
@@ -5539,6 +5648,17 @@ helm repo index charts/ --merge charts/index.yaml
 </div>
 </li>
 <li>
+<p><strong>Harden root filesystem</strong></p>
+<p>Unless a <a href="#BM_(container)%2Fi">container</a> explicitly requires write access to the root filesystem, force the root filesystem to be in read-only mode. For example, if an attacker compromises a <a href="#BM_(container)%2Fi">container</a>'s filesystem but not it's processes, it may be able to write malicious configurations and data within the root filesystem to compromise those processes.</p>
+<p><a href="#BM_(container)%2Fi">Container</a>s that need to write (e.g. writing out logs) may be able to do so in a mounted volume instead. While volume mounts live under the root filesystem, they can have their own read/write permissions.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Kinds%5C%2FPod%2FContainer%20Isolation%2FSecurity%20Context)_TOPIC%2F">Kinds/Pod/Container Isolation/Security Context</a> (<code>readOnlyRootFilesystem</code> security <a href="#BM_(context)%2Fi">context</a>)</li>
+</ul>
+</div>
+</li>
+<li>
 <p><strong>Harden volume access</strong></p>
 <p>Unless a <a href="#BM_(container)%2Fi">container</a> explicitly requires write access to a volume, mount that volume in read-only mode. For example, imagine a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> containing a <a href="#BM_(sidecar%20container%7Csidecar)%2Fi">sidecar</a> which collects the main <a href="#BM_(container)%2Fi">container</a>'s logs. The <a href="#BM_(sidecar%20container%7Csidecar)%2Fi">sidecar</a> gets access to the main <a href="#BM_(container)%2Fi">container</a>'s log files via a volume, where that shared volume is used by the main <a href="#BM_(container)%2Fi">container</a> to store logs, configurations, and data.</p>
 <p>If the <a href="#BM_(sidecar%20container%7Csidecar)%2Fi">sidecar</a> isn't restricted to just reading that shared volume, an attacker could first compromise the <a href="#BM_(sidecar%20container%7Csidecar)%2Fi">sidecar</a> and use it to compromise the main <a href="#BM_(container)%2Fi">container</a> by writing malicious configurations and data on that shared volume.</p>
@@ -5562,7 +5682,7 @@ helm repo index charts/ --merge charts/index.yaml
 </li>
 </ul>
 <a name="H3_Configuration"></a><h3>Configuration</h3>
-<p><a name="BM_(Guides%5C%2FPod%20Design%2FConfiguration)%2F"></a><strong></strong></p>
+<p><a name="BM_(Patterns%5C%2FPod%20Design%2FConfiguration)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -5598,7 +5718,7 @@ helm repo index charts/ --merge charts/index.yaml
 </li>
 </ul>
 <a name="H1_Lifecycle"></a><h3>Lifecycle</h3>
-<p><a name="BM_(Guides%5C%2FPod%20Design%2FLifecycle)%2F"></a><strong></strong></p>
+<p><a name="BM_(Patterns%5C%2FPod%20Design%2FLifecycle)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -5637,7 +5757,7 @@ helm repo index charts/ --merge charts/index.yaml
 </li>
 </ul>
 <a name="H_Performance"></a><h3>Performance</h3>
-<p><a name="BM_(Guides%5C%2FPod%20Design%2FPerformance)%2F"></a><strong></strong></p>
+<p><a name="BM_(Patterns%5C%2FPod%20Design%2FPerformance)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -5667,7 +5787,7 @@ helm repo index charts/ --merge charts/index.yaml
 </li>
 </ul>
 <a name="H_Command-line%20Interface"></a><h1>Command-line Interface</h1>
-<p><a name="BM_(Command-line%20Interface)%2F"></a><strong></strong></p>
+<p><a name="BM_(Command-line%20Interface)_TOPIC%2F"></a><strong></strong></p>
 <p><a href="#BM_(kubectl)%2Fi">kubectl</a> commands are typically organized into <a href="#BM_(context)%2Fi">context</a>s, where each <a href="#BM_(context)%2Fi">context</a> is defines <a href="#BM_(context)%2Fi">context</a>ual information about the cluster: cluster location, cluster authentication, and default <a href="#BM_(namespace)%2Fi">namespace</a>. To ...</p>
 <ul>
 <li>set location, <code>kubectl config set-context {CTX} --cluster={VAL}</code></li>
@@ -5691,7 +5811,7 @@ helm repo index charts/ --merge charts/index.yaml
 <li>get JSON output isolated to a specific field or fields <code>-o jsonpath --template={TEMPLATE}</code>, where the template is a JSONPath expression.</li>
 </ul>
 <a name="H_CRUD"></a><h2>CRUD</h2>
-<p><a name="BM_(Command-line%20Interface%5C%2FCRUD)%2F"></a><strong></strong></p>
+<p><a name="BM_(Command-line%20Interface%5C%2FCRUD)_TOPIC%2F"></a><strong></strong></p>
 <p><code>get</code> / <code>describe</code> allows you to get details on a specific <a href="#BM_(object)%2Fi">object</a>s and <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a>s. To get an overview of a ...</p>
 <ul>
 <li>list of all <a href="#BM_(object)%2Fi">object</a>s of a specific <a href="#BM_(%5Cbkind)s%3F%5Cb%2Fi">kind</a> using <code>kubectl get {KIND}</code>.</li>
@@ -5747,7 +5867,7 @@ helm repo index charts/ --merge charts/index.yaml
 <li><code>--all</code> flag can target everything.</li>
 </ul>
 <a name="H1_Deployment"></a><h2>Deployment</h2>
-<p><a name="BM_(Command-line%20Interface%5C%2FDeployment)%2F"></a><strong></strong></p>
+<p><a name="BM_(Command-line%20Interface%5C%2FDeployment)_TOPIC%2F"></a><strong></strong></p>
 <p><code>rollout</code> allows you to monitor and control <a href="#BM_(deployment)%2Fi">deployment</a> rollouts.</p>
 <ul>
 <li><code>kubectl rollout status deployments {DEPLOYMENT}</code> - monitor rollout</li>
@@ -5770,13 +5890,13 @@ helm repo index charts/ --merge charts/index.yaml
 <li><code>kubectl create secret generic my-tls-cert --from-file=a.crt --from-file=a.key</code></li>
 </ul>
 <a name="H_Proxy"></a><h2>Proxy</h2>
-<p><a name="BM_(Command-line%20Interface%5C%2FProxy)%2F"></a><strong></strong></p>
+<p><a name="BM_(Command-line%20Interface%5C%2FProxy)_TOPIC%2F"></a><strong></strong></p>
 <p><code>proxy</code> allows you to launch a proxy that lets you talk internally with the <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> API server.</p>
 <ul>
 <li><code>kubectl proxy</code></li>
 </ul>
 <a name="H_Debug"></a><h2>Debug</h2>
-<p><a name="BM_(Command-line%20Interface%5C%2FDebug)%2F"></a><strong></strong></p>
+<p><a name="BM_(Command-line%20Interface%5C%2FDebug)_TOPIC%2F"></a><strong></strong></p>
 <p><code>logs</code> allows you to view outputs of a <a href="#BM_(container)%2Fi">container</a>.</p>
 <ul>
 <li><code>kubectl logs {POD}</code> - get logs for a single <a href="#BM_(container)%2Fi">container</a> <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>.</li>
@@ -6056,9 +6176,6 @@ helm repo index charts/ --merge charts/index.yaml
 </li>
 <li>
 <p><a name="BM_(sidecar%20container%7Csidecar)%2Fi"></a><strong>sidecar container</strong> - A <a href="#BM_(container)%2Fi">container</a> within a <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> that performs helper tasks for the other more important <a href="#BM_(container)%2Fi">container</a>s in that <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (e.g. collecting application logs and sending them to a database).</p>
-</li>
-<li>
-<p><a name="BM_(custom%20metrics%3F%20adapter)%2Fi"></a><strong>custom metrics adapter</strong> - A <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> (or <a href="#BM_(pod%20replica%7Creplica)%2Fi">pod replica</a>s) that accesses some other <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a>'s metrics via a shared resource (e.g. shared volume) and places it into <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> via <a href="#BM_%5Cb(CRD)s%3F%5Cb%2F">CRD</a>s for the purpose of scaling <a href="#BM_(pod%20replica%7Creplica)%2Fi">replica</a>s via an <a href="#BM_%5Cb(HPA)s%3F%5Cb%2F">HPA</a>.</p>
 </li>
 <li>
 <p><a name="BM_(Helm)%2Fi"></a><strong>Helm</strong> - A tool to define, install, and upgrade applications on <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>. Similar to a package manager for Linux distributions (e.g. apt is used to install, upgrade, and remove software on Ubuntu).</p>

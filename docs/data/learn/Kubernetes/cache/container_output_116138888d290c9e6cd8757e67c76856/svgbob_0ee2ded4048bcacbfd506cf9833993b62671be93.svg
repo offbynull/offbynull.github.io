@@ -102,13 +102,13 @@ OCI
 </text>
 </g>
 <g>
-<text x="57" y="28">
-Kubernetes
+<text x="25" y="28">
+Container Engine
 </text>
 </g>
 <g>
 <text x="89" y="60">
-OCR
+CRI
 </text>
 </g>
 </svg>
