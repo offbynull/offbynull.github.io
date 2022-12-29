@@ -1,11 +1,9 @@
 from itertools import product
-from math import log
 
-import find_max_path.FindMaxPath_DPBacktrack
 from graph import DirectedGraph
 from helpers.Utils import slide_window
 
-with open('/home/user/Downloads/test.txt') as f:
+with open('/home/user/Downloads/dataset_240401_4(1).txt') as f:
     lines = f.read().splitlines(keepends=False)
 emitted_symbols = lines[0]
 symbols = set(lines[2].split())
@@ -30,14 +28,10 @@ for from_state, to_state, symbol in product(hidden_states, hidden_states, symbol
     prob = hidden_state_transition_probs[(from_state, to_state)] * state_symbol_emission_probs[(to_state, symbol)]
     hidden_state_transition_to_emission_probs[from_state, to_state, symbol] = prob
 
-for from_state, to_state, symbol in product({'SOURCE'}, hidden_states, symbols):
-    prob = 1.0 / len(symbols) * state_symbol_emission_probs[(to_state, symbol)]
-    hidden_state_transition_to_emission_probs[from_state, to_state, symbol] = prob
-
 
 g = DirectedGraph.Graph()
 g.insert_node('SOURCE')
-for i in range(len(emitted_symbols) + 1):
+for i in range(len(emitted_symbols)):
     for state in hidden_states:
         g.insert_node(f'{state}{i}')
 g.insert_node('SINK')
@@ -45,68 +39,48 @@ g.insert_node('SINK')
 for to_state in hidden_states:
     g.insert_edge(
         f'SOURCE->{to_state}0',
-        'SOURCE',
+        f'SOURCE',
         f'{to_state}0',
         1.0 / len(hidden_states)
     )
-for (from_states, to_states), i in slide_window([list(hidden_states)] * (len(emitted_symbols) + 1), 2):
+for (from_states, to_states), i in slide_window([list(hidden_states)] * len(emitted_symbols), 2):
     symbol = emitted_symbols[i]
     for from_state, to_state in product(from_states, to_states):
         g.insert_edge(
             f'{from_state}{i}->{to_state}{i + 1}',
             f'{from_state}{i}',
             f'{to_state}{i + 1}',
-            hidden_state_transition_to_emission_probs[from_state, to_state, symbol]
+            hidden_state_transition_probs[from_state, to_state]
         )
 i = len(emitted_symbols) - 1
 for to_state in hidden_states:
     g.insert_edge(
-        f'{to_state}{i + 1}->SINK',
-        f'{to_state}{i + 1}',
+        f'{to_state}{i}->SINK',
+        f'{to_state}{i}',
         'SINK',
         1.0
     )
 
+g.update_node_data('SOURCE', 1.0)
+for i in range(len(emitted_symbols)):
+    symbol = emitted_symbols[i]
+    for state in hidden_states:
+        n_id = f'{state}{i}'
+        n_forward_weight = 0.0
+        for e_id, from_n, _, e_weight in g.get_inputs_full(n_id):
+            from_n_forward_weight = g.get_node_data(from_n)
+            n_forward_weight += from_n_forward_weight * e_weight
+        n_forward_weight *= state_symbol_emission_probs[state, symbol]
+        g.update_node_data(n_id, n_forward_weight)
 
-n_from = 'SOURCE'
-n_from_weight = 1.0
-g.update_node_data(n_from, n_from_weight)
-for to_state in hidden_states:
-    n_to = f'{to_state}0'
-    edge_weight = g.get_edge_data(f'{n_from}->{n_to}')
-    n_to_weight = n_from_weight * edge_weight
-    g.update_node_data(n_to, n_to_weight)
-for i in range(1, len(emitted_symbols) + 1):
-    for to_state in hidden_states:
-        n_to = f'{to_state}{i}'
-        n_to_weight = 0.0
-        for from_state in hidden_states:
-            n_from = f'{from_state}{i-1}'
-            n_from_weight = g.get_node_data(n_from)
-            edge_weight = g.get_edge_data(f'{n_from}->{n_to}')
-            n_to_weight += n_from_weight * edge_weight
-        g.update_node_data(n_to, n_to_weight)
-n_to_weight = 0.0
-for from_state in hidden_states:
-    n_from = f'{from_state}{len(emitted_symbols)}'
-    n_from_weight = g.get_node_data(n_from)
-    edge_weight = g.get_edge_data(f'{n_from}->SINK')
-    n_to_weight += n_from_weight * edge_weight
-g.update_node_data('SINK', n_to_weight)
+# Now do it for the sink as well
+n_forward_weight = 0.0
+for e_id, from_n, _, e_weight in g.get_inputs_full('SINK'):
+    from_n_forward_weight = g.get_node_data(from_n)
+    n_forward_weight += from_n_forward_weight * e_weight
+g.update_node_data('SINK', n_forward_weight)
 
-print(f'{n_to_weight}')
-
-THIS ANSWER IS WRONG? NUMERICAL CONSISTENCY ISSUE?
-THIS ANSWER IS WRONG? NUMERICAL CONSISTENCY ISSUE?
-THIS ANSWER IS WRONG? NUMERICAL CONSISTENCY ISSUE?
-THIS ANSWER IS WRONG? NUMERICAL CONSISTENCY ISSUE?
-THIS ANSWER IS WRONG? NUMERICAL CONSISTENCY ISSUE?
-THIS ANSWER IS WRONG? NUMERICAL CONSISTENCY ISSUE?
-THIS ANSWER IS WRONG? NUMERICAL CONSISTENCY ISSUE?
-THIS ANSWER IS WRONG? NUMERICAL CONSISTENCY ISSUE?
-THIS ANSWER IS WRONG? NUMERICAL CONSISTENCY ISSUE?
-THIS ANSWER IS WRONG? NUMERICAL CONSISTENCY ISSUE?
-THIS ANSWER IS WRONG? NUMERICAL CONSISTENCY ISSUE?
+print(f'{n_forward_weight}')  # OUTPUT SINK'S WEIGHT
 
 
 def to_dot(g: DirectedGraph.Graph) -> str:
@@ -116,8 +90,7 @@ def to_dot(g: DirectedGraph.Graph) -> str:
     ret += ' edge[fontname="Courier-Bold", fontsize=10]\n'
     nodes = sorted(g.get_nodes())
     for n in nodes:
-        weight = g.get_node_data(n)
-        ret += f'{n} [label="{n}\\n{weight}"]\n'
+        ret += f'{n} [label="{n}\\n{g.get_node_data(n):.15f}"]\n'
     for e in sorted(g.get_edges()):
         n1, n2, weight = g.get_edge(e)
         ret += f'{n1} -> {n2} [label="{weight:.3f}"]\n'
@@ -125,4 +98,5 @@ def to_dot(g: DirectedGraph.Graph) -> str:
     return ret
 
 
-print(f'{to_dot(g)}')
+# print(f'{to_dot(g)}')
+
