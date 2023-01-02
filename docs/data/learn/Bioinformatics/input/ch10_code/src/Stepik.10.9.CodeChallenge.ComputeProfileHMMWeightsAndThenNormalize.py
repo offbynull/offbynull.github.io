@@ -5,9 +5,10 @@ from graph.DirectedGraph import Graph
 from helpers.Utils import slide_window
 
 
-with open('/home/user/Downloads/dataset_240402_15(2).txt') as f:
+with open('/home/user/Downloads/dataset_240403_5.txt') as f:
     lines = f.read().splitlines(keepends=False)
-threshold = float(lines[0])
+threshold = float(lines[0].split()[0])
+pseudocount = float(lines[0].split()[1])
 symbols = list(lines[2].split())
 sequences = [list(l) for l in lines[4:]]
 
@@ -35,15 +36,20 @@ class StableColumn:
     def is_set(self, row_idx: int):
         return self.elements[row_idx] is not None
 
-    def determine_emission_probabilities(self):
-        total = 0
-        counts = Counter()
+    def determine_emission_probabilities(self, symbols: list[E], psuedocount: float):
+        total = 0.0
+        counts = {s: 0.0 for s in symbols}
         for e in self.elements:
             if e is None:
                 continue
             counts[e] += 1
             total += 1
-        return {k: v / total for k, v in counts.items()}
+        ret = {k: v / total for k, v in counts.items()}
+        ret_total = 0.0
+        for e, v in ret.items():
+            ret[e] += psuedocount
+            ret_total += ret[e]
+        return {k: v / ret_total for k, v in ret.items()}
 
     def __str__(self):
         return f'{self.__class__.__name__}: {self.elements}'
@@ -73,24 +79,29 @@ class UnstableColumns:
     def is_set(self, row_idx: int):
         return self.row_set_count(row_idx) > 0
 
-    def determine_emission_probabilities(self):
-        total = 0
-        counts = Counter()
+    def determine_emission_probabilities(self, symbols: list[E], psuedocount: float):
+        total = 0.0
+        counts = {s: 0.0 for s in symbols}
         for row in self.rows:
             for e in row:
                 if e is None:
                     continue
                 counts[e] += 1
                 total += 1
-        return {k: v / total for k, v in counts.items()}
+        ret = {k: v / total for k, v in counts.items()}
+        ret_total = 0.0
+        for e, v in ret.items():
+            ret[e] += psuedocount
+            ret_total += ret[e]
+        return {k: v / ret_total for k, v in ret.items()}
 
 
 class ThresholdedAlignment:
     def __init__(self, threshold: float, sequences: list[list[E]], gap_symbol: E):
         self.row_count = len(sequences)
         columns = []
-        elem_count_per_row = len(sequences[0])
-        for i in range(elem_count_per_row):
+        self.elements_per_row = len(sequences[0])
+        for i in range(self.elements_per_row):
             column_elements = [None if s[i] == gap_symbol else s[i] for s in sequences]
             gapped_count = sum(1 for e in column_elements if e is None)
             gapped_perc = gapped_count / self.row_count
@@ -238,26 +249,114 @@ class EdgeData:
 
 
 g = Graph()
+# Add all nodes
+g.insert_node('S', NodeData())
+g.insert_node('I0', NodeData())
+for col_idx in range(ta.stable_col_count):
+    g.insert_node(f'I{col_idx + 1}', NodeData())
+    g.insert_node(f'M{col_idx + 1}', NodeData())
+    g.insert_node(f'D{col_idx + 1}', NodeData())
+g.insert_node('E', NodeData())
+# Connect all Is to itself
+for col_idx in range(ta.stable_col_count + 1):
+    n_id = f'I{col_idx}'
+    e_id = n_id, n_id
+    g.insert_edge(e_id, n_id, n_id, EdgeData())
+# Connect outgoing from I0
+n_from_id = f'I0'
+n_to_id = f'D1'
+e_id = n_from_id, n_to_id
+g.insert_edge(e_id, n_from_id, n_to_id, EdgeData())
+n_from_id = f'I0'
+n_to_id = f'M1'
+e_id = n_from_id, n_to_id
+g.insert_edge(e_id, n_from_id, n_to_id, EdgeData())
+# Connect all outgoing Ds, Ms, and Is > 0
+for col_idx in range(1, ta.stable_col_count + 1):
+    if col_idx < ta.stable_col_count:
+        n_from_id = f'D{col_idx}'
+        n_to_id = f'D{col_idx + 1}'
+        e_id = n_from_id, n_to_id
+        g.insert_edge(e_id, n_from_id, n_to_id, EdgeData())
+        n_from_id = f'D{col_idx}'
+        n_to_id = f'M{col_idx + 1}'
+        e_id = n_from_id, n_to_id
+        g.insert_edge(e_id, n_from_id, n_to_id, EdgeData())
+        n_from_id = f'M{col_idx}'
+        n_to_id = f'M{col_idx + 1}'
+        e_id = n_from_id, n_to_id
+        g.insert_edge(e_id, n_from_id, n_to_id, EdgeData())
+        n_from_id = f'M{col_idx}'
+        n_to_id = f'D{col_idx + 1}'
+        e_id = n_from_id, n_to_id
+        g.insert_edge(e_id, n_from_id, n_to_id, EdgeData())
+        n_from_id = f'I{col_idx}'
+        n_to_id = f'M{col_idx + 1}'
+        e_id = n_from_id, n_to_id
+        g.insert_edge(e_id, n_from_id, n_to_id, EdgeData())
+        n_from_id = f'I{col_idx}'
+        n_to_id = f'D{col_idx + 1}'
+        e_id = n_from_id, n_to_id
+        g.insert_edge(e_id, n_from_id, n_to_id, EdgeData())
+    n_from_id = f'D{col_idx}'
+    n_to_id = f'I{col_idx}'
+    e_id = n_from_id, n_to_id
+    g.insert_edge(e_id, n_from_id, n_to_id, EdgeData())
+    n_from_id = f'M{col_idx}'
+    n_to_id = f'I{col_idx}'
+    e_id = n_from_id, n_to_id
+    g.insert_edge(e_id, n_from_id, n_to_id, EdgeData())
+# Connect from S
+n_from_id = f'S'
+n_to_id = f'I0'
+e_id = n_from_id, n_to_id
+g.insert_edge(e_id, n_from_id, n_to_id, EdgeData())
+n_from_id = f'S'
+n_to_id = f'M1'
+e_id = n_from_id, n_to_id
+g.insert_edge(e_id, n_from_id, n_to_id, EdgeData())
+n_from_id = f'S'
+n_to_id = f'D1'
+e_id = n_from_id, n_to_id
+g.insert_edge(e_id, n_from_id, n_to_id, EdgeData())
+# Connect to E
+n_from_id = f'I{ta.stable_col_count}'
+n_to_id = f'E'
+e_id = n_from_id, n_to_id
+g.insert_edge(e_id, n_from_id, n_to_id, EdgeData())
+n_from_id = f'M{ta.stable_col_count}'
+n_to_id = f'E'
+e_id = n_from_id, n_to_id
+g.insert_edge(e_id, n_from_id, n_to_id, EdgeData())
+n_from_id = f'D{ta.stable_col_count}'
+n_to_id = f'E'
+e_id = n_from_id, n_to_id
+g.insert_edge(e_id, n_from_id, n_to_id, EdgeData())
+
+# Set visit counts on nodes
 for row_idx in range(ta.row_count):
     for _, col_from, col_to, n_from_id, n_to_id in ta.determine_node_path(row_idx):
-        if not g.has_node(n_from_id):
-            g.insert_node(n_from_id, NodeData())
-            g.get_node_data(n_from_id).col = col_from
-        if not g.has_node(n_to_id):
-            g.insert_node(n_to_id, NodeData())
-            g.get_node_data(n_to_id).col = col_to
+        g.get_node_data(n_from_id).col = col_from
+        g.get_node_data(n_to_id).col = col_to
         g.get_node_data(n_from_id).visit_count += 1
-
         e_id = n_from_id, n_to_id
-        if not g.has_edge(e_id):
-            g.insert_edge(e_id, n_from_id, n_to_id, EdgeData())
         g.get_edge_data(e_id).visit_count += 1
 
+# Calculate transition probabilities on edges
 for n_id in g.get_nodes():
     n_data = g.get_node_data(n_id)
     for _, _, _, e_data in g.get_outputs_full(n_id):
-        e_data.transition_probability = e_data.visit_count / n_data.visit_count
+        if n_data.visit_count != 0:
+            e_data.transition_probability = e_data.visit_count / n_data.visit_count
 
+# Add psuedocounts to transition probabilities
+for n_id in g.get_nodes():
+    total = 0.0
+    for e_id, _, _, e_data in g.get_outputs_full(n_id):
+        e_data.transition_probability += 0.01
+        total += e_data.transition_probability
+    for e_id, _, _, e_data in g.get_outputs_full(n_id):
+        e_data.transition_probability = e_data.transition_probability / total
 
 def to_dot(g: Graph) -> str:
     ret = 'digraph G {\n'
@@ -314,11 +413,12 @@ print()
 for n_from_id in potential_n_ids:
     print(f'{n_from_id}\t', end='')
     emission_probabilities = {s: 0 for s in symbols}
-    if g.has_node(n_from_id) and not n_from_id.startswith('D'):  # It can't emit anything if it's a deletion state
+    if not (n_from_id.startswith('D') or n_from_id.startswith('S') or n_from_id.startswith('E')):  # It can't emit anything if it's a deletion state, start or end
+        emission_probabilities = {s: 1.0 / len(symbols) for s in symbols}
         col = g.get_node_data(n_from_id).col
         if col is not None:
             emission_probabilities.update(
-                col.determine_emission_probabilities()
+                col.determine_emission_probabilities(symbols, pseudocount)
             )
     for symbol in symbols:
         print(f'{emission_probabilities[symbol]}\t', end='')

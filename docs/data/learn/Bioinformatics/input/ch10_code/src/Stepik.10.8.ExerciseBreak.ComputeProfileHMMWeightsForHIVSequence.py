@@ -5,18 +5,21 @@ from graph.DirectedGraph import Graph
 from helpers.Utils import slide_window
 
 
-with open('/home/user/Downloads/dataset_240402_15(2).txt') as f:
-    lines = f.read().splitlines(keepends=False)
-threshold = float(lines[0])
-symbols = list(lines[2].split())
-sequences = [list(l) for l in lines[4:]]
 
+# Exercise Break: Construct a profile HMM for the HIV sequences (reproduced below) with θ = 0.35.
+#
+# VKKLGEQFR-NKTIIFNQPSGGDLEIVMHSFNCGGEFFYCNTTQLFN----------NSTES------DTITL
+# VKKLGEQFR-NKTIIFNQPSGGDLEIVMHSFNCGGEFFYCNTTQLFN----------NSTDNG-----DTITL
+# VKKLGEQFR-NKTIIFNQPSGGDLEIVMHSFNCGGEFFYCNTTQLFD----------NSTESNN----DTITL
+# VDKLREQFGKNKTIIFNQPSGGDLEIVMHTFNCGGEFFYCNTTQLFNSTWNS---TGNGTESYNGQENGTITL
+# VDKLREQFGKNKTIIFNQPSGGDLEIVMHTFNCGGEFFYCNTTQLFNSTWNG---TNTT--GLDG--NDTITL
+# VDKLREQFGKNKTIIFNQSSGGDLEIVTHTFNCGGEFFYCNTTQLFNSNWTG---NSTE--GLHG--DDTITL
+# VKKLGEQFG-NKTIIFNQSSGGGLEIVMHSFNCGGEFFYCNTTQLFNN--TR-----NSTESNNGQGNDTTTL
+# VKKLREQFGKNKTIIFKQSSGGDLEIVTHTFNCAGEFFYCNTTQLFNSNWTE-----NSITGLDG--NDTITL
+# VGKLREQFGK-KTIIFNQPSGGDLEIVMHSFNCQGEFFYCNTTRLFNSTWDNSTWNSTGKDKENGN-NDTITL
 
-
-
-
-
-
+#
+# MY ANSWER (Same as the code challenge, just modified to use this new sequence set and symbol set)
 
 
 E = TypeVar('E')
@@ -195,16 +198,20 @@ class ThresholdedAlignment:
 
 
 
-# sequences = '''
-# ACDEFACADF
-# AFDA---CCF
-# A--EFD-FDC
-# ACAEF--A-C
-# ADDEFAAADF
-# '''.strip().split()
-# sequences = [list(s) for s in sequences]
-# symbols = ['A', 'B', 'C', 'D', 'E', 'F']
-# threshold = 0.4
+sequences = '''
+VKKLGEQFR-NKTIIFNQPSGGDLEIVMHSFNCGGEFFYCNTTQLFN----------NSTES------DTITL
+VKKLGEQFR-NKTIIFNQPSGGDLEIVMHSFNCGGEFFYCNTTQLFN----------NSTDNG-----DTITL
+VKKLGEQFR-NKTIIFNQPSGGDLEIVMHSFNCGGEFFYCNTTQLFD----------NSTESNN----DTITL
+VDKLREQFGKNKTIIFNQPSGGDLEIVMHTFNCGGEFFYCNTTQLFNSTWNS---TGNGTESYNGQENGTITL
+VDKLREQFGKNKTIIFNQPSGGDLEIVMHTFNCGGEFFYCNTTQLFNSTWNG---TNTT--GLDG--NDTITL
+VDKLREQFGKNKTIIFNQSSGGDLEIVTHTFNCGGEFFYCNTTQLFNSNWTG---NSTE--GLHG--DDTITL
+VKKLGEQFG-NKTIIFNQSSGGGLEIVMHSFNCGGEFFYCNTTQLFNN--TR-----NSTESNNGQGNDTTTL
+VKKLREQFGKNKTIIFKQSSGGDLEIVTHTFNCAGEFFYCNTTQLFNSNWTE-----NSITGLDG--NDTITL
+VGKLREQFGK-KTIIFNQPSGGDLEIVMHSFNCQGEFFYCNTTRLFNSTWDNSTWNSTGKDKENGN-NDTITL
+'''.strip().split()
+sequences = [list(s) for s in sequences]
+symbols = list('ARNDCEQGHILKMFPSTWYV')
+threshold = 0.4
 ta = ThresholdedAlignment(threshold, sequences, '-')
 # print(f'{list(ta.determine_node_path(0))}')
 # print(f'{list(ta.determine_node_path(1))}')
@@ -275,7 +282,7 @@ def to_dot(g: Graph) -> str:
     return ret
 
 
-# print(f'{to_dot(g)}')
+print(f'{to_dot(g)}')
 
 
 potential_n_ids = []
