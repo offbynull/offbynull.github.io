@@ -22264,7 +22264,7 @@ first_indexes_checkpoint_n: 20
 
    When cystine goes through DNA methylation, it has a tendency to deaminate to thymine. However, DNA methylation is often suppressed in areas of DNA dubbed CG-islands, where CG appears more frequently than the rest of the genome.
 
- * `{bm} Hidden Markov Model` `{bm} /(HMM)/` - A model of a machine that outputs symbols one after the other (in a sequence).
+ * `{bm} Hidden Markov Model/(Hidden Markov Model|hidden state)/i` `{bm} /(HMM)/` - A model of a machine that outputs a sequence.
 
    ```{svgbob}
          .---------. "moving right outputting a sequence"
@@ -22274,40 +22274,55 @@ first_indexes_checkpoint_n: 20
              ' '
     G G A C A T
    ```
- 
-   The model is defined by four pieces of information:
 
-   * Set of symbols that the machine can emit.
-   * Set of hidden states the machine can be in.
-   * Matrix of state-state transition probabilities.
-   * Matrix of state-symbol emission probabilities.
+   A machine can be in one of many hidden states. For example, the machine above could be in one of two hidden states: Gene or Non-gene. If in the ...
 
-   For example, imagine a batter in a baseball game modeled as a HMM. Each swing at the ball may result in either a hit, a miss, or a foul ball. The batter has two bats he can use, both look the exact same (spectators can't tell the difference but he can): hitter vs fouler.
+    * gene hidden state, it's outputting DNA for a region of DNA that's a gene.
+    * non-gene hidden state, its outputting DNA for a region of DNA that isn't a gene (e.g. talomeres).
+  
+   At each step, the machine transitions from its existing hidden state to another hidden state and emits a symbol (transitions to the same hidden state are possible). For the example machine above, the emittd symbol is a nucleotide: A, C, T, or G.
+
+   An HMM models such a machine by using four pieces of information:
+
+    * Set of hidden states the machine can be in.
+    * Set of symbols that the machine can emit.
+    * Matrix of hidden state to hidden state transition probabilities.
+    * Matrix of hidden state to symbol emission probabilities.
+
+   ```{note}
+   The example machine above is a bad example to model as an HMM. Only two states and emitting a single nucleotide will result in a useless HMM model. The machine should be modeled as emitting 5-mers or something and would likely need more than 2 states?
+
+   The example below might be better.
+   ```
+
+   For example, imagine a baseball player modeled as a HMM. Each swing at the ball may result in either a hit, a miss, or a foul ball. The batter has two bats he can use, both look the exact same (spectators can't tell the difference but he can): hitter vs fouler.
    
-   * The hitter bat has the following probabilities: 0.75 hit, 0.1 miss, and 0.15 foul
-   * The fouler bat has the following probabilities: 0.5 hit, 0.1 miss, amd 0.4 foul
+    * The hitter bat has the following probabilities: 0.75 hit, 0.1 miss, and 0.15 foul
+    * The fouler bat has the following probabilities: 0.5 hit, 0.1 miss, and 0.4 foul
 
-   After each swing, he has a 0.1 probability of switching to a different bat vs 0.9 probability of keeping the same bat.
+   After each swing, he has a 0.1 probability of switching to a different bat vs a 0.9 probability of keeping the same bat.
 
    The batter modeled as a HMM:
 
-   * Set of symbols that it can emit: {hit, miss, foul}
+    * Set of symbols that it can emit: {hit, miss, foul}
 
-   * Set of hidden states it can be in: {hitter bat, fouler bat}
+    * Set of hidden states it can be in: {hitter bat, fouler bat}
 
-   * Matrix of state-state transition probabilities:
+    * Matrix of state-state transition probabilities:
 
-     |            | hitter bat | fouler bat |
-     |------------|------------|------------|
-     | hitter bat |    0.9     |     0.1    |
-     | fouler bat |    0.1     |     0.9    |
+      |            | hitter bat | fouler bat |
+      |------------|------------|------------|
+      | hitter bat |    0.9     |     0.1    |
+      | fouler bat |    0.1     |     0.9    |
   
-   * Matrix of state-symbol emission probabilities:
+    * Matrix of state-symbol emission probabilities:
 
-     |            | hit  | miss | foul |
-     |------------|------|------|------|
-     | hitter bat | 0.75 | 0.1  | 0.15 |
-     | fouler bat | 0.5  | 0.1  | 0.4  |
+      |            | hit  | miss | foul |
+      |------------|------|------|------|
+      | hitter bat | 0.75 | 0.1  | 0.15 |
+      | fouler bat | 0.5  | 0.1  | 0.4  |
+ 
+   Given a sequence of swings by the batter (emitted symbols), the goal of HMM is to estimate the probability of which bat was used for each swing in that sequence (hidden state).
 
    ```{note}
    For both matrixes above, each row must sum to 1.0.
@@ -22315,8 +22330,6 @@ first_indexes_checkpoint_n: 20
    * `sum(state_state_transitions[state, s] for s in states) == 1.0`
    * `sum(state_symbol_emissions[state, s] for s in symbols) == 1.0`
    ```
-   
-   Given a sequence of swings by the batter (emitted symbols), the goal of HMM is to estimate the probability of which bat was used for each swing in that sequence (hidden state).
 
  * `{bm} Hidden Markov Model diagram` `{bm} /(HMM diagram|HMM Diagram)/` - A visualization of an HMM as a directed graph.
  
@@ -22325,20 +22338,26 @@ first_indexes_checkpoint_n: 20
    * Dashed nodes represent symbols.
    * Dashed edges represent state-symbol emissions.
 
-   Edges are labeled with the the probability of the state-state transmission / state-symbol emission happening.
+   Edges are labeled with the the probability of the state-state transmission / state-symbol emission occurring.
    
    ```{svgbob}
-              0.75      +- - - -+     0.5
-         .- - - - - - ->:  hit  :<- - - - - -.
-         :              +- - - -+            :
-         :                                   :
-         :                                   :
-         :     0.1      +- - - -+     0.1    :
-         : .- - - - - ->: miss  :<- - - - -. :
-         : :            +- - - -+          : :
-         : :                               : :
-         : :  .-------------------------.  : :
-         : :  | .---.     0.1     .---. v  : :
+                       +---------+
+                       | SOURCE  |
+           0.5         +-+-----+-+       0.5
+      .------------------'     '----------------.
+      |                                         |
+      |                                         |
+      |       0.75      +- - - -+     0.5       |
+      |  .- - - - - - ->:  hit  :<- - - - - -.  |
+      |  :              +- - - -+            :  |
+      |  :                                   :  |
+      |  :                                   :  |
+      |  :     0.1      +- - - -+     0.1    :  |
+      |  : .- - - - - ->: miss  :<- - - - -. :  |
+      |  : :            +- - - -+          : :  |
+      |  : :                               : :  |
+      |  : :  .-------------------------.  : :  |
+      v  : :  | .---.     0.1     .---. v  : :  v
    +-----+-+--+-+-+ |             | +-+----+-+-----+
    | "hitter bat" | |             | | "fouler bat" |
    +-------+------+ |0.9       0.9| +---+--+-------+

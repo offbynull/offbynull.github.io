@@ -30068,28 +30068,39 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p>When cystine goes through DNA <a href="#BM_(methylation)%2Fi">methylation</a>, it has a tendency to deaminate to thymine. However, DNA <a href="#BM_(methylation)%2Fi">methylation</a> is often suppressed in areas of DNA dubbed CG-islands, where CG appears more frequently than the rest of the <a href="#BM_(genome)%2Fi">genome</a>.</p>
 </li>
 <li>
-<p><a name="BM_(Hidden%20Markov%20Model)%2Fi"></a><strong>Hidden Markov Model</strong> <a name="BM_(HMM)%2F"></a><strong></strong> - A model of a machine that outputs symbols one after the other (in a <a href="#BM_(sequence)%2Fi">sequence</a>).</p>
+<p><a name="BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi"></a><strong>Hidden Markov Model</strong> <a name="BM_(HMM)%2F"></a><strong></strong> - A model of a machine that outputs a <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
 <p><img src="svgbob_1b85dba6b2e5054c30423fb3fdfe17c1abf1ea80.svg" alt="Kroki diagram output"></p>
-<p>The model is defined by four pieces of information:</p>
+<p>A machine can be in one of many <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s. For example, the machine above could be in one of two <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s: <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">Gene</a> or Non-<a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>. If in the ...</p>
 <ul>
-<li>Set of symbols that the machine can emit.</li>
-<li>Set of hidden states the machine can be in.</li>
-<li>Matrix of state-state transition probabilities.</li>
-<li>Matrix of state-symbol emission probabilities.</li>
+<li><a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>, it's outputting DNA for a region of DNA that's a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a>.</li>
+<li>non-<a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>, its outputting DNA for a region of DNA that isn't a <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">gene</a> (e.g. talomeres).</li>
 </ul>
-<p>For example, imagine a batter in a baseball game modeled as a <a href="#BM_(HMM)%2F">HMM</a>. Each swing at the ball may result in either a hit, a miss, or a foul ball. The batter has two bats he can use, both look the exact same (spectators can't tell the difference but he can): hitter vs fouler.</p>
+<p>At each step, the machine transitions from its existing <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> to another <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> and emits a symbol (transitions to the same <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> are possible). For the example machine above, the emittd symbol is a nucleotide: A, C, T, or G.</p>
+<p>An <a href="#BM_(HMM)%2F">HMM</a> models such a machine by using four pieces of information:</p>
+<ul>
+<li>Set of <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s the machine can be in.</li>
+<li>Set of symbols that the machine can emit.</li>
+<li>Matrix of <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> to <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transition probabilities.</li>
+<li>Matrix of <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> to symbol emission probabilities.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The example machine above is a bad example to model as an <a href="#BM_(HMM)%2F">HMM</a>. Only two states and emitting a single nucleotide will result in a useless <a href="#BM_(HMM)%2F">HMM</a> model. The machine should be modeled as emitting <a href="#BM_(%5Cd%2B-mer%7Ck-mer%7Ckmer)%2Fi">5-mer</a>s or something and would likely need more than 2 states?</p>
+<p>The example below might be better.</p>
+</div>
+<p>For example, imagine a baseball player modeled as a <a href="#BM_(HMM)%2F">HMM</a>. Each swing at the ball may result in either a hit, a miss, or a foul ball. The batter has two bats he can use, both look the exact same (spectators can't tell the difference but he can): hitter vs fouler.</p>
 <ul>
 <li>The hitter bat has the following probabilities: 0.75 hit, 0.1 miss, and 0.15 foul</li>
-<li>The fouler bat has the following probabilities: 0.5 hit, 0.1 miss, amd 0.4 foul</li>
+<li>The fouler bat has the following probabilities: 0.5 hit, 0.1 miss, and 0.4 foul</li>
 </ul>
-<p>After each swing, he has a 0.1 probability of switching to a different bat vs 0.9 probability of keeping the same bat.</p>
+<p>After each swing, he has a 0.1 probability of switching to a different bat vs a 0.9 probability of keeping the same bat.</p>
 <p>The batter modeled as a <a href="#BM_(HMM)%2F">HMM</a>:</p>
 <ul>
 <li>
 <p>Set of symbols that it can emit: {hit, miss, foul}</p>
 </li>
 <li>
-<p>Set of hidden states it can be in: {hitter bat, fouler bat}</p>
+<p>Set of <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s it can be in: {hitter bat, fouler bat}</p>
 </li>
 <li>
 <p>Matrix of state-state transition probabilities:</p>
@@ -30143,6 +30154,7 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 </table>
 </li>
 </ul>
+<p>Given a <a href="#BM_(sequence)%2Fi">sequence</a> of swings by the batter (emitted symbols), the goal of <a href="#BM_(HMM)%2F">HMM</a> is to estimate the probability of which bat was used for each swing in that <a href="#BM_(sequence)%2Fi">sequence</a> (<a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>).</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>For both matrixes above, each row must sum to 1.0.</p>
@@ -30151,7 +30163,6 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li><code>sum(state_symbol_emissions[state, s] for s in symbols) == 1.0</code></li>
 </ul>
 </div>
-<p>Given a <a href="#BM_(sequence)%2Fi">sequence</a> of swings by the batter (emitted symbols), the goal of <a href="#BM_(HMM)%2F">HMM</a> is to estimate the probability of which bat was used for each swing in that <a href="#BM_(sequence)%2Fi">sequence</a> (hidden state).</p>
 </li>
 <li>
 <p><a name="BM_(Hidden%20Markov%20Model%20diagram)%2Fi"></a><strong>Hidden Markov Model diagram</strong> <a name="BM_(HMM%20diagram%7CHMM%20Diagram)%2F"></a><strong></strong> - A visualization of an <a href="#BM_(HMM)%2F">HMM</a> as a directed graph.</p>
@@ -30161,11 +30172,11 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>Dashed nodes represent symbols.</li>
 <li>Dashed edges represent state-symbol emissions.</li>
 </ul>
-<p>Edges are labeled with the the probability of the state-state transmission / state-symbol emission happening.</p>
-<p><img src="svgbob_d392287d91f234aec32c63fbe448cfa53d88f905.svg" alt="Kroki diagram output"></p>
+<p>Edges are labeled with the the probability of the state-state transmission / state-symbol emission occurring.</p>
+<p><img src="svgbob_e88e3a03d9f7e528be1d1c0c9f39283163b74133.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(hidden%20path)%2Fi"></a><strong>hidden path</strong> - A <a href="#BM_(sequence)%2Fi">sequence</a> of hidden states that a <a href="#BM_(HMM)%2F">HMM</a> passes through. For example, in the <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> below, one possible <a href="#BM_(hidden%20path)%2Fi">hidden path</a> could be as follows.</p>
+<p><a name="BM_(hidden%20path)%2Fi"></a><strong>hidden path</strong> - A <a href="#BM_(sequence)%2Fi">sequence</a> of <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s that a <a href="#BM_(HMM)%2F">HMM</a> passes through. For example, in the <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> below, one possible <a href="#BM_(hidden%20path)%2Fi">hidden path</a> could be as follows.</p>
 <p><img src="svgbob_d392287d91f234aec32c63fbe448cfa53d88f905.svg" alt="Kroki diagram output"></p>
 <table>
 <thead>
@@ -30261,18 +30272,20 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <ul>
-<li>Pr(Pi→Pi+1) denotes the probability of transitioning from one hidden state to the next. For example, the transition between 0 and 1 is Pr(fouler→hitter), which is 0.1. At the beginning, even before 0, the probability is set to 0.5 because there's a 50/50 chance of starting off with either hitter or fouler.</li>
-<li>Pr(Xi|Pi) denotes the <a href="#BM_(conditional%20probability)%2Fi">conditional probability</a> that the symbol will be emitted given the current hidden state. For example, at 0, the probability that foul is emitted given the hidden state is set to fouler is 0.4.</li>
+<li>Pr(Pi→Pi+1) denotes the probability of transitioning from one <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> to the next. For example, the transition between 0 and 1 is Pr(fouler→hitter), which is 0.1. At the beginning, even before 0, the probability is set to 0.5 because there's a 50/50 chance of starting off with either hitter or fouler.</li>
+<li>Pr(Xi|Pi) denotes the <a href="#BM_(conditional%20probability)%2Fi">conditional probability</a> that the symbol will be emitted given the current <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>. For example, at 0, the probability that foul is emitted given the <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> is set to fouler is 0.4.</li>
 </ul>
 </div>
 </li>
 <li>
-<p><a name="BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi"></a><strong>Viterbi graph</strong> - A directed graph representing all possible hidden state transitions that resulted in a <a href="#BM_(sequence)%2Fi">sequence</a> of emitted symbols in an <a href="#BM_(HMM)%2F">HMM</a>. In the <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a>, ...</p>
+<p><a name="BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi"></a><strong>Viterbi graph</strong> - A directed graph representing all possible <a href="#BM_(HMM)%2F">HMM</a> <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transitions that result in a <a href="#BM_(sequence)%2Fi">sequence</a> of emitted symbol. Given an emitted <a href="#BM_(sequence)%2Fi">sequence</a>, a <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a> lays out nodes in a grid, where each ...</p>
 <ul>
-<li>hidden states are represented as nodes.</li>
-<li>emitted symbols are represents as edges, where an edge's weight is the probability that the symbol it represents was emitted given a hidden state transition.</li>
+<li>row represents a <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>.</li>
+<li>column represents the element of the emitted <a href="#BM_(sequence)%2Fi">sequence</a> at that same index.</li>
 </ul>
-<p>Consider a <a href="#BM_(HMM)%2F">HMM</a> that has two possible hidden states [hitter bat, fouler bat] and emits the symbols [foul, hit, miss, hit, hit], represented as the <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> below.</p>
+<p>In addition, there are two extra nodes. One just before the grid (left) and the other just after the grid (right). Each node connects to all nodes immediately infront of it, left-to-right.</p>
+<p><img src="svgbob_5bbe4917bc6d2a8c0105a902855c20bcfc75d35b.svg" alt="Kroki diagram output"></p>
+<p>Each edge represents the <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transition defined by the nodes at its ends. The weight of an edge should be set to the probability that symbol emitted at the end node (column that its ending node is in) gets emitted after the <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transition it represents occurs. The graph above is for an <a href="#BM_(HMM)%2F">HMM</a> that has two <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s [hitter bat, fouler bat] and emits the symbols [foul, hit, miss], represented as the <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> below.</p>
 <p><img src="svgbob_d392287d91f234aec32c63fbe448cfa53d88f905.svg" alt="Kroki diagram output"></p>
 <p>The probability that some symbol was emitted (e.g. hit) after some state transition occurrs (e.g. fouler bat → hitter bat) is as follows: Pr(symbol|state-transition) = Pr(state-transition) * Pr(symbol). For example, Pr(fouler bat → hitter bat) is 0.1 in the <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> above, and Pr(hit) once entered into the hitter bat state is 0.75, so Pr(hit|fouler bat → hitter bat) = 0.1 * 0.75 = 0.075.</p>
 <table>
@@ -30327,59 +30340,25 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The last two rows are for the initial selection of a state: The probability is set to 0.5 because there's a 50/50 chance of starting off with either the hitter bat or fouler bat.</p>
 </div>
-<p>The <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a> for the <a href="#BM_(sequence)%2Fi">sequence</a> [foul, hit, miss, hit, hit] is displayed below. Each node represents a state and each edge represents a symbol being emitted from that state, where edge weights are the probability calculations in the matrix above.</p>
-<p><img src="svgbob_d7152c1f93b23c8e7d6f285e63e392af8af62227.svg" alt="Kroki diagram output"></p>
-<p>The goal with a <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a> is to determine the most likely set of hidden state transitions that resulted in the emitted symbols, which is the path from source to sink with the highest product (multiplication) of edge weights. In the example above, that path is 1.0 * 0.2 * 0.45 * 0.1 * 0.675 * 0.675 = 0.0041.</p>
-<table>
-<thead>
-<tr>
-<th>SOURCE</th>
-<th>→</th>
-<th>fouler bat</th>
-<th>→</th>
-<th>fouler bat</th>
-<th>→</th>
-<th>fouler bat</th>
-<th>→</th>
-<th>hitter bat</th>
-<th>→</th>
-<th>hitter bat</th>
-<th>→</th>
-<th>hitter at</th>
-<th>→</th>
-<th>SINK</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td>1.0</td>
-<td></td>
-<td>0.2</td>
-<td></td>
-<td>0.45</td>
-<td></td>
-<td>0.1</td>
-<td></td>
-<td>0.675</td>
-<td></td>
-<td>0.675</td>
-<td></td>
-<td>1.0</td>
-<td></td>
-<td>Product: 0.0041</td>
-</tr>
-</tbody>
-</table>
+<p>With probabilities filled in, the <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a> becomes as follows.</p>
+<p><img src="svgbob_10f76bdd0415daefe45d428c6bfbf2594ebe5489.svg" alt="Kroki diagram output"></p>
+<p>The goal with a <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a> is to determine the most likely set of <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transitions that resulted in the emitted symbols, which is the path from source to sink with the highest product (multiplication) of edge weights. In the example above, that path is ...</p>
+<ol>
+<li>Pr(foul|SOURCE → fouler bat): 0.02</li>
+<li>Pr(hit|fouler bat → fouler bat): 0.45</li>
+<li>Pr(miss|fouler bat → fouler bat): 0.09</li>
+<li>Pr(hit|fouler bat → fouler bat): 0.45</li>
+<li>Pr(hit|fouler bat → fouler bat): 0.45</li>
+<li>Pr(fouler bat → SINK): 1.0</li>
+</ol>
+<p>0.2 * 0.45 * 0.09 * 0.45 * 0.45 = 0.0016.</p>
+<p>TODO: THIS DIAGRAM IS WRONG? GO TO THE PROBLEM IN 10.7, OPEN THE TEST DATASET AND INSIDE SHOULD BE A DOCUMENT. THAT DOCUMENT HAS A DIAGRAM OF HOW THE GRAPH SHOULD LOOK.</p>
+<p>TODO: THIS DIAGRAM IS WRONG? GO TO THE PROBLEM IN 10.7, OPEN THE TEST DATASET AND INSIDE SHOULD BE A DOCUMENT. THAT DOCUMENT HAS A DIAGRAM OF HOW THE GRAPH SHOULD LOOK.</p>
+<p>TODO: THIS DIAGRAM IS WRONG? GO TO THE PROBLEM IN 10.7, OPEN THE TEST DATASET AND INSIDE SHOULD BE A DOCUMENT. THAT DOCUMENT HAS A DIAGRAM OF HOW THE GRAPH SHOULD LOOK.</p>
+<p>TODO: THIS DIAGRAM IS WRONG? GO TO THE PROBLEM IN 10.7, OPEN THE TEST DATASET AND INSIDE SHOULD BE A DOCUMENT. THAT DOCUMENT HAS A DIAGRAM OF HOW THE GRAPH SHOULD LOOK.</p>
 </li>
 </ul>
-<p>TODO: continue 10.6 step 2</p>
-<p>TODO: continue 10.6 step 2</p>
-<p>TODO: continue 10.6 step 2</p>
-<p>TODO: continue 10.6 step 2</p>
-<p>TODO: continue 10.6 step 2</p>
-<p>TODO: continue 10.6 step 2</p>
+<p>TODO: continue 10.7 last step (exercise break)</p>
 <p></p>
 <p></p>
 <p></p>
