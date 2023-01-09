@@ -598,7 +598,7 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
  * `{bm} mixed number` - A fraction written in a form where an integer is used to represent the wholes and the remaining portion is written as a fraction. Recall that fractions can be thought of as unresolved integer division. For example, the fraction `{kt} \frac{15}{4}` is equivalent to the division `{kt} 15 \div 4`. Performing `{kt} 15 \div 4` results in a quotient of `{kt} 3R3` (3 wholes with 3 remaining pieces). As such, `{kt} 15 \div 4` can be written as the mixed number `{kt} 3 \frac{3}{4}`.
 
    ```{note}
-   Don't get confused -- the mixed number `{kt} 3 \frac{3}{4}` means `{kt} 3 + \frac{3}{4}`, it does not mean `{kt} 3 \cdot \frac{3}{4}` (multiplication).
+   Don't get confused -- the mixed number `{kt} 3 \frac{3}{4}` !!means!! `{kt} 3 + \frac{3}{4}`, it does not !!mean!! `{kt} 3 \cdot \frac{3}{4}` (multiplication).
    ```
 
  * `{bm} number line` - A type of diagram used to visualize the value that a number represents. It consists of a straight horizontal line with equidistant vertical notches spliced through out, where each notch is labelled with incrementally larger numbers from left-to-right...
@@ -794,7 +794,7 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
    ```
    
    ```{note}
-   The phrases evenly divisible, evenly divides, and divisible all mean the same thing.
+   The phrases evenly divisible, evenly divides, and divisible all !!mean!! the same thing.
    ```
    
    ```{note}
@@ -915,7 +915,45 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
 
    If the denominator isn't suitable, the mixed number may still be convertible so long as an equivalent fraction exists that does have a suitable denominator. In the previous example, `{kt} 2 \frac {5}{10}` is an equivalent fraction to `{kt} 2 \frac{1}{2}`.
 
- * `{bm} average` - An operation that sums a list of number and divides by the count of numbers in that list. For example, to average of 1, 2, and 3 is 2: 1+2+3 = 6, and 6 / 3 = 2. The average of some list of numbers represents the "typical" number in that list.
+ * `{bm} average` / `{bm} mean/(mean)_ST/i` - The "typical" number in a list of numbers. Numbers in the list are summed together, then the result is divided by the count of numbers in that list. For example, to average of [1, 2, 3] is 2: 1+2+3 = 6, then 6 / 3 = 2.
+    
+   `{bm-error} Wrap in !! or apply suffix _ST/\mean/i`
+
+ * `{bm} median` - The middle number in a sorted list of numbers. Numbers in the list that come ...
+ 
+   * before the median should be less than the median.
+   * after the median should be greater than the median.
+
+   When the count of numbers in the list is odd, there is a middle number. For example, the median of [55, 57, 58, 59, 70] is 58.
+
+   When the count of numbers in the list is even, there is no middle number. The median of a list with an even count is the two numbers closest to the middle averaged together. For example, the median of [3, 5, 6, 7, 9, 10] is the average of 6 and 7: 6.5.
+
+ * `{bm} mode` - The number that appears most often in a list of numbers. For example, the mode of [5, 5, 6, 7, 8, 8, 8, 10] is 8, because 8 appears the most often in the list.
+
+   Some lists may have multiple modes. For example, the mode of [1, 5, 5, 6, 6, 8] is both 5 and 6, because 5 and 6 appear the same amount of times, and that amount is more often than any other number in that list.
+
+ * `{bm} frequency` - A count of how often some number occurs. For example, in the list [1, 5, 5, 6, 6, 8], ...
+
+   * 8 has a frequency of 1.
+   * 6 has a frequency of 2.
+   * 5 has a frequency of 2.
+   * 1 has a frequency of 1.
+
+ * `{bm} probability/(probability|probabilities)/i` - A number describing how likely it is for a desired outcome to occur in some scenario.Probability is calculated as the number of desired outcomes over the number of total outcomes: `{kt} \frac{desired}{total}`. The result is a number between 0 and 1, where 0 !!means!! never happens and 1 !!means!! always happens.
+ 
+   For example, a bowl of marbles has 6 red marbles and 1 blue marble. Without looking, selecting a blue marble from the bowl has a probability of `{kt} \frac{1}{7}`. The desired outcome is selecting a blue marble (1 marble is blue) divided by the total number of marbles in the bowl (7 marbles total).
+
+ * `{bm} ratio` - A comparison of two numbers representing measurements of the same unit (e.g. inches, lbs, US dollars, etc..), written as either a fraction `{kt} \frac{a}{b}` or in the form `{kt} a:b`. For example, in a bag of M&Ms, there are 30 red M&Ms to 20 blue M&Ms, !!meaning!! the ratio of red to blue is `{kt} \frac{30}{20}` or `{kt} 30:20`. The fraction, once simplified, is `{kt} \frac{3}{2}`, !!meaning!! for every 3 red M&Ms there are 2 blue M&Ms.
+
+ * `{bm} rate` - A comparison of two numbers representing measurements of different units (e.g. inches, lbs, US dollars, etc..), written as a fraction `{kt} \frac{a}{b}`. For example, it costs $100 to fill up 2 Olympic sized swimming pool with water, !!meaning!! that the rate of money to water is `{kt} \frac{100}{2}`. The fraction, once simplified, is `{kt} \frac{50}{1}`, !!meaning!! it costs $50 to fill up each Olympic sized swimming pool.
+
+ * `{bm} unit rate` - The rate `{kt} \frac{a}{b}`, but normalized such the rate only considers a single unit of the second measurement. For example, it costs $100 to fill up 2 Olympic sized swimming pool with water, !!meaning!! that the rate of money to water is `{kt} \frac{100}{2}`. Once converted to a unit rate, it becomes $50 to fill up each Olympic sized swimming pool.
+
+   To figure out the unit rate, simply convert the fraction to a decimal (divide its numerator by its denominator).
+
+ * `{bm} square` - Power of two. For example, 5 squared is `{kt} 5^2`.
+
+ * `{bm} cube` - Power of three. For example, 5 cubed is `{kt} 5^3`.
 
  * `{bm} real number` - A decimal number whose fractional part can be arbitrarily small. There's no limit to how small it can get.
 
@@ -968,16 +1006,15 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
  * `{bm} irrational number` - 
 
 
+`{bm-ignore} !!([\w\-]+?)!!/i`
 
-TODO: continue from 5.5
+TODO: add two terms above
 
-TODO: continue from 5.5
+TODO: continue from 5.7 - continue from definition of square (above)
 
-TODO: continue from 5.5
+TODO: continue from 5.7 - continue from definition of square (above)
 
-TODO: continue from 5.5
-
-TODO: continue from 5.5
+TODO: continue from 5.7 - continue from definition of square (above)
 
 
 TODO: ADD DEFINITIONS HERE - real / whole / decimal / etc..

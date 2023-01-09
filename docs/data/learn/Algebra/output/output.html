@@ -41,17 +41,9 @@
 </ul>
 <p>The process of breaking down a <a href="#BM_(composite)%2Fi">composite</a> number into a <a href="#BM_(multiplication%7Cmultiply%7Cproduct%7Cmultiplier%7Cmultiplicand)%2Fi">product</a> of <a href="#BM_(prime)%2Fi">prime</a>s is called <a href="#BM_(prime%20factorization%7Cprime%20factor%7Cfactor%20tree)%2Fi">prime factorization</a>. <a href="#BM_(prime%20factorization%7Cprime%20factor%7Cfactor%20tree)%2Fi">Prime factorization</a> happens via the <a href="#BM_(prime%20factorization%7Cprime%20factor%7Cfactor%20tree)%2Fi">factor tree</a> algorithm, which involves taking the input and recursively breaking it down into one of its <a href="#BM_(factor)%2Fi">factor</a> pairs until all <a href="#BM_(factor)%2Fi">factor</a>s are <a href="#BM_(prime)%2Fi">prime</a>.</p>
 <p>For example, to break down the number 54, choose one of its <a href="#BM_(factor)%2Fi">factor</a> pairs...</p>
-<pre><code class="language-{svgbob}">+----54----+
-|          |
-6          9
-</code></pre>
+<p><img src="svgbob_211b83d4a6ddadec3cd3c8c29e25b8deeb6c13d5.svg" alt="Kroki diagram output"></p>
 <p>Then, for each <a href="#BM_(factor)%2Fi">factor</a>, break it down even further by choosing one of its <a href="#BM_(factor)%2Fi">factor</a> pairs...</p>
-<pre><code class="language-{svgbob}">     +--------54--------+
-     |                  |
-+----6----+        +----9----+
-|         |        |         |
-3         2        3         3
-</code></pre>
+<p><img src="svgbob_7aeb715a3c5469b9a704719758f0f7c27d9e29e0.svg" alt="Kroki diagram output"></p>
 <p>All <a href="#BM_(factor)%2Fi">factor</a>s are now <a href="#BM_(prime)%2Fi">prime</a> -- 54 = 3*2*3*3.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -71,24 +63,9 @@
 * 1 can't be used is because 1 is neither a <a href="#BM_(prime)%2Fi">prime</a> nor can it be <a href="#BM_(factor)%2Fi">factor</a>ized to <a href="#BM_(prime)%2Fi">prime</a>s.
 * 12 (the number being <a href="#BM_(factor)%2Fi">factor</a>ed itself) can't be used is because it effectively does nothing -- it finishes at the same place it    started at.</p>
 <p>For example, trying to build a <a href="#BM_(prime%20factorization%7Cprime%20factor%7Cfactor%20tree)%2Fi">factor tree</a> for 12 using one of the bad <a href="#BM_(factor)%2Fi">factor</a> pairs...</p>
-<pre><code class="language-{svgbob}">     +--------12--------+
-     |                  |
-     1             +----12----+
-   (bad)           |          |
-                   1       +--12--+
-                 (bad)     |      |
-                           1      ...
-                         (bad)
-</code></pre>
+<p><img src="svgbob_dc17b8e05555b06cf0742b8b4905db9a4a14aa17.svg" alt="Kroki diagram output"></p>
 <p>Note that the <a href="#BM_(prime%20factorization%7Cprime%20factor%7Cfactor%20tree)%2Fi">prime factor</a>s for a number will always be the same regardless of which <a href="#BM_(factor)%2Fi">factor</a> pairs are chosen (as long as its a    valid <a href="#BM_(factor)%2Fi">factor</a> pair). For example, in the initial example above, if 54 were <a href="#BM_(factor)%2Fi">factor</a>ed to (2, 27) instead of (9, 6) ...</p>
-<pre><code class="language-{svgbob}">     +--------54--------+
-     |                  |
-     2             +----27---+
-                   |         |
-                   3     +---9---+
-                         |       |
-                         3       3
-</code></pre>
+<p><img src="svgbob_13eeab5eb8c6252d77d6390465668fc292898f9e.svg" alt="Kroki diagram output"></p>
 <p>The <a href="#BM_(prime%20factorization%7Cprime%20factor%7Cfactor%20tree)%2Fi">prime factor</a>s would still be 54 = 2*3*3*3.</p>
 <p>The way to perform this algorithm as code is as follows...</p>
 <pre><code class="language-{output}">arithmetic_code/Factor.py
@@ -175,21 +152,7 @@ python
 </li>
 <li>
 <p>merge the <a href="#BM_(prime%20factorization%7Cprime%20factor%7Cfactor%20tree)%2Fi">prime factor</a>s together to get 12 = 2 * 2 * 3</p>
-<pre><code class="language-{svgbob}">       +-+  +-+
- 4 "=" |2|  |2|
-       +-+  +++
-             |
-       +-+   |   +-+
- 6 "=" |2|   |   |3|
-       +++   |   +++
-        |    |    |
-        |    |    |
-        |    |    |
-        v    v    v
-       +-+  +-+  +-+
-12 "=" |2|  |2|  |3|
-       +-+  +-+  +-+
-</code></pre>
+<p><img src="svgbob_520764c16e396aec79b179b6946798ad40780ce9.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>What's actually happening in the "merge" above is that the <a href="#BM_(prime)%2Fi">prime</a>s are being segmented by value and the segment with the highest occurrence count is being picked...</p>
@@ -259,19 +222,7 @@ python
 <li><a href="#BM_(prime)%2Fi">prime</a><a href="#BM_(factor)%2Fi">Factor</a>ize(22) is 2 * 11.</li>
 <li><a href="#BM_(prime)%2Fi">prime</a><a href="#BM_(factor)%2Fi">Factor</a>ize(8) is 2 * 2 * 2.</li>
 </ul>
-<pre><code class="language-{svgbob}">        +--+                +--+
-22 "="  |2 |                |11|
-        ++-+                +--+
-         |
-        ++-+   +--+   +--+
-8  "="  |2 |   |2 |   |2 |
-        ++-+   +--+   +--+
-         |
-         v
-        +--+
-GCD "=" |2 |
-        +--+
-</code></pre>
+<p><img src="svgbob_7b98ed66846c3ad4b66318571dfc06d595f45324.svg" alt="Kroki diagram output"></p>
 </div>
 <p>The way to perform this algorithm as code is as follows...</p>
 <pre><code class="language-{output}">arithmetic_code/GreatestCommonDivisor.py
@@ -310,125 +261,32 @@ python
 <li>
 <p>Geometric explanation</p>
 <p>Conceptually, you can think of Euclid's algorithm as recursively breaking off square chunks out of a rectangular area until it finds the smallest possible chunk that can be evenly copied to recreate the original rectangle. For example, imagine the numbers 21 and 6...</p>
-<pre><code class="language-{svgbob}">               21
-   +------------------------+
-   |                        |
-   |                        |
-   |                        | 6
-   +------------------------+
-</code></pre>
+<p><img src="svgbob_d8de4e765e95411cfed47998ec82338179319898.svg" alt="Kroki diagram output"></p>
 <p>Since in 21x6, 6 is the smaller side, break off 6 from the 21 to get a 6x6 block...</p>
-<pre><code class="language-{svgbob}">                   15
-   +------+-----------------+
-   |      |                 |
-   | 6x6  |                 |
-   |      |                 | 6
-   +------+-----------------+
-</code></pre>
+<p><img src="svgbob_6af1cf3d382810e66e673c496e397d54f5351896.svg" alt="Kroki diagram output"></p>
 <p>Since in 15x6, 6 is the smaller side, break off 6 from the 15 to get a 6x6 block...</p>
-<pre><code class="language-{svgbob}">                       9
-   +------+------+----------+
-   |      |      |          |
-   | 6x6  | 6x6  |          |
-   |      |      |          | 6
-   +------+------+----------+
-</code></pre>
+<p><img src="svgbob_44df863e2349307aa8c07052582f619f4237027f.svg" alt="Kroki diagram output"></p>
 <p>Since in 9x6, 6 is the smaller side, break off 6 from the 9 to get a 6x6 block...</p>
-<pre><code class="language-{svgbob}">                          3
-   +------+------+------+---+
-   |      |      |      |   |
-   | 6x6  | 6x6  | 6x6  |   |
-   |      |      |      |   | 6
-   +------+------+------+---+
-</code></pre>
+<p><img src="svgbob_9c7cfe4413a8ba39dcaf9ae76836a644454517bb.svg" alt="Kroki diagram output"></p>
 <p>Since in 3x6, 6 is the smaller side, break off 3 from the 6 to get a 3x3 block...</p>
-<pre><code class="language-{svgbob}">   +------+------+------+---+
-   |      |      |      |3x3|
-   | 6x6  | 6x6  | 6x6  +---+
-   |      |      |      |   | 3
-   +------+------+------+---+
-                          3
-</code></pre>
+<p><img src="svgbob_4724b854408fd110e5fb185e0ad235f841820053.svg" alt="Kroki diagram output"></p>
 <p>The remaining block is also 3x3 block. As such, the largest size that this entire rectangle can be constructed from is 3x3. The <a href="#BM_(greatest%20common%20divisor%7Chighest%20common%20divisor%7Clargest%20common%20divisor%7Cgreatest%20common%20factor%7Chighest%20common%20factor%7Clargest%20common%20divisor)%2Fi">greatest common divisor</a> is 3.</p>
-<pre><code class="language-{svgbob}">   +------+------+------+---+
-   |      |      |      |3x3|
-   | 6x6  | 6x6  | 6x6  +---+
-   |      |      |      |3x3|
-   +------+------+------+---+
-</code></pre>
+<p><img src="svgbob_f8ef8f4899d0fdac7134860108295a330dac3f6e.svg" alt="Kroki diagram output"></p>
 <p>Notice how this is <a href="#BM_(subtraction%7Csubtract)%2Fi">subtract</a>ing from the larger side at each step. Since <a href="#BM_(division%7Cdivide%7Cremainder%7Cquotient%7Cdividend%7Cdivisor)%2Fi">division</a> is iterative <a href="#BM_(subtraction%7Csubtract)%2Fi">subtraction</a>, this entire algorithm can be done using <a href="#BM_(division%7Cdivide%7Cremainder%7Cquotient%7Cdividend%7Cdivisor)%2Fi">division</a>. Starting from the very beginning...</p>
-<pre><code class="language-{svgbob}">               21
-   +------------------------+
-   |                        |
-   |                        |
-   |                        | 6
-   +------------------------+
-</code></pre>
+<p><img src="svgbob_d8de4e765e95411cfed47998ec82338179319898.svg" alt="Kroki diagram output"></p>
 <p>Since in 21x6, 6 is the smaller side, break off as many blocks of 6 as possible from 21: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>21</mn><mo>÷</mo><mn>6</mn><mo>=</mo><mn>3</mn><mi>R</mi><mn>3</mn></mrow><annotation encoding="application/x-tex">21 \div 6 = 3R3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">÷</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">6</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">3</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord">3</span></span></span></span> (3 blocks of 6x6, with 3 remaining)...</p>
-<pre><code class="language-{svgbob}">                          3
-   +------+------+------+---+
-   |      |      |      |   |
-   | 6x6  | 6x6  | 6x6  |   |
-   |      |      |      |   | 6
-   +------+------+------+---+
-</code></pre>
+<p><img src="svgbob_9c7cfe4413a8ba39dcaf9ae76836a644454517bb.svg" alt="Kroki diagram output"></p>
 <p>Since in 3x6, 3 is the smaller side, break off as many blocks of 3 as possible from 6: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>21</mn><mo>÷</mo><mn>6</mn><mo>=</mo><mn>2</mn><mi>R</mi><mn>0</mn></mrow><annotation encoding="application/x-tex">21 \div 6 = 2R0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">÷</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">6</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord">0</span></span></span></span> (2 blocks of 3x3, with 0 remaining)...</p>
-<pre><code class="language-{svgbob}">   +------+------+------+---+
-   |      |      |      |3x3|
-   | 6x6  | 6x6  | 6x6  +---+
-   |      |      |      |3x3|
-   +------+------+------+---+
-</code></pre>
+<p><img src="svgbob_f8ef8f4899d0fdac7134860108295a330dac3f6e.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p>Algebraic explanation</p>
 <p>If 2 numbers are evenly <a href="#BM_(divisible)%2Fi">divisible</a> by some other number, then their <a href="#BM_(addition%7Cadd%7Csum)%2Fi">sum</a>/difference must also be <a href="#BM_(divisible)%2Fi">divisible</a>. For example, the numbers 21 and 6 are both <a href="#BM_(divisible)%2Fi">divisible</a> by 3:</p>
-<pre><code class="language-{svgbob}">      21 / 3 = 7R0                6 / 3 = 2R0
-
-+---+---+---+---+---+---+---+      +---+---+
-|xxx|xxx|xxx|xxx|xxx|xxx|xxx|      |xxx|xxx|
-+---+---+---+---+---+---+---+      +---+---+
-</code></pre>
+<p><img src="svgbob_b632215308d4b812203f96e225b06efe539abe25.svg" alt="Kroki diagram output"></p>
 <p>Since they're both <a href="#BM_(divisible)%2Fi">divisible</a> by 3, if you were to <a href="#BM_(addition%7Cadd%7Csum)%2Fi">add</a> 18 and 6 together, the <a href="#BM_(addition%7Cadd%7Csum)%2Fi">sum</a> would also be <a href="#BM_(divisible)%2Fi">divisible</a> by 3...</p>
-<pre><code class="language-{svgbob}">      21 / 3 = 7R0                6 / 3 = 2R0
-
-+---+---+---+---+---+---+---+      +---+---+
-|xxx|xxx|xxx|xxx|xxx|xxx|xxx|      |xxx|xxx|
-+---+---+---+---+---+---+---+      +---+---+
-
-            |                          |
-            |        21 + 6 = 27       |
-            |                          |
-            +-------------+------------+
-                          |
-                          v
-        
-                     27 / 3 = 9R0
-       
-       +---+---+---+---+---+---+---+---+---+
-       |xxx|xxx|xxx|xxx|xxx|xxx|xxx|xxx|xxx|
-       +---+---+---+---+---+---+---+---+---+
-</code></pre>
+<p><img src="svgbob_2dcdf58bd577248f441a18de309a7782a29c5d0b.svg" alt="Kroki diagram output"></p>
 <p>Similarly, if you were to <a href="#BM_(subtraction%7Csubtract)%2Fi">subtract</a> 21 and 6, the difference would also be <a href="#BM_(divisible)%2Fi">divisible</a> by 3...</p>
-<pre><code class="language-{svgbob}">      21 / 3 = 7R0                6 / 3 = 2R0
-
-+---+---+---+---+---+---+---+      +---+---+
-|xxx|xxx|xxx|xxx|xxx|xxx|xxx|      |xxx|xxx|
-+---+---+---+---+---+---+---+      +---+---+
-
-            |                          |
-            |        21 - 6 = 15       |
-            |                          |
-            +-------------+------------+
-                          |
-                          v
-
-                     15 / 3 = 5R0
-                
-                +---+---+---+---+---+
-                |xxx|xxx|xxx|xxx|xxx|
-                +---+---+---+---+---+
-</code></pre>
+<p><img src="svgbob_4cbc5423f3a4311ba995f3c3bb9756c6ea262a58.svg" alt="Kroki diagram output"></p>
 <p>Even if you don't know what the <a href="#BM_(division%7Cdivide%7Cremainder%7Cquotient%7Cdividend%7Cdivisor)%2Fi">divisor</a> is, you can recursively break down the problem using the rules stated above. Imagine that you didn't know that 3 was the <a href="#BM_(division%7Cdivide%7Cremainder%7Cquotient%7Cdividend%7Cdivisor)%2Fi">divisor</a> for the previous example, but you know that some evenly <a href="#BM_(divisible)%2Fi">divisible</a> number <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi></mrow><annotation encoding="application/x-tex">d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">d</span></span></span></span> existed...</p>
 <ul>
 <li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>21</mn><mi>d</mi></mfrac><mo>=</mo><mi>x</mi><mi>R</mi><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac{21}{d} = xR0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.190108em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.845108em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">x</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord">0</span></span></span></span></li>
@@ -521,16 +379,9 @@ python
 </li>
 <li>
 <p><a name="BM_(number%20line)%2Fi"></a><strong>number line</strong> - A type of diagram used to visualize the value that a number represents. It consists of a straight horizontal line with equidistant vertical notches spliced through out, where each notch is labelled with incrementally larger numbers from left-to-right...</p>
-<pre><code class="language-{svgbob}">|---|---|---|---|---|---|---|---|---|
-0   1   2   3   4   5   6   7   8   9
-</code></pre>
+<p><img src="svgbob_82dd36c20bdae519d9b9dea6b42c9515e790a04c.svg" alt="Kroki diagram output"></p>
 <p>The number being represented is marked on the line. For example, to represent the number 5...</p>
-<pre><code class="language-{svgbob}">                    5
-                    |
-                    v
-|---|---|---|---|---|---|---|---|---|
-0   1   2   3   4   5   6   7   8   9
-</code></pre>
+<p><img src="svgbob_59e8e5cae37e1bb0af71e77b463640db376438d9.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(addition%7Cadd%7Csum)%2Fi"></a><strong>addition</strong> - Combining the values of two numbers. For example, combining 3 items and 5 items together results in 7 items...</p>
@@ -745,10 +596,7 @@ pick out 3 from the 5
 <li>right of 0 is called a <a href="#BM_(positive%7Cnegative)%2Fi">positive</a> number (<a href="#BM_(sign)%2Fi">sign</a>ified by a + prefix, called a <a href="#BM_(sign)%2Fi">sign</a>)</li>
 <li>left of 0 is called a <a href="#BM_(positive%7Cnegative)%2Fi">negative</a> number (<a href="#BM_(sign)%2Fi">sign</a>ified by a - prefix, called a <a href="#BM_(sign)%2Fi">sign</a>)</li>
 </ul>
-<pre><code class="language-{svgbob}">&lt;--+----+----+----+----+----+----+----+----+--&gt;
-   |    |    |    |    |    |    |    |    | 
-  -4   -3   -2   -1    0   +1   +2   +3   +4
-</code></pre>
+<p><img src="svgbob_c2cf201307f429ee42c88afec14c3ceb19efc1dd.svg" alt="Kroki diagram output"></p>
 <p>Conceptually, you can think of the <a href="#BM_(positive%7Cnegative)%2Fi">positive</a>s the same way you think about <a href="#BM_(natural%20number%7Ccounting%20number%7Ccardinal%20number)%2Fi">natural number</a>s. They represent some value. For each <a href="#BM_(positive%7Cnegative)%2Fi">positive</a>, there's a corresponding <a href="#BM_(positive%7Cnegative)%2Fi">negative</a> that represents the opposite of that <a href="#BM_(positive%7Cnegative)%2Fi">positive</a> value. For example, if...</p>
 <ul>
 <li>
@@ -757,11 +605,7 @@ pick out 3 from the 5
 <li>walk 5 steps (go forward 5 steps)</li>
 <li>walk -5 steps (go backward 5 steps)</li>
 </ul>
-<pre><code class="language-{svgbob}">&lt;--+-------------------------+-------------------------+--&gt;
-   |                         |                         | 
-  -5                         0                        +5
-5 feet backward         no movement         5 feet forward
-</code></pre>
+<p><img src="svgbob_4a923619305bb88a63e844787585ecea55b06768.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a href="#BM_(positive%7Cnegative)%2Fi">positive</a> <a href="#BM_(integer%20number%7Cinteger)%2Fi">integer</a>s represent money gained, then <a href="#BM_(positive%7Cnegative)%2Fi">negative</a> <a href="#BM_(integer%20number%7Cinteger)%2Fi">integer</a>s would represent money owed or spent.</p>
@@ -769,11 +613,7 @@ pick out 3 from the 5
 <li>5 dollars (gain $5)</li>
 <li>-5 dollars (spend $5, or be in debt $5)</li>
 </ul>
-<pre><code class="language-{svgbob}">&lt;--+-------------------------+-------------------------+--&gt;
-   |                         |                         | 
-  -5                         0                        +5
-5 dollar debt              broke           5 dollars gained
-</code></pre>
+<p><img src="svgbob_b0580c77252a93cb89d99f60f083cdb0525a4010.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a href="#BM_(positive%7Cnegative)%2Fi">positive</a> <a href="#BM_(integer%20number%7Cinteger)%2Fi">integer</a>s represent depth below sea-level, then <a href="#BM_(positive%7Cnegative)%2Fi">negative</a> <a href="#BM_(integer%20number%7Cinteger)%2Fi">integer</a>s would represent elevation above sea-level.</p>
@@ -781,20 +621,7 @@ pick out 3 from the 5
 <li>depth of 5 meters (5 meters below sea-level)</li>
 <li>depth of -5 meters (5 meters above sea-level)</li>
 </ul>
-<pre><code class="language-{svgbob}">^
-|
-+- -5 meters deep (5 meters above sea-level)
-|
-|
-|
-+- 0, sea-level
-|
-|
-|
-+- 5 meters deep (5 meters below sea-level)
-|
-v
-</code></pre>
+<p><img src="svgbob_757f65c9dee66a2624595c6045d66aba94ffec17.svg" alt="Kroki diagram output"></p>
 </li>
 </ul>
 </li>
@@ -824,29 +651,7 @@ v
 <li>
 <p><a name="BM_(real%20number)%2Fi"></a><strong>real number</strong> - A <a href="#BM_(decimal%20number%7Cdecimal%20point)%2Fi">decimal number</a> whose <a href="#BM_(fraction%7Cnumerator%7Cdenominator)%2Fi">fraction</a>al part can be arbitrarily small. There's no limit to how small it can get.</p>
 <p><a href="#BM_(real%20number)%2Fi">Real number</a>s include <a href="#BM_(natural%20number%7Ccounting%20number%7Ccardinal%20number)%2Fi">counting number</a>s, <a href="#BM_(whole%20number)%2Fi">whole number</a>s, <a href="#BM_(integer%20number%7Cinteger)%2Fi">integer number</a>s, <a href="#BM_(rational%20number)%2Fi">rational number</a>s, and <a href="#BM_(irrational%20number)%2Fi">irrational number</a>s.</p>
-<pre><code class="language-{svgbob}">+----------------------------------------------------------------------------------+
-|                                                                                  |
-|                                      Real                                        |
-|                                                                                  |
-|   +-+-+-+------------------------------+   +---------------------------------+   |
-|   | | | |                              |   |                                 |   |
-|   | | | |   "Counting (e.g. 1, 7, 21)" |   |                                 |   |
-|   | | | |                              |   |                                 |   |
-|   | | | +------------------------------+   |                                 |   |
-|   | | |                                |   |                                 |   |
-|   | | |   "Whole (e.g. 0, 1, 7, 21)"   |   |                                 |   |
-|   | | |                                |   |                                 |   |
-|   | | +--------------------------------+   | "Irrational (e.g. pi, sqrt(2))" |   |
-|   | |                                  |   |                                 |   |
-|   | |   "Integer (e.g. -7, -19, -471)" |   |                                 |   |
-|   | |                                  |   |                                 |   |
-|   | +----------------------------------+   |                                 |   |
-|   |                                    |   |                                 |   |
-|   |   "Rational (e.g. -0.5, 1/3, 1.2)" |   |                                 |   |
-|   |                                    |   |                                 |   |
-|   +------------------------------------+   +---------------------------------+   |
-+----------------------------------------------------------------------------------+
-</code></pre>
+<p><img src="svgbob_caf7df0a0d57229e5fcc0724c13fad9e36035a60.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(whole%20number)%2Fi"></a><strong>whole number</strong> - Numbers that begin at 0 and increment by 1. <a href="#BM_(whole%20number)%2Fi">Whole number</a>s only consist of wholes (no non-complete parts of wholes): For example, 0, 1, 2, 3, ... are <a href="#BM_(whole%20number)%2Fi">whole number</a>s while 2.2 is not.</p>
@@ -861,10 +666,7 @@ v
 <li>right of 0 is called a <a href="#BM_(positive%7Cnegative)%2Fi">positive</a> number (<a href="#BM_(sign)%2Fi">sign</a>ified by a + prefix)</li>
 <li>left of 0 is called a <a href="#BM_(positive%7Cnegative)%2Fi">negative</a> number (<a href="#BM_(sign)%2Fi">sign</a>ified by a - prefix)</li>
 </ul>
-<pre><code class="language-{svgbob}">&lt;--+----+----+----+----+----+----+----+----+--&gt;
-   |    |    |    |    |    |    |    |    | 
-  -4   -3   -2   -1    0   +1   +2   +3   +4
-</code></pre>
+<p><img src="svgbob_c2cf201307f429ee42c88afec14c3ceb19efc1dd.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(rational%20number)%2Fi"></a><strong>rational number</strong> -</p>
@@ -873,6 +675,7 @@ v
 <p><a name="BM_(irrational%20number)%2Fi"></a><strong>irrational number</strong> -</p>
 </li>
 </ul>
+<p>TODO: <a href="#BM_(addition%7Cadd%7Csum)%2Fi">add</a> two terms above</p>
 <p>TODO: continue from 5.5</p>
 <p>TODO: continue from 5.5</p>
 <p>TODO: continue from 5.5</p>
