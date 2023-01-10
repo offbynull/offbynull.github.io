@@ -917,7 +917,7 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
 
  * `{bm} average` / `{bm} mean/(mean)_ST/i` - The "typical" number in a list of numbers. Numbers in the list are summed together, then the result is divided by the count of numbers in that list. For example, to average of [1, 2, 3] is 2: 1+2+3 = 6, then 6 / 3 = 2.
     
-   `{bm-error} Wrap in !! or apply suffix _ST/\mean/i`
+   `{bm-error} Wrap in !! or apply suffix _ST/(mean)/i`
 
  * `{bm} median` - The middle number in a sorted list of numbers. Numbers in the list that come ...
  
@@ -947,13 +947,69 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
 
  * `{bm} rate` - A comparison of two numbers representing measurements of different units (e.g. inches, lbs, US dollars, etc..), written as a fraction `{kt} \frac{a}{b}`. For example, it costs $100 to fill up 2 Olympic sized swimming pool with water, !!meaning!! that the rate of money to water is `{kt} \frac{100}{2}`. The fraction, once simplified, is `{kt} \frac{50}{1}`, !!meaning!! it costs $50 to fill up each Olympic sized swimming pool.
 
- * `{bm} unit rate` - The rate `{kt} \frac{a}{b}`, but normalized such the rate only considers a single unit of the second measurement. For example, it costs $100 to fill up 2 Olympic sized swimming pool with water, !!meaning!! that the rate of money to water is `{kt} \frac{100}{2}`. Once converted to a unit rate, it becomes $50 to fill up each Olympic sized swimming pool.
+ * `{bm} unit rate` - The rate `{kt} \frac{a}{b}`, but normalized such the rate only considers a single unit of the second measurement. For example, it costs $100 to fill up 2 Olympic sized swimming pool with water, !!meaning!! that the rate of money to water is `{kt} \frac{100}{2}`. Once converted to a unit rate, it becomes $50 to fill up a single Olympic sized swimming pool.
 
-   To figure out the unit rate, simply convert the fraction to a decimal (divide its numerator by its denominator).
+   To figure out the unit rate, convert the fraction to a decimal (divide its numerator by its denominator).
 
- * `{bm} square` - Power of two. For example, 5 squared is `{kt} 5^2`.
+ * `{bm} square` - Power of two. For example, 5 squared is `{kt} 5^2`. The word square is used because power of 2 visually represents a square (e.g. 5 rows stacked on top of each other, where each row has 5 cells).
 
- * `{bm} cube` - Power of three. For example, 5 cubed is `{kt} 5^3`.
+   ```{svgbob}
+   +---+---+---+---+---+
+   |   |   |   |   |   |
+   +---+---+---+---+---+
+   |   |   |   |   |   |
+   +---+---+---+---+---+
+   |   |   |   |   |   |
+   +---+---+---+---+---+
+   |   |   |   |   |   |
+   +---+---+---+---+---+
+   |   |   |   |   |   |
+   +---+---+---+---+---+
+   ```
+
+ * `{bm} perfect square` - The result of a whole number being squared. For example, because `{kt} 3^2=9`, 9 is a perfect square.
+
+ * `{bm} cube` - Power of three. For example, 5 cubed is `{kt} 5^3`. The word cube is used because power of 3 visually represents a cube (e.g. `{kt}5^2` represents a square, and stacking together 5 of those squares makes a cube: `{kt} 5^3`)
+
+   ```{svgbob}
+             +---+---+---+---+---+
+            /   /   /   /   /   /|
+           +---+---+---+---+---+ +
+          /   /   /   /   /   /|/|
+         +---+---+---+---+---+ + +
+        /   /   /   /   /   /|/|/|
+       +---+---+---+---+---+ + + +
+      /   /   /   /   /   /|/|/|/|
+     +---+---+---+---+---+ + + + +
+    /   /   /   /   /   /|/|/|/|/|
+   +---+---+---+---+---+ + + + + +
+   |   |   |   |   |   |/|/|/|/|/
+   +---+---+---+---+---+ + + + +
+   |   |   |   |   |   |/|/|/|/
+   +---+---+---+---+---+ + + +
+   |   |   |   |   |   |/|/|/
+   +---+---+---+---+---+ + +
+   |   |   |   |   |   |/|/
+   +---+---+---+---+---+ +
+   |   |   |   |   |   |/
+   +---+---+---+---+---+
+   ```
+
+ * `{bm} square root` - The root when the exponent is 2. For example, the square root of 9, written as `{kt} \sqrt{9}` or `{kt} \sqrt[2]{9}`,  is 3 because `{kt} 3^2=9`.
+
+ * `{bm} cube root` - The root when the exponent is 3. For example, the cube root of 8, written as `{kt} \sqrt[3]{8}`,  is 2 because `{kt} 2^3=8`.
+
+ * `{bm} root` - Given the result of an exponentiation and the exponent used, determines the original number that the exponentiation was performed on. For example, given the result 125 and the exponent 3, the original number that the exponent was applied on is 5: `{kt} \sqrt[3]{125} = 5` vs `{kt} 5^3=125`.
+
+ * `{bm} power/(exponent|power)/i` - Iteratively multiply a number by itself a certain number of times. For example `{kt} 5^3=5 \cdot 5 \cdot 5 = 125`.
+
+   In the example, 5 is the base and 3 is the exponent. Another way to say it is power: 5 to the power of 3 is 125.
+
+ * `{bm} percent` - A ratio whose denominator is 100. For example, 35 percent translates to a ratio of `{kt} \frac{35}{100}.
+
+   Percents are commonly written in short-form via the % symbol. For example, 35 percent is commonly written as 35%.
+
+   The name percent comes from combining the words "per" and "cent", where "cent" is an obsolete word for one hundred. Percent effectively !!means!! per 100. For example, 35 percent translates to 35 per 100.
 
  * `{bm} real number` - A decimal number whose fractional part can be arbitrarily small. There's no limit to how small it can get.
 
@@ -1010,11 +1066,11 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
 
 TODO: add two terms above
 
-TODO: continue from 5.7 - continue from definition of square (above)
+TODO: continue from 6.1 - continue from just after definition of percent (above)
 
-TODO: continue from 5.7 - continue from definition of square (above)
+TODO: continue from 6.1 - continue from just after definition of percent (above)
 
-TODO: continue from 5.7 - continue from definition of square (above)
+TODO: continue from 6.1 - continue from just after definition of percent (above)
 
 
 TODO: ADD DEFINITIONS HERE - real / whole / decimal / etc..
