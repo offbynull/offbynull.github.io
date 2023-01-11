@@ -16531,6 +16531,320 @@ scoring_matrix: |+2
   * -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4  1
 ```
 
+## Sequence Region HMM
+
+`{bm} /(Algorithms\/Sequence Region HMM)_TOPIC/`
+
+```{prereq}
+Algorithms/K-mer_TOPIC
+```
+
+Many core biology constructs are represented as sequences. For example, ...
+
+ * DNA strands are represented as a sequence (chained nucleotides),
+ * proteins are represented as a sequence (chained amino acids),
+ * etc..
+
+These sequences typically have different regions. For example, human DNA consists of genes, telomeres, centromeres, CG islands, etc..
+
+```{svgbob}
+                    "CG island"
+                         |
+     .-------------------+-------------------.
+. . . C G A G G C G C G G T T A G G T T A C G . . .
+```
+
+It's common to develop models that infer regions within new sequences based on regions identified in past related sequences. One such model is called a hidden markov model (HMM). A HMM models a machine that, ...
+
+ * at any time, is in one of many possible hidden states (unobservable, hence the word hidden).
+ * at each hidden state, emits a symbol (observable).
+
+The machine works as a loop. At each iteration of the loop, the machine transitions to a different hidden state or stays at the same hidden state, then it emits a symbol. For example, a machine could be in one of two states: CG island or non-CG island. In the CG island state, the machine emits the nucleotide pair CG much more frequently than when in the non-CG island state.
+
+```{svgbob}
+"Asterisk (*) identifies the current state"
+
+     .-------------------------. "moving right outputting a sequence"
+     |       Machine           | ------>
+     |                         |
+     | * "CG island state"     |
+     |   "non-CG island state" |
+     '---------.  .------------' 
+               |  |
+               '  '
+ CG GA AG GG GC CG GC
+```
+
+```{note}
+Note that the last character in each pair is the start character in the next pair. It's outputting a sliding window of the sequence in the preceding diagram: ...CGAGGCGCGGTTAGGTTACG...
+```
+
+An HMM models a machine, such as CG island machine described above, using probabilities. Specifically, an HMM is described using four parameters:
+
+ 1. **Hidden states**
+ 
+    For the machine described above, the hidden states identify whether the machine is emitting a CG island or not. In addition, each HMM comes with a "SOURCE" hidden state and may come with a "SINK" hidden state. Neither of these additional hidden states emit any symbols. Rather, they represent the machine's start and termination states respectively.
+ 
+    {SOURCE, CG island, non-CG island}
+
+ 2. **Symbols**
+ 
+    For the machine described above, these are all possible nucleotide pairs that can be emitted.
+
+    {AA, AC, AT, AG, CA, CC, CT, CG, TA, TC, TT, TG, GA, GC, GT, GG}
+
+ 3. **Hidden state to hidden state transition probabilities**
+
+    For the machine described above, these are the probabilities that one hidden state transitions to another (or stays at the same hidden state). In the matrix below, rows are the hidden state being transitioned from / columns are the hidden state being transitioned to. Note the "SOURCE" hidden state, which represents the machine's starting state. At this starting state, the machine is equally likely to transition to a CG island state vs non-CG island state.
+ 
+    |               | SOURCE | CG island | non-CG island |
+    |---------------|--------|-----------|---------------|
+    | SOURCE        |  0.0   | 0.5       | 0.5           |
+    | CG island     |  0.0   | 0.999     | 0.001         |
+    | non-CG island |  0.0   | 0.0001    | 0.9999        |
+ 
+    Note how each row sums to 1.0. For example, the CG island state has two possible transitions: 0.999 probability (99.9% chance) of transitioning to it itself and 0.001 probability (0.1% chance) of transitioning to the non-CG island state. It must perform one of these transitions, hence the sum to 1.0.
+
+ 4. **Hidden state to symbol emission probabilities**
+
+    For the machine described above, these are the probabilities that, once transitioned to a hidden state, the machine emits a symbol. Note that the "SOURCE" hidden state isn't included here. The "SOURCE" and "SINK" hidden states never emit a symbol. They're simply there to represent the machine's starting and termination states.
+ 
+    |               | AA   | AC   | AT   | AG   | CA   | CC   | CT   | CG       | TA   | TC   | TT   | TG   | GA   | GC       | GT   | GG   |
+    |---------------|------|------|------|------|------|------|------|----------|------|------|------|------|------|----------|------|------|
+    | CG island     | 0.06 | 0.06 | 0.06 | 0.06 | 0.06 | 0.06 | 0.06 | **0.06** | 0.06 | 0.06 | 0.06 | 0.06 | 0.06 | **0.06** | 0.06 | 0.06 |
+    | non-CG island | 0.07 | 0.07 | 0.07 | 0.07 | 0.07 | 0.07 | 0.07 | **0.00** | 0.07 | 0.07 | 0.07 | 0.07 | 0.07 | **0.00** | 0.07 | 0.07 |
+ 
+    Note that each row should sum to 1.0. The rows above sum to slightly below 1.0 due to rounding error, but they would sum to 1.0 had they not been rounded for brevity. For example, when in the CG island state, the machine has an equal probability of emitting each symbol: 0.0625 (6.25% percent) for each symbol. It must perform one of these transitions, hence the sum to 1.0 (0.0625 * 16 is 1.0).
+ 
+    ```{note}
+    GC is the reverse completment of CG, so GC is treated the same as CG in the emission probabilities above.
+    ```
+
+The goal with an HMM is to use past observations of a machine to determine the parameters discussed above. These parameters go on to build algorithms that, given a list of emitted symbols (e.g. nucleotide pairs), infers the hidden state transitions that the machine went through to output those symbols (e.g. CG island vs non-CG island). The probablities in these parameters are typically tuned using various learning algorithms or possibly even eyeballing probabilities / trial-and-error.
+
+The four parameters discussed above are often visualized using a directed graph, called a HMM diagram. A HMM diagram treats ...
+
+ * hidden states as nodes with a solid border.
+ * symbol emissions as nodes with a dashed border.
+ * hidden state to hidden state transitions as solid edges.
+ * hidden state to symbol emissions as dashed edges.
+
+```{svgbob}
+                                            +--------+   
+                               .------------+ SOURCE +-----------.
+                           0.5 |            +--------+           | 0.5
+                               |                                 |
+                               |   .-------------------------.   |  
+                               v   | .---.    0.001    .---. v   v
++----------------------------------+-+-+ |             | +-+------------------------------------+
+| "CG island"                          | |             | | "non-CG island"                      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+------+ |0.999 0.9999 | +---+--+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  : : : : : : : : : : : : : : : :  ^ ^   |             |   ^ |  : : : : : : : : : : : : : : : : 
+  : : : : : : : : : : : : : : : :  | |   |             |   | |  : : : : : : : : : : : : : : : : 
+  : : : : : : : : : : : : : : : :  | '---'    0.0001   '---' |  : : : : : : : : : : : : : : : : 
+  : : : : : : : : : : : : : : : :  '-------------------------'  : : : : : : : : : : : : : : : : 
+  : : : : : : : : : : : : : : : :                               : : : : : : : : : : : : : : : : 
+  : : : : : : : : : : : : : : : :                               : : : : : : : : : : : : : : : : 
+  : : : : : : : : : : : : : : : :     0.06   +- - - -+  0.07    : : : : : : : : : : : : : : : : 
+  : : : : : : : : : : : : : : : '- - - - - ->:  AA   :<- - - - -' : : : : : : : : : : : : : : : 
+  : : : : : : : : : : : : : : :              +- - - -+            : : : : : : : : : : : : : : : 
+  : : : : : : : : : : : : : : :                                   : : : : : : : : : : : : : : :
+  : : : : : : : : : : : : : : :       0.06   +- - - -+  0.07      : : : : : : : : : : : : : : :
+  : : : : : : : : : : : : : : '- - - - - - ->:  AC   :<- - - - - -' : : : : : : : : : : : : : :
+  : : : : : : : : : : : : : :                +- - - -+              : : : : : : : : : : : : : :
+  : : : : : : : : : : : : : :                                       : : : : : : : : : : : : : :
+  : : : : : : : : : : : : : :         0.06   +- - - -+  0.07        : : : : : : : : : : : : : :
+  : : : : : : : : : : : : : '- - - - - - - ->:  AT   :<- - - - - - -' : : : : : : : : : : : : :
+  : : : : : : : : : : : : :                  +- - - -+                : : : : : : : : : : : : :
+  : : : : : : : : : : : : :                                           : : : : : : : : : : : : :
+  : : : : : : : : : : : : :           0.06   +- - - -+  0.07          : : : : : : : : : : : : :
+  : : : : : : : : : : : : '- - - - - - - - ->:  AG   :<- - - - - - - -' : : : : : : : : : : : :
+  : : : : : : : : : : : :                    +- - - -+                  : : : : : : : : : : : :
+  : : : : : : : : : : : :                                               : : : : : : : : : : : :
+  : : : : : : : : : : : :             0.06   +- - - -+  0.07            : : : : : : : : : : : :
+  : : : : : : : : : : : '- - - - - - - - - ->:  CA   :<- - - - - - - - -' : : : : : : : : : : :
+  : : : : : : : : : : :                      +- - - -+                    : : : : : : : : : : :
+  : : : : : : : : : : :                                                   : : : : : : : : : : :
+  : : : : : : : : : : :               0.06   +- - - -+  0.07              : : : : : : : : : : :
+  : : : : : : : : : : '- - - - - - - - - - ->:  CC   :<- - - - - - - - - -' : : : : : : : : : :
+  : : : : : : : : : :                        +- - - -+                      : : : : : : : : : :
+  : : : : : : : : : :                                                       : : : : : : : : : :
+  : : : : : : : : : :                 0.06   +- - - -+  0.07                : : : : : : : : : :
+  : : : : : : : : : '- - - - - - - - - - - ->:  CT   :<- - - - - - - - - - -' : : : : : : : : :
+  : : : : : : : : :                          +- - - -+                        : : : : : : : : :
+  : : : : : : : : :                                                           : : : : : : : : :
+  : : : : : : : : :                   0.06   +- - - -+  0.00                  : : : : : : : : :
+  : : : : : : : : '- - - - - - - - - - - - ->:  CG   :<- - - - - - - - - - - -' : : : : : : : :
+  : : : : : : : :                            +- - - -+                          : : : : : : : :
+  : : : : : : : :                                                               : : : : : : : :
+  : : : : : : : :                     0.06   +- - - -+  0.07                    : : : : : : : :
+  : : : : : : : '- - - - - - - - - - - - - ->:  TA   :<- - - - - - - - - - - - -' : : : : : : :
+  : : : : : : :                              +- - - -+                            : : : : : : :
+  : : : : : : :                                                                   : : : : : : :
+  : : : : : : :                       0.06   +- - - -+  0.07                      : : : : : : :
+  : : : : : : '- - - - - - - - - - - - - - ->:  TC   :<- - - - - - - - - - - - - -' : : : : : :
+  : : : : : :                                +- - - -+                              : : : : : :
+  : : : : : :                                                                       : : : : : :
+  : : : : : :                         0.06   +- - - -+  0.07                        : : : : : :
+  : : : : : '- - - - - - - - - - - - - - - ->:  TT   :<- - - - - - - - - - - - - - -' : : : : :
+  : : : : :                                  +- - - -+                                : : : : :
+  : : : : :                                                                           : : : : :
+  : : : : :                           0.06   +- - - -+  0.07                          : : : : :
+  : : : : '- - - - - - - - - - - - - - - - ->:  TG   :<- - - - - - - - - - - - - - - -' : : : :
+  : : : :                                    +- - - -+                                  : : : :
+  : : : :                                                                               : : : :
+  : : : :                             0.06   +- - - -+  0.07                            : : : :
+  : : : '- - - - - - - - - - - - - - - - - ->:  GA   :<- - - - - - - - - - - - - - - - -' : : :
+  : : :                                      +- - - -+                                    : : :
+  : : :                                                                                   : : :
+  : : :                               0.06   +- - - -+  0.00                              : : :
+  : : '- - - - - - - - - - - - - - - - - - ->:  GC   :<- - - - - - - - - - - - - - - - - -' : :
+  : :                                        +- - - -+                                      : :
+  : :                                                                                       : :
+  : :                                 0.06   +- - - -+  0.07                                : :
+  : '- - - - - - - - - - - - - - - - - - - ->:  GT   :<- - - - - - - - - - - - - - - - - - -' :
+  :                                          +- - - -+                                        :
+  :                                                                                           :
+  :                                   0.06   +- - - -+  0.07                                  :
+  '- - - - - - - - - - - - - - - - - - - - ->:  GG   :<- - - - - - - - - - - - - - - - - - - -'
+                                             +- - - -+
+```
+
+```{note}
+Another common way of identifying sequence regions is probably deep-learning models (LSTM)? The Pevzner book focused on HMMs so that's what this section is going to focus on.
+```
+
+### Chained Transition Probability
+
+`{bm} /(Algorithms\/Sequence Region HMM\/Chained Transition Probability)_TOPIC/`
+
+**WHAT**: The probability that, in an HMM, a sequence of hidden state transitions occur.
+
+**WHY**: These probabilities are the foundation of more elaborate HMM algorithms, discussed further on.
+
+**ALGORITHM**:
+
+The algorithm is the application of probabilities. An HMM provides the probability for each hidden state transition. A chain of such hidden state transitions is their individual probabilities multiplied together.
+
+```{output}
+ch10_code/src/hmm/StateTransitionChainProbability.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch10}
+hmm.StateTransitionChainProbability
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.26, B: 0.74}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+state_transitions: [[SOURCE,A], [A,B], [B,A], [A,B], [B,B], [B,B], [B,A], [A,A], [A,A], [A,A]]
+```
+
+### Chained Emission Probability
+
+`{bm} /(Algorithms\/Sequence Region HMM\/Chained Emission Probability)_TOPIC/`
+
+**WHAT**: The probability that, in an HMM, a sequence of symbols are emitted, each from a different state.
+
+**WHY**: These probabilities are the foundation of more elaborate HMM algorithms, discussed further on.
+
+**ALGORITHM**:
+
+The algorithm is the application of probabilities. An HMM provides the probability for each symbol emission in each hidden state. A chain of such symbol emissions is their individual probabilities multiplied together.
+
+```{output}
+ch10_code/src/hmm/SymbolEmissionChainProbability.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch10}
+hmm.SymbolEmissionChainProbability
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.26, B: 0.74}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+state_emissions: [[B,z], [A,z], [A,z], [A,y], [A,x], [A,y], [A,y], [A,z], [A,z], [A,x]]
+```
+
+### Chained Transition-Emission Probability
+
+`{bm} /(Algorithms\/Sequence Region HMM\/Chained Transition-Emission Probability)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Region HMM/Chained Transition Probability_TOPIC
+Algorithms/Sequence Region HMM/Chained Emission Probability_TOPIC
+```
+
+**WHAT**: The probability that, in an HMM, a sequence of symbols are emitted each after a state transition has occurred.
+
+**WHY**: These probabilities are the foundation of more elaborate HMM algorithms, discussed further on.
+
+**ALGORITHM**:
+
+The algorithm is the application of probabilities. An HMM provides the probability for ...
+
+ * each state transition.
+ * each symbol emission in each hidden state.
+
+The probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destionation's emission). A chain of such transition-emission probabilities is their individual probabilities multiplied together.
+
+```{output}
+ch10_code/src/hmm/StateTransitionFollowedBySymbolEmissionChainProbability.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch10}
+hmm.StateTransitionFollowedBySymbolEmissionChainProbability
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.26, B: 0.74}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+transition_to_symbol_pairs: [[[SOURCE,B],z], [[B,A],z], [[A,A],z], [[A,A],y], [[A,A],x], [[A,A],y], [[A,A],y], [[A,A],z], [[A,A],z], [[A,A],x]]
+```
+
+### Viterbi Max Hidden Path
+
+`{bm} /(Algorithms\/Sequence Region HMM\/Viterbi Max Hidden Path)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Region HMM/Chained Transition-Emission Probability_TOPIC
+```
+
+**WHAT**:
+
+**WHY**:
+
+**ALGORITHM**:
+
+### Viterbi Max Emissions
+
+`{bm} /(Algorithms\/Sequence Region HMM\/Viterbi Max Max Emission)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Region HMM/Chained Transition-Emission Probability_TOPIC
+```
+
+**WHAT**:
+
+**WHY**:
+
+**ALGORITHM**:
+
 # Stories
 
 ## Bacterial Genome Replication
@@ -17863,7 +18177,7 @@ first_indexes_checkpoint_n: 20
 
    This relates to the idea above (soft hierarchical clustering) -- You may be able to identify outliers using soft hierarchical clustering using this (e.g. the probability of being a part of some internal node is way farther than any of the other leaf nodes).
 
-* Checkpointed BWT algorithm in C++ - Implement it in modern C++ using concepts, as a generic library
+ * Checkpointed BWT algorithm in C++ - Implement it in modern C++ using concepts, as a generic library
 
 # Terminology
 
@@ -21360,7 +21674,7 @@ first_indexes_checkpoint_n: 20
    In geometry, the dot product of two vectors is used to get the angle between those vectors.
    ```
 
- * `{bm} conditional probability` - The probability of an event occurring given that another event has already occurred.
+ * `{bm} conditional probability/(conditional probability|conditional probabilities)/i` - The probability of an event occurring given that another event has already occurred.
 
    The notation for conditional probability is Pr(A|B), where A is the is event that will occurr and B is the event that already occurred. If A and B are...
 
@@ -22275,12 +22589,12 @@ first_indexes_checkpoint_n: 20
     G G A C A T
    ```
 
-   A machine can be in one of many hidden states. For example, the machine above could be in one of two hidden states: Gene or Non-gene. If in the ...
+   Th machine being modeled can be in one of many hidden states. For example, the machine above could be in one of two hidden states: Gene or Non-gene. If in the ...
 
     * gene hidden state, it's outputting DNA for a region of DNA that's a gene.
-    * non-gene hidden state, its outputting DNA for a region of DNA that isn't a gene (e.g. talomeres).
+    * non-gene hidden state, its outputting DNA for a region of DNA that isn't a gene (e.g. telomeres).
   
-   At each step, the machine transitions from its existing hidden state to another hidden state and emits a symbol (transitions to the same hidden state are possible). For the example machine above, the emittd symbol is a nucleotide: A, C, T, or G.
+   At each step, the machine transitions from its existing hidden state to another hidden state and emits a symbol (transitions to the same hidden state are possible). For the example machine above, the emitted symbols are nucleotides (A, C, T, and G).
 
    An HMM models such a machine by using four pieces of information:
 
@@ -22514,8 +22828,9 @@ first_indexes_checkpoint_n: 20
 
    TODO: THIS DIAGRAM IS WRONG? GO TO THE PROBLEM IN 10.7, OPEN THE TEST DATASET AND INSIDE SHOULD BE A DOCUMENT. THAT DOCUMENT HAS A DIAGRAM OF HOW THE GRAPH SHOULD LOOK.
 
-TODO: continue 10.7 last step (exercise break)
+   TODO: continue 10.7 last step (exercise break)
 
+ * `{bm} CpG island/(C[p\-]?G island|C[p\-]?G site)/i` - Regions of DNA with a high frequency of cystine followed by guanine. The reverse conmplementing strand will have equal regions with equally high frequencies of guanine followed by cystine.
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 
@@ -22555,7 +22870,9 @@ TODO: continue 10.7 last step (exercise break)
 
 `{bm-error} Did you mean burrows-wheeler transform (missing an s)?/(burrow[-\s]wheeler transform)/i`
 
-`{bm-error} Did you mean lexicographical (lexICographical)/(lexographical)/i`
+`{bm-error} Did you mean lexicographical (lexICographical)?/(lexographical)/i`
+
+`{bm-error} Did you mean telomere?/(talomere)/i`
 
 `{bm-error} Missing topic reference/(_TOPIC)/i`
 `{bm-error} Use you instead of we/\b(we)\b/i`

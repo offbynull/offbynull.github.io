@@ -1,10 +1,9 @@
 from sys import stdin
-from typing import TypeVar, Callable, Iterable
+from typing import TypeVar, Callable
 
 import yaml
 
 from graph.DirectedGraph import Graph
-from helpers.Utils import slide_window
 
 N = TypeVar('N')
 ND = TypeVar('ND')
@@ -17,11 +16,11 @@ SYMBOL = TypeVar('SYMBOL')
 # MARKDOWN
 def state_transition_chain_probability(
         hmm: Graph[N, ND, E, ED],
-        states: list[STATE],
+        states: list[tuple[STATE, STATE]],
         get_edge_transition_prob: Callable[[Graph[N, ND, E, ED], STATE, STATE], float]
 ) -> float:
     weight = 1.0
-    for (from_state, to_state), _ in slide_window(states, 2):
+    for from_state, to_state in states:
         weight *= get_edge_transition_prob(hmm, from_state, to_state)
     return weight
 # MARKDOWN
@@ -86,7 +85,7 @@ def to_hmm_graph(
 # emission_probabilities: # UNUSED
 #   A: {}
 #   B: {}
-# states: [SOURCE, A, B, A, B, B ,B, A, A, A, A]
+# state_transitions: [[SOURCE,A], [A,B], [B,A], [A,B], [B,B], [B,B], [B,A], [A,A], [A,A], [A,A]]
 
 def main():
     print("<div style=\"border:1px solid black;\">", end="\n\n")
@@ -96,7 +95,7 @@ def main():
         data: dict = yaml.safe_load(data_raw)
         transition_probabilities = data['transition_probabilities']
         emission_probabilities = data['emission_probabilities']
-        states = data['states']
+        state_transitions = [tuple(e) for e in data['state_transitions']]
         print(f'Building HMM and computing transition / emission probability using the following settings...')
         print()
         print('```')
@@ -106,7 +105,7 @@ def main():
         hmm = to_hmm_graph(transition_probabilities, emission_probabilities)
         p = state_transition_chain_probability(
             hmm,
-            states,
+            state_transitions,
             lambda g, s1, s2: g.get_edge_data((s1, s2))
         )
         print()
@@ -116,8 +115,7 @@ def main():
         print(f'{to_dot(hmm)}')
         print('```')
         print()
-        print(f'Probability of the chain of state transitions {list((a,b) for (a,b), _ in slide_window(states, 2))}'
-              f' is {p}')
+        print(f'Probability of the chain of state transitions {state_transitions} is {p}')
         print()
     finally:
         print("</div>", end="\n\n")

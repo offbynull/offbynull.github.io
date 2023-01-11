@@ -1,0 +1,173 @@
+<svg class="bob" font-family="arial" font-size="14" height="176" width="552" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="triangle" markerHeight="8" markerWidth="8" orient="auto" refX="4" refY="2" viewBox="0 0 8 4">
+<polygon class="fg_fill" points="0,0 0,4 8,2 0,0"/>
+</marker>
+<marker id="clear_triangle" markerHeight="10" markerWidth="10" orient="auto" refX="1" refY="7" viewBox="0 0 20 14">
+<polygon class="bg_fill" points="2,2 2,12 18,7 2,2"/>
+</marker>
+<marker id="circle" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<circle class="fg_fill" cx="10" cy="10" r="8"/>
+</marker>
+<marker id="square" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<rect class="fg_fill" height="20" width="20" x="0" y="0"/>
+</marker>
+<marker id="open_circle" markerHeight="10" markerWidth="10" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<circle class="bg_fill" cx="10" cy="10" r="4"/>
+</marker>
+<marker id="big_open_circle" markerHeight="20" markerWidth="20" orient="auto" refX="20" refY="20" viewBox="0 0 40 40">
+<circle class="bg_fill" cx="20" cy="20" r="6"/>
+</marker>
+</defs>
+<style type="text/css">
+
+rect.backdrop {
+    fill: white;
+}
+text{
+    fill: black;
+}
+
+circle {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+}
+
+line {
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    stroke-linecap: round;
+    stroke-linejoin: miter;
+}
+
+path {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    stroke-linecap: round;
+    stroke-linejoin: miter;
+}
+
+line.dashed {
+    stroke-dasharray: 5;
+}
+
+.fg_fill {
+    fill: black;
+}
+
+
+.bg_fill {
+    fill: white;
+    stroke: black;
+    stroke-width: 2;
+}
+
+tspan.head{
+    fill: none;
+    stroke: none;
+}
+    
+</style>
+<rect class="backdrop" height="176" width="552" x="0" y="0"/>
+<g>
+<line x1="44" x2="44" y1="44" y2="116"/>
+<path d="M 44 116 A 4 4 0 0 0 48 120"/>
+<path d="M 48 40 A 4 4 0 0 0 44 44"/>
+</g>
+<g>
+<line x1="48" x2="248" y1="40" y2="40"/>
+<path d="M 252 44 A 4 4 0 0 0 248 40"/>
+</g>
+<g>
+<line x1="48" x2="120" y1="120" y2="120"/>
+<path d="M 124 124 A 4 4 0 0 0 120 120"/>
+</g>
+<g>
+<line x1="124" x2="124" y1="124" y2="148"/>
+</g>
+<g>
+<line x1="148" x2="148" y1="124" y2="148"/>
+<path d="M 152 120 A 4 4 0 0 0 148 124"/>
+</g>
+<g>
+<line x1="152" x2="248" y1="120" y2="120"/>
+<path d="M 248 120 A 4 4 0 0 0 252 116"/>
+</g>
+<g>
+<line x1="252" x2="252" y1="44" y2="116"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="264" x2="316" y1="56" y2="56"/>
+</g>
+<g>
+<text x="1" y="12">
+Asterisk (*) identifies the current state
+</text>
+</g>
+<g>
+<text x="9" y="172">
+CG
+</text>
+</g>
+<g>
+<text x="33" y="172">
+GA
+</text>
+</g>
+<g>
+<text x="57" y="92">
+*
+</text>
+</g>
+<g>
+<text x="57" y="172">
+AG
+</text>
+</g>
+<g>
+<text x="73" y="92">
+CG island state
+</text>
+</g>
+<g>
+<text x="73" y="108">
+non-CG island state
+</text>
+</g>
+<g>
+<text x="81" y="172">
+GG
+</text>
+</g>
+<g>
+<text x="105" y="60">
+Machine
+</text>
+</g>
+<g>
+<text x="105" y="172">
+GC
+</text>
+</g>
+<g>
+<text x="129" y="172">
+CG
+</text>
+</g>
+<g>
+<text x="153" y="172">
+GC
+</text>
+</g>
+<g>
+<text x="265" y="44">
+moving right outputting a sequence
+</text>
+</g>
+</svg>
