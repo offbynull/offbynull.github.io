@@ -7,7 +7,7 @@ Rational Number Arithmetic
 
 # Introduction
 
-FILL ME IN
+This document codifies the standard algorithms used by grade school students for rational numbers, equality, inequality, and arithmetic. It originally started as a pre-algebra refresher and instead morphed into what it is now.
 
 # Place Value System
 
