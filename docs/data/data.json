@@ -26,13 +26,10 @@
             "source": []
         },
         {
-            "name": "Prealgebra",
-            "notesUrl": "data/learn/Math/output/output.html",
-            "source": {
-                "type": "book",
-                "isbn": "978-1975076436",
-                "url": "https://openstax.org/details/books/prealgebra-2e"
-            }
+            "year": 2022,
+            "name": "Real Number Arithmetic",
+            "notesUrl": "data/learn/Real Number Arithmetic/output/output.html",
+            "source": []
         },
         {
             "year": 2018,
