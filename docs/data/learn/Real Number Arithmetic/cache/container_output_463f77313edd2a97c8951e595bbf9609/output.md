@@ -1,0 +1,1 @@
+![Concept diagram for partial rule 55](MainPartialConceptDrawd1a093eb8471682bfe40be9d23da3a08.svg)

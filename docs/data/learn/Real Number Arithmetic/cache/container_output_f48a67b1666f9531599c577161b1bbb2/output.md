@@ -1,0 +1,1 @@
+![Concept diagram for fraction 0 / 6](MainNumberLineDraw21854b30a43886ea21a6d1fab1a95b1d.svg)

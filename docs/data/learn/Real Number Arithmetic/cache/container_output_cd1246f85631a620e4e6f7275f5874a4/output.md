@@ -1,0 +1,1 @@
+`{kt}\begin{array}{l}\phantom{{{3}\smash{)}}}{{\green{2}}} \\{{3}}\overline{\smash{)}{752}} \\\phantom{{{3}\smash{)}}}{?} \\\phantom{{{3}\smash{)}}}{\green{1}} \\\end{array}`

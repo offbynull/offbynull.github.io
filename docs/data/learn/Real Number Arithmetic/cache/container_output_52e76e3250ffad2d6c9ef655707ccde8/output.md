@@ -1,0 +1,1 @@
+![Concept diagram for fraction 0 / 15](MainNumberLineDraw4f9c57310d34b6dd422134e07c8b985b.svg)

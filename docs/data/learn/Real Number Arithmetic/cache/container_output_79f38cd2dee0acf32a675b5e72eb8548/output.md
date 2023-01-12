@@ -1,0 +1,1 @@
+`{kt}\begin{alignedat}{3}{ }&  \enspace{ 9}&  \enspace{  }& \\{0}&  \enspace\cancel{10}&  \enspace{10}& \\\cancel{1}&  \enspace\cancel{ 0}&  \enspace\cancel{ 0}& \\{ }&  \enspace{ 1}&  \enspace{ 1}& \enspace - \\ \hline{0}&  \enspace{ 8}&  \enspace{ 9}&\end{alignedat}`
