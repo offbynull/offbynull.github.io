@@ -16620,7 +16620,7 @@ An HMM models a machine, such as CG island machine described above, using probab
     GC is the reverse completment of CG, so GC is treated the same as CG in the emission probabilities above.
     ```
 
-The goal with an HMM is to use past observations of a machine to determine the parameters discussed above. These parameters go on to build algorithms that, given a list of emitted symbols (e.g. nucleotide pairs), infers the hidden state transitions that the machine went through to output those symbols (e.g. CG island vs non-CG island). The probablities in these parameters are typically tuned using various learning algorithms or possibly even eyeballing probabilities / trial-and-error.
+The goal with an HMM is to use past observations of a machine to determine the parameters discussed above. These parameters go on to build algorithms that, given a sequence of emitted symbols (e.g. nucleotide pairs), infers the sequence of hidden state transitions that the machine went through to output those symbols (e.g. CG island vs non-CG island). A sequence of hidden state transitions in an HMM is commonly referred to as a hidden path.
 
 The four parameters discussed above are often visualized using a directed graph, called a HMM diagram. A HMM diagram treats ...
 
@@ -16796,7 +16796,7 @@ The algorithm is the application of probabilities. An HMM provides the probabili
  * each state transition.
  * each symbol emission in each hidden state.
 
-The probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destionation's emission). A chain of such transition-emission probabilities is their individual probabilities multiplied together.
+The probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destionation's emission). The probability of a chain of such transition-emission is their individual probabilities multiplied together.
 
 ```{output}
 ch10_code/src/hmm/StateTransitionFollowedBySymbolEmissionChainProbability.py
@@ -16817,26 +16817,162 @@ emission_probabilities:
 transition_to_symbol_pairs: [[[SOURCE,B],z], [[B,A],z], [[A,A],z], [[A,A],y], [[A,A],x], [[A,A],y], [[A,A],y], [[A,A],z], [[A,A],z], [[A,A],x]]
 ```
 
-### Viterbi Max Hidden Path
+### Viterbi Most Probable Hidden Path
 
-`{bm} /(Algorithms\/Sequence Region HMM\/Viterbi Max Hidden Path)_TOPIC/`
+`{bm} /(Algorithms\/Sequence Region HMM\/Viterbi Most Probable Hidden Path)_TOPIC/`
 
 ```{prereq}
 Algorithms/Sequence Region HMM/Chained Transition-Emission Probability_TOPIC
+Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
 ```
 
-**WHAT**:
+**WHAT**: The Viterbi algorithm determines the most likely hidden path an HMM went through to produce a sequence of emitted symbols. For example, consider the HMM represented by the following HMM diagram and the emitted sequence [z, z, x, x, y]. The algorithm will determine the most likely set of hidden state transitions (hidden path) that resulted in that emitted sequence.
 
-**WHY**:
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+  0.5 |            +--------+           | 0.5
+      |                                 |
+      |   .-------------------------.   |  
+      v   | .---.    0.623    .---. v   v
++---------+-+-+ |             | +-+-----------+
+|     "A"     | |             | |     "B"     |
++--+-+-+------+ |0.377   0.74 | +---+--+-+-+--+
+   : : :  ^ ^   |             |   ^ |  : : : 
+   : : :  | |   |             |   | |  : : : 
+   : : :  | '---'    0.26     '---' |  : : : 
+   : : :  '-------------------------'  : : : 
+   : : :                               : : : 
+   : : :                               : : : 
+   : : :     0.176  +- - - -+  0.225   : : : 
+   : : '- - - - - ->:   x   :<- - - - -' : : 
+   : :              +- - - -+            : : 
+   : :                                   : :
+   : :       0.596  +- - - -+  0.572     : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :         0.228  +- - - -+  0.203       :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+               
+```
+
+**WHY**: An HMM's hidden state isn't observable (hence the word hidden), meaning that it's impossible to know the hidden path taken to emit a sequence of symbols. The next best alternative is the Viterbi algorithm, which provides the most likely hidden path to produce a sequence of emitted symbols.
 
 **ALGORITHM**:
 
-### Viterbi Max Emissions
+The Viterbi algorithm requires a Viterbi graph. A Viterbi graph is essentially an HMM that's been flattened out for a specific emitted sequence (no cycles). Given the  HMM and emitted sequence example above, its Viterbi graph is structured as follows.
 
-`{bm} /(Algorithms\/Sequence Region HMM\/Viterbi Max Max Emission)_TOPIC/`
+```{svgbob}
+                   z                 z                 x                 x                 y
+ 
+                 +---+             +---+             +---+             +---+             +---+
+                 | A +------------>| A +------------>| A +------------>| A +------------>| A | 
+           .---->|   +.     .----->|   +.     .----->|   +.     .----->|   +.     .----->|   +-----. 
+           |     +---+ \   /       +---+ \   /       +---+ \   /       +---+ \   /       +---+     | 
++--------+ |            \ /               \ /               \ /               \ /                  |  +------+
+| SOURCE +-+             X                 X                 X                 X                   +->| SINK |
++--------+ |            / \               / \               / \               / \                  |  +------+
+           |     +---+ /   \       +---+ /   \       +---+ /   \       +---+ /   \       +---+     |
+           '---->| B +'     '----->| B +'     '----->| B +'     '----->| B +'     '----->| B +-----'
+                 |   +------------>|   +------------>|   +------------>|   +------------>|   | 
+                 +---+             +---+             +---+             +---+             +---+
+```
+
+A Viterbi graph is structured as a grid of nodes where ...
+
+ * each emitted symbol in the emitted sequence is a column.
+ * each hidden state in the HMM is a row.
+ 
+In addtion, there's a "SOURCE" node just before the grid and a "SINK" node just after the grid. Each node connects to nodes immediately in front of it (left-to-right) assuming that the hidden state transition it represents is allowed by the HMM.
+
+```{note}
+Not all hidden states can transition to every other hidden state. Some transitions may be forbidden. In the example, there are no forbidden transitions.
+```
+
+Each edge weight in the Viterbi graph is the probability that the symbol at the destination column was emitted (e.g. x) after the hidden state transition represented by the edge occured (e.g. A→A): Pr(source-to-destination transition) * Pr(symbol emitted from destination). For example, in the HMM diagram above, Pr(A→B) is 0.623 and Pr(B emitting x) is 0.225, so Pr(x|A→B) = 0.623 * 0.225 = 0.140175.
+
+```{svgbob}
+  z                 x
+
++---+
+| A |
+|   +.
++---+ \
+       \ "0.623 * 0.225 = 0.140175"
+        \              
+         \             
+          \       +---+
+           '----->| B +
+                  |   +
+                  +---+
+```
+
+The one exception is edge weight to the "SINK" node. At the end of the sequence, there's nowhere to go but to the "SINK" node, and as such the probability of edges to the "SINK" node must be 1.0.
+
+|          |             x            |             y            |             z            |
+|----------|--------------------------|--------------------------|--------------------------|
+|      A→A | 0.377 * 0.176 = 0.066352 | 0.377 * 0.596 = 0.224692 | 0.377 * 0.228 = 0.085956 |
+|      A→B | 0.623 * 0.225 = 0.140175 | 0.623 * 0.572 = 0.356356 | 0.623 * 0.203 = 0.126469 |
+|      B→A | 0.26  * 0.176 = 0.04576  | 0.26  * 0.596 = 0.15496  | 0.26  * 0.228 = 0.05928  |
+|      B→B | 0.74  * 0.225 = 0.1665   | 0.74  * 0.572 = 0.42328  | 0.74  * 0.203 = 0.15022  |
+| SOURCE→A | 0.5   * 0.176 = 0.088    | 0.5   * 0.596 = 0.298    | 0.5   * 0.228 = 0.114    |
+| SOURCE→B | 0.5   * 0.225 = 0.1125   | 0.5   * 0.572 = 0.286    | 0.5   * 0.203 = 0.1015   |
+|   A→SINK | 1.0                      | 1.0                      | 1.0                      |
+|   B→SINK | 1.0                      | 1.0                      | 1.0                      |
+
+The Viterbi graph with edge weights is as follows.
+
+```{svgbob}
+* "Weights have been rounded for brevity."
+
+                   z                 z                 x                 x                 y
+ 
+                 +---+       0.086 +---+       0.066 +---+       0.066 +---+       0.225 +---+
+           0.114 | A +------------>| A +------------>| A +------------>| A +------------>| A | 1.0
+           .---->|   +.     .----->|   +.     .----->|   +.     .----->|   +.     .----->|   +-----. 
+           |     +---+ \   / 0.059 +---+ \   / 0.046 +---+ \   / 0.046 +---+ \   / 0.155 +---+     | 
++--------+ |            \ /               \ /               \ /               \ /                  |  +------+
+| SOURCE +-+             X                 X                 X                 X                   +->| SINK |
++--------+ |            / \               / \               / \               / \                  |  +------+
+           |     +---+ /   \ 0.126 +---+ /   \ 0.140 +---+ /   \ 0.140 +---+ /   \ 0.356 +---+     |
+           '---->| B +'     '----->| B +'     '----->| B +'     '----->| B +'     '----->| B +-----'
+           0.102 |   +------------>|   +------------>|   +------------>|   +------------>|   | 1.0
+                 +---+       0.150 +---+       0.167 +---+       0.167 +---+       0.423 +---+
+```
+
+In a Viterbi graph, each path from "SOURCE" to "SINK" corresponds to a hidden path in the corresponding HMM. The goal is to find the path with the maximum product weight: The path with the maximum product weight is the most probable hidden path for the emitted sequence.
+
+```{note}
+Why? Recall from Algorithms/Sequence Region HMM/Chained Transition-Emission Probability_TOPIC: The probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destionation's emission). The probability of a chain of such transition-emission is their individual probabilities multiplied together.
+```
+
+The algorithm for determining the path with the maximum product weight is to first apply the logarithm function to each edge weight, then apply the dynamic programming algorithm that finds the path with the maximum sum.
+
+```{note}
+See Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC for the algorithm to find the path with the maximum sum. Why does applying logarithms mean that you can now use sum instead? I'm not sure what the math here is.
+```
+
+TODO: add code here
+
+TODO: add code here
+
+TODO: add code here
+
+TODO: add code here
+
+TODO: add code here
+
+TODO: add code here
+
+TODO: add code here
+
+### Viterbi Most Probable Symbol Emissions
+
+`{bm} /(Algorithms\/Sequence Region HMM\/Viterbi Most Probable Symbol Emissions)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Region HMM/Chained Transition-Emission Probability_TOPIC
+Algorithms/Sequence Region HMM/Viterbi Most Probable Hidden Path_TOPIC
 ```
 
 **WHAT**:
@@ -22686,20 +22822,33 @@ first_indexes_checkpoint_n: 20
                         +- - - -+
    ```
   
- * `{bm} hidden path` - A sequence of hidden states that a HMM passes through. For example, in the HMM diagram below, one possible hidden path could be as follows.
+ * `{bm} hidden path` - A sequence of hidden state transitions that a HMM passes through. For example, in the HMM diagram below, one possible hidden path could be as follows:
+ 
+   1. SOURCE → fouler bat
+   1. fouler bat → hitter bat
+   1. hitter bat → hitter bat
+   1. hitter bat → hitter bat
+   1. hitter bat → hitter bat
+   1. hitter bat → hitter bat
 
    ```{svgbob}
-              0.75      +- - - -+     0.5
-         .- - - - - - ->:  hit  :<- - - - - -.
-         :              +- - - -+            :
-         :                                   :
-         :                                   :
-         :     0.1      +- - - -+     0.1    :
-         : .- - - - - ->: miss  :<- - - - -. :
-         : :            +- - - -+          : :
-         : :                               : :
-         : :  .-------------------------.  : :
-         : :  | .---.     0.1     .---. v  : :
+                       +---------+
+                       | SOURCE  |
+           0.5         +-+-----+-+       0.5
+      .------------------'     '----------------.
+      |                                         |
+      |                                         |
+      |       0.75      +- - - -+     0.5       |
+      |  .- - - - - - ->:  hit  :<- - - - - -.  |
+      |  :              +- - - -+            :  |
+      |  :                                   :  |
+      |  :                                   :  |
+      |  :     0.1      +- - - -+     0.1    :  |
+      |  : .- - - - - ->: miss  :<- - - - -. :  |
+      |  : :            +- - - -+          : :  |
+      |  : :                               : :  |
+      |  : :  .-------------------------.  : :  |
+      v  : :  | .---.     0.1     .---. v  : :  v
    +-----+-+--+-+-+ |             | +-+----+-+-----+
    | "hitter bat" | |             | | "fouler bat" |
    +-------+------+ |0.9       0.9| +---+--+-------+
@@ -22712,18 +22861,6 @@ first_indexes_checkpoint_n: 20
            :     0.15   +- - - -+  0.4     :
            '- - - - - ->: foul  :<- - - - -'
                         +- - - -+
-   ```
-
-   |                      |     |    0   |     |    1   |     |    2   |     |    3   |     |    4   |     |    5   |     |    6   |
-   |----------------------|-----|--------|-----|--------|-----|--------|-----|--------|-----|--------|-----|--------|-----|--------|
-   | emitted symbols (X)  |     | foul   |     | hit    |     | hit    |     | miss   |     | hit    |     | hit    |     | hit    |
-   | hidden path     (P)  |     | fouler |     | hitter |     | hitter |     | hitter |     | hitter |     | hitter |     | hitter |
-   | Pr(Pi→Pi+1)          | 0.5 |        | 0.1 |        | 0.9 |        | 0.9 |        | 0.9 |        | 0.9 |        | 0.9 |        |
-   | Pr(Xi\|Pi)           |     |  0.4   |     |  0.75  |     |  0.75  |     |  0.1   |     |  0.75  |     |  0.75  |     |  0.75  |
-
-   ```{note}
-   * Pr(Pi→Pi+1) denotes the probability of transitioning from one hidden state to the next. For example, the transition between 0 and 1 is Pr(fouler→hitter), which is 0.1. At the beginning, even before 0, the probability is set to 0.5 because there's a 50/50 chance of starting off with either hitter or fouler.
-   * Pr(Xi|Pi) denotes the conditional probability that the symbol will be emitted given the current hidden state. For example, at 0, the probability that foul is emitted given the hidden state is set to fouler is 0.4.
    ```
 
  * `{bm} Viterbi graph/(Viterbi graph|Viterbi algorithm|Viterbi)/i` - A directed graph representing all possible HMM hidden state transitions that result in a sequence of emitted symbol. Given an emitted sequence, a Viterbi graph lays out nodes in a grid, where each ...

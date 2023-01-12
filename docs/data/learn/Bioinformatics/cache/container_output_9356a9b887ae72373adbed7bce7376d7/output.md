@@ -3,6 +3,7 @@
 <strong>↩PREREQUISITES↩</strong>
 
  * Algorithms/Sequence Region HMM/Chained Transition-Emission Probability_TOPIC
+ * Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
 
 </div>
 

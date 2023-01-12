@@ -212,8 +212,8 @@
 <li><a href="#H_Chained%20Transition%20Probability">Chained Transition Probability</a></li>
 <li><a href="#H_Chained%20Emission%20Probability">Chained Emission Probability</a></li>
 <li><a href="#H_Chained%20Transition-Emission%20Probability">Chained Transition-Emission Probability</a></li>
-<li><a href="#H_Viterbi%20Max%20Hidden%20Path">Viterbi Max Hidden Path</a></li>
-<li><a href="#H_Viterbi%20Max%20Emissions">Viterbi Max Emissions</a></li>
+<li><a href="#H_Viterbi%20Most%20Probable%20Hidden%20Path">Viterbi Most Probable Hidden Path</a></li>
+<li><a href="#H_Viterbi%20Most%20Probable%20Symbol%20Emissions">Viterbi Most Probable Symbol Emissions</a></li>
 </ul>
 </ul>
 <li><a href="#H_Stories">Stories</a></li>
@@ -24444,7 +24444,7 @@ DB k-mer:    KKALVGNKSSFLILSDEQTEGRGRFNRNWSSSKGKGLWMSLVLRPN @ 98 ['&gt;VTR16721.
 </div>
 </li>
 </ol>
-<p>The goal with an <a href="#BM_(HMM)%2F">HMM</a> is to use past observations of a machine to determine the parameters discussed above. These parameters go on to build algorithms that, given a list of emitted symbols (e.g. nucleotide pairs), infers the <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transitions that the machine went through to output those symbols (e.g. <a href="#BM_(C%5Bp%5C-%5D%3FG%20island%7CC%5Bp%5C-%5D%3FG%20site)%2Fi">CG island</a> vs non-<a href="#BM_(C%5Bp%5C-%5D%3FG%20island%7CC%5Bp%5C-%5D%3FG%20site)%2Fi">CG island</a>). The probablities in these parameters are typically tuned using various learning algorithms or possibly even eyeballing probabilities / trial-and-error.</p>
+<p>The goal with an <a href="#BM_(HMM)%2F">HMM</a> is to use past observations of a machine to determine the parameters discussed above. These parameters go on to build algorithms that, given a <a href="#BM_(sequence)%2Fi">sequence</a> of emitted symbols (e.g. nucleotide pairs), infers the <a href="#BM_(sequence)%2Fi">sequence</a> of <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transitions that the machine went through to output those symbols (e.g. <a href="#BM_(C%5Bp%5C-%5D%3FG%20island%7CC%5Bp%5C-%5D%3FG%20site)%2Fi">CG island</a> vs non-<a href="#BM_(C%5Bp%5C-%5D%3FG%20island%7CC%5Bp%5C-%5D%3FG%20site)%2Fi">CG island</a>). A <a href="#BM_(sequence)%2Fi">sequence</a> of <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transitions in an <a href="#BM_(HMM)%2F">HMM</a> is commonly referred to as a <a href="#BM_(hidden%20path)%2Fi">hidden path</a>.</p>
 <p>The four parameters discussed above are often visualized using a directed graph, called a <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a>. A <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> treats ...</p>
 <ul>
 <li><a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s as nodes with a solid border.</li>
@@ -24546,7 +24546,7 @@ state_emissions: [[B,z], [A,z], [A,z], [A,y], [A,x], [A,y], [A,y], [A,z], [A,z],
 <li>each state transition.</li>
 <li>each symbol emission in each <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>.</li>
 </ul>
-<p>The probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destionation's emission). A chain of such transition-emission probabilities is their individual probabilities multiplied together.</p>
+<p>The probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destionation's emission). The probability of a chain of such transition-emission is their individual probabilities multiplied together.</p>
 <p><a href="ch10_code/src/hmm/StateTransitionFollowedBySymbolEmissionChainProbability.py">ch10_code/src/hmm/StateTransitionFollowedBySymbolEmissionChainProbability.py</a> (lines 17 to 27):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">state_transition_followed_by_symbol_emission_chain_probability</span>(<span class="hljs-params">
         hmm: Graph[N, ND, E, ED],
@@ -24578,23 +24578,119 @@ transition_to_symbol_pairs: [[[SOURCE,B],z], [[B,A],z], [[A,A],z], [[A,A],y], [[
 <p>Probability of traveling through and emitting [(('SOURCE', 'B'), 'z'), (('B', 'A'), 'z'), (('A', 'A'), 'z'), (('A', 'A'), 'y'), (('A', 'A'), 'x'), (('A', 'A'), 'y'), (('A', 'A'), 'y'), (('A', 'A'), 'z'), (('A', 'A'), 'z'), (('A', 'A'), 'x')] is 1.908418837511679e-10</p>
 </div>
 <p></p>
-<a name="H_Viterbi%20Max%20Hidden%20Path"></a><h3>Viterbi Max Hidden Path</h3>
-<p><a name="BM_(Algorithms%5C%2FSequence%20Region%20HMM%2FViterbi%20Max%20Hidden%20Path)_TOPIC%2F"></a><strong></strong></p>
+<a name="H_Viterbi%20Most%20Probable%20Hidden%20Path"></a><h3>Viterbi Most Probable Hidden Path</h3>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Region%20HMM%2FViterbi%20Most%20Probable%20Hidden%20Path)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Algorithms%5C%2FSequence%20Region%20HMM%2FChained%20Transition-Emission%20Probability)_TOPIC%2F">Algorithms/Sequence Region HMM/Chained Transition-Emission Probability</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path%2FBacktrack%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>:</p>
-<p><strong>WHY</strong>:</p>
+<p><strong>WHAT</strong>: The <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi algorithm</a> determines the most likely <a href="#BM_(hidden%20path)%2Fi">hidden path</a> an <a href="#BM_(HMM)%2F">HMM</a> went through to produce a <a href="#BM_(sequence)%2Fi">sequence</a> of emitted symbols. For example, consider the <a href="#BM_(HMM)%2F">HMM</a> represented by the following <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> and the emitted <a href="#BM_(sequence)%2Fi">sequence</a> [z, z, x, x, y]. The algorithm will determine the most likely set of <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transitions (<a href="#BM_(hidden%20path)%2Fi">hidden path</a>) that resulted in that emitted <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p><img src="svgbob_3a4fceb285c961d45b4ed3d400f4b219a20701c7.svg" alt="Kroki diagram output"></p>
+<p><strong>WHY</strong>: An <a href="#BM_(HMM)%2F">HMM</a>'s <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> isn't observable (hence the word hidden), meaning that it's impossible to know the <a href="#BM_(hidden%20path)%2Fi">hidden path</a> taken to emit a <a href="#BM_(sequence)%2Fi">sequence</a> of symbols. The next best alternative is the <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi algorithm</a>, which provides the most likely <a href="#BM_(hidden%20path)%2Fi">hidden path</a> to produce a <a href="#BM_(sequence)%2Fi">sequence</a> of emitted symbols.</p>
 <p><strong>ALGORITHM</strong>:</p>
-<a name="H_Viterbi%20Max%20Emissions"></a><h3>Viterbi Max Emissions</h3>
-<p><a name="BM_(Algorithms%5C%2FSequence%20Region%20HMM%2FViterbi%20Max%20Max%20Emission)_TOPIC%2F"></a><strong></strong></p>
+<p>The <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi algorithm</a> requires a <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a>. A <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a> is essentially an <a href="#BM_(HMM)%2F">HMM</a> that's been flattened out for a specific emitted <a href="#BM_(sequence)%2Fi">sequence</a> (no cycles). Given the  <a href="#BM_(HMM)%2F">HMM</a> and emitted <a href="#BM_(sequence)%2Fi">sequence</a> example above, its <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a> is structured as follows.</p>
+<p><img src="svgbob_c0ebb703c7e4e6d9d3f6f202fc3a351ac1d0a5f2.svg" alt="Kroki diagram output"></p>
+<p>A <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a> is structured as a grid of nodes where ...</p>
+<ul>
+<li>each emitted symbol in the emitted <a href="#BM_(sequence)%2Fi">sequence</a> is a column.</li>
+<li>each <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> in the <a href="#BM_(HMM)%2F">HMM</a> is a row.</li>
+</ul>
+<p>In addtion, there's a "SOURCE" node just before the grid and a "SINK" node just after the grid. Each node connects to nodes immediately in front of it (left-to-right) assuming that the <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transition it represents is allowed by the <a href="#BM_(HMM)%2F">HMM</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Not all <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s can transition to every other <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>. Some transitions may be forbidden. In the example, there are no forbidden transitions.</p>
+</div>
+<p>Each edge weight in the <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a> is the probability that the symbol at the destination column was emitted (e.g. x) after the <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transition represented by the edge occured (e.g. A→A): Pr(source-to-destination transition) * Pr(symbol emitted from destination). For example, in the <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> above, Pr(A→B) is 0.623 and Pr(B emitting x) is 0.225, so Pr(x|A→B) = 0.623 * 0.225 = 0.140175.</p>
+<p><img src="svgbob_20ffa4d5b0f20b1b40a720b9d69546ce1bb53d8f.svg" alt="Kroki diagram output"></p>
+<p>The one exception is edge weight to the "SINK" node. At the end of the <a href="#BM_(sequence)%2Fi">sequence</a>, there's nowhere to go but to the "SINK" node, and as such the probability of edges to the "SINK" node must be 1.0.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>x</th>
+<th>y</th>
+<th>z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A→A</td>
+<td>0.377 * 0.176 = 0.066352</td>
+<td>0.377 * 0.596 = 0.224692</td>
+<td>0.377 * 0.228 = 0.085956</td>
+</tr>
+<tr>
+<td>A→B</td>
+<td>0.623 * 0.225 = 0.140175</td>
+<td>0.623 * 0.572 = 0.356356</td>
+<td>0.623 * 0.203 = 0.126469</td>
+</tr>
+<tr>
+<td>B→A</td>
+<td>0.26  * 0.176 = 0.04576</td>
+<td>0.26  * 0.596 = 0.15496</td>
+<td>0.26  * 0.228 = 0.05928</td>
+</tr>
+<tr>
+<td>B→B</td>
+<td>0.74  * 0.225 = 0.1665</td>
+<td>0.74  * 0.572 = 0.42328</td>
+<td>0.74  * 0.203 = 0.15022</td>
+</tr>
+<tr>
+<td>SOURCE→A</td>
+<td>0.5   * 0.176 = 0.088</td>
+<td>0.5   * 0.596 = 0.298</td>
+<td>0.5   * 0.228 = 0.114</td>
+</tr>
+<tr>
+<td>SOURCE→B</td>
+<td>0.5   * 0.225 = 0.1125</td>
+<td>0.5   * 0.572 = 0.286</td>
+<td>0.5   * 0.203 = 0.1015</td>
+</tr>
+<tr>
+<td>A→SINK</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>B→SINK</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+<p>The <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a> with edge weights is as follows.</p>
+<p><img src="svgbob_b5a912358bbd4dabd8d9695963971da7064577d6.svg" alt="Kroki diagram output"></p>
+<p>In a <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a>, each path from "SOURCE" to "SINK" corresponds to a <a href="#BM_(hidden%20path)%2Fi">hidden path</a> in the corresponding <a href="#BM_(HMM)%2F">HMM</a>. The goal is to find the path with the maximum product weight: The path with the maximum product weight is the most probable <a href="#BM_(hidden%20path)%2Fi">hidden path</a> for the emitted <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Why? Recall from <a href="#BM_(Algorithms%5C%2FSequence%20Region%20HMM%2FChained%20Transition-Emission%20Probability)_TOPIC%2F">Algorithms/Sequence Region HMM/Chained Transition-Emission Probability</a>: The probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destionation's emission). The probability of a chain of such transition-emission is their individual probabilities multiplied together.</p>
+</div>
+<p>The algorithm for determining the path with the maximum product weight is to first apply the logarithm function to each edge weight, then apply the <a href="#BM_(dynamic%20programming%20algorithm%7Cdynamic%20programming)%2Fi">dynamic programming algorithm</a> that finds the path with the maximum sum.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>See <a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path%2FBacktrack%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm</a> for the algorithm to find the path with the maximum sum. Why does applying logarithms mean that you can now use sum instead? I'm not sure what the math here is.</p>
+</div>
+<p>TODO: add code here</p>
+<p>TODO: add code here</p>
+<p>TODO: add code here</p>
+<p>TODO: add code here</p>
+<p>TODO: add code here</p>
+<p>TODO: add code here</p>
+<p>TODO: add code here</p>
+<a name="H_Viterbi%20Most%20Probable%20Symbol%20Emissions"></a><h3>Viterbi Most Probable Symbol Emissions</h3>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Region%20HMM%2FViterbi%20Most%20Probable%20Symbol%20Emissions)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Algorithms%5C%2FSequence%20Region%20HMM%2FChained%20Transition-Emission%20Probability)_TOPIC%2F">Algorithms/Sequence Region HMM/Chained Transition-Emission Probability</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Region%20HMM%2FViterbi%20Most%20Probable%20Hidden%20Path)_TOPIC%2F">Algorithms/Sequence Region HMM/Viterbi Most Probable Hidden Path</a></li>
 </ul>
 </div>
 <p><strong>WHAT</strong>:</p>
@@ -30487,106 +30583,16 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <p><img src="svgbob_e88e3a03d9f7e528be1d1c0c9f39283163b74133.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
-<p><a name="BM_(hidden%20path)%2Fi"></a><strong>hidden path</strong> - A <a href="#BM_(sequence)%2Fi">sequence</a> of <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s that a <a href="#BM_(HMM)%2F">HMM</a> passes through. For example, in the <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> below, one possible <a href="#BM_(hidden%20path)%2Fi">hidden path</a> could be as follows.</p>
-<p><img src="svgbob_d392287d91f234aec32c63fbe448cfa53d88f905.svg" alt="Kroki diagram output"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-<th>0</th>
-<th></th>
-<th>1</th>
-<th></th>
-<th>2</th>
-<th></th>
-<th>3</th>
-<th></th>
-<th>4</th>
-<th></th>
-<th>5</th>
-<th></th>
-<th>6</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>emitted symbols (X)</td>
-<td></td>
-<td>foul</td>
-<td></td>
-<td>hit</td>
-<td></td>
-<td>hit</td>
-<td></td>
-<td>miss</td>
-<td></td>
-<td>hit</td>
-<td></td>
-<td>hit</td>
-<td></td>
-<td>hit</td>
-</tr>
-<tr>
-<td><a href="#BM_(hidden%20path)%2Fi">hidden path</a>     (P)</td>
-<td></td>
-<td>fouler</td>
-<td></td>
-<td>hitter</td>
-<td></td>
-<td>hitter</td>
-<td></td>
-<td>hitter</td>
-<td></td>
-<td>hitter</td>
-<td></td>
-<td>hitter</td>
-<td></td>
-<td>hitter</td>
-</tr>
-<tr>
-<td>Pr(Pi→Pi+1)</td>
-<td>0.5</td>
-<td></td>
-<td>0.1</td>
-<td></td>
-<td>0.9</td>
-<td></td>
-<td>0.9</td>
-<td></td>
-<td>0.9</td>
-<td></td>
-<td>0.9</td>
-<td></td>
-<td>0.9</td>
-<td></td>
-</tr>
-<tr>
-<td>Pr(Xi|Pi)</td>
-<td></td>
-<td>0.4</td>
-<td></td>
-<td>0.75</td>
-<td></td>
-<td>0.75</td>
-<td></td>
-<td>0.1</td>
-<td></td>
-<td>0.75</td>
-<td></td>
-<td>0.75</td>
-<td></td>
-<td>0.75</td>
-</tr>
-</tbody>
-</table>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<ul>
-<li>Pr(Pi→Pi+1) denotes the probability of transitioning from one <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> to the next. For example, the transition between 0 and 1 is Pr(fouler→hitter), which is 0.1. At the beginning, even before 0, the probability is set to 0.5 because there's a 50/50 chance of starting off with either hitter or fouler.</li>
-<li>Pr(Xi|Pi) denotes the <a href="#BM_(conditional%20probability%7Cconditional%20probabilities)%2Fi">conditional probability</a> that the symbol will be emitted given the current <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>. For example, at 0, the probability that foul is emitted given the <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> is set to fouler is 0.4.</li>
-</ul>
-</div>
+<p><a name="BM_(hidden%20path)%2Fi"></a><strong>hidden path</strong> - A <a href="#BM_(sequence)%2Fi">sequence</a> of <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transitions that a <a href="#BM_(HMM)%2F">HMM</a> passes through. For example, in the <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> below, one possible <a href="#BM_(hidden%20path)%2Fi">hidden path</a> could be as follows:</p>
+<ol>
+<li>SOURCE → fouler bat</li>
+<li>fouler bat → hitter bat</li>
+<li>hitter bat → hitter bat</li>
+<li>hitter bat → hitter bat</li>
+<li>hitter bat → hitter bat</li>
+<li>hitter bat → hitter bat</li>
+</ol>
+<p><img src="svgbob_e88e3a03d9f7e528be1d1c0c9f39283163b74133.svg" alt="Kroki diagram output"></p>
 </li>
 <li>
 <p><a name="BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi"></a><strong>Viterbi graph</strong> - A directed graph representing all possible <a href="#BM_(HMM)%2F">HMM</a> <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transitions that result in a <a href="#BM_(sequence)%2Fi">sequence</a> of emitted symbol. Given an emitted <a href="#BM_(sequence)%2Fi">sequence</a>, a <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a> lays out nodes in a grid, where each ...</p>
