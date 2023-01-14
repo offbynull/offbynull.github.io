@@ -139,6 +139,12 @@ class Graph(Generic[N, ND, E, ED]):
     def get_leaf_nodes(self: Graph) -> Iterator[N]:
         return (n for n in self.get_nodes() if self.get_out_degree(n) == 0)
 
+    def get_leaf_node(self: Graph) -> N:
+        leaves = list(self.get_leaf_nodes())
+        if len(leaves) != 1:
+            raise ValueError(f'Exactly 1 leaf node required: {leaves}')
+        return leaves[0]
+
     def get_nodes(self: Graph) -> Iterator[N]:
         return iter(self._node_outbound)
 

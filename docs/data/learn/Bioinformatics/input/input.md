@@ -16821,12 +16821,7 @@ transition_to_symbol_pairs: [[[SOURCE,B],z], [[B,A],z], [[A,A],z], [[A,A],y], [[
 
 `{bm} /(Algorithms\/Sequence Region HMM\/Viterbi Most Probable Hidden Path)_TOPIC/`
 
-```{prereq}
-Algorithms/Sequence Region HMM/Chained Transition-Emission Probability_TOPIC
-Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
-```
-
-**WHAT**: The Viterbi algorithm determines the most likely hidden path an HMM went through to produce a sequence of emitted symbols. For example, consider the HMM represented by the following HMM diagram and the emitted sequence [z, z, x, x, y]. The algorithm will determine the most likely set of hidden state transitions (hidden path) that resulted in that emitted sequence.
+**WHAT**: The Viterbi algorithm determines the most likely hidden path within an HMM to produce a sequence of emitted symbols. For example, consider the HMM represented by the following HMM diagram and the emitted sequence [z, z, x, x, y]. The algorithm will determine the most likely set of hidden state transitions (hidden path) that resulted in that emitted sequence.
 
 ```{svgbob}
                    +--------+   
@@ -16857,11 +16852,51 @@ Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
                     +- - - -+               
 ```
 
-**WHY**: An HMM's hidden state isn't observable (hence the word hidden), meaning that it's impossible to know the hidden path taken to emit a sequence of symbols. The next best alternative is the Viterbi algorithm, which provides the most likely hidden path to produce a sequence of emitted symbols.
+**WHY**: Hidden states aren't observable (hence the word hidden) but emitted symbols are. That means that, although it's possible to see the symbols being emitted, it's impossible to know the hidden path taken to emit that sequence of symbols. The Viterbi algorithm provides the most likely hidden path, based on probabilities, to produce a sequence of emitted symbols.
+
+#### Standard Algorithm
+
+`{bm} /(Algorithms\/Sequence Region HMM\/Viterbi Most Probable Hidden Path\/Standard Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Region HMM/Chained Transition-Emission Probability_TOPIC
+Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
+```
 
 **ALGORITHM**:
 
-The Viterbi algorithm requires a Viterbi graph. A Viterbi graph is essentially an HMM that's been flattened out for a specific emitted sequence (no cycles). Given the  HMM and emitted sequence example above, its Viterbi graph is structured as follows.
+The Viterbi algorithm requires a Viterbi graph. A Viterbi graph is essentially an HMM that's been exploded out to represent all possible hidden state transitions for an emitted sequence. For example, consider the HMM diagram below.
+
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+  0.5 |            +--------+           | 0.5
+      |                                 |
+      |   .-------------------------.   |  
+      v   | .---.    0.623          v   v
++---------+-+-+ |               +-------------+
+|     "A"     | |               |     "B"     |
++--+-+-+------+ |0.377          +---+--+-+-+--+
+   : : :  ^ ^   |                   |  : : : 
+   : : :  | |   |                   |  : : : 
+   : : :  | '---'     1.0           |  : : : 
+   : : :  '-------------------------'  : : : 
+   : : :                               : : : 
+   : : :                               : : : 
+   : : :     0.176  +- - - -+  0.225   : : : 
+   : : '- - - - - ->:   x   :<- - - - -' : : 
+   : :              +- - - -+            : : 
+   : :                                   : :
+   : :       0.596  +- - - -+  0.572     : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :         0.228  +- - - -+  0.203       :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+               
+```
+
+Given the above HMM and emitted sequence [z, z, x, x, y], its Viterbi graph is structured as follows.
 
 ```{svgbob}
                    z                 z                 x                 x                 y
@@ -16875,7 +16910,7 @@ The Viterbi algorithm requires a Viterbi graph. A Viterbi graph is essentially a
 +--------+ |            / \               / \               / \               / \                  |  +------+
            |     +---+ /   \       +---+ /   \       +---+ /   \       +---+ /   \       +---+     |
            '---->| B +'     '----->| B +'     '----->| B +'     '----->| B +'     '----->| B +-----'
-                 |   +------------>|   +------------>|   +------------>|   +------------>|   | 
+                 |   |             |   |             |   |             |   |             |   | 
                  +---+             +---+             +---+             +---+             +---+
 ```
 
@@ -16884,11 +16919,7 @@ A Viterbi graph is structured as a grid of nodes where ...
  * each emitted symbol in the emitted sequence is a column.
  * each hidden state in the HMM is a row.
  
-In addtion, there's a "SOURCE" node just before the grid and a "SINK" node just after the grid. Each node connects to nodes immediately in front of it (left-to-right) assuming that the hidden state transition it represents is allowed by the HMM.
-
-```{note}
-Not all hidden states can transition to every other hidden state. Some transitions may be forbidden. In the example, there are no forbidden transitions.
-```
+In addition, there's a SOURCE node just before the grid and a SINK node just after the grid. Each node connects to nodes immediately in front of it (left-to-right) assuming that the hidden state transition that edge represents is allowed by the HMM. In the example above, the Viterbi graph doesn't connect "B" to "B" because "B" is forbidden to transition to itself in the HMM.
 
 Each edge weight in the Viterbi graph is the probability that the symbol at the destination column was emitted (e.g. x) after the hidden state transition represented by the edge occured (e.g. A→A): Pr(source-to-destination transition) * Pr(symbol emitted from destination). For example, in the HMM diagram above, Pr(A→B) is 0.623 and Pr(B emitting x) is 0.225, so Pr(x|A→B) = 0.623 * 0.225 = 0.140175.
 
@@ -16908,20 +16939,19 @@ Each edge weight in the Viterbi graph is the probability that the symbol at the 
                   +---+
 ```
 
-The one exception is edge weight to the "SINK" node. At the end of the sequence, there's nowhere to go but to the "SINK" node, and as such the probability of edges to the "SINK" node must be 1.0.
+The one exception is edge weight to the SINK node. At the end of the sequence, there's nowhere to go but to the SINK node, and as such the probability of edges to the SINK node must be 1.0.
 
 |          |             x            |             y            |             z            |
 |----------|--------------------------|--------------------------|--------------------------|
 |      A→A | 0.377 * 0.176 = 0.066352 | 0.377 * 0.596 = 0.224692 | 0.377 * 0.228 = 0.085956 |
 |      A→B | 0.623 * 0.225 = 0.140175 | 0.623 * 0.572 = 0.356356 | 0.623 * 0.203 = 0.126469 |
-|      B→A | 0.26  * 0.176 = 0.04576  | 0.26  * 0.596 = 0.15496  | 0.26  * 0.228 = 0.05928  |
-|      B→B | 0.74  * 0.225 = 0.1665   | 0.74  * 0.572 = 0.42328  | 0.74  * 0.203 = 0.15022  |
+|      B→A | 1.0   * 0.176 = 0.176    | 1.0   * 0.596 = 0.596    | 1.0   * 0.228 = 0.228    |
 | SOURCE→A | 0.5   * 0.176 = 0.088    | 0.5   * 0.596 = 0.298    | 0.5   * 0.228 = 0.114    |
 | SOURCE→B | 0.5   * 0.225 = 0.1125   | 0.5   * 0.572 = 0.286    | 0.5   * 0.203 = 0.1015   |
 |   A→SINK | 1.0                      | 1.0                      | 1.0                      |
 |   B→SINK | 1.0                      | 1.0                      | 1.0                      |
 
-The Viterbi graph with edge weights is as follows.
+The Viterbi graph above with edge weights is as follows.
 
 ```{svgbob}
 * "Weights have been rounded for brevity."
@@ -16931,14 +16961,35 @@ The Viterbi graph with edge weights is as follows.
                  +---+       0.086 +---+       0.066 +---+       0.066 +---+       0.225 +---+
            0.114 | A +------------>| A +------------>| A +------------>| A +------------>| A | 1.0
            .---->|   +.     .----->|   +.     .----->|   +.     .----->|   +.     .----->|   +-----. 
-           |     +---+ \   / 0.059 +---+ \   / 0.046 +---+ \   / 0.046 +---+ \   / 0.155 +---+     | 
+           |     +---+ \   / 0.228 +---+ \   / 0.176 +---+ \   / 0.176 +---+ \   / 0.596 +---+     | 
 +--------+ |            \ /               \ /               \ /               \ /                  |  +------+
 | SOURCE +-+             X                 X                 X                 X                   +->| SINK |
 +--------+ |            / \               / \               / \               / \                  |  +------+
            |     +---+ /   \ 0.126 +---+ /   \ 0.140 +---+ /   \ 0.140 +---+ /   \ 0.356 +---+     |
            '---->| B +'     '----->| B +'     '----->| B +'     '----->| B +'     '----->| B +-----'
-           0.102 |   +------------>|   +------------>|   +------------>|   +------------>|   | 1.0
-                 +---+       0.150 +---+       0.167 +---+       0.167 +---+       0.423 +---+
+           0.102 |   |             |   |             |   |             |   |             |   | 1.0
+                 +---+             +---+             +---+             +---+             +---+
+```
+
+```{output}
+ch10_code/src/hmm/ViterbiMostProbableHiddenPath_Standard.py
+python
+# MARKDOWN_GENERATE_VITERBI\s*\n([\s\S]+)\n\s*# MARKDOWN_GENERATE_VITERBI\s*[\n$]
+```
+
+```{ch10}
+hmm.ViterbiMostProbableHiddenPath_Standard main_generate_viterbi_structure
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+source_state: SOURCE
+sink_state: SINK  # Doesn't have to exist in HMM, but must be unique.
+emissions: [z,z,x,x,y]
 ```
 
 In a Viterbi graph, each path from "SOURCE" to "SINK" corresponds to a hidden path in the corresponding HMM. The goal is to find the path with the maximum product weight: The path with the maximum product weight is the most probable hidden path for the emitted sequence.
@@ -16953,7 +17004,98 @@ The algorithm for determining the path with the maximum product weight is to fir
 See Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC for the algorithm to find the path with the maximum sum. Why does applying logarithms mean that you can now use sum instead? I'm not sure what the math here is.
 ```
 
-TODO: add code here
+```{output}
+ch10_code/src/hmm/ViterbiMostProbableHiddenPath_Standard.py
+python
+# MARKDOWN_MAX_PRODUCT_PATH_IN_VITERBI\s*\n([\s\S]+)\n\s*# MARKDOWN_MAX_PRODUCT_PATH_IN_VITERBI\s*[\n$]
+```
+
+```{ch10}
+hmm.ViterbiMostProbableHiddenPath_Standard main_most_probable_hidden_path
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+source_state: SOURCE
+sink_state: SINK  # Doesn't have to exist in HMM, but must be unique.
+emissions: [z,z,x,x,y]
+```
+
+```{note}
+Notice what's happening here. This can be made very memory efficient:
+
+ 1. The calculation is being done front-to-back, so once a column of nodes in the Viterbi have been processed, it doesn't need to be kept around anymore.
+ 2. You technically don't even need to keep a graph structure in memory. You can just keep the emitted symbols sequence and a pre-calculated set of probabilities.
+ 3. You can apply the divide-and-conquer algorithm as discussed in Algorithms/Sequence Alignment/Global Alignment/Divide-and-Conquer Algorithm_TOPIC - it's the same type of grid-based graph.
+```
+
+#### Pseudocounts Algorithm
+
+`{bm} /(Algorithms\/Sequence Region HMM\/Viterbi Most Probable Hidden Path\/Psuedocounts Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Region HMM/Viterbi Most Probable Hidden Path/Standard Algorithm_TOPIC
+Algorithms/Motif/K-mer Match Probability_TOPIC
+```
+
+```{note}
+The motif prerequist covers the idea of psuedocounts, which is used here again as well.
+```
+
+The weights of an HMM are typically assigned using past observations. For example, an observer could have full observability into a machine, watching it transition between hidden states and emit symbols. The weights of the HMM for that machine can then assigned based on those observations. For example, if it was observed that ...
+
+ * symbol x was emited 17.6% of the time after transitioning to hidden state A, Pr(x|A) = 0.176.
+ * symbol x was emited 0.0%  of the time after transitioning to hidden state B, Pr(y|B) = 0.0.
+ * symbol y was emited 59.6% of the time after transitioning to hidden state A, Pr(y|A) = 0.596.
+ * symbol y was emited 41.5% of the time after transitioning to hidden state B, Pr(y|B) = 0.415.
+ * symbol z was emited 22.8% of the time after transitioning to hidden state A, Pr(z|A) = 0.228.
+ * symbol z was emited 58.5% of the time after transitioning to hidden state B, Pr(z|B) = 0.585.
+ * A transitioned to A 37.7% of the time, Pr(A→A) = 0.377.
+ * A transitioned to B 62.3% of the time, Pr(A→B) = 0.623.
+ * B transitioned to A 0.0%  of the time, Pr(B→A) = 0.0.
+ * B transitioned to B 0.0%  of the time, Pr(B→B) = 0.0.
+
+If it's known that a hidden state transition or symbol emission is possible (not forbidden) but that transition / emission hasn't been encountered in past observations, its probability is set to 0. In the example above, Pr(B→A) and Pr(B→B) are both 0 because neither has been encountered in past observations. Similarly, Pr(y|B) is 0 because it hasn't been encountered in past observations.
+
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+  0.5 |            +--------+           | 0.5
+      |                                 |
+      |   .-------------------------.   |  
+      v   | .---.    0.623    .---. v   v
++---------+-+-+ |             | +-+-----------+
+|     "A"     | |             | |     "B"     |
++--+-+-+------+ |0.377    0.0 | +---+--+-+-+--+
+   : : :  ^ ^   |             |   ^ |  : : : 
+   : : :  | |   |             '---' |  : : : 
+   : : :  | '---'     0.0           |  : : : 
+   : : :  '-------------------------'  : : : 
+   : : :                               : : : 
+   : : :                               : : : 
+   : : :     0.176  +- - - -+  0.0     : : : 
+   : : '- - - - - ->:   x   :<- - - - -' : : 
+   : :              +- - - -+            : : 
+   : :                                   : :
+   : :       0.596  +- - - -+  0.415     : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :         0.228  +- - - -+  0.585       :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+               
+```
+
+Keeping such weights at 0 is bad practice because, when using the Viterbi algorithm, those paths will be removed from consideration. The Viterbi algorithm determines the most probable hidden path by computing the path with the maximum product weight. When computing the maximum product weight, anything multiplied by 0 has a product of 0. A probability of 0 means it has a 0% chance of occuring, as in it will never occur.
+
+The correct action to take in this scenario is to add pseudocounts to HMM weights: Add a very small value to each weight, then normalize each hidden state's  ...
+
+ * emission such that all of its outgoing transitions sum to 1.0.
+ * emission such that all of its emissions sum to 1.0.
 
 TODO: add code here
 
@@ -16966,6 +17108,30 @@ TODO: add code here
 TODO: add code here
 
 TODO: add code here
+
+TODO: add code here
+
+#### Non-emitting States Algorithm
+
+`{bm} /(Algorithms\/Sequence Region HMM\/Viterbi Most Probable Hidden Path\/Non-emitting States Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Region HMM/Viterbi Most Probable Hidden Path/Standard Algorithm_TOPIC
+```
+
+**ALGORITHM**:
+
+In a standard HMM, it's assumed that each hidden state transition will emit a symbol. However, certain types of HMMs may have hidden state transitions that don't emit a symbol.
+
+TODO: continue here
+
+TODO: continue here
+
+TODO: continue here
+
+TODO: continue here
+
+TODO: continue here
 
 ### Viterbi Most Probable Symbol Emissions
 

@@ -55,6 +55,8 @@ def to_hmm_graph(
 ) -> Graph[str, dict[str, float], tuple[str, str], float]:
     hmm = Graph()
     for from_state in transition_probabilities:
+        if len(transition_probabilities[from_state]) > 0:
+            assert sum(prob for prob in transition_probabilities[from_state].values()) == 1.0
         if not hmm.has_node(from_state):
             hmm.insert_node(from_state)
         for to_state, weight in transition_probabilities[from_state].items():
@@ -67,11 +69,14 @@ def to_hmm_graph(
                 weight
             )
     for state in emission_probabilities:
+        if len(emission_probabilities[state]) > 0:
+            assert sum(prob for prob in emission_probabilities[state].values()) == 1.0
         weights = emission_probabilities[state]
         if not hmm.has_node(state):
             hmm.insert_node(state)
         hmm.update_node_data(state, weights)
     return hmm
+
 
 
 def main():
