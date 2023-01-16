@@ -559,23 +559,6 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
 
 # Terminology
 
- * `{bm} place value system/(place value system|place-value system|place value notation|place-value notation|positional numeral system)/i` - A way to represent a number. A number represented using the place value system is made up of a string of symbols separated by a dot, where each (index, symbol) combination in the string represents a value.
-
-   The symbols used to represent a number are called `{bm} digit`s. All digits to the...
-
-    * left of the dot represents entire objects, called the whole part.
-    * right of the dot represents a partial object, called the fractional part.
-
-   These wholes and fractional are combined to represent the final value for the number. For example, the number 43.5 represents...
-
-   ```
-   ●●●●●●●●●●
-   ●●●●●●●●●●
-   ●●●●●●●●●●
-   ●●●●●●●●●●  ●●●     ◑
-       4        3   .  5
-   ```
-
  * `{bm} fraction/(fraction|numerator|denominator)/i` - A way of representing numbers with equally-sized partial objects. The syntax for a fraction is `{kt} \frac{numerator}{denominator}`, where the...
 
    * numerator (top) is an integer that represents the number of parts available.
@@ -899,22 +882,6 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
 
    If a number (other than 0) is positive, the convention is to leave the + sign is typically left out.
 
- * `{bm} decimal number/(decimal number|decimal point)/i` - Another way of representing a mixed number where the denominator of the fraction is 1 followed by 0s. For example, ...
-
-   * `{kt} 2 \frac{0}{1}` ↔ 2.0
-   * `{kt} 2 \frac{9}{10}` ↔ 2.9
-   * `{kt} 2 \frac{9}{100}` ↔ 2.09
-   * `{kt} 2 \frac{9}{1000}` ↔ 2.009
-
-   The period placed in between the whole and the fraction is called a decimal point. The number to the ...
-
-   * left of the decimal point is referred to as the wholes.
-   * right of the decimal point is referred to as the fractional.
-
-   A mixed number can be converted to a decimal number so long as it has a suitable denominator: 1 followed by zero or more 0s. For example, `{kt} 2 \frac{1}{10}` has a suitable denominator but `{kt} 2 \frac{1}{2}` doesn't.
-
-   If the denominator isn't suitable, the mixed number may still be convertible so long as an equivalent fraction exists that does have a suitable denominator. In the previous example, `{kt} 2 \frac {5}{10}` is an equivalent fraction to `{kt} 2 \frac{1}{2}`.
-
  * `{bm} average` / `{bm} mean/(mean)_ST/i` - The "typical" number in a list of numbers. Numbers in the list are summed together, then the result is divided by the count of numbers in that list. For example, to average of [1, 2, 3] is 2: 1+2+3 = 6, then 6 / 3 = 2.
     
    `{bm-error} Wrap in !! or apply suffix _ST/(mean)/i`
@@ -1011,6 +978,45 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
 
    The name percent comes from combining the words "per" and "cent", where "cent" is an obsolete word for one hundred. Percent effectively !!means!! per 100. For example, 35 percent translates to 35 per 100.
 
+ * `{bm} whole number` - Numbers that begin at 0 and increment by 1. Whole numbers only consist of wholes (no non-complete parts of wholes): For example, 0, 1, 2, 3, ... are whole numbers while 2.2 is not.
+ 
+ * `{bm} counting number/(natural number|counting number|cardinal number)/i` - Numbers that begin at 1 and increment by 1. For example, 0, 1, 2, 3, ... are whole numbers while 0 and 2.2 are not.
+  
+    Counting numbers start where you start counting / where set of something has at least one element. For example, if you're counting apples, you start counting at 1. There needs to be at least 1 apple to start.
+ 
+ * `{bm} integer number/(integer number|integer)/i` - 2 sets of counting numbers separated by 0, where everything to the...
+ 
+   * right of 0 is called a positive number (signified by a + prefix)
+   * left of 0 is called a negative number (signified by a - prefix)
+   
+   ```{svgbob}
+   <--+----+----+----+----+----+----+----+----+-->
+      |    |    |    |    |    |    |    |    | 
+     -4   -3   -2   -1    0   +1   +2   +3   +4
+   ```
+
+ * `{bm} rational number` - A number that can be written as a fraction (ratio) where both the numerator and denominator are integers and the denominator isn't 0 (e.g. `{kt} \frac{5}{0}` is not a rational number). Rational numbers can also be expressed in decimal form. Certain rational numbers, when converted to decimal form, will infinite digits that come after the decimal point but those digits have a repeating pattern to them (e.g. `{kt} \frac{20}{99}=0.20202020...`).
+
+   All counting numbers, whole numbers, and integer numbers are rational numbers. Each can be expressed as a fraction (e.g. `{kt} -8 = \frac{-8}{1}`).
+
+ * `{bm} irrational number` - A number that *cannot* be written as a fraction (ratio). One property of irrational numbers is that, when converted to decimal form, the digits coming after the decimal point continue infinitely but don't have a repeating pattern to them (e.g. `{kt} \pi=3.1415926...`). Contrast that to rational numbers,: When a rational number is converted to decimal form, it may have infinite digits after the decimal point but those digits will have a repeating pattern to them (e.g. `{kt} \frac{20}{99}=0.20202020...`).
+
+ * `{bm} decimal number/(decimal number|decimal point|decimal form)/i` - Another way of representing a mixed number where the denominator of the fraction is 1 followed by 0s. For example, ...
+
+   * `{kt} 2 \frac{0}{1}` ↔ 2.0
+   * `{kt} 2 \frac{9}{10}` ↔ 2.9
+   * `{kt} 2 \frac{9}{100}` ↔ 2.09
+   * `{kt} 2 \frac{9}{1000}` ↔ 2.009
+
+   The period placed in between the whole and the fraction is called a decimal point. The number to the ...
+
+   * left of the decimal point is referred to as the wholes.
+   * right of the decimal point is referred to as the fractional.
+
+   A mixed number can be converted to a decimal number so long as it has a suitable denominator: 1 followed by zero or more 0s. For example, `{kt} 2 \frac{1}{10}` has a suitable denominator but `{kt} 2 \frac{1}{2}` doesn't.
+
+   If the denominator isn't suitable, the mixed number may still be convertible so long as an equivalent fraction exists that does have a suitable denominator. In the previous example, `{kt} 2 \frac {5}{10}` is an equivalent fraction to `{kt} 2 \frac{1}{2}`.
+
  * `{bm} real number` - A decimal number whose fractional part can be arbitrarily small. There's no limit to how small it can get.
 
    Real numbers include counting numbers, whole numbers, integer numbers, rational numbers, and irrational numbers.
@@ -1040,40 +1046,21 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
    +----------------------------------------------------------------------------------+
    ```
 
- * `{bm} whole number` - Numbers that begin at 0 and increment by 1. Whole numbers only consist of wholes (no non-complete parts of wholes): For example, 0, 1, 2, 3, ... are whole numbers while 2.2 is not.
- 
- * `{bm} counting number/(natural number|counting number|cardinal number)/i` - Numbers that begin at 1 and increment by 1. For example, 0, 1, 2, 3, ... are whole numbers while 0 and 2.2 are not.
-  
-    Counting numbers start where you start counting / where set of something has at least one element. For example, if you're counting apples, you start counting at 1. There needs to be at least 1 apple to start.
- 
- * `{bm} integer number/(integer number|integer)/i` - 2 sets of counting numbers separated by 0, where everything to the...
- 
-   * right of 0 is called a positive number (signified by a + prefix)
-   * left of 0 is called a negative number (signified by a - prefix)
-   
-   ```{svgbob}
-   <--+----+----+----+----+----+----+----+----+-->
-      |    |    |    |    |    |    |    |    | 
-     -4   -3   -2   -1    0   +1   +2   +3   +4
-   ```
+ * `{bm} commutative property/(commutative property|commutative)/i` - A commutative operation always produces the same results for a set of operands, regardless of the order in which operands are submitted.
 
- * `{bm} rational number` - 
+   * Addition is commutative (e.g. 5+2=7 and 2+5=7).
+   * Multiplication is commutative (e.g. 5\*2=7 and 2\*5=7).
+   * Subtraction is *not* commutative (e.g. 5-2=3 and 2-5=-3).
+   * Division is *not* commutative (e.g. 6÷3=2 and 3÷6=0.5).
 
- * `{bm} irrational number` - 
-
+ * `{bm} associative property/(associative property|associative)/i` - 
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 
-TODO: add two terms above
+TODO: continue from 7.2 - continue from associative property (above)
 
-TODO: continue from 6.1 - continue from just after definition of percent (above)
+TODO: continue from 7.2 - continue from associative property (above)
 
-TODO: continue from 6.1 - continue from just after definition of percent (above)
+TODO: continue from 7.2 - continue from associative property (above)
 
-TODO: continue from 6.1 - continue from just after definition of percent (above)
-
-
-TODO: ADD DEFINITIONS HERE - real / whole / decimal / etc..
-
-TODO: move basic terminology from pre-algebra
-
+TODO: continue from 7.2 - continue from associative property (above)
