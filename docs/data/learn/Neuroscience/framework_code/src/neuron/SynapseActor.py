@@ -12,5 +12,5 @@ class SynapseActor(Actor):
         while True:
             from_addr, to_addr, msg = ctx.get_incoming_message()
             if msg == 'ACTION_POTENTIAL' and from_addr == self.from_soma or self.to_dendrite_or_soma == to_addr:
-                ctx.add_outgoing_message(self.to_dendrite_or_soma, 'ENERGY_RELEASE')
+                ctx.add_outgoing_message(self.to_dendrite_or_soma, ('INCREASE_ENERGY', 5))
             yield

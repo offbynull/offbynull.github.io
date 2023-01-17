@@ -17094,7 +17094,7 @@ Keeping such weights at 0 is bad practice because, when using the Viterbi algori
 
 The correct action to take in this scenario is to add pseudocounts to HMM weights: Add a very small value to each weight, then normalize each hidden state's  ...
 
- * emission such that all of its outgoing transitions sum to 1.0.
+ * outgoing transition such that all of its outgoing transitions sum to 1.0.
  * emission such that all of its emissions sum to 1.0.
 
 TODO: add code here

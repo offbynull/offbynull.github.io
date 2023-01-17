@@ -46,6 +46,9 @@ class Address:
     def __eq__(self, other: Address) -> bool:
         return self._address_elements == other._address_elements
 
+    def __lt__(self, other: Address) -> bool:
+        return self._address_elements < other._address_elements
+
     def __str__(self) -> str:
         return Address._escape_address(self)
 

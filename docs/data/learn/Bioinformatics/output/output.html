@@ -24847,7 +24847,7 @@ emissions: [z,z,x,x,y]
 <p>Keeping such weights at 0 is bad practice because, when using the <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi algorithm</a>, those paths will be removed from consideration. The <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi algorithm</a> determines the most probable <a href="#BM_(hidden%20path)%2Fi">hidden path</a> by computing the path with the maximum product weight. When computing the maximum product weight, anything multiplied by 0 has a product of 0. A probability of 0 means it has a 0% chance of occuring, as in it will never occur.</p>
 <p>The correct action to take in this scenario is to add <a href="#BM_(pseudocount)%2Fi">pseudocount</a>s to <a href="#BM_(HMM)%2F">HMM</a> weights: Add a very small value to each weight, then normalize each <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>'s  ...</p>
 <ul>
-<li>emission such that all of its outgoing transitions sum to 1.0.</li>
+<li>outgoing transition such that all of its outgoing transitions sum to 1.0.</li>
 <li>emission such that all of its emissions sum to 1.0.</li>
 </ul>
 <p>TODO: add code here</p>

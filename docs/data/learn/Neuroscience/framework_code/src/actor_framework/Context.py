@@ -11,7 +11,7 @@ class Context:
         self._timestamp = None
 
     def _update(self, timestamp: int, in_from_addr: Address, in_to_addr: Address, in_msg: Any):
-        if not self._self_addr.is_prefix_of(in_from_addr):
+        if not self._self_addr.is_prefix_of(in_to_addr):
             raise ValueError()
         self._in_msg = in_from_addr, in_to_addr, in_msg
         self._out_msgs = []
