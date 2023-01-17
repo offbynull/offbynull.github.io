@@ -4,10 +4,15 @@ from actor_framework.Address import Address
 
 
 class Context:
-    def __init__(self, timestamp: int, self_addr: Address, in_from_addr: Address, in_to_addr: Address, in_msg: Any):
-        if not self_addr.is_prefix_of(in_from_addr):
-            raise ValueError()
+    def __init__(self, self_addr: Address):
         self._self_addr = self_addr
+        self._in_msg = None
+        self._out_msgs = None
+        self._timestamp = None
+
+    def _update(self, timestamp: int, in_from_addr: Address, in_to_addr: Address, in_msg: Any):
+        if not self._self_addr.is_prefix_of(in_from_addr):
+            raise ValueError()
         self._in_msg = in_from_addr, in_to_addr, in_msg
         self._out_msgs = []
         self._timestamp = timestamp

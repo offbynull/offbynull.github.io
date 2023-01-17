@@ -8,9 +8,9 @@ class SynapseActor(Actor):
         self.from_soma = from_soma
         self.to_dendrite_or_soma = to_dendrite_or_soma
 
-    def step(self, ctx: Context) -> None:
-        from_addr, to_addr, msg = ctx.get_incoming_message()
-        if from_addr != self.from_soma or self.to_dendrite_or_soma != to_addr:
-            return
-        if msg == 'ACTION_POTENTIAL':
-            ctx.add_outgoing_message(self.to_dendrite_or_soma, 'ENERGY_RELEASE')
+    def step(self, ctx: Context):
+        while True:
+            from_addr, to_addr, msg = ctx.get_incoming_message()
+            if msg == 'ACTION_POTENTIAL' and from_addr == self.from_soma or self.to_dendrite_or_soma == to_addr:
+                ctx.add_outgoing_message(self.to_dendrite_or_soma, 'ENERGY_RELEASE')
+            yield

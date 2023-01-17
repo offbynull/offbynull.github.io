@@ -26,13 +26,16 @@ class World:
             addr = Address.from_string(addr)
         if addr in self.actors:
             raise ValueError()
+        ctx = Context(addr)
         if isinstance(actor, Actor):
-            self.actors[addr] = actor
+            self.actors[addr] = actor.step(ctx), ctx
         else:
             class FakeActor:
                 def step(self, ctx):
-                    actor(ctx)
-            self.actors[addr] = FakeActor()
+                    while True:
+                        actor(ctx)
+                        yield
+            self.actors[addr] = FakeActor().step(ctx), ctx
         if priming_msg is not None:
             duration = self.duration_calculator(addr, addr, priming_msg)
             timestamp = self.timestamp + duration
@@ -46,9 +49,12 @@ class World:
         self.timestamp = timestamp
         if to_addr not in self.actors:
             return
-        ctx = Context(timestamp, from_addr, from_addr, to_addr, msg)
-        actor = self.actors[to_addr]
-        actor.step(ctx)
+        actor, ctx = self.actors[to_addr]
+        ctx._update(timestamp, from_addr, to_addr, msg)
+        try:
+            next(actor)
+        except StopIteration:
+            del self.actors[ctx._self_addr]
         for from_addr, to_addr, msg, duration in ctx._out_msgs:
             if duration is None:
                 duration = self.duration_calculator(from_addr, to_addr, msg)
