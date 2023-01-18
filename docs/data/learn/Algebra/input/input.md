@@ -15,31 +15,7 @@ TODO: continue with openstax elementary algebra, then intermediate algebra, then
 
 ## Prime Factorization
 
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
+`{bm} /(Algorithms\/Prime Factorization)_TOPIC/i`
 
 Every composite number can be written as a product of prime numbers. For example...
 
@@ -130,30 +106,10 @@ The process of breaking down a composite number into a product of primes is call
 
 ## Least Common Multiple
 
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-
+`{bm} /(Algorithms\/Least Common Multiple)_TOPIC/i`
 
 ```{prereq}
-Prime factor
+Algorithms\/Prime Factorization_TOPIC
 ```
 
 The least common multiple is the process of taking 2 numbers and finding the smallest multiple between them. That is, if you listed out their multiples starting from 1, the first match between them would be the least common multiple.
@@ -229,32 +185,10 @@ LeastCommonMultiplePFLauncher
 
 ## Greatest Common Divisor
 
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
-TODO: fix me (add bookmarks for header, convert code)
-
+`{bm} /(Algorithms\/Greatest Common Divisor)_TOPIC/i`
 
 ```{prereq}
-Factor
-Prime factor
+Algorithms\/Prime Factorization_TOPIC
 ```
 
 The greatest common divisor is the process of taking 2 numbers and finding the largest possible divisor between the two of them. In other words, finding the greatest number that evenly divides both numbers.
@@ -601,7 +535,7 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
    0   1   2   3   4   5   6   7   8   9
    ```
 
- * `{bm} addition/(addition|add|sum)/i` - Combining the values of two numbers. For example, combining 3 items and 5 items together results in 7 items...
+ * `{bm} addition/\b(addition|add|sum)/i` - Combining the values of two numbers. For example, combining 3 items and 5 items together results in 7 items...
 
    ```
     [●●●]    [●●●●●]
@@ -910,7 +844,7 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
  
    For example, a bowl of marbles has 6 red marbles and 1 blue marble. Without looking, selecting a blue marble from the bowl has a probability of `{kt} \frac{1}{7}`. The desired outcome is selecting a blue marble (1 marble is blue) divided by the total number of marbles in the bowl (7 marbles total).
 
- * `{bm} ratio` - A comparison of two numbers representing measurements of the same unit (e.g. inches, lbs, US dollars, etc..), written as either a fraction `{kt} \frac{a}{b}` or in the form `{kt} a:b`. For example, in a bag of M&Ms, there are 30 red M&Ms to 20 blue M&Ms, !!meaning!! the ratio of red to blue is `{kt} \frac{30}{20}` or `{kt} 30:20`. The fraction, once simplified, is `{kt} \frac{3}{2}`, !!meaning!! for every 3 red M&Ms there are 2 blue M&Ms.
+ * `{bm} ratio/\b(ratios?)\b/i` - A comparison of two numbers representing measurements of the same unit (e.g. inches, lbs, US dollars, etc..), written as either a fraction `{kt} \frac{a}{b}` or in the form `{kt} a:b`. For example, in a bag of M&Ms, there are 30 red M&Ms to 20 blue M&Ms, !!meaning!! the ratio of red to blue is `{kt} \frac{30}{20}` or `{kt} 30:20`. The fraction, once simplified, is `{kt} \frac{3}{2}`, !!meaning!! for every 3 red M&Ms there are 2 blue M&Ms.
 
  * `{bm} rate` - A comparison of two numbers representing measurements of different units (e.g. inches, lbs, US dollars, etc..), written as a fraction `{kt} \frac{a}{b}`. For example, it costs $100 to fill up 2 Olympic sized swimming pool with water, !!meaning!! that the rate of money to water is `{kt} \frac{100}{2}`. The fraction, once simplified, is `{kt} \frac{50}{1}`, !!meaning!! it costs $50 to fill up each Olympic sized swimming pool.
 
@@ -1046,21 +980,78 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
    +----------------------------------------------------------------------------------+
    ```
 
- * `{bm} commutative property/(commutative property|commutative)/i` - A commutative operation always produces the same results for a set of operands, regardless of the order in which operands are submitted.
+ * `{bm} commutative property/(commutative property|commutative)/i` - An operation that, when given two operands, always produces the same results regardless of the order in which operands are submitted.
 
    * Addition is commutative (e.g. 5+2=7 and 2+5=7).
-   * Multiplication is commutative (e.g. 5\*2=7 and 2\*5=7).
+   * Multiplication is commutative (e.g. 5\*2=10 and 2\*5=10).
    * Subtraction is *not* commutative (e.g. 5-2=3 and 2-5=-3).
    * Division is *not* commutative (e.g. 6÷3=2 and 3÷6=0.5).
 
- * `{bm} associative property/(associative property|associative)/i` - 
+ * `{bm} associative property/(associative property|associative)/i` - An operation that, when chained together multiple times, always produces the same results regardless of which of the order in which those chained operations are executed.
+
+   * Addition is associative (e.g. (5+2)+1=7 and 5+(2+1)=7).
+   * Multiplication is associative (e.g. (5\*2)\*2=20 and 5\*(2\*2)=20).
+   * Subtraction is *not* associative (e.g. (5-2)-2=1 and 5-(2-2)=0).
+   * Division is *not* associative (e.g. (6÷3)÷2=1 and 6÷(3÷2)=4).
+
+ * `{bm} distributive property/(distributive property|distributive|distribute)/i` - A property of multiplication that states, when the other operand is a chain of additions or subtractions, the multiplication can be exploded out into each of the terms in that chain. For example, 3\*(5+2) = 3\*5+3\*2+3\*−1 = 18.
+
+   Similarly, the distributive property makes the reverse possible as well. When a common factor exists between all the terms in a chain of additions or subtractions, that common factor can be pulled out on its own. For example, 15+6 = 3\*5+3\*2 = 3\*(5+2) = 21.
+
+ * `{bm} identity property/(identity property|identity)/i` - A property of an operation that states the conditions for when that operation returns its left operand as its result.
+
+   * Addition identity: Anything added to 0 is itself and vice versa (e.g. 5+0=5 and 0+5=5).
+   * Multiplication identity: Anything multiplied by 1 is itself and vice versa (e.g. 5\*1=5 and 1\*5=5).
+   * Subtraction identity: Anything subtracted by 0 is itself (e.g. 5-0=5).
+   * Division identity: Anything divided by 1 is itself (e.g. 6÷1=6).
+
+   ```{note}
+   Most places just list addition and multiplication. Inferred subtractions and division.
+   ```
+
+ * `{bm} inverse property/(inverse property|inverse)/i` - A property of an operation that states the conditions for when that operation returns its identity as its result.
+
+   * Addition inverse: Anything added to its negative is 0 and vice versa (e.g. 5+-5=0 and -5+5=0).
+   * Multiplication inverse: Anything (other than 0) multiplied by its reciprocal is 1 and vice versa (e.g. `{kt} 5\cdot\frac{1}{5}=1` and `{kt} \frac{1}{5}\cdot5=1`).
+   * Subtraction inverse: Anything subtracted by itself is 0 (e.g. 5-5=0).
+   * Division inverse: Anything (other than 0) divided by itself is 1 (e.g. 6÷6=1).
+
+   ```{note}
+   See [here](http://www.cwladis.com/math101/Lecture5Groups.htm) for formal-ish definition. Most places just list addition and multiplication. Inferred subtractions and division.
+   ```
+
+ * `{bm} BEDMAS/(\bBEDMAS|PEMDAS\b)/` - An acronym that defines the order in which arithmetic operations should be evaluated. Short for:
+ 
+   1. Brackets
+   2. Exponents
+   3. Division and Multiplication
+   4. Addition and Subtraction
+
+   Note the last two items above:
+   
+   * When a chain of divisions and multiplications are encountered, evaluate left-to-right (e.g. 5÷2\*3 should first divide, then multiply the result of the division).
+   * When a chain of additions and subtractions are encountered, evaluate left-to-right (e.g. 5-2+3 should first subtract, then add the result of the subtraction).
+
+ * `{bm} expression` - A set of operations chained together. For example, (5+2)\*3.
+
+ * `{bm} evaluate/(evaluate|evaluation)/i` - To calculate an expression and produce a final numeric result. For example, evaluating (5+2)\*3 results in 21.
+
+ * `{bm} variable` - A placeholder for an unknown number inside an expression. For example, x+3 has the variable x.
+
+ * `{bm} equation` - Two expressions separated by an equal sign, where those two expressions are said to evaluate to the same value. For example, 7+7+7=3\*7. 
+
+   Equations often contain variables. An equation is said to be solved once a set of numbers have been found for its variables such that, when substituted in for those variables, both expressions evaluate to the same number. For example, in x+2=3\*7, both expressions evaluate to 21 when x is set to 19.
+
+ * `{bm} constant` - 
+
+ * `{bm} coefficient` - 
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 
-TODO: continue from 7.2 - continue from associative property (above)
+TODO: define above, write a parser, continue from 9
 
-TODO: continue from 7.2 - continue from associative property (above)
+TODO: define above, write a parser, continue from 9
 
-TODO: continue from 7.2 - continue from associative property (above)
+TODO: define above, write a parser, continue from 9
 
-TODO: continue from 7.2 - continue from associative property (above)
+TODO: define above, write a parser, continue from 9
