@@ -16583,7 +16583,7 @@ An HMM models a machine, such as CG island machine described above, using probab
 
  1. **Hidden states**
  
-    For the machine described above, the hidden states identify whether the machine is emitting a CG island or not. In addition, each HMM comes with a "SOURCE" hidden state and may come with a "SINK" hidden state. Neither of these additional hidden states emit any symbols. Rather, they represent the machine's start and termination states respectively.
+    For the machine described above, the hidden states identify whether the machine is emitting a CG island or not. In addition, each HMM comes with a "SOURCE" hidden state which represents the machine's starting state (will never emit a symbol).
  
     {SOURCE, CG island, non-CG island}
 
@@ -16817,11 +16817,11 @@ emission_probabilities:
 transition_to_symbol_pairs: [[[SOURCE,B],z], [[B,A],z], [[A,A],z], [[A,A],y], [[A,A],x], [[A,A],y], [[A,A],y], [[A,A],z], [[A,A],z], [[A,A],x]]
 ```
 
-### Viterbi Most Probable Hidden Path
+### Most Probable Hidden Path
 
-`{bm} /(Algorithms\/Sequence Region HMM\/Viterbi Most Probable Hidden Path)_TOPIC/`
+`{bm} /(Algorithms\/Sequence Region HMM\/Most Probable Hidden Path)_TOPIC/`
 
-**WHAT**: The Viterbi algorithm determines the most likely hidden path within an HMM to produce a sequence of emitted symbols. For example, consider the HMM represented by the following HMM diagram and the emitted sequence [z, z, x, x, y]. The algorithm will determine the most likely set of hidden state transitions (hidden path) that resulted in that emitted sequence.
+**WHAT**: Find the most likely hidden path within an HMM that for a sequence of emitted symbols. For example, consider the HMM represented by the following HMM diagram and the emitted sequence [z, z, x, x, y]. The algorithm will determine the most likely set of hidden state transitions (hidden path) that resulted in that emitted sequence.
 
 ```{svgbob}
                    +--------+   
@@ -16852,11 +16852,11 @@ transition_to_symbol_pairs: [[[SOURCE,B],z], [[B,A],z], [[A,A],z], [[A,A],y], [[
                     +- - - -+               
 ```
 
-**WHY**: Hidden states aren't observable (hence the word hidden) but emitted symbols are. That means that, although it's possible to see the symbols being emitted, it's impossible to know the hidden path taken to emit that sequence of symbols. The Viterbi algorithm provides the most likely hidden path, based on probabilities, to produce a sequence of emitted symbols.
+**WHY**: Hidden states aren't observable (hence the word hidden) but emitted symbols are. That means that, although it's possible to see the symbols being emitted, it's impossible to know the hidden path taken to emit that sequence of symbols. This algorithm provides the most likely hidden path, based on probabilities, that resulted in a sequence of emitted symbols.
 
-#### Standard Algorithm
+#### Viterbi Algorithm
 
-`{bm} /(Algorithms\/Sequence Region HMM\/Viterbi Most Probable Hidden Path\/Standard Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Sequence Region HMM\/Most Probable Hidden Path\/Viterbi Algorithm)_TOPIC/`
 
 ```{prereq}
 Algorithms/Sequence Region HMM/Chained Transition-Emission Probability_TOPIC
@@ -16941,15 +16941,15 @@ Each edge weight in the Viterbi graph is the probability that the symbol at the 
 
 The one exception is edge weight to the SINK node. At the end of the sequence, there's nowhere to go but to the SINK node, and as such the probability of edges to the SINK node must be 1.0.
 
-|          |             x            |             y            |             z            |
-|----------|--------------------------|--------------------------|--------------------------|
-|      A→A | 0.377 * 0.176 = 0.066352 | 0.377 * 0.596 = 0.224692 | 0.377 * 0.228 = 0.085956 |
-|      A→B | 0.623 * 0.225 = 0.140175 | 0.623 * 0.572 = 0.356356 | 0.623 * 0.203 = 0.126469 |
-|      B→A | 1.0   * 0.176 = 0.176    | 1.0   * 0.596 = 0.596    | 1.0   * 0.228 = 0.228    |
-| SOURCE→A | 0.5   * 0.176 = 0.088    | 0.5   * 0.596 = 0.298    | 0.5   * 0.228 = 0.114    |
-| SOURCE→B | 0.5   * 0.225 = 0.1125   | 0.5   * 0.572 = 0.286    | 0.5   * 0.203 = 0.1015   |
-|   A→SINK | 1.0                      | 1.0                      | 1.0                      |
-|   B→SINK | 1.0                      | 1.0                      | 1.0                      |
+|          |             x            |             y            |             z            |       NON-EMITTABLE      |
+|----------|--------------------------|--------------------------|--------------------------|--------------------------|
+|      A→A | 0.377 * 0.176 = 0.066352 | 0.377 * 0.596 = 0.224692 | 0.377 * 0.228 = 0.085956 |                          |
+|      A→B | 0.623 * 0.225 = 0.140175 | 0.623 * 0.572 = 0.356356 | 0.623 * 0.203 = 0.126469 |                          |
+|      B→A | 1.0   * 0.176 = 0.176    | 1.0   * 0.596 = 0.596    | 1.0   * 0.228 = 0.228    |                          |
+| SOURCE→A | 0.5   * 0.176 = 0.088    | 0.5   * 0.596 = 0.298    | 0.5   * 0.228 = 0.114    |                          |
+| SOURCE→B | 0.5   * 0.225 = 0.1125   | 0.5   * 0.572 = 0.286    | 0.5   * 0.203 = 0.1015   |                          |
+|   A→SINK |                          |                          |                          | 1.0                      |
+|   B→SINK |                          |                          |                          | 1.0                      |
 
 The Viterbi graph above with edge weights is as follows.
 
@@ -16959,26 +16959,26 @@ The Viterbi graph above with edge weights is as follows.
                    z                 z                 x                 x                 y
  
                  +---+       0.086 +---+       0.066 +---+       0.066 +---+       0.225 +---+
-           0.114 | A +------------>| A +------------>| A +------------>| A +------------>| A | 1.0
-           .---->|   +.     .----->|   +.     .----->|   +.     .----->|   +.     .----->|   +-----. 
-           |     +---+ \   / 0.228 +---+ \   / 0.176 +---+ \   / 0.176 +---+ \   / 0.596 +---+     | 
-+--------+ |            \ /               \ /               \ /               \ /                  |  +------+
-| SOURCE +-+             X                 X                 X                 X                   +->| SINK |
-+--------+ |            / \               / \               / \               / \                  |  +------+
-           |     +---+ /   \ 0.126 +---+ /   \ 0.140 +---+ /   \ 0.140 +---+ /   \ 0.356 +---+     |
-           '---->| B +'     '----->| B +'     '----->| B +'     '----->| B +'     '----->| B +-----'
-           0.102 |   |             |   |             |   |             |   |             |   | 1.0
-                 +---+             +---+             +---+             +---+             +---+
+           0.114 | A +------------>| A +------------>| A +------------>| A +------------>| A +------.
+       .-------->|   +.     .----->|   +.     .----->|   +.     .----->|   +.     .----->|   | 1.0  |
+       |         +---+ \   / 0.228 +---+ \   / 0.176 +---+ \   / 0.176 +---+ \   / 0.596 +---+      v
++------+-+              \ /               \ /               \ /               \ /                  +------+
+| SOURCE |               X                 X                 X                 X                   | SINK |
++------+-+              / \               / \               / \               / \                  +------+
+       |         +---+ /   \ 0.126 +---+ /   \ 0.140 +---+ /   \ 0.140 +---+ /   \ 0.356 +---+      ^
+       '-------->| B +'     '----->| B +'     '----->| B +'     '----->| B +'     '----->| B | 1.0  |
+           0.102 |   |             |   |             |   |             |   |             |   +------'
+                 +---+             +---+             +---+             +---+             +---+ 
 ```
 
 ```{output}
-ch10_code/src/hmm/ViterbiMostProbableHiddenPath_Standard.py
+ch10_code/src/hmm/MostProbableHiddenPath_Viterbi.py
 python
 # MARKDOWN_GENERATE_VITERBI\s*\n([\s\S]+)\n\s*# MARKDOWN_GENERATE_VITERBI\s*[\n$]
 ```
 
 ```{ch10}
-hmm.ViterbiMostProbableHiddenPath_Standard main_generate_viterbi_structure
+hmm.MostProbableHiddenPath_Viterbi main_generate_viterbi_structure
 transition_probabilities:
   SOURCE: {A: 0.5, B: 0.5}
   A: {A: 0.377, B: 0.623}
@@ -16988,7 +16988,7 @@ emission_probabilities:
   A: {x: 0.176, y: 0.596, z: 0.228}
   B: {x: 0.225, y: 0.572, z: 0.203}
 source_state: SOURCE
-sink_state: SINK  # Doesn't have to exist in HMM, but must be unique.
+sink_state: SINK  # Must not exist in HMM (used only for Viterbi graph)
 emissions: [z,z,x,x,y]
 ```
 
@@ -17005,13 +17005,13 @@ See Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC fo
 ```
 
 ```{output}
-ch10_code/src/hmm/ViterbiMostProbableHiddenPath_Standard.py
+ch10_code/src/hmm/MostProbableHiddenPath_Viterbi.py
 python
 # MARKDOWN_MAX_PRODUCT_PATH_IN_VITERBI\s*\n([\s\S]+)\n\s*# MARKDOWN_MAX_PRODUCT_PATH_IN_VITERBI\s*[\n$]
 ```
 
 ```{ch10}
-hmm.ViterbiMostProbableHiddenPath_Standard main_most_probable_hidden_path
+hmm.MostProbableHiddenPath_Viterbi main_most_probable_hidden_path
 transition_probabilities:
   SOURCE: {A: 0.5, B: 0.5}
   A: {A: 0.377, B: 0.623}
@@ -17021,7 +17021,7 @@ emission_probabilities:
   A: {x: 0.176, y: 0.596, z: 0.228}
   B: {x: 0.225, y: 0.572, z: 0.203}
 source_state: SOURCE
-sink_state: SINK  # Doesn't have to exist in HMM, but must be unique.
+sink_state: SINK  # Must not exist in HMM (used only for Viterbi graph)
 emissions: [z,z,x,x,y]
 ```
 
@@ -17033,12 +17033,12 @@ Notice what's happening here. This can be made very memory efficient:
  3. You can apply the divide-and-conquer algorithm as discussed in Algorithms/Sequence Alignment/Global Alignment/Divide-and-Conquer Algorithm_TOPIC - it's the same type of grid-based graph.
 ```
 
-#### Pseudocounts Algorithm
+#### Viterbi Pseudocounts Algorithm
 
-`{bm} /(Algorithms\/Sequence Region HMM\/Viterbi Most Probable Hidden Path\/Psuedocounts Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Sequence Region HMM\/Most Probable Hidden Path\/Viterbi Pseudocounts Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Region HMM/Viterbi Most Probable Hidden Path/Standard Algorithm_TOPIC
+Algorithms/Sequence Region HMM/Most Probable Hidden Path/Viterbi Algorithm_TOPIC
 Algorithms/Motif/K-mer Match Probability_TOPIC
 ```
 
@@ -17072,8 +17072,8 @@ If it's known that a hidden state transition or symbol emission is possible (not
 |     "A"     | |             | |     "B"     |
 +--+-+-+------+ |0.377    0.0 | +---+--+-+-+--+
    : : :  ^ ^   |             |   ^ |  : : : 
-   : : :  | |   |             '---' |  : : : 
-   : : :  | '---'     0.0           |  : : : 
+   : : :  | |   |             |   | |  : : : 
+   : : :  | '---'     0.0     '---' |  : : : 
    : : :  '-------------------------'  : : : 
    : : :                               : : : 
    : : :                               : : : 
@@ -17097,51 +17097,364 @@ The correct action to take in this scenario is to add pseudocounts to HMM weight
  * outgoing transition such that all of its outgoing transitions sum to 1.0.
  * emission such that all of its emissions sum to 1.0.
 
-TODO: add code here
+```{output}
+ch10_code/src/hmm/MostProbableHiddenPath_ViterbiPseudocounts.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
 
-TODO: add code here
+```{ch10}
+hmm.MostProbableHiddenPath_ViterbiPseudocounts main
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.0,   B: 0.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.0,   y: 0.572, z: 0.203}
+source_state: SOURCE
+sink_state: SINK  # Must not exist in HMM (used only for Viterbi graph)
+emissions: [z,z,x,x,y]
+pseudocount: 0.0001
+```
 
-TODO: add code here
+#### Viterbi Non-emitting States Algorithm
 
-TODO: add code here
-
-TODO: add code here
-
-TODO: add code here
-
-TODO: add code here
-
-#### Non-emitting States Algorithm
-
-`{bm} /(Algorithms\/Sequence Region HMM\/Viterbi Most Probable Hidden Path\/Non-emitting States Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Sequence Region HMM\/Most Probable Hidden Path\/Viterbi Non-emitting States Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Region HMM/Viterbi Most Probable Hidden Path/Standard Algorithm_TOPIC
+Algorithms/Sequence Region HMM/Most Probable Hidden Path/Viterbi Algorithm_TOPIC
+Algorithms/Sequence Region HMM/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
 
-In a standard HMM, it's assumed that each hidden state transition will emit a symbol. However, certain types of HMMs may have hidden state transitions that don't emit a symbol.
+A Viterbi graph explodes out an HMM based on an emitted sequence. When that HMM is exploded out into a Viterbi graph, it's assumed that each hidden state transition must emit a symbol from that emitted sequence (except after a transition to the SINK node).
 
-TODO: continue here
+```{svgbob}
+* "HMM exploded out to Viterbi based on emitted sequence [z,z,x,x,y]."
 
-TODO: continue here
 
-TODO: continue here
+                                                  +--------+   
+                                     .------------+ SOURCE +-----------.
+                                 0.5 |            +--------+           | 0.5
+                                     |                                 |
+                                     |   .-------------------------.   |  
+                                     v   | .---.    0.623          v   v
+                               +---------+-+-+ |               +-------------+
+                               |     "A"     | |               |     "B"     |
+                               +--+-+-+------+ |0.377          +---+--+-+-+--+
+                                  : : :  ^ ^   |                   |  : : : 
+                                  : : :  | |   |                   |  : : : 
+                                  : : :  | '---'     1.0           |  : : : 
+                                  : : :  '-------------------------'  : : : 
+                                  : : :                               : : : 
+                                  : : :                               : : : 
+                                  : : :     0.176  +- - - -+  0.225   : : : 
+                                  : : '- - - - - ->:   x   :<- - - - -' : : 
+                                  : :              +- - - -+            : : 
+                                  : :                                   : :
+                                  : :       0.596  +- - - -+  0.572     : :
+                                  : '- - - - - - ->:   y   :<- - - - - -' :
+                                  :                +- - - -+              :
+                                  :                                       :
+                                  :         0.228  +- - - -+  0.203       :
+                                  '- - - - - - - ->:   z   :<- - - - - - -'
+                                                   +- - - -+    
 
-TODO: continue here
 
-TODO: continue here
+
+                   z                 z                 x                 x                 y
+ 
+                 +---+       0.086 +---+       0.066 +---+       0.066 +---+       0.225 +---+ 
+           0.114 | A +------------>| A +------------>| A +------------>| A +------------>| A +------.
+       .-------->|   +.     .----->|   +.     .----->|   +.     .----->|   +.     .----->|   | 1.0  |
+       |         +---+ \   / 0.228 +---+ \   / 0.176 +---+ \   / 0.176 +---+ \   / 0.596 +---+      v
++------+-+              \ /               \ /               \ /               \ /                  +------+
+| SOURCE |               X                 X                 X                 X                   | SINK |
++------+-+              / \               / \               / \               / \                  +------+
+       |         +---+ /   \ 0.126 +---+ /   \ 0.140 +---+ /   \ 0.140 +---+ /   \ 0.356 +---+      ^
+       '-------->| B +'     '----->| B +'     '----->| B +'     '----->| B +'     '----->| B | 1.0  |
+           0.102 |   |             |   |             |   |             |   |             |   +------'
+                 +---+             +---+             +---+             +---+             +---+ 
+```
+
+Certain HMMs may have hidden states that can't emit symbols. For example, in the following HMM, hidden states C and D can't emit any symbols.
+
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+  0.5 |            +--------+           | 0.5
+      |                                 |          0.699
+      |   .-------------------------.   |    .------------.             
+      v   | .---.    0.623          v   v    |            v
++---------+-+-+ |               +------------++          +-------------+
+|     "A"     | |               |     "B"     |<---------+     "C"     |
++--+-+-+------+ |0.377          +---+--+-+-+--+     0.9  ++------------+
+   : : :  ^ ^   |                   |  : : : ^            |    
+   : : :  | |   |                   |  : : : |            | 0.1
+   : : :  | '---'     0.301         |  : : : |            v    
+   : : :  '-------------------------'  : : : |    1.0    +-------------+
+   : : :                               : : : '-----------+     "D"     |
+   : : :                               : : :             +-------------+
+   : : :     0.176  +- - - -+  0.225   : : : 
+   : : '- - - - - ->:   x   :<- - - - -' : : 
+   : :              +- - - -+            : : 
+   : :                                   : :
+   : :       0.596  +- - - -+  0.572     : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :         0.228  +- - - -+  0.203       :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+    
+```
+
+During the exploding of an HMM into a Viterbi graph, a transition to a non-emitting hidden state should continue to explode under the current index of the emitted sequence. For example, the Viterbi graph below is for the HMM diagram above and the emitted sequence [z, z, x, x, y]. For the first index of the emitted sequence (symbol z), a transition from hidden state B to hidden state C doesn't move forward to the next index of the emitted sequence. Likewise, a transition form hidden state C to hidden state D also doesn't move forward to the next index of the emitted sequence.
+
+Normally, the weight of an edge in a Viterbi graph is calculated as Pr(source-to-destination transition) * Pr(symbol emitted from destination). However, since non-emitting hidden state don't emit a symbol, the probability of symbol emission is removed: The probability of an edge going to a non-emitting is simply Pr(source-to-destination transition).
+
+|          |             x            |             y            |             z            |       NON-EMITTABLE      |
+|----------|--------------------------|--------------------------|--------------------------|--------------------------|
+|      A→A | 0.377 * 0.176 = 0.066352 | 0.377 * 0.596 = 0.224692 | 0.377 * 0.228 = 0.085956 |                          |
+|      A→B | 0.623 * 0.225 = 0.140175 | 0.623 * 0.572 = 0.356356 | 0.623 * 0.203 = 0.126469 |                          |
+|      B→A | 0.301 * 0.176 = 0.052976 | 0.301 * 0.596 = 0.179396 | 0.301 * 0.228 = 0.068628 |                          |
+|      B→C |                          |                          |                          | 0.699                    |
+|      C→B | 0.9   * 0.225 = 0.2025   | 0.9   * 0.572 = 0.5148   | 0.9   * 0.203 = 0.1827   |                          |
+|      C→D |                          |                          |                          | 0.1                      |
+|      D→B | 1.0   * 0.225 = 0.225    | 1.0   * 0.572 = 0.572    | 1.0   * 0.203 = 0.203    |                          |
+| SOURCE→A | 0.5   * 0.176 = 0.088    | 0.5   * 0.596 = 0.298    | 0.5   * 0.228 = 0.114    |                          |
+| SOURCE→B | 0.5   * 0.225 = 0.1125   | 0.5   * 0.572 = 0.286    | 0.5   * 0.203 = 0.1015   |                          |
+|   A→SINK |                          |                          |                          | 1.0                      |
+|   B→SINK |                          |                          |                          | 1.0                      |
+
+```{svgbob}
+* "Weights have been rounded for brevity."
+
+                   z                 z                 x                 x                 y
+ 
+                 +---+       0.086 +---+       0.066 +---+       0.066 +---+       0.225 +---+ 
+           0.114 | A +------------>| A +------------>| A +------------>| A +------------>| A +------.
+       .-------->|   +.     .----->|   +.     .----->|   +.     .----->|   +.     .----->|   | 1.0  | 
+       |         +---+ \   / 0.069 +---+ \   / 0.053 +---+ \   / 0.053 +---+ \   / 0.179 +---+      v 
++------+-+              \ /               \ /               \ /               \ /                  +------+
+| SOURCE |               X                 X                 X                 X                   | SINK |
++------+-+              / \               / \               / \               / \                  +------+
+       |         +---+ /   \ 0.126 +---+ /   \ 0.140 +---+ /   \ 0.140 +---+ /   \ 0.356 +---+      ^ ^ ^
+       '-------->| B +'     '----->| B +'     '----->| B +'     '----->| B +'     '----->| B | 1.0  | | |
+           0.102 |   | 0.183 .---->|   | 0.203 .---->|   | 0.203 .---->|   | 0.515 .---->|   +------' | |
+                 |   |      / .--->|   |      / .--->|   |      / .--->|   |      / .--->|   |        | |
+                 +-+-+     / /     +-+-+     / /     +-+-+     / /     +-+-+     / /     +-+-+        | |
+                   |      / .        |      / .        |      / .        |      / .        |          | |
+             0.699 |     /  |  0.699 |     /  |  0.699 |     /  |  0.699 |     /  |  0.699 |          | |
+                   v    /   |        v    /   |        v    /   |        v    /   |        v          | |
+                 +---+ /    |      +---+ /    |      +---+ /    |      +---+ /    |      +---+ 1.0    | |
+                 | C +'     |      | C +'     |      | C +'     |      | C +'     |      | C +--------' |
+                 |   |      .      |   |      .      |   |      .      |   |      .      |   |          |
+                 +-+-+     /       +-+-+     /       +-+-+     /       +-+-+     /       +-+-+          |
+                   |      /          |      /          |      /          |      /          |            |
+               0.1 |     /       0.1 |     /       0.1 |     /       0.1 |     /       0.1 |            |
+                   v    / 0.203      v    / 0.225      v    / 0.225      v    / 0.572      v            |
+                 +---+ /           +---+ /           +---+ /           +---+ /           +---+ 1.0      |
+                 | D +'            | D +'            | D +'            | D +'            | D +----------'
+                 |   |             |   |             |   |             |   |             |   |             
+                 +---+             +---+             +---+             +---+             +---+             
+```
+
+```{note}
+In an HMM, there can't be a cycle of non-emitting hidden states. If there is, the Viterbi graph will explode out infinitely. For example, if C and D pointed to each other in the HMM diagram above, its Viterbi graph would continue exploding out forever.
+```
+
+```{output}
+ch10_code/src/hmm/MostProbableHiddenPath_ViterbiNonEmittingHiddenStates.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch10}
+hmm.MostProbableHiddenPath_ViterbiNonEmittingHiddenStates main
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 0.9,   D: 0.1}
+  D: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+  C: {}
+  D: {}
+  # C and D set to empty dicts to identify them as non-emittable hidden states.
+source_state: SOURCE
+sink_state: SINK  # Must not exist in HMM (used only for Viterbi graph)
+emissions: [z,z,x,x,y]
+pseudocount: 0.0001
+```
+
+### Probability of Emitted Sequence
+
+`{bm} /(Algorithms\/Sequence Region HMM\/Most Probable Symbol Emissions)_TOPIC/`
+
+**WHAT**: This algorithm computes the likelihood that an HMM emits some sequence. For example, this algorithm can determine if the following HMM is more likely to emit [z, z, x, x, y] or [z, z, z, z, z].
+
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+  0.5 |            +--------+           | 0.5
+      |                                 |          0.699
+      |   .-------------------------.   |    .------------.             
+      v   | .---.    0.623          v   v    |            v
++---------+-+-+ |               +------------++          +-------------+
+|     "A"     | |               |     "B"     |<---------+     "C"     |
++--+-+-+------+ |0.377          +---+--+-+-+--+     0.9  ++------------+
+   : : :  ^ ^   |                   |  : : : ^            |    
+   : : :  | |   |                   |  : : : |            | 0.1
+   : : :  | '---'     0.301         |  : : : |            v    
+   : : :  '-------------------------'  : : : |    1.0    +-------------+
+   : : :                               : : : '-----------+     "D"     |
+   : : :                               : : :             +-------------+
+   : : :     0.176  +- - - -+  0.225   : : : 
+   : : '- - - - - ->:   x   :<- - - - -' : : 
+   : :              +- - - -+            : : 
+   : :                                   : :
+   : :       0.596  +- - - -+  0.572     : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :         0.228  +- - - -+  0.203       :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+    
+```
+
+**WHY**: Given a set of emitted sequences, comparing the likelihoods of those emitted sequences can be used as a measure of how viable the weights of the HMM are.
+
+```{note}
+This is speculation. I speculate this because, if you have a set of emitted sequences that you know get emitted by the machine which an HMM models, those sequences need to more probable to occur vs random sequences (I think).
+
+Why speculate? The Pevzner book never covers a good usecase for this. 
+```
+
+#### Naive Algorithm
+
+`{bm} /(Algorithms\/Sequence Region HMM\/Most Probable Symbol Emissions\/Naive Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Region HMM/Chained Transition-Emission Probability_TOPIC
+Algorithms/Sequence Region HMM/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm_TOPIC
+```
+
+**ALGORITHM**:
+
+Recall that the ....
+
+ 1. probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destionation's emission). For example, the probability that A transitions to B and emits x is Pr(A→B) * Pr(B emits x), written more concisely as Pr(x|A→B).
+
+ 2. probability of a chain of such transition-emission is their individual probabilities multiplied together. For example, the probablity that ...
+
+    1. A transitions to B and emits x
+    1. B transitions to B and emits y
+    1. B transitions to B and emits y
+    
+    ... is Pr(x|A→B) * Pr(y|B→B) * Pr(y|B→B)
+
+ 3. probability of an HMM emits a sequence while traveling through a hidden path is calculated as described above (multiplied chain of transition-emission probabilities).
+
+The probability of an HMM emitting a specific sequence is the sum of the probability of that emitted sequence occuring over all hidden paths. For example, imagine the following HMM.
+
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+  0.5 |            +--------+           | 0.5
+      |                                 |          0.699
+      |   .-------------------------.   |    .------------.             
+      v   | .---.    0.623          v   v    |            v
++---------+-+-+ |               +------------++          +-------------+
+|     "A"     | |               |     "B"     |<---------+     "C"     |
++--+-+-+------+ |0.377          +---+--+-+-+--+     0.9  ++------------+
+   : : :  ^ ^   |                   |  : : : ^            |    
+   : : :  | |   |                   |  : : : |            | 0.1
+   : : :  | '---'     0.301         |  : : : |            v    
+   : : :  '-------------------------'  : : : |    1.0    +-------------+
+   : : :                               : : : '-----------+     "D"     |
+   : : :                               : : :             +-------------+
+   : : :     0.176  +- - - -+  0.225   : : : 
+   : : '- - - - - ->:   x   :<- - - - -' : : 
+   : :              +- - - -+            : : 
+   : :                                   : :
+   : :       0.596  +- - - -+  0.572     : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :         0.228  +- - - -+  0.203       :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+    
+```
+
+The probability that the above HMM emits [z, z, y] is the sum of ...
+
+ * Pr(z|A→A) * Pr(A→A|z) * Pr(A→A|y)
+ * Pr(z|A→A) * Pr(A→A|z) * Pr(A→B|y)
+ * Pr(z|A→A) * Pr(A→A|z) * Pr(A→A|y)
+ * Pr(z|A→A) * Pr(A→A|z) * Pr(B→C) * Pr(C→A|y)
+ * Pr(z|A→A) * Pr(A→A|z) * Pr(B→C) * Pr(B→D) * Pr(D→A|y)
+ * Pr(z|A→A) * Pr(A→B|z) * Pr(A→A|y)
+ * ...
+
+```{note}
+The HMM above has non-emitting hidden states (C and D).
+
+One thing that the 2nd "recall that" point above doesn't cover is a hidden state transition to a non-emitting hidden state. If the hidden path travels through a non-emitting hidden state, leave out multiplying by the emission probability. For example, if there's a transition from B to C but C is a non-emitting hidden state, the probability should simply be Pr(B→C).
+
+That's why some of the probabilities being multipled above don't list an emission
+```
+
+```{output}
+ch10_code/src/hmm/ProbabilityOfEmittedSequence_Naive.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch10}
+hmm.ProbabilityOfEmittedSequence_Naive main
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 0.9,   D: 0.1}
+  D: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+  C: {}
+  D: {}
+  # C and D set to empty dicts to identify them as non-emittable hidden states.
+source_state: SOURCE
+emissions: [z,z,x]
+pseudocount: 0.0001
+```
+
+#### Viterbi Algorithm
+
+`{bm} /(Algorithms\/Sequence Region HMM\/Most Probable Symbol Emissions\/Viterbi Algorithm)_TOPIC/`
+
+**ALGORITHM**:
+
+TODO
+
+TODO 
+
+TODO
 
 ### Viterbi Most Probable Symbol Emissions
 
 `{bm} /(Algorithms\/Sequence Region HMM\/Viterbi Most Probable Symbol Emissions)_TOPIC/`
 
-```{prereq}
-Algorithms/Sequence Region HMM/Viterbi Most Probable Hidden Path_TOPIC
-```
+**WHAT**: 
 
-**WHAT**:
+TODO TODO TODO
 
 **WHY**:
 
@@ -22946,6 +23259,8 @@ first_indexes_checkpoint_n: 20
    * `sum(state_state_transitions[state, s] for s in states) == 1.0`
    * `sum(state_symbol_emissions[state, s] for s in symbols) == 1.0`
    ```
+
+   HMMs are often represented using HMM diagrams.
 
  * `{bm} Hidden Markov Model diagram` `{bm} /(HMM diagram|HMM Diagram)/` - A visualization of an HMM as a directed graph.
  
