@@ -906,7 +906,7 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
 
    In the example, 5 is the base and 3 is the exponent. Another way to say it is power: 5 to the power of 3 is 125.
 
- * `{bm} percent` - A ratio whose denominator is 100. For example, 35 percent translates to a ratio of `{kt} \frac{35}{100}.
+ * `{bm} percent` - A ratio whose denominator is 100. For example, 35 percent translates to a ratio of `{kt} \frac{35}{100}`.
 
    Percents are commonly written in short-form via the % symbol. For example, 35 percent is commonly written as 35%.
 
