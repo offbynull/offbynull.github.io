@@ -17357,7 +17357,7 @@ Recall that the ....
     1. B transitions to B and emits y
     1. B transitions to B and emits y
     
-    ... is Pr(x|A→B) * Pr(y|B→B) * Pr(y|B→B)
+    ... is Pr(A→B|x) * Pr(y|B→B) * Pr(y|B→B)
 
  3. probability of an HMM emits a sequence while traveling through a hidden path is calculated as described above (multiplied chain of transition-emission probabilities).
 
@@ -17394,17 +17394,21 @@ The probability of an HMM emitting a specific sequence is the sum of the probabi
 
 The probability that the above HMM emits [z, z, y] is the sum of ...
 
-* Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→A|y)
-* Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y)
-* Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y)
-* Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y)
-* Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→A|y)
-* Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y)
-* Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|x) * Pr(B→A|y)
-* Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|x) * Pr(B→C) * Pr(C→B|y)
+ * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→A|y)
+ * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y)
+ * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) * Pr(B→C)
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y)
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y)
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+ * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→A|y)
+ * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y)
+ * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) * Pr(B→C)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
 
 ```{note}
-The HMM above has non-emitting hidden states (C and D).
+The HMM above has non-emitting hidden states (C).
 
 One thing that the 2nd "recall that" point above doesn't cover is a hidden state transition to a non-emitting hidden state. If the hidden path travels through a non-emitting hidden state, leave out multiplying by the emission probability. For example, if there's a transition from B to C but C is a non-emitting hidden state, the probability should simply be Pr(B→C).
 
@@ -17488,20 +17492,16 @@ The naive algorithm computes the emmision probability of [z, z, y] as ...
 ```
 Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→A|y) +
 Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) +
+Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) * Pr(B→C) +
 Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y) +
 Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) +
-Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)+
+Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) +
 Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→A|y) +
 Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) +
-Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|x) * Pr(B→A|y) +
-Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|x) * Pr(B→C) * Pr(C→B|y)
-Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|x) * Pr(B→C) * Pr(C→B|y) + Pr(B→C)
-```
-
-```{note}
-Recall that Pr(src→dst|symbol) is equivalent to Pr(src→dst) * Pr(dst:symbol), where ...
- * Pr(src→dst) means the probability of a hidden state transition from src to dst.
- * Pr(dst:symbol) means the probability that symbol is emitted from hidden state dst.
+Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) * Pr(B→C) +
+Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y) +
+Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) +
+Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
 ```
 
 Given such an expression, factor out the probabilities based on the last emitted symbol (last multiplication in each addition).
@@ -17510,21 +17510,28 @@ Given such an expression, factor out the probabilities based on the last emitted
 Pr(A→A|y) * (
   Pr(SOURCE→A|z) * Pr(A→A|z) +
   Pr(SOURCE→B|z) * Pr(B→A|z)
-) +
+)
++
+Pr(B→A|y) * (
+  Pr(SOURCE→A|z) * Pr(A→B|z) +
+  Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z)
+)
++
 Pr(A→B|y) * (
   Pr(SOURCE→A|z) * Pr(A→A|z) +
   Pr(SOURCE→B|z) * Pr(B→A|z)
-) +
-Pr(B→A|y) * (
-  Pr(SOURCE→A|z) * Pr(A→B|z) +
-  Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|x)
-) +
+)
++
 Pr(C→B|y) * (
   Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) +
-  Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|x) * Pr(B→C)
-) + 
+  Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C)
+)
++ 
 Pr(B→C) * (
-  Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|x) * Pr(B→C) * Pr(C→B|y)
+  Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) +
+  Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) +
+  Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) +
+  Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)
 )
 ```
 
@@ -17538,48 +17545,67 @@ Continue this process for each nested expression, recursively: For each nested e
 Pr(A→A|y) * (
   Pr(A→A|z) * (
     Pr(SOURCE→A|z)
-  ) +
+  )
+  +
   Pr(B→A|z) * (
     Pr(SOURCE→B|z)
   )
-) +
-Pr(A→B|y) * (
-  Pr(A→A|z) * (
-    Pr(SOURCE→A|z)
-  ) +
-  Pr(B→A|z) * (
-    Pr(SOURCE→B|z)
-  )
-) +
+)
++
 Pr(B→A|y) * (
   Pr(A→B|z) * (
     Pr(SOURCE→A|z)
-  ) +
-  Pr(C→B|x) * (
+  )
+  + 
+  Pr(C→B|z) * (
     Pr(B→C) * (
       Pr(SOURCE→B|z)
     )
   )
-) +
+)
++
+Pr(A→B|y) * (
+  Pr(A→A|z) * (
+    Pr(SOURCE→A|z)
+  )
+  +
+  Pr(B→A|z) * (
+    Pr(SOURCE→B|z)
+  )
+)
++
 Pr(C→B|y) * (
   Pr(B→C) * (
     Pr(A→B|z) * (
       Pr(SOURCE→A|z)
-    ) +
-    Pr(C→B|x) * (
+    )
+    +
+    Pr(C→B|z) * (
       Pr(B→C) * (
         Pr(SOURCE→B|z)
       )
     )
   )
 )
++ 
 Pr(B→C) * (
+  Pr(A→B|y) * (
+    Pr(A→A|z) * (
+      Pr(SOURCE→A|z)
+    )
+    +
+    Pr(B→A|z) * (
+      Pr(SOURCE→B|z)
+    )
+  )
+  +
   Pr(C→B|y) * (
     Pr(B→C) * (
       Pr(A→B|z) * (
         Pr(SOURCE→A|z)
-      ) +
-      Pr(C→B|x) * (
+      )
+      +
+      Pr(C→B|z) * (
         Pr(B→C) * (
           Pr(SOURCE→B|z)
         )
@@ -17589,25 +17615,124 @@ Pr(B→C) * (
 )
 ```
 
+This factored expression reduces the number of additions and multiplications happening. However, notice that many of the computations in this expression are repeating. For example, notice how the block ...
 
-Pr(A→A|y) * (
-  Pr(A→A|z) * (
-    Pr(SOURCE→A|z)
-  ) +
-  Pr(B→A|z) * (
-    Pr(SOURCE→B|z)
-  )
+```
+Pr(A→A|z) * (
+  Pr(SOURCE→A|z)
 ) +
-Pr(B→A|y) * (
-  Pr(A→B|z) * (
-    Pr(SOURCE→A|z)
-  ) +
-  Pr(C→B|x) * (
-    Pr(B→C) * (
-      Pr(SOURCE→B|z)
-    )
-  )
+Pr(B→A|z) * (
+  Pr(SOURCE→B|z)
 )
+```
+
+... appears in two places. In the factored expression, one way to group repeating computations is as as follows.
+
+
+```{svgbob}
+---------------------------------------.
+"Pr(A→A|y) * ("                        |
+   ------------------------.           |
+"  Pr(A→A|z) * ("          |           |
+"    Pr(SOURCE→A|z)" -- A0 |           |
+"  )"                      |           |
+"  +"                      | A1        |
+"  Pr(B→A|z) * ("          |           |
+"    Pr(SOURCE→B|z)" -- B0 |           |
+"  )"                      |           |
+   ------------------------'           |
+")"                                    |
+"+"                                    | A2
+"Pr(B→A|y) * ("                        |
+   -------------------------------.    |
+"  Pr(A→B|z) * ("                 |    |
+"    Pr(SOURCE→A|z)" -- A0        |    |
+"  )"                             |    |
+"  +"                             |    |
+"  Pr(C→B|z) * ("                 | B1 |
+     ------------------------.    |    |
+"    Pr(B→C) * ("            |    |    |
+"      Pr(SOURCE→B|z)" -- B0 | C0 |    |
+"    )"                      |    |    |
+     ------------------------'    |    |
+"  )"                             |    |
+   -------------------------------'    |
+")"                                    |
+---------------------------------------'
+"+"
+----------------------------------------------.
+"Pr(A→B|y) * ("                               |
+   ------------------------.                  |
+"  Pr(A→A|z) * ("          |                  |
+"    Pr(SOURCE→A|z)" -- A0 |                  |
+"  )"                      | A1               |
+"  +"                      |                  |
+"  Pr(B→A|z) * ("          |                  |
+"    Pr(SOURCE→B|z)" -- B0 |                  |
+"  )"                      |                  |
+   ------------------------'                  |
+")"                                           |
+"+"                                           |
+"Pr(C→B|y) * ("                               |
+   --------------------------------------.    | 
+"  Pr(B→C) * ("                          |    | B2
+     -------------------------------.    |    |
+"    Pr(A→B|z) * ("                 |    |    |
+"      Pr(SOURCE→A|z)" -- A0        |    |    |
+"    )"                             |    |    |
+"    +"                             |    |    |
+"    Pr(C→B|z) * ("                 | B1 |    |
+       ------------------------.    |    |    |
+"      Pr(B→C) * ("            |    |    | C1 |
+"        Pr(SOURCE→B|z)" -- B0 | C0 |    |    |
+"      )"                      |    |    |    |
+       ------------------------'    |    |    |
+"    )"                             |    |    |
+     -------------------------------'    |    |
+"  )"                                    |    |
+   --------------------------------------'    |
+")"                                           |
+----------------------------------------------'
+"+" 
+-----------------------------------------------------.
+"Pr(B→C) * ("                                        |
+   ---------------------------------------------.    |
+"  Pr(A→B|y) * ("                               |    |
+     ------------------------.                  |    |
+"    Pr(A→A|z) * ("          |                  |    |
+"      Pr(SOURCE→A|z)" -- A0 |                  |    |
+"    )"                      |                  |    |
+"    +"                      | A1               |    |
+"    Pr(B→A|z) * ("          |                  |    |
+"      Pr(SOURCE→B|z)" -- B0 |                  |    |
+"    )"                      |                  |    |
+     ------------------------'                  |    |
+"  )"                                           |    |
+"  +"                                           |    |
+"  Pr(C→B|y) * ("                               |    |
+    ---------------------------------------.    |    |
+"    Pr(B→C) * ("                          |    | B2 |
+       -------------------------------.    |    |    |
+"      Pr(A→B|z) * ("                 |    |    |    | C2
+"        Pr(SOURCE→A|z)" -- A0        |    |    |    |
+"      )"                             |    |    |    |
+"      +"                             |    |    |    |
+"      Pr(C→B|z) * ("                 | B1 |    |    |
+         ------------------------.    |    |    |    |
+"        Pr(B→C) * ("            |    |    | C1 |    |
+"          Pr(SOURCE→B|z)" -- B0 | C0 |    |    |    |
+"        )"                      |    |    |    |    |
+         ------------------------'    |    |    |    |
+"      )"                             |    |    |    |
+       -------------------------------'    |    |    |
+"    )"                                    |    |    |
+     --------------------------------------'    |    |
+"  )"                                           |    |
+   ---------------------------------------------'    |
+")"                                                  |
+-----------------------------------------------------'
+```
+
 
 ```{svgbob}
 * "Weights have been rounded for brevity."
@@ -17618,7 +17743,7 @@ Pr(B→A|y) * (
             | A                        +------------>| A                        +------------>| A                        +---.
        .--->| "Pr(SOURCE→A|z)        " +-.   .------>| "Pr(A→A|z) * (         " +-.   .------>| "Pr(A→A|y) * (         " |   | 
        |    |                          | |   |       | "  Pr(SOURCE→A|z)      " | |   |       | "  Pr(A→A|z) * (       " |   | 
-       |    |                          | |   |       | ")  +                  " | |   |       | "    Pr(SOURCE→A|z)    " |   |
+       |    |                          | |   |       | ") +                   " | |   |       | "    Pr(SOURCE→A|z)    " |   |
        |    |                          | |   |       | "Pr(B→A|z) * (         " | |   |       | "  ) +                 " |   |
        |    |                          | |   |       | "  Pr(SOURCE→B|z)      " | |   |       | "  Pr(B→A|z) * (       " |   |
        |    |                          | |   |       | ")                     " | |   |       | "    Pr(SOURCE→B|z)    " |   |
