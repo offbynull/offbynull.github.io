@@ -53,6 +53,9 @@ class StringStream:
         while self.pointer < len(self.value) and self.value[self.pointer].isspace():
             self.pointer += 1
 
+    def remaining(self):
+        return len(self.value) - self.pointer
+
     def is_finished(self):
         return self.pointer == len(self.value)
 

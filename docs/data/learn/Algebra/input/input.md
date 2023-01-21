@@ -9,7 +9,7 @@ Algebra
 
 PREREQ OF NEEDING TO KNOW ABOUT REAL NUMBERS AND ARITHMETIC OPERATIONS ON THOSE REAL NUMBERS.
 
-TODO: continue with openstax elementary algebra, then intermediate algebra, then college algebra DO NOT DO THE PROBLEMS, JUST DO PROCESS AND TERMS
+TODO: continue with openstax elementary algebra, then intermediate algebra, then college algebra DO NOT DO THE PROBLEMS, JUST DO PROCESS AND TERMINOLOGY
 
 # Algorithms
 
@@ -994,9 +994,9 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
    * Subtraction is *not* associative (e.g. (5-2)-2=1 and 5-(2-2)=0).
    * Division is *not* associative (e.g. (6÷3)÷2=1 and 6÷(3÷2)=4).
 
- * `{bm} distributive property/(distributive property|distributive|distribute)/i` - A property of multiplication that states, when the other operand is a chain of additions or subtractions, the multiplication can be exploded out into each of the terms in that chain. For example, 3\*(5+2) = 3\*5+3\*2+3\*−1 = 18.
+ * `{bm} distributive property/(distributive property|distributive|distribute)/i` - A property of multiplication that states, when the other operand is a chain of additions or subtractions, the multiplication can be exploded out into each of the terms_EXP in that chain. For example, 3\*(5+2) = 3\*5+3\*2+3\*−1 = 18.
 
-   Similarly, the distributive property makes the reverse possible as well. When a common factor exists between all the terms in a chain of additions or subtractions, that common factor can be pulled out on its own. For example, 15+6 = 3\*5+3\*2 = 3\*(5+2) = 21.
+   Similarly, the distributive property makes the reverse possible as well. When a common factor exists between all the terms_EXP in a chain of additions or subtractions, that common factor can be pulled out on its own. For example, 15+6 = 3\*5+3\*2 = 3\*(5+2) = 21.
 
  * `{bm} identity property/(identity property|identity)/i` - A property of an operation that states the conditions for when that operation returns its left operand as its result.
 
@@ -1064,7 +1064,10 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
    coefficient
    ```
 
- * `{bm} coefficient` - A factor that multiplies a variable in an expression. For example, `{kt}3x^2 + x - 2` has three terms with coefficients 2, 1, and -2. The last term is technically a constant but is also a coefficient because it can technically be rewritten as a factor of `x`: `{kt}3x^2 + 1x^1 - 2x^0`.
+ * `{bm} coefficient` - A factor that multiplies a term_EXP_. For example, `{kt}3x^2 + x - 2` has three terms_EXP with coefficients {2, 1, -2}. The last term_EXP is technically a constant but is also a coefficient because it can technically be rewritten as a factor of `x` or 1:
+ 
+   * `{kt}3x^2 + 1x^1 - 2x^0`.
+   * `{kt}3x^2 + 1x^1 - 2\cdot1`
 
    A coefficient is usually a number, but may be an expression.
 
@@ -1077,6 +1080,22 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
    |    constant
    coefficient
    ```
+
+   The word coefficient applies even if the expression has multiple variables. For example, in `{kt}3x^2 + y - 2z` has three coefficients {2, 1, -2}.
+
+ * `{bm} term/(\bterms?)_EXP\b/i` - A operand being added or subtracted in the top-level of an expression. When a term_EXP is ...
+ 
+   * on the left or right of an addition, it gets pulled out as-is. For example, `{kt}3(x+1) + x + 2` has the three terms_EXP {3(x+1), x, 2}.
+   * on the right of a subtraction, it gets pulled out as a negative. For example, `{kt}3(x+1) + x - 2` has the three terms_EXP {3(x+1), x, -2}.
+   
+   The reasoning for subtraction negation is that subtracting is the same as adding by the negative. The subtraction example can be re-written as `{kt}3(x+1) + x + (-2)`. Essentially, a term_EXP is any operand being added in the top-level of an expression, given that all top-level subtractions in that expression have been converted to top-level additions.
+
+   ```{note}
+   Top-level !!means!! not a sub-expression (nested expression). Recall that BEDMAS defines addition and subtraction as the lowest precedence operations, !!meaning!! additions and subtractions get computed after all other operations (brackets, exponents, and division and multiplication).
+   ```
+   
+
+`{bm-error} Wrap in !! or apply suffix _EXP/(\bterms?\b)/i`
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 

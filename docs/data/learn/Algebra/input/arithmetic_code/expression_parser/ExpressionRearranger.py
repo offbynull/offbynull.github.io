@@ -1,7 +1,7 @@
 from fractions import Fraction
 
 from Factor import factor_fastest
-from expression_parser.Parser import FunctionNode, parse_expression
+from expression_parser.Parser import FunctionNode, expression, parse
 from expression_parser.StringStream import StringStream
 
 
@@ -99,7 +99,7 @@ def rearrange_associative(fn: FunctionNode):
 
 
 if __name__ == '__main__':
-    tree = parse_expression(StringStream('5 + 4 ^ x + 3 * 8 / log(2, 32)'))
+    tree = parse('5 + -4 ^ x + 3 * 8 / log(2, 32)')
     # tree = parse_expression(StringStream('(1*2)*3'))
     variations = rearrange(tree)
     for t in variations:

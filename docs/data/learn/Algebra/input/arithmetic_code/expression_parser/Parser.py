@@ -1,7 +1,9 @@
 from fractions import Fraction
 from typing import Any
 
-from expression_parser.StringStream import StringStream
+from expression_parser import LexerStream
+from expression_parser.Lexer import Identifier, tokenize
+from expression_parser.LexerStream import LexerStream
 
 
 class FunctionNode:
@@ -41,201 +43,111 @@ class VariableNode:
     def __hash__(self):
         return hash(self.name)
 
-
-def parse_decimal(ss: StringStream):
-    ss.mark()
+def function(s: LexerStream):
+    s.mark()
     try:
-        ss.skip_whitespace()
-        v_str = ''
-        if ss.peek_char() not in '0123456789':
-            raise ValueError('Bad decimal')
-        while ss.is_more() and ss.peek_char() in '0123456789':
-            v_str += ss.read_char()
-        if ss.is_more() and ss.peek_char() == '.':
-            v_str += ss.read_char()  # '.'
-            if ss.is_finished() or ss.peek_char() not in '0123456789':
-                raise ValueError('Bad decimal')
-            while ss.is_more() and ss.peek_char() in '0123456789':
-                v_str += ss.read_char()
-            ss.skip_whitespace()
-        ret = Fraction(v_str)
-        ss.release()
-        return ret
-    except Exception as e:
-        ss.revert()
-        raise e
-
-def parse_fraction(ss: StringStream):
-    ss.mark()
-    try:
-        ss.skip_whitespace()
-        num_str = ''
-        if ss.peek_char() not in '0123456789':
-            raise ValueError('Bad fraction')
-        while ss.is_more() and ss.peek_char() in '0123456789':
-            num_str += ss.read_char()
-        if ss.read_char() != ':':
-            raise ValueError('Bad fraction')
-        denom_str = ''
-        if ss.peek_char() not in '0123456789':
-            raise ValueError('Bad fraction')
-        while ss.is_more() and ss.peek_char() in '0123456789':
-            denom_str += ss.read_char()
-        ret = Fraction(int(num_str), int(denom_str))
-        ss.release()
-        return ret
-    except Exception as e:
-        ss.revert()
-        raise e
-
-def parse_fraction_or_decimal(ss: StringStream):
-    ss.mark()
-    try:
-        try:
-            ret = parse_fraction(ss)
-            ss.release()
-            return ret
-        except ValueError:
-            ...
-        ret = parse_decimal(ss)
-        ss.release()
-        return ret
-    except Exception as e:
-        ss.revert()
-        raise e
-
-def parse_string(ss: StringStream):
-    ss.mark()
-    try:
-        ss.skip_whitespace()
-        ss.skip_const('\'')
-        value = ''
-        in_escape_seq = False
-        while True:
-            ch = ss.read_char()
-            if in_escape_seq:
-                if ch == '\\':
-                    value += '\\'
-                elif ch == '\'':
-                    value += '\''
-                else:
-                    raise ValueError('Unrecognized escape')
-                in_escape_seq = False
-            elif ch == '\\':
-                in_escape_seq = True
-            elif ch == '\'':
-                break
-            else:
-                value += ch
-        ss.skip_whitespace()
-        ss.release()
-        return value
-    except Exception as e:
-        ss.revert()
-        raise e
-
-def parse_function(ss: StringStream):
-    ss.mark()
-    try:
-        op = ''
-        ss.skip_whitespace()
-        while ss.peek_char().isalpha():
-            op += ss.read_char()
-        if op == '':
-            raise ValueError('Bad function name')
-        ss.skip_whitespace()
-        ss.skip_const('(')
-        ss.skip_whitespace()
+        name = s.read()
+        if not isinstance(name, Identifier):
+            raise ValueError('Not identifier')
+        s.skip_const(['('])
         args = []
         while True:
-            arg = parse_expression(ss)
+            arg = expression(s)
             args.append(arg)
-            if ss.peek_char() == ')':
+            if s.peek() == ')':
                 break
-            elif ss.peek_char() == ',':
-                ss.read_char()
+            elif s.peek() == ',':
+                s.read()
             else:
                 raise ValueError('Unexpected delim')
-            ss.skip_whitespace()
-        ss.skip_const(')')
-        ss.skip_whitespace()
-        ss.release()
-        return FunctionNode(op, args)
+        s.skip_const([')'])
+        s.release()
+        return FunctionNode(name.value, args)
     except Exception as e:
-        ss.revert()
+        s.revert()
         raise e
 
-def parse_variable(ss: StringStream):
-    ss.mark()
+def variable(s: LexerStream):
+    s.mark()
     try:
+        name = s.read()
+        if not isinstance(name, Identifier):
+            raise ValueError('Not identifier')
         n = VariableNode()
-        n.name = ''
-        ss.skip_whitespace()
-        while ss.peek_char().isalpha():
-            n.name += ss.read_char()
-        if n.name == '':
-            raise ValueError('Bad function name')
-        ss.release()
+        n.name = name.value
+        s.release()
         return n
     except Exception as e:
-        ss.revert()
+        s.revert()
         raise e
 
-def parse_variable_or_function(ss: StringStream):
-    ss.mark()
+def variable_or_function(s: LexerStream):
+    s.mark()
     try:
         try:
-            ret = parse_function(ss)
-            ss.release()
+            ret = function(s)
+            s.release()
             return ret
         except ValueError:
             ...
-        ret = parse_variable(ss)
-        ss.release()
+        ret = variable(s)
+        s.release()
         return ret
     except Exception as e:
-        ss.revert()
+        s.revert()
         raise e
 
-def parse_brackets(ss: StringStream):
-    ss.mark()
+def brackets(s: LexerStream):
+    s.mark()
     try:
-        ss.skip_whitespace()
-        ss.skip_const('(')
-        ret = parse_expression(ss)
-        ss.skip_whitespace()
-        ss.skip_const(')')
-        ss.release()
+        s.skip_const(['('])
+        ret = expression(s)
+        s.skip_const([')'])
+        s.release()
         return ret
     except Exception as e:
-        ss.revert()
+        s.revert()
         raise e
 
-def parse_expression(ss: StringStream):
-    ss.mark()
+def expression(s: LexerStream):
+    s.mark()
     try:
         chain = []
-        ss.skip_whitespace()
-        while not ss.is_finished():
-            ss.skip_whitespace()
-            if ss.peek_char() in '0123456789':
-                num = parse_fraction_or_decimal(ss)
-                chain.append(num)
-            elif ss.peek_char() == '\'':
-                s = parse_string(ss)
-                chain.append(s)
-            elif ss.peek_char().isalpha():
-                tree = parse_variable_or_function(ss)
+        negate = False
+        while not s.is_finished():
+            item = s.peek()
+            if isinstance(item, Fraction):
+                s.read()  # discard
+                if negate:
+                    item = -item
+                    negate = False
+                chain.append(item)
+            elif isinstance(item, Identifier):
+                tree = variable_or_function(s)
+                if negate:
+                    tree = FunctionNode('*', [Fraction(-1), tree])
+                    negate = False
                 chain.append(tree)
-            elif ss.peek_char() == '(':
-                tree = parse_brackets(ss)
+            elif item == '(':
+                tree = brackets(s)
+                if negate:
+                    if isinstance(tree, Fraction):
+                        tree = -tree
+                    elif isinstance(tree, FunctionNode) or isinstance(tree, VariableNode):
+                        tree = FunctionNode('*', [Fraction(-1), tree])
+                    else:
+                        raise ValueError('Unknown type')
+                    negate = False
                 chain.append(tree)
-            elif ss.peek_char() in '+-*/^':
-                op = ss.read_char()
+            elif item in {'-', '+'} and len(chain) == 0 or (isinstance(chain[-1], str) and chain[-1] in '+-*/^'):
+                s.read()  # discard
+                negate = item == '-'
+            elif item in {'+', '-', '*', '/', '^'}:
+                s.read()  # discard
+                op = item
                 chain.append(op)
             else:
                 break
-        ss.skip_whitespace()
 
         def replace(ops: str):
             i = 1
@@ -252,27 +164,28 @@ def parse_expression(ss: StringStream):
         replace('*/')
         replace('+-')
         assert len(chain) == 1
-        ss.release()
+        s.release()
         return chain[0]
     except Exception as e:
-        ss.revert()
+        s.revert()
         raise e
 
-
-def parse_main(ss: StringStream):
-    ss.mark()
+def parse_stream(s: LexerStream):
+    s.mark()
     try:
-        ss.skip_whitespace()
-        ret = parse_expression(ss)
-        ss.skip_whitespace()
-        if not ss.is_finished():
-            raise ValueError('Unexpected char')
+        ret = expression(s)
+        if not s.is_finished():
+            raise ValueError('Unexpected tokens')
         return ret
     except Exception as e:
-        ss.revert()
+        s.revert()
         raise e
+
+def parse(s: str):
+    tokens = tokenize(s)
+    return parse_stream(LexerStream(tokens))
 
 
 if __name__ == '__main__':
-    tree = parse_main(StringStream('5:2 + 4.5 ^ x + 3 * 8 / log(2, 32, \'hello \\\\ world \')'))
+    tree = parse('5:2 + -4.5 ^ -x + -(3 * 8) / -log(2, 32)')
     print(f'{tree}')
