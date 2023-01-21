@@ -10,6 +10,9 @@ class StringStream:
     def revert(self):
         self.pointer = self.queue.pop()
 
+    def release(self):
+        self.queue.pop()
+
     def read_char(self):
         if self.pointer == len(self.value):
             raise ValueError('Too few characters')
@@ -52,6 +55,9 @@ class StringStream:
 
     def is_finished(self):
         return self.pointer == len(self.value)
+
+    def is_more(self):
+        return not self.is_finished()
 
     def __next__(self):
         return self.read_char()

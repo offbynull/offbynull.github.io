@@ -1032,19 +1032,51 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
    * When a chain of divisions and multiplications are encountered, evaluate left-to-right (e.g. 5÷2\*3 should first divide, then multiply the result of the division).
    * When a chain of additions and subtractions are encountered, evaluate left-to-right (e.g. 5-2+3 should first subtract, then add the result of the subtraction).
 
- * `{bm} expression` - A set of operations chained together. For example, (5+2)\*3.
+ * `{bm} expression` - A set of operations chained together. For example, (5+x)\*3. Expressions are typically made up of coefficients, variables, and constants.
 
  * `{bm} evaluate/(evaluate|evaluation)/i` - To calculate an expression and produce a final numeric result. For example, evaluating (5+2)\*3 results in 21.
-
- * `{bm} variable` - A placeholder for an unknown number inside an expression. For example, x+3 has the variable x.
 
  * `{bm} equation` - Two expressions separated by an equal sign, where those two expressions are said to evaluate to the same value. For example, 7+7+7=3\*7. 
 
    Equations often contain variables. An equation is said to be solved once a set of numbers have been found for its variables such that, when substituted in for those variables, both expressions evaluate to the same number. For example, in x+2=3\*7, both expressions evaluate to 21 when x is set to 19.
 
- * `{bm} constant` - 
+ * `{bm} variable` - A placeholder for an unknown number in an expression. For example, x+3 has the variable x.
 
- * `{bm} coefficient` - 
+   ```{svgbob}
+    variable
+    |    constant
+    |       |
+   5x - 6 = 1
+   |    |   
+   |    constant
+   coefficient
+   ```
+
+ * `{bm} constant` - A number in an expression that isn't being multiplied by a variable.
+
+   ```{svgbob}
+    variable
+    |    constant
+    |       |
+   5x - 6 = 1
+   |    |   
+   |    constant
+   coefficient
+   ```
+
+ * `{bm} coefficient` - A factor that multiplies a variable in an expression. For example, `{kt}3x^2 + x - 2` has three terms with coefficients 2, 1, and -2. The last term is technically a constant but is also a coefficient because it can technically be rewritten as a factor of `x`: `{kt}3x^2 + 1x^1 - 2x^0`.
+
+   A coefficient is usually a number, but may be an expression.
+
+   ```{svgbob}
+    variable
+    |    constant
+    |       |
+   5x - 6 = 1
+   |    |   
+   |    constant
+   coefficient
+   ```
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 
