@@ -221,7 +221,7 @@
 <li><a href="#H_Probability%20of%20Emitted%20Sequence">Probability of Emitted Sequence</a></li>
 <ul>
 <li><a href="#H1_Naive%20Algorithm">Naive Algorithm</a></li>
-<li><a href="#H1_Viterbi%20Algorithm">Viterbi Algorithm</a></li>
+<li><a href="#H5_Graph%20Algorithm">Graph Algorithm</a></li>
 </ul>
 <li><a href="#H_Viterbi%20Most%20Probable%20Symbol%20Emissions">Viterbi Most Probable Symbol Emissions</a></li>
 </ul>
@@ -25207,46 +25207,73 @@ pseudocount: 0.0001
 <li>B transitions to B and emits y</li>
 <li>B transitions to B and emits y</li>
 </ol>
-<p>... is Pr(x|A→B) * Pr(y|B→B) * Pr(y|B→B)</p>
+<p>... is Pr(A→B|x) * Pr(y|B→B) * Pr(y|B→B)</p>
 </li>
 <li>
 <p>probability of an <a href="#BM_(HMM)%2F">HMM</a> emits a <a href="#BM_(sequence)%2Fi">sequence</a> while traveling through a <a href="#BM_(hidden%20path)%2Fi">hidden path</a> is calculated as described above (multiplied chain of transition-emission probabilities).</p>
 </li>
 </ol>
 <p>The probability of an <a href="#BM_(HMM)%2F">HMM</a> emitting a specific <a href="#BM_(sequence)%2Fi">sequence</a> is the sum of the probability of that emitted <a href="#BM_(sequence)%2Fi">sequence</a> occuring over all <a href="#BM_(hidden%20path)%2Fi">hidden path</a>s. For example, imagine the following <a href="#BM_(HMM)%2F">HMM</a>.</p>
-<p><img src="svgbob_04da173ecb6959f4f99cd1725fd48700e3874f61.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_6c810aaa37a67150f1f6090237838fb6d6f152d0.svg" alt="Kroki diagram output"></p>
 <p>The probability that the above <a href="#BM_(HMM)%2F">HMM</a> emits [z, z, y] is the sum of ...</p>
 <ul>
-<li>Pr(z|A→A) * Pr(A→A|z) * Pr(A→A|y)</li>
-<li>Pr(z|A→A) * Pr(A→A|z) * Pr(A→B|y)</li>
-<li>Pr(z|A→A) * Pr(A→A|z) * Pr(A→A|y)</li>
-<li>Pr(z|A→A) * Pr(A→A|z) * Pr(B→C) * Pr(C→A|y)</li>
-<li>Pr(z|A→A) * Pr(A→A|z) * Pr(B→C) * Pr(B→D) * Pr(D→A|y)</li>
-<li>Pr(z|A→A) * Pr(A→B|z) * Pr(A→A|y)</li>
-<li>...</li>
+<li>Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→A|y)</li>
+<li>Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y)</li>
+<li>Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) * Pr(B→C)</li>
+<li>Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y)</li>
+<li>Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y)</li>
+<li>Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→A|y)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) * Pr(B→C)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The <a href="#BM_(HMM)%2F">HMM</a> above has non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s (C and D).</p>
+<p>The <a href="#BM_(HMM)%2F">HMM</a> above has non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s (C).</p>
 <p>One thing that the 2nd "recall that" point above doesn't cover is a <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transition to a non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>. If the <a href="#BM_(hidden%20path)%2Fi">hidden path</a> travels through a non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>, leave out multiplying by the emission probability. For example, if there's a transition from B to C but C is a non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>, the probability should simply be Pr(B→C).</p>
 <p>That's why some of the probabilities being multipled above don't list an emission</p>
 </div>
-<p><a href="ch10_code/src/hmm/ProbabilityOfEmittedSequence_Naive.py">ch10_code/src/hmm/ProbabilityOfEmittedSequence_Naive.py</a> (lines 108 to 148):</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>"The probability of an <a href="#BM_(HMM)%2F">HMM</a> emitting a specific <a href="#BM_(sequence)%2Fi">sequence</a> is the sum of the probability of that emitted <a href="#BM_(sequence)%2Fi">sequence</a> occuring over all <a href="#BM_(hidden%20path)%2Fi">hidden path</a>s" - Why? The probability of one or the other is defined as P(A) + P(B). So what's happening here is that, it's finding the probability that its emitted from the first <a href="#BM_(hidden%20path)%2Fi">hidden path</a>, or the second <a href="#BM_(hidden%20path)%2Fi">hidden path</a>, or the third <a href="#BM_(hidden%20path)%2Fi">hidden path</a>, or ...</p>
+</div>
+<p><a href="ch10_code/src/hmm/ProbabilityOfEmittedSequence_Naive.py">ch10_code/src/hmm/ProbabilityOfEmittedSequence_Naive.py</a> (lines 108 to 166):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">enumerate_paths</span>(<span class="hljs-params">
         hmm: Graph[N, ND, E, ED],
         hmm_from_n_id: N,
         emitted_seq_len: <span class="hljs-built_in">int</span>,
+        get_node_emittable: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE], <span class="hljs-built_in">bool</span>],
         prev_path: <span class="hljs-built_in">list</span>[E] | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>
 </span>) -&gt; Generator[<span class="hljs-built_in">list</span>[E], <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>]:
-    <span class="hljs-keyword">if</span> emitted_seq_len == <span class="hljs-number">0</span>:
-        <span class="hljs-keyword">yield</span> prev_path
-        <span class="hljs-keyword">return</span>
     <span class="hljs-keyword">if</span> prev_path <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
         prev_path = []
-    <span class="hljs-keyword">for</span> hmm_e_id, _, hmm_to_n_id, transition_prob <span class="hljs-keyword">in</span> hmm.get_outputs_full(hmm_from_n_id):
-        prev_path.append(hmm_e_id)
-        <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> enumerate_paths(hmm, hmm_to_n_id, emitted_seq_len - <span class="hljs-number">1</span>, prev_path)
-        prev_path.pop()
+    <span class="hljs-keyword">if</span> emitted_seq_len == <span class="hljs-number">0</span>:
+        <span class="hljs-comment"># We're at the end of the expected emitted sequence length, so return the current path. However, at this point</span>
+        <span class="hljs-comment"># hmm_from_n_id may still have transitions to other non-emittable hidden states, and so those need to be</span>
+        <span class="hljs-comment"># returned as paths as well (continue digging into outgoing transitions if the destination is non-emittable).</span>
+        <span class="hljs-keyword">yield</span> prev_path
+        <span class="hljs-keyword">for</span> hmm_e_id, _, hmm_to_n_id, transition_prob <span class="hljs-keyword">in</span> hmm.get_outputs_full(hmm_from_n_id):
+            <span class="hljs-keyword">if</span> get_node_emittable(hmm, hmm_to_n_id):
+                <span class="hljs-keyword">continue</span>
+            prev_path.append(hmm_e_id)
+            <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> enumerate_paths(hmm, hmm_to_n_id, emitted_seq_len, get_node_emittable, prev_path)
+            prev_path.pop()
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-comment"># Explode out at that path by digging into transitions from hmm_from_n_id. If the destination of the transition</span>
+        <span class="hljs-comment"># is an ...</span>
+        <span class="hljs-comment"># * emittable hidden state, subtract the expected emitted sequence length by 1 when you dig down.</span>
+        <span class="hljs-comment"># * non-emittable hidden state, keep the expected emitted sequence length the same when you dig down.</span>
+        <span class="hljs-keyword">for</span> hmm_e_id, _, hmm_to_n_id, transition_prob <span class="hljs-keyword">in</span> hmm.get_outputs_full(hmm_from_n_id):
+            prev_path.append(hmm_e_id)
+            <span class="hljs-keyword">if</span> get_node_emittable(hmm, hmm_to_n_id):
+                next_emittable_seq_len = emitted_seq_len - <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                next_emittable_seq_len = emitted_seq_len
+            <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> enumerate_paths(hmm, hmm_to_n_id, next_emittable_seq_len, get_node_emittable, prev_path)
+            prev_path.pop()
 
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">emission_probability</span>(<span class="hljs-params">
@@ -25258,7 +25285,7 @@ pseudocount: 0.0001
         get_edge_transition_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, STATE], <span class="hljs-built_in">float</span>]
 </span>):
     sum_of_probs = <span class="hljs-number">0.0</span>
-    <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> enumerate_paths(hmm, hmm_source_n_id, <span class="hljs-built_in">len</span>(emitted_seq)):
+    <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> enumerate_paths(hmm, hmm_source_n_id, <span class="hljs-built_in">len</span>(emitted_seq), get_node_emittable):
         emitted_seq_idx = <span class="hljs-number">0</span>
         prob = <span class="hljs-number">1.0</span>
         <span class="hljs-keyword">for</span> e_id <span class="hljs-keyword">in</span> p:
@@ -25296,15 +25323,165 @@ pseudocount: 0.0001
 </code></pre>
 <p>The following HMM was produced AFTER applying pseudocounts ...</p>
 <p><img src="dot_2bd74b1796b5596deb0ceabd73a05c06.svg" alt="Dot diagram"></p>
-<p>The probability of ['z', 'z', 'x'] being emitted is 0.034375708417050205 ...</p>
+<p>The probability of ['z', 'z', 'x'] being emitted is 0.01482111493167342 ...</p>
 </div>
 <p></p>
-<a name="H1_Viterbi%20Algorithm"></a><h4>Viterbi Algorithm</h4>
-<p><a name="BM_(Algorithms%5C%2FSequence%20Region%20HMM%2FMost%20Probable%20Symbol%20Emissions%2FViterbi%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<a name="H5_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20Region%20HMM%2FMost%20Probable%20Symbol%20Emissions%2FGraph%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Region%20HMM%2FMost%20Probable%20Symbol%20Emissions%2FNaive%20Algorithm)_TOPIC%2F">Algorithms/Sequence Region HMM/Most Probable Symbol Emissions/Naive Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20Region%20HMM%2FMost%20Probable%20Hidden%20Path%2FViterbi%20Non-emitting%20States%20Algorithm)_TOPIC%2F">Algorithms/Sequence Region HMM/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm</a></li>
+</ul>
+</div>
 <p><strong>ALGORITHM</strong>:</p>
-<p>TODO</p>
-<p>TODO</p>
-<p>TODO</p>
+<p>This algorithm uses basic algebra rules to streamline the computations performed by the naive algorithm. Recall that the naive algorithm determines the probability of an <a href="#BM_(HMM)%2F">HMM</a> emitting a <a href="#BM_(sequence)%2Fi">sequence</a> by summing the probability of that emitted <a href="#BM_(sequence)%2Fi">sequence</a> occuring over all <a href="#BM_(hidden%20path)%2Fi">hidden path</a>s. For example, imagine the following <a href="#BM_(HMM)%2F">HMM</a>.</p>
+<p><img src="svgbob_6c810aaa37a67150f1f6090237838fb6d6f152d0.svg" alt="Kroki diagram output"></p>
+<p>The naive algorithm computes the emmision probability of [z, z, y] as ...</p>
+<pre><code>Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→A|y) +
+Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) +
+Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) * Pr(B→C) +
+Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y) +
+Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) +
+Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) +
+Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→A|y) +
+Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) +
+Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) * Pr(B→C) +
+Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y) +
+Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) +
+Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+</code></pre>
+<p>Given such an expression, factor out the probabilities based on the last emitted symbol (last multiplication in each addition).</p>
+<pre><code>Pr(A→A|y) * (
+  Pr(SOURCE→A|z) * Pr(A→A|z) +
+  Pr(SOURCE→B|z) * Pr(B→A|z)
+)
++
+Pr(B→A|y) * (
+  Pr(SOURCE→A|z) * Pr(A→B|z) +
+  Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z)
+)
++
+Pr(A→B|y) * (
+  Pr(SOURCE→A|z) * Pr(A→A|z) +
+  Pr(SOURCE→B|z) * Pr(B→A|z)
+)
++
+Pr(C→B|y) * (
+  Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) +
+  Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C)
+)
++ 
+Pr(B→C) * (
+  Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) +
+  Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) +
+  Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) +
+  Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)
+)
+</code></pre>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Recall algebra factoring: <code>a*b+a*c = a(b+c)</code>.</p>
+</div>
+<p>Continue this process for each nested expression, recursively: For each nested expression, factor out the last probability being multiplied in each addition.</p>
+<pre><code>Pr(A→A|y) * (
+  Pr(A→A|z) * (
+    Pr(SOURCE→A|z)
+  )
+  +
+  Pr(B→A|z) * (
+    Pr(SOURCE→B|z)
+  )
+)
++
+Pr(B→A|y) * (
+  Pr(A→B|z) * (
+    Pr(SOURCE→A|z)
+  )
+  + 
+  Pr(C→B|z) * (
+    Pr(B→C) * (
+      Pr(SOURCE→B|z)
+    )
+  )
+)
++
+Pr(A→B|y) * (
+  Pr(A→A|z) * (
+    Pr(SOURCE→A|z)
+  )
+  +
+  Pr(B→A|z) * (
+    Pr(SOURCE→B|z)
+  )
+)
++
+Pr(C→B|y) * (
+  Pr(B→C) * (
+    Pr(A→B|z) * (
+      Pr(SOURCE→A|z)
+    )
+    +
+    Pr(C→B|z) * (
+      Pr(B→C) * (
+        Pr(SOURCE→B|z)
+      )
+    )
+  )
+)
++ 
+Pr(B→C) * (
+  Pr(A→B|y) * (
+    Pr(A→A|z) * (
+      Pr(SOURCE→A|z)
+    )
+    +
+    Pr(B→A|z) * (
+      Pr(SOURCE→B|z)
+    )
+  )
+  +
+  Pr(C→B|y) * (
+    Pr(B→C) * (
+      Pr(A→B|z) * (
+        Pr(SOURCE→A|z)
+      )
+      +
+      Pr(C→B|z) * (
+        Pr(B→C) * (
+          Pr(SOURCE→B|z)
+        )
+      )
+    )
+  )
+)
+</code></pre>
+<p>This factored expression reduces the number of additions and multiplications happening. However, notice that many of the nested expressions in this expression are repeating. For example, notice how the block ...</p>
+<pre><code>Pr(A→A|z) * (
+  Pr(SOURCE→A|z)
+) +
+Pr(B→A|z) * (
+  Pr(SOURCE→B|z)
+)
+</code></pre>
+<p>... appears in two places. In the factored expression, one way to group nested expressions is as as follows.</p>
+<p><img src="svgbob_03209d403776f207ab464b5aed3420fb4918f102.svg" alt="Kroki diagram output"></p>
+<p>Each repeating group only needs to be evaluated once. The result of that evaluation can then be fed into the evaluation of other groups. For example, ...</p>
+<ul>
+<li>once A0 and B0 are evaluated, their results can be fed directly into the evaluation for A1 and C0 (as opposed to evaluating A0 and B0 twice each).</li>
+<li>once A1 has been calculated, its result can be fed directly into the evaluation for A2 and B2 (as opposed to evaluating A1 twice).</li>
+<li>etc...</li>
+</ul>
+<p>The above grouping and how each group feeds forward is essentially an exploded out <a href="#BM_(HMM)%2F">HMM</a> for the emitted <a href="#BM_(sequence)%2Fi">sequence</a> (similar to the structure of a <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a>). When computed as a graph, each group only gets computed once.</p>
+<p><img src="svgbob_4acf9bf1b617eae49ec4205ad41d58055d596f35.svg" alt="Kroki diagram output"></p>
+<p>TODO: insert code</p>
+<p>TODO: insert code</p>
+<p>TODO: insert code</p>
+<p>TODO: insert code</p>
+<p>TODO: insert code</p>
+<p>TODO: insert code</p>
+<p>TODO: insert code</p>
 <a name="H_Viterbi%20Most%20Probable%20Symbol%20Emissions"></a><h3>Viterbi Most Probable Symbol Emissions</h3>
 <p><a name="BM_(Algorithms%5C%2FSequence%20Region%20HMM%2FViterbi%20Most%20Probable%20Symbol%20Emissions)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>:</p>

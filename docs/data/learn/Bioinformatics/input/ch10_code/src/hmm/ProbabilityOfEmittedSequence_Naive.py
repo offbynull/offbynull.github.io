@@ -166,35 +166,35 @@ def emission_probability(
 # MARKDOWN
 
 
-transition_probs = {
-    'SOURCE': {'A': 0.5, 'B': 0.5},
-    'A': {'A': 0.377, 'B': 0.623},
-    'B': {'A': 0.301, 'C': 0.699},
-    'C': {'B': 1.0}
-}
-emission_probs = {
-    'A': {'x': 0.533, 'y': 0.065, 'z': 0.402},
-    'B': {'x': 0.342, 'y': 0.334, 'z': 0.324},
-    'C': {}
-}
-prob = emission_probability(
-    to_hmm_graph_PRE_PSEUDOCOUNTS(transition_probs, emission_probs),
-    'SOURCE',
-    list('xzyyzzyzyy'),
-    lambda g, st, sy: emission_probs[st][sy],
-    lambda g, st: emission_probs[st] != {},
-    lambda g, st1, st2: transition_probs[st1][st2]
-)
-print(f'{prob}')
-g = enumerate_paths(
-    to_hmm_graph_PRE_PSEUDOCOUNTS(transition_probs, emission_probs),
-    'SOURCE',
-    3,
-    lambda g, state: g.get_node_data(state) != {}
-)
-for p in g:
-    print(f'{" * ".join(f"Pr({e[0]}→{e[1]}|)" for e in p)}')
-raise ValueError()
+# transition_probs = {
+#     'SOURCE': {'A': 0.5, 'B': 0.5},
+#     'A': {'A': 0.377, 'B': 0.623},
+#     'B': {'A': 0.301, 'C': 0.699},
+#     'C': {'B': 1.0}
+# }
+# emission_probs = {
+#     'A': {'x': 0.533, 'y': 0.065, 'z': 0.402},
+#     'B': {'x': 0.342, 'y': 0.334, 'z': 0.324},
+#     'C': {}
+# }
+# prob = emission_probability(
+#     to_hmm_graph_PRE_PSEUDOCOUNTS(transition_probs, emission_probs),
+#     'SOURCE',
+#     list('xzyyzzyzyy'),
+#     lambda g, st, sy: emission_probs[st][sy],
+#     lambda g, st: emission_probs[st] != {},
+#     lambda g, st1, st2: transition_probs[st1][st2]
+# )
+# print(f'{prob}')
+# g = enumerate_paths(
+#     to_hmm_graph_PRE_PSEUDOCOUNTS(transition_probs, emission_probs),
+#     'SOURCE',
+#     3,
+#     lambda g, state: g.get_node_data(state) != {}
+# )
+# for p in g:
+#     print(f'{" * ".join(f"Pr({e[0]}→{e[1]}|)" for e in p)}')
+# raise ValueError()
 
 
 def main():

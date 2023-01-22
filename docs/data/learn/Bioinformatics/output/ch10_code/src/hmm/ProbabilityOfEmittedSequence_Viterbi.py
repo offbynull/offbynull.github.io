@@ -29,15 +29,13 @@ def viterbi_to_dot(g: Graph) -> str:
     return ret
 
 
-def to_viterbi_graph(
+def to_viterbi_graph_without_weights(
         hmm: Graph[N, ND, E, ED],
         hmm_source_n_id: N,
         hmm_sink_n_id: N,
         emissions: list[SYMBOL],
-        get_node_emission_prob: Callable[[Graph[N, ND, E, ED], STATE, SYMBOL], float],
         get_node_emittable: Callable[[Graph[N, ND, E, ED], STATE], bool],
-        get_edge_transition_prob: Callable[[Graph[N, ND, E, ED], STATE, STATE], float]
-) -> Graph[tuple[int, N], Any, tuple[N, N], float]:
+) -> Graph[tuple[int, N], Any, tuple[N, N], Any]:
     viterbi = Graph()
     # Add Viterbi source node.
     viterbi_source_n_id = -1, hmm_source_n_id
@@ -58,24 +56,21 @@ def to_viterbi_graph(
             for _, _, hmm_to_n_id, _ in hmm.get_outputs_full(hmm_from_n_id):
                 hmm_to_n_emittable = get_node_emittable(hmm, hmm_to_n_id)
                 if hmm_to_n_emittable:
-                    hidden_state_transition_prob = get_edge_transition_prob(hmm, hmm_from_n_id, hmm_to_n_id)
-                    symbol_emission_prob = get_node_emission_prob(hmm, hmm_to_n_id, viterbi_to_n_symbol)
                     viterbi_to_n_id = viterbi_to_n_emissions_idx, hmm_to_n_id
                     connect_viterbi_nodes(
                         viterbi,
                         viterbi_from_n_id,
                         viterbi_to_n_id,
-                        hidden_state_transition_prob * symbol_emission_prob
+                        None
                     )
                     viterbi_to_n_ids_emitting.add(viterbi_to_n_id)
                 else:
-                    hidden_state_transition_prob = get_edge_transition_prob(hmm, hmm_from_n_id, hmm_to_n_id)
                     viterbi_to_n_id = viterbi_from_n_emissions_idx, hmm_to_n_id
                     to_n_existed = connect_viterbi_nodes(
                         viterbi,
                         viterbi_from_n_id,
                         viterbi_to_n_id,
-                        hidden_state_transition_prob
+                        None
                     )
                     if not to_n_existed:
                         viterbi_from_n_ids.add(viterbi_to_n_id)
@@ -95,28 +90,27 @@ def to_viterbi_graph(
             hmm_to_n_emmitable = get_node_emittable(hmm, hmm_to_n_id)
             if hmm_to_n_emmitable:
                 continue
-            hidden_state_transition_prob = get_edge_transition_prob(hmm, hmm_from_n_id, hmm_to_n_id)
             viterbi_to_n_id = viterbi_from_n_emissions_idx, hmm_to_n_id
             connect_viterbi_nodes(
                 viterbi,
                 viterbi_from_n_id,
                 viterbi_to_n_id,
-                hidden_state_transition_prob
+                None
             )
             viterbi_to_n_ids_non_emitting.add(viterbi_to_n_id)
             viterbi_from_n_ids.add(viterbi_to_n_id)
     # Add Viterbi sink node.
     viterbi_to_n_id = -1, hmm_sink_n_id
     for viterbi_from_n_id in viterbi_to_n_ids_emitting | viterbi_to_n_ids_non_emitting:
-        connect_viterbi_nodes(viterbi, viterbi_from_n_id, viterbi_to_n_id, 1.0)
+        connect_viterbi_nodes(viterbi, viterbi_from_n_id, viterbi_to_n_id, None)
     return viterbi
 
 
 def connect_viterbi_nodes(
-        viterbi: Graph[tuple[int, N], Any, tuple[N, N], float],
+        viterbi: Graph[tuple[int, N], Any, tuple[N, N], Any],
         viterbi_from_n_id: tuple[int, N],
         viterbi_to_n_id: tuple[int, N],
-        weight: float
+        weight: Any
 ) -> bool:
     to_n_existed = True
     if not viterbi.has_node(viterbi_to_n_id):
@@ -233,32 +227,36 @@ def emission_probability(
         get_node_emittable: Callable[[Graph[N, ND, E, ED], STATE], bool],
         get_edge_transition_prob: Callable[[Graph[N, ND, E, ED], STATE, STATE], float]
 ):
-    viterbi = to_viterbi_graph(hmm, hmm_source_n_id, hmm_sink_n_id, emitted_seq, get_node_emission_prob,
-                               get_node_emittable, get_edge_transition_prob)
+    # Generate a viterbi graph without any weights -- just a graph of an HMM exploded out based on the emitted sequence.
+    viterbi = to_viterbi_graph_without_weights(hmm, hmm_source_n_id, hmm_sink_n_id, emitted_seq, get_node_emittable)
+    # Use algorithm to set weights and figure out emission probability
     viterbi_source_n_id = viterbi.get_root_node()  # equiv to (-1, hmm_source_n_id) -- using root node func for clarity
     viterbi.update_node_data(viterbi_source_n_id, 1.0)
     for i, symbol in enumerate(emitted_seq):
         for state in hidden_states:
-            to_n_id = i, state
+            viterbi_to_n_id = i, state
             n_forward_weight = 0.0
-            for e_id, from_n, _, e_weight in viterbi.get_inputs_full(to_n_id):
-                from_n_forward_weight = get_edge_transition_prob(hmm, from_n[1], to_n_id[1])
-                n_forward_weight += from_n_forward_weight * from_n_forward_weight
+            for e_id, viterbi_from_n_id, _, _ in viterbi.get_inputs_full(viterbi_to_n_id):
+                from_n_forward_weight = viterbi.get_node_data(viterbi_from_n_id)
+                _, hmm_from_n_id = viterbi_from_n_id
+                _, hmm_to_n_id = viterbi_to_n_id
+                transition_prob = get_edge_transition_prob(hmm, hmm_from_n_id, hmm_to_n_id)
+                n_forward_weight += from_n_forward_weight * transition_prob
             if get_node_emittable(hmm, state):
                 symbol_emission_prob = get_node_emission_prob(hmm, state, symbol)
             else:
                 symbol_emission_prob = 1.0
             n_forward_weight *= symbol_emission_prob
-            viterbi.update_node_data(to_n_id, n_forward_weight)
-
-    # Now do it for the sink as well
+            viterbi.update_node_data(viterbi_to_n_id, n_forward_weight)
+    # The code above doesn't cover the SINK node -- run a cycle for the SINK node as well here.
     viterbi_sink_n_id = viterbi.get_leaf_node()  # equiv to (-1, hmm_sink_n_id) -- using leaf node func for clarity
     n_forward_weight = 0.0
-    for e_id, from_n, _, e_weight in viterbi.get_inputs_full(viterbi_sink_n_id):
-        from_n_forward_weight = viterbi.get_node_data(from_n)
-        n_forward_weight += from_n_forward_weight * e_weight
+    for e_id, viterbi_from_n_id, _, _ in viterbi.get_inputs_full(viterbi_sink_n_id):
+        from_n_forward_weight = viterbi.get_node_data(viterbi_from_n_id)
+        transition_prob = 1.0
+        n_forward_weight += from_n_forward_weight * transition_prob
     viterbi.update_node_data(viterbi_sink_n_id, n_forward_weight)
-
+    # SINK node's weight should be the emission probability
     return n_forward_weight
 # MARKDOWN
 
@@ -360,5 +358,5 @@ def main():
 
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()

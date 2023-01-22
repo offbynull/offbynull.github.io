@@ -57,7 +57,7 @@ digraph G {
 }
 ```
 
-The probability of ['z', 'z', 'x'] being emitted is 0.034375708417050205 ...
+The probability of ['z', 'z', 'x'] being emitted is 0.01482111493167342 ...
 
 </div>
 
