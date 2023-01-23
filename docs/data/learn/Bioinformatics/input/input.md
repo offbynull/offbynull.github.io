@@ -14739,6 +14739,8 @@ Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Standard Alg
 Algorithms/Single Nucleotide Polymorphism/Suffix Array_TOPIC
 ```
 
+**ALGORITHM**:
+
 ```{note}
 Recall the terminology used for BWT:
 
@@ -15528,6 +15530,8 @@ Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Deserializat
 Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Backsweep Testing Algorithm_TOPIC
 ```
 
+**ALGORITHM**:
+
 ```{note}
 Recall the terminology used for BWT:
 
@@ -15715,6 +15719,8 @@ test: ana
 Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Collapsed First Algorithm_TOPIC
 Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Backsweep Testing Algorithm_TOPIC
 ```
+
+**ALGORITHM**:
 
 ```{note}
 Recall the terminology used for BWT:
@@ -16076,6 +16082,8 @@ test: bba
 Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Ranks Algorithm_TOPIC
 ```
 
+**ALGORITHM**:
+
 ```{note}
 Recall the terminology used for BWT:
 
@@ -16201,6 +16209,8 @@ Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Checkpointed
 Algorithms/Single Nucleotide Polymorphism/Burrows-Wheeler Transform/Checkpointed Ranks Algorithm_TOPIC
 Algorithms/Single Nucleotide Polymorphism/Suffix Array_TOPIC
 ```
+
+**ALGORITHM**:
 
 ```{note}
 Recall the terminology used for BWT:
@@ -16531,9 +16541,9 @@ scoring_matrix: |+2
   * -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4  1
 ```
 
-## Sequence Region HMM
+## Sequence HMM
 
-`{bm} /(Algorithms\/Sequence Region HMM)_TOPIC/`
+`{bm} /(Algorithms\/Sequence HMM)_TOPIC/`
 
 ```{prereq}
 Algorithms/K-mer_TOPIC
@@ -16545,7 +16555,7 @@ Many core biology constructs are represented as sequences. For example, ...
  * proteins are represented as a sequence (chained amino acids),
  * etc..
 
-These sequences typically have different regions. For example, human DNA consists of genes, telomeres, centromeres, CG islands, etc..
+Sequences typically have common patterns / properties across the class they represent. For example, all human genomes share similar regions where the abundances of CG pairs spike, called CG-islands.
 
 ```{svgbob}
                     "CG island"
@@ -16554,12 +16564,12 @@ These sequences typically have different regions. For example, human DNA consist
 . . . C G A G G C G C G G T T A G G T T A C G . . .
 ```
 
-It's common to develop models that infer regions within new sequences based on regions identified in past related sequences. One such model is called a hidden markov model (HMM). A HMM models a machine that, ...
+It's common to develop models that infer such regions within new sequences based on similar regions identified in past related sequences. One such model is called a hidden markov model (HMM). A HMM models a machine that, ...
 
  * at any time, is in one of many possible hidden states (unobservable, hence the word hidden).
  * at each hidden state, emits a symbol (observable).
 
-The machine works as a loop. At each iteration of the loop, the machine transitions to a different hidden state or stays at the same hidden state, then it emits a symbol. For example, a machine could be in one of two states: CG island or non-CG island. In the CG island state, the machine emits the nucleotide pair CG much more frequently than when in the non-CG island state.
+The machine works in steps. At each step, the machine transitions to a different hidden state (or stays at the same hidden state), then it emits a symbol. For example, a machine could be in one of two states: CG island or non-CG island. In the CG island state, the machine emits the nucleotide pair CG much more frequently than when in the non-CG island state.
 
 ```{svgbob}
 "Asterisk (*) identifies the current state"
@@ -16609,16 +16619,12 @@ An HMM models a machine, such as CG island machine described above, using probab
 
     For the machine described above, these are the probabilities that, once transitioned to a hidden state, the machine emits a symbol. Note that the "SOURCE" hidden state isn't included here. The "SOURCE" and "SINK" hidden states never emit a symbol. They're simply there to represent the machine's starting and termination states.
  
-    |               | AA   | AC   | AT   | AG   | CA   | CC   | CT   | CG       | TA   | TC   | TT   | TG   | GA   | GC       | GT   | GG   |
-    |---------------|------|------|------|------|------|------|------|----------|------|------|------|------|------|----------|------|------|
-    | CG island     | 0.06 | 0.06 | 0.06 | 0.06 | 0.06 | 0.06 | 0.06 | **0.06** | 0.06 | 0.06 | 0.06 | 0.06 | 0.06 | **0.06** | 0.06 | 0.06 |
-    | non-CG island | 0.07 | 0.07 | 0.07 | 0.07 | 0.07 | 0.07 | 0.07 | **0.00** | 0.07 | 0.07 | 0.07 | 0.07 | 0.07 | **0.00** | 0.07 | 0.07 |
+    |               | AA    | AC    | AT    | AG    | CA    | CC    | CT    | CG        | TA    | TC    | TT    | TG    | GA    | GC    | GT    | GG    |
+    |---------------|-------|-------|-------|-------|-------|-------|-------|-----------|-------|-------|-------|-------|-------|-------|-------|-------|
+    | CG island     | 0.063 | 0.063 | 0.063 | 0.063 | 0.063 | 0.063 | 0.063 | **0.063** | 0.063 | 0.063 | 0.063 | 0.063 | 0.063 | 0.063 | 0.063 | 0.063 |
+    | non-CG island | 0.067 | 0.067 | 0.067 | 0.067 | 0.067 | 0.067 | 0.067 | **0.000** | 0.067 | 0.067 | 0.067 | 0.067 | 0.067 | 0.067 | 0.067 | 0.067 |
  
-    Note that each row should sum to 1.0. The rows above sum to slightly below 1.0 due to rounding error, but they would sum to 1.0 had they not been rounded for brevity. For example, when in the CG island state, the machine has an equal probability of emitting each symbol: 0.0625 (6.25% percent) for each symbol. It must perform one of these transitions, hence the sum to 1.0 (0.0625 * 16 is 1.0).
- 
-    ```{note}
-    GC is the reverse completment of CG, so GC is treated the same as CG in the emission probabilities above.
-    ```
+    Note that each row should sum to 1.0. The rows above sum to slightly off from 1.0 due to rounding error, but they would sum to 1.0 had they not been rounded for brevity. For example, when in the CG island state, the machine has an equal probability of emitting each symbol: 0.0625 (6.25% percent) for each symbol. It must perform one of these transitions, hence the sum to 1.0 (0.0625 * 16 is 1.0).
 
 The goal with an HMM is to use past observations of a machine to determine the parameters discussed above. These parameters go on to build algorithms that, given a sequence of emitted symbols (e.g. nucleotide pairs), infers the sequence of hidden state transitions that the machine went through to output those symbols (e.g. CG island vs non-CG island). A sequence of hidden state transitions in an HMM is commonly referred to as a hidden path.
 
@@ -16645,78 +16651,78 @@ The four parameters discussed above are often visualized using a directed graph,
   : : : : : : : : : : : : : : : :  '-------------------------'  : : : : : : : : : : : : : : : : 
   : : : : : : : : : : : : : : : :                               : : : : : : : : : : : : : : : : 
   : : : : : : : : : : : : : : : :                               : : : : : : : : : : : : : : : : 
-  : : : : : : : : : : : : : : : :     0.06   +- - - -+  0.07    : : : : : : : : : : : : : : : : 
+  : : : : : : : : : : : : : : : :     0.063  +- - - -+  0.067   : : : : : : : : : : : : : : : : 
   : : : : : : : : : : : : : : : '- - - - - ->:  AA   :<- - - - -' : : : : : : : : : : : : : : : 
   : : : : : : : : : : : : : : :              +- - - -+            : : : : : : : : : : : : : : : 
   : : : : : : : : : : : : : : :                                   : : : : : : : : : : : : : : :
-  : : : : : : : : : : : : : : :       0.06   +- - - -+  0.07      : : : : : : : : : : : : : : :
+  : : : : : : : : : : : : : : :       0.063  +- - - -+  0.067     : : : : : : : : : : : : : : :
   : : : : : : : : : : : : : : '- - - - - - ->:  AC   :<- - - - - -' : : : : : : : : : : : : : :
   : : : : : : : : : : : : : :                +- - - -+              : : : : : : : : : : : : : :
   : : : : : : : : : : : : : :                                       : : : : : : : : : : : : : :
-  : : : : : : : : : : : : : :         0.06   +- - - -+  0.07        : : : : : : : : : : : : : :
+  : : : : : : : : : : : : : :         0.063  +- - - -+  0.067       : : : : : : : : : : : : : :
   : : : : : : : : : : : : : '- - - - - - - ->:  AT   :<- - - - - - -' : : : : : : : : : : : : :
   : : : : : : : : : : : : :                  +- - - -+                : : : : : : : : : : : : :
   : : : : : : : : : : : : :                                           : : : : : : : : : : : : :
-  : : : : : : : : : : : : :           0.06   +- - - -+  0.07          : : : : : : : : : : : : :
+  : : : : : : : : : : : : :           0.063  +- - - -+  0.067         : : : : : : : : : : : : :
   : : : : : : : : : : : : '- - - - - - - - ->:  AG   :<- - - - - - - -' : : : : : : : : : : : :
   : : : : : : : : : : : :                    +- - - -+                  : : : : : : : : : : : :
   : : : : : : : : : : : :                                               : : : : : : : : : : : :
-  : : : : : : : : : : : :             0.06   +- - - -+  0.07            : : : : : : : : : : : :
+  : : : : : : : : : : : :             0.063  +- - - -+  0.067           : : : : : : : : : : : :
   : : : : : : : : : : : '- - - - - - - - - ->:  CA   :<- - - - - - - - -' : : : : : : : : : : :
   : : : : : : : : : : :                      +- - - -+                    : : : : : : : : : : :
   : : : : : : : : : : :                                                   : : : : : : : : : : :
-  : : : : : : : : : : :               0.06   +- - - -+  0.07              : : : : : : : : : : :
+  : : : : : : : : : : :               0.063  +- - - -+  0.067             : : : : : : : : : : :
   : : : : : : : : : : '- - - - - - - - - - ->:  CC   :<- - - - - - - - - -' : : : : : : : : : :
   : : : : : : : : : :                        +- - - -+                      : : : : : : : : : :
   : : : : : : : : : :                                                       : : : : : : : : : :
-  : : : : : : : : : :                 0.06   +- - - -+  0.07                : : : : : : : : : :
+  : : : : : : : : : :                 0.063  +- - - -+  0.067               : : : : : : : : : :
   : : : : : : : : : '- - - - - - - - - - - ->:  CT   :<- - - - - - - - - - -' : : : : : : : : :
   : : : : : : : : :                          +- - - -+                        : : : : : : : : :
   : : : : : : : : :                                                           : : : : : : : : :
-  : : : : : : : : :                   0.06   +- - - -+  0.00                  : : : : : : : : :
+  : : : : : : : : :                   0.063  +- - - -+  0.00                  : : : : : : : : :
   : : : : : : : : '- - - - - - - - - - - - ->:  CG   :<- - - - - - - - - - - -' : : : : : : : :
   : : : : : : : :                            +- - - -+                          : : : : : : : :
   : : : : : : : :                                                               : : : : : : : :
-  : : : : : : : :                     0.06   +- - - -+  0.07                    : : : : : : : :
+  : : : : : : : :                     0.063  +- - - -+  0.067                   : : : : : : : :
   : : : : : : : '- - - - - - - - - - - - - ->:  TA   :<- - - - - - - - - - - - -' : : : : : : :
   : : : : : : :                              +- - - -+                            : : : : : : :
   : : : : : : :                                                                   : : : : : : :
-  : : : : : : :                       0.06   +- - - -+  0.07                      : : : : : : :
+  : : : : : : :                       0.063  +- - - -+  0.067                     : : : : : : :
   : : : : : : '- - - - - - - - - - - - - - ->:  TC   :<- - - - - - - - - - - - - -' : : : : : :
   : : : : : :                                +- - - -+                              : : : : : :
   : : : : : :                                                                       : : : : : :
-  : : : : : :                         0.06   +- - - -+  0.07                        : : : : : :
+  : : : : : :                         0.063  +- - - -+  0.067                       : : : : : :
   : : : : : '- - - - - - - - - - - - - - - ->:  TT   :<- - - - - - - - - - - - - - -' : : : : :
   : : : : :                                  +- - - -+                                : : : : :
   : : : : :                                                                           : : : : :
-  : : : : :                           0.06   +- - - -+  0.07                          : : : : :
+  : : : : :                           0.063  +- - - -+  0.067                         : : : : :
   : : : : '- - - - - - - - - - - - - - - - ->:  TG   :<- - - - - - - - - - - - - - - -' : : : :
   : : : :                                    +- - - -+                                  : : : :
   : : : :                                                                               : : : :
-  : : : :                             0.06   +- - - -+  0.07                            : : : :
+  : : : :                             0.063  +- - - -+  0.067                           : : : :
   : : : '- - - - - - - - - - - - - - - - - ->:  GA   :<- - - - - - - - - - - - - - - - -' : : :
   : : :                                      +- - - -+                                    : : :
   : : :                                                                                   : : :
-  : : :                               0.06   +- - - -+  0.00                              : : :
+  : : :                               0.063  +- - - -+  0.00                              : : :
   : : '- - - - - - - - - - - - - - - - - - ->:  GC   :<- - - - - - - - - - - - - - - - - -' : :
   : :                                        +- - - -+                                      : :
   : :                                                                                       : :
-  : :                                 0.06   +- - - -+  0.07                                : :
+  : :                                 0.063  +- - - -+  0.067                               : :
   : '- - - - - - - - - - - - - - - - - - - ->:  GT   :<- - - - - - - - - - - - - - - - - - -' :
   :                                          +- - - -+                                        :
   :                                                                                           :
-  :                                   0.06   +- - - -+  0.07                                  :
+  :                                   0.063  +- - - -+  0.067                                 :
   '- - - - - - - - - - - - - - - - - - - - ->:  GG   :<- - - - - - - - - - - - - - - - - - - -'
                                              +- - - -+
 ```
 
 ```{note}
-Another common way of identifying sequence regions is probably deep-learning models (LSTM)? The Pevzner book focused on HMMs so that's what this section is going to focus on.
+Another common way of identifying sequence regions is probably deep-learning models (LSTM)? The Pevzner book focused on HMMs, so that's what this section is going to focus on.
 ```
 
 ### Chained Transition Probability
 
-`{bm} /(Algorithms\/Sequence Region HMM\/Chained Transition Probability)_TOPIC/`
+`{bm} /(Algorithms\/Sequence HMM\/Chained Transition Probability)_TOPIC/`
 
 **WHAT**: The probability that, in an HMM, a sequence of hidden state transitions occur.
 
@@ -16747,9 +16753,9 @@ state_transitions: [[SOURCE,A], [A,B], [B,A], [A,B], [B,B], [B,B], [B,A], [A,A],
 
 ### Chained Emission Probability
 
-`{bm} /(Algorithms\/Sequence Region HMM\/Chained Emission Probability)_TOPIC/`
+`{bm} /(Algorithms\/Sequence HMM\/Chained Emission Probability)_TOPIC/`
 
-**WHAT**: The probability that, in an HMM, a sequence of symbols are emitted, each from a different state.
+**WHAT**: The probability that, in an HMM, a sequence of symbols is emitted, each from a different state.
 
 **WHY**: These probabilities are the foundation of more elaborate HMM algorithms, discussed further on.
 
@@ -16778,14 +16784,14 @@ state_emissions: [[B,z], [A,z], [A,z], [A,y], [A,x], [A,y], [A,y], [A,z], [A,z],
 
 ### Chained Transition-Emission Probability
 
-`{bm} /(Algorithms\/Sequence Region HMM\/Chained Transition-Emission Probability)_TOPIC/`
+`{bm} /(Algorithms\/Sequence HMM\/Chained Transition-Emission Probability)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Region HMM/Chained Transition Probability_TOPIC
-Algorithms/Sequence Region HMM/Chained Emission Probability_TOPIC
+Algorithms/Sequence HMM/Chained Transition Probability_TOPIC
+Algorithms/Sequence HMM/Chained Emission Probability_TOPIC
 ```
 
-**WHAT**: The probability that, in an HMM, a sequence of symbols are emitted each after a state transition has occurred.
+**WHAT**: The probability that, in an HMM, a sequence of symbols is emitted, each after a state transition has occurred.
 
 **WHY**: These probabilities are the foundation of more elaborate HMM algorithms, discussed further on.
 
@@ -16796,7 +16802,7 @@ The algorithm is the application of probabilities. An HMM provides the probabili
  * each state transition.
  * each symbol emission in each hidden state.
 
-The probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destionation's emission). The probability of a chain of such transition-emission is their individual probabilities multiplied together.
+The probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destination's emission). The probability of a chain of such transition-emission is their individual probabilities multiplied together.
 
 ```{output}
 ch10_code/src/hmm/StateTransitionFollowedBySymbolEmissionChainProbability.py
@@ -16819,7 +16825,7 @@ transition_to_symbol_pairs: [[[SOURCE,B],z], [[B,A],z], [[A,A],z], [[A,A],y], [[
 
 ### Most Probable Hidden Path
 
-`{bm} /(Algorithms\/Sequence Region HMM\/Most Probable Hidden Path)_TOPIC/`
+`{bm} /(Algorithms\/Sequence HMM\/Most Probable Hidden Path)_TOPIC/`
 
 **WHAT**: Find the most likely hidden path within an HMM that for a sequence of emitted symbols. For example, consider the HMM represented by the following HMM diagram and the emitted sequence [z, z, x, x, y]. The algorithm will determine the most likely set of hidden state transitions (hidden path) that resulted in that emitted sequence.
 
@@ -16856,10 +16862,10 @@ transition_to_symbol_pairs: [[[SOURCE,B],z], [[B,A],z], [[A,A],z], [[A,A],y], [[
 
 #### Viterbi Algorithm
 
-`{bm} /(Algorithms\/Sequence Region HMM\/Most Probable Hidden Path\/Viterbi Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Sequence HMM\/Most Probable Hidden Path\/Viterbi Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Region HMM/Chained Transition-Emission Probability_TOPIC
+Algorithms/Sequence HMM/Chained Transition-Emission Probability_TOPIC
 Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
 ```
 
@@ -16921,7 +16927,7 @@ A Viterbi graph is structured as a grid of nodes where ...
  
 In addition, there's a SOURCE node just before the grid and a SINK node just after the grid. Each node connects to nodes immediately in front of it (left-to-right) assuming that the hidden state transition that edge represents is allowed by the HMM. In the example above, the Viterbi graph doesn't connect "B" to "B" because "B" is forbidden to transition to itself in the HMM.
 
-Each edge weight in the Viterbi graph is the probability that the symbol at the destination column was emitted (e.g. x) after the hidden state transition represented by the edge occured (e.g. A→A): Pr(source-to-destination transition) * Pr(symbol emitted from destination). For example, in the HMM diagram above, Pr(A→B) is 0.623 and Pr(B emitting x) is 0.225, so Pr(x|A→B) = 0.623 * 0.225 = 0.140175.
+Each edge weight in the Viterbi graph is the probability that the symbol at the destination column was emitted (e.g. x) after the hidden state transition represented by the edge occurred (e.g. A→A): Pr(source-to-destination transition) * Pr(symbol emitted from destination). For example, in the HMM diagram above, Pr(A→B) is 0.623 and Pr(B emitting x) is 0.225, so Pr(x|A→B) = 0.623 * 0.225 = 0.140175.
 
 ```{svgbob}
   z                 x
@@ -16995,7 +17001,7 @@ emissions: [z,z,x,x,y]
 In a Viterbi graph, each path from "SOURCE" to "SINK" corresponds to a hidden path in the corresponding HMM. The goal is to find the path with the maximum product weight: The path with the maximum product weight is the most probable hidden path for the emitted sequence.
 
 ```{note}
-Why? Recall from Algorithms/Sequence Region HMM/Chained Transition-Emission Probability_TOPIC: The probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destionation's emission). The probability of a chain of such transition-emission is their individual probabilities multiplied together.
+Why? Recall from Algorithms/Sequence HMM/Chained Transition-Emission Probability_TOPIC: The probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destination's emission). The probability of a chain of such transition-emission is their individual probabilities multiplied together.
 ```
 
 The algorithm for determining the path with the maximum product weight is to first apply the logarithm function to each edge weight, then apply the dynamic programming algorithm that finds the path with the maximum sum.
@@ -17035,25 +17041,25 @@ Notice what's happening here. This can be made very memory efficient:
 
 #### Viterbi Pseudocounts Algorithm
 
-`{bm} /(Algorithms\/Sequence Region HMM\/Most Probable Hidden Path\/Viterbi Pseudocounts Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Sequence HMM\/Most Probable Hidden Path\/Viterbi Pseudocounts Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Region HMM/Most Probable Hidden Path/Viterbi Algorithm_TOPIC
+Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Algorithm_TOPIC
 Algorithms/Motif/K-mer Match Probability_TOPIC
 ```
 
 ```{note}
-The motif prerequist covers the idea of psuedocounts, which is used here again as well.
+The motif prerequisite covers the idea of pseudocounts, which is used here again as well.
 ```
 
-The weights of an HMM are typically assigned using past observations. For example, an observer could have full observability into a machine, watching it transition between hidden states and emit symbols. The weights of the HMM for that machine can then assigned based on those observations. For example, if it was observed that ...
+The weights of an HMM are typically assigned using past observations. For example, an observer could have full observability into a machine, watching it transition between hidden states and emit symbols. The weights of the HMM for that machine can then be assigned based on those observations. For example, if it was observed that ...
 
- * symbol x was emited 17.6% of the time after transitioning to hidden state A, Pr(x|A) = 0.176.
- * symbol x was emited 0.0%  of the time after transitioning to hidden state B, Pr(y|B) = 0.0.
- * symbol y was emited 59.6% of the time after transitioning to hidden state A, Pr(y|A) = 0.596.
- * symbol y was emited 41.5% of the time after transitioning to hidden state B, Pr(y|B) = 0.415.
- * symbol z was emited 22.8% of the time after transitioning to hidden state A, Pr(z|A) = 0.228.
- * symbol z was emited 58.5% of the time after transitioning to hidden state B, Pr(z|B) = 0.585.
+ * symbol x was emitted 17.6% of the time after transitioning to hidden state A, Pr(x|A) = 0.176.
+ * symbol x was emitted 0.0%  of the time after transitioning to hidden state B, Pr(y|B) = 0.0.
+ * symbol y was emitted 59.6% of the time after transitioning to hidden state A, Pr(y|A) = 0.596.
+ * symbol y was emitted 41.5% of the time after transitioning to hidden state B, Pr(y|B) = 0.415.
+ * symbol z was emitted 22.8% of the time after transitioning to hidden state A, Pr(z|A) = 0.228.
+ * symbol z was emitted 58.5% of the time after transitioning to hidden state B, Pr(z|B) = 0.585.
  * A transitioned to A 37.7% of the time, Pr(A→A) = 0.377.
  * A transitioned to B 62.3% of the time, Pr(A→B) = 0.623.
  * B transitioned to A 0.0%  of the time, Pr(B→A) = 0.0.
@@ -17090,7 +17096,7 @@ If it's known that a hidden state transition or symbol emission is possible (not
                     +- - - -+               
 ```
 
-Keeping such weights at 0 is bad practice because, when using the Viterbi algorithm, those paths will be removed from consideration. The Viterbi algorithm determines the most probable hidden path by computing the path with the maximum product weight. When computing the maximum product weight, anything multiplied by 0 has a product of 0. A probability of 0 means it has a 0% chance of occuring, as in it will never occur.
+Keeping such weights at 0 is bad practice because, when using the Viterbi algorithm, those paths will be removed from consideration. The Viterbi algorithm determines the most probable hidden path by computing the path with the maximum product weight. When computing the maximum product weight, anything multiplied by 0 has a product of 0. A probability of 0 means it has a 0% chance of occurring, as in it will never occur.
 
 The correct action to take in this scenario is to add pseudocounts to HMM weights: Add a very small value to each weight, then normalize each hidden state's  ...
 
@@ -17121,11 +17127,11 @@ pseudocount: 0.0001
 
 #### Viterbi Non-emitting States Algorithm
 
-`{bm} /(Algorithms\/Sequence Region HMM\/Most Probable Hidden Path\/Viterbi Non-emitting States Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Sequence HMM\/Most Probable Hidden Path\/Viterbi Non-emitting States Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Region HMM/Most Probable Hidden Path/Viterbi Algorithm_TOPIC
-Algorithms/Sequence Region HMM/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC
+Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Algorithm_TOPIC
+Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
@@ -17211,9 +17217,9 @@ Certain HMMs may have hidden states that can't emit symbols. For example, in the
                     +- - - -+    
 ```
 
-During the exploding of an HMM into a Viterbi graph, a transition to a non-emitting hidden state should continue to explode under the current index of the emitted sequence. For example, the Viterbi graph below is for the HMM diagram above and the emitted sequence [z, z, x, x, y]. For the first index of the emitted sequence (symbol z), a transition from hidden state B to hidden state C doesn't move forward to the next index of the emitted sequence. Likewise, a transition form hidden state C to hidden state D also doesn't move forward to the next index of the emitted sequence.
+During the exploding of an HMM into a Viterbi graph, a transition to a non-emitting hidden state should continue to explode under the current index of the emitted sequence. For example, the Viterbi graph below is for the HMM diagram above and the emitted sequence [z, z, x, x, y]. For the first index of the emitted sequence (symbol z), a transition from hidden state B to hidden state C doesn't move forward to the next index of the emitted sequence. Likewise, a transition from hidden state C to hidden state D also doesn't move forward to the next index of the emitted sequence.
 
-Normally, the weight of an edge in a Viterbi graph is calculated as Pr(source-to-destination transition) * Pr(symbol emitted from destination). However, since non-emitting hidden state don't emit a symbol, the probability of symbol emission is removed: The probability of an edge going to a non-emitting is simply Pr(source-to-destination transition).
+Normally, the weight of an edge in a Viterbi graph is calculated as Pr(source-to-destination transition) * Pr(symbol emitted from destination). However, since non-emitting hidden states don't emit symbols, the probability of symbol emission is removed: The probability of an edge going to a non-emitting is simply Pr(source-to-destination transition).
 
 |          |             x            |             y            |             z            |       NON-EMITTABLE      |
 |----------|--------------------------|--------------------------|--------------------------|--------------------------|
@@ -17295,9 +17301,9 @@ pseudocount: 0.0001
 
 ### Probability of Emitted Sequence
 
-`{bm} /(Algorithms\/Sequence Region HMM\/Most Probable Symbol Emissions)_TOPIC/`
+`{bm} /(Algorithms\/Sequence HMM\/Probability of Emitted Sequence)_TOPIC/`
 
-**WHAT**: This algorithm computes the likelihood that an HMM emits some sequence. For example, this algorithm can determine if the following HMM is more likely to emit [z, z, x, x, y] or [z, z, z, z, z].
+**WHAT**: Compute the likelihood that an HMM emits some sequence. For example, determine if the following HMM is more likely to emit [z, z, x, x, y] or [z, z, z, z, z].
 
 ```{svgbob}
                    +--------+   
@@ -17308,13 +17314,13 @@ pseudocount: 0.0001
       v   | .---.    0.623          v   v    |            v
 +---------+-+-+ |               +------------++          +-------------+
 |     "A"     | |               |     "B"     |<---------+     "C"     |
-+--+-+-+------+ |0.377          +---+--+-+-+--+     0.9  ++------------+
-   : : :  ^ ^   |                   |  : : : ^            |    
-   : : :  | |   |                   |  : : : |            | 0.1
-   : : :  | '---'     0.301         |  : : : |            v    
-   : : :  '-------------------------'  : : : |    1.0    +-------------+
-   : : :                               : : : '-----------+     "D"     |
-   : : :                               : : :             +-------------+
++--+-+-+------+ |0.377          +---+--+-+-+--+     1.0  +-------------+
+   : : :  ^ ^   |                   |  : : : 
+   : : :  | |   |                   |  : : : 
+   : : :  | '---'     0.301         |  : : : 
+   : : :  '-------------------------'  : : : 
+   : : :                               : : : 
+   : : :                               : : : 
    : : :     0.176  +- - - -+  0.225   : : : 
    : : '- - - - - ->:   x   :<- - - - -' : : 
    : :              +- - - -+            : : 
@@ -17333,25 +17339,25 @@ pseudocount: 0.0001
 ```{note}
 This is speculation. I speculate this because, if you have a set of emitted sequences that you know get emitted by the machine which an HMM models, those sequences need to more probable to occur vs random sequences (I think).
 
-Why speculate? The Pevzner book never covers a good usecase for this. 
+Why speculate? The Pevzner book never covers a good use-case for this. 
 ```
 
 #### Naive Algorithm
 
-`{bm} /(Algorithms\/Sequence Region HMM\/Most Probable Symbol Emissions\/Naive Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Sequence HMM\/Probability of Emitted Sequence\/Naive Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Region HMM/Chained Transition-Emission Probability_TOPIC
-Algorithms/Sequence Region HMM/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm_TOPIC
+Algorithms/Sequence HMM/Chained Transition-Emission Probability_TOPIC
+Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
 
 Recall that the ....
 
- 1. probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destionation's emission). For example, the probability that A transitions to B and emits x is Pr(A→B) * Pr(B emits x), written more concisely as Pr(x|A→B).
+ 1. probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destination's emission). For example, the probability that A transitions to B and emits x is Pr(A→B) * Pr(B emits x), written more concisely as Pr(x|A→B).
 
- 2. probability of a chain of such transition-emission is their individual probabilities multiplied together. For example, the probablity that ...
+ 2. probability of a chain of such transition-emission is their individual probabilities multiplied together. For example, the probability that ...
 
     1. A transitions to B and emits x
     1. B transitions to B and emits y
@@ -17361,7 +17367,7 @@ Recall that the ....
 
  3. probability of an HMM emits a sequence while traveling through a hidden path is calculated as described above (multiplied chain of transition-emission probabilities).
 
-The probability of an HMM emitting a specific sequence is the sum of the probability of that emitted sequence occuring over all hidden paths. For example, imagine the following HMM.
+The probability of an HMM emitting a specific sequence is the sum of the probability of that emitted sequence occurring over all hidden paths. For example, imagine the following HMM.
 
 ```{svgbob}
                    +--------+   
@@ -17412,11 +17418,11 @@ The HMM above has non-emitting hidden states (C).
 
 One thing that the 2nd "recall that" point above doesn't cover is a hidden state transition to a non-emitting hidden state. If the hidden path travels through a non-emitting hidden state, leave out multiplying by the emission probability. For example, if there's a transition from B to C but C is a non-emitting hidden state, the probability should simply be Pr(B→C).
 
-That's why some of the probabilities being multipled above don't list an emission
+That's why some of the probabilities being multiplied above don't list an emission
 ```
 
 ```{note}
-"The probability of an HMM emitting a specific sequence is the sum of the probability of that emitted sequence occuring over all hidden paths" - Why? The probability of one or the other is defined as P(A) + P(B). So what's happening here is that, it's finding the probability that its emitted from the first hidden path, or the second hidden path, or the third hidden path, or ...
+"The probability of an HMM emitting a specific sequence is the sum of the probability of that emitted sequence occurring over all hidden paths" - Why? The probability of one or the other is defined as P(A) + P(B). What's happening here is that, it's finding the probability that it's emitted from the first hidden path, or the second hidden path, or the third hidden path, or ...
 ```
 
 ```{output}
@@ -17431,32 +17437,30 @@ transition_probabilities:
   SOURCE: {A: 0.5, B: 0.5}
   A: {A: 0.377, B: 0.623}
   B: {A: 0.301, C: 0.699}
-  C: {B: 0.9,   D: 0.1}
-  D: {B: 1.0}
+  C: {B: 1.0}
 emission_probabilities:
   SOURCE: {}
   A: {x: 0.176, y: 0.596, z: 0.228}
   B: {x: 0.225, y: 0.572, z: 0.203}
   C: {}
-  D: {}
-  # C and D set to empty dicts to identify them as non-emittable hidden states.
+  # C set to empty dicts to identify as non-emittable hidden state.
 source_state: SOURCE
-emissions: [z,z,x]
+emissions: [z,z,y]
 pseudocount: 0.0001
 ```
 
 #### Graph Algorithm
 
-`{bm} /(Algorithms\/Sequence Region HMM\/Most Probable Symbol Emissions\/Graph Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Sequence HMM\/Probability of Emitted Sequence\/Graph Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Region HMM/Most Probable Symbol Emissions/Naive Algorithm_TOPIC
-Algorithms/Sequence Region HMM/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm_TOPIC
+Algorithms/Sequence HMM/Probability of Emitted Sequence/Naive Algorithm_TOPIC
+Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
 
-This algorithm uses basic algebra rules to streamline the computations performed by the naive algorithm. Recall that the naive algorithm determines the probability of an HMM emitting a sequence by summing the probability of that emitted sequence occuring over all hidden paths. For example, imagine the following HMM.
+This algorithm uses basic algebra rules to streamline the computations performed by the naive algorithm. Recall that the naive algorithm determines the probability of an HMM emitting a sequence by summing the probability of that emitted sequence occurring over all hidden paths. For example, imagine the following HMM.
 
 ```{svgbob}
                    +--------+   
@@ -17487,7 +17491,7 @@ This algorithm uses basic algebra rules to streamline the computations performed
                     +- - - -+    
 ```
 
-The naive algorithm computes the emmision probability of [z, z, y] as ...
+The naive algorithm computes the emission probability of [z, z, y] as ...
 
 ```
 Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→A|y) +
@@ -17626,7 +17630,7 @@ Pr(B→A|z) * (
 )
 ```
 
-... appears in two places. In the factored expression, one way to group nested expressions is as as follows.
+... appears in two places. In the factored expression, one way to group nested expressions is as follows.
 
 
 ```{svgbob}
@@ -17703,10 +17707,10 @@ C2 | B2 |    .---------------> "Pr(B→C) * ("
    '---------------------> ")"                       
 ```
 
-Each repeating group only needs to be evaluated once. The result of that evaluation can then be fed into the evaluation of other groups. For example, ...
+Each distinct group only needs to be evaluated once. The result of that evaluation can then be fed into the evaluation of other groups. For example, ...
 
- * once A0 and B0 are evaluated, their results can be fed directly into the evaluation for A1 and C0 (as opposed to evaluating A0 and B0 twice each).
- * once A1 has been calculated, its result can be fed directly into the evaluation for A2 and B2 (as opposed to evaluating A1 twice).
+ * once A0 and B0 are evaluated, their results can be fed directly into the evaluation for A (as opposed to evaluating A0 and B0 twice each).
+ * once A1 is evaluated, its result can be fed directly into the evaluation for A2 and B2 (as opposed to evaluating A1 twice).
  * etc...
 
 The above grouping and how each group feeds forward is essentially an exploded out HMM for the emitted sequence (similar to the structure of a Viterbi graph). When computed as a graph, each group only gets computed once.
@@ -17787,31 +17791,493 @@ The above grouping and how each group feeds forward is essentially an exploded o
                                                                               '---------------------> ")"                          
 ```
 
-TODO: insert code
+```{output}
+ch10_code/src/hmm/ProbabilityOfEmittedSequence_Graph.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
 
-TODO: insert code
+```{ch10}
+hmm.ProbabilityOfEmittedSequence_Graph main
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+  C: {}
+  # C set to empty dicts to identify as non-emittable hidden state.
+source_state: SOURCE
+sink_state: SINK  # Must not exist in HMM (used only for exploded graph)
+pseudocount: 0.0001
+emissions: [z,z,y]
+```
 
-TODO: insert code
+### Most Probable Emitted Sequence
 
-TODO: insert code
+`{bm} /(Algorithms\/Sequence HMM\/Viterbi Most Probable Emissions)_TOPIC/`
 
-TODO: insert code
+```{prereq}
+Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
+Algorithms/Sequence HMM/Probability of Emitted Sequence/Graph Algorithm_TOPIC
+```
 
-TODO: insert code
+**WHAT**: Determine the most likely sequence of size n that an HMM will emit. For example, the following HMM is most likely to emit ...
 
-TODO: insert code
+ * \[y] when n = 1.
+ * \[y, y] when n = 2.
+ * \[y, y, y] when n = 3.
+ * etc...
 
-### Viterbi Most Probable Symbol Emissions
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+  0.5 |            +--------+           | 0.5
+      |                                 |          0.699
+      |   .-------------------------.   |    .------------.             
+      v   | .---.    0.623          v   v    |            v
++---------+-+-+ |               +------------++          +-------------+
+|     "A"     | |               |     "B"     |<---------+     "C"     |
++--+-+--------+ |0.377          +---+----+-+--+     1.0  +-------------+
+   : :    ^ ^   |                   |    : : 
+   : :    | |   |                   |    : : 
+   : :    | '---'     0.301         |    : : 
+   : :    '-------------------------'    : : 
+   : :                                   : :
+   : :       0.596  +- - - -+  0.572     : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :         0.404  +- - - -+  0.428       :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+    
+```
 
-`{bm} /(Algorithms\/Sequence Region HMM\/Viterbi Most Probable Symbol Emissions)_TOPIC/`
+```{note}
+The HMM above is simple, which is why the most probable emitted sequences all consist of y symbols. More complicated HMM structures won't be like this.
+```
 
-**WHAT**: 
+**WHY**: The most probable emitted sequence of size n acts as an idealized sequence to represent the HMM, similar to a consensus string.
 
-TODO TODO TODO
-
-**WHY**:
+```{note}
+This is speculation. The Pevzner book never covers a good use-case for this. 
+```
 
 **ALGORITHM**:
+
+This algorithm extends the graph algorithm that computes the probability of emitted sequence algorithm (Algorithms/Sequence HMM/Probability of Emitted Sequence/Graph Algorithm_TOPIC). For example, to find the probability of the HMM above emitting [z, z, y], the HMM is exploded out to the graph shown below and a set of calculations are performed on that graph using transition and emission probabilities of hidden states.
+
+```{svgbob}
+               z                  z                  y            
+                                                                  
+            +----+             +----+             +----+          
+            | A0 +------------>| A1 +------------>| A2 +---.      
+       .--->|    +.     .----->|    +.     .----->|    |   |      
+       |    +----+ \   /       +----+ \   /       +----+   v      
++------+-+          \ /                \ /                +------+
+| SOURCE |           X                  X                 | SINK |
++------+-+          / \                / \                +------+
+       |    +----+ /   \       +----+ /   \       +----+   ^ ^    
+       '--->| B0 +'     '----->| B1 +'     '----->| B2 |   | |    
+            |    |     .------>|    |     .------>|    +---' |    
+            +-+--+    /        +-+--+    /        +-+--+     |    
+              |      /           |      /           |        |    
+              v     /            v     /            v        |    
+            +----+ /           +----+ /           +----+     |    
+            | C0 +'            | C1 +'            | C2 +-----'    
+            |    |             |    |             |    |
+            +----+             +----+             +----+          
+```
+
+To start with, rather than explode out HMM nodes for a specific emitted sequence, this algorithm explodes out HMM nodes for all possible emitted sequences of size n. For example, when exploded for all possible emitted sequences of size 3, the nodes in the graph become as follows (edges removed).
+
+```{svgbob}
+* "Exploded out HMM with 2 layers, one layer for each possible emitted"
+  "symbol (y and z). Still only a single source and sink node."
+
+
+                        +--------+               +--------+                +--------+      
+                        |   A0   |               |   A1   |                |   A2   |
+                +-------+-+ y    |        +------+-+ y    |         +------+-+ y    |      
+                |    A0   |      |        |   A1   |      |         |   A2   |      |     
+                |    z    +------+        |   z    +------+         |   z    +------+
+                |         |               |        |                |        |     
+                +---------+               +--------+                +--------+            
++--------+                                                                                   +------+
+| SOURCE |                                                                                   | SINK |
++--------+                                                                                   +------+
+                        +--------+               +--------+                +--------+  
+                        |   B0   |               |   B1   |                |   B2   |
+                +-------+-+ y    |        +------+-+ y    |         +------+-+ y    |        
+                |    B0   |      |        |   B1   |      |         |   B2   |      |        
+                |    z    +------+        |   z    +------+         |   z    +------+        
+                |         |               |        |                |        |
+                +---------+               +--------+                +--------+            
+                                                                                     
+
+
+                        +--------+               +--------+                +--------+
+                        |   C0   |               |   C1   |                |   C2   |     
+                +-------+-+ y    |        +------+-+ y    |         +------+-+ y    |     
+                |    C0   |      |        |   C1   |      |         |   C2   |      |     
+                |    z    +------+        |   z    +------+         |   z    +------+
+                |         |               |        |                |        |
+                +---------+               +--------+                +--------+             
+```
+
+As with before, the edges of the exploded out HMM are hidden state transitions. However, in this case, a node's outgoing hidden state transitions explode out to each layer in the graph. For example, (A0,z) will have outgoing edges to A1 and B1 for both the z layer and the y later (4 total outgoing edges).
+
+```{svgbob}
+  "BEFORE (single layer)"                                      "AFTER (multilayer)"
+  
++----+             +----+                                                         +--------+
+| A0 +------------>| A1 |                                .----------------------->|   A1   |
+|    +.            |    |                        +-------+-+               +------+-+ y    |
++----+ \           +----+                        |    A0   +-------------->|   A1   |      |
+        \                                        |    z    +-.             |   z    +------+
+         \                                       |         +. \            |        |       
+          \                                      +---------+ \ \           +--------+       
+           \       +----+                                     \ \                           
+            '----->| B1 |                                      \ \                          
+                   |    |                                       \ \                         
+                   +-+--+                                        \ \              +--------+
+                                                                  \ '------------>|   B1   |
+                                                                   \       +------+-+ y    |
+                                                                    '----->|   B1   |      |
+                                                                           |   z    +------+
+                                                                           |        |       
+                                                                           +--------+       
+```
+
+```{output}
+ch10_code/src/hmm/MostProbableEmittedSequence_Graph.py
+python
+# MARKDOWN_EXPLODE\s*\n([\s\S]+)\n\s*# MARKDOWN_EXPLODE\s*[\n$]
+```
+
+```{ch10}
+hmm.MostProbableEmittedSequence_Graph main_explode
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {y: 0.596, z: 0.404}
+  B: {y: 0.572, z: 0.428}
+  C: {}
+  # C set to empty dicts to identify as non-emittable hidden state.
+source_state: SOURCE
+sink_state: SINK  # Must not exist in HMM (used only for exploded graph)
+pseudocount: 0.0001
+emission_len: 3
+```
+
+The computation for each node is performed similarly to how it was performed before. The only difference is that each node computation must be performed once per layer, where the layer producing the maximum value is the one that gets selected. For example, the computation for (A1,z) will happen ...
+
+ * once for the incoming nodes coming from the y layer
+ * once for the incoming nodes coming from the z layer
+
+, ... where the layer producing the maximum value is the one that gets used.
+
+
+```{svgbob}
+* "Calculate for each layer and choose max result"
+
+             "Y LAYER CALCULATION"                                            "Z LAYER CALCULATION"
+
+             +--------+                                                       +--------+                   
+             |   A0   |                                                       |   A0   |                   
+     +-------+-+ y    |        +--------+                             +-------+-+ y    |        +--------+ 
+     |    A0   |      +------->|   A1   |                             |    A0   |      |        |   A1   | 
+     |    z    +------+        |   z    |                             |    z    +------+  .---->|   z    | 
+     |         |            .->|        |                             |         +---------' .-->|        | 
+     +---------+           /   +--------+                             +---------+           |   +--------+ 
+                          /                                                                 |            
+                         /                                                                  |            
+                        /                                                                   |            
+             +--------+/                              vs                      +--------+    |            
+             |   B0   +                                                       |   B0   |    |            
+     +-------+-+ y    |                                               +-------+-+ y    |    |            
+     |    B0   |      |                                               |    B0   |      |    |            
+     |    z    +------+                                               |    z    +------+    |            
+     |         |                                                      |         +-----------'      
+     +---------+                                                      +---------+                          
+
+
+           .-----> "Pr(A->A|z) * ("                                         .-----> "Pr(A->A|z) * ("   
+           | A0,y -> "Pr(SOURCE->A|y)"                                      | A0,z -> "Pr(SOURCE->A|z)"
+           |       ")"                                                      |       ")"               
+      A1,z |       "+"                                                 A1,z |       "+"               
+           |       "Pr(B->A|z) * ("                                         |       "Pr(B->A|z) * ("   
+           | B0,y -> "Pr(SOURCE->B|y)"                                      | B0,z -> "Pr(SOURCE->B|z)"
+           '-----> ")"                                                      '-----> ")"               
+```
+
+The layer producing the maximum value is tracked alongside that maximum value. For example, when computing the maximum value for (A1,z), if the ...
+
+ * y layer produced a result of 13.5
+ * z layer produced a result of 1.2
+
+, ... then (A1,z) would store (y, 13.5). 
+
+```{output}
+ch10_code/src/hmm/MostProbableEmittedSequence_Graph.py
+python
+# MARKDOWN_CALCULATE\s*\n([\s\S]+)\n\s*# MARKDOWN_CALCULATE\s*[\n$]
+```
+
+```{ch10}
+hmm.MostProbableEmittedSequence_Graph main_calculate
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {y: 0.596, z: 0.404}
+  B: {y: 0.572, z: 0.428}
+  C: {}
+  # C set to empty dicts to identify as non-emittable hidden state.
+source_state: SOURCE
+sink_state: SINK  # Must not exist in HMM (used only for Viterbi graph)
+pseudocount: 0.0001
+emission_len: 3
+```
+
+To determine the emitted sequence with the maximum probability, the algorithm backtracks from the sink node to the source node based on which layer was used for each node's computation (layer producing the maximum value). This is similar to the backtracking algorithm used to find the path with the maximum sum (Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC), but in this case it isn't holding backtracking edges (the incoming edge that resulted in the highest sum). Instead, it's holding backtracking layers (the layer that resulted in the highest sum).
+
+For each layer backtracking step, the incoming node from that backtracked layer with the highest value is the one that gets backtracked to.
+
+```{note}
+The Pevzner book didn't go through how to do this. It only posed the question with barely any information to help figure out how to do it.
+
+I think my reasoning here is correct but I haven't had a chance to verify it.
+```
+
+```{output}
+ch10_code/src/hmm/MostProbableEmittedSequence_Graph.py
+python
+# MARKDOWN_BACKTRACK\s*\n([\s\S]+)\n\s*# MARKDOWN_BACKTRACK\s*[\n$]
+```
+
+```{ch10}
+hmm.MostProbableEmittedSequence_Graph main_backtrack
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {y: 0.596, z: 0.404}
+  B: {y: 0.572, z: 0.428}
+  C: {}
+  # C set to empty dicts to identify as non-emittable hidden state.
+source_state: SOURCE
+sink_state: SINK  # Must not exist in HMM (used only for Viterbi graph)
+pseudocount: 0.0001
+emission_len: 3
+```
+
+### Empirical Learning
+
+`{bm} /(Algorithms\/Sequence HMM\/Empirical Learning)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC
+Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm_TOPIC
+```
+
+**WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Empirical learning derives and HMM's hidden state transition probabilities and symbol emission probabilities by observing the machine that HMM models.
+
+**WHY**: Observations are one way to derive probabilities for an HMM.
+
+**ALGORITHM**:
+
+This algorithm derives weights for an HMM. For example, imagine the following HMM structure (probabilities missing).
+
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+      |            +--------+           |    
+      |                                 |          
+      |   .-------------------------.   |    .------------.             
+      v   | .---.                   v   v    |            v
++---------+-+-+ |               +------------++          +-------------+
+|     "A"     | |               |     "B"     |<---------+     "C"     |
++--+-+--------+ |               +---+----+-+--+          +-------------+
+   : :    ^ ^   |                   |    : : 
+   : :    | |   |                   |    : : 
+   : :    | '---'                   |    : : 
+   : :    '-------------------------'    : : 
+   : :                                   : :
+   : :              +- - - -+            : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :                +- - - -+              :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+    
+```
+
+The probabilities for this HMM structure are unknown, but a past observation has shown that the machine this HMM represents has passed through the following hidden path where each hidden state transition emitted the following symbol.
+
+|            | 0        | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  |
+|------------|----------|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+| Transition | SOURCE→A | A→A | A→B | B→A | A→B | B→C | C→B | B→A | A→A | A→A | A→A |
+| Emission   | z        | y   | z   | z   | z   |     | y   | y   | y   | z   | z   |
+
+Given two hidden states W and V, the hidden state transition probability for W→V is estimated as the number of times W→V appears in the sequence divided by the total number of transitions in the sequence starting with W. For example, in the sequence ...
+
+ * A→A appears 4 times 
+ * transitions starting with A appear 6 times
+
+... , meaning the probability of A→A is estimated as 4/6 = 0.667. If a transition doesn't appear in the sequence at all, its probability is set to 0.0.
+
+| Transition | Probability   |
+|------------|---------------|
+| SOURCE→A   | 1 / 1 = 1.0   |
+| SOURCE→B   | 0.0           |
+| A→A        | 4 / 6 = 0.667 |
+| A→B        | 2 / 6 = 0.333 |
+| B→A        | 2 / 3 = 0.667 |
+| B→C        | 1 / 3 = 0.333 |
+| C→B        | 1 / 1 = 1.0   |
+
+```{note}
+Note that Pr(SOURCE→B) is 0.0, which means the HMM will never start by transitioning to B. As noted in Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC, this is flawed and as such pseudocounts need to be applied.
+```
+
+```{output}
+ch10_code/src/hmm/EmpiricalLearning.py
+python
+# MARKDOWN_DERIVE_TRANSITION_PROBS\s*\n([\s\S]+)\n\s*# MARKDOWN_DERIVE_TRANSITION_PROBS\s*[\n$]
+```
+
+Symbol emission probabilities are calculated similarly. Given a hidden state W and a symbol emission u, the symbol emission probability for u after a transition to W is estimated as the number of times W emits u divided by the total number of emissions for W. For example, in the sequence ...
+
+ * A appears as a destination 7 times (7 emissions from A).
+ * A emits y 3 times.
+
+... , meaning the probability of A emitting y is 3/7 = 0.429. If an emission doesn't appear in the sequence at all, its probability is set to 0.0.
+
+| Destination-to-Emisison | Probability   |
+|-------------------------|---------------|
+| A→y                     | 3 / 7 = 0.429 |
+| A→z                     | 4 / 7 = 0.572 |
+| B→y                     | 1 / 3 = 0.333 |
+| B→z                     | 2 / 3 = 0.667 |
+
+```{output}
+ch10_code/src/hmm/EmpiricalLearning.py
+python
+# MARKDOWN_DERIVE_EMISSION_PROBS\s*\n([\s\S]+)\n\s*# MARKDOWN_DERIVE_EMISSION_PROBS\s*[\n$]
+```
+
+```{ch10}
+hmm.EmpiricalLearning main_derive_probabilities
+transitions:
+  SOURCE: [A, B]
+  A: [A, B]
+  B: [A, C]
+  C: [B]
+emissions:
+  SOURCE: []
+  A: [y, z]
+  B: [y, z]
+  C: []
+observed:
+  - [SOURCE, A, z]
+  - [A, A, y]
+  - [A, B, z]
+  - [B, A, z]
+  - [A, B, z]
+  - [B, C]
+  - [C, B, y]
+  - [B, A, y]
+  - [A, A, y]
+  - [A, A, z]
+  - [A, A, z]
+pseudocount: 0.0001
+```
+
+If the structure of the HMM isn't known beforehand, it's common to assume that ...
+
+ 1. the SOURCE hidden state can transition to every other hidden state.
+ 1. each non-SOURCE hidden state can transition to all other non-SOURCE hidden states, including itself.
+ 2. each non-SOURCE hidden state can emit all symbols unless the observed sequence shows it as not emiting anything (non-emitting hidden state).
+
+For example, given the same past observation as used in the example above (reproduced below), it can be assumed that the ...
+
+ * hidden states are [SOURCE, A, B, C].
+ * emission symols are [x, y].
+ * C is a non-emiting hidden state.
+
+|            | 0        | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  |
+|------------|----------|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+| Transition | SOURCE→A | A→A | A→B | B→A | A→B | B→C | C→B | B→A | A→A | A→A | A→A |
+| Emission   | z        | y   | z   | z   | z   |     | y   | y   | y   | z   | z   |
+
+
+```{svgbob}
+                    +--------+   
+      .-------------+ SOURCE +--------------.
+      |             +----+---+              |
+      |                  |                  |
+      |                  \                  |
+      | .-----------------]---------------. |
+      | |                /                | |
+      | | .----------.   |   .----------. | |
+      v | | .---.    v   v   v    .---. | v v    
++-------+-+-+-+ | +-------------+ | +-+-+---------+
+|     "A"     | | |     "C"     | | |     "B"     |
++--+-+--------+ | +-+--+------+-+ | +---+----+-+--+
+   : : ^  ^ ^   |   |  |   ^  |   |   ^ |  ^ : : 
+   : : |  | |   |   |  |   |  |   |   | |  | : : 
+   : : |  | '---'   |  '---'  |   '---' |  | : : 
+   : : |  \         |         |         \  | : :
+   : : '---]--------'         '----------]-' : : 
+   : :    /                             /    : :
+   : :    |                             |    : : 
+   : :    '-----------------------------'    : : 
+   : :                                       : :
+   : :              +- - - -+                : :
+   : '- - - - - - ->:   y   :<- - - - - - - -' :
+   :                +- - - -+                  :
+   :                                           :
+   :                +- - - -+                  :
+   '- - - - - - - ->:   z   :<- - - - - - - - -'
+                    +- - - -+    
+```
+
+```{output}
+ch10_code/src/hmm/EmpiricalLearning.py
+python
+# MARKDOWN_DERIVE_HMM_STRUCTURE\s*\n([\s\S]+)\n\s*# MARKDOWN_DERIVE_HMM_STRUCTURE\s*[\n$]
+```
+
+```{ch10}
+hmm.EmpiricalLearning main_derive_hmm_structure
+observed:
+  - [SOURCE, A, z]
+  - [A, A, y]
+  - [A, B, z]
+  - [B, A, z]
+  - [A, B, z]
+  - [B, C]
+  - [C, B, y]
+  - [B, A, y]
+  - [A, A, y]
+  - [A, A, z]
+  - [A, A, z]
+pseudocount: 0.0001
+```
 
 # Stories
 
