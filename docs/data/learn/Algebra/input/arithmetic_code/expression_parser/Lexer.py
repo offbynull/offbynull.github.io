@@ -119,7 +119,7 @@ def identifier(ss: StringStream):
     try:
         name = ''
         ss.skip_whitespace()
-        while ss.peek_char().isalpha():
+        while ss.is_more() and ss.peek_char().isalpha():
             name += ss.read_char()
         if name == '':
             raise ValueError('Bad function name')

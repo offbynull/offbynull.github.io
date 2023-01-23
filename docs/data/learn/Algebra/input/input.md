@@ -1064,7 +1064,7 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
    coefficient
    ```
 
- * `{bm} coefficient` - A factor that multiplies a term_EXP_. For example, `{kt}3x^2 + x - 2` has three terms_EXP with coefficients {2, 1, -2}. The last term_EXP is technically a constant but is also a coefficient because it can technically be rewritten as a factor of `x` or 1:
+ * `{bm} coefficient` - A factor that multiplies a term_EXP. For example, `{kt}3x^2 + x - 2` has three terms_EXP with coefficients {2, 1, -2}. The last term_EXP is technically a constant but is also a coefficient because it can technically be rewritten as a factor of `x` or 1:
  
    * `{kt}3x^2 + 1x^1 - 2x^0`.
    * `{kt}3x^2 + 1x^1 - 2\cdot1`
@@ -1093,16 +1093,64 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
    ```{note}
    Top-level !!means!! not a sub-expression (nested expression). Recall that BEDMAS defines addition and subtraction as the lowest precedence operations, !!meaning!! additions and subtractions get computed after all other operations (brackets, exponents, and division and multiplication).
    ```
+
+ * `{bm} monomial` - A term_EXP that has the form `{kt} cv^m`, where ...
+
+   * c is a constant.
+   * v is a variable.
+   * m is a whole number.
+
+ * `{bm} polynomial/(polynomial|binomial|trinomial)/i` - A list of monomials combined together as terms_EXP. For example, ...
+
+   * `{kt} 4y` - Equivalent to `{kt} 4y^1`
+   * `{kt} 4y^2+2y` - Equivalent to `{kt} 4y^2+2y^1`
+   * `{kt} 4y^2-7y+5` - Equivalent to `{kt} 4y^2-7y+5y^0`
+   * `{kt} z+1` - Equivalent to `{kt} z^1+z^0`
+
+   A polynomial with ...
+
+    * two terms_EXP is a called a binomial.
+    * three terms_EXP is called a trinomial.
+
+ * `{bm} degree` - In the context of a ...
+
+   * term_EXP with a single variable, the degree is the exponent of its variable. For example, ...
    
+     * `{kt} 4y^3` has a degree of 3.
+     * `{kt} 4y` has a degree of 1 (equivalent to `{kt} 4y^1`).
+     * `{kt} 4` has a degree of 0 (equivalent to `{kt} 4y^0`).
+
+   * polynomial is highest degree of all of its terms_EXP. For example, ...
+
+     * `{kt} 4y^2+2y` has a degree of 2.
+     * `{kt} 2+4y^5` has a degree of 5.
+
+ * `{bm} pythagorean theorem/(pythagorean theorem|pythagoras)/i` - The equation `{kt} a^2+b^2 = c^2` used for solving a right triangle's edge lengths. The variables a and b correspond to the legs of the triangle while the variable c refers to the hypotenuse.
+
+   The algorithm is exploiting the fact that adding up the square of the legs will equal the square of the hypotenuse.
+
+   ```{svgbob}
+                                  .`.
+                                .`   `.
+                              .`       `.
+    .              +--------.`     25    `.
+    |`.  5         |        |`.           .`
+   4|  `.          |   16   |  `.       .`
+    |    `.        |        |    `.   .`
+    +------`.      +--------+------`.`
+       3                    |  9   |
+                            |      |
+                            +------+
+   ```
 
 `{bm-error} Wrap in !! or apply suffix _EXP/(\bterms?\b)/i`
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 
-TODO: define above, write a parser, continue from 9
+TODO: define above, write a parser, continue from 10,1 add and subtract mononomials section
 
-TODO: define above, write a parser, continue from 9
+TODO: define above, write a parser, continue from 10,1 add and subtract mononomials section
 
-TODO: define above, write a parser, continue from 9
+TODO: define above, write a parser, continue from 10,1 add and subtract mononomials section
 
-TODO: define above, write a parser, continue from 9
+TODO: define above, write a parser, continue from 10,1 add and subtract mononomials section
