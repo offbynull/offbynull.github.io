@@ -18094,7 +18094,7 @@ Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm
 Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm_TOPIC
 ```
 
-**WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Empirical learning derives and HMM's hidden state transition probabilities and symbol emission probabilities by observing the machine that HMM models.
+**WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Empirical learning derives an HMM's hidden state transition probabilities and symbol emission probabilities by observing the machine that HMM models.
 
 **WHY**: Observations are one way to derive probabilities for an HMM.
 
@@ -18210,49 +18210,42 @@ pseudocount: 0.0001
 If the structure of the HMM isn't known beforehand, it's common to assume that ...
 
  1. the SOURCE hidden state can transition to every other hidden state.
- 1. each non-SOURCE hidden state can transition to all other non-SOURCE hidden states, including itself.
- 2. each non-SOURCE hidden state can emit all symbols unless the observed sequence shows it as not emiting anything (non-emitting hidden state).
+ 2. each non-SOURCE hidden state can transition to all other non-SOURCE hidden states, including itself.
+ 3. each non-SOURCE hidden state can emit all symbols.
 
-For example, given the same past observation as used in the example above (reproduced below), it can be assumed that the ...
+This assumed structure doesn't allowe for non-emitting hidden states because non-emitting hidden states can't form cycles. If they do have non-emitting hidden states with cycles, the exploded out HMM will grow infintely.For example, given the same past observation as used in the example above (reproduced below), it can be assumed that the ...
 
  * hidden states are [SOURCE, A, B, C].
  * emission symols are [x, y].
  * C is a non-emiting hidden state.
 
-|            | 0        | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  |
-|------------|----------|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-| Transition | SOURCE→A | A→A | A→B | B→A | A→B | B→C | C→B | B→A | A→A | A→A | A→A |
-| Emission   | z        | y   | z   | z   | z   |     | y   | y   | y   | z   | z   |
+|            | 0        | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  | 11  |
+|------------|----------|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+| Transition | SOURCE→A | A→A | A→B | B→A | A→B | B→A | A→A | A→A | A→A | A→B | B→B | B→B |
+| Emission   | z        | y   | z   | z   | z   | y   | y   | z   | z   | z   | z   | z   |
 
 
 ```{svgbob}
-                    +--------+   
-      .-------------+ SOURCE +--------------.
-      |             +----+---+              |
-      |                  |                  |
-      |                  \                  |
-      | .-----------------]---------------. |
-      | |                /                | |
-      | | .----------.   |   .----------. | |
-      v | | .---.    v   v   v    .---. | v v    
-+-------+-+-+-+ | +-------------+ | +-+-+---------+
-|     "A"     | | |     "C"     | | |     "B"     |
-+--+-+--------+ | +-+--+------+-+ | +---+----+-+--+
-   : : ^  ^ ^   |   |  |   ^  |   |   ^ |  ^ : : 
-   : : |  | |   |   |  |   |  |   |   | |  | : : 
-   : : |  | '---'   |  '---'  |   '---' |  | : : 
-   : : |  \         |         |         \  | : :
-   : : '---]--------'         '----------]-' : : 
-   : :    /                             /    : :
-   : :    |                             |    : : 
-   : :    '-----------------------------'    : : 
-   : :                                       : :
-   : :              +- - - -+                : :
-   : '- - - - - - ->:   y   :<- - - - - - - -' :
-   :                +- - - -+                  :
-   :                                           :
-   :                +- - - -+                  :
-   '- - - - - - - ->:   z   :<- - - - - - - - -'
+                   +--------+   
+      .------------+ SOURCE +-----------.
+      |            +--------+           |    
+      |                                 |          
+      |   .-------------------------.   |    
+      v   | .---.             .---. v   v     
++---------+-+-+ |             | +-+-----------+
+|     "A"     | |             | |     "B"     |
++--+-+--------+ |             | +---+----+-+--+
+   : :    ^ ^   |             |   ^ |    : : 
+   : :    | |   |             |   | |    : : 
+   : :    | '---'             '---' |    : : 
+   : :    '-------------------------'    : : 
+   : :                                   : :
+   : :              +- - - -+            : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :                +- - - -+              :
+   '- - - - - - - ->:   z   :<- - - - - - -'
                     +- - - -+    
 ```
 
@@ -18270,12 +18263,110 @@ observed:
   - [A, B, z]
   - [B, A, z]
   - [A, B, z]
-  - [B, C]
-  - [C, B, y]
   - [B, A, y]
   - [A, A, y]
   - [A, A, z]
   - [A, A, z]
+  - [A, B, z]
+  - [B, B, z]
+  - [B, B, z]
+cycles: 8
+pseudocount: 0.0001
+pseudocount: 0.0001
+```
+
+### Viterbi Learning
+
+`{bm} /(Algorithms\/Sequence HMM\/Viterbi Learning)_TOPIC/`
+
+```{prereq}
+Algorithms/Gene Clustering/Soft K-Means Clustering_TOPIC
+Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC
+Algorithms/Sequence HMM/Empirical Learning_TOPIC
+```
+
+**WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Viterbi learning derives an HMM's hidden state transition probabilities and symbol emission probabilities *from just an emitted sequence*.
+
+**WHY**: Viterbi learning derives the probabilities for an HMM structure from just an emitted sequence. In contrast, emperical learning needs both an emitted sequence and the hidden path that generated that emitted sequence.
+
+**ALGORITHM**:
+
+Given an emitted sequence, Viterbi learning combines two different algorithms to derive an HMM's probabilities:
+
+ 1. Viterbi algorithm (most probable hidden path for an emitted sequence)
+ 2. Empirical learning (observations to HMM probabilities).
+
+To begin with, there's an emitted sequence and an HMM. The HMM has its probabilities randomized. Then, the Viterbi algorithm is used to find the most probable hidden path in this randomized HMM for the emitted sequence.
+
+```{svgbob}
+.--------------------.
+|       "HMM"        |
+|                    +---.
+'--------------------'   |  "Viterbi algorithm" .---------------.
+                         +--------------------->| "Hidden path" |
+.--------------------.   |                      '---------------'
+| "Emitted sequence" +---'
+|                    |
+'--------------------'
+```
+
+There are now two pieces of data:
+
+ * Emitted sequence.
+ * Hidden path.
+ 
+These two pieces of data are fed into the emperical learning algorithm to generate new HMM probabliities. The hope is that these new HMM probabilities will result in the Viterbi algorithm finding a more probable hidden path.
+
+```{svgbob}
+          .----------------------------------------------------------------------------------------------------------.
+          v                                             "Update probabilities"                                       |
+.--------------------.                                                                                               |
+|       "HMM"        |                                                                                               |
+|                    +---.                                                                                           |
+'--------------------'   |  "Viterbi algorithm"  .---------------.                                                   |
+                         +---------------------->| "Hidden path" +---. "Emperical learning" .---------------------.  |
+.--------------------.   |                       '---------------'   +--------------------->| "HMM Probabilities" +--'
+| "Emitted sequence" +---'                                           |                      '---------------------'
+|                    +-----------------------------------------------'
+'--------------------'
+```
+
+This process repeats in the hopes that the HMM probabilities converge to maximize the most probable hidden path.
+
+```{note}
+Note what this algorithm is doing. The Pevzner book claims that it's very similar to Llyod's algorithm for k-means clustering in that it's starting off at some random point and pushing that point around to maximize some metric (generic name for this is called [Expectation-maximization](https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm)).
+
+Monte carlo algorithms like this are typically executed many times, where the best performing execution is the one that gets chosen.
+```
+
+```{output}
+ch10_code/src/hmm/ViterbiLearning.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch10}
+hmm.ViterbiLearning main
+transitions:
+  SOURCE: [A, B, D]
+  A: [B, E ,F]
+  B: [C, D]
+  C: [F]
+  D: [A]
+  E: [A]
+  F: [E, B]
+emissions:
+  SOURCE: []
+  A: [x, y, z]
+  B: [x, y, z]
+  C: []  # C is non-emitting
+  D: [x, y, z]
+  E: [x, y, z]
+  F: [x, y, z]
+source_state: SOURCE
+sink_state: SINK  # Must not exist in HMM (used only for Viterbi graph)
+emission_seq: [z, z, x, z, z, z, y, z, z, z, z, y, x]
+cycles: 3
 pseudocount: 0.0001
 ```
 

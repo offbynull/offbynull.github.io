@@ -1,0 +1,213 @@
+<svg class="bob" font-family="arial" font-size="14" height="176" width="944" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="triangle" markerHeight="8" markerWidth="8" orient="auto" refX="4" refY="2" viewBox="0 0 8 4">
+<polygon class="fg_fill" points="0,0 0,4 8,2 0,0"/>
+</marker>
+<marker id="clear_triangle" markerHeight="10" markerWidth="10" orient="auto" refX="1" refY="7" viewBox="0 0 20 14">
+<polygon class="bg_fill" points="2,2 2,12 18,7 2,2"/>
+</marker>
+<marker id="circle" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<circle class="fg_fill" cx="10" cy="10" r="8"/>
+</marker>
+<marker id="square" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<rect class="fg_fill" height="20" width="20" x="0" y="0"/>
+</marker>
+<marker id="open_circle" markerHeight="10" markerWidth="10" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<circle class="bg_fill" cx="10" cy="10" r="4"/>
+</marker>
+<marker id="big_open_circle" markerHeight="20" markerWidth="20" orient="auto" refX="20" refY="20" viewBox="0 0 40 40">
+<circle class="bg_fill" cx="20" cy="20" r="6"/>
+</marker>
+</defs>
+<style type="text/css">
+
+rect.backdrop {
+    fill: white;
+}
+text{
+    fill: black;
+}
+
+circle {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+}
+
+line {
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    stroke-linecap: round;
+    stroke-linejoin: miter;
+}
+
+path {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    stroke-linecap: round;
+    stroke-linejoin: miter;
+}
+
+line.dashed {
+    stroke-dasharray: 5;
+}
+
+.fg_fill {
+    fill: black;
+}
+
+
+.bg_fill {
+    fill: white;
+    stroke: black;
+    stroke-width: 2;
+}
+
+tspan.head{
+    fill: none;
+    stroke: none;
+}
+    
+</style>
+<rect class="backdrop" height="176" width="944" x="0" y="0"/>
+<g>
+<line x1="4" x2="4" y1="44" y2="84"/>
+<path d="M 4 84 A 4 4 0 0 0 8 88"/>
+<path d="M 8 40 A 4 4 0 0 0 4 44"/>
+</g>
+<g>
+<line x1="4" x2="4" y1="124" y2="164"/>
+<path d="M 4 164 A 4 4 0 0 0 8 168"/>
+<path d="M 8 120 A 4 4 0 0 0 4 124"/>
+</g>
+<g>
+<line x1="8" x2="168" y1="40" y2="40"/>
+<path d="M 172 44 A 4 4 0 0 0 168 40"/>
+</g>
+<g>
+<line x1="8" x2="168" y1="88" y2="88"/>
+<path d="M 168 88 A 4 4 0 0 0 172 84"/>
+</g>
+<g>
+<line x1="8" x2="168" y1="120" y2="120"/>
+<path d="M 172 124 A 4 4 0 0 0 168 120"/>
+</g>
+<g>
+<line x1="8" x2="168" y1="168" y2="168"/>
+<path d="M 168 168 A 4 4 0 0 0 172 164"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="84" x2="84" y1="12" y2="28"/>
+<path d="M 88 8 A 4 4 0 0 0 84 12"/>
+</g>
+<g>
+<line x1="88" x2="936" y1="8" y2="8"/>
+<path d="M 940 12 A 4 4 0 0 0 936 8"/>
+</g>
+<g>
+<line x1="172" x2="172" y1="44" y2="72"/>
+<line x1="172" x2="172" y1="72" y2="84"/>
+<line x1="172" x2="200" y1="72" y2="72"/>
+<path d="M 204 76 A 4 4 0 0 0 200 72"/>
+</g>
+<g>
+<line x1="172" x2="172" y1="124" y2="136"/>
+<line x1="172" x2="172" y1="136" y2="152"/>
+<line x1="172" x2="200" y1="136" y2="136"/>
+<line x1="172" x2="172" y1="152" y2="164"/>
+<line x1="172" x2="552" y1="152" y2="152"/>
+<path d="M 200 136 A 4 4 0 0 0 204 132"/>
+<path d="M 552 152 A 4 4 0 0 0 556 148"/>
+</g>
+<g>
+<line x1="204" x2="204" y1="76" y2="104"/>
+<line x1="204" x2="204" y1="104" y2="132"/>
+<line marker-end="url(#triangle)" x1="204" x2="388" y1="104" y2="104"/>
+</g>
+<g>
+<line x1="396" x2="396" y1="92" y2="116"/>
+<path d="M 396 116 A 4 4 0 0 0 400 120"/>
+<path d="M 400 88 A 4 4 0 0 0 396 92"/>
+</g>
+<g>
+<line x1="400" x2="520" y1="88" y2="88"/>
+<path d="M 524 92 A 4 4 0 0 0 520 88"/>
+</g>
+<g>
+<line x1="400" x2="520" y1="120" y2="120"/>
+<path d="M 520 120 A 4 4 0 0 0 524 116"/>
+</g>
+<g>
+<line x1="524" x2="524" y1="92" y2="104"/>
+<line x1="524" x2="524" y1="104" y2="116"/>
+<line x1="524" x2="552" y1="104" y2="104"/>
+<path d="M 556 108 A 4 4 0 0 0 552 104"/>
+</g>
+<g>
+<line x1="556" x2="556" y1="108" y2="120"/>
+<line x1="556" x2="556" y1="120" y2="148"/>
+<line marker-end="url(#triangle)" x1="556" x2="732" y1="120" y2="120"/>
+</g>
+<g>
+<line x1="740" x2="740" y1="108" y2="132"/>
+<path d="M 740 132 A 4 4 0 0 0 744 136"/>
+<path d="M 744 104 A 4 4 0 0 0 740 108"/>
+</g>
+<g>
+<line x1="744" x2="912" y1="104" y2="104"/>
+<path d="M 916 108 A 4 4 0 0 0 912 104"/>
+</g>
+<g>
+<line x1="744" x2="912" y1="136" y2="136"/>
+<path d="M 912 136 A 4 4 0 0 0 916 132"/>
+</g>
+<g>
+<line x1="916" x2="916" y1="108" y2="120"/>
+<line x1="916" x2="916" y1="120" y2="132"/>
+<line x1="916" x2="936" y1="120" y2="120"/>
+<path d="M 936 120 A 4 4 0 0 0 940 116"/>
+</g>
+<g>
+<line x1="940" x2="940" y1="12" y2="116"/>
+</g>
+<g>
+<text x="17" y="140">
+Emitted sequence
+</text>
+</g>
+<g>
+<text x="65" y="60">
+HMM
+</text>
+</g>
+<g>
+<text x="225" y="92">
+Viterbi algorithm
+</text>
+</g>
+<g>
+<text x="409" y="108">
+Hidden path
+</text>
+</g>
+<g>
+<text x="449" y="28">
+Update probabilities
+</text>
+</g>
+<g>
+<text x="569" y="108">
+Emperical learning
+</text>
+</g>
+<g>
+<text x="753" y="124">
+HMM Probabilities
+</text>
+</g>
+</svg>

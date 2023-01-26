@@ -1,44 +1,126 @@
 import math
 from sys import stdin
-from typing import TypeVar, Callable, Any, Iterable
+from typing import TypeVar, Iterator, Protocol, Any
 
 import yaml
 
 from find_max_path import FindMaxPath_DPBacktrack
 from graph.DirectedGraph import Graph
 
-N = TypeVar('N')
-ND = TypeVar('ND')
-E = TypeVar('E')
-ED = TypeVar('ED')
 STATE = TypeVar('STATE')
 SYMBOL = TypeVar('SYMBOL')
+TRANSITION = tuple[STATE, STATE]
 
 
-def viterbi_to_dot(g: Graph) -> str:
+class HmmNodeData(Protocol[SYMBOL]):
+    def get_symbol_emission_probability(self, symbol: SYMBOL) -> float:
+        ...
+
+    def set_symbol_emission_probability(self, symbol: SYMBOL, probability: float) -> None:
+        ...
+
+    def list_symbol_emissions(self) -> Iterator[tuple[SYMBOL, float]]:
+        ...
+
+    def is_emittable(self) -> bool:
+        ...
+
+
+class HmmEdgeData(Protocol):
+    def get_transition_probability(self) -> float:
+        ...
+
+    def set_transition_probability(self, probability: float):
+        ...
+
+
+class BaseHmmNodeData:
+    def __init__(self, emission_probabilities: dict[SYMBOL, float]):
+        self.emission_probabilities = emission_probabilities
+
+    def get_symbol_emission_probability(self, symbol: SYMBOL) -> float:
+        return self.emission_probabilities[symbol]
+
+    def set_symbol_emission_probability(self, symbol: SYMBOL, probability: float) -> None:
+        self.emission_probabilities[symbol] = probability
+
+    def list_symbol_emissions(self) -> Iterator[tuple[SYMBOL, float]]:
+        return iter(self.emission_probabilities.items())
+
+    def is_emittable(self) -> bool:
+        return self.emission_probabilities != {}
+
+
+class BaseHmmEdgeData:
+    def __init__(self, probability: float):
+        self.probability = probability
+
+    def get_transition_probability(self) -> float:
+        return self.probability
+
+    def set_transition_probability(self, probability: float):
+        self.probability = probability
+
+
+def to_hmm_graph_PRE_PSEUDOCOUNTS(
+        transition_probabilities: dict[str, dict[str, float]],
+        emission_probabilities: dict[str, dict[str, float]]
+) -> Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData]:
+    hmm = Graph()
+    for from_state in transition_probabilities:
+        if not hmm.has_node(from_state):
+            hmm.insert_node(from_state)
+        for to_state, weight in transition_probabilities[from_state].items():
+            if not hmm.has_node(to_state):
+                hmm.insert_node(to_state)
+            hmm.insert_edge(
+                (from_state, to_state),
+                from_state,
+                to_state,
+                BaseHmmEdgeData(weight)
+            )
+    for state in emission_probabilities:
+        weights = BaseHmmNodeData(emission_probabilities[state])
+        if not hmm.has_node(state):
+            hmm.insert_node(state)
+        hmm.update_node_data(state, weights)
+    return hmm
+
+
+def hmm_to_dot(g: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData]) -> str:
     ret = 'digraph G {\n'
     ret += ' graph[rankdir=LR]\n'
     ret += ' node[shape=egg, fontname="Courier-Bold", fontsize=10]\n'
     ret += ' edge[fontname="Courier-Bold", fontsize=10]\n'
     for n in sorted(g.get_nodes()):
-        ret += f'"{n}" [label="{n}"]\n'
+        ret += f'"STATE_{n}" [label="{n}"]\n'
     for e in sorted(g.get_edges()):
-        n1, n2, weight = g.get_edge(e)
-        ret += f'"{n1}" -> "{n2}" [label="{weight}"]\n'
+        n1, n2, data = g.get_edge(e)
+        weight = data.get_transition_probability()
+        ret += f'"STATE_{n1}" -> "STATE_{n2}" [label="{weight}"]\n'
+    added_symbols = set()
+    for n in sorted(g.get_nodes()):
+        emission_probs = g.get_node_data(n)
+        for n_symbol, weight in emission_probs.list_symbol_emissions():
+            if n_symbol not in added_symbols:
+                ret += f'"SYMBOL_{n_symbol}" [label="{n_symbol}", style="dashed"]\n'
+                added_symbols.add(n_symbol)
+            ret += f'"STATE_{n}" -> "SYMBOL_{n_symbol}" [label="{weight}", style="dashed"]\n'
     ret += '}'
     return ret
 
 
 # MARKDOWN
+VITERBI_NODE_ID = tuple[int, STATE]
+VITERBI_EDGE_ID = tuple[VITERBI_NODE_ID, VITERBI_NODE_ID]
+
+
 def to_viterbi_graph(
-        hmm: Graph[N, ND, E, ED],
-        hmm_source_n_id: N,
-        hmm_sink_n_id: N,
-        emissions: list[SYMBOL],
-        get_node_emission_prob: Callable[[Graph[N, ND, E, ED], STATE, SYMBOL], float],
-        get_node_emittable: Callable[[Graph[N, ND, E, ED], STATE], bool],
-        get_edge_transition_prob: Callable[[Graph[N, ND, E, ED], STATE, STATE], float]
-) -> Graph[tuple[int, N], Any, tuple[N, N], float]:
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        hmm_source_n_id: STATE,
+        hmm_sink_n_id: STATE,
+        emissions: list[SYMBOL]
+) -> Graph[VITERBI_NODE_ID, Any, VITERBI_EDGE_ID, float]:
     viterbi = Graph()
     # Add Viterbi source node.
     viterbi_source_n_id = -1, hmm_source_n_id
@@ -57,10 +139,11 @@ def to_viterbi_graph(
             viterbi_from_n_id = viterbi_from_n_ids.pop()
             _, hmm_from_n_id = viterbi_from_n_id
             for _, _, hmm_to_n_id, _ in hmm.get_outputs_full(hmm_from_n_id):
-                hmm_to_n_emittable = get_node_emittable(hmm, hmm_to_n_id)
+                hmm_to_n_emittable = hmm.get_node_data(hmm_to_n_id).is_emittable()
+                transition = hmm_from_n_id, hmm_to_n_id
                 if hmm_to_n_emittable:
-                    hidden_state_transition_prob = get_edge_transition_prob(hmm, hmm_from_n_id, hmm_to_n_id)
-                    symbol_emission_prob = get_node_emission_prob(hmm, hmm_to_n_id, viterbi_to_n_symbol)
+                    hidden_state_transition_prob = hmm.get_edge_data(transition).get_transition_probability()
+                    symbol_emission_prob = hmm.get_node_data(hmm_to_n_id).get_symbol_emission_probability(viterbi_to_n_symbol)
                     viterbi_to_n_id = viterbi_to_n_emissions_idx, hmm_to_n_id
                     connect_viterbi_nodes(
                         viterbi,
@@ -70,7 +153,7 @@ def to_viterbi_graph(
                     )
                     viterbi_to_n_ids_emitting.add(viterbi_to_n_id)
                 else:
-                    hidden_state_transition_prob = get_edge_transition_prob(hmm, hmm_from_n_id, hmm_to_n_id)
+                    hidden_state_transition_prob =  hmm.get_edge_data(transition).get_transition_probability()
                     viterbi_to_n_id = viterbi_from_n_emissions_idx, hmm_to_n_id
                     to_n_existed = connect_viterbi_nodes(
                         viterbi,
@@ -93,10 +176,11 @@ def to_viterbi_graph(
         viterbi_from_n_id = viterbi_from_n_ids.pop()
         _, hmm_from_n_id = viterbi_from_n_id
         for _, _, hmm_to_n_id, _ in hmm.get_outputs_full(hmm_from_n_id):
-            hmm_to_n_emmitable = get_node_emittable(hmm, hmm_to_n_id)
+            hmm_to_n_emmitable = hmm.get_node_data(hmm_to_n_id).is_emittable()
             if hmm_to_n_emmitable:
                 continue
-            hidden_state_transition_prob = get_edge_transition_prob(hmm, hmm_from_n_id, hmm_to_n_id)
+            transition = hmm_from_n_id, hmm_to_n_id
+            hidden_state_transition_prob = hmm.get_edge_data(transition).get_transition_probability()
             viterbi_to_n_id = viterbi_from_n_emissions_idx, hmm_to_n_id
             connect_viterbi_nodes(
                 viterbi,
@@ -114,9 +198,9 @@ def to_viterbi_graph(
 
 
 def connect_viterbi_nodes(
-        viterbi: Graph[tuple[int, N], Any, tuple[N, N], float],
-        viterbi_from_n_id: tuple[int, N],
-        viterbi_to_n_id: tuple[int, N],
+        viterbi: Graph[VITERBI_NODE_ID, Any, VITERBI_EDGE_ID, float],
+        viterbi_from_n_id: VITERBI_NODE_ID,
+        viterbi_to_n_id: VITERBI_NODE_ID,
         weight: float
 ) -> bool:
     to_n_existed = True
@@ -135,57 +219,22 @@ def connect_viterbi_nodes(
 # MARKDOWN
 
 
-def hmm_to_dot(g: Graph) -> str:
+def viterbi_to_dot(g: Graph[VITERBI_NODE_ID, Any, VITERBI_EDGE_ID, float]) -> str:
     ret = 'digraph G {\n'
     ret += ' graph[rankdir=LR]\n'
     ret += ' node[shape=egg, fontname="Courier-Bold", fontsize=10]\n'
     ret += ' edge[fontname="Courier-Bold", fontsize=10]\n'
     for n in sorted(g.get_nodes()):
-        ret += f'"STATE_{n}" [label="{n}"]\n'
+        ret += f'"{n}" [label="{n}"]\n'
     for e in sorted(g.get_edges()):
         n1, n2, weight = g.get_edge(e)
-        ret += f'"STATE_{n1}" -> "STATE_{n2}" [label="{weight}"]\n'
-    added_symbols = set()
-    for n in sorted(g.get_nodes()):
-        emission_probs = g.get_node_data(n)
-        for n_symbol, weight in emission_probs.items():
-            if n_symbol not in added_symbols:
-                ret += f'"SYMBOL_{n_symbol}" [label="{n_symbol}", style="dashed"]\n'
-                added_symbols.add(n_symbol)
-            ret += f'"STATE_{n}" -> "SYMBOL_{n_symbol}" [label="{weight}", style="dashed"]\n'
+        ret += f'"{n1}" -> "{n2}" [label="{weight}"]\n'
     ret += '}'
     return ret
 
 
-def to_hmm_graph_PRE_PSEUDOCOUNTS(
-        transition_probabilities: dict[str, dict[str, float]],
-        emission_probabilities: dict[str, dict[str, float]]
-) -> Graph[str, dict[str, float], tuple[str, str], float]:
-    # Does not check that all outgoing transitions sum to 1.0 / all emissions sum to 1.0. These checks need to be done
-    # after pseudocounts are applied
-    hmm = Graph()
-    for from_state in transition_probabilities:
-        if not hmm.has_node(from_state):
-            hmm.insert_node(from_state)
-        for to_state, weight in transition_probabilities[from_state].items():
-            if not hmm.has_node(to_state):
-                hmm.insert_node(to_state)
-            hmm.insert_edge(
-                (from_state, to_state),
-                from_state,
-                to_state,
-                weight
-            )
-    for state in emission_probabilities:
-        weights = emission_probabilities[state]
-        if not hmm.has_node(state):
-            hmm.insert_node(state)
-        hmm.update_node_data(state, weights)
-    return hmm
-
-
 def max_product_path_in_viterbi(
-        viterbi: Graph[tuple[int, N], Any, tuple[N, N], float]
+        viterbi: Graph[VITERBI_NODE_ID, Any, VITERBI_EDGE_ID, float]
 ):
     # Backtrack to find path with max sum -- using logged weights, path with max sum is actually path with max product.
     # Note that the call to populate_weights_and_backtrack_pointers() below is taking the math.log() of the edge weight
@@ -216,43 +265,38 @@ def max_product_path_in_viterbi(
 
 
 def hmm_add_pseudocounts_to_hidden_state_transition_probabilities(
-        hmm: Graph[N, ND, E, ED],
-        psuedocount: float,
-        list_states: [[Graph[N, ND, E, ED]], Iterable[STATE]],
-        list_outgoing_state_transitions: [[Graph[N, ND, E, ED], STATE], Iterable[STATE]],
-        get_edge_transition_prob: Callable[[Graph[N, ND, E, ED], STATE, STATE], float],
-        set_edge_transition_prob: Callable[[Graph[N, ND, E, ED], STATE, STATE, float], None]
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        psuedocount: float
 ) -> None:
-    for from_state in list_states(hmm):
+    for from_state in hmm.get_nodes():
         tweaked_transition_weights = {}
-        total_transition_weights = 0.0
-        for to_state in list_outgoing_state_transitions(hmm, from_state):
-            weight = get_edge_transition_prob(hmm, from_state, to_state) + psuedocount
-            tweaked_transition_weights[to_state] = weight
-            total_transition_weights += weight
-        for to_state, weight in tweaked_transition_weights.items():
-            normalized_transition_weight = weight / total_transition_weights
-            set_edge_transition_prob(hmm, from_state, to_state, normalized_transition_weight)
+        total_transition_probs = 0.0
+        for transition in hmm.get_outputs(from_state):
+            _, to_state = transition
+            prob = hmm.get_edge_data(transition).get_transition_probability() + psuedocount
+            tweaked_transition_weights[to_state] = prob
+            total_transition_probs += prob
+        for to_state, prob in tweaked_transition_weights.items():
+            transition = from_state, to_state
+            normalized_transition_prob = prob / total_transition_probs
+            hmm.get_edge_data(transition).set_transition_probability(normalized_transition_prob)
 
 
 def hmm_add_pseudocounts_to_symbol_emission_probabilities(
-        hmm: Graph[N, ND, E, ED],
-        psuedocount: float,
-        list_states: [[Graph[N, ND, E, ED]], Iterable[STATE]],
-        list_state_emissions: [[Graph[N, ND, E, ED]], Iterable[SYMBOL]],
-        get_node_emission_prob: Callable[[Graph[N, ND, E, ED], STATE, SYMBOL], float],
-        set_node_emission_prob: Callable[[Graph[N, ND, E, ED], STATE, SYMBOL, float], None],
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        psuedocount: float
 ) -> None:
-    for from_state in list_states(hmm):
+    for from_state in hmm.get_nodes():
         tweaked_emission_weights = {}
-        total_emission_weights = 0.0
-        for symbol in list_state_emissions(hmm, from_state):
-            weight = get_node_emission_prob(hmm, from_state, symbol) + psuedocount
-            tweaked_emission_weights[symbol] = weight
-            total_emission_weights += weight
-        for symbol, weight in tweaked_emission_weights.items():
-            normalized_transition_weight = weight / total_emission_weights
-            set_node_emission_prob(hmm, from_state, symbol, normalized_transition_weight)
+        total_emission_probs = 0.0
+        for symbol, prob in hmm.get_node_data(from_state).list_symbol_emissions():
+            prob += psuedocount
+            tweaked_emission_weights[symbol] = prob
+            total_emission_probs += prob
+        for symbol, prob in tweaked_emission_weights.items():
+            normalized_transition_prob = prob / total_emission_probs
+            hmm.get_node_data(from_state).set_symbol_emission_probability(symbol, normalized_transition_prob)
+
 
 
 def main():
@@ -282,19 +326,11 @@ def main():
         print()
         hmm_add_pseudocounts_to_hidden_state_transition_probabilities(
             hmm,
-            pseudocount,
-            lambda g: list(g.get_nodes()),
-            lambda g, s1: [s2 for _, _, s2, _ in g.get_outputs_full(s1)],
-            lambda g, s1, s2: g.get_edge_data((s1, s2)),
-            lambda g, s1, s2, weight: g.update_edge_data((s1, s2), weight)
+            pseudocount
         )
         hmm_add_pseudocounts_to_symbol_emission_probabilities(
             hmm,
-            pseudocount,
-            lambda g: list(g.get_nodes()),
-            lambda g, s1: list(g.get_node_data(s1)),
-            lambda g, s1, sym: g.get_node_data(s1)[sym],
-            lambda g, s1, sym, weight: g.get_node_data(s1).update({sym: weight})
+            pseudocount
         )
         print(f'After pseudocounts are applied, the HMM becomes as follows ...')
         print()
@@ -306,10 +342,7 @@ def main():
             hmm,
             source_state,
             sink_state,
-            emissions,
-            lambda g, state, symbol: g.get_node_data(state)[symbol],
-            lambda g, state: g.get_node_data(state) != {},
-            lambda g, s1, s2: g.get_edge_data((s1, s2))
+            emissions
         )
         print(f'The following Viterbi graph was produced for the HMM and the emitted sequence {emissions} ...')
         print()

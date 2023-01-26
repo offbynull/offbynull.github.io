@@ -1,48 +1,69 @@
-import math
 from sys import stdin
-from typing import TypeVar, Callable, Any, Iterable, Generator
+from typing import TypeVar, Iterator, Protocol, Generator
 
 import yaml
 
-from find_max_path import FindMaxPath_DPBacktrack
 from graph.DirectedGraph import Graph
 
-N = TypeVar('N')
-ND = TypeVar('ND')
-E = TypeVar('E')
-ED = TypeVar('ED')
 STATE = TypeVar('STATE')
 SYMBOL = TypeVar('SYMBOL')
+TRANSITION = tuple[STATE, STATE]
 
 
-def hmm_to_dot(g: Graph) -> str:
-    ret = 'digraph G {\n'
-    ret += ' graph[rankdir=LR]\n'
-    ret += ' node[shape=egg, fontname="Courier-Bold", fontsize=10]\n'
-    ret += ' edge[fontname="Courier-Bold", fontsize=10]\n'
-    for n in sorted(g.get_nodes()):
-        ret += f'"STATE_{n}" [label="{n}"]\n'
-    for e in sorted(g.get_edges()):
-        n1, n2, weight = g.get_edge(e)
-        ret += f'"STATE_{n1}" -> "STATE_{n2}" [label="{weight}"]\n'
-    added_symbols = set()
-    for n in sorted(g.get_nodes()):
-        emission_probs = g.get_node_data(n)
-        for n_symbol, weight in emission_probs.items():
-            if n_symbol not in added_symbols:
-                ret += f'"SYMBOL_{n_symbol}" [label="{n_symbol}", style="dashed"]\n'
-                added_symbols.add(n_symbol)
-            ret += f'"STATE_{n}" -> "SYMBOL_{n_symbol}" [label="{weight}", style="dashed"]\n'
-    ret += '}'
-    return ret
+class HmmNodeData(Protocol[SYMBOL]):
+    def get_symbol_emission_probability(self, symbol: SYMBOL) -> float:
+        ...
+
+    def set_symbol_emission_probability(self, symbol: SYMBOL, probability: float) -> None:
+        ...
+
+    def list_symbol_emissions(self) -> Iterator[tuple[SYMBOL, float]]:
+        ...
+
+    def is_emittable(self) -> bool:
+        ...
+
+
+class HmmEdgeData(Protocol):
+    def get_transition_probability(self) -> float:
+        ...
+
+    def set_transition_probability(self, probability: float):
+        ...
+
+
+class BaseHmmNodeData:
+    def __init__(self, emission_probabilities: dict[SYMBOL, float]):
+        self.emission_probabilities = emission_probabilities
+
+    def get_symbol_emission_probability(self, symbol: SYMBOL) -> float:
+        return self.emission_probabilities[symbol]
+
+    def set_symbol_emission_probability(self, symbol: SYMBOL, probability: float) -> None:
+        self.emission_probabilities[symbol] = probability
+
+    def list_symbol_emissions(self) -> Iterator[tuple[SYMBOL, float]]:
+        return iter(self.emission_probabilities.items())
+
+    def is_emittable(self) -> bool:
+        return self.emission_probabilities != {}
+
+
+class BaseHmmEdgeData:
+    def __init__(self, probability: float):
+        self.probability = probability
+
+    def get_transition_probability(self) -> float:
+        return self.probability
+
+    def set_transition_probability(self, probability: float):
+        self.probability = probability
 
 
 def to_hmm_graph_PRE_PSEUDOCOUNTS(
         transition_probabilities: dict[str, dict[str, float]],
         emission_probabilities: dict[str, dict[str, float]]
-) -> Graph[str, dict[str, float], tuple[str, str], float]:
-    # Does not check that all outgoing transitions sum to 1.0 / all emissions sum to 1.0. These checks need to be done
-    # after pseudocounts are applied
+) -> Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData]:
     hmm = Graph()
     for from_state in transition_probabilities:
         if not hmm.has_node(from_state):
@@ -54,64 +75,80 @@ def to_hmm_graph_PRE_PSEUDOCOUNTS(
                 (from_state, to_state),
                 from_state,
                 to_state,
-                weight
+                BaseHmmEdgeData(weight)
             )
     for state in emission_probabilities:
-        weights = emission_probabilities[state]
+        weights = BaseHmmNodeData(emission_probabilities[state])
         if not hmm.has_node(state):
             hmm.insert_node(state)
         hmm.update_node_data(state, weights)
     return hmm
 
 
+def hmm_to_dot(g: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData]) -> str:
+    ret = 'digraph G {\n'
+    ret += ' graph[rankdir=LR]\n'
+    ret += ' node[shape=egg, fontname="Courier-Bold", fontsize=10]\n'
+    ret += ' edge[fontname="Courier-Bold", fontsize=10]\n'
+    for n in sorted(g.get_nodes()):
+        ret += f'"STATE_{n}" [label="{n}"]\n'
+    for e in sorted(g.get_edges()):
+        n1, n2, data = g.get_edge(e)
+        weight = data.get_transition_probability()
+        ret += f'"STATE_{n1}" -> "STATE_{n2}" [label="{weight}"]\n'
+    added_symbols = set()
+    for n in sorted(g.get_nodes()):
+        emission_probs = g.get_node_data(n)
+        for n_symbol, weight in emission_probs.list_symbol_emissions():
+            if n_symbol not in added_symbols:
+                ret += f'"SYMBOL_{n_symbol}" [label="{n_symbol}", style="dashed"]\n'
+                added_symbols.add(n_symbol)
+            ret += f'"STATE_{n}" -> "SYMBOL_{n_symbol}" [label="{weight}", style="dashed"]\n'
+    ret += '}'
+    return ret
+
+
 def hmm_add_pseudocounts_to_hidden_state_transition_probabilities(
-        hmm: Graph[N, ND, E, ED],
-        psuedocount: float,
-        list_states: [[Graph[N, ND, E, ED]], Iterable[STATE]],
-        list_outgoing_state_transitions: [[Graph[N, ND, E, ED], STATE], Iterable[STATE]],
-        get_edge_transition_prob: Callable[[Graph[N, ND, E, ED], STATE, STATE], float],
-        set_edge_transition_prob: Callable[[Graph[N, ND, E, ED], STATE, STATE, float], None]
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        psuedocount: float
 ) -> None:
-    for from_state in list_states(hmm):
+    for from_state in hmm.get_nodes():
         tweaked_transition_weights = {}
-        total_transition_weights = 0.0
-        for to_state in list_outgoing_state_transitions(hmm, from_state):
-            weight = get_edge_transition_prob(hmm, from_state, to_state) + psuedocount
-            tweaked_transition_weights[to_state] = weight
-            total_transition_weights += weight
-        for to_state, weight in tweaked_transition_weights.items():
-            normalized_transition_weight = weight / total_transition_weights
-            set_edge_transition_prob(hmm, from_state, to_state, normalized_transition_weight)
+        total_transition_probs = 0.0
+        for transition in hmm.get_outputs(from_state):
+            _, to_state = transition
+            prob = hmm.get_edge_data(transition).get_transition_probability() + psuedocount
+            tweaked_transition_weights[to_state] = prob
+            total_transition_probs += prob
+        for to_state, prob in tweaked_transition_weights.items():
+            transition = from_state, to_state
+            normalized_transition_prob = prob / total_transition_probs
+            hmm.get_edge_data(transition).set_transition_probability(normalized_transition_prob)
 
 
 def hmm_add_pseudocounts_to_symbol_emission_probabilities(
-        hmm: Graph[N, ND, E, ED],
-        psuedocount: float,
-        list_states: [[Graph[N, ND, E, ED]], Iterable[STATE]],
-        list_state_emissions: [[Graph[N, ND, E, ED]], Iterable[SYMBOL]],
-        get_node_emission_prob: Callable[[Graph[N, ND, E, ED], STATE, SYMBOL], float],
-        set_node_emission_prob: Callable[[Graph[N, ND, E, ED], STATE, SYMBOL, float], None],
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        psuedocount: float
 ) -> None:
-    for from_state in list_states(hmm):
+    for from_state in hmm.get_nodes():
         tweaked_emission_weights = {}
-        total_emission_weights = 0.0
-        for symbol in list_state_emissions(hmm, from_state):
-            weight = get_node_emission_prob(hmm, from_state, symbol) + psuedocount
-            tweaked_emission_weights[symbol] = weight
-            total_emission_weights += weight
-        for symbol, weight in tweaked_emission_weights.items():
-            normalized_transition_weight = weight / total_emission_weights
-            set_node_emission_prob(hmm, from_state, symbol, normalized_transition_weight)
+        total_emission_probs = 0.0
+        for symbol, prob in hmm.get_node_data(from_state).list_symbol_emissions():
+            prob += psuedocount
+            tweaked_emission_weights[symbol] = prob
+            total_emission_probs += prob
+        for symbol, prob in tweaked_emission_weights.items():
+            normalized_transition_prob = prob / total_emission_probs
+            hmm.get_node_data(from_state).set_symbol_emission_probability(symbol, normalized_transition_prob)
 
 
 # MARKDOWN
 def enumerate_paths(
-        hmm: Graph[N, ND, E, ED],
-        hmm_from_n_id: N,
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        hmm_from_n_id: STATE,
         emitted_seq_len: int,
-        get_node_emittable: Callable[[Graph[N, ND, E, ED], STATE], bool],
-        prev_path: list[E] | None = None
-) -> Generator[list[E], None, None]:
+        prev_path: list[TRANSITION] | None = None
+) -> Generator[list[TRANSITION], None, None]:
     if prev_path is None:
         prev_path = []
     if emitted_seq_len == 0:
@@ -119,48 +156,45 @@ def enumerate_paths(
         # hmm_from_n_id may still have transitions to other non-emittable hidden states, and so those need to be
         # returned as paths as well (continue digging into outgoing transitions if the destination is non-emittable).
         yield prev_path
-        for hmm_e_id, _, hmm_to_n_id, transition_prob in hmm.get_outputs_full(hmm_from_n_id):
-            if get_node_emittable(hmm, hmm_to_n_id):
+        for transition, _, hmm_to_n_id, _ in hmm.get_outputs_full(hmm_from_n_id):
+            if hmm.get_node_data(hmm_to_n_id).is_emittable():
                 continue
-            prev_path.append(hmm_e_id)
-            yield from enumerate_paths(hmm, hmm_to_n_id, emitted_seq_len, get_node_emittable, prev_path)
+            prev_path.append(transition)
+            yield from enumerate_paths(hmm, hmm_to_n_id, emitted_seq_len, prev_path)
             prev_path.pop()
     else:
         # Explode out at that path by digging into transitions from hmm_from_n_id. If the destination of the transition
         # is an ...
         # * emittable hidden state, subtract the expected emitted sequence length by 1 when you dig down.
         # * non-emittable hidden state, keep the expected emitted sequence length the same when you dig down.
-        for hmm_e_id, _, hmm_to_n_id, transition_prob in hmm.get_outputs_full(hmm_from_n_id):
-            prev_path.append(hmm_e_id)
-            if get_node_emittable(hmm, hmm_to_n_id):
+        for transition, _, hmm_to_n_id, _ in hmm.get_outputs_full(hmm_from_n_id):
+            prev_path.append(transition)
+            if hmm.get_node_data(hmm_to_n_id).is_emittable():
                 next_emittable_seq_len = emitted_seq_len - 1
             else:
                 next_emittable_seq_len = emitted_seq_len
-            yield from enumerate_paths(hmm, hmm_to_n_id, next_emittable_seq_len, get_node_emittable, prev_path)
+            yield from enumerate_paths(hmm, hmm_to_n_id, next_emittable_seq_len, prev_path)
             prev_path.pop()
 
 
 def emission_probability(
-        hmm: Graph[N, ND, E, ED],
-        hmm_source_n_id: N,
-        emitted_seq: list[SYMBOL],
-        get_node_emission_prob: Callable[[Graph[N, ND, E, ED], STATE, SYMBOL], float],
-        get_node_emittable: Callable[[Graph[N, ND, E, ED], STATE], bool],
-        get_edge_transition_prob: Callable[[Graph[N, ND, E, ED], STATE, STATE], float]
-):
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        hmm_source_n_id: STATE,
+        emitted_seq: list[SYMBOL]
+) -> float:
     sum_of_probs = 0.0
-    for p in enumerate_paths(hmm, hmm_source_n_id, len(emitted_seq), get_node_emittable):
+    for p in enumerate_paths(hmm, hmm_source_n_id, len(emitted_seq)):
         emitted_seq_idx = 0
         prob = 1.0
-        for e_id in p:
-            hmm_from_n_id, hmm_to_n_id, transition_prob = hmm.get_edge(e_id)
-            if get_node_emittable(hmm, hmm_to_n_id):
+        for transition in p:
+            hmm_from_n_id, hmm_to_n_id = transition
+            if hmm.get_node_data(hmm_to_n_id).is_emittable():
                 symbol = emitted_seq[emitted_seq_idx]
-                prob *= get_node_emission_prob(hmm, hmm_to_n_id, symbol) *\
-                        get_edge_transition_prob(hmm, hmm_from_n_id, hmm_to_n_id)
+                prob *= hmm.get_node_data(hmm_to_n_id).get_symbol_emission_probability(symbol) *\
+                        hmm.get_edge_data(transition).get_transition_probability()
                 emitted_seq_idx += 1
             else:
-                prob *= get_edge_transition_prob(hmm, hmm_from_n_id, hmm_to_n_id)
+                prob *= hmm.get_edge_data(transition).get_transition_probability()
         sum_of_probs += prob
     return sum_of_probs
 # MARKDOWN
@@ -217,19 +251,11 @@ def main():
         hmm = to_hmm_graph_PRE_PSEUDOCOUNTS(transition_probabilities, emission_probabilities)
         hmm_add_pseudocounts_to_hidden_state_transition_probabilities(
             hmm,
-            pseudocount,
-            lambda g: list(g.get_nodes()),
-            lambda g, s1: [s2 for _, _, s2, _ in g.get_outputs_full(s1)],
-            lambda g, s1, s2: g.get_edge_data((s1, s2)),
-            lambda g, s1, s2, weight: g.update_edge_data((s1, s2), weight)
+            pseudocount
         )
         hmm_add_pseudocounts_to_symbol_emission_probabilities(
             hmm,
-            pseudocount,
-            lambda g: list(g.get_nodes()),
-            lambda g, s1: list(g.get_node_data(s1)),
-            lambda g, s1, sym: g.get_node_data(s1)[sym],
-            lambda g, s1, sym, weight: g.get_node_data(s1).update({sym: weight})
+            pseudocount
         )
         print(f'The following HMM was produced AFTER applying pseudocounts ...')
         print()
@@ -240,21 +266,13 @@ def main():
         probability = emission_probability(
             hmm,
             source_state,
-            emissions,
-            lambda g, state, symbol: g.get_node_data(state)[symbol],
-            lambda g, state: g.get_node_data(state) != {},
-            lambda g, s1, s2: g.get_edge_data((s1, s2))
+            emissions
         )
         print(f'The probability of {emissions} being emitted is {probability} ...')
         print()
     finally:
         print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
-
-
-
-
-
 
 
 if __name__ == '__main__':

@@ -225,6 +225,7 @@
 </ul>
 <li><a href="#H_Most%20Probable%20Emitted%20Sequence">Most Probable Emitted Sequence</a></li>
 <li><a href="#H_Empirical%20Learning">Empirical Learning</a></li>
+<li><a href="#H_Viterbi%20Learning">Viterbi Learning</a></li>
 </ul>
 </ul>
 <li><a href="#H_Stories">Stories</a></li>
@@ -24475,15 +24476,14 @@ DB k-mer:    KKALVGNKSSFLILSDEQTEGRGRFNRNWSSSKGKGLWMSLVLRPN @ 98 ['&gt;VTR16721.
 <p><strong>WHY</strong>: These probabilities are the foundation of more elaborate <a href="#BM_(HMM)%2F">HMM</a> algorithms, discussed further on.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The algorithm is the application of probabilities. An <a href="#BM_(HMM)%2F">HMM</a> provides the probability for each <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transition. A chain of such <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transitions is their individual probabilities multiplied together.</p>
-<p><a href="ch10_code/src/hmm/StateTransitionChainProbability.py">ch10_code/src/hmm/StateTransitionChainProbability.py</a> (lines 17 to 26):</p>
+<p><a href="ch10_code/src/hmm/StateTransitionChainProbability.py">ch10_code/src/hmm/StateTransitionChainProbability.py</a> (lines 121 to 129):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">state_transition_chain_probability</span>(<span class="hljs-params">
-        hmm: Graph[N, ND, E, ED],
-        states: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[STATE, STATE]],
-        get_edge_transition_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, STATE], <span class="hljs-built_in">float</span>]
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        state_transition: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[STATE, STATE]]
 </span>) -&gt; <span class="hljs-built_in">float</span>:
     weight = <span class="hljs-number">1.0</span>
-    <span class="hljs-keyword">for</span> from_state, to_state <span class="hljs-keyword">in</span> states:
-        weight *= get_edge_transition_prob(hmm, from_state, to_state)
+    <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> state_transition:
+        weight *= hmm.get_edge_data(t).get_transition_probability()
     <span class="hljs-keyword">return</span> weight
 </code></pre>
 <div style="border:1px solid black;">
@@ -24511,15 +24511,14 @@ state_transitions: [[SOURCE,A], [A,B], [B,A], [A,B], [B,B], [B,B], [B,A], [A,A],
 <p><strong>WHY</strong>: These probabilities are the foundation of more elaborate <a href="#BM_(HMM)%2F">HMM</a> algorithms, discussed further on.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>The algorithm is the application of probabilities. An <a href="#BM_(HMM)%2F">HMM</a> provides the probability for each symbol emission in each <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>. A chain of such symbol emissions is their individual probabilities multiplied together.</p>
-<p><a href="ch10_code/src/hmm/SymbolEmissionChainProbability.py">ch10_code/src/hmm/SymbolEmissionChainProbability.py</a> (lines 18 to 27):</p>
+<p><a href="ch10_code/src/hmm/SymbolEmissionChainProbability.py">ch10_code/src/hmm/SymbolEmissionChainProbability.py</a> (lines 119 to 127):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">symbol_emission_chain_probability</span>(<span class="hljs-params">
-        hmm: Graph[N, ND, E, ED],
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
         state_symbol_pairs: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[STATE, SYMBOL]],
-        get_node_emission_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, SYMBOL], <span class="hljs-built_in">float</span>]
 </span>) -&gt; <span class="hljs-built_in">float</span>:
     weight = <span class="hljs-number">1.0</span>
     <span class="hljs-keyword">for</span> state, symbol <span class="hljs-keyword">in</span> state_symbol_pairs:
-        weight *= get_node_emission_prob(hmm, state, symbol)
+        weight *= hmm.get_node_data(state).get_symbol_emission_probability(symbol)
     <span class="hljs-keyword">return</span> weight
 </code></pre>
 <div style="border:1px solid black;">
@@ -24559,16 +24558,16 @@ state_emissions: [[B,z], [A,z], [A,z], [A,y], [A,x], [A,y], [A,y], [A,z], [A,z],
 <li>each symbol emission in each <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>.</li>
 </ul>
 <p>The probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destination's emission). The probability of a chain of such transition-emission is their individual probabilities multiplied together.</p>
-<p><a href="ch10_code/src/hmm/StateTransitionFollowedBySymbolEmissionChainProbability.py">ch10_code/src/hmm/StateTransitionFollowedBySymbolEmissionChainProbability.py</a> (lines 17 to 27):</p>
+<p><a href="ch10_code/src/hmm/StateTransitionFollowedBySymbolEmissionChainProbability.py">ch10_code/src/hmm/StateTransitionFollowedBySymbolEmissionChainProbability.py</a> (lines 119 to 129):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">state_transition_followed_by_symbol_emission_chain_probability</span>(<span class="hljs-params">
-        hmm: Graph[N, ND, E, ED],
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
         transition_to_symbol_pairs: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">tuple</span>[STATE, STATE], SYMBOL]],
-        get_node_emission_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, SYMBOL], <span class="hljs-built_in">float</span>],
-        get_edge_transition_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, STATE], <span class="hljs-built_in">float</span>]
 </span>) -&gt; <span class="hljs-built_in">float</span>:
     weight = <span class="hljs-number">1.0</span>
-    <span class="hljs-keyword">for</span> (from_state, to_state), to_symbol <span class="hljs-keyword">in</span> transition_to_symbol_pairs:
-        weight *= get_edge_transition_prob(hmm, from_state, to_state) * get_node_emission_prob(hmm, to_state, to_symbol)
+    <span class="hljs-keyword">for</span> transition, to_symbol <span class="hljs-keyword">in</span> transition_to_symbol_pairs:
+        from_state, to_state = transition
+        weight *= hmm.get_edge_data(transition).get_transition_probability() \
+                  * hmm.get_node_data(to_state).get_symbol_emission_probability(to_symbol)
     <span class="hljs-keyword">return</span> weight
 </code></pre>
 <div style="border:1px solid black;">
@@ -24682,15 +24681,17 @@ transition_to_symbol_pairs: [[[SOURCE,B],z], [[B,A],z], [[A,A],z], [[A,A],y], [[
 </table>
 <p>The <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a> above with edge weights is as follows.</p>
 <p><img src="svgbob_581c8f9062694b869ff573d79d81df28b1f73c9b.svg" alt="Kroki diagram output"></p>
-<p><a href="ch10_code/src/hmm/MostProbableHiddenPath_Viterbi.py">ch10_code/src/hmm/MostProbableHiddenPath_Viterbi.py</a> (lines 33 to 84):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_viterbi_graph</span>(<span class="hljs-params">
-        hmm: Graph[N, ND, E, ED],
-        hmm_source_n_id: N,
-        hmm_sink_n_id: N,
-        emissions: <span class="hljs-built_in">list</span>[SYMBOL],
-        get_node_emission_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, SYMBOL], <span class="hljs-built_in">float</span>],
-        get_edge_transition_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, STATE], <span class="hljs-built_in">float</span>]
-</span>) -&gt; Graph[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N], <span class="hljs-type">Any</span>, <span class="hljs-built_in">tuple</span>[N, N], <span class="hljs-built_in">float</span>]:
+<p><a href="ch10_code/src/hmm/MostProbableHiddenPath_Viterbi.py">ch10_code/src/hmm/MostProbableHiddenPath_Viterbi.py</a> (lines 123 to 177):</p>
+<pre class="hljs"><code>VITERBI_NODE_ID = <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, STATE]
+VITERBI_EDGE_ID = <span class="hljs-built_in">tuple</span>[VITERBI_NODE_ID, VITERBI_NODE_ID]
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_viterbi_graph</span>(<span class="hljs-params">
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        hmm_source_n_id: STATE,
+        hmm_sink_n_id: STATE,
+        emissions: <span class="hljs-built_in">list</span>[SYMBOL]
+</span>) -&gt; Graph[VITERBI_NODE_ID, <span class="hljs-type">Any</span>, VITERBI_EDGE_ID, <span class="hljs-built_in">float</span>]:
     viterbi = Graph()
     <span class="hljs-comment"># Add Viterbi source node.</span>
     viterbi_source_n_id = -<span class="hljs-number">1</span>, hmm_source_n_id
@@ -24707,8 +24708,9 @@ transition_to_symbol_pairs: [[[SOURCE,B],z], [[B,A],z], [[A,A],z], [[A,A],y], [[
                 <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> viterbi.has_node(viterbi_to_n_id):
                     viterbi.insert_node(viterbi_to_n_id)
                     new_prev_nodes.add((hmm_to_n_id, viterbi_to_n_id))
-                hidden_state_transition_prob = get_edge_transition_prob(hmm, hmm_from_n_id, hmm_to_n_id)
-                symbol_emission_prob = get_node_emission_prob(hmm, hmm_to_n_id, symbol)
+                transition = hmm_from_n_id, hmm_to_n_id
+                hidden_state_transition_prob = hmm.get_edge_data(transition).get_transition_probability()
+                symbol_emission_prob = hmm.get_node_data(hmm_to_n_id).get_symbol_emission_probability(symbol)
                 viterbi_e_id = viterbi_from_n_id, viterbi_to_n_id
                 viterbi_e_weight = hidden_state_transition_prob * symbol_emission_prob
                 viterbi.insert_edge(
@@ -24768,9 +24770,9 @@ emissions: [z,z,x,x,y]
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>See <a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path%2FBacktrack%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm</a> for the algorithm to find the path with the maximum sum. Why does applying logarithms mean that you can now use sum instead? I'm not sure what the math here is.</p>
 </div>
-<p><a href="ch10_code/src/hmm/MostProbableHiddenPath_Viterbi.py">ch10_code/src/hmm/MostProbableHiddenPath_Viterbi.py</a> (lines 197 to 225):</p>
+<p><a href="ch10_code/src/hmm/MostProbableHiddenPath_Viterbi.py">ch10_code/src/hmm/MostProbableHiddenPath_Viterbi.py</a> (lines 251 to 279):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">max_product_path_in_viterbi</span>(<span class="hljs-params">
-        viterbi: Graph[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N], <span class="hljs-type">Any</span>, <span class="hljs-built_in">tuple</span>[N, N], <span class="hljs-built_in">float</span>]
+        viterbi: Graph[VITERBI_NODE_ID, <span class="hljs-type">Any</span>, VITERBI_EDGE_ID, <span class="hljs-built_in">float</span>]
 </span>):
     <span class="hljs-comment"># Backtrack to find path with max sum -- using logged weights, path with max sum is actually path with max product.</span>
     <span class="hljs-comment"># Note that the call to populate_weights_and_backtrack_pointers() below is taking the math.log() of the edge weight</span>
@@ -24865,45 +24867,39 @@ emissions: [z,z,x,x,y]
 <li>outgoing transition such that all of its outgoing transitions sum to 1.0.</li>
 <li>emission such that all of its emissions sum to 1.0.</li>
 </ul>
-<p><a href="ch10_code/src/hmm/MostProbableHiddenPath_ViterbiPseudocounts.py">ch10_code/src/hmm/MostProbableHiddenPath_ViterbiPseudocounts.py</a> (lines 167 to 205):</p>
+<p><a href="ch10_code/src/hmm/MostProbableHiddenPath_ViterbiPseudocounts.py">ch10_code/src/hmm/MostProbableHiddenPath_ViterbiPseudocounts.py</a> (lines 218 to 250):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">hmm_add_pseudocounts_to_hidden_state_transition_probabilities</span>(<span class="hljs-params">
-        hmm: Graph[N, ND, E, ED],
-        psuedocount: <span class="hljs-built_in">float</span>,
-        list_states: [[Graph[N, ND, E, ED]], Iterable[STATE]],
-        list_outgoing_state_transitions: [[Graph[N, ND, E, ED], STATE], Iterable[STATE]],
-        get_edge_transition_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, STATE], <span class="hljs-built_in">float</span>],
-        set_edge_transition_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, STATE, <span class="hljs-built_in">float</span>], <span class="hljs-literal">None</span>]
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        psuedocount: <span class="hljs-built_in">float</span>
 </span>) -&gt; <span class="hljs-literal">None</span>:
-    <span class="hljs-keyword">for</span> from_state <span class="hljs-keyword">in</span> list_states(hmm):
+    <span class="hljs-keyword">for</span> from_state <span class="hljs-keyword">in</span> hmm.get_nodes():
         tweaked_transition_weights = {}
-        total_transition_weights = <span class="hljs-number">0.0</span>
-        <span class="hljs-keyword">for</span> to_state <span class="hljs-keyword">in</span> list_outgoing_state_transitions(hmm, from_state):
-            weight = get_edge_transition_prob(hmm, from_state, to_state) + psuedocount
-            tweaked_transition_weights[to_state] = weight
-            total_transition_weights += weight
-        <span class="hljs-keyword">for</span> to_state, weight <span class="hljs-keyword">in</span> tweaked_transition_weights.items():
-            normalized_transition_weight = weight / total_transition_weights
-            set_edge_transition_prob(hmm, from_state, to_state, normalized_transition_weight)
+        total_transition_probs = <span class="hljs-number">0.0</span>
+        <span class="hljs-keyword">for</span> transition <span class="hljs-keyword">in</span> hmm.get_outputs(from_state):
+            _, to_state = transition
+            prob = hmm.get_edge_data(transition).get_transition_probability() + psuedocount
+            tweaked_transition_weights[to_state] = prob
+            total_transition_probs += prob
+        <span class="hljs-keyword">for</span> to_state, prob <span class="hljs-keyword">in</span> tweaked_transition_weights.items():
+            transition = from_state, to_state
+            normalized_transition_prob = prob / total_transition_probs
+            hmm.get_edge_data(transition).set_transition_probability(normalized_transition_prob)
 
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">hmm_add_pseudocounts_to_symbol_emission_probabilities</span>(<span class="hljs-params">
-        hmm: Graph[N, ND, E, ED],
-        psuedocount: <span class="hljs-built_in">float</span>,
-        list_states: [[Graph[N, ND, E, ED]], Iterable[STATE]],
-        list_state_emissions: [[Graph[N, ND, E, ED]], Iterable[SYMBOL]],
-        get_node_emission_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, SYMBOL], <span class="hljs-built_in">float</span>],
-        set_node_emission_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, SYMBOL, <span class="hljs-built_in">float</span>], <span class="hljs-literal">None</span>],
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        psuedocount: <span class="hljs-built_in">float</span>
 </span>) -&gt; <span class="hljs-literal">None</span>:
-    <span class="hljs-keyword">for</span> from_state <span class="hljs-keyword">in</span> list_states(hmm):
+    <span class="hljs-keyword">for</span> from_state <span class="hljs-keyword">in</span> hmm.get_nodes():
         tweaked_emission_weights = {}
-        total_emission_weights = <span class="hljs-number">0.0</span>
-        <span class="hljs-keyword">for</span> symbol <span class="hljs-keyword">in</span> list_state_emissions(hmm, from_state):
-            weight = get_node_emission_prob(hmm, from_state, symbol) + psuedocount
-            tweaked_emission_weights[symbol] = weight
-            total_emission_weights += weight
-        <span class="hljs-keyword">for</span> symbol, weight <span class="hljs-keyword">in</span> tweaked_emission_weights.items():
-            normalized_transition_weight = weight / total_emission_weights
-            set_node_emission_prob(hmm, from_state, symbol, normalized_transition_weight)
+        total_emission_probs = <span class="hljs-number">0.0</span>
+        <span class="hljs-keyword">for</span> symbol, prob <span class="hljs-keyword">in</span> hmm.get_node_data(from_state).list_symbol_emissions():
+            prob += psuedocount
+            tweaked_emission_weights[symbol] = prob
+            total_emission_probs += prob
+        <span class="hljs-keyword">for</span> symbol, prob <span class="hljs-keyword">in</span> tweaked_emission_weights.items():
+            normalized_transition_prob = prob / total_emission_probs
+            hmm.get_node_data(from_state).set_symbol_emission_probability(symbol, normalized_transition_prob)
 </code></pre>
 <div style="border:1px solid black;">
 <p></p>
@@ -25042,16 +25038,17 @@ pseudocount: 0.0001
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>In an <a href="#BM_(HMM)%2F">HMM</a>, there can't be a cycle of non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s. If there is, the <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a> will explode out infinitely. For example, if C and D pointed to each other in the <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> above, its <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a> would continue exploding out forever.</p>
 </div>
-<p><a href="ch10_code/src/hmm/MostProbableHiddenPath_ViterbiNonEmittingHiddenStates.py">ch10_code/src/hmm/MostProbableHiddenPath_ViterbiNonEmittingHiddenStates.py</a> (lines 33 to 135):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">to_viterbi_graph</span>(<span class="hljs-params">
-        hmm: Graph[N, ND, E, ED],
-        hmm_source_n_id: N,
-        hmm_sink_n_id: N,
-        emissions: <span class="hljs-built_in">list</span>[SYMBOL],
-        get_node_emission_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, SYMBOL], <span class="hljs-built_in">float</span>],
-        get_node_emittable: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE], <span class="hljs-built_in">bool</span>],
-        get_edge_transition_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, STATE], <span class="hljs-built_in">float</span>]
-</span>) -&gt; Graph[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N], <span class="hljs-type">Any</span>, <span class="hljs-built_in">tuple</span>[N, N], <span class="hljs-built_in">float</span>]:
+<p><a href="ch10_code/src/hmm/MostProbableHiddenPath_ViterbiNonEmittingHiddenStates.py">ch10_code/src/hmm/MostProbableHiddenPath_ViterbiNonEmittingHiddenStates.py</a> (lines 114 to 219):</p>
+<pre class="hljs"><code>VITERBI_NODE_ID = <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, STATE]
+VITERBI_EDGE_ID = <span class="hljs-built_in">tuple</span>[VITERBI_NODE_ID, VITERBI_NODE_ID]
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">to_viterbi_graph</span>(<span class="hljs-params">
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        hmm_source_n_id: STATE,
+        hmm_sink_n_id: STATE,
+        emissions: <span class="hljs-built_in">list</span>[SYMBOL]
+</span>) -&gt; Graph[VITERBI_NODE_ID, <span class="hljs-type">Any</span>, VITERBI_EDGE_ID, <span class="hljs-built_in">float</span>]:
     viterbi = Graph()
     <span class="hljs-comment"># Add Viterbi source node.</span>
     viterbi_source_n_id = -<span class="hljs-number">1</span>, hmm_source_n_id
@@ -25070,10 +25067,11 @@ pseudocount: 0.0001
             viterbi_from_n_id = viterbi_from_n_ids.pop()
             _, hmm_from_n_id = viterbi_from_n_id
             <span class="hljs-keyword">for</span> _, _, hmm_to_n_id, _ <span class="hljs-keyword">in</span> hmm.get_outputs_full(hmm_from_n_id):
-                hmm_to_n_emittable = get_node_emittable(hmm, hmm_to_n_id)
+                hmm_to_n_emittable = hmm.get_node_data(hmm_to_n_id).is_emittable()
+                transition = hmm_from_n_id, hmm_to_n_id
                 <span class="hljs-keyword">if</span> hmm_to_n_emittable:
-                    hidden_state_transition_prob = get_edge_transition_prob(hmm, hmm_from_n_id, hmm_to_n_id)
-                    symbol_emission_prob = get_node_emission_prob(hmm, hmm_to_n_id, viterbi_to_n_symbol)
+                    hidden_state_transition_prob = hmm.get_edge_data(transition).get_transition_probability()
+                    symbol_emission_prob = hmm.get_node_data(hmm_to_n_id).get_symbol_emission_probability(viterbi_to_n_symbol)
                     viterbi_to_n_id = viterbi_to_n_emissions_idx, hmm_to_n_id
                     connect_viterbi_nodes(
                         viterbi,
@@ -25083,7 +25081,7 @@ pseudocount: 0.0001
                     )
                     viterbi_to_n_ids_emitting.add(viterbi_to_n_id)
                 <span class="hljs-keyword">else</span>:
-                    hidden_state_transition_prob = get_edge_transition_prob(hmm, hmm_from_n_id, hmm_to_n_id)
+                    hidden_state_transition_prob =  hmm.get_edge_data(transition).get_transition_probability()
                     viterbi_to_n_id = viterbi_from_n_emissions_idx, hmm_to_n_id
                     to_n_existed = connect_viterbi_nodes(
                         viterbi,
@@ -25106,10 +25104,11 @@ pseudocount: 0.0001
         viterbi_from_n_id = viterbi_from_n_ids.pop()
         _, hmm_from_n_id = viterbi_from_n_id
         <span class="hljs-keyword">for</span> _, _, hmm_to_n_id, _ <span class="hljs-keyword">in</span> hmm.get_outputs_full(hmm_from_n_id):
-            hmm_to_n_emmitable = get_node_emittable(hmm, hmm_to_n_id)
+            hmm_to_n_emmitable = hmm.get_node_data(hmm_to_n_id).is_emittable()
             <span class="hljs-keyword">if</span> hmm_to_n_emmitable:
                 <span class="hljs-keyword">continue</span>
-            hidden_state_transition_prob = get_edge_transition_prob(hmm, hmm_from_n_id, hmm_to_n_id)
+            transition = hmm_from_n_id, hmm_to_n_id
+            hidden_state_transition_prob = hmm.get_edge_data(transition).get_transition_probability()
             viterbi_to_n_id = viterbi_from_n_emissions_idx, hmm_to_n_id
             connect_viterbi_nodes(
                 viterbi,
@@ -25127,9 +25126,9 @@ pseudocount: 0.0001
 
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">connect_viterbi_nodes</span>(<span class="hljs-params">
-        viterbi: Graph[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N], <span class="hljs-type">Any</span>, <span class="hljs-built_in">tuple</span>[N, N], <span class="hljs-built_in">float</span>],
-        viterbi_from_n_id: <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N],
-        viterbi_to_n_id: <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N],
+        viterbi: Graph[VITERBI_NODE_ID, <span class="hljs-type">Any</span>, VITERBI_EDGE_ID, <span class="hljs-built_in">float</span>],
+        viterbi_from_n_id: VITERBI_NODE_ID,
+        viterbi_to_n_id: VITERBI_NODE_ID,
         weight: <span class="hljs-built_in">float</span>
 </span>) -&gt; <span class="hljs-built_in">bool</span>:
     to_n_existed = <span class="hljs-literal">True</span>
@@ -25242,14 +25241,13 @@ pseudocount: 0.0001
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>"The probability of an <a href="#BM_(HMM)%2F">HMM</a> emitting a specific <a href="#BM_(sequence)%2Fi">sequence</a> is the sum of the probability of that emitted <a href="#BM_(sequence)%2Fi">sequence</a> occurring over all <a href="#BM_(hidden%20path)%2Fi">hidden path</a>s" - Why? The probability of one or the other is defined as P(A) + P(B). What's happening here is that, it's finding the probability that it's emitted from the first <a href="#BM_(hidden%20path)%2Fi">hidden path</a>, or the second <a href="#BM_(hidden%20path)%2Fi">hidden path</a>, or the third <a href="#BM_(hidden%20path)%2Fi">hidden path</a>, or ...</p>
 </div>
-<p><a href="ch10_code/src/hmm/ProbabilityOfEmittedSequence_Naive.py">ch10_code/src/hmm/ProbabilityOfEmittedSequence_Naive.py</a> (lines 108 to 166):</p>
+<p><a href="ch10_code/src/hmm/ProbabilityOfEmittedSequence_Naive.py">ch10_code/src/hmm/ProbabilityOfEmittedSequence_Naive.py</a> (lines 146 to 200):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">enumerate_paths</span>(<span class="hljs-params">
-        hmm: Graph[N, ND, E, ED],
-        hmm_from_n_id: N,
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        hmm_from_n_id: STATE,
         emitted_seq_len: <span class="hljs-built_in">int</span>,
-        get_node_emittable: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE], <span class="hljs-built_in">bool</span>],
-        prev_path: <span class="hljs-built_in">list</span>[E] | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>
-</span>) -&gt; Generator[<span class="hljs-built_in">list</span>[E], <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>]:
+        prev_path: <span class="hljs-built_in">list</span>[TRANSITION] | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>
+</span>) -&gt; Generator[<span class="hljs-built_in">list</span>[TRANSITION], <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>]:
     <span class="hljs-keyword">if</span> prev_path <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
         prev_path = []
     <span class="hljs-keyword">if</span> emitted_seq_len == <span class="hljs-number">0</span>:
@@ -25257,48 +25255,45 @@ pseudocount: 0.0001
         <span class="hljs-comment"># hmm_from_n_id may still have transitions to other non-emittable hidden states, and so those need to be</span>
         <span class="hljs-comment"># returned as paths as well (continue digging into outgoing transitions if the destination is non-emittable).</span>
         <span class="hljs-keyword">yield</span> prev_path
-        <span class="hljs-keyword">for</span> hmm_e_id, _, hmm_to_n_id, transition_prob <span class="hljs-keyword">in</span> hmm.get_outputs_full(hmm_from_n_id):
-            <span class="hljs-keyword">if</span> get_node_emittable(hmm, hmm_to_n_id):
+        <span class="hljs-keyword">for</span> transition, _, hmm_to_n_id, _ <span class="hljs-keyword">in</span> hmm.get_outputs_full(hmm_from_n_id):
+            <span class="hljs-keyword">if</span> hmm.get_node_data(hmm_to_n_id).is_emittable():
                 <span class="hljs-keyword">continue</span>
-            prev_path.append(hmm_e_id)
-            <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> enumerate_paths(hmm, hmm_to_n_id, emitted_seq_len, get_node_emittable, prev_path)
+            prev_path.append(transition)
+            <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> enumerate_paths(hmm, hmm_to_n_id, emitted_seq_len, prev_path)
             prev_path.pop()
     <span class="hljs-keyword">else</span>:
         <span class="hljs-comment"># Explode out at that path by digging into transitions from hmm_from_n_id. If the destination of the transition</span>
         <span class="hljs-comment"># is an ...</span>
         <span class="hljs-comment"># * emittable hidden state, subtract the expected emitted sequence length by 1 when you dig down.</span>
         <span class="hljs-comment"># * non-emittable hidden state, keep the expected emitted sequence length the same when you dig down.</span>
-        <span class="hljs-keyword">for</span> hmm_e_id, _, hmm_to_n_id, transition_prob <span class="hljs-keyword">in</span> hmm.get_outputs_full(hmm_from_n_id):
-            prev_path.append(hmm_e_id)
-            <span class="hljs-keyword">if</span> get_node_emittable(hmm, hmm_to_n_id):
+        <span class="hljs-keyword">for</span> transition, _, hmm_to_n_id, _ <span class="hljs-keyword">in</span> hmm.get_outputs_full(hmm_from_n_id):
+            prev_path.append(transition)
+            <span class="hljs-keyword">if</span> hmm.get_node_data(hmm_to_n_id).is_emittable():
                 next_emittable_seq_len = emitted_seq_len - <span class="hljs-number">1</span>
             <span class="hljs-keyword">else</span>:
                 next_emittable_seq_len = emitted_seq_len
-            <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> enumerate_paths(hmm, hmm_to_n_id, next_emittable_seq_len, get_node_emittable, prev_path)
+            <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> enumerate_paths(hmm, hmm_to_n_id, next_emittable_seq_len, prev_path)
             prev_path.pop()
 
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">emission_probability</span>(<span class="hljs-params">
-        hmm: Graph[N, ND, E, ED],
-        hmm_source_n_id: N,
-        emitted_seq: <span class="hljs-built_in">list</span>[SYMBOL],
-        get_node_emission_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, SYMBOL], <span class="hljs-built_in">float</span>],
-        get_node_emittable: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE], <span class="hljs-built_in">bool</span>],
-        get_edge_transition_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, STATE], <span class="hljs-built_in">float</span>]
-</span>):
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        hmm_source_n_id: STATE,
+        emitted_seq: <span class="hljs-built_in">list</span>[SYMBOL]
+</span>) -&gt; <span class="hljs-built_in">float</span>:
     sum_of_probs = <span class="hljs-number">0.0</span>
-    <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> enumerate_paths(hmm, hmm_source_n_id, <span class="hljs-built_in">len</span>(emitted_seq), get_node_emittable):
+    <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> enumerate_paths(hmm, hmm_source_n_id, <span class="hljs-built_in">len</span>(emitted_seq)):
         emitted_seq_idx = <span class="hljs-number">0</span>
         prob = <span class="hljs-number">1.0</span>
-        <span class="hljs-keyword">for</span> e_id <span class="hljs-keyword">in</span> p:
-            hmm_from_n_id, hmm_to_n_id, transition_prob = hmm.get_edge(e_id)
-            <span class="hljs-keyword">if</span> get_node_emittable(hmm, hmm_to_n_id):
+        <span class="hljs-keyword">for</span> transition <span class="hljs-keyword">in</span> p:
+            hmm_from_n_id, hmm_to_n_id = transition
+            <span class="hljs-keyword">if</span> hmm.get_node_data(hmm_to_n_id).is_emittable():
                 symbol = emitted_seq[emitted_seq_idx]
-                prob *= get_node_emission_prob(hmm, hmm_to_n_id, symbol) *\
-                        get_edge_transition_prob(hmm, hmm_from_n_id, hmm_to_n_id)
+                prob *= hmm.get_node_data(hmm_to_n_id).get_symbol_emission_probability(symbol) *\
+                        hmm.get_edge_data(transition).get_transition_probability()
                 emitted_seq_idx += <span class="hljs-number">1</span>
             <span class="hljs-keyword">else</span>:
-                prob *= get_edge_transition_prob(hmm, hmm_from_n_id, hmm_to_n_id)
+                prob *= hmm.get_edge_data(transition).get_transition_probability()
         sum_of_probs += prob
     <span class="hljs-keyword">return</span> sum_of_probs
 </code></pre>
@@ -25475,18 +25470,18 @@ Pr(B→A|z) * (
 </ul>
 <p>The above grouping and how each group feeds forward is essentially an exploded out <a href="#BM_(HMM)%2F">HMM</a> for the emitted <a href="#BM_(sequence)%2Fi">sequence</a> (similar to the structure of a <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi graph</a>). When computed as a graph, each group only gets computed once.</p>
 <p><img src="svgbob_4acf9bf1b617eae49ec4205ad41d58055d596f35.svg" alt="Kroki diagram output"></p>
-<p><a href="ch10_code/src/hmm/ProbabilityOfEmittedSequence_Graph.py">ch10_code/src/hmm/ProbabilityOfEmittedSequence_Graph.py</a> (lines 219 to 289):</p>
+<p><a href="ch10_code/src/hmm/ProbabilityOfEmittedSequence_Graph.py">ch10_code/src/hmm/ProbabilityOfEmittedSequence_Graph.py</a> (lines 268 to 339):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">emission_probability</span>(<span class="hljs-params">
-        hmm: Graph[N, ND, E, ED],
-        hmm_source_n_id: N,
-        hmm_sink_n_id: N,
-        emitted_seq: <span class="hljs-built_in">list</span>[SYMBOL],
-        get_node_emission_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, SYMBOL], <span class="hljs-built_in">float</span>],
-        get_node_emittable: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE], <span class="hljs-built_in">bool</span>],
-        get_edge_transition_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, STATE], <span class="hljs-built_in">float</span>]
-</span>):
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        hmm_source_n_id: STATE,
+        hmm_sink_n_id: STATE,
+        emitted_seq: <span class="hljs-built_in">list</span>[SYMBOL]
+</span>) -&gt; <span class="hljs-built_in">tuple</span>[
+    Graph[EXPLODED_NODE_ID, <span class="hljs-type">Any</span>, EXPLODED_EDGE_ID, <span class="hljs-type">Any</span>],
+    <span class="hljs-built_in">float</span>
+]:
     <span class="hljs-comment"># Explode out the HMM based on emitted_seq (same structure as a Viterbi graph)</span>
-    exploded = explode_hmm(hmm, hmm_source_n_id, hmm_sink_n_id, emitted_seq, get_node_emittable)
+    exploded = explode_hmm(hmm, hmm_source_n_id, hmm_sink_n_id, emitted_seq)
     <span class="hljs-comment"># Use graph algorithm to figure out emission probability</span>
     exploded_source_n_id = exploded.get_root_node()  <span class="hljs-comment"># equiv to (-1, hmm_source_n_id) -- using root node func for clarity</span>
     exploded_sink_n_id = exploded.get_leaf_node()  <span class="hljs-comment"># equiv to (-1, hmm_sink_n_id) -- using leaf node func for clarity</span>
@@ -25504,8 +25499,8 @@ Pr(B→A|z) * (
         <span class="hljs-comment"># Get the symbol emission probability for some symbol at the current hidden state. If the hidden state is</span>
         <span class="hljs-comment"># non-emittable, use 1.0 instead.</span>
         symbol = emitted_seq[exploded_to_n_emissions_idx]
-        <span class="hljs-keyword">if</span> get_node_emittable(hmm, hmm_to_n_id):
-            symbol_emission_prob = get_node_emission_prob(hmm, hmm_to_n_id, symbol)
+        <span class="hljs-keyword">if</span> hmm.get_node_data(hmm_to_n_id).is_emittable():
+            symbol_emission_prob = hmm.get_node_data(hmm_to_n_id).get_symbol_emission_probability(symbol)
         <span class="hljs-keyword">else</span>:
             symbol_emission_prob = <span class="hljs-number">1.0</span>
         <span class="hljs-comment"># Calculate forward weight for current node</span>
@@ -25513,7 +25508,8 @@ Pr(B→A|z) * (
         <span class="hljs-keyword">for</span> _, exploded_from_n_id, _, _ <span class="hljs-keyword">in</span> exploded.get_inputs_full(exploded_to_n_id):
             _, hmm_from_n_id = exploded_from_n_id
             exploded_from_forward_weight = exploded.get_node_data(exploded_from_n_id)
-            transition_prob = get_edge_transition_prob(hmm, hmm_from_n_id, hmm_to_n_id)
+            transition = hmm_from_n_id, hmm_to_n_id
+            transition_prob = hmm.get_edge_data(transition).get_transition_probability()
             exploded_to_forward_weight += exploded_from_forward_weight * transition_prob * symbol_emission_prob
             <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> The Pevzner book's formulas did it slightly differently. It factors out multiplication of</span>
             <span class="hljs-comment"># symbol_emission_prob such that it's applied only once after the loop finishes</span>
@@ -25538,9 +25534,9 @@ Pr(B→A|z) * (
 <span class="hljs-comment"># (exploded_to_n_id). If that outgoing neighbour (exploded_to_n_id) has a "forward weight" set for all of its incoming</span>
 <span class="hljs-comment"># neighbours, add it to the set of "ready_to_process" nodes.</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_ready_to_process_outgoing_nodes</span>(<span class="hljs-params">
-        exploded: Graph[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N], <span class="hljs-type">Any</span>, <span class="hljs-built_in">tuple</span>[N, N], <span class="hljs-type">Any</span>],
-        exploded_n_from_id: <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N],
-        ready_to_process_n_ids: <span class="hljs-built_in">set</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N]]
+        exploded: Graph[EXPLODED_NODE_ID, <span class="hljs-type">Any</span>, EXPLODED_EDGE_ID, <span class="hljs-type">Any</span>],
+        exploded_n_from_id: EXPLODED_NODE_ID,
+        ready_to_process_n_ids: <span class="hljs-built_in">set</span>[EXPLODED_NODE_ID]
 </span>):
     <span class="hljs-keyword">for</span> _, _, exploded_to_n_id, _ <span class="hljs-keyword">in</span> exploded.get_outputs_full(exploded_n_from_id):
         ready_to_process = <span class="hljs-built_in">all</span>(exploded.get_node_data(n) <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">for</span> _, n, _, _ <span class="hljs-keyword">in</span> exploded.get_inputs_full(exploded_to_n_id))
@@ -25570,7 +25566,7 @@ emissions: [z,z,y]
 <p>The following HMM was produced AFTER applying pseudocounts ...</p>
 <p><img src="dot_31eaae9b2316b1fe3d867cb1b470d1bf.svg" alt="Dot diagram"></p>
 <p>The following exploded HMM was produced for the HMM and the emitted sequence ['z', 'z', 'y'] ...</p>
-<p><img src="dot_635f85af2c599a12ae38d54618c88946.svg" alt="Dot diagram"></p>
+<p><img src="dot_186d99ecbcec752cfa544f07b261321c.svg" alt="Dot diagram"></p>
 <p>The probability of ['z', 'z', 'y'] being emitted is 0.038671885171816495 ...</p>
 </div>
 <p></p>
@@ -25607,15 +25603,18 @@ emissions: [z,z,y]
 <p><img src="svgbob_a4aa8f24ac5b780640ebb39117117a0dfcee1b39.svg" alt="Kroki diagram output"></p>
 <p>As with before, the edges of the exploded out <a href="#BM_(HMM)%2F">HMM</a> are <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transitions. However, in this case, a node's outgoing <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transitions explode out to each layer in the graph. For example, (A0,z) will have outgoing edges to A1 and B1 for both the z layer and the y later (4 total outgoing edges).</p>
 <p><img src="svgbob_43309ad4b9f0de4ab1e589a19588d73b727cf5d5.svg" alt="Kroki diagram output"></p>
-<p><a href="ch10_code/src/hmm/MostProbableEmittedSequence_Graph.py">ch10_code/src/hmm/MostProbableEmittedSequence_Graph.py</a> (lines 39 to 137):</p>
-<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">explode_hmm</span>(<span class="hljs-params">
-        hmm: Graph[N, ND, E, ED],
-        hmm_source_n_id: N,
-        hmm_sink_n_id: N,
+<p><a href="ch10_code/src/hmm/MostProbableEmittedSequence_Graph.py">ch10_code/src/hmm/MostProbableEmittedSequence_Graph.py</a> (lines 147 to 248):</p>
+<pre class="hljs"><code>EXPLODED_NODE_ID = <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, STATE, SYMBOL | <span class="hljs-literal">None</span>]
+EXPLODED_EDGE_ID = <span class="hljs-built_in">tuple</span>[EXPLODED_NODE_ID, EXPLODED_NODE_ID]
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">explode_hmm</span>(<span class="hljs-params">
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        hmm_source_n_id: STATE,
+        hmm_sink_n_id: STATE,
         symbols: <span class="hljs-built_in">set</span>[SYMBOL],
-        emission_len: <span class="hljs-built_in">int</span>,
-        get_node_emittable: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE], <span class="hljs-built_in">bool</span>],
-</span>) -&gt; Graph[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N, SYMBOL], <span class="hljs-type">Any</span>, <span class="hljs-built_in">tuple</span>[N, N], <span class="hljs-type">Any</span>]:
+        emission_len: <span class="hljs-built_in">int</span>
+</span>) -&gt; Graph[EXPLODED_NODE_ID, <span class="hljs-type">Any</span>, EXPLODED_EDGE_ID, <span class="hljs-type">Any</span>]:
     exploded = Graph()
     <span class="hljs-comment"># Add exploded source node.</span>
     exploded_source_n_id = -<span class="hljs-number">1</span>, hmm_source_n_id, <span class="hljs-literal">None</span>
@@ -25634,7 +25633,7 @@ emissions: [z,z,y]
             _, hmm_from_n_id, exploded_from_symbol = exploded_from_n_id
             <span class="hljs-keyword">for</span> exploded_to_n_symbol <span class="hljs-keyword">in</span> symbols:
                 <span class="hljs-keyword">for</span> _, _, hmm_to_n_id, _ <span class="hljs-keyword">in</span> hmm.get_outputs_full(hmm_from_n_id):
-                    hmm_to_n_emittable = get_node_emittable(hmm, hmm_to_n_id)
+                    hmm_to_n_emittable = hmm.get_node_data(hmm_to_n_id).is_emittable()
                     <span class="hljs-keyword">if</span> hmm_to_n_emittable:
                         exploded_to_n_id = exploded_to_n_emissions_idx, hmm_to_n_id, exploded_to_n_symbol
                         connect_exploded_nodes(
@@ -25668,8 +25667,8 @@ emissions: [z,z,y]
         _, hmm_from_n_id, exploded_from_symbol = exploded_from_n_id
         <span class="hljs-keyword">for</span> exploded_to_n_symbol <span class="hljs-keyword">in</span> symbols:
             <span class="hljs-keyword">for</span> _, _, hmm_to_n_id, _ <span class="hljs-keyword">in</span> hmm.get_outputs_full(hmm_from_n_id):
-                hmm_to_n_emmitable = get_node_emittable(hmm, hmm_to_n_id)
-                <span class="hljs-keyword">if</span> hmm_to_n_emmitable:
+                hmm_to_n_emittable = hmm.get_node_data(hmm_to_n_id).is_emittable()
+                <span class="hljs-keyword">if</span> hmm_to_n_emittable:
                     <span class="hljs-keyword">continue</span>
                 exploded_to_n_id = exploded_from_n_emissions_idx, hmm_to_n_id, exploded_to_n_symbol
                 connect_exploded_nodes(
@@ -25688,9 +25687,9 @@ emissions: [z,z,y]
 
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">connect_exploded_nodes</span>(<span class="hljs-params">
-        exploded: Graph[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N], <span class="hljs-type">Any</span>, <span class="hljs-built_in">tuple</span>[N, N], <span class="hljs-type">Any</span>],
-        exploded_from_n_id: <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N, SYMBOL],
-        exploded_to_n_id: <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N, SYMBOL],
+        exploded: Graph[EXPLODED_NODE_ID, <span class="hljs-type">Any</span>, EXPLODED_EDGE_ID, <span class="hljs-built_in">float</span>],
+        exploded_from_n_id: EXPLODED_NODE_ID,
+        exploded_to_n_id: EXPLODED_NODE_ID,
         weight: <span class="hljs-type">Any</span>
 </span>) -&gt; <span class="hljs-built_in">bool</span>:
     to_n_existed = <span class="hljs-literal">True</span>
@@ -25748,13 +25747,10 @@ emission_len: 3
 <li>z layer produced a result of 1.2</li>
 </ul>
 <p>, ... then (A1,z) would store (y, 13.5).</p>
-<p><a href="ch10_code/src/hmm/MostProbableEmittedSequence_Graph.py">ch10_code/src/hmm/MostProbableEmittedSequence_Graph.py</a> (lines 304 to 393):</p>
+<p><a href="ch10_code/src/hmm/MostProbableEmittedSequence_Graph.py">ch10_code/src/hmm/MostProbableEmittedSequence_Graph.py</a> (lines 341 to 424):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">compute_exploded_max_emission_weights</span>(<span class="hljs-params">
-        hmm: Graph[N, ND, E, ED],
-        exploded: Graph[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N, SYMBOL], <span class="hljs-type">Any</span>, <span class="hljs-built_in">tuple</span>[N, N], <span class="hljs-type">Any</span>],
-        get_node_emission_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, SYMBOL], <span class="hljs-built_in">float</span>],
-        get_node_emittable: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE], <span class="hljs-built_in">bool</span>],
-        get_edge_transition_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, STATE], <span class="hljs-built_in">float</span>]
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        exploded: Graph[EXPLODED_NODE_ID, <span class="hljs-type">Any</span>, EXPLODED_EDGE_ID, <span class="hljs-built_in">float</span>]
 </span>) -&gt; <span class="hljs-built_in">float</span>:
     <span class="hljs-comment"># Use graph algorithm to figure out emission probability</span>
     exploded_source_n_id = exploded.get_root_node()  <span class="hljs-comment"># equiv to (-1, hmm_source_n_id) -- using root node func for clarity</span>
@@ -25769,8 +25765,7 @@ emission_len: 3
         <span class="hljs-comment"># you try to query if its emittable / its emission probabilities.</span>
         <span class="hljs-keyword">if</span> exploded_to_n_id == exploded_sink_n_id:
             <span class="hljs-keyword">continue</span>
-        compute_node_forward_weight(hmm, exploded, exploded_to_n_id, get_node_emission_prob, get_node_emittable,
-                                    get_edge_transition_prob)
+        compute_node_forward_weight(hmm, exploded, exploded_to_n_id)
         <span class="hljs-comment"># Now that the forward weight's been calculated for this node, check its outgoing neighbours to see if they're</span>
         <span class="hljs-comment"># also ready and add them to the ready set if they are.</span>
         add_ready_to_process_outgoing_nodes(exploded, exploded_to_n_id, exploded_to_n_ids)
@@ -25782,18 +25777,15 @@ emission_len: 3
 
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">compute_node_forward_weight</span>(<span class="hljs-params">
-        hmm: Graph[N, ND, E, ED],
-        exploded: Graph[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N, SYMBOL], <span class="hljs-type">Any</span>, <span class="hljs-built_in">tuple</span>[N, N], <span class="hljs-type">Any</span>],
-        exploded_to_n_id: <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N, SYMBOL],
-        get_node_emission_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, SYMBOL], <span class="hljs-built_in">float</span>],
-        get_node_emittable: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE], <span class="hljs-built_in">bool</span>],
-        get_edge_transition_prob: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE, STATE], <span class="hljs-built_in">float</span>]
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        exploded: Graph[EXPLODED_NODE_ID, <span class="hljs-type">Any</span>, EXPLODED_EDGE_ID, <span class="hljs-built_in">float</span>],
+        exploded_to_n_id: EXPLODED_NODE_ID
 </span>):
     exploded_to_n_emissions_idx, hmm_to_n_id, exploded_to_symbol = exploded_to_n_id
     <span class="hljs-comment"># Get the symbol emission probability for some symbol at the current hidden state. If the hidden state is</span>
     <span class="hljs-comment"># non-emittable, use 1.0 instead.</span>
-    <span class="hljs-keyword">if</span> get_node_emittable(hmm, hmm_to_n_id):
-        symbol_emission_prob = get_node_emission_prob(hmm, hmm_to_n_id, exploded_to_symbol)
+    <span class="hljs-keyword">if</span> hmm.get_node_data(hmm_to_n_id).is_emittable():
+        symbol_emission_prob = hmm.get_node_data(hmm_to_n_id).get_symbol_emission_probability(exploded_to_symbol)
     <span class="hljs-keyword">else</span>:
         symbol_emission_prob = <span class="hljs-number">1.0</span>
     <span class="hljs-comment"># Calculate forward weight for current node</span>
@@ -25801,7 +25793,8 @@ emission_len: 3
     <span class="hljs-keyword">for</span> _, exploded_from_n_id, _, _ <span class="hljs-keyword">in</span> exploded.get_inputs_full(exploded_to_n_id):
         _, hmm_from_n_id, exploded_from_symbol = exploded_from_n_id
         _, exploded_from_forward_weight = exploded.get_node_data(exploded_from_n_id)
-        transition_prob = get_edge_transition_prob(hmm, hmm_from_n_id, hmm_to_n_id)
+        transition = hmm_from_n_id, hmm_to_n_id
+        transition_prob = hmm.get_edge_data(transition).get_transition_probability()
         exploded_to_forward_weights[exploded_from_symbol] += exploded_from_forward_weight * transition_prob * symbol_emission_prob
         <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> The Pevzner book's formulas did it slightly differently. It factors out multiplication of</span>
         <span class="hljs-comment"># symbol_emission_prob such that it's applied only once after the loop finishes</span>
@@ -25812,8 +25805,8 @@ emission_len: 3
 
 
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">compute_sink_node_forward_weight</span>(<span class="hljs-params">
-        exploded: Graph[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N, SYMBOL], <span class="hljs-type">Any</span>, <span class="hljs-built_in">tuple</span>[N, N], <span class="hljs-type">Any</span>],
-        exploded_sink_n_id: <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N, SYMBOL]
+        exploded: Graph[EXPLODED_NODE_ID, <span class="hljs-type">Any</span>, EXPLODED_EDGE_ID, <span class="hljs-built_in">float</span>],
+        exploded_sink_n_id: EXPLODED_NODE_ID
 </span>):
     transition_prob = <span class="hljs-number">1.0</span>
     <span class="hljs-comment"># Calculate forward weight for current node</span>
@@ -25830,9 +25823,9 @@ emission_len: 3
 <span class="hljs-comment"># (exploded_to_n_id). If that outgoing neighbour (exploded_to_n_id) has a "forward weight" set for all of its incoming</span>
 <span class="hljs-comment"># neighbours, add it to the set of "ready_to_process" nodes.</span>
 <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_ready_to_process_outgoing_nodes</span>(<span class="hljs-params">
-        exploded: Graph[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N, SYMBOL], <span class="hljs-type">Any</span>, <span class="hljs-built_in">tuple</span>[N, N], <span class="hljs-type">Any</span>],
-        exploded_n_from_id: <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N, SYMBOL],
-        ready_to_process_n_ids: <span class="hljs-built_in">set</span>[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N, SYMBOL]]
+        exploded: Graph[EXPLODED_NODE_ID, <span class="hljs-type">Any</span>, EXPLODED_EDGE_ID, <span class="hljs-built_in">float</span>],
+        exploded_n_from_id: EXPLODED_NODE_ID,
+        ready_to_process_n_ids: <span class="hljs-built_in">set</span>[EXPLODED_NODE_ID]
 </span>):
     <span class="hljs-keyword">for</span> _, _, exploded_to_n_id, _ <span class="hljs-keyword">in</span> exploded.get_outputs_full(exploded_n_from_id):
         ready_to_process = <span class="hljs-built_in">all</span>(exploded.get_node_data(n) <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">for</span> _, n, _, _ <span class="hljs-keyword">in</span> exploded.get_inputs_full(exploded_to_n_id))
@@ -25875,11 +25868,10 @@ emission_len: 3
 <p>The Pevzner book didn't go through how to do this. It only posed the question with barely any information to help figure out how to do it.</p>
 <p>I think my reasoning here is correct but I haven't had a chance to verify it.</p>
 </div>
-<p><a href="ch10_code/src/hmm/MostProbableEmittedSequence_Graph.py">ch10_code/src/hmm/MostProbableEmittedSequence_Graph.py</a> (lines 482 to 514):</p>
+<p><a href="ch10_code/src/hmm/MostProbableEmittedSequence_Graph.py">ch10_code/src/hmm/MostProbableEmittedSequence_Graph.py</a> (lines 501 to 532):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">
-    hmm: Graph[N, ND, E, ED],
-    exploded: Graph[<span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">int</span>, N, SYMBOL], <span class="hljs-type">Any</span>, <span class="hljs-built_in">tuple</span>[N, N], <span class="hljs-type">Any</span>],
-    get_node_emittable: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE], <span class="hljs-built_in">bool</span>]
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        exploded: Graph[EXPLODED_NODE_ID, <span class="hljs-type">Any</span>, EXPLODED_EDGE_ID, <span class="hljs-built_in">float</span>]
 </span>) -&gt; <span class="hljs-built_in">list</span>[SYMBOL]:
     exploded_source_n_id = exploded.get_root_node()
     exploded_sink_n_id = exploded.get_leaf_node()
@@ -25893,7 +25885,7 @@ emission_len: 3
         <span class="hljs-comment"># the symbol for that layer, so the symbol is being added to the emitted sequence. The SINK node may not exist</span>
         <span class="hljs-comment"># in the HMM, so if exploded_to_n_id is the SINK node, filter it out of test (SINK node will never emit a symbol</span>
         <span class="hljs-comment"># and isn't part of a layer).</span>
-        <span class="hljs-keyword">if</span> hmm_to_n_id != hmm_sink_n_id <span class="hljs-keyword">and</span> get_node_emittable(hmm, hmm_to_n_id):
+        <span class="hljs-keyword">if</span> hmm_to_n_id != hmm_sink_n_id <span class="hljs-keyword">and</span> hmm.get_node_data(hmm_to_n_id).is_emittable():
             emitted_seq.insert(<span class="hljs-number">0</span>, exploded_to_layer)
         backtracking_layer, _ = exploded.get_node_data(exploded_to_n_id)
         <span class="hljs-comment"># The backtracking symbol is the layer this came from. Collect all nodes in that layer that have edges to</span>
@@ -25934,8 +25926,8 @@ emission_len: 3
 <p>The following exploded graph was produced for the HMM and an emission length of 3 ...</p>
 <p><img src="dot_9876e3af35801fa9fdcc722a72f44129.svg" alt="Dot diagram"></p>
 <p>The following exploded graph forward and layer backtracking pointers were produced for the exploded graph...</p>
-<p><img src="dot_65df56e2eb017710318041ab33429c99.svg" alt="Dot diagram"></p>
-<p>The sequence ['y', 'y', 'y'] is the most probable for any emitted sequence of length 3 (probability=0.287526321185488) ...</p>
+<p><img src="dot_e97d10c7ec20ab4caf9039f0d88073dd.svg" alt="Dot diagram"></p>
+<p>The sequence ['y', 'y', 'y'] is the most probable for any emitted sequence of length 3 (probability=0.28752632118548793) ...</p>
 </div>
 <p></p>
 <a name="H_Empirical%20Learning"></a><h3>Empirical Learning</h3>
@@ -25947,7 +25939,7 @@ emission_len: 3
 <li><a href="#BM_(Algorithms%5C%2FSequence%20HMM%2FMost%20Probable%20Hidden%20Path%2FViterbi%20Non-emitting%20States%20Algorithm)_TOPIC%2F">Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: An <a href="#BM_(HMM)%2F">HMM</a> uses probabilities to model a machine which transitions through <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s and possibly emits a symbol after each transition (non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s don't emit a symbol). Empirical learning derives and <a href="#BM_(HMM)%2F">HMM</a>'s <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transition probabilities and symbol emission probabilities by observing the machine that <a href="#BM_(HMM)%2F">HMM</a> models.</p>
+<p><strong>WHAT</strong>: An <a href="#BM_(HMM)%2F">HMM</a> uses probabilities to model a machine which transitions through <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s and possibly emits a symbol after each transition (non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s don't emit a symbol). Empirical learning derives an <a href="#BM_(HMM)%2F">HMM</a>'s <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transition probabilities and symbol emission probabilities by observing the machine that <a href="#BM_(HMM)%2F">HMM</a> models.</p>
 <p><strong>WHY</strong>: Observations are one way to derive probabilities for an <a href="#BM_(HMM)%2F">HMM</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>This algorithm derives weights for an <a href="#BM_(HMM)%2F">HMM</a>. For example, imagine the following <a href="#BM_(HMM)%2F">HMM</a> structure (probabilities missing).</p>
@@ -26049,24 +26041,24 @@ emission_len: 3
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Note that Pr(SOURCE→B) is 0.0, which means the <a href="#BM_(HMM)%2F">HMM</a> will never start by transitioning to B. As noted in <a href="#BM_(Algorithms%5C%2FSequence%20HMM%2FMost%20Probable%20Hidden%20Path%2FViterbi%20Pseudocounts%20Algorithm)_TOPIC%2F">Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm</a>, this is flawed and as such <a href="#BM_(pseudocount)%2Fi">pseudocount</a>s need to be applied.</p>
 </div>
-<p><a href="ch10_code/src/hmm/EmpiricalLearning.py">ch10_code/src/hmm/EmpiricalLearning.py</a> (lines 109 to 127):</p>
+<p><a href="ch10_code/src/hmm/EmpiricalLearning.py">ch10_code/src/hmm/EmpiricalLearning.py</a> (lines 148 to 166):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">derive_transition_probabilities</span>(<span class="hljs-params">
-        hmm: Graph[N, ND, E, ED],
-        list_state_transitions: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED]], Iterable[<span class="hljs-built_in">tuple</span>[STATE, STATE]]],
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
         observed_transitions: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[STATE, STATE]]
 </span>) -&gt; <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[STATE, STATE], <span class="hljs-built_in">float</span>]:
     transition_counts = defaultdict(<span class="hljs-keyword">lambda</span>: <span class="hljs-number">0</span>)
     transition_source_counts = defaultdict(<span class="hljs-keyword">lambda</span>: <span class="hljs-number">0</span>)
-    <span class="hljs-keyword">for</span> src, dst <span class="hljs-keyword">in</span> observed_transitions:
-        transition_counts[src, dst] += <span class="hljs-number">1</span>
-        transition_source_counts[src] += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> from_state, to_state <span class="hljs-keyword">in</span> observed_transitions:
+        transition_counts[from_state, to_state] += <span class="hljs-number">1</span>
+        transition_source_counts[from_state] += <span class="hljs-number">1</span>
     transition_probabilities = {}
-    <span class="hljs-keyword">for</span> src, dst <span class="hljs-keyword">in</span> list_state_transitions(hmm):  <span class="hljs-comment"># Query HMM for transitions (observed_transitions might miss some)</span>
-        <span class="hljs-keyword">if</span> transition_source_counts[src] &gt; <span class="hljs-number">0</span>:
-            prob = transition_counts[src, dst] / transition_source_counts[src]
+    <span class="hljs-keyword">for</span> transition <span class="hljs-keyword">in</span> hmm.get_edges():  <span class="hljs-comment"># Query HMM for transitions (observed_transitions might miss some)</span>
+        from_state, to_state = transition
+        <span class="hljs-keyword">if</span> transition_source_counts[from_state] &gt; <span class="hljs-number">0</span>:
+            prob = transition_counts[from_state, to_state] / transition_source_counts[from_state]
         <span class="hljs-keyword">else</span>:
             prob = <span class="hljs-number">0.0</span>
-        transition_probabilities[src, dst] = prob
+        transition_probabilities[from_state, to_state] = prob
     <span class="hljs-keyword">return</span> transition_probabilities
 </code></pre>
 <p>Symbol emission probabilities are calculated similarly. Given a <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> W and a symbol emission u, the symbol emission probability for u after a transition to W is estimated as the number of times W emits u divided by the total number of emissions for W. For example, in the <a href="#BM_(sequence)%2Fi">sequence</a> ...</p>
@@ -26101,29 +26093,27 @@ emission_len: 3
 </tr>
 </tbody>
 </table>
-<p><a href="ch10_code/src/hmm/EmpiricalLearning.py">ch10_code/src/hmm/EmpiricalLearning.py</a> (lines 131 to 154):</p>
+<p><a href="ch10_code/src/hmm/EmpiricalLearning.py">ch10_code/src/hmm/EmpiricalLearning.py</a> (lines 170 to 191):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">derive_emission_probabilities</span>(<span class="hljs-params">
-        hmm: Graph[N, ND, E, ED],
-        list_states: [[Graph[N, ND, E, ED]], Iterable[STATE]],
-        list_symbols: [[Graph[N, ND, E, ED]], Iterable[SYMBOL]],
-        get_node_emittable: <span class="hljs-type">Callable</span>[[Graph[N, ND, E, ED], STATE], <span class="hljs-built_in">bool</span>],
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
         observed_emissions: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[STATE, SYMBOL | <span class="hljs-literal">None</span>]]
 </span>) -&gt; <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[STATE, SYMBOL], <span class="hljs-built_in">float</span>]:
     dst_emission_counts = defaultdict(<span class="hljs-keyword">lambda</span>: <span class="hljs-number">0</span>)
     dst_total_emission_counts = defaultdict(<span class="hljs-keyword">lambda</span>: <span class="hljs-number">0</span>)
-    <span class="hljs-keyword">for</span> dst, symbol <span class="hljs-keyword">in</span> observed_emissions:
-        dst_emission_counts[dst, symbol] += <span class="hljs-number">1</span>
-        dst_total_emission_counts[dst] += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> to_state, symbol <span class="hljs-keyword">in</span> observed_emissions:
+        dst_emission_counts[to_state, symbol] += <span class="hljs-number">1</span>
+        dst_total_emission_counts[to_state] += <span class="hljs-number">1</span>
     emission_probabilities = {}
-    <span class="hljs-keyword">for</span> dst <span class="hljs-keyword">in</span> list_states(hmm):  <span class="hljs-comment"># Query HMM for states (observed_emissions might miss some)</span>
-        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> get_node_emittable(hmm, dst):
+    all_possible_symbols = {symbol <span class="hljs-keyword">for</span> _, symbol <span class="hljs-keyword">in</span> observed_emissions <span class="hljs-keyword">if</span> symbol <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>}
+    <span class="hljs-keyword">for</span> to_state <span class="hljs-keyword">in</span> hmm.get_nodes():  <span class="hljs-comment"># Query HMM for states (observed_emissions might miss some)</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> hmm.get_node_data(to_state).is_emittable():
             <span class="hljs-keyword">continue</span>
-        <span class="hljs-keyword">for</span> symbol <span class="hljs-keyword">in</span> list_symbols(hmm):
-            <span class="hljs-keyword">if</span> dst_total_emission_counts[dst] &gt; <span class="hljs-number">0</span>:
-                prob = dst_emission_counts[dst, symbol] / dst_total_emission_counts[dst]
+        <span class="hljs-keyword">for</span> symbol <span class="hljs-keyword">in</span> all_possible_symbols:
+            <span class="hljs-keyword">if</span> dst_total_emission_counts[to_state] &gt; <span class="hljs-number">0</span>:
+                prob = dst_emission_counts[to_state, symbol] / dst_total_emission_counts[to_state]
             <span class="hljs-keyword">else</span>:
                 prob = <span class="hljs-number">0.0</span>
-            emission_probabilities[dst, symbol] = prob
+            emission_probabilities[to_state, symbol] = prob
     <span class="hljs-keyword">return</span> emission_probabilities
 </code></pre>
 <div style="border:1px solid black;">
@@ -26158,8 +26148,27 @@ pseudocount: 0.0001
 <p><img src="dot_43fda8ca6ba07995f08093ce732a37a3.svg" alt="Dot diagram"></p>
 <p>The following probabilities were derived from the observed sequence of transitions and emissions ...</p>
 <ul>
-<li>transition_probs={('SOURCE', 'B'): 0.0, ('SOURCE', 'A'): 1.0, ('A', 'B'): 0.3333333333333333, ('A', 'A'): 0.6666666666666666, ('B', 'C'): 0.3333333333333333, ('B', 'A'): 0.6666666666666666, ('C', 'B'): 1.0}</li>
-<li>emission_probs={('A', 'z'): 0.5714285714285714, ('A', 'y'): 0.42857142857142855, ('B', 'z'): 0.6666666666666666, ('B', 'y'): 0.3333333333333333}</li>
+<li>
+<p>Transition probabilities:</p>
+<ul>
+<li>SOURCE→B = 0.0</li>
+<li>SOURCE→A = 1.0</li>
+<li>A→B = 0.3333333333333333</li>
+<li>A→A = 0.6666666666666666</li>
+<li>B→A = 0.6666666666666666</li>
+<li>B→C = 0.3333333333333333</li>
+<li>C→B = 1.0</li>
+</ul>
+</li>
+<li>
+<p>Emission probabilities:</p>
+<ul>
+<li>(B, z) = 0.6666666666666666</li>
+<li>(B, y) = 0.3333333333333333</li>
+<li>(A, z) = 0.5714285714285714</li>
+<li>(A, y) = 0.42857142857142855</li>
+</ul>
+</li>
 </ul>
 <p>The following HMM was produced after derived probabilities were applied ...</p>
 <p><img src="dot_31243ae947b8067248708795157a8311.svg" alt="Dot diagram"></p>
@@ -26171,9 +26180,9 @@ pseudocount: 0.0001
 <ol>
 <li>the SOURCE <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> can transition to every other <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>.</li>
 <li>each non-SOURCE <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> can transition to all other non-SOURCE <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s, including itself.</li>
-<li>each non-SOURCE <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> can emit all symbols unless the observed <a href="#BM_(sequence)%2Fi">sequence</a> shows it as not emiting anything (non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>).</li>
+<li>each non-SOURCE <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> can emit all symbols.</li>
 </ol>
-<p>For example, given the same past observation as used in the example above (reproduced below), it can be assumed that the ...</p>
+<p>This assumed structure doesn't allowe for non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s because non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s can't form cycles. If they do have non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s with cycles, the exploded out <a href="#BM_(HMM)%2F">HMM</a> will grow infintely.For example, given the same past observation as used in the example above (reproduced below), it can be assumed that the ...</p>
 <ul>
 <li><a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s are [SOURCE, A, B, C].</li>
 <li>emission symols are [x, y].</li>
@@ -26194,6 +26203,7 @@ pseudocount: 0.0001
 <th>8</th>
 <th>9</th>
 <th>10</th>
+<th>11</th>
 </tr>
 </thead>
 <tbody>
@@ -26204,12 +26214,13 @@ pseudocount: 0.0001
 <td>A→B</td>
 <td>B→A</td>
 <td>A→B</td>
-<td>B→C</td>
-<td>C→B</td>
 <td>B→A</td>
 <td>A→A</td>
 <td>A→A</td>
 <td>A→A</td>
+<td>A→B</td>
+<td>B→B</td>
+<td>B→B</td>
 </tr>
 <tr>
 <td>Emission</td>
@@ -26218,17 +26229,18 @@ pseudocount: 0.0001
 <td>z</td>
 <td>z</td>
 <td>z</td>
-<td></td>
 <td>y</td>
 <td>y</td>
-<td>y</td>
+<td>z</td>
+<td>z</td>
+<td>z</td>
 <td>z</td>
 <td>z</td>
 </tr>
 </tbody>
 </table>
-<p><img src="svgbob_bcac9362fc3d867ef282ac0eee68a0bf71651ce0.svg" alt="Kroki diagram output"></p>
-<p><a href="ch10_code/src/hmm/EmpiricalLearning.py">ch10_code/src/hmm/EmpiricalLearning.py</a> (lines 263 to 298):</p>
+<p><img src="svgbob_33e170f25860acc67138f8421a4b1d2e4f304b34.svg" alt="Kroki diagram output"></p>
+<p><a href="ch10_code/src/hmm/EmpiricalLearning.py">ch10_code/src/hmm/EmpiricalLearning.py</a> (lines 293 to 337):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">derive_hmm_structure</span>(<span class="hljs-params">
         observed_sequence: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[STATE, STATE, SYMBOL] | <span class="hljs-built_in">tuple</span>[STATE, STATE]]
 </span>) -&gt; <span class="hljs-built_in">tuple</span>[
@@ -26247,22 +26259,31 @@ pseudocount: 0.0001
         <span class="hljs-keyword">else</span>:
             from_state, to_state = entry
             non_emitting_hidden_states.add(to_state)
+    <span class="hljs-comment"># Unable to infer when there are non-emitting hidden states. Recall that non-emitting hidden states cannot form</span>
+    <span class="hljs-comment"># cycles because those cycles will infinitely blow out when exploding out an HMM (Viterbi). When there's only one</span>
+    <span class="hljs-comment"># non-emitting hidden state, it's fine so long as you kill the edge to itself. When there's more than one</span>
+    <span class="hljs-comment"># non-emitting hidden state, this algorithm assumes that they can point at each other, which will cause a cycle.</span>
+    <span class="hljs-comment">#</span>
+    <span class="hljs-comment"># For example, if there are two non-emitting states A and B, this algorithm will always produce a cycle.</span>
+    <span class="hljs-comment"># .----.</span>
+    <span class="hljs-comment"># |    v</span>
+    <span class="hljs-comment"># A&lt;---B</span>
+    <span class="hljs-comment">#</span>
+    <span class="hljs-comment"># The observed sequence doesn't make it clear which of thw two edges should be kept vs which should be discarded. As</span>
+    <span class="hljs-comment"># such, non-emitting hidden states (other than the SOURCE state) aren't allowed in this algorithm.</span>
+    <span class="hljs-keyword">if</span> non_emitting_hidden_states:
+        <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'Cannot derive HMM structure when there are non-emitting hidden sates'</span>)
     <span class="hljs-comment"># Assume first transition always begins from the SOURCE hidden state -- add it as non-emitting hidden state</span>
     source_state = observed_sequence[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]
-    non_emitting_hidden_states.add(source_state)
-    <span class="hljs-comment"># Ensure nothing conflicts</span>
-    <span class="hljs-keyword">if</span> emitting_hidden_states &amp; non_emitting_hidden_states != <span class="hljs-built_in">set</span>():
-        <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'Some states are reportedly non-emitting and emitting at the same time'</span>)
     <span class="hljs-comment"># Build out HMM structure</span>
     transitions = {}
-    transitions[source_state] = non_emitting_hidden_states | emitting_hidden_states
-    <span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> non_emitting_hidden_states | emitting_hidden_states:
-        transitions[state] = non_emitting_hidden_states | emitting_hidden_states
+    transitions[source_state] = emitting_hidden_states.copy()
+    <span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> emitting_hidden_states:
+        transitions[state] = emitting_hidden_states.copy()
     emissions = {}
+    emissions[source_state] = {}
     <span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> emitting_hidden_states:
         emissions[state] = symbols.copy()
-    <span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> non_emitting_hidden_states:
-        emissions[state] = {}
     <span class="hljs-keyword">return</span> transitions, emissions
 </code></pre>
 <div style="border:1px solid black;">
@@ -26274,31 +26295,306 @@ pseudocount: 0.0001
   - [A, B, z]
   - [B, A, z]
   - [A, B, z]
-  - [B, C]
-  - [C, B, y]
   - [B, A, y]
   - [A, A, y]
   - [A, A, z]
   - [A, A, z]
+  - [A, B, z]
+  - [B, B, z]
+  - [B, B, z]
+cycles: 8
+pseudocount: 0.0001
 pseudocount: 0.0001
 
 </code></pre>
 <p>The following HMM hidden state transitions and symbol emissions were assumed...</p>
 <ul>
-<li>transitions={'SOURCE': {'A', 'C', 'B', 'SOURCE'}, 'A': {'A', 'C', 'B', 'SOURCE'}, 'C': {'A', 'C', 'B', 'SOURCE'}, 'B': {'A', 'C', 'B', 'SOURCE'}}</li>
-<li>emissions={'A': {'z', 'y'}, 'B': {'z', 'y'}, 'C': {}, 'SOURCE': {}}</li>
+<li>transitions={'SOURCE': {'A', 'B'}, 'A': {'A', 'B'}, 'B': {'A', 'B'}}</li>
+<li>emissions={'SOURCE': {}, 'A': {'z', 'y'}, 'B': {'z', 'y'}}</li>
 </ul>
 <p>The following HMM was produced (no probabilities) ...</p>
-<p><img src="dot_0f268959b449e8baf8187a51d4288c7a.svg" alt="Dot diagram"></p>
+<p><img src="dot_8df97e7260c1283683a7fa09f0cdaf85.svg" alt="Dot diagram"></p>
 <p>The following probabilities were derived from the observed sequence of transitions and emissions ...</p>
 <ul>
-<li>transition_probs={('SOURCE', 'A'): 1.0, ('SOURCE', 'C'): 0.0, ('SOURCE', 'B'): 0.0, ('SOURCE', 'SOURCE'): 0.0, ('A', 'A'): 0.6666666666666666, ('A', 'C'): 0.0, ('A', 'B'): 0.3333333333333333, ('A', 'SOURCE'): 0.0, ('C', 'A'): 0.0, ('C', 'C'): 0.0, ('C', 'B'): 1.0, ('C', 'SOURCE'): 0.0, ('B', 'A'): 0.6666666666666666, ('B', 'C'): 0.3333333333333333, ('B', 'B'): 0.0, ('B', 'SOURCE'): 0.0}</li>
-<li>emission_probs={('A', 'z'): 0.5714285714285714, ('A', 'y'): 0.42857142857142855, ('B', 'z'): 0.6666666666666666, ('B', 'y'): 0.3333333333333333}</li>
+<li>transition_probs={('SOURCE', 'A'): 1.0, ('SOURCE', 'B'): 0.0, ('A', 'A'): 0.5714285714285714, ('A', 'B'): 0.42857142857142855, ('B', 'A'): 0.5, ('B', 'B'): 0.5}</li>
+<li>emission_probs={('A', 'z'): 0.5714285714285714, ('A', 'y'): 0.42857142857142855, ('B', 'z'): 1.0, ('B', 'y'): 0.0}</li>
 </ul>
 <p>The following HMM was produced after derived probabilities were applied ...</p>
-<p><img src="dot_e9b384480183b758e554f4ea04ed4268.svg" alt="Dot diagram"></p>
+<p><img src="dot_edc18836c8e6fc36adf1412d25d447e0.svg" alt="Dot diagram"></p>
 <p>After pseudocounts are applied, the HMM becomes as follows ...</p>
-<p><img src="dot_8c08b6f22a4acd40c77f6311ed451135.svg" alt="Dot diagram"></p>
+<p><img src="dot_95176205cf1e365630db9e12814b6978.svg" alt="Dot diagram"></p>
+</div>
+<p></p>
+<a name="H_Viterbi%20Learning"></a><h3>Viterbi Learning</h3>
+<p><a name="BM_(Algorithms%5C%2FSequence%20HMM%2FViterbi%20Learning)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FGene%20Clustering%2FSoft%20K-Means%20Clustering)_TOPIC%2F">Algorithms/Gene Clustering/Soft K-Means Clustering</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20HMM%2FMost%20Probable%20Hidden%20Path%2FViterbi%20Pseudocounts%20Algorithm)_TOPIC%2F">Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20HMM%2FEmpirical%20Learning)_TOPIC%2F">Algorithms/Sequence HMM/Empirical Learning</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>: An <a href="#BM_(HMM)%2F">HMM</a> uses probabilities to model a machine which transitions through <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s and possibly emits a symbol after each transition (non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s don't emit a symbol). <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi</a> learning derives an <a href="#BM_(HMM)%2F">HMM</a>'s <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transition probabilities and symbol emission probabilities <em>from just an emitted <a href="#BM_(sequence)%2Fi">sequence</a></em>.</p>
+<p><strong>WHY</strong>: <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi</a> learning derives the probabilities for an <a href="#BM_(HMM)%2F">HMM</a> structure from just an emitted <a href="#BM_(sequence)%2Fi">sequence</a>. In contrast, emperical learning needs both an emitted <a href="#BM_(sequence)%2Fi">sequence</a> and the <a href="#BM_(hidden%20path)%2Fi">hidden path</a> that generated that emitted <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p><strong>ALGORITHM</strong>:</p>
+<p>Given an emitted <a href="#BM_(sequence)%2Fi">sequence</a>, <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi</a> learning combines two different algorithms to derive an <a href="#BM_(HMM)%2F">HMM</a>'s probabilities:</p>
+<ol>
+<li><a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi algorithm</a> (most probable <a href="#BM_(hidden%20path)%2Fi">hidden path</a> for an emitted <a href="#BM_(sequence)%2Fi">sequence</a>)</li>
+<li>Empirical learning (observations to <a href="#BM_(HMM)%2F">HMM</a> probabilities).</li>
+</ol>
+<p>To begin with, there's an emitted <a href="#BM_(sequence)%2Fi">sequence</a> and an <a href="#BM_(HMM)%2F">HMM</a>. The <a href="#BM_(HMM)%2F">HMM</a> has its probabilities randomized. Then, the <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi algorithm</a> is used to find the most probable <a href="#BM_(hidden%20path)%2Fi">hidden path</a> in this randomized <a href="#BM_(HMM)%2F">HMM</a> for the emitted <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<p><img src="svgbob_9f2c6fc62a18db7d0c382c9e5f992d624578e31b.svg" alt="Kroki diagram output"></p>
+<p>There are now two pieces of data:</p>
+<ul>
+<li>Emitted <a href="#BM_(sequence)%2Fi">sequence</a>.</li>
+<li><a href="#BM_(hidden%20path)%2Fi">Hidden path</a>.</li>
+</ul>
+<p>These two pieces of data are fed into the emperical learning algorithm to generate new <a href="#BM_(HMM)%2F">HMM</a> probabliities. The hope is that these new <a href="#BM_(HMM)%2F">HMM</a> probabilities will result in the <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi algorithm</a> finding a more probable <a href="#BM_(hidden%20path)%2Fi">hidden path</a>.</p>
+<p><img src="svgbob_4389d30c1cd7ee631de595e304011baca5d8ac5d.svg" alt="Kroki diagram output"></p>
+<p>This process repeats in the hopes that the <a href="#BM_(HMM)%2F">HMM</a> probabilities converge to maximize the most probable <a href="#BM_(hidden%20path)%2Fi">hidden path</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Note what this algorithm is doing. The Pevzner book claims that it's very similar to Llyod's algorithm for <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> <a href="#BM_(cluster)%2Fi">cluster</a>ing in that it's starting off at some random point and pushing that point around to maximize some metric (generic name for this is called <a href="https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm">Expectation-maximization</a>).</p>
+<p><a href="#BM_(Monte%20Carlo%20algorithm)%2Fi">Monte carlo algorithm</a>s like this are typically executed many times, where the best performing execution is the one that gets chosen.</p>
+</div>
+<p><a href="ch10_code/src/hmm/ViterbiLearning.py">ch10_code/src/hmm/ViterbiLearning.py</a> (lines 150 to 239):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">randomize_hmm_probabilities</span>(<span class="hljs-params">
+    hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData]
+</span>):
+    <span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> hmm.get_nodes():
+        transitions = <span class="hljs-built_in">list</span>(hmm.get_outputs(state))
+        samples = [random() <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> transitions]
+        samples_sum = <span class="hljs-built_in">sum</span>(samples)
+        probs = [s / samples_sum <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> samples]
+        <span class="hljs-keyword">for</span> transition, probability <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(transitions, probs):
+            hmm.get_edge_data(transition).set_transition_probability(probability)
+    <span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> hmm.get_nodes():
+        emissions = [s <span class="hljs-keyword">for</span> s, _ <span class="hljs-keyword">in</span> hmm.get_node_data(state).list_symbol_emissions()]
+        samples = [random() <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> emissions]
+        samples_sum = <span class="hljs-built_in">sum</span>(samples)
+        probs = [s / samples_sum <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> samples]
+        <span class="hljs-keyword">for</span> symbol, probability <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(emissions, probs):
+            hmm.get_node_data(state).set_symbol_emission_probability(symbol, probability)
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">viterbi_learning</span>(<span class="hljs-params">
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        hmm_source_n_id: STATE,
+        hmm_sink_n_id: STATE,
+        emitted_seq: <span class="hljs-built_in">list</span>[SYMBOL],
+        pseudocount: <span class="hljs-built_in">float</span>,
+        cycles: <span class="hljs-built_in">int</span>
+</span>) -&gt; Generator[
+    <span class="hljs-built_in">tuple</span>[
+        Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[STATE, STATE], <span class="hljs-built_in">float</span>],
+        <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">tuple</span>[STATE, SYMBOL], <span class="hljs-built_in">float</span>],
+        <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[STATE, STATE]]
+    ],
+    <span class="hljs-literal">None</span>,
+    <span class="hljs-literal">None</span>
+]:
+    <span class="hljs-comment"># Assume first transition always begins from the SOURCE hidden state -- add it as non-emitting hidden state</span>
+    <span class="hljs-keyword">while</span> cycles &gt; <span class="hljs-number">0</span>:
+        <span class="hljs-comment"># Find most probable hidden path</span>
+        viterbi = to_viterbi_graph(
+            hmm,
+            hmm_source_n_id,
+            hmm_sink_n_id,
+            emitted_seq
+        )
+        _, hidden_path = max_product_path_in_viterbi(viterbi)
+        hidden_path = hidden_path[:-<span class="hljs-number">1</span>]  <span class="hljs-comment"># Remove SINK transition from the path -- shouldn't be in original HMM</span>
+        <span class="hljs-comment"># Refine observation by shoving in new path defined by the Viterbi graph</span>
+        observed_transitions_and_emissions = []
+        <span class="hljs-keyword">for</span> (from_state, to_state), to_symbol <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(hidden_path, emitted_seq):
+            observed_transitions_and_emissions.append((from_state, to_state, to_symbol))
+        <span class="hljs-comment"># Derive probabilities</span>
+        transition_probs = derive_transition_probabilities(
+            hmm,
+            [(from_state, to_state) <span class="hljs-keyword">for</span> from_state, to_state, to_symbol <span class="hljs-keyword">in</span> observed_transitions_and_emissions]
+        )
+        emission_probs = derive_emission_probabilities(
+            hmm,
+            [(dst, symbol) <span class="hljs-keyword">for</span> src, dst, symbol <span class="hljs-keyword">in</span> observed_transitions_and_emissions]
+        )
+        <span class="hljs-comment"># Apply probabilities</span>
+        <span class="hljs-keyword">for</span> transition, prob <span class="hljs-keyword">in</span> transition_probs.items():
+            hmm.get_edge_data(transition).set_transition_probability(prob)
+        <span class="hljs-keyword">for</span> (to_state, to_symbol), prob <span class="hljs-keyword">in</span> emission_probs.items():
+            hmm.get_node_data(to_state).set_symbol_emission_probability(to_symbol, prob)
+        <span class="hljs-comment"># Apply pseudocounts to probabilities</span>
+        hmm_add_pseudocounts_to_hidden_state_transition_probabilities(
+            hmm,
+            pseudocount
+        )
+        hmm_add_pseudocounts_to_symbol_emission_probabilities(
+            hmm,
+            pseudocount
+        )
+        <span class="hljs-comment"># Override source state transitions such that they have equal probability of transitioning out. Should this be</span>
+        <span class="hljs-comment"># enabled? The emitted sequence only has one transition from source, meaning that the learning process is going</span>
+        <span class="hljs-comment"># to max out that transition.</span>
+        <span class="hljs-comment"># source_transition_prob = 1.0 / hmm.get_out_degree(hmm_source_n_id)</span>
+        <span class="hljs-comment"># for transition in hmm.get_outputs(hmm_source_n_id):</span>
+        <span class="hljs-comment">#     hmm.get_edge_data(transition).set_transition_probability(source_transition_prob)</span>
+        <span class="hljs-comment"># Extract out revised probabilities</span>
+        <span class="hljs-keyword">for</span> transition <span class="hljs-keyword">in</span> hmm.get_edges():
+            transition_probs[transition] = hmm.get_edge_data(transition).get_transition_probability()
+        <span class="hljs-keyword">for</span> to_state <span class="hljs-keyword">in</span> hmm.get_nodes():
+            <span class="hljs-keyword">for</span> to_symbol, prob <span class="hljs-keyword">in</span> hmm.get_node_data(to_state).list_symbol_emissions():
+                emission_probs[to_state, to_symbol] = prob
+        <span class="hljs-comment"># Yield</span>
+        <span class="hljs-keyword">yield</span> hmm, transition_probs, emission_probs, hidden_path
+        cycles -= <span class="hljs-number">1</span>
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Deriving HMM probabilities using the following settings...</p>
+<pre><code>transitions:
+  SOURCE: [A, B, D]
+  A: [B, E ,F]
+  B: [C, D]
+  C: [F]
+  D: [A]
+  E: [A]
+  F: [E, B]
+emissions:
+  SOURCE: []
+  A: [x, y, z]
+  B: [x, y, z]
+  C: []  # C is non-emitting
+  D: [x, y, z]
+  E: [x, y, z]
+  F: [x, y, z]
+source_state: SOURCE
+sink_state: SINK  # Must not exist in HMM (used only for Viterbi graph)
+emission_seq: [z, z, x, z, z, z, y, z, z, z, z, y, x]
+cycles: 3
+pseudocount: 0.0001
+
+</code></pre>
+<p>The following HMM was produced (no probabilities) ...</p>
+<p><img src="dot_ba1558106bc028987e4eda58703e127d.svg" alt="Dot diagram"></p>
+<p>The following HMM was produced after applying randomized probabilities ...</p>
+<p><img src="dot_1109162bc6fe46abd7dc35998c8ed520.svg" alt="Dot diagram"></p>
+<p>Applying Viterbi learning for 3 cycles ...</p>
+<ol>
+<li>
+<p>Hidden path for emitted sequence: SOURCE→D, D→A, A→B, B→C, C→F, F→E, E→A, A→F, F→B, B→C, C→F, F→E, E→A, A→B, B→D</p>
+<p>New transition probabilities:</p>
+<ul>
+<li>SOURCE→B = 9.997000899730082e-05</li>
+<li>SOURCE→D = 0.9998000599820054</li>
+<li>SOURCE→A = 9.997000899730082e-05</li>
+<li>A→B = 0.49995001499550135</li>
+<li>A→F = 0.49995001499550135</li>
+<li>A→E = 9.997000899730082e-05</li>
+<li>B→C = 0.9999000199960009</li>
+<li>B→D = 9.998000399920017e-05</li>
+<li>C→F = 1.0</li>
+<li>D→A = 1.0</li>
+<li>E→A = 1.0</li>
+<li>F→B = 0.333366660001333</li>
+<li>F→E = 0.6666333399986669</li>
+</ul>
+<p>New emission probabilities:</p>
+<ul>
+<li>(B, y) = 9.997000899730082e-05</li>
+<li>(B, z) = 0.49995001499550135</li>
+<li>(B, x) = 0.49995001499550135</li>
+<li>(D, y) = 9.997000899730082e-05</li>
+<li>(D, z) = 0.9998000599820054</li>
+<li>(D, x) = 9.997000899730082e-05</li>
+<li>(A, y) = 0.3333333333333333</li>
+<li>(A, z) = 0.3333333333333333</li>
+<li>(A, x) = 0.3333333333333333</li>
+<li>(F, y) = 9.997000899730082e-05</li>
+<li>(F, z) = 0.9998000599820054</li>
+<li>(F, x) = 9.997000899730082e-05</li>
+<li>(E, y) = 0.49995001499550135</li>
+<li>(E, z) = 0.49995001499550135</li>
+<li>(E, x) = 9.997000899730082e-05</li>
+</ul>
+</li>
+<li>
+<p>Hidden path for emitted sequence: SOURCE→D, D→A, A→B, B→C, C→F, F→B, B→C, C→F, F→E, E→A, A→F, F→B, B→C, C→F, F→E, E→A</p>
+<p>New transition probabilities:</p>
+<ul>
+<li>SOURCE→B = 9.997000899730082e-05</li>
+<li>SOURCE→D = 0.9998000599820054</li>
+<li>SOURCE→A = 9.997000899730082e-05</li>
+<li>A→B = 0.49995001499550135</li>
+<li>A→F = 0.49995001499550135</li>
+<li>A→E = 9.997000899730082e-05</li>
+<li>B→C = 0.9999000199960009</li>
+<li>B→D = 9.998000399920017e-05</li>
+<li>C→F = 1.0</li>
+<li>D→A = 1.0</li>
+<li>E→A = 1.0</li>
+<li>F→B = 0.6666333399986669</li>
+<li>F→E = 0.333366660001333</li>
+</ul>
+<p>New emission probabilities:</p>
+<ul>
+<li>(B, y) = 0.3333333333333333</li>
+<li>(B, z) = 0.3333333333333333</li>
+<li>(B, x) = 0.3333333333333333</li>
+<li>(D, y) = 9.997000899730082e-05</li>
+<li>(D, z) = 0.9998000599820054</li>
+<li>(D, x) = 9.997000899730082e-05</li>
+<li>(A, y) = 9.997000899730082e-05</li>
+<li>(A, z) = 0.9998000599820054</li>
+<li>(A, x) = 9.997000899730082e-05</li>
+<li>(F, y) = 9.997000899730082e-05</li>
+<li>(F, z) = 0.9998000599820054</li>
+<li>(F, x) = 9.997000899730082e-05</li>
+<li>(E, y) = 9.997000899730082e-05</li>
+<li>(E, z) = 0.9998000599820054</li>
+<li>(E, x) = 9.997000899730082e-05</li>
+</ul>
+</li>
+<li>
+<p>Hidden path for emitted sequence: SOURCE→D, D→A, A→B, B→C, C→F, F→E, E→A, A→B, B→C, C→F, F→E, E→A, A→F, F→B, B→C, C→F</p>
+<p>New transition probabilities:</p>
+<ul>
+<li>SOURCE→B = 9.997000899730082e-05</li>
+<li>SOURCE→D = 0.9998000599820054</li>
+<li>SOURCE→A = 9.997000899730082e-05</li>
+<li>A→B = 0.6665666966576693</li>
+<li>A→F = 0.3333333333333333</li>
+<li>A→E = 9.997000899730082e-05</li>
+<li>B→C = 0.9999000199960009</li>
+<li>B→D = 9.998000399920017e-05</li>
+<li>C→F = 1.0</li>
+<li>D→A = 1.0</li>
+<li>E→A = 1.0</li>
+<li>F→B = 9.998000399920017e-05</li>
+<li>F→E = 0.9999000199960009</li>
+</ul>
+<p>New emission probabilities:</p>
+<ul>
+<li>(B, y) = 9.997000899730082e-05</li>
+<li>(B, z) = 0.49995001499550135</li>
+<li>(B, x) = 0.49995001499550135</li>
+<li>(D, y) = 9.997000899730082e-05</li>
+<li>(D, z) = 0.9998000599820054</li>
+<li>(D, x) = 9.997000899730082e-05</li>
+<li>(A, y) = 0.6665666966576693</li>
+<li>(A, z) = 0.3333333333333333</li>
+<li>(A, x) = 9.997000899730082e-05</li>
+<li>(F, y) = 9.997000899730082e-05</li>
+<li>(F, z) = 0.6665666966576693</li>
+<li>(F, x) = 0.3333333333333333</li>
+<li>(E, y) = 9.997000899730082e-05</li>
+<li>(E, z) = 0.9998000599820054</li>
+<li>(E, x) = 9.997000899730082e-05</li>
+</ul>
+</li>
+</ol>
+<p>The following HMM was produced after Viterbi learning was applied for 3 cycles ...</p>
+<p><img src="dot_19d61e57898e30b42823b991bbf82fd3.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Stories"></a><h1>Stories</h1>
