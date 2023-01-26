@@ -491,6 +491,24 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
    * ...
 ````
 
+## Expression Parsing
+
+## Expression Properties
+
+### Associative Property
+
+### Commutative Property
+
+### Distributive Property
+
+also 10.4 equivalent fraction property?
+
+### Product Property
+
+### Power Property
+
+### Product to a Power Property
+
 # Terminology
 
  * `{bm} fraction/(fraction|numerator|denominator)/i` - A way of representing numbers with equally-sized partial objects. The syntax for a fraction is `{kt} \frac{numerator}{denominator}`, where the...
@@ -906,6 +924,10 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
 
    In the example, 5 is the base and 3 is the exponent. Another way to say it is power: 5 to the power of 3 is 125.
 
+ * `{bm} base` - The number or variable being multiplied in an exponent.
+
+    In the example `{kt} 5^3`, 5 is the base and 3 is the exponent.
+
  * `{bm} percent` - A ratio whose denominator is 100. For example, 35 percent translates to a ratio of `{kt} \frac{35}{100}`.
 
    Percents are commonly written in short-form via the % symbol. For example, 35 percent is commonly written as 35%.
@@ -1143,14 +1165,30 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
                             +------+
    ```
 
+ * `{bm} product property/(product property)_POW/i` - Two power operations with the same base being multiplied together can merge into one by keeping the same base but adding together their exponents. For example, `{kt} x^2 \cdot x^3 = x^5` because `{kt} x^2 \cdot x^3 = x \cdot x \cdot x \cdot x \cdot x = x^5`.
+
+ * `{bm} power property/(power property)_POW/i` - A power operation of a power operation can be rewritten as the a single operation where the exponents are multiplied. For example, `{kt} {(x^2)}^3 = x^{2*3} = x^6` because `{kt} {(x^2)}^3 = x^2 \cdot x^2 \cdot x^2 = x \cdot x \cdot x \cdot x \cdot x \cdot x = x^6`.
+
+   See product property_POW.
+
+ * `{bm} product to power property/(product to power property)_POW/i` - A power operation of a multiply operation can be rewritten as two individual power operations multiplied together. Each of the two power operations has the same exponent as the original. For example, `{kt} {(x \cdot y)}^3 = {kt} x^3 \cdot y^3` because `{kt} {(x \cdot y)}^3 = (x \cdot y) \cdot (x \cdot y) \cdot (x \cdot y) = x \cdot x \cdot x \cdot y \cdot y \cdot y = {kt} x^3 \cdot y^3`.
+
+   See associative property and commutative property.
+
 `{bm-error} Wrap in !! or apply suffix _EXP/(\bterms?\b)/i`
+
+`{bm-error} Wrap in !! or apply suffix _POW/(product property)/i`
+
+`{bm-error} Wrap in !! or apply suffix _POW/(power property)/i`
+
+`{bm-error} Wrap in !! or apply suffix _POW/(product to power property)/i`
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 
-TODO: define above, write a parser, continue from 10,1 add and subtract mononomials section
+TODO: define above, write a parser, continue from 10.3 FOIL method
 
-TODO: define above, write a parser, continue from 10,1 add and subtract mononomials section
+TODO: define above, write a parser, continue from 10.3 FOIL method
 
-TODO: define above, write a parser, continue from 10,1 add and subtract mononomials section
+TODO: define above, write a parser, continue from 10.3 FOIL method
 
-TODO: define above, write a parser, continue from 10,1 add and subtract mononomials section
+TODO: define above, write a parser, continue from 10.3 FOIL method

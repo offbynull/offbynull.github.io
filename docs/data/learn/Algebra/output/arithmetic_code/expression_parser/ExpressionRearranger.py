@@ -46,6 +46,8 @@ def rearrange_explode_factors(f: Fraction):
             continue
         inner_fn = FunctionNode('*', [Fraction(factor1), Fraction(factor2)])
         variations.add(inner_fn)
+        inner_fn = FunctionNode('*', [Fraction(-factor1), Fraction(-factor2)])
+        variations.add(inner_fn)
     return variations
 
 def rearrange_compute(fn: FunctionNode):
