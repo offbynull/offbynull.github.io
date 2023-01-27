@@ -1016,7 +1016,7 @@ also 10.4 equivalent fraction property?
    * Subtraction is *not* associative (e.g. (5-2)-2=1 and 5-(2-2)=0).
    * Division is *not* associative (e.g. (6÷3)÷2=1 and 6÷(3÷2)=4).
 
- * `{bm} distributive property/(distributive property|distributive|distribute)/i` - A property of multiplication that states, when the other operand is a chain of additions or subtractions, the multiplication can be exploded out into each of the terms_EXP in that chain. For example, 3\*(5+2) = 3\*5+3\*2+3\*−1 = 18.
+ * `{bm} distributive property/(distributive property|distributive|distribute)/i` - A property of multiplication that states, when the other operand is a chain of additions or subtractions, the multiplication can be exploded out into each of the terms_EXP in that chain. For example, 3\*(5+2-1) = 3\*5+3\*2+3\*−1 = 18.
 
    Similarly, the distributive property makes the reverse possible as well. When a common factor exists between all the terms_EXP in a chain of additions or subtractions, that common factor can be pulled out on its own. For example, 15+6 = 3\*5+3\*2 = 3\*(5+2) = 21.
 
@@ -1175,6 +1175,41 @@ also 10.4 equivalent fraction property?
 
    See associative property and commutative property.
 
+ * `{bm} FOIL/(FOIL)/` `{bm} /(first[-\s]outer[-\s]inner[-\s]last)/i` - An acronym for the application of the distributive property to binomials. For example, when normally multiplying two binomials `{kt} (x+y) \cdot (x+z)` ...
+   
+   * `{kt} x \cdot (x+z) + y \cdot (x+z)` - distributive property (distribute first operand to every term_EXP in the second operand)
+   * `{kt} x^2 + x \cdot z + y \cdot (x+z)` - distributive property (distribute out multiplication in first term_EXP)
+   * `{kt} x^2 + x \cdot z + y \cdot x + y \cdot z` - distributive property (distribute out multiplication in last term_EXP)
+
+   FOIL stands for first-outer-inner-last, which is short for the order of multiplying terms_EXP across the two binomials.
+
+   ```{svgbob}
+   first     first
+     |  last   |  last
+     |   |     |   |
+    (a + b) * (c + d)
+     |   '-----'   |
+     |    inner    |
+     '-------------'
+          outer   
+   ```
+
+   1. First - multiply the first terms_EXP: a*b
+   2. Outer - multiply the outside terms_EXP: a*d
+   3. Inner - multiply the inner terms_EXP: b*c
+   4. Last - multiply the last terms_EXP: b*d
+
+   With respect to the `{kt} (x+y) \cdot (x+z)` example, FOIL results in ...
+
+   1. First - multiply the first terms_EXP: `{kt} x^2`
+   2. Outer - multiply the outside terms_EXP: `{kt} x \cdot z`
+   3. Inner - multiply the inner terms_EXP: `{kt} y \cdot x`
+   4. Last - multiply the last terms_EXP: `{kt} y \cdot z`
+
+   ```{note}
+   There's also another method called the vertical method that mimics multiplication.
+   ```
+
 `{bm-error} Wrap in !! or apply suffix _EXP/(\bterms?\b)/i`
 
 `{bm-error} Wrap in !! or apply suffix _POW/(product property)/i`
@@ -1185,10 +1220,10 @@ also 10.4 equivalent fraction property?
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 
-TODO: define above, write a parser, continue from 10.3 FOIL method
+TODO: define above, write a parser, continue from start of 10.4
 
-TODO: define above, write a parser, continue from 10.3 FOIL method
+TODO: define above, write a parser, continue from start of 10.4
 
-TODO: define above, write a parser, continue from 10.3 FOIL method
+TODO: define above, write a parser, continue from start of 10.4
 
-TODO: define above, write a parser, continue from 10.3 FOIL method
+TODO: define above, write a parser, continue from start of 10.4

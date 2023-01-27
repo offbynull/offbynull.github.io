@@ -21,7 +21,7 @@ class FunctionNode:
         return str(self)
 
     def __eq__(self, other):
-        return self.op == other.op and self.args == other.args
+        return isinstance(other, FunctionNode) and self.op == other.op and self.args == other.args
 
     def __hash__(self):
         return hash((self.op, tuple(self.args)))
@@ -38,7 +38,7 @@ class VariableNode:
         return str(self)
 
     def __eq__(self, other):
-        return self.name == other.name
+        return isinstance(other, VariableNode) and self.name == other.name
 
     def __hash__(self):
         return hash(self.name)
