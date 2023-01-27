@@ -17367,7 +17367,7 @@ Recall that the ....
 
  3. probability of an HMM emits a sequence while traveling through a hidden path is calculated as described above (multiplied chain of transition-emission probabilities).
 
-The probability of an HMM emitting a specific sequence is the sum of the probability of that emitted sequence occurring over all hidden paths. For example, imagine the following HMM.
+Given all hidden paths in a HMM, the probability of an HMM emitting a specific sequence is the sum of probability calculations for each hidden path and the emitted sequence (sum of point #3 above). For example, imagine the following HMM.
 
 ```{svgbob}
                    +--------+   
@@ -17816,9 +17816,392 @@ pseudocount: 0.0001
 emissions: [z,z,y]
 ```
 
+
+### Probability of Emitted Sequence Where Index Emits From Hidden State
+
+`{bm} /(Algorithms\/Sequence HMM\/Probability of Emitted Sequence Where Index Emits From Hidden State)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm_TOPIC
+Algorithms/Sequence HMM/Probability of Emitted Sequence_TOPIC
+```
+
+**WHAT**: An HMM works by transitioning from one hidden state to the next, where each transition possibly results in a symbol being emitted (non-emitting hidden states don't emit symbols). Given a ...
+
+ * HMM
+ * hidden state in that HMM
+ * emitted sequence
+ * index in that emitted sequence
+
+...,  determine how certain it is that the HMM was in that hidden state when the symbol at the emitted sequence index was emitted. For example, how certain is it that the following HMM was in hidden state B when index 2 of [y, y, z, y, z, z, y] was emitted.
+
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+  0.5 |            +--------+           | 0.5
+      |                                 |          0.699
+      |   .-------------------------.   |    .------------.             
+      v   | .---.    0.623          v   v    |            v
++---------+-+-+ |               +------------++          +-------------+
+|     "A"     | |               |     "B"     |<---------+     "C"     |
++--+-+--------+ |0.377          +---+----+-+--+     1.0  +-------------+
+   : :    ^ ^   |                   |    : : 
+   : :    | |   |                   |    : : 
+   : :    | '---'     0.301         |    : : 
+   : :    '-------------------------'    : : 
+   : :                                   : :
+   : :       0.596  +- - - -+  0.572     : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :         0.404  +- - - -+  0.428       :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+    
+```
+
+```python
+hidden_state = 'B'
+emitted_seq = ['y', 'y', 'z', 'y', 'z', 'z', 'y']
+# Certainty that HMM emits idx 2 of emitted_seq from hidden state B
+certainty = prob_passing_thru_hidden_state(hmm, 'B', emitted_seq, 2)
+```
+
+**WHY**: Given an emitted sequence, the Viterbi algorithm can be used to find the most probable hidden path for that emitted sequence. However, that most probable hidden path is a rigid determination. This algorithm allows you to interogate the certanty of each hidden state transition in that path.
+
+```{note}
+The Pevzner book calls this "Soft Decoding" and it never covers a good use-case for it. What is the point of this? Imagine I've used the Viterbi algorithm to generate the most probable hidden path. I've determined that one of the transitions in that hidden path leads to a hidden state symbol emission with low certainty. So what do I do at that point? In the hidden path, do I try swapping that transition's destination to another hidden state? Maybe the revised hidden path will be slightly less probable but the certainty calculations will even out more?
+```
+
+#### Naive Algorithm
+
+`{bm} /(Algorithms\/Sequence HMM\/Probability of Emitted Sequence Where Index Emits From Hidden State\/Naive Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence HMM/Probability of Emitted Sequence/Naive Algorithm_TOPIC
+```
+
+**ALGORITHM**:
+
+Given all hidden paths in a HMM, recall that the probability of an HMM emitting a specific sequence is the sum of probability calculations for each hidden path and the emitted sequence. For example, imagine the following HMM.
+
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+  0.5 |            +--------+           | 0.5
+      |                                 |          0.699
+      |   .-------------------------.   |    .------------.             
+      v   | .---.    0.623          v   v    |            v
++---------+-+-+ |               +------------++          +-------------+
+|     "A"     | |               |     "B"     |<---------+     "C"     |
++--+-+--------+ |0.377          +---+----+-+--+     1.0  +-------------+
+   : :    ^ ^   |                   |    : : 
+   : :    | |   |                   |    : : 
+   : :    | '---'     0.301         |    : : 
+   : :    '-------------------------'    : : 
+   : :                                   : :
+   : :       0.596  +- - - -+  0.572     : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :         0.404  +- - - -+  0.428       :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+    
+```
+
+```{note}
+C is a non-emitting hidden state, which is why it doesn't have any linkages to emissions.
+```
+
+The probability that the above HMM emits [z, z, y] is the sum of ...
+
+ * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→A|y)
+ * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y)
+ * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) * Pr(B→C)
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y)
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y)
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+ * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→A|y)
+ * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y)
+ * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) * Pr(B→C)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+
+This algorithm revises the summation above to only include hidden paths that travel through the hidden state of interest at the emitted sequence index of interest. For example, to calculate the probability that the hidden state was B when index 1 of the [z, z, y] was emitted, the summation becomes ...
+
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y)
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y)
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+
+This filtered sum is divided by the original non-filtered sum to determine the probability.
+
+```{note}
+This is getting a probability of probabilities. The ...
+
+* numerator is the probability union of the filtered hidden paths.
+* denominator is the probability union of all hidden paths.
+
+It's a partial divided by the total.
+```
+
+```{output}
+ch10_code/src/hmm/ProbabilityOfEmittedSequenceWithIndexEmittingFromHiddenState_Naive.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch10}
+hmm.ProbabilityOfEmittedSequenceWithIndexEmittingFromHiddenState_Naive main
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+  C: {}
+  # C set to empty dicts to identify as non-emittable hidden state.
+source_state: SOURCE
+emissions: [z,z,y]
+emission_index_of_interest: 2
+hidden_state_of_interest: B
+pseudocount: 0.0001
+```
+
+#### Graph Algorithm
+
+`{bm} /(Algorithms\/Sequence HMM\/Probability of Emitted Sequence Where Index Emits From Hidden State\/Graph Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence HMM/Probability of Emitted Sequence/Naive Algorithm_TOPIC
+Algorithms/Sequence HMM/Probability of Emitted Sequence/Graph Algorithm_TOPIC
+Algorithms/Sequence HMM/Probability of Emitted Sequence Where Index Emits From Hidden State/Naive Algorithm_TOPIC
+```
+
+**ALGORITHM**:
+
+Recall that ...
+
+1. the probability of an HMM emitting a specific sequence is the sum of the probability of that emitted sequence occurring over all hidden paths in the HMM.
+2. the summation can have factors pulled out of it such that the expression can be calculated as an exploded HMM.
+
+For example, imagine the following HMM.
+
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+  0.5 |            +--------+           | 0.5
+      |                                 |          0.699
+      |   .-------------------------.   |    .------------.             
+      v   | .---.    0.623          v   v    |            v
++---------+-+-+ |               +------------++          +-------------+
+|     "A"     | |               |     "B"     |<---------+     "C"     |
++--+-+--------+ |0.377          +---+----+-+--+     1.0  +-------------+
+   : :    ^ ^   |                   |    : : 
+   : :    | |   |                   |    : : 
+   : :    | '---'     0.301         |    : : 
+   : :    '-------------------------'    : : 
+   : :                                   : :
+   : :       0.596  +- - - -+  0.572     : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :         0.404  +- - - -+  0.428       :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+    
+```
+
+```{note}
+C is a non-emitting hidden state, which is why it doesn't have any linkages to emissions.
+```
+
+The probability that the above HMM emits [z, z, y] is the sum of ...
+
+ * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→A|y)
+ * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y)
+ * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) * Pr(B→C)
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y)
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y)
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+ * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→A|y)
+ * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y)
+ * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) * Pr(B→C)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+
+This summation is then factored and grouped such that it represents an exploded HMM.
+
+```{svgbob}
+                         "EXPLODED OUT HMM"                                             "GROUPED FACTORED EXPRESSION"
+
+               z                  z                  y                                .-------------> "Pr(A→A|y) * ("       
+                                                                                      |         .-----> "Pr(A→A|z) * ("     
+            +----+             +----+             +----+                              |         | A0 ---> "Pr(SOURCE→A|z)"  
+            | A0 +------------>| A1 +------------>| A2 +---.                          |         |       ")"                 
+       .--->|    +.     .----->|    +.     .----->|    |   |                          |      A1 |       "+"                 
+       |    +----+ \   /       +----+ \   /       +----+   v                          |         |       "Pr(B→A|z) * ("     
++------+-+          \ /                \ /                +------+                    |         | B0 ---> "Pr(SOURCE→B|z)"  
+| SOURCE |           X                  X                 | SINK |                    |         '-----> ")"                 
++------+-+          / \                / \                +------+                    |               ")"                   
+       |    +----+ /   \       +----+ /   \       +----+   ^ ^                        |               "+"                   
+       '--->| B0 +'     '----->| B1 +'     '----->| B2 |   | |                    A2  |               "Pr(B→A|y) * ("       
+            |    |     .------>|    |     .------>|    +---' |                        |    .----------> "Pr(A→B|z) * ("     
+            +-+--+    /        +-+--+    /        +-+--+     |                        |    |      A0 ---> "Pr(SOURCE→A|z)"  
+              |      /           |      /           |        |                        |    |            ")"                 
+              v     /            v     /            v        |                        |    |            "+"                 
+            +----+ /           +----+ /           +----+     |                        | B1 |            "Pr(C→B|z) * ("     
+            | C0 +'            | C1 +'            | C2 +-----'                        |    |    .-------> "Pr(B→C) * ("     
+            +----+             +----+             +----+                              |    | C0 | B0 -----> "Pr(SOURCE→B|z)"
+                                                                                      |    |    '-------> ")"               
+                                                                                      |    '----------> ")"                 
+                                                                                      '-------------> ")"                   
+                                                                                                      "+"
+                                                                                 .------------------> "Pr(A→B|y) * ("         
+                                                                                 |              .-----> "Pr(A→A|z) * ("       
+                                                                                 |              | A0 ---> "Pr(SOURCE→A|z)"    
+                                                                                 |              |       ")"                   
+                                                                                 |           A1 |       "+"                   
+                                                                                 |              |       "Pr(B→A|z) * ("       
+                                                                                 |              | B0 ---> "Pr(SOURCE→B|z)"    
+                                                                                 |              '-----> ")"                   
+                                                                                 |                    ")"                     
+                                                                                 |                    "+"                     
+                                                                                 |                    "Pr(C→B|y) * ("         
+                                                                              B2 |    .---------------> "Pr(B→C) * ("         
+                                                                                 |    |    .------------> "Pr(A→B|z) * ("     
+                                                                                 |    |    |      A0 -----> "Pr(SOURCE→A|z)"  
+                                                                                 |    |    |              ")"                 
+                                                                                 |    |    |              "+"                 
+                                                                                 | C1 | B1 |              "Pr(C→B|z) * ("     
+                                                                                 |    |    |    .---------> "Pr(B→C) * ("     
+                                                                                 |    |    | C0 | B0 -------> "Pr(SOURCE→B|z)"
+                                                                                 |    |    |    '---------> ")"               
+                                                                                 |    |    '------------> ")"                 
+                                                                                 |    '---------------> ")"                   
+                                                                                 '------------------> ")"                     
+                                                                                                      "+" 
+                                                                              .---------------------> "Pr(B→C) * ("             
+                                                                              |    .------------------> "Pr(A→B|y) * ("         
+                                                                              |    |              .-----> "Pr(A→A|z) * ("       
+                                                                              |    |              | A0 ---> "Pr(SOURCE→A|z)"    
+                                                                              |    |              |       ")"                   
+                                                                              |    |           A1 |       "+"                   
+                                                                              |    |              |       "Pr(B→A|z) * ("       
+                                                                              |    |              | B0 --> "Pr(SOURCE→B|z)"    
+                                                                              |    |              '-----> ")"                   
+                                                                              |    |                    ")"                     
+                                                                              |    |                    "+"                     
+                                                                              |    |                    "Pr(C→B|y) * ("         
+                                                                           C2 | B2 |    .---------------> "Pr(B→C) * ("         
+                                                                              |    |    |    .------------> "Pr(A→B|z) * ("     
+                                                                              |    |    |    |      A0 -----> "Pr(SOURCE→A|z)"  
+                                                                              |    |    |    |              ")"                 
+                                                                              |    |    |    |              "+"                 
+                                                                              |    | C1 | B1 |              "Pr(C→B|z) * ("     
+                                                                              |    |    |    |    .---------> "Pr(B→C) * ("     
+                                                                              |    |    |    | C0 | B0 -------> "Pr(SOURCE→B|z)"
+                                                                              |    |    |    |    '---------> ")"               
+                                                                              |    |    |    '------------> ")"                 
+                                                                              |    |    '---------------> ")"                   
+                                                                              |    '------------------> ")"                     
+                                                                              '---------------------> ")"                          
+```
+
+This algorithm revises the exploded HMM above to only the hidden state of interest at the emitted sequence index of interest. For example, to calculate the probability that the hidden state was B when index 1 of [z, z, y] was emitted, the exploded HMM becomes ...
+
+```{svgbob}
+                         "EXPLODED OUT HMM"                                             "GROUPED FACTORED EXPRESSION"
+
+               z                  z                  y                                .-------------> "Pr(B→A|y) * ("       
+                                                                                      |    .----------> "Pr(A→B|z) * ("     
+            +----+                                +----+                              |    |      A0 ---> "Pr(SOURCE→A|z)"  
+            | A0 |                                | A2 +---.                          |    |            ")"                 
+       .--->|    +.                        .----->|    |   |                       A2 |    |            "+"                 
+       |    +----+ \                      /       +----+   v                          | B1 |            "Pr(C→B|z) * ("     
++------+-+          \                    /                +------+                    |    |    .-------> "Pr(B→C) * ("     
+| SOURCE |           \                  /                 | SINK |                    |    | C0 | B0 -----> "Pr(SOURCE→B|z)"
++------+-+            \                /                  +------+                    |    |    '-------> ")"               
+       |    +----+     \       +----+ /           +----+   ^ ^                        |    '----------> ")"                 
+       '--->| B0 |      '----->| B1 +'            | B2 |   | |                        '-------------> ")"                   
+            |    |     .------>|    |     .------>|    +---' |                                        "+"
+            +-+--+    /        +-+--+    /        +-+--+     |                   .------------------> "Pr(C→B|y) * ("         
+              |      /           |      /           |        |                   |    .---------------> "Pr(B→C) * ("         
+              v     /            v     /            v        |                   |    |    .------------> "Pr(A→B|z) * ("     
+            +----+ /           +----+ /           +----+     |                   |    |    |      A0 -----> "Pr(SOURCE→A|z)"  
+            | C0 +'            | C1 +'            | C2 +-----'                   |    |    |              ")"                 
+            +----+             +----+             +----+                         |    |    |              "+"                 
+                                                                              B2 | C1 | B1 |              "Pr(C→B|z) * ("     
+                                                                                 |    |    |    .---------> "Pr(B→C) * ("     
+                                                                                 |    |    | C0 | B0 -------> "Pr(SOURCE→B|z)"
+                                                                                 |    |    |    '---------> ")"               
+                                                                                 |    |    '------------> ")"                 
+                                                                                 |    '---------------> ")"                   
+                                                                                 '------------------> ")"                     
+                                                                                                      "+" 
+                                                                              .---------------------> "Pr(B→C) * ("             
+                                                                              |    .------------------> "Pr(C→B|y) * ("         
+                                                                              |    |    .---------------> "Pr(B→C) * ("         
+                                                                              |    |    |    .------------> "Pr(A→B|z) * ("     
+                                                                              |    |    |    |      A0 -----> "Pr(SOURCE→A|z)"  
+                                                                              |    |    |    |              ")"                 
+                                                                              |    |    |    |              "+"                 
+                                                                           C2 | B2 | C1 | B1 |              "Pr(C→B|z) * ("     
+                                                                              |    |    |    |    .---------> "Pr(B→C) * ("     
+                                                                              |    |    |    | C0 | B0 -------> "Pr(SOURCE→B|z)"
+                                                                              |    |    |    |    '---------> ")"               
+                                                                              |    |    |    '------------> ")"                 
+                                                                              |    |    '---------------> ")"                   
+                                                                              |    '------------------> ")"                     
+                                                                              '---------------------> ")"                          
+```
+
+To determine the probability (certainty) that the HMM was in B at index 1 of the emitted sequence, the calculation from the filtered exploded HMM is divided by the calculation from the non-filtered exploded HMM.
+
+```{note}
+This is getting a probability of probabilities. The ...
+
+* numerator is the probability union of the filtered hidden paths.
+* denominator is the probability union of all hidden paths.
+
+It's a partial divided by the total.
+```
+
+```{output}
+ch10_code/src/hmm/ProbabilityOfEmittedSequenceWithIndexEmittingFromHiddenState_Graph.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch10}
+hmm.ProbabilityOfEmittedSequenceWithIndexEmittingFromHiddenState_Graph main
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+  C: {}
+  # C set to empty dicts to identify as non-emittable hidden state.
+source_state: SOURCE
+sink_state: SINK
+emissions: [z,z,y]
+emission_index_of_interest: 2
+hidden_state_of_interest: B
+pseudocount: 0.0001
+```
+
 ### Most Probable Emitted Sequence
 
-`{bm} /(Algorithms\/Sequence HMM\/Viterbi Most Probable Emissions)_TOPIC/`
+`{bm} /(Algorithms\/Sequence HMM\/Most Probable Emitted Sequence)_TOPIC/`
 
 ```{prereq}
 Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
@@ -18094,9 +18477,18 @@ Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm
 Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm_TOPIC
 ```
 
-**WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Empirical learning derives an HMM's hidden state transition probabilities and symbol emission probabilities by observing the machine that HMM models.
+**WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Empirical learning sets an HMM's probabilities by observing the machine that HMM models. Specifically, if the user is able to see the ...
 
-**WHY**: Observations are one way to derive probabilities for an HMM.
+ * hidden state transitions that occur
+ * symbol emissions that occur after each hidden state transition
+
+..., that user can derive a set of hidden state transition probabilities and symbol emission probabilities for the HMM.
+
+```python
+hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = empirical_learning(hmm_structure, observed_hidden_state_transitions, observered_symbol_emissions)
+```
+
+**WHY**: Observing the model is one way to derive probabilities for an HMM.
 
 **ALGORITHM**:
 
@@ -18285,9 +18677,19 @@ Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm
 Algorithms/Sequence HMM/Empirical Learning_TOPIC
 ```
 
-**WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Viterbi learning derives an HMM's hidden state transition probabilities and symbol emission probabilities *from just an emitted sequence*.
+**WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Viterbi learning sets an HMM's probabilities by observing only the symbol emissions of the machine that HMM models. Specifically, if the user is only able to observe the symbol emissions (not the transitions that resulted in those emissions), that user can derive a set of hidden state transition probabilities and symbol emission probabilities for the HMM.
+
+```python
+hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = viterbi_learning(hmm_structure, observered_symbol_emissions)
+```
 
 **WHY**: Viterbi learning derives the probabilities for an HMM structure from just an emitted sequence. In contrast, emperical learning needs both an emitted sequence and the hidden path that generated that emitted sequence.
+
+```python
+hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = viterbi_learning(hmm_structure, observered_symbol_emissions)
+# ... vs ...
+hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = empirical_learning(hmm_structure, observed_hidden_state_transitions, observered_symbol_emissions)
+```
 
 **ALGORITHM**:
 
@@ -18315,7 +18717,7 @@ There are now two pieces of data:
  * Emitted sequence.
  * Hidden path.
  
-These two pieces of data are fed into the emperical learning algorithm to generate new HMM probabliities. The hope is that these new HMM probabilities will result in the Viterbi algorithm finding a more probable hidden path.
+These two pieces of data are fed into the emperical learning algorithm to generate new HMM probabliities. The hope is that these new HMM probabilities will result in the Viterbi algorithm finding a better hidden path.
 
 ```{svgbob}
           .----------------------------------------------------------------------------------------------------------.
@@ -18335,6 +18737,8 @@ This process repeats in the hopes that the HMM probabilities converge to maximiz
 
 ```{note}
 Note what this algorithm is doing. The Pevzner book claims that it's very similar to Llyod's algorithm for k-means clustering in that it's starting off at some random point and pushing that point around to maximize some metric (generic name for this is called [Expectation-maximization](https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm)).
+
+The book claims that this is soft clustering. But if you only have one observed sequence, aren't you clustering a single data point? Shouldn't you have many observed sequences? Or maybe having many observed sequences is the same thing as having one sequence and concatenating them (need to figure out some special logic for each sequence's first transition from SOURCE)?
 
 Monte carlo algorithms like this are typically executed many times, where the best performing execution is the one that gets chosen.
 ```

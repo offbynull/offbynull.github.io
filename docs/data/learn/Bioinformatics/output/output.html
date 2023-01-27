@@ -223,6 +223,11 @@
 <li><a href="#H1_Naive%20Algorithm">Naive Algorithm</a></li>
 <li><a href="#H5_Graph%20Algorithm">Graph Algorithm</a></li>
 </ul>
+<li><a href="#H_Probability%20of%20Emitted%20Sequence%20Where%20Index%20Emits%20From%20Hidden%20State">Probability of Emitted Sequence Where Index Emits From Hidden State</a></li>
+<ul>
+<li><a href="#H2_Naive%20Algorithm">Naive Algorithm</a></li>
+<li><a href="#H6_Graph%20Algorithm">Graph Algorithm</a></li>
+</ul>
 <li><a href="#H_Most%20Probable%20Emitted%20Sequence">Most Probable Emitted Sequence</a></li>
 <li><a href="#H_Empirical%20Learning">Empirical Learning</a></li>
 <li><a href="#H_Viterbi%20Learning">Viterbi Learning</a></li>
@@ -25214,7 +25219,7 @@ pseudocount: 0.0001
 <p>probability of an <a href="#BM_(HMM)%2F">HMM</a> emits a <a href="#BM_(sequence)%2Fi">sequence</a> while traveling through a <a href="#BM_(hidden%20path)%2Fi">hidden path</a> is calculated as described above (multiplied chain of transition-emission probabilities).</p>
 </li>
 </ol>
-<p>The probability of an <a href="#BM_(HMM)%2F">HMM</a> emitting a specific <a href="#BM_(sequence)%2Fi">sequence</a> is the sum of the probability of that emitted <a href="#BM_(sequence)%2Fi">sequence</a> occurring over all <a href="#BM_(hidden%20path)%2Fi">hidden path</a>s. For example, imagine the following <a href="#BM_(HMM)%2F">HMM</a>.</p>
+<p>Given all <a href="#BM_(hidden%20path)%2Fi">hidden path</a>s in a <a href="#BM_(HMM)%2F">HMM</a>, the probability of an <a href="#BM_(HMM)%2F">HMM</a> emitting a specific <a href="#BM_(sequence)%2Fi">sequence</a> is the sum of probability calculations for each <a href="#BM_(hidden%20path)%2Fi">hidden path</a> and the emitted <a href="#BM_(sequence)%2Fi">sequence</a> (sum of point #3 above). For example, imagine the following <a href="#BM_(HMM)%2F">HMM</a>.</p>
 <p><img src="svgbob_6c810aaa37a67150f1f6090237838fb6d6f152d0.svg" alt="Kroki diagram output"></p>
 <p>The probability that the above <a href="#BM_(HMM)%2F">HMM</a> emits [z, z, y] is the sum of ...</p>
 <ul>
@@ -25570,8 +25575,384 @@ emissions: [z,z,y]
 <p>The probability of ['z', 'z', 'y'] being emitted is 0.038671885171816495 ...</p>
 </div>
 <p></p>
+<a name="H_Probability%20of%20Emitted%20Sequence%20Where%20Index%20Emits%20From%20Hidden%20State"></a><h3>Probability of Emitted Sequence Where Index Emits From Hidden State</h3>
+<p><a name="BM_(Algorithms%5C%2FSequence%20HMM%2FProbability%20of%20Emitted%20Sequence%20Where%20Index%20Emits%20From%20Hidden%20State)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20HMM%2FMost%20Probable%20Hidden%20Path%2FViterbi%20Non-emitting%20States%20Algorithm)_TOPIC%2F">Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20HMM%2FProbability%20of%20Emitted%20Sequence)_TOPIC%2F">Algorithms/Sequence HMM/Probability of Emitted Sequence</a></li>
+</ul>
+</div>
+<p><strong>WHAT</strong>: An <a href="#BM_(HMM)%2F">HMM</a> works by transitioning from one <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> to the next, where each transition possibly results in a symbol being emitted (non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s don't emit symbols). Given a ...</p>
+<ul>
+<li><a href="#BM_(HMM)%2F">HMM</a></li>
+<li><a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> in that <a href="#BM_(HMM)%2F">HMM</a></li>
+<li>emitted <a href="#BM_(sequence)%2Fi">sequence</a></li>
+<li>index in that emitted <a href="#BM_(sequence)%2Fi">sequence</a></li>
+</ul>
+<p>...,  determine how certain it is that the <a href="#BM_(HMM)%2F">HMM</a> was in that <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> when the symbol at the emitted <a href="#BM_(sequence)%2Fi">sequence</a> index was emitted. For example, how certain is it that the following <a href="#BM_(HMM)%2F">HMM</a> was in <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> B when index 2 of [y, y, z, y, z, z, y] was emitted.</p>
+<p><img src="svgbob_dbcd3c974d43c0303cbe57a0f3244a5f6947f388.svg" alt="Kroki diagram output"></p>
+<pre class="hljs"><code>hidden_state = <span class="hljs-string">'B'</span>
+emitted_seq = [<span class="hljs-string">'y'</span>, <span class="hljs-string">'y'</span>, <span class="hljs-string">'z'</span>, <span class="hljs-string">'y'</span>, <span class="hljs-string">'z'</span>, <span class="hljs-string">'z'</span>, <span class="hljs-string">'y'</span>]
+<span class="hljs-comment"># Certainty that HMM emits idx 2 of emitted_seq from hidden state B</span>
+certainty = prob_passing_thru_hidden_state(hmm, <span class="hljs-string">'B'</span>, emitted_seq, <span class="hljs-number">2</span>)
+</code></pre>
+<p><strong>WHY</strong>: Given an emitted <a href="#BM_(sequence)%2Fi">sequence</a>, the <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi algorithm</a> can be used to find the most probable <a href="#BM_(hidden%20path)%2Fi">hidden path</a> for that emitted <a href="#BM_(sequence)%2Fi">sequence</a>. However, that most probable <a href="#BM_(hidden%20path)%2Fi">hidden path</a> is a rigid determination. This algorithm allows you to interogate the certanty of each <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transition in that path.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The Pevzner book calls this "Soft <a href="#BM_(encode%7Cencoding%7Cdecode%7Cdecoding)%2Fi">Decoding</a>" and it never covers a good use-case for it. What is the point of this? Imagine I've used the <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi algorithm</a> to generate the most probable <a href="#BM_(hidden%20path)%2Fi">hidden path</a>. I've determined that one of the transitions in that <a href="#BM_(hidden%20path)%2Fi">hidden path</a> leads to a <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> symbol emission with low certainty. So what do I do at that point? In the <a href="#BM_(hidden%20path)%2Fi">hidden path</a>, do I try swapping that transition's destination to another <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>? Maybe the revised <a href="#BM_(hidden%20path)%2Fi">hidden path</a> will be slightly less probable but the certainty calculations will even out more?</p>
+</div>
+<a name="H2_Naive%20Algorithm"></a><h4>Naive Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20HMM%2FProbability%20of%20Emitted%20Sequence%20Where%20Index%20Emits%20From%20Hidden%20State%2FNaive%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20HMM%2FProbability%20of%20Emitted%20Sequence%2FNaive%20Algorithm)_TOPIC%2F">Algorithms/Sequence HMM/Probability of Emitted Sequence/Naive Algorithm</a></li>
+</ul>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>Given all <a href="#BM_(hidden%20path)%2Fi">hidden path</a>s in a <a href="#BM_(HMM)%2F">HMM</a>, recall that the probability of an <a href="#BM_(HMM)%2F">HMM</a> emitting a specific <a href="#BM_(sequence)%2Fi">sequence</a> is the sum of probability calculations for each <a href="#BM_(hidden%20path)%2Fi">hidden path</a> and the emitted <a href="#BM_(sequence)%2Fi">sequence</a>. For example, imagine the following <a href="#BM_(HMM)%2F">HMM</a>.</p>
+<p><img src="svgbob_dbcd3c974d43c0303cbe57a0f3244a5f6947f388.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>C is a non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>, which is why it doesn't have any linkages to emissions.</p>
+</div>
+<p>The probability that the above <a href="#BM_(HMM)%2F">HMM</a> emits [z, z, y] is the sum of ...</p>
+<ul>
+<li>Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→A|y)</li>
+<li>Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y)</li>
+<li>Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) * Pr(B→C)</li>
+<li>Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y)</li>
+<li>Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y)</li>
+<li>Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→A|y)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) * Pr(B→C)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)</li>
+</ul>
+<p>This algorithm revises the summation above to only include <a href="#BM_(hidden%20path)%2Fi">hidden path</a>s that travel through the <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> of interest at the emitted <a href="#BM_(sequence)%2Fi">sequence</a> index of interest. For example, to calculate the probability that the <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> was B when index 1 of the [z, z, y] was emitted, the summation becomes ...</p>
+<ul>
+<li>Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y)</li>
+<li>Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y)</li>
+<li>Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)</li>
+</ul>
+<p>This filtered sum is divided by the original non-filtered sum to determine the probability.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This is getting a probability of probabilities. The ...</p>
+<ul>
+<li>numerator is the probability union of the filtered <a href="#BM_(hidden%20path)%2Fi">hidden path</a>s.</li>
+<li>denominator is the probability union of all <a href="#BM_(hidden%20path)%2Fi">hidden path</a>s.</li>
+</ul>
+<p>It's a partial divided by the total.</p>
+</div>
+<p><a href="ch10_code/src/hmm/ProbabilityOfEmittedSequenceWithIndexEmittingFromHiddenState_Naive.py">ch10_code/src/hmm/ProbabilityOfEmittedSequenceWithIndexEmittingFromHiddenState_Naive.py</a> (lines 147 to 241):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">enumerate_paths_targeting_hidden_state_at_index</span>(<span class="hljs-params">
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        hmm_from_n_id: STATE,
+        emitted_seq_len: <span class="hljs-built_in">int</span>,
+        emitted_seq_idx_of_interest: <span class="hljs-built_in">int</span>,
+        hidden_state_of_interest: STATE,
+        prev_path: <span class="hljs-built_in">list</span>[TRANSITION] | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span>
+</span>) -&gt; Generator[<span class="hljs-built_in">list</span>[TRANSITION], <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>]:
+    <span class="hljs-keyword">if</span> prev_path <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        prev_path = []
+    <span class="hljs-keyword">if</span> emitted_seq_len == <span class="hljs-number">0</span>:
+        <span class="hljs-comment"># We're at the end of the expected emitted sequence length, so return the current path. However, at this point</span>
+        <span class="hljs-comment"># hmm_from_n_id may still have transitions to other non-emittable hidden states, and so those need to be</span>
+        <span class="hljs-comment"># returned as paths as well (continue digging into outgoing transitions if the destination is non-emittable).</span>
+        <span class="hljs-keyword">yield</span> prev_path
+        <span class="hljs-keyword">for</span> transition, _, hmm_to_n_id, _ <span class="hljs-keyword">in</span> hmm.get_outputs_full(hmm_from_n_id):
+            <span class="hljs-keyword">if</span> hmm.get_node_data(hmm_to_n_id).is_emittable():
+                <span class="hljs-keyword">continue</span>
+            prev_path.append(transition)
+            <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> enumerate_paths_targeting_hidden_state_at_index(hmm, hmm_to_n_id, emitted_seq_len, emitted_seq_idx_of_interest,
+                                                                       hidden_state_of_interest, prev_path)
+            prev_path.pop()
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-comment"># About to explode out by digging into transitions from hmm_from_n_id. But, before doing that, check if this is</span>
+        <span class="hljs-comment"># emitted sequence index that's being isolated. If it is, we want to isolate things such that we only travel</span>
+        <span class="hljs-comment"># down the hidden state of interest.</span>
+        <span class="hljs-keyword">if</span> emitted_seq_idx_of_interest != <span class="hljs-number">0</span>:
+            outputs = <span class="hljs-built_in">list</span>(hmm.get_outputs_full(hmm_from_n_id))
+        <span class="hljs-keyword">else</span>:
+            outputs = []
+            <span class="hljs-keyword">for</span> transition, hmm_from_n_id, hmm_to_n_id, transition_data <span class="hljs-keyword">in</span> hmm.get_outputs_full(hmm_from_n_id):
+                <span class="hljs-keyword">if</span> hmm_to_n_id == hidden_state_of_interest <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> hmm.get_node_data(hmm_to_n_id).is_emittable():
+                    outputs.append((transition, hmm_from_n_id, hmm_to_n_id, transition_data))
+        <span class="hljs-comment"># Explode out at that path by digging into transitions from hmm_from_n_id. If the destination of the transition</span>
+        <span class="hljs-comment"># is an ...</span>
+        <span class="hljs-comment"># * emittable hidden state, subtract the expected emitted sequence length by 1 when you dig down.</span>
+        <span class="hljs-comment"># * non-emittable hidden state, keep the expected emitted sequence length the same when you dig down.</span>
+        <span class="hljs-keyword">for</span> transition, _, hmm_to_n_id, _ <span class="hljs-keyword">in</span> outputs:
+            prev_path.append(transition)
+            <span class="hljs-keyword">if</span> hmm.get_node_data(hmm_to_n_id).is_emittable():
+                next_emittable_seq_len = emitted_seq_len - <span class="hljs-number">1</span>
+                next_emitted_seq_idx_of_interest = emitted_seq_idx_of_interest - <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                next_emittable_seq_len = emitted_seq_len
+                next_emitted_seq_idx_of_interest = emitted_seq_idx_of_interest
+            <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> enumerate_paths_targeting_hidden_state_at_index(hmm, hmm_to_n_id, next_emittable_seq_len,
+                                                                       next_emitted_seq_idx_of_interest, hidden_state_of_interest, prev_path)
+            prev_path.pop()
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">emission_probability</span>(<span class="hljs-params">
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        hmm_source_n_id: STATE,
+        emitted_seq: <span class="hljs-built_in">list</span>[SYMBOL],
+        emitted_seq_idx_of_interest: <span class="hljs-built_in">int</span>,
+        hidden_state_of_interest: STATE
+</span>) -&gt; <span class="hljs-built_in">float</span>:
+    <span class="hljs-comment"># Calculate isolated</span>
+    path_iterator = enumerate_paths_targeting_hidden_state_at_index(
+        hmm,
+        hmm_source_n_id,
+        <span class="hljs-built_in">len</span>(emitted_seq),
+        emitted_seq_idx_of_interest,
+        hidden_state_of_interest
+    )
+    isolated_probs_sum = <span class="hljs-number">0.0</span>
+    <span class="hljs-keyword">for</span> path <span class="hljs-keyword">in</span> path_iterator:
+        isolated_probs_sum += probability_of_transitions_and_emissions(hmm, path, emitted_seq)
+    <span class="hljs-comment"># Calculate full - This is using enumerate_paths from the original ProbabilityOfEmittedSequence_Naive</span>
+    path_iterator = enumerate_paths(
+        hmm,
+        hmm_source_n_id,
+        <span class="hljs-built_in">len</span>(emitted_seq)
+    )
+    full_probs_sum = <span class="hljs-number">0.0</span>
+    <span class="hljs-keyword">for</span> path <span class="hljs-keyword">in</span> path_iterator:
+        full_probs_sum += probability_of_transitions_and_emissions(hmm, path, emitted_seq)
+    <span class="hljs-comment"># Return probability</span>
+    <span class="hljs-keyword">return</span> isolated_probs_sum / full_probs_sum
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">probability_of_transitions_and_emissions</span>(<span class="hljs-params">hmm, path, emitted_seq</span>):
+    emitted_seq_idx = <span class="hljs-number">0</span>
+    prob = <span class="hljs-number">1.0</span>
+    <span class="hljs-keyword">for</span> transition <span class="hljs-keyword">in</span> path:
+        hmm_from_n_id, hmm_to_n_id = transition
+        <span class="hljs-keyword">if</span> hmm.get_node_data(hmm_to_n_id).is_emittable():
+            symbol = emitted_seq[emitted_seq_idx]
+            prob *= hmm.get_node_data(hmm_to_n_id).get_symbol_emission_probability(symbol) * \
+                    hmm.get_edge_data(transition).get_transition_probability()
+            emitted_seq_idx += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            prob *= hmm.get_edge_data(transition).get_transition_probability()
+    <span class="hljs-keyword">return</span> prob
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Finding the probability of an HMM emitting a sequence, using the following settings...</p>
+<pre><code>transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+  C: {}
+  # C set to empty dicts to identify as non-emittable hidden state.
+source_state: SOURCE
+emissions: [z,z,y]
+emission_index_of_interest: 2
+hidden_state_of_interest: B
+pseudocount: 0.0001
+
+</code></pre>
+<p>The following HMM was produced AFTER applying pseudocounts ...</p>
+<p><img src="dot_31eaae9b2316b1fe3d867cb1b470d1bf.svg" alt="Dot diagram"></p>
+<p>The probability of ['z', 'z', 'y'] being emitted when index 2 only has the option to emitted from B is 0.7688262748256085.</p>
+</div>
+<p></p>
+<a name="H6_Graph%20Algorithm"></a><h4>Graph Algorithm</h4>
+<p><a name="BM_(Algorithms%5C%2FSequence%20HMM%2FProbability%20of%20Emitted%20Sequence%20Where%20Index%20Emits%20From%20Hidden%20State%2FGraph%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20HMM%2FProbability%20of%20Emitted%20Sequence%2FNaive%20Algorithm)_TOPIC%2F">Algorithms/Sequence HMM/Probability of Emitted Sequence/Naive Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20HMM%2FProbability%20of%20Emitted%20Sequence%2FGraph%20Algorithm)_TOPIC%2F">Algorithms/Sequence HMM/Probability of Emitted Sequence/Graph Algorithm</a></li>
+<li><a href="#BM_(Algorithms%5C%2FSequence%20HMM%2FProbability%20of%20Emitted%20Sequence%20Where%20Index%20Emits%20From%20Hidden%20State%2FNaive%20Algorithm)_TOPIC%2F">Algorithms/Sequence HMM/Probability of Emitted Sequence Where Index Emits From Hidden State/Naive Algorithm</a></li>
+</ul>
+</div>
+<p><strong>ALGORITHM</strong>:</p>
+<p>Recall that ...</p>
+<ol>
+<li>the probability of an <a href="#BM_(HMM)%2F">HMM</a> emitting a specific <a href="#BM_(sequence)%2Fi">sequence</a> is the sum of the probability of that emitted <a href="#BM_(sequence)%2Fi">sequence</a> occurring over all <a href="#BM_(hidden%20path)%2Fi">hidden path</a>s in the <a href="#BM_(HMM)%2F">HMM</a>.</li>
+<li>the summation can have factors pulled out of it such that the expression can be calculated as an exploded <a href="#BM_(HMM)%2F">HMM</a>.</li>
+</ol>
+<p>For example, imagine the following <a href="#BM_(HMM)%2F">HMM</a>.</p>
+<p><img src="svgbob_dbcd3c974d43c0303cbe57a0f3244a5f6947f388.svg" alt="Kroki diagram output"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>C is a non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>, which is why it doesn't have any linkages to emissions.</p>
+</div>
+<p>The probability that the above <a href="#BM_(HMM)%2F">HMM</a> emits [z, z, y] is the sum of ...</p>
+<ul>
+<li>Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→A|y)</li>
+<li>Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y)</li>
+<li>Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) * Pr(B→C)</li>
+<li>Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y)</li>
+<li>Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y)</li>
+<li>Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→A|y)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) * Pr(B→C)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)</li>
+<li>Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)</li>
+</ul>
+<p>This summation is then factored and grouped such that it represents an exploded <a href="#BM_(HMM)%2F">HMM</a>.</p>
+<p><img src="svgbob_4acf9bf1b617eae49ec4205ad41d58055d596f35.svg" alt="Kroki diagram output"></p>
+<p>This algorithm revises the exploded <a href="#BM_(HMM)%2F">HMM</a> above to only the <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> of interest at the emitted <a href="#BM_(sequence)%2Fi">sequence</a> index of interest. For example, to calculate the probability that the <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> was B when index 1 of [z, z, y] was emitted, the exploded <a href="#BM_(HMM)%2F">HMM</a> becomes ...</p>
+<p><img src="svgbob_88606e244a7cfecd70cf46056bfbbe6bf6886ae8.svg" alt="Kroki diagram output"></p>
+<p>To determine the probability (certainty) that the <a href="#BM_(HMM)%2F">HMM</a> was in B at index 1 of the emitted <a href="#BM_(sequence)%2Fi">sequence</a>, the calculation from the filtered exploded <a href="#BM_(HMM)%2F">HMM</a> is divided by the calculation from the non-filtered exploded <a href="#BM_(HMM)%2F">HMM</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This is getting a probability of probabilities. The ...</p>
+<ul>
+<li>numerator is the probability union of the filtered <a href="#BM_(hidden%20path)%2Fi">hidden path</a>s.</li>
+<li>denominator is the probability union of all <a href="#BM_(hidden%20path)%2Fi">hidden path</a>s.</li>
+</ul>
+<p>It's a partial divided by the total.</p>
+</div>
+<p><a href="ch10_code/src/hmm/ProbabilityOfEmittedSequenceWithIndexEmittingFromHiddenState_Graph.py">ch10_code/src/hmm/ProbabilityOfEmittedSequenceWithIndexEmittingFromHiddenState_Graph.py</a> (lines 268 to 361):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">emission_probability</span>(<span class="hljs-params">
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        hmm_source_n_id: STATE,
+        hmm_sink_n_id: STATE,
+        emitted_seq: <span class="hljs-built_in">list</span>[SYMBOL],
+        emitted_seq_idx_of_interest: <span class="hljs-built_in">int</span>,
+        hidden_state_of_interest: STATE
+</span>):
+    <span class="hljs-comment"># Compute on full exploded HMM</span>
+    full_exploded = explode_hmm(hmm, hmm_source_n_id, hmm_sink_n_id, emitted_seq)
+    full_probs_sum = exploded_hmm_calculation(hmm, full_exploded, emitted_seq)
+    <span class="hljs-comment"># Compute on isolated exploded HMM</span>
+    <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> Instead of re-exploding the graph again, you can just use the same exploded HMM as above. I did it like this</span>
+    <span class="hljs-comment">#       because I want the code to display both graphs. The other options to doing this were to use callbacks or</span>
+    <span class="hljs-comment">#       yield statements, both of which make the function more complicated to understand.</span>
+    isolated_exploded = explode_hmm(hmm, hmm_source_n_id, hmm_sink_n_id, emitted_seq)
+    <span class="hljs-keyword">for</span> exploded_n_id <span class="hljs-keyword">in</span> <span class="hljs-built_in">set</span>(isolated_exploded.get_nodes()):
+        emitted_seq_idx, hmm_n_id = exploded_n_id
+        <span class="hljs-keyword">if</span> emitted_seq_idx == emitted_seq_idx_of_interest <span class="hljs-keyword">and</span> hmm_n_id != hidden_state_of_interest\
+                <span class="hljs-keyword">and</span> hmm.get_node_data(hmm_n_id).is_emittable():
+            delete_exploded_n_id = emitted_seq_idx, hmm_n_id
+            isolated_exploded.delete_node(delete_exploded_n_id)
+    isolated_probs_sum = exploded_hmm_calculation(hmm, isolated_exploded, emitted_seq)
+    <span class="hljs-comment"># Determine certainty and return</span>
+    certainty = isolated_probs_sum / full_probs_sum
+    <span class="hljs-keyword">return</span> full_exploded, isolated_exploded, certainty
+
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">exploded_hmm_calculation</span>(<span class="hljs-params">
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        exploded: Graph[EXPLODED_NODE_ID, <span class="hljs-type">Any</span>, EXPLODED_EDGE_ID, <span class="hljs-type">Any</span>],
+        emitted_seq: <span class="hljs-built_in">list</span>[SYMBOL]
+</span>) -&gt; <span class="hljs-built_in">float</span>:
+    <span class="hljs-comment"># Use graph algorithm to figure out emission probability</span>
+    exploded_source_n_id = exploded.get_root_node()  <span class="hljs-comment"># equiv to (-1, hmm_source_n_id) -- using root node func for clarity</span>
+    exploded_sink_n_id = exploded.get_leaf_node()  <span class="hljs-comment"># equiv to (-1, hmm_sink_n_id) -- using leaf node func for clarity</span>
+    exploded.update_node_data(exploded_source_n_id, <span class="hljs-number">1.0</span>)
+    exploded_to_n_ids = <span class="hljs-built_in">set</span>()
+    add_ready_to_process_outgoing_nodes(exploded, exploded_source_n_id, exploded_to_n_ids)
+    <span class="hljs-keyword">while</span> exploded_to_n_ids:
+        exploded_to_n_id = exploded_to_n_ids.pop()
+        <span class="hljs-comment"># Don't process SINK node in this loop because of the emittable check / emission probability extraction: The</span>
+        <span class="hljs-comment"># sink node is not a hidden state in the HMM (it's only a node in the exploded graph) meaning it will fail if</span>
+        <span class="hljs-comment"># you try to query if its emittable / its emission probabilities.</span>
+        <span class="hljs-keyword">if</span> exploded_to_n_id == exploded_sink_n_id:
+            <span class="hljs-keyword">continue</span>
+        exploded_to_n_emissions_idx, hmm_to_n_id = exploded_to_n_id
+        <span class="hljs-comment"># Get the symbol emission probability for some symbol at the current hidden state. If the hidden state is</span>
+        <span class="hljs-comment"># non-emittable, use 1.0 instead.</span>
+        symbol = emitted_seq[exploded_to_n_emissions_idx]
+        <span class="hljs-keyword">if</span> hmm.get_node_data(hmm_to_n_id).is_emittable():
+            symbol_emission_prob = hmm.get_node_data(hmm_to_n_id).get_symbol_emission_probability(symbol)
+        <span class="hljs-keyword">else</span>:
+            symbol_emission_prob = <span class="hljs-number">1.0</span>
+        <span class="hljs-comment"># Calculate forward weight for current node</span>
+        exploded_to_forward_weight = <span class="hljs-number">0.0</span>
+        <span class="hljs-keyword">for</span> _, exploded_from_n_id, _, _ <span class="hljs-keyword">in</span> exploded.get_inputs_full(exploded_to_n_id):
+            _, hmm_from_n_id = exploded_from_n_id
+            exploded_from_forward_weight = exploded.get_node_data(exploded_from_n_id)
+            transition = hmm_from_n_id, hmm_to_n_id
+            transition_prob = hmm.get_edge_data(transition).get_transition_probability()
+            exploded_to_forward_weight += exploded_from_forward_weight * transition_prob * symbol_emission_prob
+            <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> The Pevzner book's formulas did it slightly differently. It factors out multiplication of</span>
+            <span class="hljs-comment"># symbol_emission_prob such that it's applied only once after the loop finishes</span>
+            <span class="hljs-comment"># (e.g. a*b*5+c*d*5+e*f*5 = 5*(a*b+c*d+e*f)). I didn't factor out symbol_emission_prob because I wanted the</span>
+            <span class="hljs-comment"># code to line-up with the diagrams I created for the algorithm documentation.</span>
+        exploded.update_node_data(exploded_to_n_id, exploded_to_forward_weight)
+        <span class="hljs-comment"># Now that the forward weight's been calculated for this node, check its outgoing neighbours to see if they're</span>
+        <span class="hljs-comment"># also ready and add them to the ready set if they are.</span>
+        add_ready_to_process_outgoing_nodes(exploded, exploded_to_n_id, exploded_to_n_ids)
+    <span class="hljs-comment"># The code above doesn't cover the SINK node -- run a cycle for the SINK node as well here.</span>
+    exploded_sink_forward_weight = <span class="hljs-number">0.0</span>
+    <span class="hljs-keyword">for</span> _, exploded_from_n_id, _, _ <span class="hljs-keyword">in</span> exploded.get_inputs_full(exploded_sink_n_id):
+        exploded_from_forward_weight = exploded.get_node_data(exploded_from_n_id)
+        transition_prob = <span class="hljs-number">1.0</span>
+        exploded_sink_forward_weight += exploded_from_forward_weight * transition_prob
+    exploded.update_node_data(exploded_sink_n_id, exploded_sink_forward_weight)
+    <span class="hljs-comment"># SINK node's weight should be the emission probability</span>
+    <span class="hljs-keyword">return</span> exploded_sink_forward_weight
+
+
+<span class="hljs-comment"># Given a node in the exploded graph (exploded_n_from_id), look at each outgoing neighbours that it has</span>
+<span class="hljs-comment"># (exploded_to_n_id). If that outgoing neighbour (exploded_to_n_id) has a "forward weight" set for all of its incoming</span>
+<span class="hljs-comment"># neighbours, add it to the set of "ready_to_process" nodes.</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">add_ready_to_process_outgoing_nodes</span>(<span class="hljs-params">
+        exploded: Graph[EXPLODED_NODE_ID, <span class="hljs-type">Any</span>, EXPLODED_EDGE_ID, <span class="hljs-type">Any</span>],
+        exploded_n_from_id: EXPLODED_NODE_ID,
+        ready_to_process_n_ids: <span class="hljs-built_in">set</span>[EXPLODED_NODE_ID]
+</span>):
+    <span class="hljs-keyword">for</span> _, _, exploded_to_n_id, _ <span class="hljs-keyword">in</span> exploded.get_outputs_full(exploded_n_from_id):
+        ready_to_process = <span class="hljs-built_in">all</span>(exploded.get_node_data(n) <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">for</span> _, n, _, _ <span class="hljs-keyword">in</span> exploded.get_inputs_full(exploded_to_n_id))
+        <span class="hljs-keyword">if</span> ready_to_process:
+            ready_to_process_n_ids.add(exploded_to_n_id)
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Finding the probability of an HMM emitting a sequence, using the following settings...</p>
+<pre><code>transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+  C: {}
+  # C set to empty dicts to identify as non-emittable hidden state.
+source_state: SOURCE
+sink_state: SINK
+emissions: [z,z,y]
+emission_index_of_interest: 2
+hidden_state_of_interest: B
+pseudocount: 0.0001
+
+</code></pre>
+<p>The following HMM was produced AFTER applying pseudocounts ...</p>
+<p><img src="dot_31eaae9b2316b1fe3d867cb1b470d1bf.svg" alt="Dot diagram"></p>
+<p>The following exploded HMM was produced for the HMM and the emitted sequence ['z', 'z', 'y'] ...</p>
+<p><img src="dot_186d99ecbcec752cfa544f07b261321c.svg" alt="Dot diagram"></p>
+<p>The exploded HMM was modified such that index 2 only has the option to B ...</p>
+<p><img src="dot_55dba3e7301eb0d83498555f7d55bdbf.svg" alt="Dot diagram"></p>
+<p>The probability of ['z', 'z', 'y'] being emitted when index 2 only has the option to emit from B is 0.7688262748256085.</p>
+</div>
+<p></p>
 <a name="H_Most%20Probable%20Emitted%20Sequence"></a><h3>Most Probable Emitted Sequence</h3>
-<p><a name="BM_(Algorithms%5C%2FSequence%20HMM%2FViterbi%20Most%20Probable%20Emissions)_TOPIC%2F"></a><strong></strong></p>
+<p><a name="BM_(Algorithms%5C%2FSequence%20HMM%2FMost%20Probable%20Emitted%20Sequence)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -25926,8 +26307,8 @@ emission_len: 3
 <p>The following exploded graph was produced for the HMM and an emission length of 3 ...</p>
 <p><img src="dot_9876e3af35801fa9fdcc722a72f44129.svg" alt="Dot diagram"></p>
 <p>The following exploded graph forward and layer backtracking pointers were produced for the exploded graph...</p>
-<p><img src="dot_e97d10c7ec20ab4caf9039f0d88073dd.svg" alt="Dot diagram"></p>
-<p>The sequence ['y', 'y', 'y'] is the most probable for any emitted sequence of length 3 (probability=0.28752632118548793) ...</p>
+<p><img src="dot_65df56e2eb017710318041ab33429c99.svg" alt="Dot diagram"></p>
+<p>The sequence ['y', 'y', 'y'] is the most probable for any emitted sequence of length 3 (probability=0.287526321185488) ...</p>
 </div>
 <p></p>
 <a name="H_Empirical%20Learning"></a><h3>Empirical Learning</h3>
@@ -25939,8 +26320,15 @@ emission_len: 3
 <li><a href="#BM_(Algorithms%5C%2FSequence%20HMM%2FMost%20Probable%20Hidden%20Path%2FViterbi%20Non-emitting%20States%20Algorithm)_TOPIC%2F">Algorithms/Sequence HMM/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: An <a href="#BM_(HMM)%2F">HMM</a> uses probabilities to model a machine which transitions through <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s and possibly emits a symbol after each transition (non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s don't emit a symbol). Empirical learning derives an <a href="#BM_(HMM)%2F">HMM</a>'s <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transition probabilities and symbol emission probabilities by observing the machine that <a href="#BM_(HMM)%2F">HMM</a> models.</p>
-<p><strong>WHY</strong>: Observations are one way to derive probabilities for an <a href="#BM_(HMM)%2F">HMM</a>.</p>
+<p><strong>WHAT</strong>: An <a href="#BM_(HMM)%2F">HMM</a> uses probabilities to model a machine which transitions through <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s and possibly emits a symbol after each transition (non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s don't emit a symbol). Empirical learning sets an <a href="#BM_(HMM)%2F">HMM</a>'s probabilities by observing the machine that <a href="#BM_(HMM)%2F">HMM</a> models. Specifically, if the user is able to see the ...</p>
+<ul>
+<li><a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transitions that occur</li>
+<li>symbol emissions that occur after each <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transition</li>
+</ul>
+<p>..., that user can derive a set of <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transition probabilities and symbol emission probabilities for the <a href="#BM_(HMM)%2F">HMM</a>.</p>
+<pre class="hljs"><code>hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = empirical_learning(hmm_structure, observed_hidden_state_transitions, observered_symbol_emissions)
+</code></pre>
+<p><strong>WHY</strong>: Observing the model is one way to derive probabilities for an <a href="#BM_(HMM)%2F">HMM</a>.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>This algorithm derives weights for an <a href="#BM_(HMM)%2F">HMM</a>. For example, imagine the following <a href="#BM_(HMM)%2F">HMM</a> structure (probabilities missing).</p>
 <p><img src="svgbob_557418043072f94020c73e91e4dc837da58e4f6d.svg" alt="Kroki diagram output"></p>
@@ -26145,7 +26533,7 @@ pseudocount: 0.0001
 
 </code></pre>
 <p>The following HMM was produced (no probabilities) ...</p>
-<p><img src="dot_43fda8ca6ba07995f08093ce732a37a3.svg" alt="Dot diagram"></p>
+<p><img src="dot_c56c7375255aa4030fddee3569efd1ac.svg" alt="Dot diagram"></p>
 <p>The following probabilities were derived from the observed sequence of transitions and emissions ...</p>
 <ul>
 <li>
@@ -26155,25 +26543,25 @@ pseudocount: 0.0001
 <li>SOURCE→A = 1.0</li>
 <li>A→B = 0.3333333333333333</li>
 <li>A→A = 0.6666666666666666</li>
-<li>B→A = 0.6666666666666666</li>
 <li>B→C = 0.3333333333333333</li>
+<li>B→A = 0.6666666666666666</li>
 <li>C→B = 1.0</li>
 </ul>
 </li>
 <li>
 <p>Emission probabilities:</p>
 <ul>
-<li>(B, z) = 0.6666666666666666</li>
 <li>(B, y) = 0.3333333333333333</li>
-<li>(A, z) = 0.5714285714285714</li>
+<li>(B, z) = 0.6666666666666666</li>
 <li>(A, y) = 0.42857142857142855</li>
+<li>(A, z) = 0.5714285714285714</li>
 </ul>
 </li>
 </ul>
 <p>The following HMM was produced after derived probabilities were applied ...</p>
-<p><img src="dot_31243ae947b8067248708795157a8311.svg" alt="Dot diagram"></p>
+<p><img src="dot_74a7d3d5523650a7e083e1996c058e63.svg" alt="Dot diagram"></p>
 <p>After pseudocounts are applied, the HMM becomes as follows ...</p>
-<p><img src="dot_f94ae7e229bf71616756864743bb8522.svg" alt="Dot diagram"></p>
+<p><img src="dot_a142a52df87866bd0956fb20e09d4dfc.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>If the structure of the <a href="#BM_(HMM)%2F">HMM</a> isn't known beforehand, it's common to assume that ...</p>
@@ -26309,15 +26697,15 @@ pseudocount: 0.0001
 </code></pre>
 <p>The following HMM hidden state transitions and symbol emissions were assumed...</p>
 <ul>
-<li>transitions={'SOURCE': {'A', 'B'}, 'A': {'A', 'B'}, 'B': {'A', 'B'}}</li>
-<li>emissions={'SOURCE': {}, 'A': {'z', 'y'}, 'B': {'z', 'y'}}</li>
+<li>transitions={'SOURCE': {'B', 'A'}, 'B': {'B', 'A'}, 'A': {'B', 'A'}}</li>
+<li>emissions={'SOURCE': {}, 'B': {'z', 'y'}, 'A': {'z', 'y'}}</li>
 </ul>
 <p>The following HMM was produced (no probabilities) ...</p>
 <p><img src="dot_8df97e7260c1283683a7fa09f0cdaf85.svg" alt="Dot diagram"></p>
 <p>The following probabilities were derived from the observed sequence of transitions and emissions ...</p>
 <ul>
-<li>transition_probs={('SOURCE', 'A'): 1.0, ('SOURCE', 'B'): 0.0, ('A', 'A'): 0.5714285714285714, ('A', 'B'): 0.42857142857142855, ('B', 'A'): 0.5, ('B', 'B'): 0.5}</li>
-<li>emission_probs={('A', 'z'): 0.5714285714285714, ('A', 'y'): 0.42857142857142855, ('B', 'z'): 1.0, ('B', 'y'): 0.0}</li>
+<li>transition_probs={('SOURCE', 'B'): 0.0, ('SOURCE', 'A'): 1.0, ('B', 'B'): 0.5, ('B', 'A'): 0.5, ('A', 'B'): 0.42857142857142855, ('A', 'A'): 0.5714285714285714}</li>
+<li>emission_probs={('B', 'z'): 1.0, ('B', 'y'): 0.0, ('A', 'z'): 0.5714285714285714, ('A', 'y'): 0.42857142857142855}</li>
 </ul>
 <p>The following HMM was produced after derived probabilities were applied ...</p>
 <p><img src="dot_edc18836c8e6fc36adf1412d25d447e0.svg" alt="Dot diagram"></p>
@@ -26335,8 +26723,14 @@ pseudocount: 0.0001
 <li><a href="#BM_(Algorithms%5C%2FSequence%20HMM%2FEmpirical%20Learning)_TOPIC%2F">Algorithms/Sequence HMM/Empirical Learning</a></li>
 </ul>
 </div>
-<p><strong>WHAT</strong>: An <a href="#BM_(HMM)%2F">HMM</a> uses probabilities to model a machine which transitions through <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s and possibly emits a symbol after each transition (non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s don't emit a symbol). <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi</a> learning derives an <a href="#BM_(HMM)%2F">HMM</a>'s <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transition probabilities and symbol emission probabilities <em>from just an emitted <a href="#BM_(sequence)%2Fi">sequence</a></em>.</p>
+<p><strong>WHAT</strong>: An <a href="#BM_(HMM)%2F">HMM</a> uses probabilities to model a machine which transitions through <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s and possibly emits a symbol after each transition (non-emitting <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a>s don't emit a symbol). <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi</a> learning sets an <a href="#BM_(HMM)%2F">HMM</a>'s probabilities by observing only the symbol emissions of the machine that <a href="#BM_(HMM)%2F">HMM</a> models. Specifically, if the user is only able to observe the symbol emissions (not the transitions that resulted in those emissions), that user can derive a set of <a href="#BM_(Hidden%20Markov%20Model%7Chidden%20state)%2Fi">hidden state</a> transition probabilities and symbol emission probabilities for the <a href="#BM_(HMM)%2F">HMM</a>.</p>
+<pre class="hljs"><code>hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = viterbi_learning(hmm_structure, observered_symbol_emissions)
+</code></pre>
 <p><strong>WHY</strong>: <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi</a> learning derives the probabilities for an <a href="#BM_(HMM)%2F">HMM</a> structure from just an emitted <a href="#BM_(sequence)%2Fi">sequence</a>. In contrast, emperical learning needs both an emitted <a href="#BM_(sequence)%2Fi">sequence</a> and the <a href="#BM_(hidden%20path)%2Fi">hidden path</a> that generated that emitted <a href="#BM_(sequence)%2Fi">sequence</a>.</p>
+<pre class="hljs"><code>hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = viterbi_learning(hmm_structure, observered_symbol_emissions)
+<span class="hljs-comment"># ... vs ...</span>
+hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = empirical_learning(hmm_structure, observed_hidden_state_transitions, observered_symbol_emissions)
+</code></pre>
 <p><strong>ALGORITHM</strong>:</p>
 <p>Given an emitted <a href="#BM_(sequence)%2Fi">sequence</a>, <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi</a> learning combines two different algorithms to derive an <a href="#BM_(HMM)%2F">HMM</a>'s probabilities:</p>
 <ol>
@@ -26350,12 +26744,13 @@ pseudocount: 0.0001
 <li>Emitted <a href="#BM_(sequence)%2Fi">sequence</a>.</li>
 <li><a href="#BM_(hidden%20path)%2Fi">Hidden path</a>.</li>
 </ul>
-<p>These two pieces of data are fed into the emperical learning algorithm to generate new <a href="#BM_(HMM)%2F">HMM</a> probabliities. The hope is that these new <a href="#BM_(HMM)%2F">HMM</a> probabilities will result in the <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi algorithm</a> finding a more probable <a href="#BM_(hidden%20path)%2Fi">hidden path</a>.</p>
+<p>These two pieces of data are fed into the emperical learning algorithm to generate new <a href="#BM_(HMM)%2F">HMM</a> probabliities. The hope is that these new <a href="#BM_(HMM)%2F">HMM</a> probabilities will result in the <a href="#BM_(Viterbi%20graph%7CViterbi%20algorithm%7CViterbi)%2Fi">Viterbi algorithm</a> finding a better <a href="#BM_(hidden%20path)%2Fi">hidden path</a>.</p>
 <p><img src="svgbob_4389d30c1cd7ee631de595e304011baca5d8ac5d.svg" alt="Kroki diagram output"></p>
 <p>This process repeats in the hopes that the <a href="#BM_(HMM)%2F">HMM</a> probabilities converge to maximize the most probable <a href="#BM_(hidden%20path)%2Fi">hidden path</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Note what this algorithm is doing. The Pevzner book claims that it's very similar to Llyod's algorithm for <a href="#BM_(k-means%3F%7C%5Cd%2B-means%3F%7Csquared%20error%20distortion)%2Fi">k-means</a> <a href="#BM_(cluster)%2Fi">cluster</a>ing in that it's starting off at some random point and pushing that point around to maximize some metric (generic name for this is called <a href="https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm">Expectation-maximization</a>).</p>
+<p>The book claims that this is <a href="#BM_(hard%20clustering%7Csoft%20clustering)%2Fi">soft clustering</a>. But if you only have one observed <a href="#BM_(sequence)%2Fi">sequence</a>, aren't you <a href="#BM_(cluster)%2Fi">cluster</a>ing a single data point? Shouldn't you have many observed <a href="#BM_(sequence)%2Fi">sequence</a>s? Or maybe having many observed <a href="#BM_(sequence)%2Fi">sequence</a>s is the same thing as having one <a href="#BM_(sequence)%2Fi">sequence</a> and concatenating them (need to figure out some special logic for each <a href="#BM_(sequence)%2Fi">sequence</a>'s first transition from SOURCE)?</p>
 <p><a href="#BM_(Monte%20Carlo%20algorithm)%2Fi">Monte carlo algorithm</a>s like this are typically executed many times, where the best performing execution is the one that gets chosen.</p>
 </div>
 <p><a href="ch10_code/src/hmm/ViterbiLearning.py">ch10_code/src/hmm/ViterbiLearning.py</a> (lines 150 to 239):</p>
@@ -26476,125 +26871,125 @@ pseudocount: 0.0001
 
 </code></pre>
 <p>The following HMM was produced (no probabilities) ...</p>
-<p><img src="dot_ba1558106bc028987e4eda58703e127d.svg" alt="Dot diagram"></p>
+<p><img src="dot_550836510558ccba60d5df73eb0e9e93.svg" alt="Dot diagram"></p>
 <p>The following HMM was produced after applying randomized probabilities ...</p>
-<p><img src="dot_1109162bc6fe46abd7dc35998c8ed520.svg" alt="Dot diagram"></p>
+<p><img src="dot_86e903101d91e0a8a574762aba4b7e39.svg" alt="Dot diagram"></p>
 <p>Applying Viterbi learning for 3 cycles ...</p>
 <ol>
 <li>
-<p>Hidden path for emitted sequence: SOURCE→D, D→A, A→B, B→C, C→F, F→E, E→A, A→F, F→B, B→C, C→F, F→E, E→A, A→B, B→D</p>
+<p>Hidden path for emitted sequence: SOURCE→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A</p>
 <p>New transition probabilities:</p>
 <ul>
 <li>SOURCE→B = 9.997000899730082e-05</li>
-<li>SOURCE→D = 0.9998000599820054</li>
-<li>SOURCE→A = 9.997000899730082e-05</li>
-<li>A→B = 0.49995001499550135</li>
-<li>A→F = 0.49995001499550135</li>
-<li>A→E = 9.997000899730082e-05</li>
-<li>B→C = 0.9999000199960009</li>
-<li>B→D = 9.998000399920017e-05</li>
+<li>SOURCE→D = 9.997000899730082e-05</li>
+<li>SOURCE→A = 0.9998000599820054</li>
+<li>A→B = 9.997000899730082e-05</li>
+<li>A→E = 0.9998000599820054</li>
+<li>A→F = 9.997000899730082e-05</li>
+<li>B→D = 0.5</li>
+<li>B→C = 0.5</li>
 <li>C→F = 1.0</li>
 <li>D→A = 1.0</li>
 <li>E→A = 1.0</li>
-<li>F→B = 0.333366660001333</li>
-<li>F→E = 0.6666333399986669</li>
+<li>F→B = 0.5</li>
+<li>F→E = 0.5</li>
 </ul>
 <p>New emission probabilities:</p>
 <ul>
-<li>(B, y) = 9.997000899730082e-05</li>
-<li>(B, z) = 0.49995001499550135</li>
-<li>(B, x) = 0.49995001499550135</li>
-<li>(D, y) = 9.997000899730082e-05</li>
-<li>(D, z) = 0.9998000599820054</li>
-<li>(D, x) = 9.997000899730082e-05</li>
-<li>(A, y) = 0.3333333333333333</li>
-<li>(A, z) = 0.3333333333333333</li>
-<li>(A, x) = 0.3333333333333333</li>
-<li>(F, y) = 9.997000899730082e-05</li>
-<li>(F, z) = 0.9998000599820054</li>
-<li>(F, x) = 9.997000899730082e-05</li>
-<li>(E, y) = 0.49995001499550135</li>
-<li>(E, z) = 0.49995001499550135</li>
-<li>(E, x) = 9.997000899730082e-05</li>
-</ul>
-</li>
-<li>
-<p>Hidden path for emitted sequence: SOURCE→D, D→A, A→B, B→C, C→F, F→B, B→C, C→F, F→E, E→A, A→F, F→B, B→C, C→F, F→E, E→A</p>
-<p>New transition probabilities:</p>
-<ul>
-<li>SOURCE→B = 9.997000899730082e-05</li>
-<li>SOURCE→D = 0.9998000599820054</li>
-<li>SOURCE→A = 9.997000899730082e-05</li>
-<li>A→B = 0.49995001499550135</li>
-<li>A→F = 0.49995001499550135</li>
-<li>A→E = 9.997000899730082e-05</li>
-<li>B→C = 0.9999000199960009</li>
-<li>B→D = 9.998000399920017e-05</li>
-<li>C→F = 1.0</li>
-<li>D→A = 1.0</li>
-<li>E→A = 1.0</li>
-<li>F→B = 0.6666333399986669</li>
-<li>F→E = 0.333366660001333</li>
-</ul>
-<p>New emission probabilities:</p>
-<ul>
-<li>(B, y) = 0.3333333333333333</li>
-<li>(B, z) = 0.3333333333333333</li>
 <li>(B, x) = 0.3333333333333333</li>
-<li>(D, y) = 9.997000899730082e-05</li>
-<li>(D, z) = 0.9998000599820054</li>
-<li>(D, x) = 9.997000899730082e-05</li>
-<li>(A, y) = 9.997000899730082e-05</li>
-<li>(A, z) = 0.9998000599820054</li>
-<li>(A, x) = 9.997000899730082e-05</li>
-<li>(F, y) = 9.997000899730082e-05</li>
-<li>(F, z) = 0.9998000599820054</li>
-<li>(F, x) = 9.997000899730082e-05</li>
-<li>(E, y) = 9.997000899730082e-05</li>
-<li>(E, z) = 0.9998000599820054</li>
+<li>(B, z) = 0.3333333333333333</li>
+<li>(B, y) = 0.3333333333333333</li>
+<li>(D, x) = 0.3333333333333333</li>
+<li>(D, z) = 0.3333333333333333</li>
+<li>(D, y) = 0.3333333333333333</li>
+<li>(A, x) = 0.28572856714414246</li>
+<li>(A, z) = 0.5713571642792876</li>
+<li>(A, y) = 0.14291426857656986</li>
 <li>(E, x) = 9.997000899730082e-05</li>
+<li>(E, z) = 0.8331833783198375</li>
+<li>(E, y) = 0.1667166516711653</li>
+<li>(F, x) = 0.3333333333333333</li>
+<li>(F, z) = 0.3333333333333333</li>
+<li>(F, y) = 0.3333333333333333</li>
 </ul>
 </li>
 <li>
-<p>Hidden path for emitted sequence: SOURCE→D, D→A, A→B, B→C, C→F, F→E, E→A, A→B, B→C, C→F, F→E, E→A, A→F, F→B, B→C, C→F</p>
+<p>Hidden path for emitted sequence: SOURCE→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A</p>
 <p>New transition probabilities:</p>
 <ul>
 <li>SOURCE→B = 9.997000899730082e-05</li>
-<li>SOURCE→D = 0.9998000599820054</li>
-<li>SOURCE→A = 9.997000899730082e-05</li>
-<li>A→B = 0.6665666966576693</li>
-<li>A→F = 0.3333333333333333</li>
-<li>A→E = 9.997000899730082e-05</li>
-<li>B→C = 0.9999000199960009</li>
-<li>B→D = 9.998000399920017e-05</li>
+<li>SOURCE→D = 9.997000899730082e-05</li>
+<li>SOURCE→A = 0.9998000599820054</li>
+<li>A→B = 9.997000899730082e-05</li>
+<li>A→E = 0.9998000599820054</li>
+<li>A→F = 9.997000899730082e-05</li>
+<li>B→D = 0.5</li>
+<li>B→C = 0.5</li>
 <li>C→F = 1.0</li>
 <li>D→A = 1.0</li>
 <li>E→A = 1.0</li>
-<li>F→B = 9.998000399920017e-05</li>
-<li>F→E = 0.9999000199960009</li>
+<li>F→B = 0.5</li>
+<li>F→E = 0.5</li>
 </ul>
 <p>New emission probabilities:</p>
 <ul>
-<li>(B, y) = 9.997000899730082e-05</li>
-<li>(B, z) = 0.49995001499550135</li>
-<li>(B, x) = 0.49995001499550135</li>
-<li>(D, y) = 9.997000899730082e-05</li>
-<li>(D, z) = 0.9998000599820054</li>
-<li>(D, x) = 9.997000899730082e-05</li>
-<li>(A, y) = 0.6665666966576693</li>
-<li>(A, z) = 0.3333333333333333</li>
-<li>(A, x) = 9.997000899730082e-05</li>
-<li>(F, y) = 9.997000899730082e-05</li>
-<li>(F, z) = 0.6665666966576693</li>
-<li>(F, x) = 0.3333333333333333</li>
-<li>(E, y) = 9.997000899730082e-05</li>
-<li>(E, z) = 0.9998000599820054</li>
+<li>(B, x) = 0.3333333333333333</li>
+<li>(B, z) = 0.3333333333333333</li>
+<li>(B, y) = 0.3333333333333333</li>
+<li>(D, x) = 0.3333333333333333</li>
+<li>(D, z) = 0.3333333333333333</li>
+<li>(D, y) = 0.3333333333333333</li>
+<li>(A, x) = 0.28572856714414246</li>
+<li>(A, z) = 0.5713571642792876</li>
+<li>(A, y) = 0.14291426857656986</li>
 <li>(E, x) = 9.997000899730082e-05</li>
+<li>(E, z) = 0.8331833783198375</li>
+<li>(E, y) = 0.1667166516711653</li>
+<li>(F, x) = 0.3333333333333333</li>
+<li>(F, z) = 0.3333333333333333</li>
+<li>(F, y) = 0.3333333333333333</li>
+</ul>
+</li>
+<li>
+<p>Hidden path for emitted sequence: SOURCE→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A</p>
+<p>New transition probabilities:</p>
+<ul>
+<li>SOURCE→B = 9.997000899730082e-05</li>
+<li>SOURCE→D = 9.997000899730082e-05</li>
+<li>SOURCE→A = 0.9998000599820054</li>
+<li>A→B = 9.997000899730082e-05</li>
+<li>A→E = 0.9998000599820054</li>
+<li>A→F = 9.997000899730082e-05</li>
+<li>B→D = 0.5</li>
+<li>B→C = 0.5</li>
+<li>C→F = 1.0</li>
+<li>D→A = 1.0</li>
+<li>E→A = 1.0</li>
+<li>F→B = 0.5</li>
+<li>F→E = 0.5</li>
+</ul>
+<p>New emission probabilities:</p>
+<ul>
+<li>(B, x) = 0.3333333333333333</li>
+<li>(B, z) = 0.3333333333333333</li>
+<li>(B, y) = 0.3333333333333333</li>
+<li>(D, x) = 0.3333333333333333</li>
+<li>(D, z) = 0.3333333333333333</li>
+<li>(D, y) = 0.3333333333333333</li>
+<li>(A, x) = 0.28572856714414246</li>
+<li>(A, z) = 0.5713571642792876</li>
+<li>(A, y) = 0.14291426857656986</li>
+<li>(E, x) = 9.997000899730082e-05</li>
+<li>(E, z) = 0.8331833783198375</li>
+<li>(E, y) = 0.1667166516711653</li>
+<li>(F, x) = 0.3333333333333333</li>
+<li>(F, z) = 0.3333333333333333</li>
+<li>(F, y) = 0.3333333333333333</li>
 </ul>
 </li>
 </ol>
 <p>The following HMM was produced after Viterbi learning was applied for 3 cycles ...</p>
-<p><img src="dot_19d61e57898e30b42823b991bbf82fd3.svg" alt="Dot diagram"></p>
+<p><img src="dot_8d724c22ecf33c778f1a772d112dcfc6.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Stories"></a><h1>Stories</h1>

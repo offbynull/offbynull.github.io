@@ -31,7 +31,11 @@ class Graph(Generic[N, ND, E, ED]):
             self._node_outbound[from_node].remove(edge_id)
             self._node_inbound[to_node].remove(edge_id)
             del self._edges[edge_id]
-        # _node_inbound mirrors _node_outbound, so you don't have to do the above again for _node_inbound
+        for edge_id in self._node_inbound[node].copy():
+            from_node, to_node, _ = self._edges[edge_id]
+            self._node_outbound[from_node].remove(edge_id)
+            self._node_inbound[to_node].remove(edge_id)
+            del self._edges[edge_id]
         del self._node_inbound[node]
         del self._node_outbound[node]
         del self._node_data[node]
