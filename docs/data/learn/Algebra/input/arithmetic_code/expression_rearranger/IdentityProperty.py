@@ -22,7 +22,7 @@ def identity(fn: FunctionNode):
     elif fn.op == '/':
         if fn.args[1] == Fraction(1):
             return {fn.args[0]}
-
+    return set()
 
 
 if __name__ == '__main__':
