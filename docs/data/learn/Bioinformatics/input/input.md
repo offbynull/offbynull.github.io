@@ -18199,6 +18199,186 @@ hidden_state_of_interest: B
 pseudocount: 0.0001
 ```
 
+#### Forward-Backward Algorithm
+
+`{bm} /(Algorithms\/Sequence HMM\/Probability of Emitted Sequence Where Index Emits From Hidden State\/Forward-Backward Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence HMM/Probability of Emitted Sequence Where Index Emits From Hidden State/Naive Algorithm_TOPIC
+Algorithms/Sequence HMM/Probability of Emitted Sequence Where Index Emits From Hidden State/Graph Algorithm_TOPIC
+```
+
+Recall that the graph algorithm explodes out the HMM, but only retains the hidden state of interest at the emitted sequence index of interest. The calculation performed via the graph algorithm is the same as the summation performed by the naive algorithm but with common factors extracted and grouped to fit the structure. For exmaple, imagine the following HMM.
+
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+  0.5 |            +--------+           | 0.5
+      |                                 |          0.699
+      |   .-------------------------.   |    .------------.             
+      v   | .---.    0.623          v   v    |            v
++---------+-+-+ |               +------------++          +-------------+
+|     "A"     | |               |     "B"     |<---------+     "C"     |
++--+-+--------+ |0.377          +---+----+-+--+     1.0  +-------------+
+   : :    ^ ^   |                   |    : : 
+   : :    | |   |                   |    : : 
+   : :    | '---'     0.301         |    : : 
+   : :    '-------------------------'    : : 
+   : :                                   : :
+   : :       0.596  +- - - -+  0.572     : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :         0.404  +- - - -+  0.428       :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+    
+```
+
+To determine the probability that the above HMM emits [z, z, y], where index 1 of the emitted sequence must travel through B, is the sum of ...
+
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y)
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y)
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+
+This summation is then factored and grouped such that it represents an exploded HMM.
+
+```{svgbob}
+                         "EXPLODED OUT HMM"                                             "GROUPED FACTORED EXPRESSION"
+
+               z                  z                  y                                .-------------> "Pr(B→A|y) * ("       
+                                                                                      |    .----------> "Pr(A→B|z) * ("     
+            +----+                                +----+                              |    |      A0 ---> "Pr(SOURCE→A|z)"  
+            | A0 |                                | A2 +---.                          |    |            ")"                 
+       .--->|    +.                        .----->|    |   |                       A2 |    |            "+"                 
+       |    +----+ \                      /       +----+   v                          | B1 |            "Pr(C→B|z) * ("     
++------+-+          \                    /                +------+                    |    |    .-------> "Pr(B→C) * ("     
+| SOURCE |           \                  /                 | SINK |                    |    | C0 | B0 -----> "Pr(SOURCE→B|z)"
++------+-+            \                /                  +------+                    |    |    '-------> ")"               
+       |    +----+     \       +----+ /           +----+   ^ ^                        |    '----------> ")"                 
+       '--->| B0 |      '----->| B1 +'            | B2 |   | |                        '-------------> ")"                   
+            |    |     .------>|    |     .------>|    +---' |                                        "+"
+            +-+--+    /        +-+--+    /        +-+--+     |                   .------------------> "Pr(C→B|y) * ("         
+              |      /           |      /           |        |                   |    .---------------> "Pr(B→C) * ("         
+              v     /            v     /            v        |                   |    |    .------------> "Pr(A→B|z) * ("     
+            +----+ /           +----+ /           +----+     |                   |    |    |      A0 -----> "Pr(SOURCE→A|z)"  
+            | C0 +'            | C1 +'            | C2 +-----'                   |    |    |              ")"                 
+            +----+             +----+             +----+                         |    |    |              "+"                 
+                                                                              B2 | C1 | B1 |              "Pr(C→B|z) * ("     
+                                                                                 |    |    |    .---------> "Pr(B→C) * ("     
+                                                                                 |    |    | C0 | B0 -------> "Pr(SOURCE→B|z)"
+                                                                                 |    |    |    '---------> ")"               
+                                                                                 |    |    '------------> ")"                 
+                                                                                 |    '---------------> ")"                   
+                                                                                 '------------------> ")"                     
+                                                                                                      "+" 
+                                                                              .---------------------> "Pr(B→C) * ("             
+                                                                              |    .------------------> "Pr(C→B|y) * ("         
+                                                                              |    |    .---------------> "Pr(B→C) * ("         
+                                                                              |    |    |    .------------> "Pr(A→B|z) * ("     
+                                                                              |    |    |    |      A0 -----> "Pr(SOURCE→A|z)"  
+                                                                              |    |    |    |              ")"                 
+                                                                              |    |    |    |              "+"                 
+                                                                           C2 | B2 | C1 | B1 |              "Pr(C→B|z) * ("     
+                                                                              |    |    |    |    .---------> "Pr(B→C) * ("     
+                                                                              |    |    |    | C0 | B0 -------> "Pr(SOURCE→B|z)"
+                                                                              |    |    |    |    '---------> ")"               
+                                                                              |    |    |    '------------> ")"                 
+                                                                              |    |    '---------------> ")"                   
+                                                                              |    '------------------> ")"                     
+                                                                              '---------------------> ")"                          
+```
+
+Note that original summation:
+
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y)
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y)
+ * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)
+ * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+
+If the following terms were to be replaced by the following variables ...
+
+ * a = Pr(SOURCE→A|z) * Pr(A→B|z)
+ * b = Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z)
+ * c = Pr(B→A|y)
+ * d = Pr(B→C) * Pr(C→B|y)
+ * e = Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+
+... the summation would be written as follows ...
+
+a*c + a*d + a*e + b*c + b*d + b*e
+
+Applying common algebra rules will segregate the expression based by the B1 split point:
+
+ * a*c + a*d + a*e + b*c + b*d + b*e
+ * (a*c + a*d + a*e) + (b*c + b*d + b*e)
+ * a(c+d+e) + b(c+d+e)
+ * (a+b)*(c+d+e)
+
+(a+b) is the everything feeding into B1 (including B1 itself), and (c+d+e) is everything coming out of B1. By multiplying them together, you get the final result for SINK. Since (c+d+e) are being summed together, it doesn't matter which you add first. For exmaple, ...
+
+ * you can start from c, then add d, then add e.
+ * you can start from e. then add d, then add c.
+
+The forward-backward algorithm will computer (a+b) in the standard forward direction (as done in the original graph algorithm, from SOURCE to B1) but compute (c+d+e) backwards (from SINK to B1).
+
+               z                  z                  y             
+                                                                  
+            +----+                                +----+          
+            | A0 |                                | A2 +---.      
+       .--->|    +.                        .----->|    |   |      
+       |    +----+ \                      /       +----+   v      
++------+-+          \                    /                +------+
+| SOURCE |           \                  /                 | SINK |
++------+-+            \                /                  +------+
+       |    +----+     \       +----+ /           +----+   ^ ^    
+       '--->| B0 |      '----->| B1 +'            | B2 |   | |    
+            |    |     .------>|    |     .------>|    +---' |    
+            +-+--+    /        +-+--+    /        +-+--+     |    
+              |      /           |      /           |        |    
+              v     /            v     /            v        |    
+            +----+ /           +----+ /           +----+     |    
+            | C0 +'            | C1 +'            | C2 +-----'    
+            +----+             +----+             +----+          
+
+
+
+Pr(SOURCE→A|z) * Pr(A→B|z) + 
+Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) + 
+
+Pr(B→A|y) + 
+Pr(B→C) * Pr(C→B|y) + 
+Pr(B→C) * Pr(C→B|y) * Pr(B→C) + 
+
+
+
+
+a = Pr(SOURCE→A|z) * Pr(A→B|z)
+b = Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z)
+c = Pr(B→A|y)
+d = Pr(B→C) * Pr(C→B|y)
+e = Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+
+a*c + a*d + a*e + b*c + b*d + b*e
+(a*c + a*d + a*e) + (b*c + b*d + b*e)
+a(c+d+e) + b(c+d+e)
+(c+d+e)*(a+b)
+
+
+
+
+
+Pr(SOURCE→A|z) * Pr(A→B|z) +                   Pr(B→A|y) * Pr(A→A)
+Pr(SOURCE→A|z) * Pr(A→B|z) +                   Pr(B→A|y) * Pr(A→B) +
+Pr(SOURCE→A|z) * Pr(A→B|z) +                   Pr(B→A|y) * Pr(A→B) * Pr(B→C) +
+Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) +         Pr(B→C) * Pr(C→B|y) * Pr(B→A) +
+Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) +         Pr(B→C) * Pr(C→B|y) * Pr(B→C) * Pr(C→B) +
+Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) +         Pr(B→C) * Pr(C→B|y) * Pr(B→C) * Pr(C→B) * Pr(B→C) +
+
 ### Most Probable Emitted Sequence
 
 `{bm} /(Algorithms\/Sequence HMM\/Most Probable Emitted Sequence)_TOPIC/`
