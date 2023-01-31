@@ -153,7 +153,7 @@ def to_viterbi_graph(
                     )
                     viterbi_to_n_ids_emitting.add(viterbi_to_n_id)
                 else:
-                    hidden_state_transition_prob =  hmm.get_edge_data(transition).get_transition_probability()
+                    hidden_state_transition_prob = hmm.get_edge_data(transition).get_transition_probability()
                     viterbi_to_n_id = viterbi_from_n_emissions_idx, hmm_to_n_id
                     to_n_existed = connect_viterbi_nodes(
                         viterbi,

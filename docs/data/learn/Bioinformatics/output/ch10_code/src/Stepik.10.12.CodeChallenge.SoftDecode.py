@@ -149,7 +149,7 @@ def backward(
 
 
 
-with open('/home/user/Downloads/dataset_240405_5.txt') as f:
+with open('/home/user/Downloads/test.txt') as f:
     lines = f.read().splitlines(keepends=False)
 emitted_seq = list(lines[0])
 symbols = lines[2].split()
