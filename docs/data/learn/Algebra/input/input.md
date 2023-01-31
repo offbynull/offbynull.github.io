@@ -1171,7 +1171,7 @@ also 10.4 equivalent fraction property?
 
    See product property_POW.
 
- * `{bm} product to power property/(product to power property)_POW/i` - A power operation of a multiply operation can be rewritten as two individual power operations multiplied together. Each of the two power operations has the same exponent as the original. For example, `{kt} {(x \cdot y)}^3 = {kt} x^3 \cdot y^3` because `{kt} {(x \cdot y)}^3 = (x \cdot y) \cdot (x \cdot y) \cdot (x \cdot y) = x \cdot x \cdot x \cdot y \cdot y \cdot y = {kt} x^3 \cdot y^3`.
+ * `{bm} product to power property/(product to power property)_POW/i` - A power operation of a multiply operation can be rewritten as two individual power operations multiplied together. Each of the two power operations has the same exponent as the original. For example, `{kt} {(x \cdot y)}^3 = x^3 \cdot y^3` because `{kt} {(x \cdot y)}^3 = (x \cdot y) \cdot (x \cdot y) \cdot (x \cdot y) = x \cdot x \cdot x \cdot y \cdot y \cdot y = x^3 \cdot y^3`.
 
    See associative property and commutative property.
 
@@ -1188,6 +1188,7 @@ also 10.4 equivalent fraction property?
      |  last   |  last
      |   |     |   |
     (a + b) * (c + d)
+     |   |     |   |
      |   '-----'   |
      |    inner    |
      '-------------'
@@ -1209,6 +1210,8 @@ also 10.4 equivalent fraction property?
    ```{note}
    There's also another method called the vertical method that mimics multiplication.
    ```
+
+ * `{bm} equivalent fraction property` - The value of a fraction doesn't change if its numerator and denominator have a common factor added or removed. For example, `{kt} \frac{a \cdot c}{b \cdot c} = \frac{a}{b}` (a and c cannot be 0).
 
 `{bm-error} Wrap in !! or apply suffix _EXP/(\bterms?\b)/i`
 
