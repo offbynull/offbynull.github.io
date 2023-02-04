@@ -6,13 +6,13 @@ from graph.DirectedGraph import Graph
 from hmm.MostProbableHiddenPath_ViterbiNonEmittingHiddenStates import STATE, HmmNodeData, TRANSITION, HmmEdgeData, \
     SYMBOL, to_hmm_graph_PRE_PSEUDOCOUNTS, hmm_add_pseudocounts_to_hidden_state_transition_probabilities, \
     hmm_add_pseudocounts_to_symbol_emission_probabilities, hmm_to_dot
-from hmm.ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughNode_ForwardBackwardFullGraph import \
+from hmm.ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughEdge_ForwardBackwardFullGraph import \
     all_emission_probabilities
 from hmm.ProbabilityOfEmittedSequence_ForwardGraph import exploded_to_dot
 
 
 # MARKDOWN
-def forward_exploded_node_certainty(
+def forward_exploded_edge_certainty(
         hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
         hmm_source_n_id: STATE,
         hmm_sink_n_id: STATE,
@@ -61,7 +61,7 @@ def main():
         print(f'{hmm_to_dot(hmm)}')
         print('```')
         print()
-        f_exploded, b_exploded, certainties = forward_exploded_node_certainty(
+        f_exploded, b_exploded, certainties = forward_exploded_edge_certainty(
             hmm,
             source_state,
             sink_state,
