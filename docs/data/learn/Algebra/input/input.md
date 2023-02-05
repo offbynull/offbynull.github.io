@@ -1175,6 +1175,23 @@ also 10.4 equivalent fraction property?
 
    See associative property and commutative property.
 
+ * `{bm} quotient property/(quotient property)_POW/i` - Two power operations with the same base being divided by each other can merge into one by keeping the same base and subtracting their exponents. There are two different cases: Consider the division `{kt} \frac{x^m}{x^n}`.
+
+   * If m >= n, then `{kt} \frac{x^m}{x^n} = x^{m-n}`. For example, `{kt} \frac{x^5}{x^2} = \frac{x \cdot x \cdot x \cdot x \cdot x}{x \cdot x}`, where the common `{kt} x \cdot x` is removed from both the numerator and denominator: `{kt} \frac{x \cdot x \cdot x}{1} = x^3`.
+
+   * If m < n, then `{kt} \frac{x^m}{x^n} = \frac{1}{x^{n-m}}`. For example, `{kt} \frac{x^2}{x^5} = \frac{x \cdot x}{x \cdot x \cdot x \cdot x \cdot x}`, where the common `{kt} x \cdot x` is removed from both the numerator and denominator: `{kt} \frac{1}{x \cdot x \cdot x} = \frac{1}{x^3}`.
+
+   See equivalent fraction property and identity property.
+
+ * `{bm} quotient to power property/(quotient to power property)_POW/i` - A power operation on a fraction can be rewritten as a fraction where the numerator and denominator are both raised to that power. For example, `{kt} (\frac{x}{y})^3 = \frac{x^3}{y^3}` because `{kt} (\frac{x}{y})^3 = \frac{x}{y} \cdot \frac{x}{y} \cdot \frac{x}{y} = \frac{x \cdot x \cdot x}{y \cdot y \cdot y} = \frac{x^3}{y^3}`.
+
+ * `{bm} zero exponent definition/(zero exponent definition|zero exponent property)/i` - If the exponent of a power operation is zero, that operation evaluates to 1 as long as the base isn't zero as well (`{kt} 0^0` is undefined).
+
+   For example, ...
+   
+   * `{kt} 5^0 = 1`.
+   * `{kt} x^0 = 1, x \neq 0`.
+
  * `{bm} FOIL/(FOIL)/` `{bm} /(first[-\s]outer[-\s]inner[-\s]last)/i` - An acronym for the application of the distributive property to binomials. For example, when normally multiplying two binomials `{kt} (x+y) \cdot (x+z)` ...
    
    * `{kt} x \cdot (x+z) + y \cdot (x+z)` - distributive property (distribute first operand to every term_EXP in the second operand)
