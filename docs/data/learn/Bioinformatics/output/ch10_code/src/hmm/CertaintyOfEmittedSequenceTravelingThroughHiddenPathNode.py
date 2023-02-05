@@ -12,7 +12,7 @@ from hmm.ProbabilityOfEmittedSequence_ForwardGraph import exploded_to_dot
 
 
 # MARKDOWN
-def certainty_of_hidden_state_emitting_sequence_index(
+def forward_exploded_node_certainty(
         hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
         hmm_source_n_id: STATE,
         hmm_sink_n_id: STATE,
@@ -61,7 +61,7 @@ def main():
         print(f'{hmm_to_dot(hmm)}')
         print('```')
         print()
-        f_exploded, b_exploded, certainties = certainty_of_hidden_state_emitting_sequence_index(
+        f_exploded, b_exploded, certainties = forward_exploded_node_certainty(
             hmm,
             source_state,
             sink_state,

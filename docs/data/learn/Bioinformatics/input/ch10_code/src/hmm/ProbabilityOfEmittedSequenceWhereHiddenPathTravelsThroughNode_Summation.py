@@ -16,11 +16,12 @@ def enumerate_paths_targeting_hidden_state_at_index(
         emitted_seq_len: int,
         emitted_seq_idx_of_interest: int,
         hidden_state_of_interest: STATE,
-        prev_path: list[TRANSITION] | None = None
+        prev_path: list[TRANSITION] | None = None,
+        emission_idx: int = 0
 ) -> Generator[list[TRANSITION], None, None]:
     if prev_path is None:
         prev_path = []
-    if emitted_seq_len == 0:
+    if emission_idx == emitted_seq_len:
         # We're at the end of the expected emitted sequence length, so return the current path. However, at this point
         # hmm_from_n_id may still have transitions to other non-emittable hidden states, and so those need to be
         # returned as paths as well (continue digging into outgoing transitions if the destination is non-emittable).
@@ -30,13 +31,13 @@ def enumerate_paths_targeting_hidden_state_at_index(
                 continue
             prev_path.append(transition)
             yield from enumerate_paths_targeting_hidden_state_at_index(hmm, hmm_to_n_id, emitted_seq_len, emitted_seq_idx_of_interest,
-                                                                       hidden_state_of_interest, prev_path)
+                                                                       hidden_state_of_interest, prev_path, emission_idx)
             prev_path.pop()
     else:
         # About to explode out by digging into transitions from hmm_from_n_id. But, before doing that, check if this is
         # emitted sequence index that's being isolated. If it is, we want to isolate things such that we only travel
         # down the hidden state of interest.
-        if emitted_seq_idx_of_interest != 0:
+        if emitted_seq_idx_of_interest != emission_idx:
             outputs = list(hmm.get_outputs_full(hmm_from_n_id))
         else:
             outputs = []
@@ -50,13 +51,11 @@ def enumerate_paths_targeting_hidden_state_at_index(
         for transition, _, hmm_to_n_id, _ in outputs:
             prev_path.append(transition)
             if hmm.get_node_data(hmm_to_n_id).is_emittable():
-                next_emittable_seq_len = emitted_seq_len - 1
-                next_emitted_seq_idx_of_interest = emitted_seq_idx_of_interest - 1
+                next_emission_idx = emission_idx + 1
             else:
-                next_emittable_seq_len = emitted_seq_len
-                next_emitted_seq_idx_of_interest = emitted_seq_idx_of_interest
-            yield from enumerate_paths_targeting_hidden_state_at_index(hmm, hmm_to_n_id, next_emittable_seq_len,
-                                                                       next_emitted_seq_idx_of_interest, hidden_state_of_interest, prev_path)
+                next_emission_idx = emission_idx
+            yield from enumerate_paths_targeting_hidden_state_at_index(hmm, hmm_to_n_id, emitted_seq_len, emitted_seq_idx_of_interest,
+                                                                       hidden_state_of_interest, prev_path, next_emission_idx)
             prev_path.pop()
 
 

@@ -15,11 +15,12 @@ def enumerate_paths(
         hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
         hmm_from_n_id: STATE,
         emitted_seq_len: int,
-        prev_path: list[TRANSITION] | None = None
+        prev_path: list[TRANSITION] | None = None,
+        emission_idx: int = 0
 ) -> Generator[list[TRANSITION], None, None]:
     if prev_path is None:
         prev_path = []
-    if emitted_seq_len == 0:
+    if emission_idx == emitted_seq_len:
         # We're at the end of the expected emitted sequence length, so return the current path. However, at this point
         # hmm_from_n_id may still have transitions to other non-emittable hidden states, and so those need to be
         # returned as paths as well (continue digging into outgoing transitions if the destination is non-emittable).
@@ -28,7 +29,7 @@ def enumerate_paths(
             if hmm.get_node_data(hmm_to_n_id).is_emittable():
                 continue
             prev_path.append(transition)
-            yield from enumerate_paths(hmm, hmm_to_n_id, emitted_seq_len, prev_path)
+            yield from enumerate_paths(hmm, hmm_to_n_id, emitted_seq_len, prev_path, emission_idx)
             prev_path.pop()
     else:
         # Explode out at that path by digging into transitions from hmm_from_n_id. If the destination of the transition
@@ -38,10 +39,10 @@ def enumerate_paths(
         for transition, _, hmm_to_n_id, _ in hmm.get_outputs_full(hmm_from_n_id):
             prev_path.append(transition)
             if hmm.get_node_data(hmm_to_n_id).is_emittable():
-                next_emittable_seq_len = emitted_seq_len - 1
+                next_emission_idx = emission_idx + 1
             else:
-                next_emittable_seq_len = emitted_seq_len
-            yield from enumerate_paths(hmm, hmm_to_n_id, next_emittable_seq_len, prev_path)
+                next_emission_idx = emission_idx
+            yield from enumerate_paths(hmm, hmm_to_n_id, emitted_seq_len, prev_path, next_emission_idx)
             prev_path.pop()
 
 

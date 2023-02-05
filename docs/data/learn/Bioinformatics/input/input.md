@@ -17299,6 +17299,312 @@ emissions: [z,z,x,x,y]
 pseudocount: 0.0001
 ```
 
+### Empirical Learning
+
+`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Empirical Learning)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC
+Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm_TOPIC
+```
+
+**WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Empirical learning sets an HMM's probabilities by observing the machine that HMM models. Specifically, if the user is able to see the ...
+
+ * hidden state transitions that occur
+ * symbol emissions that occur after each hidden state transition
+
+..., that user can derive a set of hidden state transition probabilities and symbol emission probabilities for the HMM.
+
+```python
+hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = empirical_learning(hmm_structure, observed_hidden_state_transitions, observered_symbol_emissions)
+```
+
+**WHY**: Observing the model is one way to derive probabilities for an HMM.
+
+**ALGORITHM**:
+
+This algorithm derives weights for an HMM. For example, imagine the following HMM structure (probabilities missing).
+
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+      |            +--------+           |    
+      |                                 |          
+      |   .-------------------------.   |    .------------.             
+      v   | .---.                   v   v    |            v
++---------+-+-+ |               +------------++          +-------------+
+|     "A"     | |               |     "B"     |<---------+     "C"     |
++--+-+--------+ |               +---+----+-+--+          +-------------+
+   : :    ^ ^   |                   |    : : 
+   : :    | |   |                   |    : : 
+   : :    | '---'                   |    : : 
+   : :    '-------------------------'    : : 
+   : :                                   : :
+   : :              +- - - -+            : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :                +- - - -+              :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+    
+```
+
+The probabilities for this HMM structure are unknown, but a past observation has shown that the machine this HMM represents has passed through the following hidden path where each hidden state transition emitted the following symbol.
+
+|            | 0        | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  |
+|------------|----------|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+| Transition | SOURCE→A | A→A | A→B | B→A | A→B | B→C | C→B | B→A | A→A | A→A | A→A |
+| Emission   | z        | y   | z   | z   | z   |     | y   | y   | y   | z   | z   |
+
+Given two hidden states W and V, the hidden state transition probability for W→V is estimated as the number of times W→V appears in the sequence divided by the total number of transitions in the sequence starting with W. For example, in the sequence ...
+
+ * A→A appears 4 times 
+ * transitions starting with A appear 6 times
+
+... , meaning the probability of A→A is estimated as 4/6 = 0.667. If a transition doesn't appear in the sequence at all, its probability is set to 0.0.
+
+| Transition | Probability   |
+|------------|---------------|
+| SOURCE→A   | 1 / 1 = 1.0   |
+| SOURCE→B   | 0.0           |
+| A→A        | 4 / 6 = 0.667 |
+| A→B        | 2 / 6 = 0.333 |
+| B→A        | 2 / 3 = 0.667 |
+| B→C        | 1 / 3 = 0.333 |
+| C→B        | 1 / 1 = 1.0   |
+
+```{note}
+Note that Pr(SOURCE→B) is 0.0, which means the HMM will never start by transitioning to B. As noted in Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC, this is flawed and as such pseudocounts need to be applied.
+```
+
+```{output}
+ch10_code/src/hmm/EmpiricalLearning.py
+python
+# MARKDOWN_DERIVE_TRANSITION_PROBS\s*\n([\s\S]+)\n\s*# MARKDOWN_DERIVE_TRANSITION_PROBS\s*[\n$]
+```
+
+Symbol emission probabilities are calculated similarly. Given a hidden state W and a symbol emission u, the symbol emission probability for u after a transition to W is estimated as the number of times W emits u divided by the total number of emissions for W. For example, in the sequence ...
+
+ * A appears as a destination 7 times (7 emissions from A).
+ * A emits y 3 times.
+
+... , meaning the probability of A emitting y is 3/7 = 0.429. If an emission doesn't appear in the sequence at all, its probability is set to 0.0.
+
+| Destination-to-Emisison | Probability   |
+|-------------------------|---------------|
+| A→y                     | 3 / 7 = 0.429 |
+| A→z                     | 4 / 7 = 0.572 |
+| B→y                     | 1 / 3 = 0.333 |
+| B→z                     | 2 / 3 = 0.667 |
+
+```{output}
+ch10_code/src/hmm/EmpiricalLearning.py
+python
+# MARKDOWN_DERIVE_EMISSION_PROBS\s*\n([\s\S]+)\n\s*# MARKDOWN_DERIVE_EMISSION_PROBS\s*[\n$]
+```
+
+```{ch10}
+hmm.EmpiricalLearning main_derive_probabilities
+transitions:
+  SOURCE: [A, B]
+  A: [A, B]
+  B: [A, C]
+  C: [B]
+emissions:
+  SOURCE: []
+  A: [y, z]
+  B: [y, z]
+  C: []
+observed:
+  - [SOURCE, A, z]
+  - [A, A, y]
+  - [A, B, z]
+  - [B, A, z]
+  - [A, B, z]
+  - [B, C]
+  - [C, B, y]
+  - [B, A, y]
+  - [A, A, y]
+  - [A, A, z]
+  - [A, A, z]
+pseudocount: 0.0001
+```
+
+If the structure of the HMM isn't known beforehand, it's common to assume that ...
+
+ 1. the SOURCE hidden state can transition to every other hidden state.
+ 2. each non-SOURCE hidden state can transition to all other non-SOURCE hidden states, including itself.
+ 3. each non-SOURCE hidden state can emit all symbols.
+
+This assumed structure doesn't allowe for non-emitting hidden states because non-emitting hidden states can't form cycles. If they do have non-emitting hidden states with cycles, the exploded out HMM will grow infintely.For example, given the same past observation as used in the example above (reproduced below), it can be assumed that the ...
+
+ * hidden states are [SOURCE, A, B, C].
+ * emission symols are [x, y].
+ * C is a non-emiting hidden state.
+
+|            | 0        | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  | 11  |
+|------------|----------|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
+| Transition | SOURCE→A | A→A | A→B | B→A | A→B | B→A | A→A | A→A | A→A | A→B | B→B | B→B |
+| Emission   | z        | y   | z   | z   | z   | y   | y   | z   | z   | z   | z   | z   |
+
+
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+      |            +--------+           |    
+      |                                 |          
+      |   .-------------------------.   |    
+      v   | .---.             .---. v   v     
++---------+-+-+ |             | +-+-----------+
+|     "A"     | |             | |     "B"     |
++--+-+--------+ |             | +---+----+-+--+
+   : :    ^ ^   |             |   ^ |    : : 
+   : :    | |   |             |   | |    : : 
+   : :    | '---'             '---' |    : : 
+   : :    '-------------------------'    : : 
+   : :                                   : :
+   : :              +- - - -+            : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :                +- - - -+              :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+    
+```
+
+```{output}
+ch10_code/src/hmm/EmpiricalLearning.py
+python
+# MARKDOWN_DERIVE_HMM_STRUCTURE\s*\n([\s\S]+)\n\s*# MARKDOWN_DERIVE_HMM_STRUCTURE\s*[\n$]
+```
+
+```{ch10}
+hmm.EmpiricalLearning main_derive_hmm_structure
+observed:
+  - [SOURCE, A, z]
+  - [A, A, y]
+  - [A, B, z]
+  - [B, A, z]
+  - [A, B, z]
+  - [B, A, y]
+  - [A, A, y]
+  - [A, A, z]
+  - [A, A, z]
+  - [A, B, z]
+  - [B, B, z]
+  - [B, B, z]
+cycles: 8
+pseudocount: 0.0001
+pseudocount: 0.0001
+```
+
+### Viterbi Learning
+
+`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Viterbi Learning)_TOPIC/`
+
+```{prereq}
+Algorithms/Gene Clustering/Soft K-Means Clustering_TOPIC
+Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC
+Algorithms/Sequence Hidden Markov Models/Empirical Learning_TOPIC
+```
+
+**WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Viterbi learning sets an HMM's probabilities by observing only the symbol emissions of the machine that HMM models. Specifically, if the user is only able to observe the symbol emissions (not the transitions that resulted in those emissions), that user can derive a set of hidden state transition probabilities and symbol emission probabilities for the HMM.
+
+```python
+hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = viterbi_learning(hmm_structure, observered_symbol_emissions)
+```
+
+**WHY**: Viterbi learning derives the probabilities for an HMM structure from just an emitted sequence. In contrast, emperical learning needs both an emitted sequence and the hidden path that generated that emitted sequence.
+
+```python
+hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = viterbi_learning(hmm_structure, observered_symbol_emissions)
+# ... vs ...
+hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = empirical_learning(hmm_structure, observed_hidden_state_transitions, observered_symbol_emissions)
+```
+
+**ALGORITHM**:
+
+Given an emitted sequence, Viterbi learning combines two different algorithms to derive an HMM's probabilities:
+
+ 1. Viterbi algorithm (most probable hidden path for an emitted sequence)
+ 2. Empirical learning (observations to HMM probabilities).
+
+To begin with, there's an emitted sequence and an HMM. The HMM has its probabilities randomized. Then, the Viterbi algorithm is used to find the most probable hidden path in this randomized HMM for the emitted sequence.
+
+```{svgbob}
+.--------------------.
+|       "HMM"        |
+|                    +---.
+'--------------------'   |  "Viterbi algorithm" .---------------.
+                         +--------------------->| "Hidden path" |
+.--------------------.   |                      '---------------'
+| "Emitted sequence" +---'
+|                    |
+'--------------------'
+```
+
+There are now two pieces of data:
+
+ * Emitted sequence.
+ * Hidden path.
+ 
+These two pieces of data are fed into the emperical learning algorithm to generate new HMM probabliities. The hope is that these new HMM probabilities will result in the Viterbi algorithm finding a better hidden path.
+
+```{svgbob}
+          .----------------------------------------------------------------------------------------------------------.
+          v                                             "Update probabilities"                                       |
+.--------------------.                                                                                               |
+|       "HMM"        |                                                                                               |
+|                    +---.                                                                                           |
+'--------------------'   |  "Viterbi algorithm"  .---------------.                                                   |
+                         +---------------------->| "Hidden path" +---. "Emperical learning" .---------------------.  |
+.--------------------.   |                       '---------------'   +--------------------->| "HMM Probabilities" +--'
+| "Emitted sequence" +---'                                           |                      '---------------------'
+|                    +-----------------------------------------------'
+'--------------------'
+```
+
+This process repeats in the hopes that the HMM probabilities converge to maximize the most probable hidden path.
+
+```{note}
+Note what this algorithm is doing. The Pevzner book claims that it's very similar to Llyod's algorithm for k-means clustering in that it's starting off at some random point and pushing that point around to maximize some metric (generic name for this is called [Expectation-maximization](https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm)).
+
+The book claims that this is soft clustering. But if you only have one observed sequence, aren't you clustering a single data point? Shouldn't you have many observed sequences? Or maybe having many observed sequences is the same thing as having one sequence and concatenating them (need to figure out some special logic for each sequence's first transition from SOURCE)?
+
+Monte carlo algorithms like this are typically executed many times, where the best performing execution is the one that gets chosen.
+```
+
+```{output}
+ch10_code/src/hmm/ViterbiLearning.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch10}
+hmm.ViterbiLearning main
+transitions:
+  SOURCE: [A, B, D]
+  A: [B, E ,F]
+  B: [C, D]
+  C: [F]
+  D: [A]
+  E: [A]
+  F: [E, B]
+emissions:
+  SOURCE: []
+  A: [x, y, z]
+  B: [x, y, z]
+  C: []  # C is non-emitting
+  D: [x, y, z]
+  E: [x, y, z]
+  F: [x, y, z]
+source_state: SOURCE
+sink_state: SINK  # Must not exist in HMM (used only for Viterbi graph)
+emission_seq: [z, z, x, z, z, z, y, z, z, z, z, y, x]
+cycles: 3
+pseudocount: 0.0001
+```
+
 ### Probability of Emitted Sequence
 
 `{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence)_TOPIC/`
@@ -17930,15 +18236,6 @@ This algorithm filters the summation above to only include hidden paths that tra
  * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)
  * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
 
-```{note}
-This is getting a probability of probabilities. The ...
-
-* numerator is the probability union of the filtered hidden paths.
-* denominator is the probability union of all hidden paths.
-
-It's a partial divided by the total.
-```
-
 ```{output}
 ch10_code/src/hmm/ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughNode_Summation.py
 python
@@ -18105,7 +18402,7 @@ This summation is then factored and grouped such that it represents an exploded 
                                                                               '---------------------> ")"                          
 ```
 
-This algorithm revises the exploded HMM above to only the hidden state of interest at the emission index of interest. For example, to calculate the probability for only those hidden paths that travel through B at index 1 of the [z, z, y], the exploded HMM becomes ...
+This algorithm revises the exploded HMM above to only include the hidden state of interest at the emission index of interest. For example, to calculate the probability for only those hidden paths that travel through B at index 1 of the [z, z, y], the exploded HMM becomes ...
 
 ```{svgbob}
                          "EXPLODED OUT HMM"                                             "GROUPED FACTORED EXPRESSION"
@@ -18151,17 +18448,6 @@ This algorithm revises the exploded HMM above to only the hidden state of intere
                                                                               |    |    '---------------> ")"                   
                                                                               |    '------------------> ")"                     
                                                                               '---------------------> ")"                          
-```
-
-This SINK value from the filtered exploded HMM is divided by the SINK value from the non-filtered exploded HMM to determine the certainty of the hidden path passing through hidden state B at emission index 1.
-
-```{note}
-This is getting a probability of probabilities. The ...
-
-* numerator is the probability union of the filtered hidden paths.
-* denominator is the probability union of all hidden paths.
-
-It's a partial divided by the total.
 ```
 
 ```{output}
@@ -18785,6 +19071,7 @@ sink_state: SINK
 emissions: [z,z,y]
 pseudocount: 0.0001
 ```
+
 ### Certainty of Emitted Sequence Traveling Through Hidden Path Node
 
 `{bm} /(Algorithms\/Sequence Hidden Markov Models\/Certainty of Emitted Sequence Traveling Through Hidden Path Node)_TOPIC/`
@@ -18922,6 +19209,509 @@ pseudocount: 0.0001
 For some emission index, the sum of certainties for hidden states that do emit should come to 1.0. For example, in the example run above, 1A=0.36 and 1B=0.64: 0.36+0.64=1.0.
 
 But what does the certainty mean for non-emitting hidden states such as 1C? If it's 0.31 certain that it goes through hidden state 1C, then it's 1.0-0.31=0.69 certain that it goes through either 1A or 1B? But for it to reach 1C, it must travel over 1B, so maybe it's 0.69 certain that it only travels through 1A vs 1B→1C?
+```
+
+### Probability of Emitted Sequence Where Hidden Path Travels Through Edge
+
+`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC
+```
+
+```{note}
+The meat of this section is the forward-backward full algorithm. The Pevzner book didn't discuss why this algorithm works, but I've done my best to try to reason about it and extend the reasoning to non-emitting hidden states. However, I don't know if my reasoning is correct. It seems to be correct for some cases, but there are many cases I haven't tested for. In any event, I think what's here will work just fine so long as you don't have non-emitting hidden states (and may work if you do have non-emitting hidden states).
+```
+
+**WHAT**: Compute the probability that an HMM emits some sequence, but only for hidden paths where a specific edge is taken. For example, determine the probability of following HMM emitting [z, z, x, x, y] when, at emission index 1, only A is available as an option and the only outgoing edge from that A is to B.
+
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+  0.5 |            +--------+           | 0.5
+      |                                 |          0.699
+      |   .-------------------------.   |    .------------.             
+      v   | .---.    0.623          v   v    |            v
++---------+-+-+ |               +------------++          +-------------+
+|     "A"     | |               |     "B"     |<---------+     "C"     |
++--+-+-+------+ |0.377          +---+--+-+-+--+     1.0  +-------------+
+   : : :  ^ ^   |                   |  : : : 
+   : : :  | |   |                   |  : : : 
+   : : :  | '---'     0.301         |  : : : 
+   : : :  '-------------------------'  : : : 
+   : : :                               : : : 
+   : : :                               : : : 
+   : : :     0.176  +- - - -+  0.225   : : : 
+   : : '- - - - - ->:   x   :<- - - - -' : : 
+   : :              +- - - -+            : : 
+   : :                                   : :
+   : :       0.596  +- - - -+  0.572     : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :         0.228  +- - - -+  0.203       :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+    
+```
+
+**WHY**: This is used for Baum-Welch learning, which is a learning algorithm used for HMMs (described further on).
+
+```{note}
+See Algorithms/Sequence Hidden Markov Models/Certainty of Emitted Sequence Traveling Through Hidden Path Edge_TOPIC and Algorithms/Sequence Hidden Markov Models/Baum-Welch Learning_TOPIC.
+```
+
+#### Summation Algorithm
+
+`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Summation Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence/Summation Algorithm_TOPIC
+Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Summation Algorithm_TOPIC
+```
+
+**ALGORITHM**:
+
+Given all hidden paths in a HMM, recall that the probability of an HMM emitting a specific sequence is the sum of probability calculations for each hidden path and the emitted sequence. For example, imagine the following HMM.
+
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+  0.5 |            +--------+           | 0.5
+      |                                 |          0.699
+      |   .-------------------------.   |    .------------.             
+      v   | .---.    0.623          v   v    |            v
++---------+-+-+ |               +------------++          +-------------+
+|     "A"     | |               |     "B"     |<---------+     "C"     |
++--+-+--------+ |0.377          +---+----+-+--+     1.0  +-------------+
+   : :    ^ ^   |                   |    : : 
+   : :    | |   |                   |    : : 
+   : :    | '---'     0.301         |    : : 
+   : :    '-------------------------'    : : 
+   : :                                   : :
+   : :       0.596  +- - - -+  0.572     : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :         0.404  +- - - -+  0.428       :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+    
+```
+
+```{note}
+C is a non-emitting hidden state, which is why it doesn't have any linkages to emissions.
+```
+
+The probability that the above HMM emits [y, y, z, z] is the sum of ...
+
+ * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→A|z) * Pr(A→A|z)
+ * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→A|z) * Pr(A→B|z)
+ * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→A|z) * Pr(A→B|z) * Pr(B→C)
+ * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→B|z) * Pr(B→C|) * Pr(C→B|z)
+ * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→B|z) * Pr(B→C|) * Pr(C→B|z) * Pr(B→C)
+ * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→B|z) * Pr(B→A|z)
+ * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|z)
+ * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C)
+ * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|z)
+ * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→A|z)
+ * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z)
+ * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C)
+ * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|z)
+ * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C)
+ * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|z)
+ * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→A|z)
+ * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z)
+ * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C)
+ * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→A|z) * Pr(A→A|z)
+ * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→A|z) * Pr(A→B|z)
+ * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→A|z) * Pr(A→B|z) * Pr(B→C)
+ * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|z)
+ * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C)
+ * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→B|z) * Pr(B→A|z)
+
+This algorithm filters the summation above to only include hidden paths that travel through a transition of interest after an emission index of interest. For example, to calculate the probability for only those hidden paths that travel through B→A after index 1 of the [y, y, z, z], the summation becomes ...
+
+ * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→A|z)
+ * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z)
+ * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C)
+ * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→A|z)
+ * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z)
+ * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C)
+
+```{output}
+ch10_code/src/hmm/ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughEdge_Summation.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch10}
+hmm.ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughEdge_Summation main
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+  C: {}
+  # C set to empty dicts to identify as non-emittable hidden state.
+source_state: SOURCE
+emissions: [y,y,z,z]
+from_emission_idx: 1
+from_hidden_state: B
+to_hidden_state: A
+pseudocount: 0.0001
+```
+
+#### Forward Graph Algorithm
+
+`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Forward Graph Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence/Forward Graph Algorithm_TOPIC
+Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Graph Algorithm_TOPIC
+Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Summation Algorithm_TOPIC
+```
+
+Recall that ...
+
+1. the probability of an HMM emitting a specific sequence is the sum of the probability of that emitted sequence occurring over all hidden paths in the HMM.
+2. the summation can have factors pulled out of it such that the expression can be calculated as an exploded HMM.
+
+For example, imagine the following HMM.
+
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+  0.5 |            +--------+           | 0.5
+      |                                 |          0.699
+      |   .-------------------------.   |    .------------.             
+      v   | .---.    0.623          v   v    |            v
++---------+-+-+ |               +------------++          +-------------+
+|     "A"     | |               |     "B"     |<---------+     "C"     |
++--+-+--------+ |0.377          +---+----+-+--+     1.0  +-------------+
+   : :    ^ ^   |                   |    : : 
+   : :    | |   |                   |    : : 
+   : :    | '---'     0.301         |    : : 
+   : :    '-------------------------'    : : 
+   : :                                   : :
+   : :       0.596  +- - - -+  0.572     : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :         0.404  +- - - -+  0.428       :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+    
+```
+
+```{note}
+C is a non-emitting hidden state, which is why it doesn't have any linkages to emissions.
+```
+
+The probability that the above HMM emits [y, y, z, z] is the sum of ...
+
+ * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→A|z) * Pr(A→A|z)
+ * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→A|z) * Pr(A→B|z)
+ * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→A|z) * Pr(A→B|z) * Pr(B→C)
+ * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→B|z) * Pr(B→C|) * Pr(C→B|z)
+ * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→B|z) * Pr(B→C|) * Pr(C→B|z) * Pr(B→C)
+ * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→B|z) * Pr(B→A|z)
+ * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|z)
+ * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C)
+ * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|z)
+ * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→A|z)
+ * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z)
+ * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C)
+ * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|z)
+ * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C)
+ * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|z)
+ * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→A|z)
+ * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z)
+ * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C)
+ * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→A|z) * Pr(A→A|z)
+ * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→A|z) * Pr(A→B|z)
+ * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→A|z) * Pr(A→B|z) * Pr(B→C)
+ * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|z)
+ * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C)
+ * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→B|z) * Pr(B→A|z)
+
+This summation is then factored and grouped such that it represents an exploded HMM.
+
+```{svgbob}
+                                    "EXPLODED OUT HMM"
+
+               y                  y                  z                  z            
+                                                                                     
+            +----+             +----+             +----+             +----+          
+            | A0 +------------>| A1 +------------>| A2 +------------>| A3 +---.      
+       .--->|    +.     .----->|    +.     .----->|    +.     .----->|    |   |      
+       |    +----+ \   /       +----+ \   /       +----+ \   /       +----+   v      
++------+-+          \ /                \ /                \ /                +------+
+| SOURCE |           X                  X                  X                 | SINK |
++------+-+          / \                / \                / \                +------+
+       |    +----+ /   \       +----+ /   \       +----+ /   \       +----+   ^ ^    
+       '--->| B0 +'     '----->| B1 +'     '----->| B2 +'     '----->| B3 |   | |    
+            |    |     .------>|    |     .------>|    |     .------>|    +---' |    
+            +-+--+    /        +-+--+    /        +-+--+    /        +-+--+     |    
+              |      /           |      /           |      /           |        |    
+              v     /            v     /            v     /            v        |    
+            +----+ /           +----+ /           +----+ /           +----+     |    
+            | C0 +'            | C1 +'            | C2 +'            | C3 +-----'    
+            +----+             +----+             +----+             +----+          
+```
+
+```{note}
+This factoring/grouping is done in exactly the same way as shown in Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Graph Algorithm_TOPIC. I didn't include the re-arranged expression in the diagram above (or the diagram below) because that re-arranged expression would be huge.
+```
+
+This algorithm revises the exploded HMM above to only include the transition of interest after the emission index of interest. For example, to calculate the probability for only those hidden paths that travel through B→A after index 1 of the [y, y, z, z], the exploded HMM becomes ...
+
+```{svgbob}
+                                    "EXPLODED OUT HMM"
+
+               y                  y                  z                  z            
+                                                                                     
+            +----+                                +----+             +----+          
+            | A0 |                                | A2 +------------>| A3 +---.      
+       .--->|    +.                        .----->|    +.            |    |   |      
+       |    +----+ \                      /       +----+ \           +----+   v      
++------+-+          \                    /                \                  +------+
+| SOURCE |           \                  /                  \                 | SINK |
++------+-+            \                /                    \                +------+
+       |    +----+     \       +----+ /                      \       +----+   ^ ^    
+       '--->| B0 |      '----->| B1 +'                        '----->| B3 |   | |    
+            |    |     .------>|    |                                |    +---' |    
+            +-+--+    /        +----+                                +-+--+     |    
+              |      /                                                 |        |    
+              v     /                                                  v        |    
+            +----+ /                                                 +----+     |    
+            | C0 +'                                                  | C3 +-----'    
+            +----+                                                   +----+          
+```
+
+```{output}
+ch10_code/src/hmm/ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughEdge_ForwardGraph.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch10}
+hmm.ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughEdge_ForwardGraph main
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+  C: {}
+  # C set to empty dicts to identify as non-emittable hidden state.
+source_state: SOURCE
+sink_state: SINK
+emissions: [y,y,z,z]
+from_emission_idx: 1
+from_hidden_state: B
+to_hidden_state: A
+pseudocount: 0.0001
+```
+
+#### Forward Split Graph Algorithm
+
+`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Forward Split Graph Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Split Graph Algorithm_TOPIC
+Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward Graph Algorithm_TOPIC
+```
+
+```{note}
+The example below is from the prerequisite section: Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Split Graph Algorithm_TOPIC. The expressions under the left-hand side / right-hand side of the diagram are the expression derived in that section. Go back to it if you need a refresher.
+```
+
+Recall that, when computing the probability of an emitted sequence where the hidden path must travel through a specific *node*, the forward split graph algorithm ...
+
+1. splits the forward graph into two smaller forward graphs: Left-hand side and right-hand side.
+2. performs the forward graph computation on each smaller forward graphs.
+3. multiplies the sink node values from the smaller forward graphs together, which is the value that would have existed at the sink node of the unsplit forward graph.
+
+In the example below, the forward graph below splits on B1.
+
+```{svgbob}
+                                                  "FULL"
+                                 z                  z                  y             
+                                                                                    
+                              +----+                                +----+          
+                              | A0 |                                | A2 +---.      
+                         .--->|    +.                        .----->|    |   |      
+                         |    +----+ \                      /       +----+   v      
+                  +------+-+          \                    /                +------+
+                  | SOURCE |           \                  /                 | SINK |
+                  +------+-+            \                /                  +------+
+                         |    +----+     \       +----+ /           +----+   ^ ^    
+                         '--->| B0 |      '----->| B1 +'            | B2 |   | |    
+                              |    |     .------>|    |     .------>|    +---' |    
+                              +-+--+    /        +-+--+    /        +-+--+     |    
+                                |      /           |      /           |        |    
+                                v     /            v     /            v        |    
+                              +----+ /           +----+ /           +----+     |    
+                              | C0 +'            | C1 +'            | C2 +-----'    
+                              +----+             +----+             +----+          
+
+
+
+
+         "LEFT-HAND SIDE"                                                   "RIGHT-HAND SIDE"
+         "(up to B1)"                                                       "(from B1)"
+               z                  z                                     z                  y             
+                                                                                                        
+            +----+                                                                      +----+          
+            | A0 |                                                                      | A2 +---.      
+       .--->|    +.                                                              .----->|    |   |      
+       |    +----+ \                                                            /       +----+   v      
++------+-+          \                                                          /                +------+
+| SOURCE |           \                                                        /                 | SINK |
++------+-+            \                                                      /                  +------+
+       |    +----+     \       +----+                                +----+ /           +----+   ^ ^    
+       '--->| B0 |      '----->| B1 |                                | B1 +'            | B2 |   | |    
+            |    |     .------>|    |                                |    |     .------>|    +---' |    
+            +-+--+    /        +----+                                +-+--+    /        +-+--+     |    
+              |      /                                                 |      /           |        |    
+              v     /                                                  v     /            v        |    
+            +----+ /                                                 +----+ /           +----+     |    
+            | C0 +'                                                  | C1 +'            | C2 +-----'    
+            +----+                                                   +----+             +----+          
+                                                                         
+"a + b =" "Pr(SOURCE->A|z) * Pr(A->B|z) +"             "*"           "c + d + e =" "Pr(B->A|y) +"
+          "Pr(SOURCE->B|z) * Pr(B->C) * Pr(C->B|z)"                                "Pr(B->C) * Pr(C->B|y) +"
+                                                                                   "Pr(B->C) * Pr(C->B|y) * Pr(B->C)"
+```
+
+```{note}
+The example below is a continuation of the example from the prerequisite section: Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward Graph Algorithm_TOPIC.
+```
+
+The forward split graph algorithm works for edges in exactly the same way with exactly the same reasoning. In this case, the hidden path must travel through a specific edge rather than a specific node. In the example below, that edge is B1→A2. Note how the emission index for the ...
+
+ * start of the edge B1 doesn't have any node other than B1.
+ * end of the edge A2 doesn't have any node other than A2.
+
+This will always be the case when the forward graph is isolated to travel over a specific edge (start and end emission indices will only contain the start and end of the edge). You can split the the forward graph on either of the stat node or the end node and perform the forward computations on each side, then multiply the results. The reasoning behind why it works is exactly the same: If there's only a single emitting node at an emission index, you can split on that node, run the forward computation on each side, and multiply the results together.
+
+```{svgbob}
+                                                                 "FULL"
+                                       y                  y                  z                  z            
+                                                                                                             
+                                    +----+                                +----+             +----+          
+                                    | A0 |                                | A2 +------------>| A3 +---.      
+                               .--->|    +.                        .----->|    +.            |    |   |      
+                               |    +----+ \                      /       +----+ \           +----+   v      
+                        +------+-+          \                    /                \                  +------+
+                        | SOURCE |           \                  /                  \                 | SINK |
+                        +------+-+            \                /                    \                +------+
+                               |    +----+     \       +----+ /                      \       +----+   ^ ^    
+                               '--->| B0 |      '----->| B1 +'                        '----->| B3 |   | |    
+                                    |    |     .------>|    |                                |    +---' |    
+                                    +-+--+    /        +----+                                +-+--+     |    
+                                      |      /                                                 |        |    
+                                      v     /                                                  v        |    
+                                    +----+ /                                                 +----+     |    
+                                    | C0 +'                                                  | C3 +-----'    
+                                    +----+                                                   +----+          
+
+
+
+                                                                "SPLIT ON B1"
+         "LEFT-HAND SIDE"                                                                            "RIGHT-HAND SIDE"
+         "(up to B1)"                                                                                "(from B1)"
+               y                  y                                                      y                  z                  z            
+                                                                                                                                            
+            +----+                                                                                       +----+             +----+          
+            | A0 |                                                                                       | A2 +------------>| A3 +---.      
+       .--->|    +.                                                                               .----->|    +.            |    |   |      
+       |    +----+ \                                                                             /       +----+ \           +----+   v      
++------+-+          \                                                                           /                \                  +------+
+| SOURCE |           \                                                                         /                  \                 | SINK |
++------+-+            \                                                                       /                    \                +------+
+       |    +----+     \       +----+                                                 +----+ /                      \       +----+   ^ ^    
+       '--->| B0 |      '----->| B1 +                                                 | B1 +'                        '----->| B3 |   | |    
+            |    |     .------>|    |                                                 |    |                                |    +---' |    
+            +-+--+    /        +----+                                                 +----+                                +-+--+     |    
+              |      /                                                                                                        |        |    
+              v     /                                                                                                         v        |    
+            +----+ /                                                                                                        +----+     |    
+            | C0 +'                                                                                                         | C3 +-----'    
+            +----+                                                                                                          +----+          
+
+
+
+
+                                                                "SPLIT ON A2"
+         "LEFT-HAND SIDE"                                                                            "RIGHT-HAND SIDE"
+         "(up to A2)"                                                                                "(from A2)"
+               y                  y                  z                                  z                  z            
+                                                                                                                        
+            +----+                                +----+                              +----+             +----+          
+            | A0 |                                | A2 +                              | A2 +------------>| A3 +---.      
+       .--->|    +.                        .----->|    +                              |    +.            |    |   |      
+       |    +----+ \                      /       +----+                              +----+ \           +----+   v      
++------+-+          \                    /                                                    \                  +------+
+| SOURCE |           \                  /                                                      \                 | SINK |
++------+-+            \                /                                                        \                +------+
+       |    +----+     \       +----+ /                                                          \       +----+   ^ ^    
+       '--->| B0 |      '----->| B1 +'                                                            '----->| B3 |   | |    
+            |    |     .------>|    |                                                                    |    +---' |    
+            +-+--+    /        +----+                                                                    +-+--+     |    
+              |      /                                                                                     |        |    
+              v     /                                                                                      v        |    
+            +----+ /                                                                                     +----+     |    
+            | C0 +'                                                                                      | C3 +-----'    
+            +----+                                                                                       +----+          
+```
+
+#### Forward-Backward Split Graph Algorithm
+
+`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Forward-Backward Split Graph Algorithm)_TOPIC/`
+
+#### Forward-Backward Split Full Algorithm
+
+`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Forward-Backward Split Full Algorithm)_TOPIC/`
+
+**ALGORITHM**:
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+### Certainty of Emitted Sequence Traveling Through Hidden Path Edge
+
+`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Certainty of Emitted Sequence Traveling Through Hidden Path Edge)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge_TOPIC
+```
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+TODO: fill me in
+
+### Baum-Welch Learning
+
+`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Baum-Welch Learning)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC
+Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward-Backward Split Graph Algorithm_TOPIC
 ```
 
 ### Most Probable Emitted Sequence
@@ -19191,312 +19981,6 @@ source_state: SOURCE
 sink_state: SINK  # Must not exist in HMM (used only for Viterbi graph)
 pseudocount: 0.0001
 emission_len: 3
-```
-
-### Empirical Learning
-
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Empirical Learning)_TOPIC/`
-
-```{prereq}
-Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm_TOPIC
-```
-
-**WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Empirical learning sets an HMM's probabilities by observing the machine that HMM models. Specifically, if the user is able to see the ...
-
- * hidden state transitions that occur
- * symbol emissions that occur after each hidden state transition
-
-..., that user can derive a set of hidden state transition probabilities and symbol emission probabilities for the HMM.
-
-```python
-hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = empirical_learning(hmm_structure, observed_hidden_state_transitions, observered_symbol_emissions)
-```
-
-**WHY**: Observing the model is one way to derive probabilities for an HMM.
-
-**ALGORITHM**:
-
-This algorithm derives weights for an HMM. For example, imagine the following HMM structure (probabilities missing).
-
-```{svgbob}
-                   +--------+   
-      .------------+ SOURCE +-----------.
-      |            +--------+           |    
-      |                                 |          
-      |   .-------------------------.   |    .------------.             
-      v   | .---.                   v   v    |            v
-+---------+-+-+ |               +------------++          +-------------+
-|     "A"     | |               |     "B"     |<---------+     "C"     |
-+--+-+--------+ |               +---+----+-+--+          +-------------+
-   : :    ^ ^   |                   |    : : 
-   : :    | |   |                   |    : : 
-   : :    | '---'                   |    : : 
-   : :    '-------------------------'    : : 
-   : :                                   : :
-   : :              +- - - -+            : :
-   : '- - - - - - ->:   y   :<- - - - - -' :
-   :                +- - - -+              :
-   :                                       :
-   :                +- - - -+              :
-   '- - - - - - - ->:   z   :<- - - - - - -'
-                    +- - - -+    
-```
-
-The probabilities for this HMM structure are unknown, but a past observation has shown that the machine this HMM represents has passed through the following hidden path where each hidden state transition emitted the following symbol.
-
-|            | 0        | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  |
-|------------|----------|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-| Transition | SOURCE→A | A→A | A→B | B→A | A→B | B→C | C→B | B→A | A→A | A→A | A→A |
-| Emission   | z        | y   | z   | z   | z   |     | y   | y   | y   | z   | z   |
-
-Given two hidden states W and V, the hidden state transition probability for W→V is estimated as the number of times W→V appears in the sequence divided by the total number of transitions in the sequence starting with W. For example, in the sequence ...
-
- * A→A appears 4 times 
- * transitions starting with A appear 6 times
-
-... , meaning the probability of A→A is estimated as 4/6 = 0.667. If a transition doesn't appear in the sequence at all, its probability is set to 0.0.
-
-| Transition | Probability   |
-|------------|---------------|
-| SOURCE→A   | 1 / 1 = 1.0   |
-| SOURCE→B   | 0.0           |
-| A→A        | 4 / 6 = 0.667 |
-| A→B        | 2 / 6 = 0.333 |
-| B→A        | 2 / 3 = 0.667 |
-| B→C        | 1 / 3 = 0.333 |
-| C→B        | 1 / 1 = 1.0   |
-
-```{note}
-Note that Pr(SOURCE→B) is 0.0, which means the HMM will never start by transitioning to B. As noted in Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC, this is flawed and as such pseudocounts need to be applied.
-```
-
-```{output}
-ch10_code/src/hmm/EmpiricalLearning.py
-python
-# MARKDOWN_DERIVE_TRANSITION_PROBS\s*\n([\s\S]+)\n\s*# MARKDOWN_DERIVE_TRANSITION_PROBS\s*[\n$]
-```
-
-Symbol emission probabilities are calculated similarly. Given a hidden state W and a symbol emission u, the symbol emission probability for u after a transition to W is estimated as the number of times W emits u divided by the total number of emissions for W. For example, in the sequence ...
-
- * A appears as a destination 7 times (7 emissions from A).
- * A emits y 3 times.
-
-... , meaning the probability of A emitting y is 3/7 = 0.429. If an emission doesn't appear in the sequence at all, its probability is set to 0.0.
-
-| Destination-to-Emisison | Probability   |
-|-------------------------|---------------|
-| A→y                     | 3 / 7 = 0.429 |
-| A→z                     | 4 / 7 = 0.572 |
-| B→y                     | 1 / 3 = 0.333 |
-| B→z                     | 2 / 3 = 0.667 |
-
-```{output}
-ch10_code/src/hmm/EmpiricalLearning.py
-python
-# MARKDOWN_DERIVE_EMISSION_PROBS\s*\n([\s\S]+)\n\s*# MARKDOWN_DERIVE_EMISSION_PROBS\s*[\n$]
-```
-
-```{ch10}
-hmm.EmpiricalLearning main_derive_probabilities
-transitions:
-  SOURCE: [A, B]
-  A: [A, B]
-  B: [A, C]
-  C: [B]
-emissions:
-  SOURCE: []
-  A: [y, z]
-  B: [y, z]
-  C: []
-observed:
-  - [SOURCE, A, z]
-  - [A, A, y]
-  - [A, B, z]
-  - [B, A, z]
-  - [A, B, z]
-  - [B, C]
-  - [C, B, y]
-  - [B, A, y]
-  - [A, A, y]
-  - [A, A, z]
-  - [A, A, z]
-pseudocount: 0.0001
-```
-
-If the structure of the HMM isn't known beforehand, it's common to assume that ...
-
- 1. the SOURCE hidden state can transition to every other hidden state.
- 2. each non-SOURCE hidden state can transition to all other non-SOURCE hidden states, including itself.
- 3. each non-SOURCE hidden state can emit all symbols.
-
-This assumed structure doesn't allowe for non-emitting hidden states because non-emitting hidden states can't form cycles. If they do have non-emitting hidden states with cycles, the exploded out HMM will grow infintely.For example, given the same past observation as used in the example above (reproduced below), it can be assumed that the ...
-
- * hidden states are [SOURCE, A, B, C].
- * emission symols are [x, y].
- * C is a non-emiting hidden state.
-
-|            | 0        | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  | 11  |
-|------------|----------|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
-| Transition | SOURCE→A | A→A | A→B | B→A | A→B | B→A | A→A | A→A | A→A | A→B | B→B | B→B |
-| Emission   | z        | y   | z   | z   | z   | y   | y   | z   | z   | z   | z   | z   |
-
-
-```{svgbob}
-                   +--------+   
-      .------------+ SOURCE +-----------.
-      |            +--------+           |    
-      |                                 |          
-      |   .-------------------------.   |    
-      v   | .---.             .---. v   v     
-+---------+-+-+ |             | +-+-----------+
-|     "A"     | |             | |     "B"     |
-+--+-+--------+ |             | +---+----+-+--+
-   : :    ^ ^   |             |   ^ |    : : 
-   : :    | |   |             |   | |    : : 
-   : :    | '---'             '---' |    : : 
-   : :    '-------------------------'    : : 
-   : :                                   : :
-   : :              +- - - -+            : :
-   : '- - - - - - ->:   y   :<- - - - - -' :
-   :                +- - - -+              :
-   :                                       :
-   :                +- - - -+              :
-   '- - - - - - - ->:   z   :<- - - - - - -'
-                    +- - - -+    
-```
-
-```{output}
-ch10_code/src/hmm/EmpiricalLearning.py
-python
-# MARKDOWN_DERIVE_HMM_STRUCTURE\s*\n([\s\S]+)\n\s*# MARKDOWN_DERIVE_HMM_STRUCTURE\s*[\n$]
-```
-
-```{ch10}
-hmm.EmpiricalLearning main_derive_hmm_structure
-observed:
-  - [SOURCE, A, z]
-  - [A, A, y]
-  - [A, B, z]
-  - [B, A, z]
-  - [A, B, z]
-  - [B, A, y]
-  - [A, A, y]
-  - [A, A, z]
-  - [A, A, z]
-  - [A, B, z]
-  - [B, B, z]
-  - [B, B, z]
-cycles: 8
-pseudocount: 0.0001
-pseudocount: 0.0001
-```
-
-### Viterbi Learning
-
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Viterbi Learning)_TOPIC/`
-
-```{prereq}
-Algorithms/Gene Clustering/Soft K-Means Clustering_TOPIC
-Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Empirical Learning_TOPIC
-```
-
-**WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Viterbi learning sets an HMM's probabilities by observing only the symbol emissions of the machine that HMM models. Specifically, if the user is only able to observe the symbol emissions (not the transitions that resulted in those emissions), that user can derive a set of hidden state transition probabilities and symbol emission probabilities for the HMM.
-
-```python
-hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = viterbi_learning(hmm_structure, observered_symbol_emissions)
-```
-
-**WHY**: Viterbi learning derives the probabilities for an HMM structure from just an emitted sequence. In contrast, emperical learning needs both an emitted sequence and the hidden path that generated that emitted sequence.
-
-```python
-hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = viterbi_learning(hmm_structure, observered_symbol_emissions)
-# ... vs ...
-hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = empirical_learning(hmm_structure, observed_hidden_state_transitions, observered_symbol_emissions)
-```
-
-**ALGORITHM**:
-
-Given an emitted sequence, Viterbi learning combines two different algorithms to derive an HMM's probabilities:
-
- 1. Viterbi algorithm (most probable hidden path for an emitted sequence)
- 2. Empirical learning (observations to HMM probabilities).
-
-To begin with, there's an emitted sequence and an HMM. The HMM has its probabilities randomized. Then, the Viterbi algorithm is used to find the most probable hidden path in this randomized HMM for the emitted sequence.
-
-```{svgbob}
-.--------------------.
-|       "HMM"        |
-|                    +---.
-'--------------------'   |  "Viterbi algorithm" .---------------.
-                         +--------------------->| "Hidden path" |
-.--------------------.   |                      '---------------'
-| "Emitted sequence" +---'
-|                    |
-'--------------------'
-```
-
-There are now two pieces of data:
-
- * Emitted sequence.
- * Hidden path.
- 
-These two pieces of data are fed into the emperical learning algorithm to generate new HMM probabliities. The hope is that these new HMM probabilities will result in the Viterbi algorithm finding a better hidden path.
-
-```{svgbob}
-          .----------------------------------------------------------------------------------------------------------.
-          v                                             "Update probabilities"                                       |
-.--------------------.                                                                                               |
-|       "HMM"        |                                                                                               |
-|                    +---.                                                                                           |
-'--------------------'   |  "Viterbi algorithm"  .---------------.                                                   |
-                         +---------------------->| "Hidden path" +---. "Emperical learning" .---------------------.  |
-.--------------------.   |                       '---------------'   +--------------------->| "HMM Probabilities" +--'
-| "Emitted sequence" +---'                                           |                      '---------------------'
-|                    +-----------------------------------------------'
-'--------------------'
-```
-
-This process repeats in the hopes that the HMM probabilities converge to maximize the most probable hidden path.
-
-```{note}
-Note what this algorithm is doing. The Pevzner book claims that it's very similar to Llyod's algorithm for k-means clustering in that it's starting off at some random point and pushing that point around to maximize some metric (generic name for this is called [Expectation-maximization](https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm)).
-
-The book claims that this is soft clustering. But if you only have one observed sequence, aren't you clustering a single data point? Shouldn't you have many observed sequences? Or maybe having many observed sequences is the same thing as having one sequence and concatenating them (need to figure out some special logic for each sequence's first transition from SOURCE)?
-
-Monte carlo algorithms like this are typically executed many times, where the best performing execution is the one that gets chosen.
-```
-
-```{output}
-ch10_code/src/hmm/ViterbiLearning.py
-python
-# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
-```
-
-```{ch10}
-hmm.ViterbiLearning main
-transitions:
-  SOURCE: [A, B, D]
-  A: [B, E ,F]
-  B: [C, D]
-  C: [F]
-  D: [A]
-  E: [A]
-  F: [E, B]
-emissions:
-  SOURCE: []
-  A: [x, y, z]
-  B: [x, y, z]
-  C: []  # C is non-emitting
-  D: [x, y, z]
-  E: [x, y, z]
-  F: [x, y, z]
-source_state: SOURCE
-sink_state: SINK  # Must not exist in HMM (used only for Viterbi graph)
-emission_seq: [z, z, x, z, z, z, y, z, z, z, z, y, x]
-cycles: 3
-pseudocount: 0.0001
 ```
 
 # Stories

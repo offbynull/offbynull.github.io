@@ -19,8 +19,6 @@ from helpers.Utils import slide_window
 # I'm still unclear about what the backwards graph is doing. I don't know how to prove this. Maybe come back to this
 # later
 
-LOOK AT ME LATER
-LOOK AT ME LATER
-LOOK AT ME LATER
-LOOK AT ME LATER
+
+# UPDATE: Months later, I've figured this out. I've written about it in the docs.
 

@@ -1,4 +1,5 @@
 from sys import stdin
+from typing import Any
 
 import yaml
 
@@ -7,7 +8,7 @@ from hmm.MostProbableHiddenPath_ViterbiNonEmittingHiddenStates import HmmNodeDat
     SYMBOL, to_hmm_graph_PRE_PSEUDOCOUNTS, hmm_add_pseudocounts_to_hidden_state_transition_probabilities, \
     hmm_add_pseudocounts_to_symbol_emission_probabilities, hmm_to_dot
 from hmm.ProbabilityOfEmittedSequence_ForwardGraph import forward_explode_hmm, forward_exploded_hmm_calculation, \
-    exploded_to_dot
+    exploded_to_dot, FORWARD_EXPLODED_NODE_ID, FORWARD_EXPLODED_EDGE_ID
 
 
 # MARKDOWN
@@ -25,7 +26,12 @@ def emission_probability(
     return f_exploded, f_exploded_sink_weight
 
 
-def filter_at_emission_idx(hmm, f_exploded, emitted_seq_idx_of_interest, hidden_state_of_interest):
+def filter_at_emission_idx(
+        hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
+        f_exploded: Graph[FORWARD_EXPLODED_NODE_ID, Any, FORWARD_EXPLODED_EDGE_ID, Any],
+        emitted_seq_idx_of_interest: int,
+        hidden_state_of_interest: STATE
+):
     for f_exploded_test_n_id in set(f_exploded.get_nodes()):
         emitted_seq_idx, hmm_n_id = f_exploded_test_n_id
         if emitted_seq_idx == emitted_seq_idx_of_interest and hmm_n_id != hidden_state_of_interest \
