@@ -16957,7 +16957,7 @@ The one exception is edge weight to the SINK node. At the end of the sequence, t
 |   A→SINK |                          |                          |                          | 1.0                      |
 |   B→SINK |                          |                          |                          | 1.0                      |
 
-The Viterbi graph above with edge weights is as follows.
+The Viterbi graph above with edge probabilities is as follows.
 
 ```{svgbob}
 * "Weights have been rounded for brevity."
@@ -17052,7 +17052,7 @@ Algorithms/Motif/K-mer Match Probability_TOPIC
 The motif prerequisite covers the idea of pseudocounts, which is used here again as well.
 ```
 
-The weights of an HMM are typically assigned using past observations. For example, an observer could have full observability into a machine, watching it transition between hidden states and emit symbols. The weights of the HMM for that machine can then be assigned based on those observations. For example, if it was observed that ...
+The probabilities of an HMM are typically assigned using past observations. For example, an observer could have full observability into a machine, watching it transition between hidden states and emit symbols. The probabilities of the HMM for that machine can then be assigned based on those observations. For example, if it was observed that ...
 
  * symbol x was emitted 17.6% of the time after transitioning to hidden state A, Pr(x|A) = 0.176.
  * symbol x was emitted 0.0%  of the time after transitioning to hidden state B, Pr(y|B) = 0.0.
@@ -17096,9 +17096,9 @@ If it's known that a hidden state transition or symbol emission is possible (not
                     +- - - -+               
 ```
 
-Keeping such weights at 0 is bad practice because, when using the Viterbi algorithm, those paths will be removed from consideration. The Viterbi algorithm determines the most probable hidden path by computing the path with the maximum product weight. When computing the maximum product weight, anything multiplied by 0 has a product of 0. A probability of 0 means it has a 0% chance of occurring, as in it will never occur.
+Keeping such probabilities at 0 is bad practice because, when using the Viterbi algorithm, those paths will be removed from consideration. The Viterbi algorithm determines the most probable hidden path by computing the path with the maximum product weight. When computing the maximum product weight, anything multiplied by 0 has a product of 0. A probability of 0 means it has a 0% chance of occurring, as in it will never occur.
 
-The correct action to take in this scenario is to add pseudocounts to HMM weights: Add a very small value to each weight, then normalize each hidden state's  ...
+The correct action to take in this scenario is to add pseudocounts to HMM probabilities: Add a very small value to each weight, then normalize each hidden state's  ...
 
  * outgoing transition such that all of its outgoing transitions sum to 1.0.
  * emission such that all of its emissions sum to 1.0.
@@ -17316,14 +17316,14 @@ Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-e
 ..., that user can derive a set of hidden state transition probabilities and symbol emission probabilities for the HMM.
 
 ```python
-hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = empirical_learning(hmm_structure, observed_hidden_state_transitions, observered_symbol_emissions)
+transition_probs, symbol_emission_probs = empirical_learning(hmm_structure, observed_transitions, observered_symbol_emissions)
 ```
 
 **WHY**: Observing the model is one way to derive probabilities for an HMM.
 
 **ALGORITHM**:
 
-This algorithm derives weights for an HMM. For example, imagine the following HMM structure (probabilities missing).
+This algorithm derives probabilities for an HMM. For example, imagine the following HMM structure (probabilities missing).
 
 ```{svgbob}
                    +--------+   
@@ -17440,7 +17440,7 @@ This assumed structure doesn't allowe for non-emitting hidden states because non
 
  * hidden states are [SOURCE, A, B, C].
  * emission symols are [x, y].
- * C is a non-emiting hidden state.
+ * C is a non-emitting hidden state.
 
 |            | 0        | 1   | 2   | 3   | 4   | 5   | 6   | 7   | 8   | 9   | 10  | 11  |
 |------------|----------|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|
@@ -17495,7 +17495,6 @@ observed:
   - [B, B, z]
 cycles: 8
 pseudocount: 0.0001
-pseudocount: 0.0001
 ```
 
 ### Viterbi Learning
@@ -17511,15 +17510,15 @@ Algorithms/Sequence Hidden Markov Models/Empirical Learning_TOPIC
 **WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Viterbi learning sets an HMM's probabilities by observing only the symbol emissions of the machine that HMM models. Specifically, if the user is only able to observe the symbol emissions (not the transitions that resulted in those emissions), that user can derive a set of hidden state transition probabilities and symbol emission probabilities for the HMM.
 
 ```python
-hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = viterbi_learning(hmm_structure, observered_symbol_emissions)
+transition_probs, symbol_emission_probs = viterbi_learning(hmm_structure, observered_symbol_emissions)
 ```
 
 **WHY**: Viterbi learning derives the probabilities for an HMM structure from just an emitted sequence. In contrast, emperical learning needs both an emitted sequence and the hidden path that generated that emitted sequence.
 
 ```python
-hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = viterbi_learning(hmm_structure, observered_symbol_emissions)
+transition_probs, symbol_emission_probs = viterbi_learning(hmm_structure, observered_symbol_emissions)
 # ... vs ...
-hmm_hidden_state_transition_probs, hmm_symbol_emission_probs = empirical_learning(hmm_structure, observed_hidden_state_transitions, observered_symbol_emissions)
+transition_probs, symbol_emission_probs = empirical_learning(hmm_structure, observed_transitions, observered_symbol_emissions)
 ```
 
 **ALGORITHM**:
@@ -17571,7 +17570,7 @@ Note what this algorithm is doing. The Pevzner book claims that it's very simila
 
 The book claims that this is soft clustering. But if you only have one observed sequence, aren't you clustering a single data point? Shouldn't you have many observed sequences? Or maybe having many observed sequences is the same thing as having one sequence and concatenating them (need to figure out some special logic for each sequence's first transition from SOURCE)?
 
-Monte carlo algorithms like this are typically executed many times, where the best performing execution is the one that gets chosen.
+Monte Carlo algorithms like this are typically executed many times, where the best performing execution is the one that gets chosen.
 ```
 
 ```{output}
@@ -17640,7 +17639,7 @@ pseudocount: 0.0001
                     +- - - -+    
 ```
 
-**WHY**: Given a set of emitted sequences, comparing the likelihoods of those emitted sequences can be used as a measure of how viable the weights of the HMM are.
+**WHY**: Given a set of emitted sequences, comparing the likelihoods of those emitted sequences can be used as a measure of how viable the probabilities of the HMM are.
 
 ```{note}
 This is speculation. I speculate this because, if you have a set of emitted sequences that you know get emitted by the machine which an HMM models, those sequences need to more probable to occur vs random sequences (I think).
@@ -18135,7 +18134,7 @@ Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence_TOPIC
 The meat of this section is the forward-backward full algorithm. The Pevzner book didn't discuss why this algorithm works, but I've done my best to try to reason about it and extend the reasoning to non-emitting hidden states. However, I don't know if my reasoning is correct. It seems to be correct for some cases, but there are many cases I haven't tested for. In any event, I think what's here will work just fine so long as you don't have non-emitting hidden states (and may work if you do have non-emitting hidden states).
 ```
 
-**WHAT**: Compute the probability that an HMM emits some sequence, but only for hidden paths where a specific emission index is emitted from a specific hidden state. For example, determine the probability of following HMM emitting [z, z, x, x, y] when index 1 of the emission always goes through B.
+**WHAT**: Compute the probability that an HMM emits some sequence, but only for hidden paths where a specific emission index is emitted from a specific hidden state. For example, determine the probability of following HMM emitting [z, z, y] when index 1 of the emission always travels through B.
 
 ```{svgbob}
                    +--------+   
@@ -18146,30 +18145,48 @@ The meat of this section is the forward-backward full algorithm. The Pevzner boo
       v   | .---.    0.623          v   v    |            v
 +---------+-+-+ |               +------------++          +-------------+
 |     "A"     | |               |     "B"     |<---------+     "C"     |
-+--+-+-+------+ |0.377          +---+--+-+-+--+     1.0  +-------------+
-   : : :  ^ ^   |                   |  : : : 
-   : : :  | |   |                   |  : : : 
-   : : :  | '---'     0.301         |  : : : 
-   : : :  '-------------------------'  : : : 
-   : : :                               : : : 
-   : : :                               : : : 
-   : : :     0.176  +- - - -+  0.225   : : : 
-   : : '- - - - - ->:   x   :<- - - - -' : : 
-   : :              +- - - -+            : : 
++--+-+--------+ |0.377          +---+----+-+--+     1.0  +-------------+
+   : :    ^ ^   |                   |    : : 
+   : :    | |   |                   |    : : 
+   : :    | '---'     0.301         |    : : 
+   : :    '-------------------------'    : : 
    : :                                   : :
    : :       0.596  +- - - -+  0.572     : :
    : '- - - - - - ->:   y   :<- - - - - -' :
    :                +- - - -+              :
    :                                       :
-   :         0.228  +- - - -+  0.203       :
+   :         0.404  +- - - -+  0.428       :
    '- - - - - - - ->:   z   :<- - - - - - -'
                     +- - - -+    
 ```
 
-**WHY**: This is the basis for determining the certanty of hidden state transitions in that path, explained in a later section.
+```{svgbob}
+* "Exploded HMM based on [z, z, y], but hidden paths must travel through B1"
+
+               z                  z                  y            
+                                                                  
+            +----+                                +----+          
+            | A0 |                                | A2 +---.      
+       .--->|    +.                        .----->|    |   |      
+       |    +----+ \                      /       +----+   v      
++------+-+          \                    /                +------+
+| SOURCE |           \                  /                 | SINK |
++------+-+            \                /                  +------+
+       |    +----+     \       +----+ /           +----+   ^ ^    
+       '--->| B0 |      '----->| B1 +'            | B2 |   | |    
+            |    |     .------>|    |     .------>|    +---' |    
+            +-+--+    /        +-+--+    /        +-+--+     |    
+              |      /           |      /           |        |    
+              v     /            v     /            v        |    
+            +----+ /           +----+ /           +----+     |    
+            | C0 +'            | C1 +'            | C2 +-----'    
+            +----+             +----+             +----+          
+```
+
+**WHY**: This is used for Baum-Welch learning, which is a learning algorithm used for HMMs (described further on).
 
 ```{note}
-See Algorithms/Sequence Hidden Markov Models/Certainty of Emitted Sequence Traveling Through Hidden Path Node_TOPIC
+See Algorithms/Sequence Hidden Markov Models/Certainty of Emitted Sequence Traveling Through Hidden Path Node_TOPIC and Algorithms/Sequence Hidden Markov Models/Baum-Welch Learning_TOPIC.
 ```
 
 #### Summation Algorithm
@@ -18402,7 +18419,7 @@ This summation is then factored and grouped such that it represents an exploded 
                                                                               '---------------------> ")"                          
 ```
 
-This algorithm revises the exploded HMM above to only include the hidden state of interest at the emission index of interest. For example, to calculate the probability for only those hidden paths that travel through B at index 1 of the [z, z, y], the exploded HMM becomes ...
+This algorithm revises the exploded HMM above to only feed forward to the hidden state of interest at the emission index of interest: When nodes in the previous emission index feed forward to this emission index, only transitions to the hidden state of interest. For example, to calculate the probability for only those hidden paths that travel through B at index 1 of the [z, z, y], the exploded HMM becomes ...
 
 ```{svgbob}
                          "EXPLODED OUT HMM"                                             "GROUPED FACTORED EXPRESSION"
@@ -18533,7 +18550,7 @@ Given the emitted sequence [z, z, y], recall that ...
    Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
    ```
 
- * the forward graph algorithm explodes out the HMM, but only retains the hidden state of interest at the emission index of interest. The calculation performed via the forward graph algorithm is the same as the summation performed by the summation algorithm but with common factors extracted and grouped to fit the exploded graph structure. For example, to calculate the probability for only those hidden paths that travel through B at index 1 of the [z, z, y] ...
+ * the forward graph algorithm explodes out the HMM, but only feeds forward to the hidden state of interest at the emission index of interest. The calculation performed via the forward graph algorithm is the same as the summation performed by the summation algorithm but with common factors extracted and grouped to fit the exploded graph structure. For example, to calculate the probability for only those hidden paths that travel through B at index 1 of the [z, z, y] ...
 
    ```{svgbob}
                             "EXPLODED OUT HMM"                                             "GROUPED FACTORED EXPRESSION"
@@ -18632,8 +18649,8 @@ VARIABLE SUBSTITUTION                                                      ORIGI
 
 Notice that the main multiplication's ...
 
- * left-hand side (a+b) corresponds to running the forward graph algorithm from SOURCE-to-B1.
- * right-hand side (c+d+e) corresponds to running the forward graph algorithm from B1-to-SINK.
+ * left-hand side (a+b) corresponds to running the forward graph algorithm from SOURCE-to-B1
+ * right-hand side (c+d+e) corresponds to running the forward graph algorithm from B1-to-SINK
 
 , where B1 is the hidden state of interest at the emission index of interest (e.g. hidden paths traveling through B at index 1 of [z, z, y]).
 
@@ -18660,13 +18677,43 @@ Notice that the main multiplication's ...
 
 Essentially, the expression has been re-arranged such that it cleanly splits the computation between B1:
 
- * The left-hand side (a+b) is everything feeding into B1 (including B1 itself).
+ * The left-hand side (a+b) is everything feeding into B1.
  * The right-hand side (c+d+e) is everything coming out of B1.
  
-The left-hand side computation (a+b) shares nothing with the right-hand side computation (c+d+e), meaning that you can compute them independently and then multiply to get the final result for SINK: (a + b)\*(c + d + e).
+The left-hand side computation (a+b) shares nothing with the right-hand side computation (c+d+e), meaning that you can compute them independently and then multiply to get the value that would be at SINK in the unsplit graph: (a + b)\*(c + d + e).
 
 
 ```{svgbob}
+                                                    "FULL"
+                                   z                  z                  y             
+                                                                                      
+                                +----+                                +----+          
+                                | A0 |                                | A2 +---.      
+                           .--->|    +.                        .----->|    |   |      
+                           |    +----+ \                      /       +----+   v      
+                    +------+-+          \                    /                +------+
+                    | SOURCE |           \                  /                 | SINK |
+                    +------+-+            \                /                  +------+
+                           |    +----+     \       +----+ /           +----+   ^ ^    
+                           '--->| B0 |      '----->| B1 +'            | B2 |   | |    
+                                |    |     .------>|    |     .------>|    +---' |    
+                                +-+--+    /        +-+--+    /        +-+--+     |    
+                                  |      /           |      /           |        |    
+                                  v     /            v     /            v        |    
+                                +----+ /           +----+ /           +----+     |    
+                                | C0 +'            | C1 +'            | C2 +-----'    
+                                +----+             +----+             +----+          
+                    
+                    Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y) +                             
+                    Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) +                   
+                    Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) +         
+                    Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y) +                   
+                    Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) +         
+                    Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) 
+
+
+
+
          "LEFT-HAND SIDE"                                                   "RIGHT-HAND SIDE"
                                                                          
                z                  z                                     z                  y             
@@ -18913,10 +18960,10 @@ Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where H
 
 Recall that the forward-backward split graph algorithm ...
 
-1. splits the forward graph into two smaller forward graphs: Left-hand side and right-hand side.
+1. splits the forward graph into two smaller graphs: Left-hand side (forward graph) and right-hand side (backward graph).
 2. performs the forward graph computation on the left-hand side.
-3. performs the forward graph computation on the right-hand side.
-4. multiplies the sink node values from 2 and 3 together, which is the value that would have existed at the sink node of the unsplit forward graph.
+3. performs the backward graph computation on the right-hand side.
+4. multiplies 2's sink node value with 3's *source* node value, which is the value that would have existed at the sink node of the unsplit forward graph.
 
 In the example below, the forward graph below splits on B1.
 
@@ -18971,7 +19018,7 @@ In the example below, the forward graph below splits on B1.
                                                                                    "Pr(B->C) * Pr(C->B|y) * Pr(B->C)"
 ```
 
-This algorithm calculates the same probability as the forward-backward split algorithm (e.g. probability of hidden path traveling through B at index 1 of [z, z, y]), but it efficiently calculates it for every index and every hidden state. The algorithm computes a full forward exploded HMM and a full backward exploded HMM (full meaning that it isn't filtered to a hidden state and emission index of interest). Once values in each graph have been computed, the ...
+This algorithm calculates the same probability as the forward-backward split algorithm (e.g. probability of hidden path traveling through B at index 1 of [z, z, y]), but it efficiently calculates it for every index and every hidden state. The algorithm computes a full forward graph and a full backward graph (full meaning that no nodes are filtered out). Once values in each graph have been computed, the ...
 
  * forward graph represents all possible left-hand sides.
  * backward graph represents all possible right-hand sides.
@@ -19004,12 +19051,12 @@ This algorithm calculates the same probability as the forward-backward split alg
             +----+             +----+             +----+                                           +----+               +----+               +----+          
 ```
 
-For any node in the forward graph, if you were to ...
+For any node N in the forward graph, if you were to ...
 
- 1. take the value of that node from the forward graph
- 2. sum the values of that node's duplicates in the backward graph
+ 1. take N's value from the forward graph
+ 2. sum N's values in the backward graph
 
-... and multiply them together, it would produce the same result as running the forward-backward split graph algorithm on that node. For example, to calculate the probability for only those hidden paths that travel through B at index 1 of the [z, z, y], simply multiply B1's value in the forward graph with the sum of B1 values in the backward graph: `forward[B1] * sum(backward[B1])`.
+... and multiply them together, it would produce the same result as running the forward-backward split graph algorithm for node N. For example, to calculate the probability for only those hidden paths that travel through B at index 1 of the [z, z, y], simply multiply B1's value in the forward graph with the sum of B1 values in the backward graph: `forward[B1] * sum(backward[B1])`.
 
 ```{note}
 Why is this?
@@ -19045,7 +19092,14 @@ hidden_state_of_interest: B
 pseudocount: 0.0001
 ```
 
-To calculate the probabilities for every index and every hidden state, compute both the full forward graph and full backward graph (as done above) but then run the multiplication for each index and hidden state pair.
+To calculate the probabilities for every node, compute both the full forward graph and full backward graph (as done above) once, then simply extract forward and backward values from those graphs for each node's computation.
+
+ * `forward[A0] * sum(backward[A0])`
+ * `forward[B0] * sum(backward[B0])`
+ * `forward[C0] * sum(backward[C0])`
+ * `forward[A1] * sum(backward[A1])`
+ * `forward[B1] * sum(backward[B1])`
+ * ...
 
 ```{output}
 ch10_code/src/hmm/ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughNode_ForwardBackwardFullGraph.py
@@ -19072,24 +19126,23 @@ emissions: [z,z,y]
 pseudocount: 0.0001
 ```
 
-### Certainty of Emitted Sequence Traveling Through Hidden Path Node
+### Probability of Emitted Sequence Where Hidden Path Travels Through Edge
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Certainty of Emitted Sequence Traveling Through Hidden Path Node)_TOPIC/`
+`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence/Forward Graph Algorithm_TOPIC
 Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC
 ```
 
-**WHAT**: An HMM works by transitioning from one hidden state to the next, where each transition possibly results in a symbol being emitted (non-emitting hidden states don't emit symbols). Given a ...
+```{note}
+The meat of this section is the forward-backward full algorithm. The Pevzner book didn't discuss why this algorithm works, but I've done my best to try to reason about it and extend the reasoning to non-emitting hidden states. However, I don't know if my reasoning is correct. It seems to be correct for some cases, but there are many cases I haven't tested for. In any event, I think what's here will work just fine so long as you don't have non-emitting hidden states (and may work if you do have non-emitting hidden states).
+```
 
- * HMM
- * hidden state in that HMM
- * emitted sequence
- * index in that emitted sequence
+**WHAT**: Compute the probability that an HMM emits some sequence, but only for hidden paths where a specific edge is taken. For example, determine the probability of following HMM emitting [y, y, z, z] when ...
 
-...,  determine how certain it is that the HMM was in that hidden state when the symbol at the emitted sequence index was emitted. For example, how certain is it that the following HMM was in hidden state B when index 2 of [y, y, z, y, z, z, y] was emitted.
+* index 1 of the emission always travels through B
+* index 2 of the emission always travels through A
+* the only transtion allowed between emission index 1 and 2 is B→A.
 
 ```{svgbob}
                    +--------+   
@@ -19115,143 +19168,27 @@ Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where H
                     +- - - -+    
 ```
 
-```python
-hidden_state = 'B'
-emitted_seq = ['y', 'y', 'z', 'y', 'z', 'z', 'y']
-# Certainty that HMM emits idx 2 of emitted_seq from hidden state B
-certainty = prob_passing_thru_hidden_state(hmm, 'B', emitted_seq, 2)
-```
-
-**WHY**: Given an emitted sequence, the Viterbi algorithm can be used to find the most probable hidden path for that emitted sequence. However, that most probable hidden path is a rigid determination. This algorithm allows you to interrogate the certainty of each hidden state transition in that path.
-
-```{note}
-The Pevzner book calls this !!Soft Decoding!! and it never covers a good use-case for it. What is the point of this? Imagine I've used the Viterbi algorithm to generate the most probable hidden path. I've determined that one of the transitions in that hidden path leads to a hidden state symbol emission with low certainty. So what do I do at that point? In the hidden path, do I try swapping that transition's destination to another hidden state? Maybe the revised hidden path will be slightly less probable but the certainty calculations will even out more?
-```
-
-**ALGORITHM**:
-
-The certainty for all nodes in the hidden path can be computed efficiently via the forward-backward full graph algorithm. The full forward graph and backward graph for the example HMM above and the emitted sequence [z, z, y] is as follows.
-
 ```{svgbob}
-                     "ALL POSSIBLE LEFT-HAND SIDES"                                                        "ALL POSSIBLE RIGHT-HAND SIDES"
-                          ---- forward -->                                                                        <--- backward ---
+* "Exploded HMM based on [y, y, z, z], but hidden paths must travel through B1->A2"
 
-               z                  z                  y                                                z                    y                   z
-                                                                                                                                    
-            +----+             +----+             +----+                                           +----+               +----+               +----+          
-            | A0 +------------>| A1 +------------>| A2 +---.                                       | A0 +-------------->| A1 +-------------->| A2 +-----.    
-            |    |             |    |             |    |   |                                .----->|    +---.   .------>|    +---.   .------>|    |     |    
-       .--->|    +.     .----->|    +.     .----->|    |   |                                |      |    +--. \ /        |    +--. \ /        |    |     |    
-       |    +----+ \   /       +----+ \   /       +----+   v                         +------+-+    +----+   \ X         +----+   \ X         +----+     v    
-+------+-+          \ /                \ /                +------+                   | SOURCE |  +----+      X \      +----+      X \      +----+      +------+
-| SOURCE |           X                  X                 | SINK |                   +----+-+-+  | B0 |     / \ '---->| B1 |     / \ '---->| B2 |      | SINK |
-+------+-+          / \                / \                +------+                        | |    |    +----'   \   .->|    +----'   \   .->|    +---.  +------+
-       |    +----+ /   \       +----+ /   \       +----+   ^ ^                            | '--->| +--+-+       \ /   | +--+-+       \ /   | +--+-+ |   ^ ^  
-       '--->| B0 +'     '----->| B1 +'     '----->| B2 |   | |                            |      +-| B0 |        X    +-| B1 |        X    +-| B2 | |   | |  
-            |    |      .----->|    |      .----->|    +---' |                            '------->|    |       / '---->|    |       / '---->|    | '---' |  
-            |    |     /       |    |     /       |    |     |                                     |    |      / .----->|    |      / .----->|    |       |  
-            +-+--+    /        +-+--+    /        +-+--+     |                                     +-+--+     / /       +-+--+     / /       +-+--+       |  
-              |      /           |      /           |        |                                       |       / /          |       / /          |          |  
-              v     /            v     /            v        |                                       v      / /           v      / /           v          |  
-            +----+ /           +----+ /           +----+     |                                     +----+  / /          +----+  / /          +----+       |  
-            | C0 +'            | C1 +'            | C2 +-----'                                     | C0 +-' /           | C1 +-' /           | C2 +-------'  
-            |    |             |    |             |    |                                           |    |  /            |    |  /            |    |          
-            |    |             |    |             |    |                                           |    +-'             |    +-'             |    |
-            +----+             +----+             +----+                                           +----+               +----+               +----+          
-```
-
-Recall that ...
-
- * `forward[SINK]` is the probability that the HMM emits [z, z, y].
- * `forward[Xn] * sum(backward[Xn])` is the probability that the HMM emits [z, z, y] had emission index n removed all hidden states except for X and those non-emitting states it could reach out to (e.g. for emission index 1 and hidden state B: `forward[B1] * sum(backward[B1])`).
-
-To compute the certainty that the hidden path will travel through some hidden state at some emission index, ...
-
-1. compute the probability for the emitted sequence (forward graph's sink node).
-2. compute the probability for the emitted sequence when the emission index of interest is isolated to hidden state of interest.
-3. divide the isolated probability (step 2) by the full probability (step 1).
-
-```{note}
-This is getting a probability of probabilities. The ...
-
-* numerator is the probability union of the filtered hidden paths (hidden paths isolated at emission index of interest to hidden state of interest).
-* denominator is the probability union of all hidden paths.
-
-It's a portion divided by the total.
-```
-
-```{output}
-ch10_code/src/hmm/CertaintyOfEmittedSequenceTravelingThroughHiddenPathNode.py
-python
-# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
-```
-
-```{ch10}
-hmm.CertaintyOfEmittedSequenceTravelingThroughHiddenPathNode
-transition_probabilities:
-  SOURCE: {A: 0.5, B: 0.5}
-  A: {A: 0.377, B: 0.623}
-  B: {A: 0.301, C: 0.699}
-  C: {B: 1.0}
-emission_probabilities:
-  SOURCE: {}
-  A: {x: 0.176, y: 0.596, z: 0.228}
-  B: {x: 0.225, y: 0.572, z: 0.203}
-  C: {}
-  # C set to empty dicts to identify as non-emittable hidden state.
-source_state: SOURCE
-sink_state: SINK
-emissions: [z,z,y]
-pseudocount: 0.0001
-```
-
-```{note}
-For some emission index, the sum of certainties for hidden states that do emit should come to 1.0. For example, in the example run above, 1A=0.36 and 1B=0.64: 0.36+0.64=1.0.
-
-But what does the certainty mean for non-emitting hidden states such as 1C? If it's 0.31 certain that it goes through hidden state 1C, then it's 1.0-0.31=0.69 certain that it goes through either 1A or 1B? But for it to reach 1C, it must travel over 1B, so maybe it's 0.69 certain that it only travels through 1A vs 1B→1C?
-```
-
-### Probability of Emitted Sequence Where Hidden Path Travels Through Edge
-
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge)_TOPIC/`
-
-```{prereq}
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC
-```
-
-```{note}
-The meat of this section is the forward-backward full algorithm. The Pevzner book didn't discuss why this algorithm works, but I've done my best to try to reason about it and extend the reasoning to non-emitting hidden states. However, I don't know if my reasoning is correct. It seems to be correct for some cases, but there are many cases I haven't tested for. In any event, I think what's here will work just fine so long as you don't have non-emitting hidden states (and may work if you do have non-emitting hidden states).
-```
-
-**WHAT**: Compute the probability that an HMM emits some sequence, but only for hidden paths where a specific edge is taken. For example, determine the probability of following HMM emitting [z, z, x, x, y] when, at emission index 1, only A is available as an option and the only outgoing edge from that A is to B.
-
-```{svgbob}
-                   +--------+   
-      .------------+ SOURCE +-----------.
-  0.5 |            +--------+           | 0.5
-      |                                 |          0.699
-      |   .-------------------------.   |    .------------.             
-      v   | .---.    0.623          v   v    |            v
-+---------+-+-+ |               +------------++          +-------------+
-|     "A"     | |               |     "B"     |<---------+     "C"     |
-+--+-+-+------+ |0.377          +---+--+-+-+--+     1.0  +-------------+
-   : : :  ^ ^   |                   |  : : : 
-   : : :  | |   |                   |  : : : 
-   : : :  | '---'     0.301         |  : : : 
-   : : :  '-------------------------'  : : : 
-   : : :                               : : : 
-   : : :                               : : : 
-   : : :     0.176  +- - - -+  0.225   : : : 
-   : : '- - - - - ->:   x   :<- - - - -' : : 
-   : :              +- - - -+            : : 
-   : :                                   : :
-   : :       0.596  +- - - -+  0.572     : :
-   : '- - - - - - ->:   y   :<- - - - - -' :
-   :                +- - - -+              :
-   :                                       :
-   :         0.228  +- - - -+  0.203       :
-   '- - - - - - - ->:   z   :<- - - - - - -'
-                    +- - - -+    
+               y                  y                  z                  z            
+                                                                                     
+            +----+                                +----+             +----+          
+            | A0 |                                | A2 +------------>| A3 +---.      
+       .--->|    +.                        .----->|    +.            |    |   |      
+       |    +----+ \                      /       +----+ \           +----+   v      
++------+-+          \                    /                \                  +------+
+| SOURCE |           \                  /                  \                 | SINK |
++------+-+            \                /                    \                +------+
+       |    +----+     \       +----+ /                      \       +----+   ^ ^    
+       '--->| B0 |      '----->| B1 +'                        '----->| B3 |   | |    
+            |    |     .------>|    |                                |    +---' |    
+            +-+--+    /        +----+                                +-+--+     |    
+              |      /                                                 |        |    
+              v     /                                                  v        |    
+            +----+ /                                                 +----+     |    
+            | C0 +'                                                  | C3 +-----'    
+            +----+                                                   +----+          
 ```
 
 **WHY**: This is used for Baum-Welch learning, which is a learning algorithm used for HMMs (described further on).
@@ -19465,7 +19402,7 @@ This summation is then factored and grouped such that it represents an exploded 
 This factoring/grouping is done in exactly the same way as shown in Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Graph Algorithm_TOPIC. I didn't include the re-arranged expression in the diagram above (or the diagram below) because that re-arranged expression would be huge.
 ```
 
-This algorithm revises the exploded HMM above to only include the transition of interest after the emission index of interest. For example, to calculate the probability for only those hidden paths that travel through B→A after index 1 of the [y, y, z, z], the exploded HMM becomes ...
+This algorithm revises the exploded HMM above to only feed forward to the transition of interest after the emission index of interest. For example, to calculate the probability for only those hidden paths that travel through B→A after index 1 of the [y, y, z, z], the exploded HMM becomes ...
 
 ```{svgbob}
                                     "EXPLODED OUT HMM"
@@ -19518,6 +19455,76 @@ to_hidden_state: A
 pseudocount: 0.0001
 ```
 
+````{note}
+
+The example is for B→A after index 1 of the [y, y, z, z], ...
+
+```{svgbob}
+                                    "EXPLODED OUT HMM"
+
+               y                  y                  z                  z            
+                                                                                     
+            +----+                                +----+             +----+          
+            | A0 |                                | A2 +------------>| A3 +---.      
+       .--->|    +.                        .----->|    +.            |    |   |      
+       |    +----+ \                      /       +----+ \           +----+   v      
++------+-+          \                    /                \                  +------+
+| SOURCE |           \                  /                  \                 | SINK |
++------+-+            \                /                    \                +------+
+       |    +----+     \       +----+ /                      \       +----+   ^ ^    
+       '--->| B0 |      '----->| B1 +'                        '----->| B3 |   | |    
+            |    |     .------>|    |                                |    +---' |    
+            +-+--+    /        +----+                                +-+--+     |    
+              |      /                                                 |        |    
+              v     /                                                  v        |    
+            +----+ /                                                 +----+     |    
+            | C0 +'                                                  | C3 +-----'    
+            +----+                                                   +----+          
+```
+
+But a more illustrative example would be for A→B after index 1 of the [y, y, z, z], ...
+
+```{svgbob}
+            +----+             +----+                                +----+          
+            | A0 +------------>| A1 |                                | A3 +---.      
+       .--->|    |             |    +.                        .----->|    |   |      
+       |    +----+             +----+ \                      /       +----+   v      
++------+-+                             \                    /                +------+
+| SOURCE |                              \                  /                 | SINK |
++------+-+                               \                /                  +------+
+       |    +----+                        \       +----+ /           +----+   ^ ^    
+       '--->| B0 |                         '----->| B2 +'            | B3 |   | |    
+            |    |                                |    |     .------>|    +---' |    
+            +-+--+                                +-+--+    /        +-+--+     |    
+              |                                     |      /           |        |    
+              v                                     v     /            v        |    
+            +----+                                +----+ /           +----+     |    
+            | C0 |                                | C2 +'            | C3 +-----'    
+            +----+                                +----+             +----+          
+```
+
+In the above diagram, SOURCE→B0→C0 is a dead-end. The graph algorithm removes such dead-ends before computing the graph. That means, when you filter to a specific edge from an emission index, that filtering process will remove any dead-ends caused by the filtering as well.
+
+```{svgbob}
+            +----+             +----+                                +----+          
+            | A0 +------------>| A1 |                                | A3 +---.      
+       .--->|    |             |    +.                        .----->|    |   |      
+       |    +----+             +----+ \                      /       +----+   v      
++------+-+                             \                    /                +------+
+| SOURCE |                              \                  /                 | SINK |
++--------+                               \                /                  +------+
+                                          \       +----+ /           +----+   ^ ^    
+                                           '----->| B2 +'            | B3 |   | |    
+                                                  |    |     .------>|    +---' |    
+                                                  +-+--+    /        +-+--+     |    
+                                                    |      /           |        |    
+                                                    v     /            v        |    
+                                                  +----+ /           +----+     |    
+                                                  | C2 +'            | C3 +-----'    
+                                                  +----+             +----+          
+```
+````
+
 #### Forward Split Graph Algorithm
 
 `{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Forward Split Graph Algorithm)_TOPIC/`
@@ -19525,6 +19532,10 @@ pseudocount: 0.0001
 ```{prereq}
 Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Split Graph Algorithm_TOPIC
 Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward Graph Algorithm_TOPIC
+```
+
+```{note}
+This algorithm seems totally useless, but it sets the foundation for other more efficient algorithms in further subsections. It isn't from the Pevzner book. It comes from me spending several days trying to figure out why the forward-backward algorithm works, and then trying to figure out a set of modifications to make it work for non-emitting hidden states. I don't know if I've reasoned about this correctly.
 ```
 
 ```{note}
@@ -19593,12 +19604,41 @@ In the example below, the forward graph below splits on B1.
 The example below is a continuation of the example from the prerequisite section: Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward Graph Algorithm_TOPIC.
 ```
 
-The forward split graph algorithm works for edges in exactly the same way with exactly the same reasoning. In this case, the hidden path must travel through a specific edge rather than a specific node. In the example below, that edge is B1→A2. Note how the emission index for the ...
+The forward split graph algorithm for edges works in exactly the same way as it does for nodes, with exactly the same reasoning. In this case, the hidden path must travel through a specific edge rather than a specific node. In the example below, that edge is B1→A2. Notice how both ends of the edge are isolated at their emission index, such that its the only node at that emission index being fed into by the previous emission index:
 
- * start of the edge B1 doesn't have any node other than B1.
- * end of the edge A2 doesn't have any node other than A2.
+ * B1 is being fed into by A0 and C0.
+ * A2 is being fed into by B1.
 
-This will always be the case when the forward graph is isolated to travel over a specific edge (start and end emission indices will only contain the start and end of the edge). You can split the the forward graph on either of the stat node or the end node and perform the forward computations on each side, then multiply the results. The reasoning behind why it works is exactly the same: If there's only a single emitting node at an emission index, you can split on that node, run the forward computation on each side, and multiply the results together.
+This will always be the case when the forward graph is isolated to travel over a specific edge. 
+
+```{note}
+> ... such that its the only node at that emission index being fed into by the previous emission index ...
+
+This is what happens with the node version of the forward-split algorithm: When nodes in the previous emission index feed forward to emission index of interest, only transitions to the hidden state of interest are allowed. See the node version of the algorithm for a refresher.
+```
+
+```{svgbob}
+               y                  y                  z                  z            
+                                                                                     
+            +----+                                +----+             +----+          
+            | A0 |                                | A2 +------------>| A3 +---.      
+       .--->|    +.                        .----->|    +.            |    |   |      
+       |    +----+ \                      /       +----+ \           +----+   v      
++------+-+          \                    /                \                  +------+
+| SOURCE |           \                  /                  \                 | SINK |
++------+-+            \                /                    \                +------+
+       |    +----+     \       +----+ /                      \       +----+   ^ ^    
+       '--->| B0 |      '----->| B1 +'                        '----->| B3 |   | |    
+            |    |     .------>|    |                                |    +---' |    
+            +-+--+    /        +----+                                +-+--+     |    
+              |      /                                                 |        |    
+              v     /                                                  v        |    
+            +----+ /                                                 +----+     |    
+            | C0 +'                                                  | C3 +-----'    
+            +----+                                                   +----+          
+```
+
+Given this observation, the node version of the forward split graph algorithm is usable with edges as well: Split the forward graph on either the start node or end node, perform the forward graph computation on each side, then multiply the results. Regardless of which of the two nodes you choose to split on, the multiplication result will be the same.
 
 ```{svgbob}
                                                                  "FULL"
@@ -19671,47 +19711,1059 @@ This will always be the case when the forward graph is isolated to travel over a
             +----+                                                                                       +----+          
 ```
 
+```{output}
+ch10_code/src/hmm/ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughEdge_ForwardSplitGraph.py
+python
+# MARKDOWN_TWO_SPLIT\s*\n([\s\S]+)\n\s*# MARKDOWN_TWO_SPLIT\s*[\n$]
+```
+
+```{ch10}
+hmm.ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughEdge_ForwardSplitGraph main_two_split
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+  C: {}
+  # C set to empty dicts to identify as non-emittable hidden state.
+source_state: SOURCE
+sink_state: SINK
+emissions: [y,y,z,z]
+from_emission_idx: 1
+from_hidden_state: B
+to_hidden_state: A
+pseudocount: 0.0001
+```
+
+One other way to perform this same computation is to split the forward graph into three pieces rather than two pieces. To understand how, consider how the summation algorithm treats the example above: The summation algorithm filters the terms being summed to only include hidden paths that travel B→A after emission index 1, resulting in the expression ...
+
+```
+Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→A|z) +
+Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z) +
+Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C) +
+Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→A|z) +
+Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z) +
+Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C)
+```
+
+Note how each term in the summation is multiplying by Pr(B→A|z), which is the probability calculation for the edge being isolated (B1→A2).
+
+```
+                                        common factor
+                                             |
+                                             v
+Pr(SOURCE→A|y) * Pr(A→B|y) *             Pr(B→A|z)   * Pr(A→A|z) +          
+Pr(SOURCE→A|y) * Pr(A→B|y) *             Pr(B→A|z)   * Pr(A→B|z) +          
+Pr(SOURCE→A|y) * Pr(A→B|y) *             Pr(B→A|z)   * Pr(A→B|z) * Pr(B→C) +
+Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) *   Pr(B→A|z)   * Pr(A→A|z) +          
+Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) *   Pr(B→A|z)   * Pr(A→B|z) +          
+Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) *   Pr(B→A|z)   * Pr(A→B|z) * Pr(B→C)  
+```
+
+Replace the following parts of the expression above with the following variables ...
+
+ * a = Pr(SOURCE→A|y) * Pr(A→B|y)
+ * b = Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y)
+ * x = Pr(B→A|z)
+ * c = Pr(A→A|z)
+ * d = Pr(A→B|z)
+ * e = Pr(A→B|z) * Pr(B→C)
+
+, ... resulting in the expression a\*x\*c + a\*x\*d + a\*x\*e + b\*x\*c + b\*x\*d + b\*x\*e.
+
+```
+                       ORIGINAL                                                      VARIABLE SUBSTITUTION
+             
+Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→A|z) +                                     a * x * c +
+Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z) +                                     a * x * d +
+Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C) +                           a * x * e +
+Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→A|z) +                           b * x * c +
+Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z) +                           b * x * d +
+Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C)                   b * x * e
+```
+
+In this expression, apply algebra factoring rules to pull out common factors:
+
+ * a\*x\*c + a\*x\*d + a\*x\*e + b\*x\*c + b\*x\*d + b\*x\*e
+ * (a\*x\*c + a\*x\*d + a\*x\*e) + (b\*x\*c + b\*x\*d + b\*x\*e) - commutative property of addition
+ * a\*x\*(c + d + e) + b\*x\*(c + d + e) - pull common factors out of each bracketed group
+ * (a\*x + b\*x)\*(c + d + e) - pull common factor of (c+d+e)
+ * (a\*x + b\*x)\*(c + d + e) - pull common factor of x from first group
+ * x\*(a + b)\*(c + d + e) - pull common factor of x from first group
+ * (a + b)\*x\*(c + d + e) - commutative property of multiplication
+
+```
+VARIABLE SUBSTITUTION                                                      ORIGINAL
+
+      (a + b)                                  (Pr(SOURCE→A|y) * Pr(A→B|y) + Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y))
+         *                                                                     *
+         x                                                                 Pr(B→A|z)
+         *                                                                     *
+    (c + d + e)                                          (Pr(A→A|z) + Pr(A→B|z) + Pr(A→B|z) * Pr(B→C))
+```
+
+Notice that the main multiplication's ...
+
+ * left-hand side (a+b) corresponds to running the forward graph algorithm from SOURCE-to-B1
+ * middle side (x) corresponds to running the forward graph algorithm from B1-to-A2, which is just the probability calculation of the isolated edge (B1→A2)
+ * right-hand side (c+d+e) corresponds to running the forward graph algorithm from A2-to-SINK
+
+```{svgbob}
+               y                  y                  z                  z            
+                                                                                     
+            +----+                                +----+             +----+          
+            | A0 |                                | A2 +------------>| A3 +---.      
+       .--->|    +.                        .----->|    +.            |    |   |      
+       |    +----+ \                      /       +----+ \           +----+   v      
++------+-+          \                    /                \                  +------+
+| SOURCE |           \                  /                  \                 | SINK |
++------+-+            \                /                    \                +------+
+       |    +----+     \       +----+ /                      \       +----+   ^ ^    
+       '--->| B0 |      '----->| B1 +'                        '----->| B3 |   | |    
+            |    |     .------>|    |                                |    +---' |    
+            +-+--+    /        +----+                                +-+--+     |    
+              |      /                                                 |        |    
+              v     /                                                  v        |    
+            +----+ /                                                 +----+     |    
+            | C0 +'                                                  | C3 +-----'    
+            +----+                                                   +----+          
+```
+
+Essentially, the expression has been re-arranged such that it cleanly splits the computation between the edge B1→A2:
+
+ * The left-hand side (a+b) is everything feeding into B1.
+ * The middle side (x) is the probability calculation for edge B1→A2.
+ * The right-hand side (c+d+e) is everything coming out of A2.
+ 
+The left-hand side computation (a+b), right-hand side computation (c+d+e), and middle side computation (x) share nothing with each other, meaning that you can compute them independently and then multiply to get the value that would be at SINK in the unsplit forward graph: (a + b)\*x\*(c + d + e).
+
+```{svgbob}
+                                                                            "FULL"
+                                                  y                  y                  z                  z            
+                                                                                                                        
+                                               +----+                                +----+             +----+          
+                                               | A0 |                                | A2 +------------>| A3 +---.      
+                                          .--->|    +.                        .----->|    +.            |    |   |      
+                                          |    +----+ \                      /       +----+ \           +----+   v      
+                                   +------+-+          \                    /                \                  +------+
+                                   | SOURCE |           \                  /                  \                 | SINK |
+                                   +------+-+            \                /                    \                +------+
+                                          |    +----+     \       +----+ /                      \       +----+   ^ ^    
+                                          '--->| B0 |      '----->| B1 +'                        '----->| B3 |   | |    
+                                               |    |     .------>|    |                                |    +---' |    
+                                               +-+--+    /        +----+                                +-+--+     |    
+                                                 |      /                                                 |        |    
+                                                 v     /                                                  v        |    
+                                               +----+ /                                                 +----+     |    
+                                               | C0 +'                                                  | C3 +-----'    
+                                               +----+                                                   +----+          
+
+                                       "Pr(SOURCE->A|y) * Pr(A->B|y) * Pr(B->A|z) * Pr(A->A|z) +"
+                                       "Pr(SOURCE->A|y) * Pr(A->B|y) * Pr(B->A|z) * Pr(A->B|z) +"
+                                       "Pr(SOURCE->A|y) * Pr(A->B|y) * Pr(B->A|z) * Pr(A->B|z) * Pr(B->C) +"
+                                       "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y) * Pr(B->A|z) * Pr(A->A|z) +"
+                                       "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y) * Pr(B->A|z) * Pr(A->B|z) +"
+                                       "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y) * Pr(B->A|z) * Pr(A->B|z) * Pr(B->C)"
+
+
+
+
+         "LEFT-HAND SIDE"                                                  "MIDDLE SIDE"                                          "RIGHT-HAND SIDE"
+         "(up to B1)"                                                      "(B1->A2)"                                             "(from B2)"
+               y                  y                                  y                  z                                    z                  z            
+                                                                                                                                                             
+            +----+                                                                   +----+                               +----+             +----+          
+            | A0 |                                                                   | A2 +                               | A2 +------------>| A3 +---.      
+       .--->|    +.                                                           .----->|    +                               |    +.            |    |   |      
+       |    +----+ \                                                         /       +----+                               +----+ \           +----+   v      
++------+-+          \                                                       /                                                     \                  +------+
+| SOURCE |           \                                                     /                                                       \                 | SINK |
++------+-+            \                                                   /                                                         \                +------+
+       |    +----+     \       +----+                             +----+ /                                                           \       +----+   ^ ^    
+       '--->| B0 |      '----->| B1 +                             | B1 +'                                                             '----->| B3 |   | |    
+            |    |     .------>|    |                             |    |                                                                     |    +---' |    
+            +-+--+    /        +----+                             +----+                                                                     +-+--+     |    
+              |      /                                                                                                                         |        |    
+              v     /                                                                                                                          v        |    
+            +----+ /                                                                                                                         +----+     |    
+            | C0 +'                                                                                                                          | C3 +-----'    
+            +----+                                                                                                                           +----+       
+
+"a + b =" "Pr(SOURCE->A|y) * Pr(A->B|y) +"            "*"         "x =" "Pr(B->A|z)"                  "*"                 "c + d + e =" "Pr(A->A|z) +"
+          "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y)"                                                                                     "Pr(A->B|z) +"
+                                                                                                                                        "Pr(A->B|z) * Pr(B->C)"
+```
+
+```{output}
+ch10_code/src/hmm/ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughEdge_ForwardSplitGraph.py
+python
+# MARKDOWN_THREE_SPLIT\s*\n([\s\S]+)\n\s*# MARKDOWN_THREE_SPLIT\s*[\n$]
+```
+
+```{ch10}
+hmm.ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughEdge_ForwardSplitGraph main_three_split
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+  C: {}
+  # C set to empty dicts to identify as non-emittable hidden state.
+source_state: SOURCE
+sink_state: SINK
+emissions: [y,y,z,z]
+from_emission_idx: 1
+from_hidden_state: B
+to_hidden_state: A
+pseudocount: 0.0001
+```
+
 #### Forward-Backward Split Graph Algorithm
 
 `{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Forward-Backward Split Graph Algorithm)_TOPIC/`
 
-#### Forward-Backward Split Full Algorithm
-
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Forward-Backward Split Full Algorithm)_TOPIC/`
+```{prereq}
+Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC
+Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward Split Graph Algorithm_TOPIC
+```
 
 **ALGORITHM**:
 
-TODO: fill me in
+```{note}
+This algorithm seems totally useless, but it sets the foundation for other more efficient algorithms in further subsections. It isn't from the Pevzner book. It comes from me spending several days trying to figure out why the forward-backward algorithm works, and then trying to figure out a set of modifications to make it work for non-emitting hidden states. I don't know if I've reasoned about this correctly.
+```
 
-TODO: fill me in
+```{note}
+The example below is from the prerequisite section: Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC. The expressions under the left-hand side / right-hand side of the diagram are the expression derived in that section. Go back to it if you need a refresher.
+```
 
-TODO: fill me in
+Recall that, when computing the probability of an emitted sequence where the hidden path must travel through a specific *node*, the forward-backward split graph algorithm ...
 
-TODO: fill me in
+1. splits the forward graph into two smaller forward graphs: Left-hand side and right-hand side.
+2. performs the forward graph computation on the left-hand side.
+3. performs the *backward* graph computation on the right-hand side.
+4. multiplies 2's sink node value with 3's source node value, which is the value that would have existed at the sink node of the unsplit forward graph.
+
+In the example below, the forward graph below splits on B1.
+
+```{svgbob}
+                                                  "FULL"
+                                 z                  z                  y             
+                                                                                    
+                              +----+                                +----+          
+                              | A0 |                                | A2 +---.      
+                         .--->|    +.                        .----->|    |   |      
+                         |    +----+ \                      /       +----+   v      
+                  +------+-+          \                    /                +------+
+                  | SOURCE |           \                  /                 | SINK |
+                  +------+-+            \                /                  +------+
+                         |    +----+     \       +----+ /           +----+   ^ ^    
+                         '--->| B0 |      '----->| B1 +'            | B2 |   | |    
+                              |    |     .------>|    |     .------>|    +---' |    
+                              +-+--+    /        +-+--+    /        +-+--+     |    
+                                |      /           |      /           |        |    
+                                v     /            v     /            v        |    
+                              +----+ /           +----+ /           +----+     |    
+                              | C0 +'            | C1 +'            | C2 +-----'    
+                              +----+             +----+             +----+          
+
+
+
+         "LEFT-HAND SIDE"                                                     "RIGHT-HAND SIDE"
+         ---- forward -->                                                     <--- backward ---
+
+               z                  z                                     z                  y             
+                                                                                                        
+            +----+                                                                      +----+          
+            | A0 |                                                                      | A2 +-----.      
+       .--->|    +.                                                              .----->|    |     |      
+       |    +----+ \                                                            /       +----+     v      
++------+-+          \                                                          /                  +------+
+| SOURCE |           \                                                        /       +----+      | SINK |
++------+-+            \                                                      /        | B2 +---.  +------+
+       |    +----+     \       +----+                                +----+ /     .-->| +--+-+ |   ^ ^    
+       '--->| B0 |      '----->| B1 |                                | B1 +'     /    +-| B2 | |   | |    
+            |    |     .------>|    |                                |    |     /.----->|    | '---' |    
+            +-+--+    /        +----+                                +-+--+    //       +-+--+       |    
+              |      /                                                 |      //          |          |    
+              v     /                                                  v     //           v          |    
+            +----+ /                                                 +----+ //          +----+       |    
+            | C0 +'                                                  | C1 +'/           | C2 +-------'    
+            +----+                                                   |    +'            |    |          
+                                                                     +----+             +----+          
+                                                                          
+"a + b =" "Pr(SOURCE->A|z) * Pr(A->B|z) +"             "*"           "c + d + e =" "Pr(B->A|y) +"
+          "Pr(SOURCE->B|z) * Pr(B->C) * Pr(C->B|z)"                                "Pr(C->B|y) * Pr(B->C) +"
+                                                                                   "Pr(B->C) * Pr(C->B|y) * Pr(B->C)"
+```
+
+```{note}
+The example below is a continuation of the example from the prerequisite section: Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward Split Graph Algorithm_TOPIC.
+```
+
+The forward-backward split graph algorithm for edges works in exactly the same way as it does for nodes, with exactly the same reasoning. In the example below, the forward graph is being split into three parts based on the edge B1→A2:
+
+ * The piece up to B1 (left-hand side).
+ * The piece containing the edge B1→A2 (middle side).
+ * The piece from A2 (right-hand side).
+
+This algorithm converts the right-hand side into a backward graph instead of a forward graph. Just as with the node variant of this algorithm, the backward graph computation will set the source node's value (A2) to the value that would have been set at the sink node had the graph remained a forward graph (SINK).
+
+Just with the forward split algorithm for edges, multiply the computation result of each piece to get the value that would be at SINK in the unsplit forward graph: (a + b)\*x\*(c + d + e). The only difference is that, as mentioned in the previous paragraph, the computation result for the right-hand side will now be at its source node (A2).
+
+```{svgbob}
+                                                                            "FULL"
+                                                  y                  y                  z                  z            
+                                                                                                                        
+                                               +----+                                +----+             +----+          
+                                               | A0 |                                | A2 +------------>| A3 +---.      
+                                          .--->|    +.                        .----->|    +.            |    |   |      
+                                          |    +----+ \                      /       +----+ \           +----+   v      
+                                   +------+-+          \                    /                \                  +------+
+                                   | SOURCE |           \                  /                  \                 | SINK |
+                                   +------+-+            \                /                    \                +------+
+                                          |    +----+     \       +----+ /                      \       +----+   ^ ^    
+                                          '--->| B0 |      '----->| B1 +'                        '----->| B3 |   | |    
+                                               |    |     .------>|    |                                |    +---' |    
+                                               +-+--+    /        +----+                                +-+--+     |    
+                                                 |      /                                                 |        |    
+                                                 v     /                                                  v        |    
+                                               +----+ /                                                 +----+     |    
+                                               | C0 +'                                                  | C3 +-----'    
+                                               +----+                                                   +----+          
+
+                                       "Pr(SOURCE->A|y) * Pr(A->B|y) * Pr(B->A|z) * Pr(A->A|z) +"
+                                       "Pr(SOURCE->A|y) * Pr(A->B|y) * Pr(B->A|z) * Pr(A->B|z) +"
+                                       "Pr(SOURCE->A|y) * Pr(A->B|y) * Pr(B->A|z) * Pr(A->B|z) * Pr(B->C) +"
+                                       "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y) * Pr(B->A|z) * Pr(A->A|z) +"
+                                       "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y) * Pr(B->A|z) * Pr(A->B|z) +"
+                                       "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y) * Pr(B->A|z) * Pr(A->B|z) * Pr(B->C)"
+
+
+
+                                                                      "FORWARD SPLIT ALGORITHM"
+         "LEFT-HAND SIDE"                                                  "MIDDLE SIDE"                                          "RIGHT-HAND SIDE"
+         ---- forward -->                                                  ---- forward -->                                       ---- forward -->
+         "(up to B1)"                                                      "(B1->A2)"                                             "(from B2)"
+               y                  y                                  y                  z                                    z                  z            
+                                                                                                                                                             
+            +----+                                                                   +----+                               +----+             +----+          
+            | A0 |                                                                   | A2 +                               | A2 +------------>| A3 +---.      
+       .--->|    +.                                                           .----->|    +                               |    +.            |    |   |      
+       |    +----+ \                                                         /       +----+                               +----+ \           +----+   v      
++------+-+          \                                                       /                                                     \                  +------+
+| SOURCE |           \                                                     /                                                       \                 | SINK |
++------+-+            \                                                   /                                                         \                +------+
+       |    +----+     \       +----+                             +----+ /                                                           \       +----+   ^ ^    
+       '--->| B0 |      '----->| B1 +                             | B1 +'                                                             '----->| B3 |   | |    
+            |    |     .------>|    |                             |    |                                                                     |    +---' |    
+            +-+--+    /        +----+                             +----+                                                                     +-+--+     |    
+              |      /                                                                                                                         |        |    
+              v     /                                                                                                                          v        |    
+            +----+ /                                                                                                                         +----+     |    
+            | C0 +'                                                                                                                          | C3 +-----'    
+            +----+                                                                                                                           +----+       
+
+"a + b =" "Pr(SOURCE->A|y) * Pr(A->B|y) +"            "*"         "x =" "Pr(B->A|z)"                  "*"                 "c + d + e =" "Pr(A->A|z) +"
+          "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y)"                                                                                      "Pr(A->B|z) +"
+                                                                                                                                         "Pr(A->B|z) * Pr(B->C)"
+
+
+
+
+                                                                 "FORWARD-BACKWARD SPLIT ALGORITHM"
+         "LEFT-HAND SIDE"                                                  "MIDDLE SIDE"                                          "RIGHT-HAND SIDE"
+         ---- forward -->                                                  ---- forward -->                                       <--- backward ---
+         "(up to B1)"                                                      "(B1->A2)"                                             "(from B2)"
+               y                  y                                  y                  z                                    z                  z            
+                                                                                                                                                             
+            +----+                                                                   +----+                               +----+             +----+          
+            | A0 |                                                                   | A2 +                               | A2 +------------>| A3 +-----.      
+       .--->|    +.                                                           .----->|    +                               |    +.            |    |     |      
+       |    +----+ \                                                         /       +----+                               +----+ \           +----+     v      
++------+-+          \                                                       /                                                     \                    +------+
+| SOURCE |           \                                                     /                                                       \       +----+      | SINK |
++------+-+            \                                                   /                                                         \      | B3 +---.  +------+
+       |    +----+     \       +----+                             +----+ /                                                           '---->| +--+-+ |   ^ ^    
+       '--->| B0 |      '----->| B1 +                             | B1 +'                                                                  +-| B3 | |   | |    
+            |    |     .------>|    |                             |    |                                                                     |    | '---' |    
+            +-+--+    /        +----+                             +----+                                                                     +-+--+       |    
+              |      /                                                                                                                         |          |    
+              v     /                                                                                                                          v          |     
+            +----+ /                                                                                                                         +----+       |    
+            | C0 +'                                                                                                                          | C3 +-------'    
+            +----+                                                                                                                           +----+       
+
+"a + b =" "Pr(SOURCE->A|y) * Pr(A->B|y) +"            "*"         "x =" "Pr(B->A|z)"                  "*"                 "c + d + e =" "Pr(A->A|z) +"
+          "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y)"                                                                                     "Pr(A->B|z) +"
+                                                                                                                                        "Pr(B->C) * Pr(A->B|z)"
+```
+
+```{output}
+ch10_code/src/hmm/ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughEdge_ForwardBackwardSplitGraph.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch10}
+hmm.ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughEdge_ForwardBackwardSplitGraph
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+  C: {}
+  # C set to empty dicts to identify as non-emittable hidden state.
+source_state: SOURCE
+sink_state: SINK
+emissions: [y,y,z,z]
+from_emission_idx: 1
+from_hidden_state: B
+to_hidden_state: A
+pseudocount: 0.0001
+```
+
+#### Forward-Backward Full Graph Algorithm
+
+`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Forward-Backward Full Graph Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Full Graph Algorithm_TOPIC
+Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward-Backward Split Graph Algorithm_TOPIC
+```
+
+**ALGORITHM**:
+
+Recall that the forward-backward split graph algorithm ...
+
+1. splits the forward graph into three smaller graphs: Left-hand side (forward graph), middle side (isolated edge), and right-hand side (backward graph).
+2. performs the forward graph computation on the left-hand side.
+3. performs the probability computation for the isolated edge (middle side).
+4. performs the backward graph computation on the right-hand side.
+5. multiplies 2's sink node value, 3's result, and 4's *source* node value together, which is the value that would have existed at the sink node of the unsplit forward graph.
+
+In the example below, the forward graph below splits on B1→A2.
+
+```{svgbob}
+                                                                            "FULL"
+                                                  y                  y                  z                  z            
+                                                                                                                        
+                                               +----+                                +----+             +----+          
+                                               | A0 |                                | A2 +------------>| A3 +---.      
+                                          .--->|    +.                        .----->|    +.            |    |   |      
+                                          |    +----+ \                      /       +----+ \           +----+   v      
+                                   +------+-+          \                    /                \                  +------+
+                                   | SOURCE |           \                  /                  \                 | SINK |
+                                   +------+-+            \                /                    \                +------+
+                                          |    +----+     \       +----+ /                      \       +----+   ^ ^    
+                                          '--->| B0 |      '----->| B1 +'                        '----->| B3 |   | |    
+                                               |    |     .------>|    |                                |    +---' |    
+                                               +-+--+    /        +----+                                +-+--+     |    
+                                                 |      /                                                 |        |    
+                                                 v     /                                                  v        |    
+                                               +----+ /                                                 +----+     |    
+                                               | C0 +'                                                  | C3 +-----'    
+                                               +----+                                                   +----+          
+
+
+
+
+                                                                      "FORWARD SPLIT ALGORITHM"
+         "LEFT-HAND SIDE"                                                  "MIDDLE SIDE"                                          "RIGHT-HAND SIDE"
+         ---- forward -->                                                  ---- forward -->                                       <--- backward ---
+         "(up to B1)"                                                      "(B1->A2)"                                             "(from B2)"
+               y                  y                                  y                  z                                    z                  z            
+                                                                                                                                                             
+            +----+                                                                   +----+                               +----+             +----+          
+            | A0 |                                                                   | A2 +                               | A2 +------------>| A3 +-----.      
+       .--->|    +.                                                           .----->|    +                               |    +.            |    |     |      
+       |    +----+ \                                                         /       +----+                               +----+ \           +----+     v      
++------+-+          \                                                       /                                                     \                    +------+
+| SOURCE |           \                                                     /                                                       \       +----+      | SINK |
++------+-+            \                                                   /                                                         \      | B3 +---.  +------+
+       |    +----+     \       +----+                             +----+ /                                                           '---->| +--+-+ |   ^ ^    
+       '--->| B0 |      '----->| B1 +                             | B1 +'                                                                  +-| B3 | |   | |    
+            |    |     .------>|    |                             |    |                                                                     |    | '---' |    
+            +-+--+    /        +----+                             +----+                                                                     +-+--+       |    
+              |      /                                                                                                                         |          |    
+              v     /                                                                                                                          v          |     
+            +----+ /                                                                                                                         +----+       |    
+            | C0 +'                                                                                                                          | C3 +-------'    
+            +----+                                                                                                                           +----+       
+
+"a + b =" "Pr(SOURCE->A|y) * Pr(A->B|y) +"            "*"         "x =" "Pr(B->A|z)"                  "*"                 "c + d + e =" "Pr(A->A|z) +"
+          "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y)"                                                                                     "Pr(A->B|z) +"
+                                                                                                                                        "Pr(B->C) * Pr(A->B|z)"
+```
+
+This algorithm calculates the same probability as the forward-backward split algorithm, but it efficiently calculates it for every edge in the forward graph. The algorithm computes a full forward graph and a full backward graph (full meaning that no nodes or edges are filtered out). Once values in each graph have been computed, the ...
+
+ * forward graph represents all possible left-hand sides.
+ * backward graph represents all possible right-hand sides.
+
+```{svgbob}
+                  "ALL POSSIBLE LEFT-HAND AND MIDDLE SIDES"                                                  "ALL POSSIBLE RIGHT-HAND SIDES"
+                            ---- forward -->                                                                      <--- backward ---
+                                                                                                                                                    
+              y              y              z              z                                  y                   y                  z                   z 
+                                                                                                                                                   
+           +----+         +----+         +----+         +----+                             +----+              +----+              +----+              +----+         
+           | A0 +-------->| A1 +-------->| A2 +-------->| A3 +--.                          | A0 +------------->| A1 +------------->| A2 +------------->| A3 +----.    
+           |    |         |    |         |    |         |    |  |                    .---->|    +--.   .------>|    +--.   .------>|    +--.   .------>|    |    |    
+       .-->|    +.     .->|    +.     .->|    +.     .->|    |  |                    |     |    +-. \ /        |    +-. \ /        |    +-. \ /        |    |    |    
+       |   +----+ \   /   +----+ \   /   +----+ \   /   +----+  v             +------+-+   +----+  \ X         +----+  \ X         +----+  \ X         +----+    v    
++------+-+         \ /            \ /            \ /           +------+       | SOURCE | +----+     X \      +----+     X \      +----+     X \      +----+     +------+
+| SOURCE |          X              X              X            | SINK |       +----+-+-+ | B0 |    / \ '---->| B1 |    / \ '---->| B2 |    / \ '---->| B3 |     | SINK |
++------+-+         / \            / \            / \           +------+            | |   |    +---'   \   .->|    +---'   \   .->|    +---'   \   .->|    +---. +------+
+       |   +----+ /   \   +----+ /   \   +----+ /   \   +----+  ^ ^                | '-->| +--+-+      \ /   | +--+-+      \ /   | +--+-+      \ /   | +--+-+ |  ^ ^  
+       '-->| B0 +'     '->| B1 +'     '->| B2 +'     '->| B3 |  | |                |     +-| B0 |       X    +-| B1 |       X    +-| B2 |       X    +-| B3 | |  | |  
+           |    |      .->|    |      .->|    +      .->|    +--' |                '------>|    |      / '---->|    |      / '---->|    |      / '---->|    | '--' |  
+           |    |     /   |    |     /   |    |     /   |    |    |                        |    |     / .----->|    |     / .----->|    |     / .----->|    |      |  
+           +-+--+    /    +-+--+    /    +-+--+    /    +-+--+    |                        +-+--+    / /       +-+--+    / /       +-+--+    / /       +-+--+      |  
+             |      /       |      /       |      /       |       |                          |      / /          |      / /          |      / /          |         |  
+             v     /        v     /        v     /        v       |                          v     / /           v     / /           v     / /           v         |  
+           +----+ /       +----+ /       +----+ /       +----+    |                        +----+ / /          +----+ / /          +----+ / /          +----+      |  
+           | C0 +'        | C1 +'        | C2 +'        | C3 +----'                        | C0 +' /           | C1 +' /           | C2 +' /           | C3 +------'  
+           |    |         |    |         |    |         |    |                             |    | /            |    | /            |    | /            |    |
+           |    |         |    |         |    |         |    |                             |    +'             |    +'             |    +'             |    |          
+           +----+         +----+         +----+         +----+                             +----+              +----+              +----+              +----+
+```
+
+For any edge S→E in the forward graph, if you were to ...
+
+ 1. take S's value from the forward graph
+ 2. compute the probability of S→E
+ 3. sum E's values in the backward graph
+
+... and multiply them together, it would produce the same result as running the forward-backward split graph algorithm for edge S→E. For example, to calculate the probability for only those hidden paths that travel through B1→A2, simply multiply ...
+
+* B1's value in the forward graph
+* Pr(B→A|z)
+* sum of A2 values in the backward graph
+
+...: `forward[B1] * Pr(B→A|z) * sum(backward[A2])`.
+
+```{note}
+Why is this?
+
+* B1's forward computation is done in exactly the same way as it is for the left-hand side of B1→A2's forward-backward split graph. It's just that this algorithm doesn't stop after reaching B1 (it goes all the way to SINK).
+* A2's backward computation is done in exactly the same way as it is for the right-hand side of B1→A2's forward-backward split graph. It's just that this algorithm doesn't stop after reaching A2 (it goes all the way to SOURCE).
+```
+
+```{output}
+ch10_code/src/hmm/ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughEdge_ForwardBackwardFullGraph.py
+python
+# MARKDOWN_SINGLE\s*\n([\s\S]+)\n\s*# MARKDOWN_SINGLE\s*[\n$]
+```
+
+```{ch10}
+hmm.ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughEdge_ForwardBackwardFullGraph main_single
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+  C: {}
+  # C set to empty dicts to identify as non-emittable hidden state.
+source_state: SOURCE
+sink_state: SINK
+emissions: [y,y,z,z]
+from_emission_idx: 1
+from_hidden_state: B
+to_hidden_state: A
+pseudocount: 0.0001
+```
+
+```{output}
+ch10_code/src/hmm/ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughEdge_ForwardBackwardFullGraph.py
+python
+# MARKDOWN_ALL\s*\n([\s\S]+)\n\s*# MARKDOWN_ALL\s*[\n$]
+```
+
+To calculate the probabilities for every edge, compute both the full forward graph and full backward graph (as done above) once, then simply extract forward and backward values from those graphs for each edges's computation.
+
+ * `forward[A0] * Pr(A→A|y) s* um(backward[A1])`
+ * `forward[A0] * Pr(A→B|y) * sum(backward[B1])`
+ * `forward[B0] * Pr(B→A|y) * sum(backward[A1])`
+ * `forward[B0] * Pr(B→C) * sum(backward[C0])`
+ * `forward[B0] * Pr(B→B|y) * sum(backward[B1])`
+ * `forward[C0] * Pr(C→B|y) * sum(backward[B1])`
+ * ...
+
+```{ch10}
+hmm.ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughEdge_ForwardBackwardFullGraph main_all
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+  C: {}
+  # C set to empty dicts to identify as non-emittable hidden state.
+source_state: SOURCE
+sink_state: SINK
+emissions: [y,y,z,z]
+pseudocount: 0.0001
+```
+
+### Certainty of Emitted Sequence Traveling Through Hidden Path Node
+
+`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Certainty of Emitted Sequence Traveling Through Hidden Path Node)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Full Graph Algorithm_TOPIC
+```
+
+**WHAT**: An HMM works by transitioning from one hidden state to the next, where each transition possibly results in a symbol being emitted (non-emitting hidden states don't emit symbols). Given a ...
+
+ * HMM
+ * hidden state in that HMM
+ * emitted sequence
+ * index in that emitted sequence
+
+...,  determine how certain it is that the HMM was in that hidden state when the symbol at the emitted sequence index was emitted. For example, how certain is it that the following HMM was in hidden state B when index 1 of [z, z, y] was emitted.
+
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+  0.5 |            +--------+           | 0.5
+      |                                 |          0.699
+      |   .-------------------------.   |    .------------.             
+      v   | .---.    0.623          v   v    |            v
++---------+-+-+ |               +------------++          +-------------+
+|     "A"     | |               |     "B"     |<---------+     "C"     |
++--+-+--------+ |0.377          +---+----+-+--+     1.0  +-------------+
+   : :    ^ ^   |                   |    : : 
+   : :    | |   |                   |    : : 
+   : :    | '---'     0.301         |    : : 
+   : :    '-------------------------'    : : 
+   : :                                   : :
+   : :       0.596  +- - - -+  0.572     : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :         0.404  +- - - -+  0.428       :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+    
+```
+
+```python
+# Certainty that HMM emits idx 1 of emitted_seq from hidden state B
+certainty = prob_passing_thru_node(hmm, 'B', ['z', 'z', 'y'], 1)
+```
+
+```{note}
+What does certainty mean in this case? It means a value between 0.0 and 1.0, where 0.0 means there's zero chance of it happening and 1.0 means it'll always happen. Another word that could maybe be used instead is confidence?
+```
+
+**WHY**: Given an emitted sequence, the Viterbi algorithm can be used to find the most probable hidden path for that emitted sequence. However, that most probable hidden path is a rigid determination. This algorithm allows you to interrogate the certainty of each hidden state transition in that path.
+
+This is used for Baum-Welch learning, which is a learning algorithm used for HMMs (described further on).
+
+**ALGORITHM**:
+
+The certainty for all nodes in the hidden path can be computed efficiently via the forward-backward full graph algorithm. The full forward graph and backward graph for the example HMM above and the emitted sequence [z, z, y] is as follows.
+
+```{svgbob}
+                     "ALL POSSIBLE LEFT-HAND SIDES"                                                        "ALL POSSIBLE RIGHT-HAND SIDES"
+                          ---- forward -->                                                                        <--- backward ---
+
+               z                  z                  y                                                z                    y                   z
+                                                                                                                                    
+            +----+             +----+             +----+                                           +----+               +----+               +----+          
+            | A0 +------------>| A1 +------------>| A2 +---.                                       | A0 +-------------->| A1 +-------------->| A2 +-----.    
+            |    |             |    |             |    |   |                                .----->|    +---.   .------>|    +---.   .------>|    |     |    
+       .--->|    +.     .----->|    +.     .----->|    |   |                                |      |    +--. \ /        |    +--. \ /        |    |     |    
+       |    +----+ \   /       +----+ \   /       +----+   v                         +------+-+    +----+   \ X         +----+   \ X         +----+     v    
++------+-+          \ /                \ /                +------+                   | SOURCE |  +----+      X \      +----+      X \      +----+      +------+
+| SOURCE |           X                  X                 | SINK |                   +----+-+-+  | B0 |     / \ '---->| B1 |     / \ '---->| B2 |      | SINK |
++------+-+          / \                / \                +------+                        | |    |    +----'   \   .->|    +----'   \   .->|    +---.  +------+
+       |    +----+ /   \       +----+ /   \       +----+   ^ ^                            | '--->| +--+-+       \ /   | +--+-+       \ /   | +--+-+ |   ^ ^  
+       '--->| B0 +'     '----->| B1 +'     '----->| B2 |   | |                            |      +-| B0 |        X    +-| B1 |        X    +-| B2 | |   | |  
+            |    |      .----->|    |      .----->|    +---' |                            '------->|    |       / '---->|    |       / '---->|    | '---' |  
+            |    |     /       |    |     /       |    |     |                                     |    |      / .----->|    |      / .----->|    |       |  
+            +-+--+    /        +-+--+    /        +-+--+     |                                     +-+--+     / /       +-+--+     / /       +-+--+       |  
+              |      /           |      /           |        |                                       |       / /          |       / /          |          |  
+              v     /            v     /            v        |                                       v      / /           v      / /           v          |  
+            +----+ /           +----+ /           +----+     |                                     +----+  / /          +----+  / /          +----+       |  
+            | C0 +'            | C1 +'            | C2 +-----'                                     | C0 +-' /           | C1 +-' /           | C2 +-------'  
+            |    |             |    |             |    |                                           |    |  /            |    |  /            |    |          
+            |    |             |    |             |    |                                           |    +-'             |    +-'             |    |
+            +----+             +----+             +----+                                           +----+               +----+               +----+          
+```
+
+Recall that ...
+
+ * `forward[SINK]` is the probability that the HMM emits [z, z, y].
+ * `forward[Xn] * sum(backward[Xn])` is the probability that the HMM emits [z, z, y] had emission index n removed all hidden states except for X and those non-emitting states it could reach out to (e.g. for hidden paths that travel over B1: `forward[B1] * sum(backward[B1])`).
+
+To compute the certainty that the hidden path will travel over some node, ...
+
+1. compute the probability for the emitted sequence (forward graph's sink node).
+2. compute the probability for the emitted sequence when the emission index of interest is isolated to hidden state of interest.
+3. divide the isolated probability (step 2) by the full probability (step 1).
+
+```{note}
+This is getting a probability of probabilities. The ...
+
+* numerator is the probability union of the filtered hidden paths (hidden paths isolated at emission index of interest to hidden state of interest).
+* denominator is the probability union of all hidden paths.
+
+It's a portion divided by the total.
+```
+
+```{output}
+ch10_code/src/hmm/CertaintyOfEmittedSequenceTravelingThroughHiddenPathNode.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch10}
+hmm.CertaintyOfEmittedSequenceTravelingThroughHiddenPathNode
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+  C: {}
+  # C set to empty dicts to identify as non-emittable hidden state.
+source_state: SOURCE
+sink_state: SINK
+emissions: [z,z,y]
+pseudocount: 0.0001
+```
+
+```{note}
+For some emission index, the sum of certainties for hidden states that do emit should come to 1.0. For example, in the example run above, 1A=0.36 and 1B=0.64: 0.36+0.64=1.0.
+
+But what does the certainty mean for non-emitting hidden states such as 1C? If it's 0.31 certain that it goes through hidden state 1C, then it's 1.0-0.31=0.69 certain that it goes through either 1A or 1B? But for it to reach 1C, it must travel over 1B, so maybe it's 0.69 certain that it only travels through 1A vs 1B→1C?
+```
 
 ### Certainty of Emitted Sequence Traveling Through Hidden Path Edge
 
 `{bm} /(Algorithms\/Sequence Hidden Markov Models\/Certainty of Emitted Sequence Traveling Through Hidden Path Edge)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge_TOPIC
+Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward-Backward Full Graph Algorithm_TOPIC
 ```
 
-TODO: fill me in
+**WHAT**: An HMM works by transitioning from one hidden state to the next, where each transition possibly results in a symbol being emitted (non-emitting hidden states don't emit symbols). Given a ...
 
-TODO: fill me in
+ * HMM
+ * hidden state transition in that HMM
+ * emitted sequence
+ * index in that emitted sequence
 
-TODO: fill me in
+...,  determine how certain it is that the HMM took that hidden state transition after the symbol at the emitted sequence index was emitted. For example, how certain is it that the following HMM traveled over B→A after index 1 of [y, y, z, z] was emitted.
 
-TODO: fill me in
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+  0.5 |            +--------+           | 0.5
+      |                                 |          0.699
+      |   .-------------------------.   |    .------------.             
+      v   | .---.    0.623          v   v    |            v
++---------+-+-+ |               +------------++          +-------------+
+|     "A"     | |               |     "B"     |<---------+     "C"     |
++--+-+--------+ |0.377          +---+----+-+--+     1.0  +-------------+
+   : :    ^ ^   |                   |    : : 
+   : :    | |   |                   |    : : 
+   : :    | '---'     0.301         |    : : 
+   : :    '-------------------------'    : : 
+   : :                                   : :
+   : :       0.596  +- - - -+  0.572     : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :         0.404  +- - - -+  0.428       :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+    
+```
+
+```python
+# Certainty that HMM emits idx 1 of emitted_seq from hidden state B, then transition to A
+certainty = prob_passing_thru_edge(hmm, 'B', 'A', ['y', 'y', 'z', 'z'], 1)
+```
+
+```{note}
+What does certainty mean in this case? It means a value between 0.0 and 1.0, where 0.0 means there's zero chance of it happening and 1.0 means it'll always happen. Another word that could maybe be used instead is confidence?
+```
+
+**WHY**: Given an emitted sequence, the Viterbi algorithm can be used to find the most probable hidden path for that emitted sequence. However, that most probable hidden path is a rigid determination. This algorithm allows you to interrogate the certainty of each hidden state transition in that path.
+
+This is used for Baum-Welch learning, which is a learning algorithm used for HMMs (described further on).
+
+**ALGORITHM**:
+
+The certainty for all edges in the hidden path can be computed efficiently via the forward-backward full graph algorithm. The full forward graph and backward graph for the example HMM above and the emitted sequence [y, y, z, z] is as follows.
+
+```{svgbob}
+                  "ALL POSSIBLE LEFT-HAND AND MIDDLE SIDES"                                                  "ALL POSSIBLE RIGHT-HAND SIDES"
+                            ---- forward -->                                                                      <--- backward ---
+                                                                                                                                                    
+              y              y              z              z                                  y                   y                  z                   z 
+                                                                                                                                                   
+           +----+         +----+         +----+         +----+                             +----+              +----+              +----+              +----+         
+           | A0 +-------->| A1 +-------->| A2 +-------->| A3 +--.                          | A0 +------------->| A1 +------------->| A2 +------------->| A3 +----.    
+           |    |         |    |         |    |         |    |  |                    .---->|    +--.   .------>|    +--.   .------>|    +--.   .------>|    |    |    
+       .-->|    +.     .->|    +.     .->|    +.     .->|    |  |                    |     |    +-. \ /        |    +-. \ /        |    +-. \ /        |    |    |    
+       |   +----+ \   /   +----+ \   /   +----+ \   /   +----+  v             +------+-+   +----+  \ X         +----+  \ X         +----+  \ X         +----+    v    
++------+-+         \ /            \ /            \ /           +------+       | SOURCE | +----+     X \      +----+     X \      +----+     X \      +----+     +------+
+| SOURCE |          X              X              X            | SINK |       +----+-+-+ | B0 |    / \ '---->| B1 |    / \ '---->| B2 |    / \ '---->| B3 |     | SINK |
++------+-+         / \            / \            / \           +------+            | |   |    +---'   \   .->|    +---'   \   .->|    +---'   \   .->|    +---. +------+
+       |   +----+ /   \   +----+ /   \   +----+ /   \   +----+  ^ ^                | '-->| +--+-+      \ /   | +--+-+      \ /   | +--+-+      \ /   | +--+-+ |  ^ ^  
+       '-->| B0 +'     '->| B1 +'     '->| B2 +'     '->| B3 |  | |                |     +-| B0 |       X    +-| B1 |       X    +-| B2 |       X    +-| B3 | |  | |  
+           |    |      .->|    |      .->|    +      .->|    +--' |                '------>|    |      / '---->|    |      / '---->|    |      / '---->|    | '--' |  
+           |    |     /   |    |     /   |    |     /   |    |    |                        |    |     / .----->|    |     / .----->|    |     / .----->|    |      |  
+           +-+--+    /    +-+--+    /    +-+--+    /    +-+--+    |                        +-+--+    / /       +-+--+    / /       +-+--+    / /       +-+--+      |  
+             |      /       |      /       |      /       |       |                          |      / /          |      / /          |      / /          |         |  
+             v     /        v     /        v     /        v       |                          v     / /           v     / /           v     / /           v         |  
+           +----+ /       +----+ /       +----+ /       +----+    |                        +----+ / /          +----+ / /          +----+ / /          +----+      |  
+           | C0 +'        | C1 +'        | C2 +'        | C3 +----'                        | C0 +' /           | C1 +' /           | C2 +' /           | C3 +------'  
+           |    |         |    |         |    |         |    |                             |    | /            |    | /            |    | /            |    |
+           |    |         |    |         |    |         |    |                             |    +'             |    +'             |    +'             |    |          
+           +----+         +----+         +----+         +----+                             +----+              +----+              +----+              +----+
+```
+
+Recall that ...
+
+ * `forward[SINK]` is the probability that the HMM emits [y, y, z, z].
+ * `forward[S] * middle *  sum(backward[E])` is the probability that the HMM emits [y, y, z, z] had all hidden paths been removed except those that travel over S→E (e.g. for hidden paths that travel over B1→A2: `forward[B1] * Pr(B→A|z) * sum(backward[A2])`).
+
+To compute the certainty that the hidden path will travel some edge, ...
+
+1. compute the probability for the emitted sequence (forward graph's sink node).
+2. compute the probability for the emitted sequence when the hidden path is isolated to a specific edge.
+3. divide the isolated probability (step 2) by the full probability (step 1).
+
+```{note}
+This is getting a probability of probabilities. The ...
+
+* numerator is the probability union of the filtered hidden paths (hidden paths isolated at emission index of interest to hidden state of interest).
+* denominator is the probability union of all hidden paths.
+
+It's a portion divided by the total.
+```
+
+```{output}
+ch10_code/src/hmm/CertaintyOfEmittedSequenceTravelingThroughHiddenPathEdge.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch10}
+hmm.CertaintyOfEmittedSequenceTravelingThroughHiddenPathEdge
+transition_probabilities:
+  SOURCE: {A: 0.5, B: 0.5}
+  A: {A: 0.377, B: 0.623}
+  B: {A: 0.301, C: 0.699}
+  C: {B: 1.0}
+emission_probabilities:
+  SOURCE: {}
+  A: {x: 0.176, y: 0.596, z: 0.228}
+  B: {x: 0.225, y: 0.572, z: 0.203}
+  C: {}
+  # C set to empty dicts to identify as non-emittable hidden state.
+source_state: SOURCE
+sink_state: SINK
+emissions: [y,y,z,z]
+pseudocount: 0.0001
+```
 
 ### Baum-Welch Learning
 
 `{bm} /(Algorithms\/Sequence Hidden Markov Models\/Baum-Welch Learning)_TOPIC/`
 
 ```{prereq}
+Algorithms/Sequence Hidden Markov Models/Empirical Learning_TOPIC
+Algorithms/Sequence Hidden Markov Models/Viterbi Learning_TOPIC
 Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC
 Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward-Backward Split Graph Algorithm_TOPIC
+```
+
+**WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Baum-Welch learning sets an HMM's probabilities by observing only the symbol emissions of the machine that HMM models. Specifically, if the user is only able to observe the symbol emissions (not the transitions that resulted in those emissions), that user can derive a set of hidden state transition probabilities and symbol emission probabilities for the HMM.
+
+```python
+transition_probs, hmm_symbol_emission_probs = baum_welch_learning(hmm_structure, observered_symbol_emissions)
+```
+
+**WHY**: Just like Viterbi learning, Baum-Welch learning derives the probabilities for an HMM structure from just an emitted sequence. In contrast, emperical learning needs both an emitted sequence and the hidden path that generated that emitted sequence.
+
+```python
+transition_probs, symbol_emission_probs = baum_welch_learning(hmm_structure, observered_symbol_emissions)
+# ... vs ...
+transition_probs, symbol_emission_probs = viterbi_learning(hmm_structure, observered_symbol_emissions)
+# ... vs ...
+transition_probs, symbol_emission_probs = empirical_learning(hmm_structure, observed_transitions, observered_symbol_emissions)
+```
+
+**ALGORITHM**:
+
+Given an emitted sequence, Baum-Welch learning uses hidden path certainty measurements to derive HMM probabilities. For example, consider the following HMM.
+
+```{svgbob}
+                   +--------+   
+      .------------+ SOURCE +-----------.
+  0.5 |            +--------+           | 0.5
+      |                                 |          0.699
+      |   .-------------------------.   |    .------------.             
+      v   | .---.    0.623          v   v    |            v
++---------+-+-+ |               +------------++          +-------------+
+|     "A"     | |               |     "B"     |<---------+     "C"     |
++--+-+--------+ |0.377          +---+----+-+--+     1.0  +-------------+
+   : :    ^ ^   |                   |    : : 
+   : :    | |   |                   |    : : 
+   : :    | '---'     0.301         |    : : 
+   : :    '-------------------------'    : : 
+   : :                                   : :
+   : :       0.596  +- - - -+  0.572     : :
+   : '- - - - - - ->:   y   :<- - - - - -' :
+   :                +- - - -+              :
+   :                                       :
+   :         0.404  +- - - -+  0.428       :
+   '- - - - - - - ->:   z   :<- - - - - - -'
+                    +- - - -+    
+```
+
+Given the emitted sequence [z, z, y], the HMM explodes out as follows.
+
+```{svgbob}
+               z                  z                  y            
+                                                                  
+            +----+             +----+             +----+          
+            | A0 +------------>| A1 +------------>| A2 +---.      
+            |    |             |    |             |    |   |      
+       .--->|    +.     .----->|    +.     .----->|    |   |      
+       |    +----+ \   /       +----+ \   /       +----+   v      
++------+-+          \ /                \ /                +------+
+| SOURCE |           X                  X                 | SINK |
++------+-+          / \                / \                +------+
+       |    +----+ /   \       +----+ /   \       +----+   ^ ^    
+       '--->| B0 +'     '----->| B1 +'     '----->| B2 |   | |    
+            |    |      .----->|    |      .----->|    +---' |    
+            |    |     /       |    |     /       |    |     |    
+            +-+--+    /        +-+--+    /        +-+--+     |    
+              |      /           |      /           |        |    
+              v     /            v     /            v        |    
+            +----+ /           +----+ /           +----+     |    
+            | C0 +'            | C1 +'            | C2 +-----'    
+            |    |             |    |             |    |          
+            |    |             |    |             |    |          
+            +----+             +----+             +----+          
+```
+
+Recall that a certainty value can be computed for each node and edge in an exploded HMM. Each node / edge's certainty value is a measure of how confident you can be that, based on the HMM's probabilities, the hidden path travels over that node / edge (certainty values are between 0.0 and 1.0). For example, the certainty that the hidden path travels over  ...
+
+ * node A0 is 0.530.
+ * edge A0→A1 is 0.210.
+
+```{note}
+For a refresher on computing certainties, see ...
+
+* Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC
+* Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward-Backward Split Graph Algorithm_TOPIC
+```
+
+Baum-Welch learning begins by randomizing the HMM's probabilities. Then, the following two steps happen in a loop:
+
+ 1. The certainty value for each edge in the exploded HMM is computed. Edge certainties are grouped together by the HMM edge they represent, then summed together. For example, every instance of A→A in the exploded HMM above has its certainties summed together as ...
+
+    ```
+    certainty_sum[A→A] = certainty[A0→A1] + certainty[A1→A2]
+    ```
+ 
+    In the HMM, the probability of a transition is set to the certainty sum of that transition divided by the certainty sum of all transitions with that starting node. For example, A→A in the HMM above has its probability computed as ...
+ 
+    ```
+    HMM[A→A] = certainty_sum[A→A] / (certainty_sum[A→A] + certainty_sum[A→B])
+    ```
+
+    ```{output}
+    ch10_code/src/hmm/BaumWelchLearning.py
+    python
+    # MARKDOWN_EDGE\s*\n([\s\S]+)\n\s*# MARKDOWN_EDGE\s*[\n$]
+    ```
+
+ 2. The certainty value for each node in the exploded HMM is computed. Node certainties are grouped together by the HMM node and symbol emission they represent, then summed together. For example, every instance where A emits z in the exploded HMM above (an "A" node under a "z" column) has its certainties summed together as ...
+
+    ```
+    certainty_sum[A|z] = certainty[A0|z] + certainty[A1|z]
+    ```
+
+    In the HMM, the probability of a hidden state emitting a symbol is set to the certainty sum of that (node, symbol) pair divided by the certainty sum of all symbol emissions from that node. For example, A's z emission in the HMM above has its probability computed as ...
+
+    ```
+    HMM[A|z] = certainty_sum[A|z] / (certainty_sum[A|z] + certainty_sum[A|y])
+    ```
+
+    ```{output}
+    ch10_code/src/hmm/BaumWelchLearning.py
+    python
+    # MARKDOWN_NODE\s*\n([\s\S]+)\n\s*# MARKDOWN_NODE\s*[\n$]
+    ```
+
+Essentialy, you're using the HMM probabilities and an emitted sequence to derive the certainties for the exploded HMM (probabilities → certainties), then you're converting those exploded HMM certainties back into HMM probabilities (certainties → probabilities). Each time you perform an iteration of this probabilities → certainties → probabilities loop, the hope is that the HMM probabilities converge closer to some maximum.
+
+```{note}
+Similar to the Viterbi algorithm, the Pevzner book claims this is [expectation-maximization](https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm). The book didn't tell you the HMM probabilities to start with. I just assumed that you start off with randomized probabilities (the code challenge in the book gives you starting probabilities, not sure how they're derived).
+
+This algorithm works for a single emitted sequence, but how do you make it work when you have many emitted sequences? Maybe what you need to do is, in each cycle of the algorithm, select one of the emitted sequences at random and use the certainties from that.
+
+Monte Carlo algorithms like this are typically executed many times, where the best performing execution is the one that gets chosen.
+```
+
+```{output}
+ch10_code/src/hmm/BaumWelchLearning.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch10}
+hmm.BaumWelchLearning
+transitions:
+  SOURCE: [A, B, D]
+  A: [B, E ,F]
+  B: [C, D]
+  C: [F]
+  D: [A]
+  E: [A]
+  F: [E, B]
+emissions:
+  SOURCE: []
+  A: [x, y, z]
+  B: [x, y, z]
+  C: []  # C is non-emitting
+  D: [x, y, z]
+  E: [x, y, z]
+  F: [x, y, z]
+source_state: SOURCE
+sink_state: SINK  # Must not exist in HMM (used only for Viterbi graph)
+emission_seq: [z, z, x, z, z, z, y, z, z, z, z, y, x]
+cycles: 3
+pseudocount: 0.0001
 ```
 
 ### Most Probable Emitted Sequence

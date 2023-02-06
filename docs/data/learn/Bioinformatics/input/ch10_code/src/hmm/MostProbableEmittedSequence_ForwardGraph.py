@@ -10,17 +10,17 @@ from hmm.MostProbableHiddenPath_ViterbiNonEmittingHiddenStates import STATE, SYM
     hmm_add_pseudocounts_to_hidden_state_transition_probabilities, hmm_add_pseudocounts_to_symbol_emission_probabilities
 
 # MARKDOWN_EXPLODE
-FORWARD_EXPLODED_NODE_ID = tuple[int, STATE, SYMBOL | None]
-FORWARD_EXPLODED_EDGE_ID = tuple[FORWARD_EXPLODED_NODE_ID, FORWARD_EXPLODED_NODE_ID]
+LAYERED_FORWARD_EXPLODED_NODE_ID = tuple[int, STATE, SYMBOL | None]
+LAYERED_FORWARD_EXPLODED_EDGE_ID = tuple[LAYERED_FORWARD_EXPLODED_NODE_ID, LAYERED_FORWARD_EXPLODED_NODE_ID]
 
 
-def explode_hmm(
+def layer_explode_hmm(
         hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
         hmm_source_n_id: STATE,
         hmm_sink_n_id: STATE,
         symbols: set[SYMBOL],
         emission_len: int
-) -> Graph[FORWARD_EXPLODED_NODE_ID, Any, FORWARD_EXPLODED_EDGE_ID, Any]:
+) -> Graph[LAYERED_FORWARD_EXPLODED_NODE_ID, Any, LAYERED_FORWARD_EXPLODED_EDGE_ID, Any]:
     f_exploded = Graph()
     # Add exploded source node.
     f_exploded_source_n_id = -1, hmm_source_n_id, None
@@ -93,9 +93,9 @@ def explode_hmm(
 
 
 def connect_exploded_nodes(
-        f_exploded: Graph[FORWARD_EXPLODED_NODE_ID, Any, FORWARD_EXPLODED_EDGE_ID, float],
-        f_exploded_from_n_id: FORWARD_EXPLODED_NODE_ID,
-        f_exploded_to_n_id: FORWARD_EXPLODED_NODE_ID,
+        f_exploded: Graph[LAYERED_FORWARD_EXPLODED_NODE_ID, Any, LAYERED_FORWARD_EXPLODED_EDGE_ID, float],
+        f_exploded_from_n_id: LAYERED_FORWARD_EXPLODED_NODE_ID,
+        f_exploded_to_n_id: LAYERED_FORWARD_EXPLODED_NODE_ID,
         weight: Any
 ) -> bool:
     to_n_existed = True
@@ -114,7 +114,7 @@ def connect_exploded_nodes(
 # MARKDOWN_EXPLODE
 
 
-def exploded_to_dot(g: Graph[FORWARD_EXPLODED_NODE_ID, Any, FORWARD_EXPLODED_EDGE_ID, Any]) -> str:
+def exploded_to_dot(g: Graph[LAYERED_FORWARD_EXPLODED_NODE_ID, Any, LAYERED_FORWARD_EXPLODED_EDGE_ID, Any]) -> str:
     ret = 'digraph G {\n'
     ret += ' graph[rankdir=LR]\n'
     ret += ' node[shape=egg, fontname="Courier-Bold", fontsize=10]\n'
@@ -174,7 +174,7 @@ def main_explode():
         print(f'{hmm_to_dot(hmm)}')
         print('```')
         print()
-        exploded = explode_hmm(
+        exploded = layer_explode_hmm(
             hmm,
             source_state,
             sink_state,
@@ -204,9 +204,9 @@ def main_explode():
 
 
 # MARKDOWN_CALCULATE
-def compute_exploded_max_emission_weights(
+def compute_layer_exploded_max_emission_weights(
         hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
-        f_exploded: Graph[FORWARD_EXPLODED_NODE_ID, Any, FORWARD_EXPLODED_EDGE_ID, float]
+        f_exploded: Graph[LAYERED_FORWARD_EXPLODED_NODE_ID, Any, LAYERED_FORWARD_EXPLODED_EDGE_ID, float]
 ) -> float:
     # Use graph algorithm to figure out emission probability
     f_exploded_source_n_id = f_exploded.get_root_node()
@@ -255,9 +255,9 @@ def compute_exploded_max_emission_weights(
 # (exploded_to_n_id). If that outgoing neighbour (exploded_to_n_id) has a "forward weight" set for all of its incoming
 # neighbours, add it to the set of "ready_to_process" nodes.
 def add_ready_to_process_outgoing_nodes(
-        f_exploded: Graph[FORWARD_EXPLODED_NODE_ID, Any, FORWARD_EXPLODED_EDGE_ID, float],
-        f_exploded_n_from_id: FORWARD_EXPLODED_NODE_ID,
-        ready_to_process_n_ids: set[FORWARD_EXPLODED_NODE_ID]
+        f_exploded: Graph[LAYERED_FORWARD_EXPLODED_NODE_ID, Any, LAYERED_FORWARD_EXPLODED_EDGE_ID, float],
+        f_exploded_n_from_id: LAYERED_FORWARD_EXPLODED_NODE_ID,
+        ready_to_process_n_ids: set[LAYERED_FORWARD_EXPLODED_NODE_ID]
 ):
     for _, _, f_exploded_to_n_id, _ in f_exploded.get_outputs_full(f_exploded_n_from_id):
         ready_to_process = True
@@ -303,7 +303,7 @@ def main_calculate():
         print('```')
         print()
         print()
-        exploded = explode_hmm(
+        exploded = layer_explode_hmm(
             hmm,
             source_state,
             sink_state,
@@ -316,7 +316,7 @@ def main_calculate():
         print(f'{exploded_to_dot(exploded)}')
         print('```')
         print()
-        probability = compute_exploded_max_emission_weights(
+        probability = compute_layer_exploded_max_emission_weights(
             hmm,
             exploded
         )
@@ -345,7 +345,7 @@ def main_calculate():
 # MARKDOWN_BACKTRACK
 def backtrack(
         hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
-        exploded: Graph[FORWARD_EXPLODED_NODE_ID, Any, FORWARD_EXPLODED_EDGE_ID, float]
+        exploded: Graph[LAYERED_FORWARD_EXPLODED_NODE_ID, Any, LAYERED_FORWARD_EXPLODED_EDGE_ID, float]
 ) -> list[SYMBOL]:
     exploded_source_n_id = exploded.get_root_node()
     exploded_sink_n_id = exploded.get_leaf_node()
@@ -410,7 +410,7 @@ def main_backtrack():
         print(f'{hmm_to_dot(hmm)}')
         print('```')
         print()
-        exploded = explode_hmm(
+        exploded = layer_explode_hmm(
             hmm,
             source_state,
             sink_state,
@@ -423,7 +423,7 @@ def main_backtrack():
         print(f'{exploded_to_dot(exploded)}')
         print('```')
         print()
-        probability = compute_exploded_max_emission_weights(
+        probability = compute_layer_exploded_max_emission_weights(
             hmm,
             exploded
         )

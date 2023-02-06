@@ -12,7 +12,7 @@ from hmm.ProbabilityOfEmittedSequence_ForwardGraph import exploded_to_dot
 
 
 # MARKDOWN
-def forward_exploded_edge_certainty(
+def edge_certainties(
         hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
         hmm_source_n_id: STATE,
         hmm_sink_n_id: STATE,
@@ -61,7 +61,7 @@ def main():
         print(f'{hmm_to_dot(hmm)}')
         print('```')
         print()
-        f_exploded, b_exploded, certainties = forward_exploded_edge_certainty(
+        f_exploded, b_exploded, certainties = edge_certainties(
             hmm,
             source_state,
             sink_state,
@@ -83,8 +83,8 @@ def main():
         print()
         print(f'The **certainty** for {emissions} when the hidden path is limited to traveling through ...')
         print()
-        for node, certainty in sorted(certainties.items()):
-            print(f' * {node} = {certainty}')
+        for transition, certainty in sorted(certainties.items()):
+            print(f' * {transition[0]} → {transition[1]} = {certainty}')
         print()
     finally:
         print("</div>", end="\n\n")

@@ -1,0 +1,914 @@
+<svg class="bob" font-family="arial" font-size="14" height="864" width="936" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="triangle" markerHeight="8" markerWidth="8" orient="auto" refX="4" refY="2" viewBox="0 0 8 4">
+<polygon class="fg_fill" points="0,0 0,4 8,2 0,0"/>
+</marker>
+<marker id="clear_triangle" markerHeight="10" markerWidth="10" orient="auto" refX="1" refY="7" viewBox="0 0 20 14">
+<polygon class="bg_fill" points="2,2 2,12 18,7 2,2"/>
+</marker>
+<marker id="circle" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<circle class="fg_fill" cx="10" cy="10" r="8"/>
+</marker>
+<marker id="square" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<rect class="fg_fill" height="20" width="20" x="0" y="0"/>
+</marker>
+<marker id="open_circle" markerHeight="10" markerWidth="10" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<circle class="bg_fill" cx="10" cy="10" r="4"/>
+</marker>
+<marker id="big_open_circle" markerHeight="20" markerWidth="20" orient="auto" refX="20" refY="20" viewBox="0 0 40 40">
+<circle class="bg_fill" cx="20" cy="20" r="6"/>
+</marker>
+</defs>
+<style type="text/css">
+
+rect.backdrop {
+    fill: white;
+}
+text{
+    fill: black;
+}
+
+circle {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+}
+
+line {
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    stroke-linecap: round;
+    stroke-linejoin: miter;
+}
+
+path {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    stroke-linecap: round;
+    stroke-linejoin: miter;
+}
+
+line.dashed {
+    stroke-dasharray: 5;
+}
+
+.fg_fill {
+    fill: black;
+}
+
+
+.bg_fill {
+    fill: white;
+    stroke: black;
+    stroke-width: 2;
+}
+
+tspan.head{
+    fill: none;
+    stroke: none;
+}
+    
+</style>
+<rect class="backdrop" height="864" width="936" x="0" y="0"/>
+<g>
+<line x1="4" x2="4" y1="616" y2="648"/>
+<line x1="4" x2="60" y1="616" y2="616"/>
+<line x1="4" x2="60" y1="648" y2="648"/>
+<line x1="60" x2="60" y1="588" y2="616"/>
+<line x1="60" x2="76" y1="616" y2="616"/>
+<line x1="60" x2="60" y1="648" y2="676"/>
+<line x1="60" x2="76" y1="648" y2="648"/>
+<line x1="76" x2="76" y1="616" y2="648"/>
+<path d="M 60 676 A 4 4 0 0 0 64 680"/>
+<path d="M 64 584 A 4 4 0 0 0 60 588"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="64" x2="92" y1="584" y2="584"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="64" x2="92" y1="680" y2="680"/>
+</g>
+<g>
+<line x1="100" x2="100" y1="552" y2="600"/>
+<line x1="100" x2="140" y1="552" y2="552"/>
+<line x1="100" x2="140" y1="600" y2="600"/>
+<line x1="140" x2="140" y1="552" y2="584"/>
+<line x1="140" x2="140" y1="584" y2="600"/>
+<line x1="140" x2="144" y1="584" y2="584"/>
+<path d="M 150 588 A 8 8 0 0 0 144 584"/>
+</g>
+<g>
+<line x1="100" x2="100" y1="664" y2="712"/>
+<line x1="100" x2="140" y1="664" y2="664"/>
+<line x1="100" x2="116" y1="712" y2="712"/>
+<line marker-end="url(#triangle)" x1="116" x2="116" y1="712" y2="748"/>
+<line x1="116" x2="140" y1="712" y2="712"/>
+<line x1="140" x2="140" y1="664" y2="712"/>
+</g>
+<g>
+<line x1="100" x2="100" y1="760" y2="792"/>
+<line x1="100" x2="140" y1="760" y2="760"/>
+<line x1="100" x2="140" y1="792" y2="792"/>
+<line x1="140" x2="140" y1="760" y2="776"/>
+<line x1="140" x2="140" y1="776" y2="792"/>
+<line x1="140" x2="144" y1="776" y2="776"/>
+<path d="M 144 776 A 8 8 0 0 0 150 772"/>
+</g>
+<g>
+<line x1="150" x2="194" y1="588" y2="676"/>
+<path d="M 194 676 A 8 8 0 0 0 200 680"/>
+</g>
+<g>
+<line x1="164" x2="164" y1="120" y2="152"/>
+<line x1="164" x2="220" y1="120" y2="120"/>
+<line x1="164" x2="220" y1="152" y2="152"/>
+<line x1="220" x2="220" y1="92" y2="120"/>
+<line x1="220" x2="236" y1="120" y2="120"/>
+<line x1="220" x2="220" y1="152" y2="180"/>
+<line x1="220" x2="236" y1="152" y2="152"/>
+<line x1="236" x2="236" y1="120" y2="152"/>
+<path d="M 220 180 A 4 4 0 0 0 224 184"/>
+<path d="M 224 88 A 4 4 0 0 0 220 92"/>
+</g>
+<g>
+<line x1="186" x2="150" y1="700" y2="772"/>
+<path d="M 192 696 A 8 8 0 0 0 186 700"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="192" x2="244" y1="696" y2="696"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="200" x2="244" y1="680" y2="680"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="224" x2="252" y1="88" y2="88"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="224" x2="252" y1="184" y2="184"/>
+</g>
+<g>
+<line x1="252" x2="252" y1="320" y2="416"/>
+</g>
+<g>
+<line x1="252" x2="252" y1="664" y2="712"/>
+<line x1="252" x2="292" y1="664" y2="664"/>
+<line x1="252" x2="292" y1="712" y2="712"/>
+<line x1="292" x2="292" y1="664" y2="712"/>
+</g>
+<g>
+<line x1="260" x2="260" y1="56" y2="104"/>
+<line x1="260" x2="300" y1="56" y2="56"/>
+<line x1="260" x2="300" y1="104" y2="104"/>
+<line x1="300" x2="300" y1="56" y2="88"/>
+<line x1="300" x2="300" y1="88" y2="104"/>
+<line x1="300" x2="304" y1="88" y2="88"/>
+<path d="M 310 92 A 8 8 0 0 0 304 88"/>
+</g>
+<g>
+<line x1="260" x2="260" y1="168" y2="216"/>
+<line x1="260" x2="300" y1="168" y2="168"/>
+<line x1="260" x2="276" y1="216" y2="216"/>
+<line marker-end="url(#triangle)" x1="276" x2="276" y1="216" y2="252"/>
+<line x1="276" x2="300" y1="216" y2="216"/>
+<line x1="300" x2="300" y1="168" y2="216"/>
+</g>
+<g>
+<line x1="260" x2="260" y1="264" y2="296"/>
+<line x1="260" x2="300" y1="264" y2="264"/>
+<line x1="260" x2="300" y1="296" y2="296"/>
+<line x1="300" x2="300" y1="264" y2="280"/>
+<line x1="300" x2="300" y1="280" y2="296"/>
+<line x1="300" x2="304" y1="280" y2="280"/>
+<path d="M 304 280 A 8 8 0 0 0 310 276"/>
+</g>
+<g>
+<line x1="310" x2="354" y1="92" y2="180"/>
+<path d="M 354 180 A 8 8 0 0 0 360 184"/>
+</g>
+<g>
+<line x1="346" x2="310" y1="204" y2="276"/>
+<path d="M 352 200 A 8 8 0 0 0 346 204"/>
+</g>
+<g>
+<line x1="348" x2="348" y1="320" y2="368"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="352" x2="404" y1="200" y2="200"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="360" x2="404" y1="184" y2="184"/>
+</g>
+<g>
+<line x1="412" x2="412" y1="168" y2="216"/>
+<line x1="412" x2="452" y1="168" y2="168"/>
+<line x1="412" x2="428" y1="216" y2="216"/>
+<line marker-end="url(#triangle)" x1="428" x2="428" y1="216" y2="252"/>
+<line x1="428" x2="452" y1="216" y2="216"/>
+<line x1="452" x2="452" y1="168" y2="184"/>
+<line x1="452" x2="452" y1="184" y2="216"/>
+<line x1="452" x2="456" y1="184" y2="184"/>
+<path d="M 456 184 A 8 8 0 0 0 462 180"/>
+</g>
+<g>
+<line x1="412" x2="412" y1="264" y2="296"/>
+<line x1="412" x2="452" y1="264" y2="264"/>
+<line x1="412" x2="452" y1="296" y2="296"/>
+<line x1="452" x2="452" y1="264" y2="280"/>
+<line x1="452" x2="452" y1="280" y2="296"/>
+<line x1="452" x2="456" y1="280" y2="280"/>
+<path d="M 456 280 A 8 8 0 0 0 462 276"/>
+</g>
+<g>
+<line x1="428" x2="428" y1="368" y2="416"/>
+</g>
+<g>
+<line x1="498" x2="462" y1="204" y2="276"/>
+<path d="M 504 200 A 8 8 0 0 0 498 204"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="504" x2="556" y1="200" y2="200"/>
+</g>
+<g>
+<line x1="506" x2="462" y1="92" y2="180"/>
+<path d="M 512 88 A 8 8 0 0 0 506 92"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="512" x2="556" y1="88" y2="88"/>
+</g>
+<g>
+<line x1="524" x2="524" y1="336" y2="384"/>
+</g>
+<g>
+<line x1="556" x2="556" y1="344" y2="352"/>
+</g>
+<g>
+<line x1="556" x2="556" y1="376" y2="368"/>
+</g>
+<g>
+<line x1="556" x2="556" y1="664" y2="712"/>
+<line x1="556" x2="596" y1="664" y2="664"/>
+<line x1="556" x2="572" y1="712" y2="712"/>
+<line marker-end="url(#triangle)" x1="572" x2="572" y1="712" y2="748"/>
+<line x1="572" x2="596" y1="712" y2="712"/>
+<line x1="596" x2="596" y1="664" y2="680"/>
+<line x1="596" x2="596" y1="680" y2="712"/>
+<line x1="596" x2="600" y1="680" y2="680"/>
+<path d="M 600 680 A 8 8 0 0 0 606 676"/>
+</g>
+<g>
+<line x1="556" x2="556" y1="760" y2="792"/>
+<line x1="556" x2="596" y1="760" y2="760"/>
+<line x1="556" x2="596" y1="792" y2="792"/>
+<line x1="596" x2="596" y1="760" y2="776"/>
+<line x1="596" x2="596" y1="776" y2="792"/>
+<line x1="596" x2="600" y1="776" y2="776"/>
+<path d="M 600 776 A 8 8 0 0 0 606 772"/>
+</g>
+<g>
+<line x1="564" x2="564" y1="56" y2="104"/>
+<line x1="564" x2="604" y1="56" y2="56"/>
+<line x1="564" x2="604" y1="104" y2="104"/>
+<line x1="604" x2="604" y1="56" y2="72"/>
+<line x1="604" x2="604" y1="72" y2="104"/>
+<line x1="604" x2="632" y1="72" y2="72"/>
+<path d="M 636 76 A 4 4 0 0 0 632 72"/>
+</g>
+<g>
+<line x1="564" x2="564" y1="168" y2="216"/>
+<line x1="564" x2="604" y1="168" y2="168"/>
+<line x1="564" x2="580" y1="216" y2="216"/>
+<line marker-end="url(#triangle)" x1="580" x2="580" y1="216" y2="252"/>
+<line x1="580" x2="604" y1="216" y2="216"/>
+<line x1="604" x2="604" y1="168" y2="200"/>
+<line x1="604" x2="604" y1="200" y2="216"/>
+<line x1="604" x2="632" y1="200" y2="200"/>
+<path d="M 632 200 A 4 4 0 0 0 636 196"/>
+</g>
+<g>
+<line x1="564" x2="564" y1="264" y2="296"/>
+<line x1="564" x2="604" y1="264" y2="264"/>
+<line x1="564" x2="604" y1="296" y2="296"/>
+<line x1="604" x2="604" y1="264" y2="280"/>
+<line x1="604" x2="604" y1="280" y2="296"/>
+<line x1="604" x2="648" y1="280" y2="280"/>
+<path d="M 648 280 A 4 4 0 0 0 652 276"/>
+</g>
+<g>
+<line x1="604" x2="604" y1="384" y2="416"/>
+</g>
+<g>
+<line x1="628" x2="628" y1="120" y2="152"/>
+<line x1="628" x2="684" y1="120" y2="120"/>
+<line x1="628" x2="684" y1="152" y2="152"/>
+<line x1="684" x2="684" y1="120" y2="152"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="636" x2="636" y1="76" y2="108"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="636" x2="636" y1="176" y2="164"/>
+<line x1="636" x2="636" y1="176" y2="196"/>
+</g>
+<g>
+<line x1="636" x2="636" y1="392" y2="400"/>
+</g>
+<g>
+<line x1="642" x2="606" y1="700" y2="772"/>
+<path d="M 648 696 A 8 8 0 0 0 642 700"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="648" x2="700" y1="696" y2="696"/>
+</g>
+<g>
+<line x1="650" x2="606" y1="588" y2="676"/>
+<path d="M 656 584 A 8 8 0 0 0 650 588"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="652" x2="652" y1="176" y2="164"/>
+<line x1="652" x2="652" y1="176" y2="276"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="656" x2="700" y1="584" y2="584"/>
+</g>
+<g>
+<line x1="708" x2="708" y1="552" y2="600"/>
+<line x1="708" x2="748" y1="552" y2="552"/>
+<line x1="708" x2="748" y1="600" y2="600"/>
+<line x1="748" x2="748" y1="552" y2="568"/>
+<line x1="748" x2="748" y1="568" y2="600"/>
+<line x1="748" x2="776" y1="568" y2="568"/>
+<path d="M 780 572 A 4 4 0 0 0 776 568"/>
+</g>
+<g>
+<line x1="708" x2="708" y1="664" y2="712"/>
+<line x1="708" x2="748" y1="664" y2="664"/>
+<line x1="708" x2="724" y1="712" y2="712"/>
+<line marker-end="url(#triangle)" x1="724" x2="724" y1="712" y2="748"/>
+<line x1="724" x2="748" y1="712" y2="712"/>
+<line x1="748" x2="748" y1="664" y2="696"/>
+<line x1="748" x2="748" y1="696" y2="712"/>
+<line x1="748" x2="776" y1="696" y2="696"/>
+<path d="M 776 696 A 4 4 0 0 0 780 692"/>
+</g>
+<g>
+<line x1="708" x2="708" y1="760" y2="792"/>
+<line x1="708" x2="748" y1="760" y2="760"/>
+<line x1="708" x2="748" y1="792" y2="792"/>
+<line x1="748" x2="748" y1="760" y2="776"/>
+<line x1="748" x2="748" y1="776" y2="792"/>
+<line x1="748" x2="792" y1="776" y2="776"/>
+<path d="M 792 776 A 4 4 0 0 0 796 772"/>
+</g>
+<g>
+<line x1="772" x2="772" y1="616" y2="648"/>
+<line x1="772" x2="828" y1="616" y2="616"/>
+<line x1="772" x2="828" y1="648" y2="648"/>
+<line x1="828" x2="828" y1="616" y2="648"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="780" x2="780" y1="572" y2="604"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="780" x2="780" y1="672" y2="660"/>
+<line x1="780" x2="780" y1="672" y2="692"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="796" x2="796" y1="672" y2="660"/>
+<line x1="796" x2="796" y1="672" y2="772"/>
+</g>
+<g>
+<text x="1" y="828">
+a + b =
+</text>
+</g>
+<g>
+<text x="17" y="636">
+SOURCE
+</text>
+</g>
+<g>
+<text x="73" y="492">
+LEFT-HAND SIDE
+</text>
+</g>
+<g>
+<text x="81" y="828">
+Pr(SOURCE-&gt;A|z) * Pr(A-&gt;B|z) +
+</text>
+</g>
+<g>
+<text x="81" y="844">
+Pr(SOURCE-&gt;B|z) * Pr(B-&gt;C) * Pr(C-&gt;B|z)
+</text>
+</g>
+<g>
+<text x="113" y="572">
+A0
+</text>
+</g>
+<g>
+<text x="113" y="684">
+B0
+</text>
+</g>
+<g>
+<text x="113" y="780">
+C0
+</text>
+</g>
+<g>
+<text x="121" y="524">
+z
+</text>
+</g>
+<g>
+<text x="161" y="332">
+Pr(SOURCE→A
+</text>
+</g>
+<g>
+<text x="161" y="348">
+Pr(SOURCE→A
+</text>
+</g>
+<g>
+<text x="161" y="364">
+Pr(SOURCE→A
+</text>
+</g>
+<g>
+<text x="161" y="380">
+Pr(SOURCE→B
+</text>
+</g>
+<g>
+<text x="161" y="396">
+Pr(SOURCE→B
+</text>
+</g>
+<g>
+<text x="161" y="412">
+Pr(SOURCE→B
+</text>
+</g>
+<g>
+<text x="177" y="140">
+SOURCE
+</text>
+</g>
+<g>
+<text x="257" y="332">
+z)
+</text>
+</g>
+<g>
+<text x="257" y="348">
+z)
+</text>
+</g>
+<g>
+<text x="257" y="364">
+z)
+</text>
+</g>
+<g>
+<text x="257" y="380">
+z)
+</text>
+</g>
+<g>
+<text x="257" y="396">
+z)
+</text>
+</g>
+<g>
+<text x="257" y="412">
+z)
+</text>
+</g>
+<g>
+<text x="265" y="684">
+B1
+</text>
+</g>
+<g>
+<text x="273" y="76">
+A0
+</text>
+</g>
+<g>
+<text x="273" y="188">
+B0
+</text>
+</g>
+<g>
+<text x="273" y="284">
+C0
+</text>
+</g>
+<g>
+<text x="273" y="524">
+z
+</text>
+</g>
+<g>
+<text x="281" y="28">
+z
+</text>
+</g>
+<g>
+<text x="281" y="332">
+*
+</text>
+</g>
+<g>
+<text x="281" y="348">
+*
+</text>
+</g>
+<g>
+<text x="281" y="364">
+*
+</text>
+</g>
+<g>
+<text x="281" y="380">
+*
+</text>
+</g>
+<g>
+<text x="281" y="396">
+*
+</text>
+</g>
+<g>
+<text x="281" y="412">
+*
+</text>
+</g>
+<g>
+<text x="297" y="332">
+Pr(A→B
+</text>
+</g>
+<g>
+<text x="297" y="348">
+Pr(A→B
+</text>
+</g>
+<g>
+<text x="297" y="364">
+Pr(A→B
+</text>
+</g>
+<g>
+<text x="297" y="380">
+Pr(B→C)
+</text>
+</g>
+<g>
+<text x="297" y="396">
+Pr(B→C)
+</text>
+</g>
+<g>
+<text x="297" y="412">
+Pr(B→C)
+</text>
+</g>
+<g>
+<text x="353" y="332">
+z)
+</text>
+</g>
+<g>
+<text x="353" y="348">
+z)
+</text>
+</g>
+<g>
+<text x="353" y="364">
+z)
+</text>
+</g>
+<g>
+<text x="361" y="380">
+*
+</text>
+</g>
+<g>
+<text x="361" y="396">
+*
+</text>
+</g>
+<g>
+<text x="361" y="412">
+*
+</text>
+</g>
+<g>
+<text x="377" y="332">
+*
+</text>
+</g>
+<g>
+<text x="377" y="348">
+*
+</text>
+</g>
+<g>
+<text x="377" y="364">
+*
+</text>
+</g>
+<g>
+<text x="377" y="380">
+Pr(C→B
+</text>
+</g>
+<g>
+<text x="377" y="396">
+Pr(C→B
+</text>
+</g>
+<g>
+<text x="377" y="412">
+Pr(C→B
+</text>
+</g>
+<g>
+<text x="393" y="332">
+Pr(B→A|y)
+</text>
+</g>
+<g>
+<text x="393" y="348">
+Pr(B→C)
+</text>
+</g>
+<g>
+<text x="393" y="364">
+Pr(B→C)
+</text>
+</g>
+<g>
+<text x="417" y="12">
+FULL
+</text>
+</g>
+<g>
+<text x="425" y="188">
+B1
+</text>
+</g>
+<g>
+<text x="425" y="284">
+C1
+</text>
+</g>
+<g>
+<text x="433" y="28">
+z
+</text>
+</g>
+<g>
+<text x="433" y="380">
+z)
+</text>
+</g>
+<g>
+<text x="433" y="396">
+z)
+</text>
+</g>
+<g>
+<text x="433" y="412">
+z)
+</text>
+</g>
+<g>
+<text x="441" y="828">
+*
+</text>
+</g>
+<g>
+<text x="457" y="348">
+*
+</text>
+</g>
+<g>
+<text x="457" y="364">
+*
+</text>
+</g>
+<g>
+<text x="457" y="380">
+*
+</text>
+</g>
+<g>
+<text x="457" y="396">
+*
+</text>
+</g>
+<g>
+<text x="457" y="412">
+*
+</text>
+</g>
+<g>
+<text x="473" y="332">
++
+</text>
+</g>
+<g>
+<text x="473" y="348">
+Pr(C→B
+</text>
+</g>
+<g>
+<text x="473" y="364">
+Pr(C→B
+</text>
+</g>
+<g>
+<text x="473" y="380">
+Pr(B→A
+</text>
+</g>
+<g>
+<text x="473" y="396">
+Pr(B→C)
+</text>
+</g>
+<g>
+<text x="473" y="412">
+Pr(B→C)
+</text>
+</g>
+<g>
+<text x="529" y="348">
+y)
+</text>
+</g>
+<g>
+<text x="529" y="364">
+y)
+</text>
+</g>
+<g>
+<text x="529" y="380">
+y)
+</text>
+</g>
+<g>
+<text x="537" y="396">
+*
+</text>
+</g>
+<g>
+<text x="537" y="412">
+*
+</text>
+</g>
+<g>
+<text x="553" y="364">
+*
+</text>
+</g>
+<g>
+<text x="553" y="396">
+Pr(C→B
+</text>
+</g>
+<g>
+<text x="553" y="412">
+Pr(C→B
+</text>
+</g>
+<g>
+<text x="553" y="828">
+c + d + e =
+</text>
+</g>
+<g>
+<text x="569" y="364">
+Pr(B→C)
+</text>
+</g>
+<g>
+<text x="569" y="684">
+B1
+</text>
+</g>
+<g>
+<text x="569" y="780">
+C1
+</text>
+</g>
+<g>
+<text x="577" y="76">
+A2
+</text>
+</g>
+<g>
+<text x="577" y="188">
+B2
+</text>
+</g>
+<g>
+<text x="577" y="284">
+C2
+</text>
+</g>
+<g>
+<text x="577" y="524">
+z
+</text>
+</g>
+<g>
+<text x="585" y="28">
+y
+</text>
+</g>
+<g>
+<text x="609" y="396">
+y)
+</text>
+</g>
+<g>
+<text x="609" y="412">
+y)
+</text>
+</g>
+<g>
+<text x="609" y="492">
+RIGHT-HAND SIDE
+</text>
+</g>
+<g>
+<text x="633" y="364">
++
+</text>
+</g>
+<g>
+<text x="633" y="412">
+*
+</text>
+</g>
+<g>
+<text x="641" y="140">
+SINK
+</text>
+</g>
+<g>
+<text x="649" y="412">
+Pr(B→C)
+</text>
+</g>
+<g>
+<text x="665" y="828">
+Pr(B-&gt;A|y) +
+</text>
+</g>
+<g>
+<text x="665" y="844">
+Pr(B-&gt;C) * Pr(C-&gt;B|y) +
+</text>
+</g>
+<g>
+<text x="665" y="860">
+Pr(B-&gt;C) * Pr(C-&gt;B|y) * Pr(B-&gt;C)
+</text>
+</g>
+<g>
+<text x="721" y="572">
+A2
+</text>
+</g>
+<g>
+<text x="721" y="684">
+B2
+</text>
+</g>
+<g>
+<text x="721" y="780">
+C2
+</text>
+</g>
+<g>
+<text x="729" y="524">
+y
+</text>
+</g>
+<g>
+<text x="785" y="636">
+SINK
+</text>
+</g>
+</svg>

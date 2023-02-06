@@ -1,7 +1,7 @@
 from collections import defaultdict
 
-from hmm.CertaintyOfEmittedSequenceTravelingThroughHiddenPathEdge import forward_exploded_edge_certainty
-from hmm.CertaintyOfEmittedSequenceTravelingThroughHiddenPathNode import forward_exploded_node_certainty
+from hmm.CertaintyOfEmittedSequenceTravelingThroughHiddenPathEdge import edge_certainties
+from hmm.CertaintyOfEmittedSequenceTravelingThroughHiddenPathNode import node_certainties
 from hmm.MostProbableHiddenPath_ViterbiNonEmittingHiddenStates import to_hmm_graph_PRE_PSEUDOCOUNTS
 
 with open('/home/user/Downloads/dataset_240406_5.txt') as f:
@@ -30,11 +30,11 @@ for _ in range(iterations):
     for st in states:
         state_transition_probs['SOURCE'][st] = 1.0 / len(states)
     hmm = to_hmm_graph_PRE_PSEUDOCOUNTS(state_transition_probs, state_emission_probs)
-    _, _, node_certainties = forward_exploded_node_certainty(hmm, 'SOURCE', 'SINK', emitted_seq)
-    _, _, edge_certainties = forward_exploded_edge_certainty(hmm, 'SOURCE', 'SINK', emitted_seq)
+    _, _, f_exploded_n_certainties = node_certainties(hmm, 'SOURCE', 'SINK', emitted_seq)
+    _, _, f_exploded_e_certainties = edge_certainties(hmm, 'SOURCE', 'SINK', emitted_seq)
 
     transition_sums = defaultdict(lambda: 0.0)
-    for (f_exploded_from_n_id, f_exploded_to_n_id), certainty in edge_certainties.items():
+    for (f_exploded_from_n_id, f_exploded_to_n_id), certainty in f_exploded_e_certainties.items():
         _, hmm_from_n_id = f_exploded_from_n_id
         _, hmm_to_n_id = f_exploded_to_n_id
         if hmm_from_n_id == 'SOURCE' or hmm_to_n_id == 'SINK':
@@ -45,7 +45,7 @@ for _ in range(iterations):
 
     emission_sums = defaultdict(lambda: 0.0)
     for expected_symbol in symbols:
-        for f_exploded_to_n_id, certainty in node_certainties.items():
+        for f_exploded_to_n_id, certainty in f_exploded_n_certainties.items():
             f_exploded_to_n_emission_idx, hmm_to_n_id = f_exploded_to_n_id
             if hmm_to_n_id == 'SOURCE' or hmm_to_n_id == 'SINK':
                 continue

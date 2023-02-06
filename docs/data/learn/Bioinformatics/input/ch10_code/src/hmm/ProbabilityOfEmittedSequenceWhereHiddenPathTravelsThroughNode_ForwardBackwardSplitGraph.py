@@ -8,12 +8,10 @@ from graph.DirectedGraph import Graph
 from hmm.MostProbableHiddenPath_ViterbiNonEmittingHiddenStates import STATE, HmmNodeData, TRANSITION, HmmEdgeData, \
     SYMBOL, to_hmm_graph_PRE_PSEUDOCOUNTS, hmm_add_pseudocounts_to_hidden_state_transition_probabilities, \
     hmm_add_pseudocounts_to_symbol_emission_probabilities, hmm_to_dot
-from hmm.ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughNode_ForwardGraph import filter_at_emission_idx
 from hmm.ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughNode_ForwardSplitGraph import remove_after_node, \
     remove_before_node
 from hmm.ProbabilityOfEmittedSequence_ForwardGraph import forward_explode_hmm, forward_exploded_hmm_calculation, \
     exploded_to_dot, FORWARD_EXPLODED_NODE_ID, FORWARD_EXPLODED_EDGE_ID
-
 
 # MARKDOWN_BACKWARD_EXPLODE
 BACKWARD_EXPLODED_NODE_ID = tuple[FORWARD_EXPLODED_NODE_ID, int]
@@ -210,12 +208,11 @@ def emission_probability(
     f_exploded_n_id = emitted_seq_idx_of_interest, hidden_state_of_interest
     # Isolate left-hand side and compute
     f_exploded_lhs = forward_explode_hmm(hmm, hmm_source_n_id, hmm_sink_n_id, emitted_seq)
-    remove_after_node(f_exploded_lhs, f_exploded_n_id, hmm_sink_n_id)
+    remove_after_node(f_exploded_lhs, f_exploded_n_id)
     f_exploded_lhs_sink_weight = forward_exploded_hmm_calculation(hmm, f_exploded_lhs, emitted_seq)
     # Isolate right-hand side and compute BACKWARDS
     f_exploded_rhs = forward_explode_hmm(hmm, hmm_source_n_id, hmm_sink_n_id, emitted_seq)
-    filter_at_emission_idx(hmm, f_exploded_rhs, emitted_seq_idx_of_interest, hidden_state_of_interest)
-    remove_before_node(f_exploded_rhs, f_exploded_n_id, hmm, hmm_source_n_id, hmm_sink_n_id)
+    remove_before_node(f_exploded_rhs, f_exploded_n_id)
     b_exploded_rhs, _ = backward_explode(hmm, f_exploded_rhs)
     b_exploded_rhs_source_weight = backward_exploded_hmm_calculation(hmm, b_exploded_rhs, emitted_seq)
     # Multiply to determine SINK value of the unsplit isolated exploded graph.

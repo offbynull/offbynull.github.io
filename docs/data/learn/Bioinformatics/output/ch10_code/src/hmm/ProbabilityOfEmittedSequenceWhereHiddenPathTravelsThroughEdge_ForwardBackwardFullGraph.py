@@ -6,6 +6,7 @@ from graph.DirectedGraph import Graph
 from hmm.MostProbableHiddenPath_ViterbiNonEmittingHiddenStates import STATE, HmmNodeData, TRANSITION, HmmEdgeData, \
     SYMBOL, to_hmm_graph_PRE_PSEUDOCOUNTS, hmm_add_pseudocounts_to_hidden_state_transition_probabilities, \
     hmm_add_pseudocounts_to_symbol_emission_probabilities, hmm_to_dot
+from hmm.ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughEdge_ForwardSplitGraph import get_edge_probability
 from hmm.ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughNode_ForwardBackwardSplitGraph import \
     backward_explode, backward_exploded_hmm_calculation
 from hmm.ProbabilityOfEmittedSequence_ForwardGraph import forward_explode_hmm, forward_exploded_hmm_calculation, \
@@ -13,15 +14,17 @@ from hmm.ProbabilityOfEmittedSequence_ForwardGraph import forward_explode_hmm, f
 
 
 # MARKDOWN_SINGLE
-def emission_probability(
+def emission_probability_single(
         hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
         hmm_source_n_id: STATE,
         hmm_sink_n_id: STATE,
         emitted_seq: list[SYMBOL],
-        f_exploded_from_n_id: FORWARD_EXPLODED_NODE_ID,
-        f_exploded_to_n_id: FORWARD_EXPLODED_NODE_ID
+        from_emission_idx: int,
+        from_hidden_state: STATE,
+        to_hidden_state: STATE
 ):
-    assert f_exploded_from_n_id[0] == f_exploded_to_n_id[0] + 1
+    f_exploded_from_n_id = from_emission_idx, from_hidden_state
+    f_exploded_to_n_id = (-1 if to_hidden_state == hmm_sink_n_id else from_emission_idx + 1), to_hidden_state
     # Left-hand side forward computation
     f_exploded = forward_explode_hmm(hmm, hmm_source_n_id, hmm_sink_n_id, emitted_seq)
     forward_exploded_hmm_calculation(hmm, f_exploded, emitted_seq)
@@ -34,29 +37,14 @@ def emission_probability(
     for i in range(b_exploded_n_count):
         b_exploded_n_id = f_exploded_to_n_id, i
         b += b_exploded.get_node_data(b_exploded_n_id)
-    # Get transition probability of edge connecting gap. In certain cases, the SINK node may exist in the HMM. Here we
-    # check that the transition exists in the HMM. If it does, we use the transition prob. If it doesn't but it's the
-    # SINK node, it's assumed to have a 100% transition probability.
-    f_exploded_sink_n_id = f_exploded.get_leaf_node()
-    f_exploded_from_n_emissions_idx, hmm_from_n_id = f_exploded_from_n_id
-    f_exploded_to_n_emissions_idx, hmm_to_n_id = f_exploded_to_n_id
-    transition = hmm_from_n_id, hmm_to_n_id
-    if hmm.has_edge(transition):
-        transition_prob = hmm.get_edge_data(transition).get_transition_probability()
-    elif f_exploded_to_n_id == f_exploded_sink_n_id:
-        transition_prob = 1.0  # Setting to 1.0 means it always happens
-    else:
-        raise ValueError('To node must either be SINK or must exist in HMM')
-    # Determine symbol emission prob. In certain cases, the SINK node may exist in the HMM. Here we check that the node
-    # exists in the HMM and that it's emmitable before getting the emission prob.
-    symbol = emitted_seq[f_exploded_to_n_emissions_idx]
-    if hmm.has_node(hmm_to_n_id) and hmm.get_node_data(hmm_to_n_id).is_emittable():
-        symbol_emission_prob = hmm.get_node_data(hmm_to_n_id).get_symbol_emission_probability(symbol)
-    else:
-        symbol_emission_prob = 1.0  # No emission - setting to 1.0 means it has no effect in multiplication later on
+    # Forward compute middle side (this is just the probability of the edge itself)
+    _, hmm_from_n_id = f_exploded_from_n_id
+    f_exploded_to_n_emission_idx, hmm_to_n_id = f_exploded_to_n_id
+    f_exploded_middle_sink_weight = get_edge_probability(hmm, hmm_from_n_id, hmm_to_n_id, emitted_seq,
+                                                         f_exploded_to_n_emission_idx)
     # Calculate probability and return
-    prob = f * (transition_prob * symbol_emission_prob) * b
-    return (f_exploded, f), (b_exploded, b), transition_prob, prob
+    prob = f * f_exploded_middle_sink_weight * b
+    return (f_exploded, f), (b_exploded, b), f_exploded_middle_sink_weight, prob
 # MARKDOWN_SINGLE
 
 
@@ -72,8 +60,9 @@ def main_single():
         source_state = data['source_state']
         sink_state = data['sink_state']
         emissions = data['emissions']
-        f_exploded_from_n_id = tuple(data['f_exploded_from_n_id'])
-        f_exploded_to_n_id = tuple(data['f_exploded_to_n_id'])
+        from_emission_idx = data['from_emission_idx']
+        from_hidden_state = data['from_hidden_state']
+        to_hidden_state = data['to_hidden_state']
         pseudocount = data['pseudocount']
         print(f'Finding the probability of an HMM emitting a sequence, using the following settings...')
         print()
@@ -98,34 +87,36 @@ def main_single():
         print()
         (f_exploded_lhs, f_exploded_lhs_prob_sum), \
         (b_exploded_rhs, b_exploded_rhs_prob_sum), \
-        transition_prob, probability = emission_probability(
+        f_exploded_middle_prob_sum, \
+        probability = emission_probability_single(
             hmm,
             source_state,
             sink_state,
             emissions,
-            f_exploded_from_n_id,
-            f_exploded_to_n_id
+            from_emission_idx,
+            from_hidden_state,
+            to_hidden_state
         )
         print()
-        print(f'The fully exploded HMM for the  ...')
-        print()
-        print(f' * left-hand side was forward computed.')
-        print(f' * right-hand side was backward computed.')
+        print(f'The following isolated exploded HMM was produced -- index {from_emission_idx} only has the option'
+              f' to travel from {from_hidden_state} to {to_hidden_state}, then split based on that *edge*.')
         print()
         print('```{dot}')
-        print(f'{exploded_to_dot(f_exploded_lhs, label="ALL possible left-hand sides (forward)", label_loc="top")}')
+        print(f'{exploded_to_dot(f_exploded_lhs, label="Left-hand side", label_loc="top")}')
         print('```')
         print()
         print('```{dot}')
-        print(f'{exploded_to_dot(b_exploded_rhs, label="ALL possible right-hand sides (backward)", label_loc="top")}')
+        print(f'{exploded_to_dot(b_exploded_rhs, label="Right-hand side (backward)", label_loc="top")}')
         print('```')
         print()
-        print(f' * The left-hand side is computed to have {f_exploded_lhs_prob_sum} at node {f_exploded_from_n_id}.')
-        print(f' * The right-hand side is is computed to have {b_exploded_rhs_prob_sum} at node(s) {f_exploded_to_n_id}.')
-        print(f' * The transition probability between {f_exploded_from_n_id} to {f_exploded_to_n_id} is {transition_prob}')
+        print(f' * The left-hand side is computed to have {f_exploded_lhs_prob_sum} at its sink node.')
+        print(f' * The middle side (the edge itself, not displayed as a graph above) is computed to'
+              f' {f_exploded_middle_prob_sum} at its sink node.')
+        print(f' * The right-hand side is is computed to have {b_exploded_rhs_prob_sum} at its source node.')
         print()
-        print(f'When those values are multiplied together, its the probability for all hidden paths that travel'
-              f' from {f_exploded_from_n_id} of {f_exploded_to_n_id}: {probability}.')
+        print(f'When the sink nodes are multiplied together, its the probability for all hidden paths that travel'
+              f' from {from_hidden_state} to {to_hidden_state} at index {from_emission_idx} of {emissions}:'
+              f' {probability}.')
         print()
     finally:
         print("</div>", end="\n\n")
@@ -179,23 +170,11 @@ def all_emission_probabilities(
         # the SINK node, it's assumed to have a 100% transition probability.
         f_exploded_sink_n_id = f_exploded.get_leaf_node()
         f_exploded_from_n_emissions_idx, hmm_from_n_id = f_exploded_from_n_id
-        f_exploded_to_n_emissions_idx, hmm_to_n_id = f_exploded_to_n_id
-        transition = hmm_from_n_id, hmm_to_n_id
-        if hmm.has_edge(transition):
-            transition_prob = hmm.get_edge_data(transition).get_transition_probability()
-        elif f_exploded_to_n_id == f_exploded_sink_n_id:
-            transition_prob = 1.0  # Setting to 1.0 means it always happens
-        else:
-            raise ValueError('To node must either be SINK or must exist in HMM')
-        # Determine symbol emission prob. In certain cases, the SINK node may exist in the HMM. Here we check that the
-        # node exists in the HMM and that it's emmitable before getting the emission prob.
-        symbol = emitted_seq[f_exploded_to_n_emissions_idx]
-        if hmm.has_node(hmm_to_n_id) and hmm.get_node_data(hmm_to_n_id).is_emittable():
-            symbol_emission_prob = hmm.get_node_data(hmm_to_n_id).get_symbol_emission_probability(symbol)
-        else:
-            symbol_emission_prob = 1.0  # No emission - setting to 1.0 means it has no effect in multiplication later on
+        f_exploded_to_n_emission_idx, hmm_to_n_id = f_exploded_to_n_id
+        f_exploded_middle_sink_weight = get_edge_probability(hmm, hmm_from_n_id, hmm_to_n_id, emitted_seq,
+                                                             f_exploded_to_n_emission_idx)
         # Calculate probability and return
-        prob = f * (transition_prob * symbol_emission_prob) * b
+        prob = f * f_exploded_middle_sink_weight * b
         probs[f_exploded_e_id] = prob
     return f_exploded, b_exploded, probs
 # MARKDOWN_ALL
@@ -256,8 +235,8 @@ def main_all():
         print()
         print(f'The probability for {emissions} when the hidden path is limited to traveling through ...')
         print()
-        for node, prob in sorted(probabilities.items()):
-            print(f' * {node} = {prob}')
+        for transition, prob in sorted(probabilities.items()):
+            print(f' * {transition[0]} → {transition[1]} = {prob}')
         print()
     finally:
         print("</div>", end="\n\n")

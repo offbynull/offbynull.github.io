@@ -12,7 +12,6 @@ from hmm.MostProbableHiddenPath_ViterbiNonEmittingHiddenStates import STATE, Hmm
     hmm_add_pseudocounts_to_symbol_emission_probabilities, to_viterbi_graph, max_product_path_in_viterbi
 
 
-# MARKDOWN
 def randomize_hmm_probabilities(
     hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData]
 ):
@@ -32,6 +31,7 @@ def randomize_hmm_probabilities(
             hmm.get_node_data(state).set_symbol_emission_probability(symbol, probability)
 
 
+# MARKDOWN
 def viterbi_learning(
         hmm: Graph[STATE, HmmNodeData, TRANSITION, HmmEdgeData],
         hmm_source_n_id: STATE,
