@@ -1175,13 +1175,12 @@ also 10.4 equivalent fraction property?
 
    See associative property and commutative property.
 
- * `{bm} quotient property/(quotient property)_POW/i` - Two power operations with the same base being divided by each other can merge into one by keeping the same base and subtracting their exponents. There are two different cases: Consider the division `{kt} \frac{x^m}{x^n}`.
+ * `{bm} quotient property/(quotient property)_POW/i` - Two power operations with the same base being divided by each other can merge into one by keeping the same base and subtracting their exponents. There are two different cases: Consider the division `{kt} \frac{x^m}{x^n}`. If ...
 
-   * If m >= n, then `{kt} \frac{x^m}{x^n} = x^{m-n}`. For example, `{kt} \frac{x^5}{x^2} = \frac{x \cdot x \cdot x \cdot x \cdot x}{x \cdot x}`, where the common `{kt} x \cdot x` is removed from both the numerator and denominator: `{kt} \frac{x \cdot x \cdot x}{1} = x^3`.
+   * m >= n, then `{kt} \frac{x^m}{x^n} = x^{m-n}`. For example, `{kt} \frac{x^5}{x^2} = \frac{x \cdot x \cdot x \cdot x \cdot x}{x \cdot x}`, where the common `{kt} x \cdot x` is removed from both the numerator and denominator: `{kt} \frac{x \cdot x \cdot x}{1} = x^3`.
+   * m < n, then `{kt} \frac{x^m}{x^n} = \frac{1}{x^{n-m}}`. For example, `{kt} \frac{x^2}{x^5} = \frac{x \cdot x}{x \cdot x \cdot x \cdot x \cdot x}`, where the common `{kt} x \cdot x` is removed from both the numerator and denominator: `{kt} \frac{1}{x \cdot x \cdot x} = \frac{1}{x^3}`.
 
-   * If m < n, then `{kt} \frac{x^m}{x^n} = \frac{1}{x^{n-m}}`. For example, `{kt} \frac{x^2}{x^5} = \frac{x \cdot x}{x \cdot x \cdot x \cdot x \cdot x}`, where the common `{kt} x \cdot x` is removed from both the numerator and denominator: `{kt} \frac{1}{x \cdot x \cdot x} = \frac{1}{x^3}`.
-
-   See equivalent fraction property and identity property.
+   See equivalent fraction property, identity property, and negative exponent definition.
 
  * `{bm} quotient to power property/(quotient to power property)_POW/i` - A power operation on a fraction can be rewritten as a fraction where the numerator and denominator are both raised to that power. For example, `{kt} (\frac{x}{y})^3 = \frac{x^3}{y^3}` because `{kt} (\frac{x}{y})^3 = \frac{x}{y} \cdot \frac{x}{y} \cdot \frac{x}{y} = \frac{x \cdot x \cdot x}{y \cdot y \cdot y} = \frac{x^3}{y^3}`.
 
@@ -1191,6 +1190,15 @@ also 10.4 equivalent fraction property?
    
    * `{kt} 5^0 = 1`.
    * `{kt} x^0 = 1, x \neq 0`.
+
+ * `{bm} negative exponent definition/(negative exponent definition|negative exponent property)/i` - If the exponent of a power operation is a negative integer, that operation evaluates to the reciprocal of the power operation with the positive form of the exponent.
+
+   For example, ...
+
+   * `{kt} 5^{-2} = \frac{1}{5^2}`.
+   * `{kt} x^{-3} = \frac{1}{x^2}`.
+
+   To understand why, refer to the quotient to power property_POW: `{kt} x^{-3} = x^{1-4} = \frac{x^1}{x^4} = \frac{x}{x \cdot x \cdot x \cdot x} = \frac{1}{x \cdot x \cdot x} = \frac{1}{x^3}`. 
 
  * `{bm} FOIL/(FOIL)/` `{bm} /(first[-\s]outer[-\s]inner[-\s]last)/i` - An acronym for the application of the distributive property to binomials. For example, when normally multiplying two binomials `{kt} (x+y) \cdot (x+z)` ...
    
@@ -1230,6 +1238,21 @@ also 10.4 equivalent fraction property?
 
  * `{bm} equivalent fraction property` - The value of a fraction doesn't change if its numerator and denominator have a common factor added or removed. For example, `{kt} \frac{a \cdot c}{b \cdot c} = \frac{a}{b}` (a and c cannot be 0).
 
+ * `{bm} scientific notation` - A number written in the form `{kt} a \cdot 10^n`, where ...
+
+   * a is rational number between 1 and 9.
+   * n is an integer.
+
+   For example, ...
+   
+   * 0.075 in scientific notation is `{kt} 7.5 \cdot 10^{-2} = 7.5 \cdot \frac{1}{10^2} = 7.5 \cdot \frac{1}{100}`.
+   * 0.75 in scientific notation is `{kt} 7.5 \cdot 10^{-1} = 7.5 \cdot \frac{1}{10^1} = 7.5 \cdot \frac{1}{10}`.
+   * 7.5 in scientific notation is `{kt} 7.5 \cdot 10^0 = 7.5 \cdot 1`.
+   * 75 in scientific notation is `{kt} 7.5 \cdot 10^1 = 7.5 \cdot 10`.
+   * 750 in scientific is `{kt} 7.5 \cdot 10^2 = 7.5 \cdot 100`.
+
+   See negative exponent definition and zero exponent definition.
+
 `{bm-error} Wrap in !! or apply suffix _EXP/(\bterms?\b)/i`
 
 `{bm-error} Wrap in !! or apply suffix _POW/(product property)/i`
@@ -1240,10 +1263,10 @@ also 10.4 equivalent fraction property?
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 
-TODO: define above, write a parser, continue from start of 10.4
+TODO: define above, write a parser, continue from start of 10.6
 
-TODO: define above, write a parser, continue from start of 10.4
+TODO: define above, write a parser, continue from start of 10.6
 
-TODO: define above, write a parser, continue from start of 10.4
+TODO: define above, write a parser, continue from start of 10.6
 
-TODO: define above, write a parser, continue from start of 10.4
+TODO: define above, write a parser, continue from start of 10.6
