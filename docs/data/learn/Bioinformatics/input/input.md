@@ -16593,7 +16593,7 @@ An HMM models a machine, such as CG island machine described above, using probab
 
  1. **Hidden states**
  
-    For the machine described above, the hidden states identify whether the machine is emitting a CG island or not. In addition, each HMM comes with a "SOURCE" hidden state which represents the machine's starting state (will never emit a symbol).
+    For the machine described above, the hidden states identify whether the machine is emitting a CG island or not. In addition, each HMM comes with a "SOURCE" hidden state which represents the machine's starting state (will never emit a symbol -- non-emitting hidden state).
  
     {SOURCE, CG island, non-CG island}
 
@@ -16791,7 +16791,7 @@ Algorithms/Sequence Hidden Markov Models/Chained Transition Probability_TOPIC
 Algorithms/Sequence Hidden Markov Models/Chained Emission Probability_TOPIC
 ```
 
-**WHAT**: The probability that, in an HMM, a sequence of symbols is emitted, each after a state transition has occurred.
+**WHAT**: The probability that, in an HMM, a sequence of symbols is emitted, each after a hidden state transition has occurred.
 
 **WHY**: These probabilities are the foundation of more elaborate HMM algorithms, discussed further on.
 
@@ -16799,10 +16799,10 @@ Algorithms/Sequence Hidden Markov Models/Chained Emission Probability_TOPIC
 
 The algorithm is the application of probabilities. An HMM provides the probability for ...
 
- * each state transition.
+ * each hidden state transition.
  * each symbol emission in each hidden state.
 
-The probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destination's emission). The probability of a chain of such transition-emission is their individual probabilities multiplied together.
+The probability of symbol emission after a hidden state transition is Pr(source-to-destination transition) * Pr(destination's emission). The probability of a chain of such transition-emission is their individual probabilities multiplied together.
 
 ```{output}
 ch10_code/src/hmm/StateTransitionFollowedBySymbolEmissionChainProbability.py
@@ -16827,7 +16827,7 @@ transition_to_symbol_pairs: [[[SOURCE,B],z], [[B,A],z], [[A,A],z], [[A,A],y], [[
 
 `{bm} /(Algorithms\/Sequence Hidden Markov Models\/Most Probable Hidden Path)_TOPIC/`
 
-**WHAT**: Find the most likely hidden path within an HMM that for a sequence of emitted symbols. For example, consider the HMM represented by the following HMM diagram and the emitted sequence [z, z, x, x, y]. The algorithm will determine the most likely set of hidden state transitions (hidden path) that resulted in that emitted sequence.
+**WHAT**: Find the most likely hidden path within an HMM for an emitted sequence. For example, consider the HMM represented by the following HMM diagram and the emitted sequence [z, z, x, x, y]. The algorithm will determine the most likely set of hidden state transitions (hidden path) that resulted in that emitted sequence.
 
 ```{svgbob}
                    +--------+   
@@ -16858,7 +16858,7 @@ transition_to_symbol_pairs: [[[SOURCE,B],z], [[B,A],z], [[A,A],z], [[A,A],y], [[
                     +- - - -+               
 ```
 
-**WHY**: Hidden states aren't observable (hence the word hidden) but emitted symbols are. That means that, although it's possible to see the symbols being emitted, it's impossible to know the hidden path taken to emit that sequence of symbols. This algorithm provides the most likely hidden path, based on probabilities, that resulted in a sequence of emitted symbols.
+**WHY**: Hidden states aren't observable (hence the word hidden) but emitted symbols are. That means that, although it's possible to see the symbols being emitted, it's impossible to know the hidden path taken to emit that sequence of symbols. This algorithm provides the most likely hidden path, based on probabilities, that resulted in an emitted sequence.
 
 #### Viterbi Algorithm
 
@@ -16945,7 +16945,7 @@ Each edge weight in the Viterbi graph is the probability that the symbol at the 
                   +---+
 ```
 
-The one exception is edge weight to the SINK node. At the end of the sequence, there's nowhere to go but to the SINK node, and as such the probability of edges to the SINK node must be 1.0.
+The one exception is edge weight to the SINK node. At the end of the emitted sequence, there's nowhere to go but to the SINK node, and as such the probability of edges to the SINK node must be 1.0.
 
 |          |             x            |             y            |             z            |       NON-EMITTABLE      |
 |----------|--------------------------|--------------------------|--------------------------|--------------------------|
@@ -17001,7 +17001,7 @@ emissions: [z,z,x,x,y]
 In a Viterbi graph, each path from "SOURCE" to "SINK" corresponds to a hidden path in the corresponding HMM. The goal is to find the path with the maximum product weight: The path with the maximum product weight is the most probable hidden path for the emitted sequence.
 
 ```{note}
-Why? Recall from Algorithms/Sequence Hidden Markov Models/Chained Transition-Emission Probability_TOPIC: The probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destination's emission). The probability of a chain of such transition-emission is their individual probabilities multiplied together.
+Why? Recall from Algorithms/Sequence Hidden Markov Models/Chained Transition-Emission Probability_TOPIC: The probability of symbol emission after a hidden state transition is Pr(source-to-destination transition) * Pr(destination's emission). The probability of a chain of such transition-emission is their individual probabilities multiplied together.
 ```
 
 The algorithm for determining the path with the maximum product weight is to first apply the logarithm function to each edge weight, then apply the dynamic programming algorithm that finds the path with the maximum sum.
@@ -17035,7 +17035,7 @@ emissions: [z,z,x,x,y]
 Notice what's happening here. This can be made very memory efficient:
 
  1. The calculation is being done front-to-back, so once a column of nodes in the Viterbi have been processed, it doesn't need to be kept around anymore.
- 2. You technically don't even need to keep a graph structure in memory. You can just keep the emitted symbols sequence and a pre-calculated set of probabilities.
+ 2. You technically don't even need to keep a graph structure in memory. You can just keep the emitted sequence and a pre-calculated set of probabilities.
  3. You can apply the divide-and-conquer algorithm as discussed in Algorithms/Sequence Alignment/Global Alignment/Divide-and-Conquer Algorithm_TOPIC - it's the same type of grid-based graph.
 ```
 
@@ -17568,7 +17568,7 @@ This process repeats in the hopes that the HMM probabilities converge to maximiz
 ```{note}
 Note what this algorithm is doing. The Pevzner book claims that it's very similar to Llyod's algorithm for k-means clustering in that it's starting off at some random point and pushing that point around to maximize some metric (generic name for this is called [Expectation-maximization](https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm)).
 
-The book claims that this is soft clustering. But if you only have one observed sequence, aren't you clustering a single data point? Shouldn't you have many observed sequences? Or maybe having many observed sequences is the same thing as having one sequence and concatenating them (need to figure out some special logic for each sequence's first transition from SOURCE)?
+The book claims that this is soft clustering. But if you only have one emitted sequence, aren't you clustering a single data point? Shouldn't you have many emitted sequences? Or maybe having many emitted sequences is the same thing as having one emitted and concatenating them (need to figure out some special logic for each emitted sequence's first transition from SOURCE)?
 
 Monte Carlo algorithms like this are typically executed many times, where the best performing execution is the one that gets chosen.
 ```
@@ -17608,7 +17608,7 @@ pseudocount: 0.0001
 
 `{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence)_TOPIC/`
 
-**WHAT**: Compute the likelihood that an HMM emits some sequence. For example, determine if the following HMM is more likely to emit [z, z, x, x, y] or [z, z, z, z, z].
+**WHAT**: Compute the likelihood that an HMM outputs some emitted sequence. For example, determine if the following HMM is more likely to emit [z, z, x, x, y] or [z, z, z, z, z].
 
 ```{svgbob}
                    +--------+   
@@ -17642,7 +17642,7 @@ pseudocount: 0.0001
 **WHY**: Given a set of emitted sequences, comparing the likelihoods of those emitted sequences can be used as a measure of how viable the probabilities of the HMM are.
 
 ```{note}
-This is speculation. I speculate this because, if you have a set of emitted sequences that you know get emitted by the machine which an HMM models, those sequences need to more probable to occur vs random sequences (I think).
+This is speculation. I speculate this because, if you have a set of emitted sequences that you know get emitted by the machine which an HMM models, those emitted sequences need to be more probable vs randomized emitted sequences (I think).
 
 Why speculate? The Pevzner book never covers a good use-case for this. 
 ```
@@ -17660,7 +17660,7 @@ Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-e
 
 Recall that the ....
 
- 1. probability of symbol emission after a state transition is Pr(source-to-destination transition) * Pr(destination's emission). For example, the probability that A transitions to B and emits x is Pr(A→B) * Pr(B emits x), written more concisely as Pr(x|A→B).
+ 1. probability of symbol emission after a hidden state transition is Pr(source-to-destination transition) * Pr(destination's emission). For example, the probability that A transitions to B and emits x is Pr(A→B) * Pr(B emits x), written more concisely as Pr(x|A→B).
 
  2. probability of a chain of such transition-emission is their individual probabilities multiplied together. For example, the probability that ...
 
@@ -17670,9 +17670,9 @@ Recall that the ....
     
     ... is Pr(A→B|x) * Pr(y|B→B) * Pr(y|B→B)
 
- 3. probability of an HMM emits a sequence while traveling through a hidden path is calculated as described above (multiplied chain of transition-emission probabilities).
+ 3. probability of an HMM outputting an emitted sequence while traveling through a hidden path is calculated as described above (multiplied chain of transition-emission probabilities).
 
-Given all hidden paths in a HMM, the probability of an HMM emitting a specific sequence is the sum of probability calculations for each hidden path and the emitted sequence (sum of point #3 above). For example, imagine the following HMM.
+Given all hidden paths in a HMM, the probability of an HMM outputting a specific emitted sequence is the sum of probability calculations for each hidden path and the emitted sequence (sum of point #3 above). For example, imagine the following HMM.
 
 ```{svgbob}
                    +--------+   
@@ -17727,7 +17727,7 @@ That's why some of the probabilities being multiplied above don't list an emissi
 ```
 
 ```{note}
-"The probability of an HMM emitting a specific sequence is the sum of the probability of that emitted sequence occurring over all hidden paths" - Why? The probability of one or the other is defined as P(A) + P(B). What's happening here is that, it's finding the probability that it's emitted from the first hidden path, or the second hidden path, or the third hidden path, or ...
+"The probability of an HMM outputting a specific emitted sequence is the sum of the probability of that emitted sequence occurring over all hidden paths" - Why? The probability of one or the other is defined as P(A) + P(B). What's happening here is that, it's finding the probability that it's emitted from the first hidden path, or the second hidden path, or the third hidden path, or ...
 ```
 
 ```{output}
@@ -17765,7 +17765,7 @@ Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-e
 
 **ALGORITHM**:
 
-This algorithm uses basic algebra rules to streamline the computations performed by the summation algorithm. Recall that the summation algorithm determines the probability of an HMM emitting a sequence by summing the probability of that emitted sequence occurring over all hidden paths. For example, imagine the following HMM.
+This algorithm uses basic algebra rules to streamline the computations performed by the summation algorithm. Recall that the summation algorithm determines the probability of an HMM outputting an emitted sequence by summing the probability of that emitted sequence occurring over all hidden paths. For example, imagine the following HMM.
 
 ```{svgbob}
                    +--------+   
@@ -18134,7 +18134,7 @@ Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence_TOPIC
 The meat of this section is the forward-backward full algorithm. The Pevzner book didn't discuss why this algorithm works, but I've done my best to try to reason about it and extend the reasoning to non-emitting hidden states. However, I don't know if my reasoning is correct. It seems to be correct for some cases, but there are many cases I haven't tested for. In any event, I think what's here will work just fine so long as you don't have non-emitting hidden states (and may work if you do have non-emitting hidden states).
 ```
 
-**WHAT**: Compute the probability that an HMM emits some sequence, but only for hidden paths where a specific emission index is emitted from a specific hidden state. For example, determine the probability of following HMM emitting [z, z, y] when index 1 of the emission always travels through B.
+**WHAT**: Compute the probability that an HMM outputs some emitted sequence, but only for hidden paths where a specific emission index is emitted from a specific hidden state. For example, determine the probability of following HMM emitting [z, z, y] when index 1 of the emission always travels through B.
 
 ```{svgbob}
                    +--------+   
@@ -18199,7 +18199,7 @@ Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence/Summati
 
 **ALGORITHM**:
 
-Given all hidden paths in a HMM, recall that the probability of an HMM emitting a specific sequence is the sum of probability calculations for each hidden path and the emitted sequence. For example, imagine the following HMM.
+Given all hidden paths in a HMM, recall that the probability of an HMM outputting a specific emitted sequence is the sum of probability calculations for each hidden path and the emitted sequence. For example, imagine the following HMM.
 
 ```{svgbob}
                    +--------+   
@@ -18293,7 +18293,7 @@ Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where H
 
 Recall that ...
 
-1. the probability of an HMM emitting a specific sequence is the sum of the probability of that emitted sequence occurring over all hidden paths in the HMM.
+1. the probability of an HMM outputting a specific emitted sequence is the sum of the probability of that emitted sequence occurring over all hidden paths in the HMM.
 2. the summation can have factors pulled out of it such that the expression can be calculated as an exploded HMM.
 
 For example, imagine the following HMM.
@@ -19138,7 +19138,7 @@ Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where H
 The meat of this section is the forward-backward full algorithm. The Pevzner book didn't discuss why this algorithm works, but I've done my best to try to reason about it and extend the reasoning to non-emitting hidden states. However, I don't know if my reasoning is correct. It seems to be correct for some cases, but there are many cases I haven't tested for. In any event, I think what's here will work just fine so long as you don't have non-emitting hidden states (and may work if you do have non-emitting hidden states).
 ```
 
-**WHAT**: Compute the probability that an HMM emits some sequence, but only for hidden paths where a specific edge is taken. For example, determine the probability of following HMM emitting [y, y, z, z] when ...
+**WHAT**: Compute the probability that an HMM outputs some emitted sequence, but only for hidden paths where a specific edge is taken. For example, determine the probability of following HMM emitting [y, y, z, z] when ...
 
 * index 1 of the emission always travels through B
 * index 2 of the emission always travels through A
@@ -19208,7 +19208,7 @@ Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where H
 
 **ALGORITHM**:
 
-Given all hidden paths in a HMM, recall that the probability of an HMM emitting a specific sequence is the sum of probability calculations for each hidden path and the emitted sequence. For example, imagine the following HMM.
+Given all hidden paths in a HMM, recall that the probability of an HMM outputting a specific emitted sequence is the sum of probability calculations for each hidden path and the emitted sequence. For example, imagine the following HMM.
 
 ```{svgbob}
                    +--------+   
@@ -19313,7 +19313,7 @@ Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where H
 
 Recall that ...
 
-1. the probability of an HMM emitting a specific sequence is the sum of the probability of that emitted sequence occurring over all hidden paths in the HMM.
+1. the probability of an HMM outputting a specific emitted sequence is the sum of the probability of that emitted sequence occurring over all hidden paths in the HMM.
 2. the summation can have factors pulled out of it such that the expression can be calculated as an exploded HMM.
 
 For example, imagine the following HMM.
@@ -20775,7 +20775,7 @@ Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
 Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence/Forward Graph Algorithm_TOPIC
 ```
 
-**WHAT**: Determine the most likely sequence of size n that an HMM will emit. For example, the following HMM is most likely to emit ...
+**WHAT**: Determine the most likely emitted sequence of size n that an HMM will output. For example, the following HMM is most likely to emit ...
 
  * \[y] when n = 1.
  * \[y, y] when n = 2.
@@ -26768,7 +26768,7 @@ first_indexes_checkpoint_n: 20
 
    When cystine goes through DNA methylation, it has a tendency to deaminate to thymine. However, DNA methylation is often suppressed in areas of DNA dubbed CG-islands, where CG appears more frequently than the rest of the genome.
 
- * `{bm} Hidden Markov Model/(Hidden Markov Model|hidden state)/i` `{bm} /(HMM)/` - A model of a machine that outputs a sequence.
+ * `{bm} Hidden Markov Model` `{bm} /(HMM)/` - A model of a machine that outputs a sequence.
 
    ```{svgbob}
          .---------. "moving right outputting a sequence"
@@ -26851,17 +26851,12 @@ first_indexes_checkpoint_n: 20
                        | SOURCE  |
            0.5         +-+-----+-+       0.5
       .------------------'     '----------------.
-      |                                         |
-      |                                         |
       |       0.75      +- - - -+     0.5       |
       |  .- - - - - - ->:  hit  :<- - - - - -.  |
       |  :              +- - - -+            :  |
-      |  :                                   :  |
-      |  :                                   :  |
       |  :     0.1      +- - - -+     0.1    :  |
       |  : .- - - - - ->: miss  :<- - - - -. :  |
       |  : :            +- - - -+          : :  |
-      |  : :                               : :  |
       |  : :  .-------------------------.  : :  |
       v  : :  | .---.     0.1     .---. v  : :  v
    +-----+-+--+-+-+ |             | +-+----+-+-----+
@@ -26871,13 +26866,82 @@ first_indexes_checkpoint_n: 20
            :  | |   |             |   | |  :
            :  | '---'     0.1     '---' |  :
            :  '-------------------------'  :
-           :                               :
-           :                               :
            :     0.15   +- - - -+  0.4     :
            '- - - - - ->: foul  :<- - - - -'
                         +- - - -+
    ```
-  
+
+ * `{bm} hidden state` - A state within an HMM. At any given time, a HMM will be in one of n different hidden states. Unless a hidden state is a non-emitting hidden state, ...
+ 
+   * a HMM transitioning to that hidden state will result in a symbol emission (e.g. [foul, miss, hit] in the HMM diagram below).
+   * the probability of symbol emission depends on the hidden state (e.g. emitting foul from hitter bat has 0.15 probability vs fouler bat has 0.4 probability, in the HMM diagram below).
+
+   ```{note}
+   I think the word "hidden" is used because the machine that an HMM models typically has unobservable state (as in you can't observe its state, hence the word hidden).
+   ```
+ 
+   In the HMM diagram below, the hidden states are [SOURCE, hitter bat, quitter bat].
+
+   ```{svgbob}
+                       +---------+
+                       | SOURCE  |
+           0.5         +-+-----+-+       0.5
+      .------------------'     '----------------.
+      |       0.75      +- - - -+     0.5       |
+      |  .- - - - - - ->:  hit  :<- - - - - -.  |
+      |  :              +- - - -+            :  |
+      |  :     0.1      +- - - -+     0.1    :  |
+      |  : .- - - - - ->: miss  :<- - - - -. :  |
+      |  : :            +- - - -+          : :  |
+      |  : :  .-------------------------.  : :  |
+      v  : :  | .---.     0.1     .---. v  : :  v
+   +-----+-+--+-+-+ |             | +-+----+-+-----+
+   | "hitter bat" | |             | | "fouler bat" |
+   +-------+------+ |0.9       0.9| +---+--+-------+
+           :  ^ ^   |             |   ^ |  :
+           :  | |   |             |   | |  :
+           :  | '---'     0.1     '---' |  :
+           :  '-------------------------'  :
+           :     0.15   +- - - -+  0.4     :
+           '- - - - - ->: foul  :<- - - - -'
+                        +- - - -+
+   ```
+
+ * `{bm} non-emitting hidden state` - A hidden state that doesn't emit symbols. An HMM typically emits a symbol after transitioning to a new hidden state. However, if that new hidden state is a non-emitting hidden state, it doesn't emit a symbol.
+ 
+   An HMM ...
+ 
+   * typically has a non-emitting hidden state that represents the start state of the machine.
+   * may have a non-emitting hidden state that represents the termination state of the machine.
+   * may have several other non-emitting hidden states (not related to machine start or termination).
+
+   The HMM diagram below has the non-emitting hidden state SOURCE, which represents the machine's start state.
+
+   ```{svgbob}
+                       +---------+
+                       | SOURCE  |
+           0.5         +-+-----+-+       0.5
+      .------------------'     '----------------.
+      |       0.75      +- - - -+     0.5       |
+      |  .- - - - - - ->:  hit  :<- - - - - -.  |
+      |  :              +- - - -+            :  |
+      |  :     0.1      +- - - -+     0.1    :  |
+      |  : .- - - - - ->: miss  :<- - - - -. :  |
+      |  : :            +- - - -+          : :  |
+      |  : :  .-------------------------.  : :  |
+      v  : :  | .---.     0.1     .---. v  : :  v
+   +-----+-+--+-+-+ |             | +-+----+-+-----+
+   | "hitter bat" | |             | | "fouler bat" |
+   +-------+------+ |0.9       0.9| +---+--+-------+
+           :  ^ ^   |             |   ^ |  :
+           :  | |   |             |   | |  :
+           :  | '---'     0.1     '---' |  :
+           :  '-------------------------'  :
+           :     0.15   +- - - -+  0.4     :
+           '- - - - - ->: foul  :<- - - - -'
+                        +- - - -+
+   ```
+
  * `{bm} hidden path` - A sequence of hidden state transitions that a HMM passes through. For example, in the HMM diagram below, one possible hidden path could be as follows:
  
    1. SOURCE → fouler bat
@@ -26892,17 +26956,12 @@ first_indexes_checkpoint_n: 20
                        | SOURCE  |
            0.5         +-+-----+-+       0.5
       .------------------'     '----------------.
-      |                                         |
-      |                                         |
       |       0.75      +- - - -+     0.5       |
       |  .- - - - - - ->:  hit  :<- - - - - -.  |
       |  :              +- - - -+            :  |
-      |  :                                   :  |
-      |  :                                   :  |
       |  :     0.1      +- - - -+     0.1    :  |
       |  : .- - - - - ->: miss  :<- - - - -. :  |
       |  : :            +- - - -+          : :  |
-      |  : :                               : :  |
       |  : :  .-------------------------.  : :  |
       v  : :  | .---.     0.1     .---. v  : :  v
    +-----+-+--+-+-+ |             | +-+----+-+-----+
@@ -26912,12 +26971,39 @@ first_indexes_checkpoint_n: 20
            :  | |   |             |   | |  :
            :  | '---'     0.1     '---' |  :
            :  '-------------------------'  :
-           :                               :
-           :                               :
            :     0.15   +- - - -+  0.4     :
            '- - - - - ->: foul  :<- - - - -'
                         +- - - -+
    ```
+
+ * `{bm} symbol emission/(symbol emission|emitted symbol)/i` - A symbol emitted after a hidden state transition. The HMM diagram below can emit the symbols [hit, miss, foul].
+
+   ```{svgbob}
+                       +---------+
+                       | SOURCE  |
+           0.5         +-+-----+-+       0.5
+      .------------------'     '----------------.
+      |       0.75      +- - - -+     0.5       |
+      |  .- - - - - - ->:  hit  :<- - - - - -.  |
+      |  :              +- - - -+            :  |
+      |  :     0.1      +- - - -+     0.1    :  |
+      |  : .- - - - - ->: miss  :<- - - - -. :  |
+      |  : :            +- - - -+          : :  |
+      |  : :  .-------------------------.  : :  |
+      v  : :  | .---.     0.1     .---. v  : :  v
+   +-----+-+--+-+-+ |             | +-+----+-+-----+
+   | "hitter bat" | |             | | "fouler bat" |
+   +-------+------+ |0.9       0.9| +---+--+-------+
+           :  ^ ^   |             |   ^ |  :
+           :  | |   |             |   | |  :
+           :  | '---'     0.1     '---' |  :
+           :  '-------------------------'  :
+           :     0.15   +- - - -+  0.4     :
+           '- - - - - ->: foul  :<- - - - -'
+                        +- - - -+
+   ```
+
+ * `{bm} emitted sequence` - A sequence of symbol emissions.
 
  * `{bm} Viterbi graph/(Viterbi graph|Viterbi algorithm|Viterbi)/i` - A directed graph representing all possible HMM hidden state transitions that result in a sequence of emitted symbol. Given an emitted sequence, a Viterbi graph lays out nodes in a grid, where each ...
  
@@ -26971,7 +27057,7 @@ first_indexes_checkpoint_n: 20
                         +- - - -+
    ```
 
-   The probability that some symbol was emitted (e.g. hit) after some state transition occurrs (e.g. fouler bat → hitter bat) is as follows: Pr(symbol|state-transition) = Pr(state-transition) * Pr(symbol). For example, Pr(fouler bat → hitter bat) is 0.1 in the HMM diagram above, and Pr(hit) once entered into the hitter bat state is 0.75, so Pr(hit|fouler bat → hitter bat) = 0.1 * 0.75 = 0.075.
+   The probability that some symbol was emitted (e.g. hit) after some hidden state transition occurrs (e.g. fouler bat → hitter bat) is as follows: Pr(symbol|state-transition) = Pr(state-transition) * Pr(symbol). For example, Pr(fouler bat → hitter bat) is 0.1 in the HMM diagram above, and Pr(hit) once entered into the hitter bat state is 0.75, so Pr(hit|fouler bat → hitter bat) = 0.1 * 0.75 = 0.075.
 
    |                             |         hit        |        miss      |        foul        |
    |-----------------------------|--------------------|------------------|--------------------|
@@ -27013,17 +27099,37 @@ first_indexes_checkpoint_n: 20
    
    0.2 * 0.45 * 0.09 * 0.45 * 0.45 = 0.0016.
 
-   TODO: THIS DIAGRAM IS WRONG? GO TO THE PROBLEM IN 10.7, OPEN THE TEST DATASET AND INSIDE SHOULD BE A DOCUMENT. THAT DOCUMENT HAS A DIAGRAM OF HOW THE GRAPH SHOULD LOOK.
+ * `{bm} Viterbi learning` - A Monte Carlo algorithm that uses the Viterbi algorithm to derive an HMM's probabilities from an emission sequence.
 
-   TODO: THIS DIAGRAM IS WRONG? GO TO THE PROBLEM IN 10.7, OPEN THE TEST DATASET AND INSIDE SHOULD BE A DOCUMENT. THAT DOCUMENT HAS A DIAGRAM OF HOW THE GRAPH SHOULD LOOK.
+   ```{note}
+   See Algorithms/Sequence Hidden Markov Models/Viterbi Learning_TOPIC for more information.
+   ```
 
-   TODO: THIS DIAGRAM IS WRONG? GO TO THE PROBLEM IN 10.7, OPEN THE TEST DATASET AND INSIDE SHOULD BE A DOCUMENT. THAT DOCUMENT HAS A DIAGRAM OF HOW THE GRAPH SHOULD LOOK.
+ * `{bm} Baum-Welch learning` - A Monte Carlo algorithm that uses confidence measurements to derive an HMM's probabilities from an emission sequence.
 
-   TODO: THIS DIAGRAM IS WRONG? GO TO THE PROBLEM IN 10.7, OPEN THE TEST DATASET AND INSIDE SHOULD BE A DOCUMENT. THAT DOCUMENT HAS A DIAGRAM OF HOW THE GRAPH SHOULD LOOK.
-
-   TODO: continue 10.7 last step (exercise break)
+   ```{note}
+   See Algorithms/Sequence Hidden Markov Models/Baum-Welch Learning_TOPIC for more information.
+   ```
 
  * `{bm} CpG island/(C[p\-]?G island|C[p\-]?G site)/i` - Regions of DNA with a high frequency of cystine followed by guanine. The reverse conmplementing strand will have equal regions with equally high frequencies of guanine followed by cystine.
+
+ * `{bm} exploded HMM` -
+
+ TODO: ADD ABOVE, FIX VITERBI DEFINITION, ADD FORWARD GRAPH / BACKWARD GRAPH DEFINITIONS?
+
+ TODO: ADD ABOVE, FIX VITERBI DEFINITION, ADD FORWARD GRAPH / BACKWARD GRAPH DEFINITIONS?
+
+ TODO: ADD ABOVE, FIX VITERBI DEFINITION, ADD FORWARD GRAPH / BACKWARD GRAPH DEFINITIONS?
+
+ TODO: ADD ABOVE, FIX VITERBI DEFINITION, ADD FORWARD GRAPH / BACKWARD GRAPH DEFINITIONS?
+
+ TODO: ADD ABOVE, FIX VITERBI DEFINITION, ADD FORWARD GRAPH / BACKWARD GRAPH DEFINITIONS?
+
+ TODO: ADD ABOVE, FIX VITERBI DEFINITION, ADD FORWARD GRAPH / BACKWARD GRAPH DEFINITIONS?
+
+ TODO: ADD ABOVE, FIX VITERBI DEFINITION, ADD FORWARD GRAPH / BACKWARD GRAPH DEFINITIONS?
+
+ TODO: ADD ABOVE, FIX VITERBI DEFINITION, ADD FORWARD GRAPH / BACKWARD GRAPH DEFINITIONS?
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 
