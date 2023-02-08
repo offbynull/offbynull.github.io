@@ -16871,7 +16871,7 @@ Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
 
 **ALGORITHM**:
 
-The Viterbi algorithm requires a Viterbi graph. A Viterbi graph is essentially an HMM that's been exploded out to represent all possible hidden state transitions for an emitted sequence. For example, consider the HMM diagram below.
+The Viterbi algorithm requires a Viterbi graph. A Viterbi graph is essentially an HMM that's been exploded out to represent all possible hidden state transitions for an emitted sequence (exploded HMM). For example, consider the HMM diagram below.
 
 ```{svgbob}
                    +--------+   
@@ -17125,13 +17125,19 @@ emissions: [z,z,x,x,y]
 pseudocount: 0.0001
 ```
 
-#### Viterbi Non-emitting States Algorithm
+#### Viterbi Non-emitting Hidden States Algorithm
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Most Probable Hidden Path\/Viterbi Non-emitting States Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Most Probable Hidden Path\/Viterbi Non-emitting Hidden States Algorithm)_TOPIC/`
 
 ```{prereq}
 Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Algorithm_TOPIC
 Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC
+```
+
+```{note}
+This section may seem useless, but it sets the foundation for a different type of HMM discussed later on: profile HMMs. Also, it may be useful for discriminator HMMs as these non-emitting hidden states seem to kinda resemble nodes in a feed-forward neural network? Maybe they could potentially build out higher-order logic chains (e.g. AND, OR, NOT, etc..)?
+
+I may be wrong about this.
 ```
 
 **ALGORITHM**:
@@ -17305,7 +17311,7 @@ pseudocount: 0.0001
 
 ```{prereq}
 Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm_TOPIC
+Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting Hidden States Algorithm_TOPIC
 ```
 
 **WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Empirical learning sets an HMM's probabilities by observing the machine that HMM models. Specifically, if the user is able to see the ...
@@ -17653,7 +17659,7 @@ Why speculate? The Pevzner book never covers a good use-case for this.
 
 ```{prereq}
 Algorithms/Sequence Hidden Markov Models/Chained Transition-Emission Probability_TOPIC
-Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm_TOPIC
+Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting Hidden States Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
@@ -17668,7 +17674,7 @@ Recall that the ....
     1. B transitions to B and emits y
     1. B transitions to B and emits y
     
-    ... is Pr(A→B|x) * Pr(y|B→B) * Pr(y|B→B)
+    ... is Pr(x|A→B) * Pr(B→B|y) * Pr(B→B|y)
 
  3. probability of an HMM outputting an emitted sequence while traveling through a hidden path is calculated as described above (multiplied chain of transition-emission probabilities).
 
@@ -17705,18 +17711,18 @@ Given all hidden paths in a HMM, the probability of an HMM outputting a specific
 
 The probability that the above HMM emits [z, z, y] is the sum of ...
 
- * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→A|y)
- * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y)
- * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) * Pr(B→C)
- * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y)
- * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y)
- * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
- * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→A|y)
- * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y)
- * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) * Pr(B→C)
- * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y)
- * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)
- * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+ * Pr(z|SOURCE→A) * Pr(z|A→A) * Pr(y|A→A)
+ * Pr(z|SOURCE→A) * Pr(z|A→A) * Pr(y|A→B)
+ * Pr(z|SOURCE→A) * Pr(z|A→A) * Pr(y|A→B) * Pr(B→C)
+ * Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(y|B→A)
+ * Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B)
+ * Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C)
+ * Pr(z|SOURCE→B) * Pr(z|B→A) * Pr(y|A→A)
+ * Pr(z|SOURCE→B) * Pr(z|B→A) * Pr(y|A→B)
+ * Pr(z|SOURCE→B) * Pr(z|B→A) * Pr(y|A→B) * Pr(B→C)
+ * Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(y|B→A)
+ * Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B)
+ * Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C)
 
 ```{note}
 The HMM above has non-emitting hidden states (C).
@@ -17760,7 +17766,7 @@ pseudocount: 0.0001
 
 ```{prereq}
 Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence/Summation Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm_TOPIC
+Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting Hidden States Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
@@ -17799,48 +17805,48 @@ This algorithm uses basic algebra rules to streamline the computations performed
 The summation algorithm computes the emission probability of [z, z, y] as ...
 
 ```
-Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→A|y) +
-Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) +
-Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) * Pr(B→C) +
-Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y) +
-Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) +
-Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) +
-Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→A|y) +
-Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) +
-Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) * Pr(B→C) +
-Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y) +
-Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) +
-Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+Pr(z|SOURCE→A) * Pr(z|A→A) * Pr(y|A→A) +
+Pr(z|SOURCE→A) * Pr(z|A→A) * Pr(y|A→B) +
+Pr(z|SOURCE→A) * Pr(z|A→A) * Pr(y|A→B) * Pr(B→C) +
+Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(y|B→A) +
+Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B) +
+Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C) +
+Pr(z|SOURCE→B) * Pr(z|B→A) * Pr(y|A→A) +
+Pr(z|SOURCE→B) * Pr(z|B→A) * Pr(y|A→B) +
+Pr(z|SOURCE→B) * Pr(z|B→A) * Pr(y|A→B) * Pr(B→C) +
+Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(y|B→A) +
+Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B) +
+Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C)
 ```
 
 Given such an expression, factor out the probabilities based on the last emitted symbol (last multiplication in each addition).
 
 ```
-Pr(A→A|y) * (
-  Pr(SOURCE→A|z) * Pr(A→A|z) +
-  Pr(SOURCE→B|z) * Pr(B→A|z)
+Pr(y|A→A) * (
+  Pr(z|SOURCE→A) * Pr(z|A→A) +
+  Pr(z|SOURCE→B) * Pr(z|B→A)
 )
 +
-Pr(B→A|y) * (
-  Pr(SOURCE→A|z) * Pr(A→B|z) +
-  Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z)
+Pr(y|B→A) * (
+  Pr(z|SOURCE→A) * Pr(z|A→B) +
+  Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B)
 )
 +
-Pr(A→B|y) * (
-  Pr(SOURCE→A|z) * Pr(A→A|z) +
-  Pr(SOURCE→B|z) * Pr(B→A|z)
+Pr(y|A→B) * (
+  Pr(z|SOURCE→A) * Pr(z|A→A) +
+  Pr(z|SOURCE→B) * Pr(z|B→A)
 )
 +
-Pr(C→B|y) * (
-  Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) +
-  Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C)
+Pr(y|C→B) * (
+  Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) +
+  Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C)
 )
 + 
 Pr(B→C) * (
-  Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) +
-  Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) +
-  Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) +
-  Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)
+  Pr(z|SOURCE→A) * Pr(z|A→A) * Pr(y|A→B) +
+  Pr(z|SOURCE→B) * Pr(z|B→A) * Pr(y|A→B) +
+  Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B) +
+  Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B)
 )
 ```
 
@@ -17851,72 +17857,72 @@ Recall algebra factoring: `a*b+a*c = a(b+c)`.
 Continue this process for each nested expression, recursively: For each nested expression, factor out the last probability being multiplied in each addition.
 
 ```
-Pr(A→A|y) * (
-  Pr(A→A|z) * (
-    Pr(SOURCE→A|z)
+Pr(y|A→A) * (
+  Pr(z|A→A) * (
+    Pr(z|SOURCE→A)
   )
   +
-  Pr(B→A|z) * (
-    Pr(SOURCE→B|z)
+  Pr(z|B→A) * (
+    Pr(z|SOURCE→B)
   )
 )
 +
-Pr(B→A|y) * (
-  Pr(A→B|z) * (
-    Pr(SOURCE→A|z)
+Pr(y|B→A) * (
+  Pr(z|A→B) * (
+    Pr(z|SOURCE→A)
   )
   + 
-  Pr(C→B|z) * (
+  Pr(z|C→B) * (
     Pr(B→C) * (
-      Pr(SOURCE→B|z)
+      Pr(z|SOURCE→B)
     )
   )
 )
 +
-Pr(A→B|y) * (
-  Pr(A→A|z) * (
-    Pr(SOURCE→A|z)
+Pr(y|A→B) * (
+  Pr(z|A→A) * (
+    Pr(z|SOURCE→A)
   )
   +
-  Pr(B→A|z) * (
-    Pr(SOURCE→B|z)
+  Pr(z|B→A) * (
+    Pr(z|SOURCE→B)
   )
 )
 +
-Pr(C→B|y) * (
+Pr(y|C→B) * (
   Pr(B→C) * (
-    Pr(A→B|z) * (
-      Pr(SOURCE→A|z)
+    Pr(z|A→B) * (
+      Pr(z|SOURCE→A)
     )
     +
-    Pr(C→B|z) * (
+    Pr(z|C→B) * (
       Pr(B→C) * (
-        Pr(SOURCE→B|z)
+        Pr(z|SOURCE→B)
       )
     )
   )
 )
 + 
 Pr(B→C) * (
-  Pr(A→B|y) * (
-    Pr(A→A|z) * (
-      Pr(SOURCE→A|z)
+  Pr(y|A→B) * (
+    Pr(z|A→A) * (
+      Pr(z|SOURCE→A)
     )
     +
-    Pr(B→A|z) * (
-      Pr(SOURCE→B|z)
+    Pr(z|B→A) * (
+      Pr(z|SOURCE→B)
     )
   )
   +
-  Pr(C→B|y) * (
+  Pr(y|C→B) * (
     Pr(B→C) * (
-      Pr(A→B|z) * (
-        Pr(SOURCE→A|z)
+      Pr(z|A→B) * (
+        Pr(z|SOURCE→A)
       )
       +
-      Pr(C→B|z) * (
+      Pr(z|C→B) * (
         Pr(B→C) * (
-          Pr(SOURCE→B|z)
+          Pr(z|SOURCE→B)
         )
       )
     )
@@ -17927,11 +17933,11 @@ Pr(B→C) * (
 This factored expression reduces the number of additions and multiplications happening. However, notice that many of the nested expressions in this expression are repeating. For example, notice how the block ...
 
 ```
-Pr(A→A|z) * (
-  Pr(SOURCE→A|z)
+Pr(z|A→A) * (
+  Pr(z|SOURCE→A)
 ) +
-Pr(B→A|z) * (
-  Pr(SOURCE→B|z)
+Pr(z|B→A) * (
+  Pr(z|SOURCE→B)
 )
 ```
 
@@ -17939,72 +17945,72 @@ Pr(B→A|z) * (
 
 
 ```{svgbob}
-           .-------------> "Pr(A→A|y) * ("       
-           |         .-----> "Pr(A→A|z) * ("     
-           |         | A0 ---> "Pr(SOURCE→A|z)"  
+           .-------------> "Pr(y|A→A) * ("       
+           |         .-----> "Pr(z|A→A) * ("     
+           |         | A0 ---> "Pr(z|SOURCE→A)"  
            |         |       ")"                 
            |      A1 |       "+"                 
-           |         |       "Pr(B→A|z) * ("     
-           |         | B0 ---> "Pr(SOURCE→B|z)"  
+           |         |       "Pr(z|B→A) * ("     
+           |         | B0 ---> "Pr(z|SOURCE→B)"  
            |         '-----> ")"                 
            |               ")"                   
            |               "+"                   
-       A2  |               "Pr(B→A|y) * ("       
-           |    .----------> "Pr(A→B|z) * ("     
-           |    |      A0 ---> "Pr(SOURCE→A|z)"  
+       A2  |               "Pr(y|B→A) * ("       
+           |    .----------> "Pr(z|A→B) * ("     
+           |    |      A0 ---> "Pr(z|SOURCE→A)"  
            |    |            ")"                 
            |    |            "+"                 
-           | B1 |            "Pr(C→B|z) * ("     
+           | B1 |            "Pr(z|C→B) * ("     
            |    |    .-------> "Pr(B→C) * ("     
-           |    | C0 | B0 -----> "Pr(SOURCE→B|z)"
+           |    | C0 | B0 -----> "Pr(z|SOURCE→B)"
            |    |    '-------> ")"               
            |    '----------> ")"                 
            '-------------> ")"                   
                            "+"
-      .------------------> "Pr(A→B|y) * ("         
-      |              .-----> "Pr(A→A|z) * ("       
-      |              | A0 ---> "Pr(SOURCE→A|z)"    
+      .------------------> "Pr(y|A→B) * ("         
+      |              .-----> "Pr(z|A→A) * ("       
+      |              | A0 ---> "Pr(z|SOURCE→A)"    
       |              |       ")"                   
       |           A1 |       "+"                   
-      |              |       "Pr(B→A|z) * ("       
-      |              | B0 ---> "Pr(SOURCE→B|z)"    
+      |              |       "Pr(z|B→A) * ("       
+      |              | B0 ---> "Pr(z|SOURCE→B)"    
       |              '-----> ")"                   
       |                    ")"                     
       |                    "+"                     
-      |                    "Pr(C→B|y) * ("         
+      |                    "Pr(y|C→B) * ("         
    B2 |    .---------------> "Pr(B→C) * ("         
-      |    |    .------------> "Pr(A→B|z) * ("     
-      |    |    |      A0 -----> "Pr(SOURCE→A|z)"  
+      |    |    .------------> "Pr(z|A→B) * ("     
+      |    |    |      A0 -----> "Pr(z|SOURCE→A)"  
       |    |    |              ")"                 
       |    |    |              "+"                 
-      | C1 | B1 |              "Pr(C→B|z) * ("     
+      | C1 | B1 |              "Pr(z|C→B) * ("     
       |    |    |    .---------> "Pr(B→C) * ("     
-      |    |    | C0 | B0 -------> "Pr(SOURCE→B|z)"
+      |    |    | C0 | B0 -------> "Pr(z|SOURCE→B)"
       |    |    |    '---------> ")"               
       |    |    '------------> ")"                 
       |    '---------------> ")"                   
       '------------------> ")"                     
                            "+" 
    .---------------------> "Pr(B→C) * ("             
-   |    .------------------> "Pr(A→B|y) * ("         
-   |    |              .-----> "Pr(A→A|z) * ("       
-   |    |              | A0 ---> "Pr(SOURCE→A|z)"    
+   |    .------------------> "Pr(y|A→B) * ("         
+   |    |              .-----> "Pr(z|A→A) * ("       
+   |    |              | A0 ---> "Pr(z|SOURCE→A)"    
    |    |              |       ")"                   
    |    |           A1 |       "+"                   
-   |    |              |       "Pr(B→A|z) * ("       
-   |    |              | B0 --> "Pr(SOURCE→B|z)"    
+   |    |              |       "Pr(z|B→A) * ("       
+   |    |              | B0 --> "Pr(z|SOURCE→B)"    
    |    |              '-----> ")"                   
    |    |                    ")"                     
    |    |                    "+"                     
-   |    |                    "Pr(C→B|y) * ("         
+   |    |                    "Pr(y|C→B) * ("         
 C2 | B2 |    .---------------> "Pr(B→C) * ("         
-   |    |    |    .------------> "Pr(A→B|z) * ("     
-   |    |    |    |      A0 -----> "Pr(SOURCE→A|z)"  
+   |    |    |    .------------> "Pr(z|A→B) * ("     
+   |    |    |    |      A0 -----> "Pr(z|SOURCE→A)"  
    |    |    |    |              ")"                 
    |    |    |    |              "+"                 
-   |    | C1 | B1 |              "Pr(C→B|z) * ("     
+   |    | C1 | B1 |              "Pr(z|C→B) * ("     
    |    |    |    |    .---------> "Pr(B→C) * ("     
-   |    |    |    | C0 | B0 -------> "Pr(SOURCE→B|z)"
+   |    |    |    | C0 | B0 -------> "Pr(z|SOURCE→B)"
    |    |    |    |    '---------> ")"               
    |    |    |    '------------> ")"                 
    |    |    '---------------> ")"                   
@@ -18023,72 +18029,72 @@ The above grouping and how each group feeds forward is essentially an exploded o
 ```{svgbob}
                          "EXPLODED OUT HMM"                                             "GROUPED FACTORED EXPRESSION"
 
-               z                  z                  y                                .-------------> "Pr(A→A|y) * ("       
-                                                                                      |         .-----> "Pr(A→A|z) * ("     
-            +----+             +----+             +----+                              |         | A0 ---> "Pr(SOURCE→A|z)"  
+               z                  z                  y                                .-------------> "Pr(y|A→A) * ("       
+                                                                                      |         .-----> "Pr(z|A→A) * ("     
+            +----+             +----+             +----+                              |         | A0 ---> "Pr(z|SOURCE→A)"  
             | A0 +------------>| A1 +------------>| A2 +---.                          |         |       ")"                 
        .--->|    +.     .----->|    +.     .----->|    |   |                          |      A1 |       "+"                 
-       |    +----+ \   /       +----+ \   /       +----+   v                          |         |       "Pr(B→A|z) * ("     
-+------+-+          \ /                \ /                +------+                    |         | B0 ---> "Pr(SOURCE→B|z)"  
+       |    +----+ \   /       +----+ \   /       +----+   v                          |         |       "Pr(z|B→A) * ("     
++------+-+          \ /                \ /                +------+                    |         | B0 ---> "Pr(z|SOURCE→B)"  
 | SOURCE |           X                  X                 | SINK |                    |         '-----> ")"                 
 +------+-+          / \                / \                +------+                    |               ")"                   
        |    +----+ /   \       +----+ /   \       +----+   ^ ^                        |               "+"                   
-       '--->| B0 +'     '----->| B1 +'     '----->| B2 |   | |                    A2  |               "Pr(B→A|y) * ("       
-            |    |     .------>|    |     .------>|    +---' |                        |    .----------> "Pr(A→B|z) * ("     
-            +-+--+    /        +-+--+    /        +-+--+     |                        |    |      A0 ---> "Pr(SOURCE→A|z)"  
+       '--->| B0 +'     '----->| B1 +'     '----->| B2 |   | |                    A2  |               "Pr(y|B→A) * ("       
+            |    |     .------>|    |     .------>|    +---' |                        |    .----------> "Pr(z|A→B) * ("     
+            +-+--+    /        +-+--+    /        +-+--+     |                        |    |      A0 ---> "Pr(z|SOURCE→A)"  
               |      /           |      /           |        |                        |    |            ")"                 
               v     /            v     /            v        |                        |    |            "+"                 
-            +----+ /           +----+ /           +----+     |                        | B1 |            "Pr(C→B|z) * ("     
+            +----+ /           +----+ /           +----+     |                        | B1 |            "Pr(z|C→B) * ("     
             | C0 +'            | C1 +'            | C2 +-----'                        |    |    .-------> "Pr(B→C) * ("     
-            +----+             +----+             +----+                              |    | C0 | B0 -----> "Pr(SOURCE→B|z)"
+            +----+             +----+             +----+                              |    | C0 | B0 -----> "Pr(z|SOURCE→B)"
                                                                                       |    |    '-------> ")"               
                                                                                       |    '----------> ")"                 
                                                                                       '-------------> ")"                   
                                                                                                       "+"
-                                                                                 .------------------> "Pr(A→B|y) * ("         
-                                                                                 |              .-----> "Pr(A→A|z) * ("       
-                                                                                 |              | A0 ---> "Pr(SOURCE→A|z)"    
+                                                                                 .------------------> "Pr(y|A→B) * ("         
+                                                                                 |              .-----> "Pr(z|A→A) * ("       
+                                                                                 |              | A0 ---> "Pr(z|SOURCE→A)"    
                                                                                  |              |       ")"                   
                                                                                  |           A1 |       "+"                   
-                                                                                 |              |       "Pr(B→A|z) * ("       
-                                                                                 |              | B0 ---> "Pr(SOURCE→B|z)"    
+                                                                                 |              |       "Pr(z|B→A) * ("       
+                                                                                 |              | B0 ---> "Pr(z|SOURCE→B)"    
                                                                                  |              '-----> ")"                   
                                                                                  |                    ")"                     
                                                                                  |                    "+"                     
-                                                                                 |                    "Pr(C→B|y) * ("         
+                                                                                 |                    "Pr(y|C→B) * ("         
                                                                               B2 |    .---------------> "Pr(B→C) * ("         
-                                                                                 |    |    .------------> "Pr(A→B|z) * ("     
-                                                                                 |    |    |      A0 -----> "Pr(SOURCE→A|z)"  
+                                                                                 |    |    .------------> "Pr(z|A→B) * ("     
+                                                                                 |    |    |      A0 -----> "Pr(z|SOURCE→A)"  
                                                                                  |    |    |              ")"                 
                                                                                  |    |    |              "+"                 
-                                                                                 | C1 | B1 |              "Pr(C→B|z) * ("     
+                                                                                 | C1 | B1 |              "Pr(z|C→B) * ("     
                                                                                  |    |    |    .---------> "Pr(B→C) * ("     
-                                                                                 |    |    | C0 | B0 -------> "Pr(SOURCE→B|z)"
+                                                                                 |    |    | C0 | B0 -------> "Pr(z|SOURCE→B)"
                                                                                  |    |    |    '---------> ")"               
                                                                                  |    |    '------------> ")"                 
                                                                                  |    '---------------> ")"                   
                                                                                  '------------------> ")"                     
                                                                                                       "+" 
                                                                               .---------------------> "Pr(B→C) * ("             
-                                                                              |    .------------------> "Pr(A→B|y) * ("         
-                                                                              |    |              .-----> "Pr(A→A|z) * ("       
-                                                                              |    |              | A0 ---> "Pr(SOURCE→A|z)"    
+                                                                              |    .------------------> "Pr(y|A→B) * ("         
+                                                                              |    |              .-----> "Pr(z|A→A) * ("       
+                                                                              |    |              | A0 ---> "Pr(z|SOURCE→A)"    
                                                                               |    |              |       ")"                   
                                                                               |    |           A1 |       "+"                   
-                                                                              |    |              |       "Pr(B→A|z) * ("       
-                                                                              |    |              | B0 --> "Pr(SOURCE→B|z)"    
+                                                                              |    |              |       "Pr(z|B→A) * ("       
+                                                                              |    |              | B0 --> "Pr(z|SOURCE→B)"    
                                                                               |    |              '-----> ")"                   
                                                                               |    |                    ")"                     
                                                                               |    |                    "+"                     
-                                                                              |    |                    "Pr(C→B|y) * ("         
+                                                                              |    |                    "Pr(y|C→B) * ("         
                                                                            C2 | B2 |    .---------------> "Pr(B→C) * ("         
-                                                                              |    |    |    .------------> "Pr(A→B|z) * ("     
-                                                                              |    |    |    |      A0 -----> "Pr(SOURCE→A|z)"  
+                                                                              |    |    |    .------------> "Pr(z|A→B) * ("     
+                                                                              |    |    |    |      A0 -----> "Pr(z|SOURCE→A)"  
                                                                               |    |    |    |              ")"                 
                                                                               |    |    |    |              "+"                 
-                                                                              |    | C1 | B1 |              "Pr(C→B|z) * ("     
+                                                                              |    | C1 | B1 |              "Pr(z|C→B) * ("     
                                                                               |    |    |    |    .---------> "Pr(B→C) * ("     
-                                                                              |    |    |    | C0 | B0 -------> "Pr(SOURCE→B|z)"
+                                                                              |    |    |    | C0 | B0 -------> "Pr(z|SOURCE→B)"
                                                                               |    |    |    |    '---------> ")"               
                                                                               |    |    |    '------------> ")"                 
                                                                               |    |    '---------------> ")"                   
@@ -18126,7 +18132,7 @@ emissions: [z,z,y]
 `{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Node)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting States Algorithm_TOPIC
+Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting Hidden States Algorithm_TOPIC
 Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence_TOPIC
 ```
 
@@ -18231,27 +18237,27 @@ C is a non-emitting hidden state, which is why it doesn't have any linkages to e
 
 The probability that the above HMM emits [z, z, y] is the sum of ...
 
- * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→A|y)
- * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y)
- * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) * Pr(B→C)
- * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y)
- * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y)
- * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
- * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→A|y)
- * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y)
- * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) * Pr(B→C)
- * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y)
- * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)
- * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+ * Pr(z|SOURCE→A) * Pr(z|A→A) * Pr(y|A→A)
+ * Pr(z|SOURCE→A) * Pr(z|A→A) * Pr(y|A→B)
+ * Pr(z|SOURCE→A) * Pr(z|A→A) * Pr(y|A→B) * Pr(B→C)
+ * Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(y|B→A)
+ * Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B)
+ * Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C)
+ * Pr(z|SOURCE→B) * Pr(z|B→A) * Pr(y|A→A)
+ * Pr(z|SOURCE→B) * Pr(z|B→A) * Pr(y|A→B)
+ * Pr(z|SOURCE→B) * Pr(z|B→A) * Pr(y|A→B) * Pr(B→C)
+ * Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(y|B→A)
+ * Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B)
+ * Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C)
 
 This algorithm filters the summation above to only include hidden paths that travel through the hidden state of interest at the emission index of interest. For example, to calculate the probability for only those hidden paths that travel through B at index 1 of the [z, z, y], the summation becomes ...
 
- * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y)
- * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y)
- * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
- * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y)
- * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)
- * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+ * Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(y|B→A)
+ * Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B)
+ * Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C)
+ * Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(y|B→A)
+ * Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B)
+ * Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C)
 
 ```{output}
 ch10_code/src/hmm/ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughNode_Summation.py
@@ -18328,90 +18334,90 @@ C is a non-emitting hidden state, which is why it doesn't have any linkages to e
 
 The probability that the above HMM emits [z, z, y] is the sum of ...
 
- * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→A|y)
- * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y)
- * Pr(SOURCE→A|z) * Pr(A→A|z) * Pr(A→B|y) * Pr(B→C)
- * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y)
- * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y)
- * Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
- * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→A|y)
- * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y)
- * Pr(SOURCE→B|z) * Pr(B→A|z) * Pr(A→B|y) * Pr(B→C)
- * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y)
- * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y)
- * Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+ * Pr(z|SOURCE→A) * Pr(z|A→A) * Pr(y|A→A)
+ * Pr(z|SOURCE→A) * Pr(z|A→A) * Pr(y|A→B)
+ * Pr(z|SOURCE→A) * Pr(z|A→A) * Pr(y|A→B) * Pr(B→C)
+ * Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(y|B→A)
+ * Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B)
+ * Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C)
+ * Pr(z|SOURCE→B) * Pr(z|B→A) * Pr(y|A→A)
+ * Pr(z|SOURCE→B) * Pr(z|B→A) * Pr(y|A→B)
+ * Pr(z|SOURCE→B) * Pr(z|B→A) * Pr(y|A→B) * Pr(B→C)
+ * Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(y|B→A)
+ * Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B)
+ * Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C)
 
 This summation is then factored and grouped such that it represents an exploded HMM.
 
 ```{svgbob}
                          "EXPLODED OUT HMM"                                             "GROUPED FACTORED EXPRESSION"
 
-               z                  z                  y                                .-------------> "Pr(A→A|y) * ("       
-                                                                                      |         .-----> "Pr(A→A|z) * ("     
-            +----+             +----+             +----+                              |         | A0 ---> "Pr(SOURCE→A|z)"  
+               z                  z                  y                                .-------------> "Pr(y|A→A) * ("       
+                                                                                      |         .-----> "Pr(z|A→A) * ("     
+            +----+             +----+             +----+                              |         | A0 ---> "Pr(z|SOURCE→A)"  
             | A0 +------------>| A1 +------------>| A2 +---.                          |         |       ")"                 
        .--->|    +.     .----->|    +.     .----->|    |   |                          |      A1 |       "+"                 
-       |    +----+ \   /       +----+ \   /       +----+   v                          |         |       "Pr(B→A|z) * ("     
-+------+-+          \ /                \ /                +------+                    |         | B0 ---> "Pr(SOURCE→B|z)"  
+       |    +----+ \   /       +----+ \   /       +----+   v                          |         |       "Pr(z|B→A) * ("     
++------+-+          \ /                \ /                +------+                    |         | B0 ---> "Pr(z|SOURCE→B)"  
 | SOURCE |           X                  X                 | SINK |                    |         '-----> ")"                 
 +------+-+          / \                / \                +------+                    |               ")"                   
        |    +----+ /   \       +----+ /   \       +----+   ^ ^                        |               "+"                   
-       '--->| B0 +'     '----->| B1 +'     '----->| B2 |   | |                    A2  |               "Pr(B→A|y) * ("       
-            |    |     .------>|    |     .------>|    +---' |                        |    .----------> "Pr(A→B|z) * ("     
-            +-+--+    /        +-+--+    /        +-+--+     |                        |    |      A0 ---> "Pr(SOURCE→A|z)"  
+       '--->| B0 +'     '----->| B1 +'     '----->| B2 |   | |                    A2  |               "Pr(y|B→A) * ("       
+            |    |     .------>|    |     .------>|    +---' |                        |    .----------> "Pr(z|A→B) * ("     
+            +-+--+    /        +-+--+    /        +-+--+     |                        |    |      A0 ---> "Pr(z|SOURCE→A)"  
               |      /           |      /           |        |                        |    |            ")"                 
               v     /            v     /            v        |                        |    |            "+"                 
-            +----+ /           +----+ /           +----+     |                        | B1 |            "Pr(C→B|z) * ("     
+            +----+ /           +----+ /           +----+     |                        | B1 |            "Pr(z|C→B) * ("     
             | C0 +'            | C1 +'            | C2 +-----'                        |    |    .-------> "Pr(B→C) * ("     
-            +----+             +----+             +----+                              |    | C0 | B0 -----> "Pr(SOURCE→B|z)"
+            +----+             +----+             +----+                              |    | C0 | B0 -----> "Pr(z|SOURCE→B)"
                                                                                       |    |    '-------> ")"               
                                                                                       |    '----------> ")"                 
                                                                                       '-------------> ")"                   
                                                                                                       "+"
-                                                                                 .------------------> "Pr(A→B|y) * ("         
-                                                                                 |              .-----> "Pr(A→A|z) * ("       
-                                                                                 |              | A0 ---> "Pr(SOURCE→A|z)"    
+                                                                                 .------------------> "Pr(y|A→B) * ("         
+                                                                                 |              .-----> "Pr(z|A→A) * ("       
+                                                                                 |              | A0 ---> "Pr(z|SOURCE→A)"    
                                                                                  |              |       ")"                   
                                                                                  |           A1 |       "+"                   
-                                                                                 |              |       "Pr(B→A|z) * ("       
-                                                                                 |              | B0 ---> "Pr(SOURCE→B|z)"    
+                                                                                 |              |       "Pr(z|B→A) * ("       
+                                                                                 |              | B0 ---> "Pr(z|SOURCE→B)"    
                                                                                  |              '-----> ")"                   
                                                                                  |                    ")"                     
                                                                                  |                    "+"                     
-                                                                                 |                    "Pr(C→B|y) * ("         
+                                                                                 |                    "Pr(y|C→B) * ("         
                                                                               B2 |    .---------------> "Pr(B→C) * ("         
-                                                                                 |    |    .------------> "Pr(A→B|z) * ("     
-                                                                                 |    |    |      A0 -----> "Pr(SOURCE→A|z)"  
+                                                                                 |    |    .------------> "Pr(z|A→B) * ("     
+                                                                                 |    |    |      A0 -----> "Pr(z|SOURCE→A)"  
                                                                                  |    |    |              ")"                 
                                                                                  |    |    |              "+"                 
-                                                                                 | C1 | B1 |              "Pr(C→B|z) * ("     
+                                                                                 | C1 | B1 |              "Pr(z|C→B) * ("     
                                                                                  |    |    |    .---------> "Pr(B→C) * ("     
-                                                                                 |    |    | C0 | B0 -------> "Pr(SOURCE→B|z)"
+                                                                                 |    |    | C0 | B0 -------> "Pr(z|SOURCE→B)"
                                                                                  |    |    |    '---------> ")"               
                                                                                  |    |    '------------> ")"                 
                                                                                  |    '---------------> ")"                   
                                                                                  '------------------> ")"                     
                                                                                                       "+" 
                                                                               .---------------------> "Pr(B→C) * ("             
-                                                                              |    .------------------> "Pr(A→B|y) * ("         
-                                                                              |    |              .-----> "Pr(A→A|z) * ("       
-                                                                              |    |              | A0 ---> "Pr(SOURCE→A|z)"    
+                                                                              |    .------------------> "Pr(y|A→B) * ("         
+                                                                              |    |              .-----> "Pr(z|A→A) * ("       
+                                                                              |    |              | A0 ---> "Pr(z|SOURCE→A)"    
                                                                               |    |              |       ")"                   
                                                                               |    |           A1 |       "+"                   
-                                                                              |    |              |       "Pr(B→A|z) * ("       
-                                                                              |    |              | B0 --> "Pr(SOURCE→B|z)"    
+                                                                              |    |              |       "Pr(z|B→A) * ("       
+                                                                              |    |              | B0 --> "Pr(z|SOURCE→B)"    
                                                                               |    |              '-----> ")"                   
                                                                               |    |                    ")"                     
                                                                               |    |                    "+"                     
-                                                                              |    |                    "Pr(C→B|y) * ("         
+                                                                              |    |                    "Pr(y|C→B) * ("         
                                                                            C2 | B2 |    .---------------> "Pr(B→C) * ("         
-                                                                              |    |    |    .------------> "Pr(A→B|z) * ("     
-                                                                              |    |    |    |      A0 -----> "Pr(SOURCE→A|z)"  
+                                                                              |    |    |    .------------> "Pr(z|A→B) * ("     
+                                                                              |    |    |    |      A0 -----> "Pr(z|SOURCE→A)"  
                                                                               |    |    |    |              ")"                 
                                                                               |    |    |    |              "+"                 
-                                                                              |    | C1 | B1 |              "Pr(C→B|z) * ("     
+                                                                              |    | C1 | B1 |              "Pr(z|C→B) * ("     
                                                                               |    |    |    |    .---------> "Pr(B→C) * ("     
-                                                                              |    |    |    | C0 | B0 -------> "Pr(SOURCE→B|z)"
+                                                                              |    |    |    | C0 | B0 -------> "Pr(z|SOURCE→B)"
                                                                               |    |    |    |    '---------> ")"               
                                                                               |    |    |    '------------> ")"                 
                                                                               |    |    '---------------> ")"                   
@@ -18424,42 +18430,42 @@ This algorithm revises the exploded HMM above to only feed forward to the hidden
 ```{svgbob}
                          "EXPLODED OUT HMM"                                             "GROUPED FACTORED EXPRESSION"
 
-               z                  z                  y                                .-------------> "Pr(B→A|y) * ("       
-                                                                                      |    .----------> "Pr(A→B|z) * ("     
-            +----+                                +----+                              |    |      A0 ---> "Pr(SOURCE→A|z)"  
+               z                  z                  y                                .-------------> "Pr(y|B→A) * ("       
+                                                                                      |    .----------> "Pr(z|A→B) * ("     
+            +----+                                +----+                              |    |      A0 ---> "Pr(z|SOURCE→A)"  
             | A0 |                                | A2 +---.                          |    |            ")"                 
        .--->|    +.                        .----->|    |   |                          |    |            "+"                 
-       |    +----+ \                      /       +----+   v                       A2 | B1 |            "Pr(C→B|z) * ("     
+       |    +----+ \                      /       +----+   v                       A2 | B1 |            "Pr(z|C→B) * ("     
 +------+-+          \                    /                +------+                    |    |    .-------> "Pr(B→C) * ("     
-| SOURCE |           \                  /                 | SINK |                    |    | C0 | B0 -----> "Pr(SOURCE→B|z)"
+| SOURCE |           \                  /                 | SINK |                    |    | C0 | B0 -----> "Pr(z|SOURCE→B)"
 +------+-+            \                /                  +------+                    |    |    '-------> ")"               
        |    +----+     \       +----+ /           +----+   ^ ^                        |    '----------> ")"                 
        '--->| B0 |      '----->| B1 +'            | B2 |   | |                        '-------------> ")"                   
             |    |     .------>|    |     .------>|    +---' |                                        "+"
-            +-+--+    /        +-+--+    /        +-+--+     |                   .------------------> "Pr(C→B|y) * ("         
+            +-+--+    /        +-+--+    /        +-+--+     |                   .------------------> "Pr(y|C→B) * ("         
               |      /           |      /           |        |                   |    .---------------> "Pr(B→C) * ("         
-              v     /            v     /            v        |                   |    |    .------------> "Pr(A→B|z) * ("     
-            +----+ /           +----+ /           +----+     |                   |    |    |      A0 -----> "Pr(SOURCE→A|z)"  
+              v     /            v     /            v        |                   |    |    .------------> "Pr(z|A→B) * ("     
+            +----+ /           +----+ /           +----+     |                   |    |    |      A0 -----> "Pr(z|SOURCE→A)"  
             | C0 +'            | C1 +'            | C2 +-----'                   |    |    |              ")"                 
             +----+             +----+             +----+                         |    |    |              "+"                 
-                                                                              B2 | C1 | B1 |              "Pr(C→B|z) * ("     
+                                                                              B2 | C1 | B1 |              "Pr(z|C→B) * ("     
                                                                                  |    |    |    .---------> "Pr(B→C) * ("     
-                                                                                 |    |    | C0 | B0 -------> "Pr(SOURCE→B|z)"
+                                                                                 |    |    | C0 | B0 -------> "Pr(z|SOURCE→B)"
                                                                                  |    |    |    '---------> ")"               
                                                                                  |    |    '------------> ")"                 
                                                                                  |    '---------------> ")"                   
                                                                                  '------------------> ")"                     
                                                                                                       "+" 
                                                                               .---------------------> "Pr(B→C) * ("             
-                                                                              |    .------------------> "Pr(C→B|y) * ("         
+                                                                              |    .------------------> "Pr(y|C→B) * ("         
                                                                               |    |    .---------------> "Pr(B→C) * ("         
-                                                                              |    |    |    .------------> "Pr(A→B|z) * ("     
-                                                                              |    |    |    |      A0 -----> "Pr(SOURCE→A|z)"  
+                                                                              |    |    |    .------------> "Pr(z|A→B) * ("     
+                                                                              |    |    |    |      A0 -----> "Pr(z|SOURCE→A)"  
                                                                               |    |    |    |              ")"                 
                                                                               |    |    |    |              "+"                 
-                                                                           C2 | B2 | C1 | B1 |              "Pr(C→B|z) * ("     
+                                                                           C2 | B2 | C1 | B1 |              "Pr(z|C→B) * ("     
                                                                               |    |    |    |    .---------> "Pr(B→C) * ("     
-                                                                              |    |    |    | C0 | B0 -------> "Pr(SOURCE→B|z)"
+                                                                              |    |    |    | C0 | B0 -------> "Pr(z|SOURCE→B)"
                                                                               |    |    |    |    '---------> ")"               
                                                                               |    |    |    '------------> ")"                 
                                                                               |    |    '---------------> ")"                   
@@ -18542,12 +18548,12 @@ Given the emitted sequence [z, z, y], recall that ...
  * the summation algorithm sums hidden paths that travel through the hidden state of interest at the emission index of interest. For example, to calculate the probability for only those hidden paths that travel through B at index 1 of the [z, z, y] ...
 
    ```
-   Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y) + 
-   Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) + 
-   Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) + 
-   Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y) + 
-   Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) + 
-   Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+   Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(y|B→A) + 
+   Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B) + 
+   Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C) + 
+   Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(y|B→A) + 
+   Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B) + 
+   Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C)
    ```
 
  * the forward graph algorithm explodes out the HMM, but only feeds forward to the hidden state of interest at the emission index of interest. The calculation performed via the forward graph algorithm is the same as the summation performed by the summation algorithm but with common factors extracted and grouped to fit the exploded graph structure. For example, to calculate the probability for only those hidden paths that travel through B at index 1 of the [z, z, y] ...
@@ -18555,42 +18561,42 @@ Given the emitted sequence [z, z, y], recall that ...
    ```{svgbob}
                             "EXPLODED OUT HMM"                                             "GROUPED FACTORED EXPRESSION"
    
-                  z                  z                  y                                .-------------> "Pr(B→A|y) * ("       
-                                                                                         |    .----------> "Pr(A→B|z) * ("     
-               +----+                                +----+                              |    |      A0 ---> "Pr(SOURCE→A|z)"  
+                  z                  z                  y                                .-------------> "Pr(y|B→A) * ("       
+                                                                                         |    .----------> "Pr(z|A→B) * ("     
+               +----+                                +----+                              |    |      A0 ---> "Pr(z|SOURCE→A)"  
                | A0 |                                | A2 +---.                          |    |            ")"                 
           .--->|    +.                        .----->|    |   |                          |    |            "+"                 
-          |    +----+ \                      /       +----+   v                       A2 | B1 |            "Pr(C→B|z) * ("     
+          |    +----+ \                      /       +----+   v                       A2 | B1 |            "Pr(z|C→B) * ("     
    +------+-+          \                    /                +------+                    |    |    .-------> "Pr(B→C) * ("     
-   | SOURCE |           \                  /                 | SINK |                    |    | C0 | B0 -----> "Pr(SOURCE→B|z)"
+   | SOURCE |           \                  /                 | SINK |                    |    | C0 | B0 -----> "Pr(z|SOURCE→B)"
    +------+-+            \                /                  +------+                    |    |    '-------> ")"               
           |    +----+     \       +----+ /           +----+   ^ ^                        |    '----------> ")"                 
           '--->| B0 |      '----->| B1 +'            | B2 |   | |                        '-------------> ")"                   
                |    |     .------>|    |     .------>|    +---' |                                        "+"
-               +-+--+    /        +-+--+    /        +-+--+     |                   .------------------> "Pr(C→B|y) * ("         
+               +-+--+    /        +-+--+    /        +-+--+     |                   .------------------> "Pr(y|C→B) * ("         
                  |      /           |      /           |        |                   |    .---------------> "Pr(B→C) * ("         
-                 v     /            v     /            v        |                   |    |    .------------> "Pr(A→B|z) * ("     
-               +----+ /           +----+ /           +----+     |                   |    |    |      A0 -----> "Pr(SOURCE→A|z)"  
+                 v     /            v     /            v        |                   |    |    .------------> "Pr(z|A→B) * ("     
+               +----+ /           +----+ /           +----+     |                   |    |    |      A0 -----> "Pr(z|SOURCE→A)"  
                | C0 +'            | C1 +'            | C2 +-----'                   |    |    |              ")"                 
                +----+             +----+             +----+                         |    |    |              "+"                 
-                                                                                 B2 | C1 | B1 |              "Pr(C→B|z) * ("     
+                                                                                 B2 | C1 | B1 |              "Pr(z|C→B) * ("     
                                                                                     |    |    |    .---------> "Pr(B→C) * ("     
-                                                                                    |    |    | C0 | B0 -------> "Pr(SOURCE→B|z)"
+                                                                                    |    |    | C0 | B0 -------> "Pr(z|SOURCE→B)"
                                                                                     |    |    |    '---------> ")"               
                                                                                     |    |    '------------> ")"                 
                                                                                     |    '---------------> ")"                   
                                                                                     '------------------> ")"                     
                                                                                                          "+" 
                                                                                  .---------------------> "Pr(B→C) * ("             
-                                                                                 |    .------------------> "Pr(C→B|y) * ("         
+                                                                                 |    .------------------> "Pr(y|C→B) * ("         
                                                                                  |    |    .---------------> "Pr(B→C) * ("         
-                                                                                 |    |    |    .------------> "Pr(A→B|z) * ("     
-                                                                                 |    |    |    |      A0 -----> "Pr(SOURCE→A|z)"  
+                                                                                 |    |    |    .------------> "Pr(z|A→B) * ("     
+                                                                                 |    |    |    |      A0 -----> "Pr(z|SOURCE→A)"  
                                                                                  |    |    |    |              ")"                 
                                                                                  |    |    |    |              "+"                 
-                                                                              C2 | B2 | C1 | B1 |              "Pr(C→B|z) * ("     
+                                                                              C2 | B2 | C1 | B1 |              "Pr(z|C→B) * ("     
                                                                                  |    |    |    |    .---------> "Pr(B→C) * ("     
-                                                                                 |    |    |    | C0 | B0 -------> "Pr(SOURCE→B|z)"
+                                                                                 |    |    |    | C0 | B0 -------> "Pr(z|SOURCE→B)"
                                                                                  |    |    |    |    '---------> ")"               
                                                                                  |    |    |    '------------> ")"                 
                                                                                  |    |    '---------------> ")"                   
@@ -18603,33 +18609,33 @@ This algorithm performs the same computation as the forward graph algorithm, but
 To start with, begin by taking the original summation from the summation algorithm example above:
 
 ```
-Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y) + 
-Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) + 
-Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) + 
-Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y) + 
-Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) + 
-Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(y|B→A) + 
+Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B) + 
+Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C) + 
+Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(y|B→A) + 
+Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B) + 
+Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C)
 ```
 
 Replace the following parts of the expression above with the following variables ...
 
- * a = Pr(SOURCE→A|z) * Pr(A→B|z)
- * b = Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z)
- * c = Pr(B→A|y)
- * d = Pr(B→C) * Pr(C→B|y)
- * e = Pr(B→C) * Pr(C→B|y) * Pr(B→C)
+ * a = Pr(z|SOURCE→A) * Pr(z|A→B)
+ * b = Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B)
+ * c = Pr(y|B→A)
+ * d = Pr(B→C) * Pr(y|C→B)
+ * e = Pr(B→C) * Pr(y|C→B) * Pr(B→C)
 
 , ... resulting in the expression a\*c + a\*d + a\*e + b\*c + b\*d + b\*e.
 
 ```
                        ORIGINAL                                                      VARIABLE SUBSTITUTION
              
-Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y) +                                                    a * c +
-Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) +                                          a * d +
-Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) +                                a * e +
-Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y) +                                          b * c +
-Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) +                                b * d +
-Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C)                        b * e
+Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(y|B→A) +                                                    a * c +
+Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B) +                                          a * d +
+Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C) +                                a * e +
+Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(y|B→A) +                                          b * c +
+Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B) +                                b * d +
+Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C)                        b * e
 ```
 
 In this expression, apply algebra factoring rules to pull out common factors:
@@ -18642,9 +18648,9 @@ In this expression, apply algebra factoring rules to pull out common factors:
 ```
 VARIABLE SUBSTITUTION                                                      ORIGINAL
 
-      (a + b)                                  (Pr(SOURCE→A|z) * Pr(A→B|z) + Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z))
+      (a + b)                                  (Pr(z|SOURCE→A) * Pr(z|A→B) + Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B))
          *                                                                     *
-    (c + d + e)                                  (Pr(B→A|y) + Pr(B→C) * Pr(C→B|y) + Pr(B→C) * Pr(C→B|y) * Pr(B→C))
+    (c + d + e)                                  (Pr(y|B→A) + Pr(B→C) * Pr(y|C→B) + Pr(B→C) * Pr(y|C→B) * Pr(B→C))
 ```
 
 Notice that the main multiplication's ...
@@ -18704,12 +18710,12 @@ The left-hand side computation (a+b) shares nothing with the right-hand side com
                                 | C0 +'            | C1 +'            | C2 +-----'    
                                 +----+             +----+             +----+          
                     
-                    Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→A|y) +                             
-                    Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) +                   
-                    Pr(SOURCE→A|z) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) +         
-                    Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|y) +                   
-                    Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) +         
-                    Pr(SOURCE→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) 
+                    Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(y|B→A) +                             
+                    Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B) +                   
+                    Pr(z|SOURCE→A) * Pr(z|A→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C) +         
+                    Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(y|B→A) +                   
+                    Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B) +         
+                    Pr(z|SOURCE→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C) 
 
 
 
@@ -18735,9 +18741,9 @@ The left-hand side computation (a+b) shares nothing with the right-hand side com
             | C0 +'                                                  | C1 +'            | C2 +-----'    
             +----+                                                   +----+             +----+          
                                                                          
-"a + b =" "Pr(SOURCE->A|z) * Pr(A->B|z) +"             "*"           "c + d + e =" "Pr(B->A|y) +"
-          "Pr(SOURCE->B|z) * Pr(B->C) * Pr(C->B|z)"                                "Pr(B->C) * Pr(C->B|y) +"
-                                                                                   "Pr(B->C) * Pr(C->B|y) * Pr(B->C)"
+"a + b =" "Pr(z|SOURCE->A) * Pr(z|A->B) +"             "*"           "c + d + e =" "Pr(y|B->A) +"
+          "Pr(z|SOURCE->B) * Pr(B->C) * Pr(z|C->B)"                                "Pr(B->C) * Pr(y|C->B) +"
+                                                                                   "Pr(B->C) * Pr(y|C->B) * Pr(B->C)"
 ```
 
 ```{note}
@@ -18840,9 +18846,9 @@ In the example below, the forward graph below splits on B1.
             | C0 +'                                                  | C1 +'            | C2 +-----'    
             +----+                                                   +----+             +----+          
                                                                          
-"a + b =" "Pr(SOURCE->A|z) * Pr(A->B|z) +"             "*"           "c + d + e =" "Pr(B->A|y) +"
-          "Pr(SOURCE->B|z) * Pr(B->C) * Pr(C->B|z)"                                "Pr(B->C) * Pr(C->B|y) +"
-                                                                                   "Pr(B->C) * Pr(C->B|y) * Pr(B->C)"
+"a + b =" "Pr(z|SOURCE->A) * Pr(z|A->B) +"             "*"           "c + d + e =" "Pr(y|B->A) +"
+          "Pr(z|SOURCE->B) * Pr(B->C) * Pr(z|C->B)"                                "Pr(B->C) * Pr(y|C->B) +"
+                                                                                   "Pr(B->C) * Pr(y|C->B) * Pr(B->C)"
 ```
 
 Since nothing is shared between the left-hand side and the right-hand side, the right-hand side can be computed backwards rather than forwards (from SINK towards B1, where the result that'd be set to SINK in the forward computation is instead set to B1 in the backward computation).
@@ -18851,7 +18857,7 @@ Since nothing is shared between the left-hand side and the right-hand side, the 
 In this case, computing backwards doesn't mean that the edges go in reverse direction. It just means that you're stepping backwards (from SINK) rather than stepping forward. So for example, ...
 
 1. stepping backwards from SINK to A2 is calculated exactly the same as stepping forward from A2 forward to SINK: Pr(SINK→A) = 1.0.
-2. stepping backwards from A2 to B1 is calculated exactly the same as stepping forward from B1 forward to A2: Pr(B→A|y).
+2. stepping backwards from A2 to B1 is calculated exactly the same as stepping forward from B1 forward to A2: Pr(y|B→A).
 ```
 
 The right-hand graph needs to be slightly modified to allow for backwards computation. To get the backwards computation to produce the same result as the forward computation, any hidden state (other than B1) that feeds into a non-emitting hidden state needs to be exploded out: For each outgoing edge to a non-hidden state, duplicate the node and have that duplicate just follow that outgoing edge. The duplicate should have all of the same incoming edges.
@@ -18880,9 +18886,9 @@ The right-hand graph needs to be slightly modified to allow for backwards comput
 |    |             |    |                                    |    |             |    |                                   |    +'            |    |          
 +----+             +----+                                    +----+             +----+                                   +----+             +----+          
                                                                                                                             
-"c + d + e =" "Pr(B->A|y) +"                                 "c + d + e =" "Pr(B->A|y) +"                               "c + d + e =" "Pr(B->A|y) +"
-              "Pr(B->C) * Pr(C->B|y) +"                                    "Pr(B->C) * Pr(C->B|y) * Pr(B->C) +"                       "Pr(C->B|y) * Pr(B->C) +"
-              "Pr(B->C) * Pr(C->B|y) * Pr(B->C)"                           "Pr(B->C) * Pr(C->B|y) * Pr(B->C)"                         "Pr(B->C) * Pr(C->B|y) * Pr(B->C)"
+"c + d + e =" "Pr(y|B->A) +"                                 "c + d + e =" "Pr(y|B->A) +"                               "c + d + e =" "Pr(y|B->A) +"
+              "Pr(B->C) * Pr(y|C->B) +"                                    "Pr(B->C) * Pr(y|C->B) * Pr(B->C) +"                       "Pr(y|C->B) * Pr(B->C) +"
+              "Pr(B->C) * Pr(y|C->B) * Pr(B->C)"                           "Pr(B->C) * Pr(y|C->B) * Pr(B->C)"                         "Pr(B->C) * Pr(y|C->B) * Pr(B->C)"
 ```
 
 In the example above, ...
@@ -18893,7 +18899,7 @@ In the example above, ...
 ```{note}
 What's happening here? The right-hand side graph is being modified such that, when you go backwards, the terms being added in the expression are the same as when you go forward. That's all. This can't happen without the node duplication because the terms wouldn't end up being the same (as per the B2 example).
 
-If you have no non-emitting states, your backward graph will have no duplicate nodes (same structure as the forward graph).
+If you have no non-emitting hidden states, your backward graph will have no duplicate nodes (same structure as the forward graph).
 
 When computing backwards, SINK is being initialized to 1.0 similar to how B1 is initialized to 1.0 when computing forwards.
 ```
@@ -19013,9 +19019,9 @@ In the example below, the forward graph below splits on B1.
             +----+                                                   |    +'            |    |          
                                                                      +----+             +----+          
                                                                           
-"a + b =" "Pr(SOURCE->A|z) * Pr(A->B|z) +"             "*"           "c + d + e =" "Pr(B->A|y) +"
-          "Pr(SOURCE->B|z) * Pr(B->C) * Pr(C->B|z)"                                "Pr(C->B|y) * Pr(B->C) +"
-                                                                                   "Pr(B->C) * Pr(C->B|y) * Pr(B->C)"
+"a + b =" "Pr(z|SOURCE->A) * Pr(z|A->B) +"             "*"           "c + d + e =" "Pr(y|B->A) +"
+          "Pr(z|SOURCE->B) * Pr(B->C) * Pr(z|C->B)"                                "Pr(y|C->B) * Pr(B->C) +"
+                                                                                   "Pr(B->C) * Pr(y|C->B) * Pr(B->C)"
 ```
 
 This algorithm calculates the same probability as the forward-backward split algorithm (e.g. probability of hidden path traveling through B at index 1 of [z, z, y]), but it efficiently calculates it for every index and every hidden state. The algorithm computes a full forward graph and a full backward graph (full meaning that no nodes are filtered out). Once values in each graph have been computed, the ...
@@ -19240,39 +19246,39 @@ C is a non-emitting hidden state, which is why it doesn't have any linkages to e
 
 The probability that the above HMM emits [y, y, z, z] is the sum of ...
 
- * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→A|z) * Pr(A→A|z)
- * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→A|z) * Pr(A→B|z)
- * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→A|z) * Pr(A→B|z) * Pr(B→C)
- * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→B|z) * Pr(B→C|) * Pr(C→B|z)
- * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→B|z) * Pr(B→C|) * Pr(C→B|z) * Pr(B→C)
- * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→B|z) * Pr(B→A|z)
- * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|z)
- * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C)
- * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|z)
- * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→A|z)
- * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z)
- * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C)
- * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|z)
- * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C)
- * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|z)
- * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→A|z)
- * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z)
- * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C)
- * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→A|z) * Pr(A→A|z)
- * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→A|z) * Pr(A→B|z)
- * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→A|z) * Pr(A→B|z) * Pr(B→C)
- * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|z)
- * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C)
- * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→B|z) * Pr(B→A|z)
+ * Pr(y|SOURCE→A) * Pr(y|A→A) * Pr(z|A→A) * Pr(z|A→A)
+ * Pr(y|SOURCE→A) * Pr(y|A→A) * Pr(z|A→A) * Pr(z|A→B)
+ * Pr(y|SOURCE→A) * Pr(y|A→A) * Pr(z|A→A) * Pr(z|A→B) * Pr(B→C)
+ * Pr(y|SOURCE→A) * Pr(y|A→A) * Pr(z|A→B) * Pr(B→C|) * Pr(z|C→B)
+ * Pr(y|SOURCE→A) * Pr(y|A→A) * Pr(z|A→B) * Pr(B→C|) * Pr(z|C→B) * Pr(B→C)
+ * Pr(y|SOURCE→A) * Pr(y|A→A) * Pr(z|A→B) * Pr(z|B→A)
+ * Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(z|C→B)
+ * Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C)
+ * Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(B→C) * Pr(z|C→B) * Pr(z|B→A)
+ * Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(z|B→A) * Pr(z|A→A)
+ * Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(z|B→A) * Pr(z|A→B)
+ * Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(z|B→A) * Pr(z|A→B) * Pr(B→C)
+ * Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(z|C→B)
+ * Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C)
+ * Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C) * Pr(z|C→B) * Pr(z|B→A)
+ * Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(z|B→A) * Pr(z|A→A)
+ * Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(z|B→A) * Pr(z|A→B)
+ * Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(z|B→A) * Pr(z|A→B) * Pr(B→C)
+ * Pr(y|SOURCE→B) * Pr(y|B→A) * Pr(z|A→A) * Pr(z|A→A)
+ * Pr(y|SOURCE→B) * Pr(y|B→A) * Pr(z|A→A) * Pr(z|A→B)
+ * Pr(y|SOURCE→B) * Pr(y|B→A) * Pr(z|A→A) * Pr(z|A→B) * Pr(B→C)
+ * Pr(y|SOURCE→B) * Pr(y|B→A) * Pr(z|A→B) * Pr(B→C) * Pr(z|C→B)
+ * Pr(y|SOURCE→B) * Pr(y|B→A) * Pr(z|A→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C)
+ * Pr(y|SOURCE→B) * Pr(y|B→A) * Pr(z|A→B) * Pr(z|B→A)
 
 This algorithm filters the summation above to only include hidden paths that travel through a transition of interest after an emission index of interest. For example, to calculate the probability for only those hidden paths that travel through B→A after index 1 of the [y, y, z, z], the summation becomes ...
 
- * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→A|z)
- * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z)
- * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C)
- * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→A|z)
- * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z)
- * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C)
+ * Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(z|B→A) * Pr(z|A→A)
+ * Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(z|B→A) * Pr(z|A→B)
+ * Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(z|B→A) * Pr(z|A→B) * Pr(B→C)
+ * Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(z|B→A) * Pr(z|A→A)
+ * Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(z|B→A) * Pr(z|A→B)
+ * Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(z|B→A) * Pr(z|A→B) * Pr(B→C)
 
 ```{output}
 ch10_code/src/hmm/ProbabilityOfEmittedSequenceWhereHiddenPathTravelsThroughEdge_Summation.py
@@ -19348,30 +19354,30 @@ C is a non-emitting hidden state, which is why it doesn't have any linkages to e
 
 The probability that the above HMM emits [y, y, z, z] is the sum of ...
 
- * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→A|z) * Pr(A→A|z)
- * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→A|z) * Pr(A→B|z)
- * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→A|z) * Pr(A→B|z) * Pr(B→C)
- * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→B|z) * Pr(B→C|) * Pr(C→B|z)
- * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→B|z) * Pr(B→C|) * Pr(C→B|z) * Pr(B→C)
- * Pr(SOURCE→A|y) * Pr(A→A|y) * Pr(A→B|z) * Pr(B→A|z)
- * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|z)
- * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C)
- * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|z)
- * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→A|z)
- * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z)
- * Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C)
- * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|z)
- * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C)
- * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→C) * Pr(C→B|z) * Pr(B→A|z)
- * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→A|z)
- * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z)
- * Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C)
- * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→A|z) * Pr(A→A|z)
- * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→A|z) * Pr(A→B|z)
- * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→A|z) * Pr(A→B|z) * Pr(B→C)
- * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|z)
- * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→B|z) * Pr(B→C) * Pr(C→B|z) * Pr(B→C)
- * Pr(SOURCE→B|y) * Pr(B→A|y) * Pr(A→B|z) * Pr(B→A|z)
+ * Pr(y|SOURCE→A) * Pr(y|A→A) * Pr(z|A→A) * Pr(z|A→A)
+ * Pr(y|SOURCE→A) * Pr(y|A→A) * Pr(z|A→A) * Pr(z|A→B)
+ * Pr(y|SOURCE→A) * Pr(y|A→A) * Pr(z|A→A) * Pr(z|A→B) * Pr(B→C)
+ * Pr(y|SOURCE→A) * Pr(y|A→A) * Pr(z|A→B) * Pr(B→C|) * Pr(z|C→B)
+ * Pr(y|SOURCE→A) * Pr(y|A→A) * Pr(z|A→B) * Pr(B→C|) * Pr(z|C→B) * Pr(B→C)
+ * Pr(y|SOURCE→A) * Pr(y|A→A) * Pr(z|A→B) * Pr(z|B→A)
+ * Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(z|C→B)
+ * Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C)
+ * Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(B→C) * Pr(z|C→B) * Pr(z|B→A)
+ * Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(z|B→A) * Pr(z|A→A)
+ * Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(z|B→A) * Pr(z|A→B)
+ * Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(z|B→A) * Pr(z|A→B) * Pr(B→C)
+ * Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(z|C→B)
+ * Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C)
+ * Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(B→C) * Pr(z|C→B) * Pr(z|B→A)
+ * Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(z|B→A) * Pr(z|A→A)
+ * Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(z|B→A) * Pr(z|A→B)
+ * Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(z|B→A) * Pr(z|A→B) * Pr(B→C)
+ * Pr(y|SOURCE→B) * Pr(y|B→A) * Pr(z|A→A) * Pr(z|A→A)
+ * Pr(y|SOURCE→B) * Pr(y|B→A) * Pr(z|A→A) * Pr(z|A→B)
+ * Pr(y|SOURCE→B) * Pr(y|B→A) * Pr(z|A→A) * Pr(z|A→B) * Pr(B→C)
+ * Pr(y|SOURCE→B) * Pr(y|B→A) * Pr(z|A→B) * Pr(B→C) * Pr(z|C→B)
+ * Pr(y|SOURCE→B) * Pr(y|B→A) * Pr(z|A→B) * Pr(B→C) * Pr(z|C→B) * Pr(B→C)
+ * Pr(y|SOURCE→B) * Pr(y|B→A) * Pr(z|A→B) * Pr(z|B→A)
 
 This summation is then factored and grouped such that it represents an exploded HMM.
 
@@ -19595,9 +19601,9 @@ In the example below, the forward graph below splits on B1.
             | C0 +'                                                  | C1 +'            | C2 +-----'    
             +----+                                                   +----+             +----+          
                                                                          
-"a + b =" "Pr(SOURCE->A|z) * Pr(A->B|z) +"             "*"           "c + d + e =" "Pr(B->A|y) +"
-          "Pr(SOURCE->B|z) * Pr(B->C) * Pr(C->B|z)"                                "Pr(B->C) * Pr(C->B|y) +"
-                                                                                   "Pr(B->C) * Pr(C->B|y) * Pr(B->C)"
+"a + b =" "Pr(z|SOURCE->A) * Pr(z|A->B) +"             "*"           "c + d + e =" "Pr(y|B->A) +"
+          "Pr(z|SOURCE->B) * Pr(B->C) * Pr(z|C->B)"                                "Pr(B->C) * Pr(y|C->B) +"
+                                                                                   "Pr(B->C) * Pr(y|C->B) * Pr(B->C)"
 ```
 
 ```{note}
@@ -19742,48 +19748,48 @@ pseudocount: 0.0001
 One other way to perform this same computation is to split the forward graph into three pieces rather than two pieces. To understand how, consider how the summation algorithm treats the example above: The summation algorithm filters the terms being summed to only include hidden paths that travel B→A after emission index 1, resulting in the expression ...
 
 ```
-Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→A|z) +
-Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z) +
-Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C) +
-Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→A|z) +
-Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z) +
-Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C)
+Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(z|B→A) * Pr(z|A→A) +
+Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(z|B→A) * Pr(z|A→B) +
+Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(z|B→A) * Pr(z|A→B) * Pr(B→C) +
+Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(z|B→A) * Pr(z|A→A) +
+Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(z|B→A) * Pr(z|A→B) +
+Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(z|B→A) * Pr(z|A→B) * Pr(B→C)
 ```
 
-Note how each term in the summation is multiplying by Pr(B→A|z), which is the probability calculation for the edge being isolated (B1→A2).
+Note how each term in the summation is multiplying by Pr(z|B→A), which is the probability calculation for the edge being isolated (B1→A2).
 
 ```
                                         common factor
                                              |
                                              v
-Pr(SOURCE→A|y) * Pr(A→B|y) *             Pr(B→A|z)   * Pr(A→A|z) +          
-Pr(SOURCE→A|y) * Pr(A→B|y) *             Pr(B→A|z)   * Pr(A→B|z) +          
-Pr(SOURCE→A|y) * Pr(A→B|y) *             Pr(B→A|z)   * Pr(A→B|z) * Pr(B→C) +
-Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) *   Pr(B→A|z)   * Pr(A→A|z) +          
-Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) *   Pr(B→A|z)   * Pr(A→B|z) +          
-Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) *   Pr(B→A|z)   * Pr(A→B|z) * Pr(B→C)  
+Pr(y|SOURCE→A) * Pr(y|A→B) *             Pr(z|B→A)   * Pr(z|A→A) +          
+Pr(y|SOURCE→A) * Pr(y|A→B) *             Pr(z|B→A)   * Pr(z|A→B) +          
+Pr(y|SOURCE→A) * Pr(y|A→B) *             Pr(z|B→A)   * Pr(z|A→B) * Pr(B→C) +
+Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) *   Pr(z|B→A)   * Pr(z|A→A) +          
+Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) *   Pr(z|B→A)   * Pr(z|A→B) +          
+Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) *   Pr(z|B→A)   * Pr(z|A→B) * Pr(B→C)  
 ```
 
 Replace the following parts of the expression above with the following variables ...
 
- * a = Pr(SOURCE→A|y) * Pr(A→B|y)
- * b = Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y)
- * x = Pr(B→A|z)
- * c = Pr(A→A|z)
- * d = Pr(A→B|z)
- * e = Pr(A→B|z) * Pr(B→C)
+ * a = Pr(y|SOURCE→A) * Pr(y|A→B)
+ * b = Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B)
+ * x = Pr(z|B→A)
+ * c = Pr(z|A→A)
+ * d = Pr(z|A→B)
+ * e = Pr(z|A→B) * Pr(B→C)
 
 , ... resulting in the expression a\*x\*c + a\*x\*d + a\*x\*e + b\*x\*c + b\*x\*d + b\*x\*e.
 
 ```
                        ORIGINAL                                                      VARIABLE SUBSTITUTION
              
-Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→A|z) +                                     a * x * c +
-Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z) +                                     a * x * d +
-Pr(SOURCE→A|y) * Pr(A→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C) +                           a * x * e +
-Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→A|z) +                           b * x * c +
-Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z) +                           b * x * d +
-Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y) * Pr(B→A|z) * Pr(A→B|z) * Pr(B→C)                   b * x * e
+Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(z|B→A) * Pr(z|A→A) +                                     a * x * c +
+Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(z|B→A) * Pr(z|A→B) +                                     a * x * d +
+Pr(y|SOURCE→A) * Pr(y|A→B) * Pr(z|B→A) * Pr(z|A→B) * Pr(B→C) +                           a * x * e +
+Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(z|B→A) * Pr(z|A→A) +                           b * x * c +
+Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(z|B→A) * Pr(z|A→B) +                           b * x * d +
+Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B) * Pr(z|B→A) * Pr(z|A→B) * Pr(B→C)                   b * x * e
 ```
 
 In this expression, apply algebra factoring rules to pull out common factors:
@@ -19799,11 +19805,11 @@ In this expression, apply algebra factoring rules to pull out common factors:
 ```
 VARIABLE SUBSTITUTION                                                      ORIGINAL
 
-      (a + b)                                  (Pr(SOURCE→A|y) * Pr(A→B|y) + Pr(SOURCE→B|y) * Pr(B→C) * Pr(C→B|y))
+      (a + b)                                  (Pr(y|SOURCE→A) * Pr(y|A→B) + Pr(y|SOURCE→B) * Pr(B→C) * Pr(y|C→B))
          *                                                                     *
-         x                                                                 Pr(B→A|z)
+         x                                                                 Pr(z|B→A)
          *                                                                     *
-    (c + d + e)                                          (Pr(A→A|z) + Pr(A→B|z) + Pr(A→B|z) * Pr(B→C))
+    (c + d + e)                                          (Pr(z|A→A) + Pr(z|A→B) + Pr(z|A→B) * Pr(B→C))
 ```
 
 Notice that the main multiplication's ...
@@ -19862,12 +19868,12 @@ The left-hand side computation (a+b), right-hand side computation (c+d+e), and m
                                                | C0 +'                                                  | C3 +-----'    
                                                +----+                                                   +----+          
 
-                                       "Pr(SOURCE->A|y) * Pr(A->B|y) * Pr(B->A|z) * Pr(A->A|z) +"
-                                       "Pr(SOURCE->A|y) * Pr(A->B|y) * Pr(B->A|z) * Pr(A->B|z) +"
-                                       "Pr(SOURCE->A|y) * Pr(A->B|y) * Pr(B->A|z) * Pr(A->B|z) * Pr(B->C) +"
-                                       "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y) * Pr(B->A|z) * Pr(A->A|z) +"
-                                       "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y) * Pr(B->A|z) * Pr(A->B|z) +"
-                                       "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y) * Pr(B->A|z) * Pr(A->B|z) * Pr(B->C)"
+                                       "Pr(y|SOURCE->A) * Pr(y|A->B) * Pr(z|B->A) * Pr(z|A->A) +"
+                                       "Pr(y|SOURCE->A) * Pr(y|A->B) * Pr(z|B->A) * Pr(z|A->B) +"
+                                       "Pr(y|SOURCE->A) * Pr(y|A->B) * Pr(z|B->A) * Pr(z|A->B) * Pr(B->C) +"
+                                       "Pr(y|SOURCE->B) * Pr(B->C) * Pr(y|C->B) * Pr(z|B->A) * Pr(z|A->A) +"
+                                       "Pr(y|SOURCE->B) * Pr(B->C) * Pr(y|C->B) * Pr(z|B->A) * Pr(z|A->B) +"
+                                       "Pr(y|SOURCE->B) * Pr(B->C) * Pr(y|C->B) * Pr(z|B->A) * Pr(z|A->B) * Pr(B->C)"
 
 
 
@@ -19893,9 +19899,9 @@ The left-hand side computation (a+b), right-hand side computation (c+d+e), and m
             | C0 +'                                                                                                                          | C3 +-----'    
             +----+                                                                                                                           +----+       
 
-"a + b =" "Pr(SOURCE->A|y) * Pr(A->B|y) +"            "*"         "x =" "Pr(B->A|z)"                  "*"                 "c + d + e =" "Pr(A->A|z) +"
-          "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y)"                                                                                     "Pr(A->B|z) +"
-                                                                                                                                        "Pr(A->B|z) * Pr(B->C)"
+"a + b =" "Pr(y|SOURCE->A) * Pr(y|A->B) +"            "*"         "x =" "Pr(z|B->A)"                  "*"                 "c + d + e =" "Pr(z|A->A) +"
+          "Pr(y|SOURCE->B) * Pr(B->C) * Pr(y|C->B)"                                                                                     "Pr(z|A->B) +"
+                                                                                                                                        "Pr(z|A->B) * Pr(B->C)"
 ```
 
 ```{output}
@@ -20000,9 +20006,9 @@ In the example below, the forward graph below splits on B1.
             +----+                                                   |    +'            |    |          
                                                                      +----+             +----+          
                                                                           
-"a + b =" "Pr(SOURCE->A|z) * Pr(A->B|z) +"             "*"           "c + d + e =" "Pr(B->A|y) +"
-          "Pr(SOURCE->B|z) * Pr(B->C) * Pr(C->B|z)"                                "Pr(C->B|y) * Pr(B->C) +"
-                                                                                   "Pr(B->C) * Pr(C->B|y) * Pr(B->C)"
+"a + b =" "Pr(z|SOURCE->A) * Pr(z|A->B) +"             "*"           "c + d + e =" "Pr(y|B->A) +"
+          "Pr(z|SOURCE->B) * Pr(B->C) * Pr(z|C->B)"                                "Pr(y|C->B) * Pr(B->C) +"
+                                                                                   "Pr(B->C) * Pr(y|C->B) * Pr(B->C)"
 ```
 
 ```{note}
@@ -20040,12 +20046,12 @@ Just with the forward split algorithm for edges, multiply the computation result
                                                | C0 +'                                                  | C3 +-----'    
                                                +----+                                                   +----+          
 
-                                       "Pr(SOURCE->A|y) * Pr(A->B|y) * Pr(B->A|z) * Pr(A->A|z) +"
-                                       "Pr(SOURCE->A|y) * Pr(A->B|y) * Pr(B->A|z) * Pr(A->B|z) +"
-                                       "Pr(SOURCE->A|y) * Pr(A->B|y) * Pr(B->A|z) * Pr(A->B|z) * Pr(B->C) +"
-                                       "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y) * Pr(B->A|z) * Pr(A->A|z) +"
-                                       "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y) * Pr(B->A|z) * Pr(A->B|z) +"
-                                       "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y) * Pr(B->A|z) * Pr(A->B|z) * Pr(B->C)"
+                                       "Pr(y|SOURCE->A) * Pr(y|A->B) * Pr(z|B->A) * Pr(z|A->A) +"
+                                       "Pr(y|SOURCE->A) * Pr(y|A->B) * Pr(z|B->A) * Pr(z|A->B) +"
+                                       "Pr(y|SOURCE->A) * Pr(y|A->B) * Pr(z|B->A) * Pr(z|A->B) * Pr(B->C) +"
+                                       "Pr(y|SOURCE->B) * Pr(B->C) * Pr(y|C->B) * Pr(z|B->A) * Pr(z|A->A) +"
+                                       "Pr(y|SOURCE->B) * Pr(B->C) * Pr(y|C->B) * Pr(z|B->A) * Pr(z|A->B) +"
+                                       "Pr(y|SOURCE->B) * Pr(B->C) * Pr(y|C->B) * Pr(z|B->A) * Pr(z|A->B) * Pr(B->C)"
 
 
 
@@ -20072,9 +20078,9 @@ Just with the forward split algorithm for edges, multiply the computation result
             | C0 +'                                                                                                                          | C3 +-----'    
             +----+                                                                                                                           +----+       
 
-"a + b =" "Pr(SOURCE->A|y) * Pr(A->B|y) +"            "*"         "x =" "Pr(B->A|z)"                  "*"                 "c + d + e =" "Pr(A->A|z) +"
-          "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y)"                                                                                      "Pr(A->B|z) +"
-                                                                                                                                         "Pr(A->B|z) * Pr(B->C)"
+"a + b =" "Pr(y|SOURCE->A) * Pr(y|A->B) +"            "*"         "x =" "Pr(z|B->A)"                  "*"                 "c + d + e =" "Pr(z|A->A) +"
+          "Pr(y|SOURCE->B) * Pr(B->C) * Pr(y|C->B)"                                                                                      "Pr(z|A->B) +"
+                                                                                                                                         "Pr(z|A->B) * Pr(B->C)"
 
 
 
@@ -20102,9 +20108,9 @@ Just with the forward split algorithm for edges, multiply the computation result
             | C0 +'                                                                                                                          | C3 +-------'    
             +----+                                                                                                                           +----+       
 
-"a + b =" "Pr(SOURCE->A|y) * Pr(A->B|y) +"            "*"         "x =" "Pr(B->A|z)"                  "*"                 "c + d + e =" "Pr(A->A|z) +"
-          "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y)"                                                                                     "Pr(A->B|z) +"
-                                                                                                                                        "Pr(B->C) * Pr(A->B|z)"
+"a + b =" "Pr(y|SOURCE->A) * Pr(y|A->B) +"            "*"         "x =" "Pr(z|B->A)"                  "*"                 "c + d + e =" "Pr(z|A->A) +"
+          "Pr(y|SOURCE->B) * Pr(B->C) * Pr(y|C->B)"                                                                                     "Pr(z|A->B) +"
+                                                                                                                                        "Pr(B->C) * Pr(z|A->B)"
 ```
 
 ```{output}
@@ -20203,9 +20209,9 @@ In the example below, the forward graph below splits on B1→A2.
             | C0 +'                                                                                                                          | C3 +-------'    
             +----+                                                                                                                           +----+       
 
-"a + b =" "Pr(SOURCE->A|y) * Pr(A->B|y) +"            "*"         "x =" "Pr(B->A|z)"                  "*"                 "c + d + e =" "Pr(A->A|z) +"
-          "Pr(SOURCE->B|y) * Pr(B->C) * Pr(C->B|y)"                                                                                     "Pr(A->B|z) +"
-                                                                                                                                        "Pr(B->C) * Pr(A->B|z)"
+"a + b =" "Pr(y|SOURCE->A) * Pr(y|A->B) +"            "*"         "x =" "Pr(z|B->A)"                  "*"                 "c + d + e =" "Pr(z|A->A) +"
+          "Pr(y|SOURCE->B) * Pr(B->C) * Pr(y|C->B)"                                                                                     "Pr(z|A->B) +"
+                                                                                                                                        "Pr(B->C) * Pr(z|A->B)"
 ```
 
 This algorithm calculates the same probability as the forward-backward split algorithm, but it efficiently calculates it for every edge in the forward graph. The algorithm computes a full forward graph and a full backward graph (full meaning that no nodes or edges are filtered out). Once values in each graph have been computed, the ...
@@ -20250,10 +20256,10 @@ For any edge S→E in the forward graph, if you were to ...
 ... and multiply them together, it would produce the same result as running the forward-backward split graph algorithm for edge S→E. For example, to calculate the probability for only those hidden paths that travel through B1→A2, simply multiply ...
 
 * B1's value in the forward graph
-* Pr(B→A|z)
+* Pr(z|B→A)
 * sum of A2 values in the backward graph
 
-...: `forward[B1] * Pr(B→A|z) * sum(backward[A2])`.
+...: `forward[B1] * Pr(z|B→A) * sum(backward[A2])`.
 
 ```{note}
 Why is this?
@@ -20298,12 +20304,12 @@ python
 
 To calculate the probabilities for every edge, compute both the full forward graph and full backward graph (as done above) once, then simply extract forward and backward values from those graphs for each edges's computation.
 
- * `forward[A0] * Pr(A→A|y) s* um(backward[A1])`
- * `forward[A0] * Pr(A→B|y) * sum(backward[B1])`
- * `forward[B0] * Pr(B→A|y) * sum(backward[A1])`
+ * `forward[A0] * Pr(y|A→A) s* um(backward[A1])`
+ * `forward[A0] * Pr(y|A→B) * sum(backward[B1])`
+ * `forward[B0] * Pr(y|B→A) * sum(backward[A1])`
  * `forward[B0] * Pr(B→C) * sum(backward[C0])`
- * `forward[B0] * Pr(B→B|y) * sum(backward[B1])`
- * `forward[C0] * Pr(C→B|y) * sum(backward[B1])`
+ * `forward[B0] * Pr(y|B→B) * sum(backward[B1])`
+ * `forward[C0] * Pr(y|C→B) * sum(backward[B1])`
  * ...
 
 ```{ch10}
@@ -20414,7 +20420,7 @@ The certainty for all nodes in the hidden path can be computed efficiently via t
 Recall that ...
 
  * `forward[SINK]` is the probability that the HMM emits [z, z, y].
- * `forward[Xn] * sum(backward[Xn])` is the probability that the HMM emits [z, z, y] had emission index n removed all hidden states except for X and those non-emitting states it could reach out to (e.g. for hidden paths that travel over B1: `forward[B1] * sum(backward[B1])`).
+ * `forward[Xn] * sum(backward[Xn])` is the probability that the HMM emits [z, z, y] had emission index n removed all hidden states except for X and those non-emitting hidden states it could reach out to (e.g. for hidden paths that travel over B1: `forward[B1] * sum(backward[B1])`).
 
 To compute the certainty that the hidden path will travel over some node, ...
 
@@ -20551,7 +20557,7 @@ The certainty for all edges in the hidden path can be computed efficiently via t
 Recall that ...
 
  * `forward[SINK]` is the probability that the HMM emits [y, y, z, z].
- * `forward[S] * middle *  sum(backward[E])` is the probability that the HMM emits [y, y, z, z] had all hidden paths been removed except those that travel over S→E (e.g. for hidden paths that travel over B1→A2: `forward[B1] * Pr(B→A|z) * sum(backward[A2])`).
+ * `forward[S] * middle *  sum(backward[E])` is the probability that the HMM emits [y, y, z, z] had all hidden paths been removed except those that travel over S→E (e.g. for hidden paths that travel over B1→A2: `forward[B1] * Pr(z|B→A) * sum(backward[A2])`).
 
 To compute the certainty that the hidden path will travel some edge, ...
 
@@ -20959,12 +20965,12 @@ The computation for each node is performed similarly to how it was performed bef
      +---------+                                                      +---------+                          
 
 
-           .-----> "Pr(A->A|z) * ("                                         .-----> "Pr(A->A|z) * ("   
-           | A0,y -> "Pr(SOURCE->A|y)"                                      | A0,z -> "Pr(SOURCE->A|z)"
+           .-----> "Pr(z|A->A) * ("                                         .-----> "Pr(z|A->A) * ("   
+           | A0,y -> "Pr(y|SOURCE->A)"                                      | A0,z -> "Pr(z|SOURCE->A)"
            |       ")"                                                      |       ")"               
       A1,z |       "+"                                                 A1,z |       "+"               
-           |       "Pr(B->A|z) * ("                                         |       "Pr(B->A|z) * ("   
-           | B0,y -> "Pr(SOURCE->B|y)"                                      | B0,z -> "Pr(SOURCE->B|z)"
+           |       "Pr(z|B->A) * ("                                         |       "Pr(z|B->A) * ("   
+           | B0,y -> "Pr(y|SOURCE->B)"                                      | B0,z -> "Pr(z|SOURCE->B)"
            '-----> ")"                                                      '-----> ")"               
 ```
 
@@ -21034,6 +21040,459 @@ sink_state: SINK  # Must not exist in HMM (used only for Viterbi graph)
 pseudocount: 0.0001
 emission_len: 3
 ```
+
+## Profile Hidden Markov Models
+
+`{bm} /(Algorithms\/Profile Hidden Markov Models)_TOPIC/`
+
+```{prereq}
+Algorithms/Sequence Alignment/Multiple Alignment_TOPIC
+Algorithms/Sequence Hidden Markov Models_TOPIC
+```
+
+Sequence alignments are expensive to compute, especially when there are more than two sequences being aligned (multiple alignment). For example, consider the following multiple alignment ...
+
+| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---|---|---|---|---|---|---|---|---|
+| - | T | - | R | E | L | L | O | - |
+| - | - | - | M | E | L | L | O | W |
+| Y | - | - | - | E | L | L | O | W |
+| - | - | - | B | E | L | L | O | W |
+| - | - | H | - | E | L | L | O | - |
+| O | T | H | - | E | L | L | O | - |
+
+The alignment above represents a family of sequences, which in this case is a small set of words that rhyme together. Given a never before seen word, a profile HMM for the above alignment allows for ...
+
+ * estimating how related the word is to  that word is related to the multiple alignment (e.g. does it look like it rhymes).
+ * estimating how that word would align if it were included in the multiple alignment (e.g. estimate if the suffix roughly matches up with "ELLO").
+
+Since multiple alignments are computationally expensive to perform, the HMM profile provides for a quick-and-dirty mechanism to determine if a new sequence is related to some existing family or not. For example, consider the word the example above with the following words:
+
+ * How does POMELO relate to the multiple alignment?
+ * How does CELLO relate to the multiple alignment?
+ * How does FELLOW relate to the multiple alignment?
+ * How does SELLOUTS relate to the multiple alignment?
+
+Generally, profile HMMs are used to quickly test a never before seen sequence against a known sequence family. The example above uses English language words that rhyme together, but in a biological context the sequences would likely be an alignment of ...
+
+ * different forms of some gene's regulatory motif.
+ * homologous proteins.
+ * homologous genes.
+ * etc...
+
+### HMM Sequence Alignment
+
+**WHAT**: Re-formulate a pair-wise sequence alignment as an HMM.
+
+**WHY**: This builds the foundation for computing profile HMMs.
+
+**ALGORITHM**:
+
+A pair-wise sequence alignment graph aligns two sequences together. For example, imagine the follow two sequences, each with a single element: \[n] and \[a]. The sequence alignment graph for these two sequences is as follows.
+
+```{svgbob}
+           "n"       
+           "-"       
+       *------->*  
+       |\       |    
+       | \      |    
+    "-"|  \     |"-" 
+    "a"|   \    |"a" 
+       |   n\   |  
+       |   a \  |  
+       |      \ |  
+       ▼       ▼▼
+       *------->*  
+           "n"      
+           "-"      
+
+  "ALIGNMENT OPTIONS:"  
+-n   vs   n    vs    n- 
+a-        a          -a 
+```
+
+Any path from the top-left node (source) to the bottom-right node (sink) represents a possible alignment. For example, going down and to the right forms the alignment:
+
+| 0 | 1 |
+|---|---|
+| - | n |
+| a | - |
+
+To re-formulate the alignment graph above as a HMM, think of the paths through the alignment graph as emitting symbols in a sequence rather than alinging two sequences together. For example, from the perspective of the first sequence \[n], each edge that goes ...
+
+ * down represents a gap, which can be represented by a non-emitting hidden state.
+ * right represents an emission, which can be represented by an emitting hidden state.
+ * diagonal represents an emission, which can be represented by an emitting hidden state.
+ 
+```{svgbob}
+ "SEQUENCE ALIGNMENT"                        "HMM from [n]'s perspective"
+           "n"                                                           
+           "-"                               +----+      +----+    +- -+ 
+       *------->*                            | S  +----->|E10 +- ->: n : 
+       |\       |                            +-+--+      +--+-+    +- -+ 
+       | \      |                              |   \        |       ^    
+    "-"|  \     |"-"                           |    \       v       :    
+    "a"|   \    |"a"                           |     \   +----+     :    
+       |   n\   |                              |      \  |D11 |     :    
+       |   a \  |                              |       \ +----+     :    
+       |      \ |                              v        v           :    
+       ▼       ▼▼                            +----+      +----+     :    
+       *------->*                            |D01 +----->|E11 +- - -'    
+           "n"                               +----+      +----+          
+           "-"                                                           
+                                                                         
+  "ALIGNMENT OPTIONS:"                          "EMISSION OPTIONS:"      
+-n   vs   n    vs    n-                         S -> D01 -> E11: -n      
+a-        a          -a                         S -> E11:        n       
+                                                S -> E10 -> D11: n-      
+```
+
+```{note}
+The alignment graph and HMM diagrams in the example above have intentially left out weights.
+```
+
+````{note}
+Why represent a gap as a non-emitting hidden state? Because technically, a gap means the sequence didn't move forward (no symbol emission happened). For example, if your sequence is BAN and the alignment starts with a gap (-), you still need to emit the initial B symbol later on...
+
+```
+-BAN
+G-AN
+```
+
+By the end, all of BAN should have been emitted.
+````
+
+Likewise, from the perspective of the second sequence \[a], each edge that goes ...
+
+ * down represents an emission, which can be represented by an emitting hidden state hidden state.
+ * right represents a gap, which can be represented by an non-emitting hidden state.
+ * diagonal represents an emission, which can be represented by an emitting hidden state.
+
+```{svgbob}
+ "SEQUENCE ALIGNMENT"                        "HMM from [n]'s perspective"                     "HMM from [a]'s perspective"  
+           "n"                                                                                                             
+           "-"                               +----+      +----+    +- -+                      +----+      +----+           
+       *------->*                            | S  +----->|E10 +- ->: n :                      | S  +----->|D10 |
+       |\       |                            +-+--+      +--+-+    +- -+                      +-+--+      +--+-+
+       | \      |                              |   \        |       ^                           |   \        |  
+    "-"|  \     |"-"                           |    \       v       :                           |    \       v  
+    "a"|   \    |"a"                           |     \   +----+     :                           |     \   +----+    +- -+
+       |   n\   |                              |      \  |D11 |     :                           |      '->|E11 +- ->: a :
+       |   a \  |                              |       \ +----+     :                           |         +----+    +- -+
+       |      \ |                              v        v           :                           v                    ^
+       ▼       ▼▼                            +----+      +----+     :                         +----+      +----+     :
+       *------->*                            |D01 +----->|E11 +- - -'                         |E01 +----->|D11 |     :
+           "n"                               +----+      +----+                               +--+-+      +----+     :            
+           "-"                                                                                   '- - - - - - - - - -'     
+                                                                                                                           
+  "ALIGNMENT OPTIONS:"                          "EMISSION OPTIONS:"                             "EMISSION OPTIONS:"        
+-n   vs   n    vs    n-                         S -> D01 -> E11: -n                             S -> E01 -> D11: a-        
+a-        a          -a                         S -> E11:        n                              S -> E11:        a
+                                                S -> E10 -> D11: n-                             S -> D10 -> E11: -a      
+```
+
+When an alignment graph involves sequences with more than one element, the re-formulated HMMs should chain similarly to that alignment graph. However, instead of each "square" having a single bottom-right node (as in the alignment graph), each "square" in the HMM will have two bottom right nodes. These two bottom-right nodes are hidden states, where ...
+
+ * one is an emitting hidden state, labelled as E.
+ * one is a non-emitting hidden state, labelled as D.
+ 
+For example, consider the sequence alignment [h, i] vs [q, i]. From [h, i]'s perspective, whenever an edge in the alignment graph goes ...
+
+ * down, it's a gap: Must point to D (non-emitting hidden state).
+ * right, it's an insertion: Must point to E (emitting hidden state).
+ * diagonal, it's an match: Must point to E (emitting hidden state).
+
+<table>
+<tr><th>Sequence Alignment</th><th>HMM</th></tr>
+<tr><td>
+
+```{dot}
+digraph G {
+  label="Alignment graph for \"hi\" vs \"qi\""
+  labelloc=top
+  layout=neato;
+  #splines=curved;
+  node [shape=point];
+  S [pos="0,0!"]
+  E01 [pos="0,-2!"];
+  E02 [pos="0,-4!"];
+  E10 [pos="2,0!"];
+  E11 [pos="2,-2!"];
+  E20 [pos="4,0!"];
+  E21 [pos="4,-2!"];
+  E12 [pos="2,-4!"];
+  E22 [pos="4,-4!"];
+ 
+  S->E01 [label="-\nq"];
+  S->E10 [label="h\n-"];
+  S->E11 [label="h\nq"];
+  E10->E20 [label="i\n-"];
+  E10->E11 [label="-\nq"];
+  E10->E21 [label="i\nq"];
+  E01->E02 [label="-\ni"];
+  E01->E11 [label="h\n-"];
+  E01->E12 [label="h\ni"];
+  E11->E12 [label="-\ni"];
+  E11->E21 [label="i\n-"];
+  E11->E22 [label="i\ni"];
+  E02->E12 [label="h\n-"];
+  E12->E22 [label="i\n-"];
+  E20->E21 [label="-\nq"];
+  E21->E22 [label="-\ni"];
+}
+```
+
+</td><td>
+
+```{dot}
+digraph G {
+  label="HMM diagram for \"hi\" vs \"qi\"\n(from \"hi\"'s perspective)"
+  labelloc=top
+  layout=neato;
+  #splines=curved;
+  node [shape=plain];
+  S [pos="0,0!"]
+  D01 [pos="0,-2!"];  D02 [pos="0,-4!"]
+  E10 [pos="2,0!" label="E10\n(h)"]
+  E11 [pos="2,-2!" label="E11\n(h)"];  D11 [pos="2.2,-1.7!"];
+  E20 [pos="4,0!" label="E20\n(i)"]
+  E21 [pos="4,-2!" label="E21\n(i)"];  D21 [pos="4.2,-1.7!"];
+  E12 [pos="2,-4!" label="E12\n(h)"];  D12 [pos="2.2,-3.7!"];
+  E22 [pos="4,-4!" label="E22\n(i)"];  D22 [pos="4.2,-3.7!"];
+ 
+  S->D01; S->E10; S->E11;
+  E10->E20; E10->D11; E10->E21;
+  D01->D02; D01->E11; D01->E12;
+  D12->E22
+  E11->D12; E11->E21; E11->E22;
+  D11->D12; D11->E21; D11->E22;
+  D02->E12
+  E12->E22
+  E20->D21
+  D21->D22
+  E21->D22
+}
+```
+
+</td></tr>
+</table>
+
+```{note}
+In the HMM above, each emitting hidden state has a 100% symbol emission probability for emitting the symbol at the sequence index that it's for vs a 0% probability of embedding all other symbols. For example, E10 has a ...
+
+ * 100% probability of emitting symbol h.
+ * 0% probability of emittin symbol i.
+
+As such, the HMM diagram above embeds the sole symbol emission for each E node directly in that E node vs drawing out dashed edges / nodes to symbol emission. Doing this makes it easier to understand what's going on.
+```
+
+In the alignment graph example above, each alignment path through the graph is a unique way in which [h, i] and [q, i] can align. Likewise, in the HMM example above, each hidden path is unique way in which [h, i]'s symbols get aligned.
+
+<table>
+<tr><th>Sequence Alignment (alignment path)</th><th>HMM (hidden path)</th></tr>
+<tr><td>
+
+```{dot}
+digraph G {
+  label="Alignment graph for \"hi\" vs \"qi\""
+  labelloc=top
+  layout=neato;
+  #splines=curved;
+  node [shape=point];
+  S [pos="0,0!"]
+  E01 [pos="0,-2!"];
+  E02 [pos="0,-4!"];
+  E10 [pos="2,0!"];
+  E11 [pos="2,-2!"];
+  E20 [pos="4,0!"];
+  E21 [pos="4,-2!"];
+  E12 [pos="2,-4!"];
+  E22 [pos="4,-4!"];
+ 
+  S->E01 [label="-\nq"];
+  S->E10 [label="h\n-", fontcolor=red, color=red];
+  S->E11 [label="h\nq"];
+  E10->E20 [label="i\n-"];
+  E10->E11 [label="-\nq", fontcolor=red, color=red];
+  E10->E21 [label="i\nq"];
+  E01->E02 [label="-\ni"];
+  E01->E11 [label="h\n-"];
+  E01->E12 [label="h\ni"];
+  E11->E12 [label="-\ni"];
+  E11->E21 [label="i\n-"];
+  E11->E22 [label="i\ni", fontcolor=red, color=red];
+  E02->E12 [label="h\n-"];
+  E12->E22 [label="i\n-"];
+  E20->E21 [label="-\nq"];
+  E21->E22 [label="-\ni"];
+}
+```
+
+| 0 | 1 | 2 |
+|---|---|---|
+| h | - | i |
+| - | q | i |
+
+</td><td>
+
+```{dot}
+digraph G {
+  label="HMM diagram for \"hi\" vs \"qi\"\n(from \"hi\"'s perspective)"
+  labelloc=top
+  layout=neato;
+  #splines=curved;
+  node [shape=plain];
+  S [pos="0,0!" fontcolor=red]
+  D01 [pos="0,-2!"];  D02 [pos="0,-4!"]
+  E10 [pos="2,0!" label="E10\n(h)", fontcolor=red]
+  E11 [pos="2,-2!" label="E11\n(h)"];  D11 [pos="2.2,-1.7!", fontcolor=red];
+  E20 [pos="4,0!" label="E20\n(i)"]
+  E21 [pos="4,-2!" label="E21\n(i)"];  D21 [pos="4.2,-1.7!"];
+  E12 [pos="2,-4!" label="E12\n(h)"];  D12 [pos="2.2,-3.7!"];
+  E22 [pos="4,-4!" label="E22\n(i)", fontcolor=red];  D22 [pos="4.2,-3.7!"];
+ 
+  S->D01; S->E10 [fontcolor=red, color=red]; S->E11;
+  E10->E20; E10->D11 [fontcolor=red, color=red]; E10->E21;
+  D01->D02; D01->E11; D01->E12;
+  D12->E22
+  E11->D12; E11->E21; E11->E22;
+  D11->D12; D11->E21; D11->E22 [fontcolor=red, color=red];
+  D02->E12
+  E12->E22
+  E20->D21
+  D21->D22
+  E21->D22
+}
+```
+
+|                  |   0   |    1    |    2    |
+|------------------|-------|---------|---------|
+| Hidden path      | S→E10 | E10→D11 | D11→E22 |
+| Symbol emissions |   h   |    -    |    i    |
+
+</td></tr>
+</table>
+
+When you re-formulate an alignment graph as an HMM, the computation essentially changes to something fundamentally different. The goal of an alignment graph is different than that of an HMM. With an ...
+
+ * alignment graph, you're trying to maximize score (what path do I take to produce the maximum score).
+ * HMM, you're trying to maximize likelihood (what path do I take to produce the most likely outcome).
+
+<table>
+<tr><th>Sequence Alignment (max score)</th><th>HMM (max transition probabilities)</th></tr>
+<tr><td>
+
+With an alignment graph, each edge represents a possible alignment between an element from the first sequence and an element from the second sequence. That edge is assigned a score that measures how well those two score against each other. The goal is to find the alignment path whose edge scores sum to the maximum of all possible alignment paths.
+
+ * There is no limit to low / high an edge score can be. Even negative values are allowed.
+
+```{dot}
+digraph G {
+  label="Alignment graph for \"hi\" vs \"qi\""
+  labelloc=top
+  layout=neato;
+  #splines=curved;
+  node [shape=point];
+  S [pos="0,0!"]
+  E01 [pos="0,-2!"];
+  E02 [pos="0,-4!"];
+  E10 [pos="2,0!"];
+  E11 [pos="2,-2!"];
+  E20 [pos="4,0!"];
+  E21 [pos="4,-2!"];
+  E12 [pos="2,-4!"];
+  E22 [pos="4,-4!"];
+ 
+  S->E01 [label="-\nq\n0.0"];
+  S->E10 [label="h\n-\n0.0", fontcolor=red, color=red];
+  S->E11 [label="h\nq\n-1.0"];
+  E10->E20 [label="i\n-\n0.0"];
+  E10->E11 [label="-\nq\n0.0", fontcolor=red, color=red];
+  E10->E21 [label="i\nq\n-1.0"];
+  E01->E02 [label="-\ni\n0.0"];
+  E01->E11 [label="h\n-\n0.0"];
+  E01->E12 [label="h\ni\n-1.0"];
+  E11->E12 [label="-\ni\n0.0"];
+  E11->E21 [label="i\n-\n0.0"];
+  E11->E22 [label="i\ni\n1.0", fontcolor=red, color=red];
+  E02->E12 [label="h\n-\n0.0"];
+  E12->E22 [label="i\n-\n0.0"];
+  E20->E21 [label="-\nq\n0.0"];
+  E21->E22 [label="-\ni\n0.0"];
+}
+```
+
+Scoring matrix:
+
+|       |  h   |  i   |   -  |
+|-------|------|------|------|
+| **q** | -1.0 | -1.0 |  0.0 |
+| **i** | -1.0 |  1.0 |  0.0 |
+| **-** |  0.0 |  0.0 |      |
+
+</td><td>
+
+With an HMM, each node represents a hidden state and each edge represents a transition between the hidden states at the ends of that edge. That edge is assigned a probabilitiy that measures how likely it is for that transition to occur (for the edge to be taken). The goal is to find the hidden path whose probability is the maximum of all possible hidden paths.
+
+ * Each hidden state transition probability must be between 0 and 1.
+ * For each hidden state, its outgoing hidden state transition probabilities must sum to 1.0.
+
+```{dot}
+digraph G {
+  label="HMM diagram for \"hi\" vs \"qi\"\n(from \"hi\"'s perspective)"
+  labelloc=top
+  layout=neato;
+  #splines=curved;
+  node [shape=plain];
+  S [pos="0,0!" fontcolor=red]
+  D01 [pos="0,-2!"];  D02 [pos="0,-4!"]
+  E10 [pos="2,0!" label="E10\n(h)", fontcolor=red]
+  E11 [pos="2,-2!" label="E11\n(h)"];  D11 [pos="2.2,-1.7!", fontcolor=red];
+  E20 [pos="4,0!" label="E20\n(i)"]
+  E21 [pos="4,-2!" label="E21\n(i)"];  D21 [pos="4.2,-1.7!"];
+  E12 [pos="2,-4!" label="E12\n(h)"];  D12 [pos="2.2,-3.7!"];
+  E22 [pos="4,-4!" label="E22\n(i)", fontcolor=red];  D22 [pos="4.2,-3.7!"];
+ 
+  S->D01 [label=0.4]; S->E10 [fontcolor=red, color=red, label=0.6]; S->E11 [label=0.0];
+  E10->E20 [label=0.5]; E10->D11 [fontcolor=red, color=red, label=0.5]; E10->E21 [label=0.0];
+  D01->D02 [label=0.5]; D01->E11 [label=0.5]; D01->E12 [label=0.0];
+  D12->E22 [label=1.0];
+  E11->D12 [label=1.0]; E11->E21 [label=0.0]; E11->E22 [label=0.0];
+  D11->D12 [label=0.0]; D11->E21 [label=0.0]; D11->E22 [fontcolor=red, color=red, label=1.0];
+  D02->E12 [label=1.0];
+  E12->E22 [label=1.0];
+  E20->D21 [label=1.0];
+  D21->D22 [label=1.0];
+  E21->D22 [label=1.0];
+}
+```
+
+Hidden state transition probabilities:
+
+```yaml
+S:   {E10: 0.6, E11: 0.0, D01: 0.4}
+E10: {D11: 0.5, E20: 0.5, E21: 0.0}
+E20: {D21: 1.0}
+D01: {D02: 0.5, E12: 0.0, E11: 0.5}
+E11: {D12: 0.0, E22: 1.0, E21: 0.0}
+D11: {D12: 0.0, E22: 1.0, E21: 0.0}
+E21: {D22: 1.0}
+D02: {E12: 1.0}
+D12: {E22: 1.0}
+E12: {E22: 1.0}
+D21: {D22: 1.0}
+D22: {}
+E22: {}
+```
+
+</td></tr>
+</table>
+
+```{note}
+This section doesn't cover how to derive the hidden state transition probabilities for an HMM. It's assumed that you already have something in place for this, similar to how a scoring matrix (e.g. BLOSUM) is used for sequence alignments.
+```
+
+### HMM Profile Alignment
 
 # Stories
 
@@ -26768,6 +27227,8 @@ first_indexes_checkpoint_n: 20
 
    When cystine goes through DNA methylation, it has a tendency to deaminate to thymine. However, DNA methylation is often suppressed in areas of DNA dubbed CG-islands, where CG appears more frequently than the rest of the genome.
 
+ * `{bm} CpG island/(C[p\-]?G island|C[p\-]?G site)/i` - Regions of DNA with a high frequency of cystine followed by guanine. The reverse complementing strand will have equal regions with equally high frequencies of guanine followed by cystine.
+
  * `{bm} Hidden Markov Model` `{bm} /(HMM)/` - A model of a machine that outputs a sequence.
 
    ```{svgbob}
@@ -26779,63 +27240,44 @@ first_indexes_checkpoint_n: 20
     G G A C A T
    ```
 
-   Th machine being modeled can be in one of many hidden states. For example, the machine above could be in one of two hidden states: Gene or Non-gene. If in the ...
+   The machine being modeled can be in one of many hidden states (called hidden because that state is unobservable). For example, the machine above could be in one of two hidden states: Gene or Non-gene. If in the ...
 
     * gene hidden state, it's outputting DNA for a region of DNA that's a gene.
-    * non-gene hidden state, its outputting DNA for a region of DNA that isn't a gene (e.g. telomeres).
+    * non-gene hidden state, it's outputting DNA for a region of DNA that isn't a gene (e.g. telomeres).
   
    At each step, the machine transitions from its existing hidden state to another hidden state and emits a symbol (transitions to the same hidden state are possible). For the example machine above, the emitted symbols are nucleotides (A, C, T, and G).
 
    An HMM models such a machine by using four pieces of information:
 
-    * Set of hidden states the machine can be in.
-    * Set of symbols that the machine can emit.
-    * Matrix of hidden state to hidden state transition probabilities.
-    * Matrix of hidden state to symbol emission probabilities.
+    1. Set of hidden states the machine can be in: `{gene, non-gene}`
 
-   ```{note}
-   The example machine above is a bad example to model as an HMM. Only two states and emitting a single nucleotide will result in a useless HMM model. The machine should be modeled as emitting 5-mers or something and would likely need more than 2 states?
+    2. Set of symbols that the machine can emit: `{A, C, T, G}`
 
-   The example below might be better.
-   ```
+    3. Set of hidden state-to-hidden state transition probabilities:
 
-   For example, imagine a baseball player modeled as a HMM. Each swing at the ball may result in either a hit, a miss, or a foul ball. The batter has two bats he can use, both look the exact same (spectators can't tell the difference but he can): hitter vs fouler.
-   
-    * The hitter bat has the following probabilities: 0.75 hit, 0.1 miss, and 0.15 foul
-    * The fouler bat has the following probabilities: 0.5 hit, 0.1 miss, and 0.4 foul
+       ```yaml
+       {
+         [gene, gene]: 0.9,
+         [gene, non-gene]: 0.1,
+         [non-gene, gene]: 0.1,
+         [non-gene, non-gene]: 0.9
+       }
+       ```
 
-   After each swing, he has a 0.1 probability of switching to a different bat vs a 0.9 probability of keeping the same bat.
+    4. set of hidden state-to-symbol emission probabilities.
 
-   The batter modeled as a HMM:
-
-    * Set of symbols that it can emit: {hit, miss, foul}
-
-    * Set of hidden states it can be in: {hitter bat, fouler bat}
-
-    * Matrix of state-state transition probabilities:
-
-      |            | hitter bat | fouler bat |
-      |------------|------------|------------|
-      | hitter bat |    0.9     |     0.1    |
-      | fouler bat |    0.1     |     0.9    |
-  
-    * Matrix of state-symbol emission probabilities:
-
-      |            | hit  | miss | foul |
-      |------------|------|------|------|
-      | hitter bat | 0.75 | 0.1  | 0.15 |
-      | fouler bat | 0.5  | 0.1  | 0.4  |
- 
-   Given a sequence of swings by the batter (emitted symbols), the goal of HMM is to estimate the probability of which bat was used for each swing in that sequence (hidden state).
-
-   ```{note}
-   For both matrixes above, each row must sum to 1.0.
-
-   * `sum(state_state_transitions[state, s] for s in states) == 1.0`
-   * `sum(state_symbol_emissions[state, s] for s in symbols) == 1.0`
-   ```
+       ```yaml
+       {
+         gene: {A: 0.2, B: 0.3, C: 0.1, D: 0.4},
+         non-gene: {A: 0.3, B: 0.2, C: 0.2, D: 0.3}
+       }
+       ```
 
    HMMs are often represented using HMM diagrams.
+
+   ```{note}
+   The probabilities above are totally made up. The example machine above is a bad example to model as an HMM. Only two states and emitting a single nucleotide will result in a useless HMM model. The machine should be modeled as emitting 5-mers or something else and would likely need more than 2 states?
+   ```
 
  * `{bm} Hidden Markov Model diagram` `{bm} /(HMM diagram|HMM Diagram)/` - A visualization of an HMM as a directed graph.
  
@@ -26851,9 +27293,11 @@ first_indexes_checkpoint_n: 20
                        | SOURCE  |
            0.5         +-+-----+-+       0.5
       .------------------'     '----------------.
+      |                                         |
       |       0.75      +- - - -+     0.5       |
       |  .- - - - - - ->:  hit  :<- - - - - -.  |
       |  :              +- - - -+            :  |
+      |  :                                   :  |
       |  :     0.1      +- - - -+     0.1    :  |
       |  : .- - - - - ->: miss  :<- - - - -. :  |
       |  : :            +- - - -+          : :  |
@@ -26887,9 +27331,11 @@ first_indexes_checkpoint_n: 20
                        | SOURCE  |
            0.5         +-+-----+-+       0.5
       .------------------'     '----------------.
+      |                                         |
       |       0.75      +- - - -+     0.5       |
       |  .- - - - - - ->:  hit  :<- - - - - -.  |
       |  :              +- - - -+            :  |
+      |  :                                   :  |
       |  :     0.1      +- - - -+     0.1    :  |
       |  : .- - - - - ->: miss  :<- - - - -. :  |
       |  : :            +- - - -+          : :  |
@@ -26907,7 +27353,7 @@ first_indexes_checkpoint_n: 20
                         +- - - -+
    ```
 
- * `{bm} non-emitting hidden state` - A hidden state that doesn't emit symbols. An HMM typically emits a symbol after transitioning to a new hidden state. However, if that new hidden state is a non-emitting hidden state, it doesn't emit a symbol.
+ * `{bm} non-emitting hidden state/(non-emitting hidden state|emitting hidden state|silent hidden state)/i` - A hidden state that doesn't emit symbols. An HMM typically emits a symbol after transitioning to a new hidden state. However, if that new hidden state is a non-emitting hidden state, it doesn't emit a symbol.
  
    An HMM ...
  
@@ -26922,9 +27368,11 @@ first_indexes_checkpoint_n: 20
                        | SOURCE  |
            0.5         +-+-----+-+       0.5
       .------------------'     '----------------.
+      |                                         |
       |       0.75      +- - - -+     0.5       |
       |  .- - - - - - ->:  hit  :<- - - - - -.  |
       |  :              +- - - -+            :  |
+      |  :                                   :  |
       |  :     0.1      +- - - -+     0.1    :  |
       |  : .- - - - - ->: miss  :<- - - - -. :  |
       |  : :            +- - - -+          : :  |
@@ -26956,9 +27404,11 @@ first_indexes_checkpoint_n: 20
                        | SOURCE  |
            0.5         +-+-----+-+       0.5
       .------------------'     '----------------.
+      |                                         |
       |       0.75      +- - - -+     0.5       |
       |  .- - - - - - ->:  hit  :<- - - - - -.  |
       |  :              +- - - -+            :  |
+      |  :                                   :  |
       |  :     0.1      +- - - -+     0.1    :  |
       |  : .- - - - - ->: miss  :<- - - - -. :  |
       |  : :            +- - - -+          : :  |
@@ -26983,9 +27433,11 @@ first_indexes_checkpoint_n: 20
                        | SOURCE  |
            0.5         +-+-----+-+       0.5
       .------------------'     '----------------.
+      |                                         |
       |       0.75      +- - - -+     0.5       |
       |  .- - - - - - ->:  hit  :<- - - - - -.  |
       |  :              +- - - -+            :  |
+      |  :                                   :  |
       |  :     0.1      +- - - -+     0.1    :  |
       |  : .- - - - - ->: miss  :<- - - - -. :  |
       |  : :            +- - - -+          : :  |
@@ -27003,46 +27455,31 @@ first_indexes_checkpoint_n: 20
                         +- - - -+
    ```
 
- * `{bm} emitted sequence` - A sequence of symbol emissions.
-
- * `{bm} Viterbi graph/(Viterbi graph|Viterbi algorithm|Viterbi)/i` - A directed graph representing all possible HMM hidden state transitions that result in a sequence of emitted symbol. Given an emitted sequence, a Viterbi graph lays out nodes in a grid, where each ...
+ * `{bm} emission sequence/(symbol emission sequence|emission sequence|emitted sequence)/i` - A sequence of symbol emissions, where those symbols are emitted from an HMM. The HMM diagram below can produce the emitted sequence ...
  
-   * row represents a hidden state.
-   * column represents the element of the emitted sequence at that same index.
-
-   In addition, there are two extra nodes. One just before the grid (left) and the other just after the grid (right). Each node connects to all nodes immediately infront of it, left-to-right.
-
-   ```{svgbob}
-   * "HMM hidden states: [hitter bat, fouler bat]"
-   * "HMM emitted sequence: [foul, hit, miss, hit, hit]"
-
-                    +--------+             +--------+             +---------+              +--------+             +--------+
-                    | hitter +------------>| hitter +------------>| hitter  +------------->| hitter +------------>| hitter |
-              .---->| bat    +.     .----->| bat    +.     .----->| bat     +.     .------>| bat    +.     .----->| bat    +-----. 
-              |     +--------+ \   /       +--------+ \   /       +---------+ \   /        +--------+ \   /       +--------+     | 
-   +--------+ |                 \ /                    \ /                     \ /                     \ /                       |  +------+
-   | SOURCE +-+       foul       X           hit        X           miss        X            hit        X           hit          +->| SINK |
-   +--------+ |                 / \                    / \                     / \                     / \                       |  +------+
-              |     +--------+ /   \       +--------+ /   \       +---------+ /   \        +--------+ /   \       +--------+     |
-              '---->| fouler +'     '----->| fouler +'     '----->| fouler  +'     '------>| fouler +'     '----->| fouler +-----'
-                    | bat    +------------>| bat    +------------>| bat     +------------->| bat    +------------>| bat    |
-                    +--------+             +--------+             +---------+              +--------+             +--------+
-   ```
-
-   Each edge represents the hidden state transition defined by the nodes at its ends. The weight of an edge should be set to the probability that symbol emitted at the end node (column that its ending node is in) gets emitted after the hidden state transition it represents occurs. The graph above is for an HMM that has two hidden states [hitter bat, fouler bat] and emits the symbols [foul, hit, miss], represented as the HMM diagram below.
+   * [hit, hit hit]
+   * [hit, hit hit, hit]
+   * [hit, hit hit, hit, hit]
+   * [hit, hit hit, hit, foul]
+   * [hit, hit hit, hit, miss]
+   * [hit, hit hit, foul, hit]
+   * ...
 
    ```{svgbob}
-              0.75      +- - - -+     0.5
-         .- - - - - - ->:  hit  :<- - - - - -.
-         :              +- - - -+            :
-         :                                   :
-         :                                   :
-         :     0.1      +- - - -+     0.1    :
-         : .- - - - - ->: miss  :<- - - - -. :
-         : :            +- - - -+          : :
-         : :                               : :
-         : :  .-------------------------.  : :
-         : :  | .---.     0.1     .---. v  : :
+                       +---------+
+                       | SOURCE  |
+           0.5         +-+-----+-+       0.5
+      .------------------'     '----------------.
+      |                                         |
+      |       0.75      +- - - -+     0.5       |
+      |  .- - - - - - ->:  hit  :<- - - - - -.  |
+      |  :              +- - - -+            :  |
+      |  :                                   :  |
+      |  :     0.1      +- - - -+     0.1    :  |
+      |  : .- - - - - ->: miss  :<- - - - -. :  |
+      |  : :            +- - - -+          : :  |
+      |  : :  .-------------------------.  : :  |
+      v  : :  | .---.     0.1     .---. v  : :  v
    +-----+-+--+-+-+ |             | +-+----+-+-----+
    | "hitter bat" | |             | | "fouler bat" |
    +-------+------+ |0.9       0.9| +---+--+-------+
@@ -27050,45 +27487,80 @@ first_indexes_checkpoint_n: 20
            :  | |   |             |   | |  :
            :  | '---'     0.1     '---' |  :
            :  '-------------------------'  :
-           :                               :
-           :                               :
            :     0.15   +- - - -+  0.4     :
            '- - - - - ->: foul  :<- - - - -'
                         +- - - -+
    ```
 
-   The probability that some symbol was emitted (e.g. hit) after some hidden state transition occurrs (e.g. fouler bat → hitter bat) is as follows: Pr(symbol|state-transition) = Pr(state-transition) * Pr(symbol). For example, Pr(fouler bat → hitter bat) is 0.1 in the HMM diagram above, and Pr(hit) once entered into the hitter bat state is 0.75, so Pr(hit|fouler bat → hitter bat) = 0.1 * 0.75 = 0.075.
+ * `{bm} Viterbi algorithm/(Viterbi algorithm|Viterbi graph|Viterbi)/i` - An algorithm that determines the most probable hidden path in an HMM for some emitted sequence. 
+   
+   The algorithm begins by transforming an HMM to an exploded HMM.
+   
+   ```{svgbob}
+                                                       "EXPLODE HMM BASED ON EMITTED SEQUENCE [foul,hit,miss,hit,hit]"
+                       +---------+                  
+                       | SOURCE  |                  
+           0.5         +-+-----+-+       0.5        
+      .------------------'     '----------------.   
+      |                                         |   
+      |       0.75      +- - - -+     0.5       |    
+      |  .- - - - - - ->:  hit  :<- - - - - -.  |                                    foul              hit             miss               hit              hit      
+      |  :              +- - - -+            :  |                                 +--------+       +--------+       +---------+       +--------+       +--------+  
+      |  :                                   :  |             +                   | hitter +------>| hitter +------>| hitter  +------>| hitter +------>| hitter |  
+      |  :     0.1      +- - - -+     0.1    :  |             |\               .->| bat0   +.   .->| bat1   +.   .->| bat2    +.   .->| bat3   +.   .->| bat4   +-. 
+      |  : .- - - - - ->: miss  :<- - - - -. :  |     +-------+ \   +--------+ |  +--------+ \ /   +--------+ \ /   +---------+ \ /   +--------+ \ /   +--------+ |  +------+
+      |  : :            +- - - -+          : :  |     |          +  | SOURCE +-+              X                X                 X                X               +->| SINK |
+      |  : :  .-------------------------.  : :  |     +-------+ /   +--------+ |  +--------+ / \   +--------+ / \   +---------+ / \   +--------+ / \   +--------+ |  +------+
+      v  : :  | .---.     0.1     .---. v  : :  v             |/               '->| fouler +'   '->| fouler +'   '->| fouler  +'   '->| fouler +'   '->| fouler +-'
+   +-----+-+--+-+-+ |             | +-+----+-+-----+          +                   | bat0   +------>| bat1   +------>| bat2    +------>| bat3   +------>| bat4   |
+   | "hitter bat" | |             | | "fouler bat" |                              +--------+       +--------+       +---------+       +--------+       +--------+
+   +-------+------+ |0.9       0.9| +---+--+-------+
+           :  ^ ^   |             |   ^ |  :        
+           :  | |   |             |   | |  :        
+           :  | '---'     0.1     '---' |  :        
+           :  '-------------------------'  :        
+           :     0.15   +- - - -+  0.4     :        
+           '- - - - - ->: foul  :<- - - - -'        
+                        +- - - -+                   
+   ```
+   
+   Each edge in the exploded HMM represents a hidden state transition (e.g. fouler bat → hitter bat) followed by a symbol emission (e.g. hit emitted after reaching hitter bat). The algorithm sets each exploded HMM edge's weight to that probability of that edge's transition-emission occurring: Pr(symbol|transition) = Pr(transition) * Pr(symbol). For example, Pr(fouler bat → hitter bat) is 0.1 in the HMM diagram above, and Pr(hit) once entered into the hitter bat state is 0.75, so Pr(hit|fouler bat → hitter bat) = 0.1 * 0.75 = 0.075.
 
-   |                             |         hit        |        miss      |        foul        |
-   |-----------------------------|--------------------|------------------|--------------------|
-   | Pr(hitter bat → hitter bat) | 0.9 * 0.75 = 0.675 | 0.9 * 0.1 = 0.09 | 0.9 * 0.15 = 0.135 |
-   | Pr(hitter bat → fouler bat) | 0.1 * 0.5  = 0.05  | 0.1 * 0.1 = 0.01 | 0.1 * 0.4  = 0.04  |
-   | Pr(fouler bat → hitter bat) | 0.1 * 0.75 = 0.075 | 0.1 * 0.1 = 0.01 | 0.1 * 0.15 = 0.015 |
-   | Pr(fouler bat → fouler bat) | 0.9 * 0.5  = 0.45  | 0.9 * 0.1 = 0.09 | 0.9 * 0.4  = 0.36  |
-   | Pr(SOURCE     → hitter bat) | 0.5 * 0.75 = 0.375 | 0.5 * 0.1 = 0.05 | 0.5 * 0.15 = 0.075 |
-   | Pr(SOURCE     → fouler bat) | 0.5 * 0.5  = 0.25  | 0.5 * 0.1 = 0.05 | 0.5 * 0.4  = 0.2   |
+   |                             |      Pr(hit)       |     Pr(miss)     |      Pr(foul)      | NON-EMITTABLE |
+   |-----------------------------|--------------------|------------------|--------------------|---------------|
+   | Pr(hitter bat → hitter bat) | 0.9 * 0.75 = 0.675 | 0.9 * 0.1 = 0.09 | 0.9 * 0.15 = 0.135 |               |
+   | Pr(hitter bat → fouler bat) | 0.1 * 0.5  = 0.05  | 0.1 * 0.1 = 0.01 | 0.1 * 0.4  = 0.04  |               |
+   | Pr(fouler bat → hitter bat) | 0.1 * 0.75 = 0.075 | 0.1 * 0.1 = 0.01 | 0.1 * 0.15 = 0.015 |               |
+   | Pr(fouler bat → fouler bat) | 0.9 * 0.5  = 0.45  | 0.9 * 0.1 = 0.09 | 0.9 * 0.4  = 0.36  |               |
+   | Pr(SOURCE     → hitter bat) | 0.5 * 0.75 = 0.375 | 0.5 * 0.1 = 0.05 | 0.5 * 0.15 = 0.075 |               |
+   | Pr(SOURCE     → fouler bat) | 0.5 * 0.5  = 0.25  | 0.5 * 0.1 = 0.05 | 0.5 * 0.4  = 0.2   |               |
+   | Pr(hitter bat → SINK)       |                    |                  |                    | 1.0           |
+   | Pr(fouler bat → SINK)       |                    |                  |                    | 1.0           |
 
    ```{note}
-   The last two rows are for the initial selection of a state: The probability is set to 0.5 because there's a 50/50 chance of starting off with either the hitter bat or fouler bat.
+   The transitions to the SINK node are set to 1.0 because, once the emitted sequence ends, there's a 100% chance of going to the SINK node (no other options are available).
    ```
-
-   With probabilities filled in, the Viterbi graph becomes as follows.
 
    ```{svgbob}
-                    +--------+       0.675 +--------+       0.09  +---------+        0.675 +--------+       0.675 +--------+
-              0.075 | hitter +------------>| hitter +------------>| hitter  +------------->| hitter +------------>| hitter | 1.0
-              .---->| bat    +.     .----->| bat    +.     .----->| bat     +.     .------>| bat    +.     .----->| bat    +-----. 
-              |     +--------+ \   / 0.075 +--------+ \   / 0.01  +---------+ \   /  0.075 +--------+ \   / 0.075 +--------+     | 
-   +--------+ |                 \ /                    \ /                     \ /                     \ /                       |  +------+
-   | SOURCE +-+       foul       X           hit        X           miss        X            hit        X           hit          +->| SINK |
-   +--------+ |                 / \                    / \                     / \                     / \                       |  +------+
-              |     +--------+ /   \ 0.05  +--------+ /   \ 0.01  +---------+ /   \  0.05  +--------+ /   \ 0.05  +--------+     |
-              '---->| fouler +'     '----->| fouler +'     '----->| fouler  +'     '------>| fouler +'     '----->| fouler +-----'
-              0.2   | bat    +------------>| bat    +------------>| bat     +------------->| bat    +------------>| bat    | 1.0
-                    +--------+       0.45  +--------+       0.09  +---------+        0.45  +--------+       0.45  +--------+
+                       foul                 hit                  miss                   hit                   hit
+                    +--------+     0.675 +--------+     0.09  +---------+      0.675 +--------+     0.675 +--------+
+              0.075 | hitter +---------->| hitter +---------->| hitter  +----------->| hitter +---------->| hitter | 1.0
+              .---->| bat    +.   .----->| bat    +.   .----->| bat     +.   .------>| bat    +.   .----->| bat    +-----. 
+   +--------+ |     +--------+ \ / 0.075 +--------+ \ / 0.01  +---------+ \ /  0.075 +--------+ \ / 0.075 +--------+     |  +------+
+   | SOURCE +-+                 X                    X                     X                     X                       +->| SINK |
+   +--------+ |     +--------+ / \ 0.05  +--------+ / \ 0.01  +---------+ / \  0.05  +--------+ / \ 0.05  +--------+     |  +------+
+              '---->| fouler +'   '----->| fouler +'   '----->| fouler  +'   '------>| fouler +'   '----->| fouler +-----'
+              0.2   | bat    +---------->| bat    +---------->| bat     +----------->| bat    +---------->| bat    | 1.0
+                    +--------+     0.45  +--------+     0.09  +---------+      0.45  +--------+     0.45  +--------+
    ```
 
-   The goal with a Viterbi graph is to determine the most likely set of hidden state transitions that resulted in the emitted symbols, which is the path from source to sink with the highest product (multiplication) of edge weights. In the example above, that path is ...
+   ```{note}
+   The example above doesn't cover non-emitting hidden states. A non-emitting hidden state's probability will be Pr(transition) because transitioning to it won't result in a symbol emission.
+
+   See Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting Hidden States Algorithm_TOPIC
+   ```
+
+   The directed graph above is called a Viterbi graph. The goal with a Viterbi graph is to determine the most likely set of hidden state transitions that resulted in the emitted symbols, which is the path from source node to sink node with the highest product (multiplication) of edge weights. In the example above, that path is ...
 
    1. Pr(foul|SOURCE → fouler bat): 0.02
    1. Pr(hit|fouler bat → fouler bat): 0.45
@@ -27099,37 +27571,73 @@ first_indexes_checkpoint_n: 20
    
    0.2 * 0.45 * 0.09 * 0.45 * 0.45 = 0.0016.
 
- * `{bm} Viterbi learning` - A Monte Carlo algorithm that uses the Viterbi algorithm to derive an HMM's probabilities from an emission sequence.
+ * `{bm} exploded HMM` - A transformation of an HMM such that hidden state transitions are enumerated based on an emitted sequence (HMM cycles removed).
+ 
+   ```{svgbob}
+                       +---------+                  
+                       | SOURCE  |                  
+           0.5         +-+-----+-+       0.5        
+      .------------------'     '----------------.   
+      |                                         |   
+      |       0.75      +- - - -+     0.5       |   
+      |  .- - - - - - ->:  hit  :<- - - - - -.  |                                                   foul              hit             miss               hit      
+      |  :              +- - - -+            :  |                                                +--------+       +--------+       +---------+       +--------+  
+      |  :                                   :  |                            +                   | hitter +------>| hitter +------>| hitter  +------>| hitter |  
+      |  :     0.1      +- - - -+     0.1    :  |              EXPLODE       |\               .->| bat0   +.   .->| bat1   +.   .->| bat2    +.   .->| bat3   +-. 
+      |  : .- - - - - ->: miss  :<- - - - -. :  |     +----------------------+ \   +--------+ |  +--------+ \ /   +--------+ \ /   +---------+ \ /   +--------+ |  +------+
+      |  : :            +- - - -+          : :  |     | "[foul,hit,miss,hit]"   +  | SOURCE +-+              X                X                 X               +->| SINK |
+      |  : :  .-------------------------.  : :  |     +----------------------+ /   +--------+ |  +--------+ / \   +--------+ / \   +---------+ / \   +--------+ |  +------+
+      v  : :  | .---.     0.1     .---. v  : :  v                            |/               '->| fouler +'   '->| fouler +'   '->| fouler  +'   '->| fouler +-'
+   +-----+-+--+-+-+ |             | +-+----+-+-----+                         +                   | bat0   +------>| bat1   +------>| bat2    +------>| bat3   |
+   | "hitter bat" | |             | | "fouler bat" |                                             +--------+       +--------+       +---------+       +--------+
+   +-------+------+ |0.9       0.9| +---+--+-------+
+           :  ^ ^   |             |   ^ |  :        
+           :  | |   |             |   | |  :        
+           :  | '---'     0.1     '---' |  :        
+           :  '-------------------------'  :        
+           :     0.15   +- - - -+  0.4     :        
+           '- - - - - ->: foul  :<- - - - -'        
+                        +- - - -+                   
+   ```
+ 
+   The HMM above is transformed to an exploded HMM based on the emitted sequence [foul, hit, miss, hit]. Each column in the exploded HMM represents an index within the emitted sequence, where that column replicates all possible hidden state transitions that lead to that index (both nodes and edges).
+
+    * SOURCE: Possible transitions are to [hitter bat, fouler bat], both of which lead to index 0 being emitted: [SOURCE → hitter bat0, SOURCE → fouler bat0].
+    * hitter bat0: Possible transitions are to [hitter bat, fouler bat], both of which lead to index 1 being emitted: [hitter bat0 → hitter bat1, hitter bat0 → fouler bat1].
+    * fouler bat0: Possible transitions are to [hitter bat, fouler bat], both of which lead to index 1 being emitted: [fouler bat0 → hitter bat1, fouler bat0 → fouler bat1].
+    * hitter bat1: Possible transitions are to [hitter bat, fouler bat], both of which lead to index 2 being emitted: [hitter bat1 → hitter bat2, hitter bat1 → fouler bat2].
+    * fouler bat1: Possible transitions are to [hitter bat, fouler bat], both of which lead to index 2 being emitted: [fouler bat1 → hitter bat2, fouler bat1 → fouler bat2].
+    * ...
+    * hitter bat3: Emissions have ended, leading to an artificially placed sink node: [hitter bat3 → SINK, hitter bat3 → SINK].
+    * fouler bat3: Emissions have ended, leading to an artificially placed sink node: [fouler bat3 → SINK, fouler bat3 → SINK].
+
+   ```{note}
+   In certain algorithms, the sink node may exist in the HMM (meaning it isn't artificial).
+   ```
+
+   ```{note}
+   The example above doesn't include non-emitting hidden states. A non-emitting hidden state means that a transition to that hidden state doesn't result in a symbol emission. In other words, the emission index wouldn't increment, meaning the exploded HMM node would end up under the same column as the node that's pointing to it.
+
+   Consider if fouler bat in the example above had a transition to a non-emitting hidden state called bingo. At ...
+   
+    * fouler bat0, the transition to bingo would be fouler bat0 → bingo0.
+    * fouler bat1, the transition to bingo would be fouler bat1 → bingo1.
+    * etc...
+   
+   Exploded bingo nodes maintain the same index as their exploded fouler bat predecessor because bingo is a non-emitting hidden state (nothing gets emitted when you transition to it, meaning you stay at the same index).
+   ```
+
+ * `{bm} Viterbi learning` - A Monte Carlo algorithm that uses the Viterbi algorithm to derive an HMM's probabilities from an emitted sequence.
 
    ```{note}
    See Algorithms/Sequence Hidden Markov Models/Viterbi Learning_TOPIC for more information.
    ```
 
- * `{bm} Baum-Welch learning` - A Monte Carlo algorithm that uses confidence measurements to derive an HMM's probabilities from an emission sequence.
+ * `{bm} Baum-Welch learning` - A Monte Carlo algorithm that uses confidence measurements to derive an HMM's probabilities from an emitted sequence.
 
    ```{note}
    See Algorithms/Sequence Hidden Markov Models/Baum-Welch Learning_TOPIC for more information.
    ```
-
- * `{bm} CpG island/(C[p\-]?G island|C[p\-]?G site)/i` - Regions of DNA with a high frequency of cystine followed by guanine. The reverse conmplementing strand will have equal regions with equally high frequencies of guanine followed by cystine.
-
- * `{bm} exploded HMM` -
-
- TODO: ADD ABOVE, FIX VITERBI DEFINITION, ADD FORWARD GRAPH / BACKWARD GRAPH DEFINITIONS?
-
- TODO: ADD ABOVE, FIX VITERBI DEFINITION, ADD FORWARD GRAPH / BACKWARD GRAPH DEFINITIONS?
-
- TODO: ADD ABOVE, FIX VITERBI DEFINITION, ADD FORWARD GRAPH / BACKWARD GRAPH DEFINITIONS?
-
- TODO: ADD ABOVE, FIX VITERBI DEFINITION, ADD FORWARD GRAPH / BACKWARD GRAPH DEFINITIONS?
-
- TODO: ADD ABOVE, FIX VITERBI DEFINITION, ADD FORWARD GRAPH / BACKWARD GRAPH DEFINITIONS?
-
- TODO: ADD ABOVE, FIX VITERBI DEFINITION, ADD FORWARD GRAPH / BACKWARD GRAPH DEFINITIONS?
-
- TODO: ADD ABOVE, FIX VITERBI DEFINITION, ADD FORWARD GRAPH / BACKWARD GRAPH DEFINITIONS?
-
- TODO: ADD ABOVE, FIX VITERBI DEFINITION, ADD FORWARD GRAPH / BACKWARD GRAPH DEFINITIONS?
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 
