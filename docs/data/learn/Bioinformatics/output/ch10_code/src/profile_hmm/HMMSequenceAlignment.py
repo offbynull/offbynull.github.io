@@ -4,9 +4,7 @@ from typing import TypeVar
 
 import yaml
 
-from hmm.MostProbableHiddenPath_ViterbiNonEmittingHiddenStates import to_hmm_graph_PRE_PSEUDOCOUNTS, hmm_to_dot, \
-    to_viterbi_graph, max_product_path_in_viterbi, hmm_add_pseudocounts_to_hidden_state_transition_probabilities, \
-    hmm_add_pseudocounts_to_symbol_emission_probabilities, viterbi_to_dot
+from hmm.MostProbableHiddenPath_ViterbiNonEmittingHiddenStates import to_hmm_graph_PRE_PSEUDOCOUNTS, hmm_to_dot
 
 ELEM = TypeVar('ELEM')
 
@@ -24,7 +22,7 @@ def stringify_probability_keys(transition_probabilities, emission_probabilities)
     for k, v in emission_probabilities.items():
         _emission_probabilities[key_to_str(k)] = {}
         for _k, _v in v.items():
-            _emission_probabilities[key_to_str(k)][_k] = _v
+            _emission_probabilities[key_to_str(k)][key_to_str(_k)] = _v
     return _transition_probabilities, _emission_probabilities
 
 
@@ -314,7 +312,7 @@ def main_v_chain():
         data: dict = yaml.safe_load(data_raw)
         v_seq = data['v_sequence']
         w_seq = data['w_sequence']
-        print(f'Building HMM alignment chain (from v\'s perspective), using the following settings...')
+        print(f'Building HMM alignment chain (from w\'s perspective), using the following settings...')
         print()
         print('```')
         print(data_raw)
@@ -337,90 +335,5 @@ def main_v_chain():
         print("`{bm-enable-all}`", end="\n\n")
 
 
-
-
-
-
-
-
-
-
-
-# MARKDOWN_V_MOST_PROBABLE
-def hmm_most_probable_from_v_perspective(
-        v_seq: list[ELEM],
-        w_seq: list[ELEM],
-        pseudocount: float
-):
-    transition_probabilities, emission_probabilities = create_hmm_chain_from_v_perspective(v_seq, w_seq)
-    transition_probabilities['X', -1, -1] = {}
-    transition_probabilities['E', len(v_seq), len(w_seq)]['X', -1, -1] = 1.0
-    transition_probabilities['D', len(v_seq), len(w_seq)]['X', -1, -1] = 1.0
-    emission_probabilities['X', -1, -1] = {None: 1.0}
-    v_seq = v_seq + [None]
-    transition_probabilities, emission_probabilities = stringify_probability_keys(transition_probabilities,
-                                                                                  emission_probabilities)
-    hmm = to_hmm_graph_PRE_PSEUDOCOUNTS(transition_probabilities, emission_probabilities)
-    hmm_add_pseudocounts_to_hidden_state_transition_probabilities(
-        hmm,
-        pseudocount
-    )
-    hmm_add_pseudocounts_to_symbol_emission_probabilities(
-        hmm,
-        pseudocount
-    )
-    hmm_source_n_id = hmm.get_root_node()
-    hmm_sink_n_id = 'VITERBI_SINK'  # Fake sink node ID required for exploding HMM into Viterbi graph
-    viterbi = to_viterbi_graph(hmm, hmm_source_n_id, hmm_sink_n_id, v_seq)
-    max_prob, max_prob_path = max_product_path_in_viterbi(viterbi)
-    return hmm, viterbi, max_prob, max_prob_path
-# MARKDOWN_V_MOST_PROBABLE
-
-
-def main_v_most_probable():
-    print("<div style=\"border:1px solid black;\">", end="\n\n")
-    print("`{bm-disable-all}`", end="\n\n")
-    try:
-        data_raw = ''.join(stdin.readlines())
-        data: dict = yaml.safe_load(data_raw)
-        v_seq = data['v_sequence']
-        w_seq = data['w_sequence']
-        pseudocount = data['pseudocount']
-        print(f'Building HMM alignment chain (from w\'s perspective), using the following settings...')
-        print()
-        print('```')
-        print(data_raw)
-        print('```')
-        print()
-        hmm, viterbi, weight, hidden_path = hmm_most_probable_from_v_perspective(
-            list(v_seq),
-            list(w_seq),
-            pseudocount
-        )
-        print(f'The following HMM was produced before applying pseudocounts ...')
-        print()
-        print('```{dot}')
-        print(f'{hmm_to_dot(hmm)}')
-        print('```')
-        print()
-        print(f'The following Viterbi graph was produced for the HMM and the emitted sequence {v_seq} ...')
-        print()
-        print('```{dot}')
-        print(f'{viterbi_to_dot(viterbi)}')
-        print('```')
-        print()
-        print()
-        print(f'The hidden path with the max product weight in this Viterbi graph is {hidden_path} (max product weight = {weight}).')
-        print()
-    finally:
-        print("</div>", end="\n\n")
-        print("`{bm-enable-all}`", end="\n\n")
-
-
-
-
-
-
-
 if __name__ == '__main__':
-    main_v_most_probable()
+    main_v_chain()

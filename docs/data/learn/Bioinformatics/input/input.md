@@ -21075,9 +21075,9 @@ Since multiple alignments are computationally expensive to perform, the HMM prof
 
 Generally, profile HMMs are used to quickly test a never before seen sequence against a known sequence family. The example above uses English language words that rhyme together, but in a biological context the sequences would likely be an alignment of ...
 
- * different forms of some gene's regulatory motif.
  * homologous proteins.
  * homologous genes.
+ * some gene's regulatory motif.
  * etc...
 
 ### HMM Sequence Alignment
@@ -21123,6 +21123,17 @@ To re-formulate the alignment graph above as a HMM, think of the paths through t
  * down represents a gap, which can be represented by a non-emitting hidden state.
  * right represents an emission, which can be represented by an emitting hidden state.
  * diagonal represents an emission, which can be represented by an emitting hidden state.
+
+```{note}
+Why represent a gap as a non-emitting hidden state? Because technically, a gap means the sequence didn't move forward (no symbol emission happened -- in otherwords, forgo a symbol emission). For example, if your sequence is BAN and the alignment starts with a gap (-), you still need to emit the initial B symbol later on...
+
+| 0 | 1 | 2 | 3 |
+|---|---|---|---|
+| - | B | A | N |
+| G | - | A | N |
+
+By the end, all of BAN should have been emitted.
+```
  
 ```{svgbob}
  "SEQUENCE ALIGNMENT"                        "HMM from [n]'s perspective"
@@ -21141,7 +21152,7 @@ To re-formulate the alignment graph above as a HMM, think of the paths through t
            "n"                               +----+      +----+          
            "-"                                                           
                                                                          
-  "ALIGNMENT OPTIONS:"                          "EMISSION OPTIONS:"      
+   "ALIGNMENT PATHS:"                             "HIDDEN PATHS:"      
 -n   vs   n    vs    n-                         S -> D01 -> E11: -n      
 a-        a          -a                         S -> E11:        n       
                                                 S -> E10 -> D11: n-      
@@ -21151,20 +21162,21 @@ a-        a          -a                         S -> E11:        n
 The alignment graph and HMM diagrams in the example above have intentially left out weights.
 ```
 
-````{note}
-Why represent a gap as a non-emitting hidden state? Because technically, a gap means the sequence didn't move forward (no symbol emission happened). For example, if your sequence is BAN and the alignment starts with a gap (-), you still need to emit the initial B symbol later on...
-
-```
--BAN
-G-AN
+```{output}
+ch10_code/src/profile_hmm/HMMSequenceAlignment.py
+python
+# MARKDOWN_V_SQUARE\s*\n([\s\S]+)\n\s*# MARKDOWN_V_SQUARE\s*[\n$]
 ```
 
-By the end, all of BAN should have been emitted.
-````
+```{ch10}
+profile_hmm.HMMSequenceAlignment main_v_square
+v_element: n
+w_element: a
+```
 
 Likewise, from the perspective of the second sequence \[a], each edge that goes ...
 
- * down represents an emission, which can be represented by an emitting hidden state hidden state.
+ * down represents an emission, which can be represented by an emitting hidden state.
  * right represents a gap, which can be represented by an non-emitting hidden state.
  * diagonal represents an emission, which can be represented by an emitting hidden state.
 
@@ -21185,10 +21197,22 @@ Likewise, from the perspective of the second sequence \[a], each edge that goes 
            "n"                               +----+      +----+                               +--+-+      +----+     :            
            "-"                                                                                   '- - - - - - - - - -'     
                                                                                                                            
-  "ALIGNMENT OPTIONS:"                          "EMISSION OPTIONS:"                             "EMISSION OPTIONS:"        
+   "ALIGNMENT PATHS:"                              "HIDDEN PATHS:"                                "HIDDEN PATHS:"        
 -n   vs   n    vs    n-                         S -> D01 -> E11: -n                             S -> E01 -> D11: a-        
 a-        a          -a                         S -> E11:        n                              S -> E11:        a
                                                 S -> E10 -> D11: n-                             S -> D10 -> E11: -a      
+```
+
+```{output}
+ch10_code/src/profile_hmm/HMMSequenceAlignment.py
+python
+# MARKDOWN_W_SQUARE\s*\n([\s\S]+)\n\s*# MARKDOWN_W_SQUARE\s*[\n$]
+```
+
+```{ch10}
+profile_hmm.HMMSequenceAlignment main_w_square
+v_element: n
+w_element: a
 ```
 
 When an alignment graph involves sequences with more than one element, the re-formulated HMMs should chain similarly to that alignment graph. However, instead of each "square" having a single bottom-right node (as in the alignment graph), each "square" in the HMM will have two bottom right nodes. These two bottom-right nodes are hidden states, where ...
@@ -21286,7 +21310,19 @@ In the HMM above, each emitting hidden state has a 100% symbol emission probabil
 As such, the HMM diagram above embeds the sole symbol emission for each E node directly in that E node vs drawing out dashed edges / nodes to symbol emission. Doing this makes it easier to understand what's going on.
 ```
 
-In the alignment graph example above, each alignment path through the graph is a unique way in which [h, i] and [q, i] can align. Likewise, in the HMM example above, each hidden path is unique way in which [h, i]'s symbols get aligned.
+```{output}
+ch10_code/src/profile_hmm/HMMSequenceAlignment.py
+python
+# MARKDOWN_V_CHAIN\s*\n([\s\S]+)\n\s*# MARKDOWN_V_CHAIN\s*[\n$]
+```
+
+```{ch10}
+profile_hmm.HMMSequenceAlignment main_v_chain
+v_sequence: hi
+w_sequence: qi
+```
+
+In the alignment graph example above, each alignment path through the alignment graph is a unique way in which [h, i] and [q, i] can align. Likewise, in the HMM example above, each hidden path through the HMM is unique way in which [h, i]'s symbols get aligned.
 
 <table>
 <tr><th>Sequence Alignment (alignment path)</th><th>HMM (hidden path)</th></tr>
@@ -21373,18 +21409,27 @@ digraph G {
 </td></tr>
 </table>
 
-When you re-formulate an alignment graph as an HMM, the computation essentially changes to something fundamentally different. The goal of an alignment graph is different than that of an HMM. With an ...
+When you re-formulate an alignment graph as an HMM, the computation essentially changes to something fundamentally different. The goal of an alignment graph is different than that of an HMM.
 
- * alignment graph, you're trying to maximize score (what path do I take to produce the maximum score).
- * HMM, you're trying to maximize likelihood (what path do I take to produce the most likely outcome).
+ * **Alignment graph**: You're trying to produce an alignment path whose edge scores accumulate to the maximum of all possible alignment paths (*maximum sum* - highest scoring).
+ * **HMM**: You're trying to produce a hidden path whose transition-emission probability chain is the maximum of all possible hidden paths (*maximum product* - most probable).
+
+In an alignment, there is no limit to how low or high a score can be (even negative scores are allowed). In an HMM, a probabilitiy must be between [0, 1] and each hidden state's ...
+
+ * outgoing hidden state transition probabilities must sum to 1.
+ * symbol emission probabilities must sum to 1.
+
+When you re-formulate an alignment graph as an HMM, the computation changes to one of most likely vs highest scoring. As such, it doesn't make sense to use the same edge weights in an HMM as you do in an alignment graph. Even if you normalize those weights (based on the "sum to 1" criteria discussed above), the optimal alignment path will likely be different than the the optimal hidden path.
+
+```{note}
+The question remains, if you were to actually do this (re-formulate an alignment graph as an HMM), how would you go about choosing the hidden state transition probabilities? That remains unclear at the moment. The probabilities in the example below were handpicked to force the optimal hidden path to be the one highlighted.
+
+This section isn't meant to be a solution to some practical problem. It's just a building block for another concept discussed further on. As long as you understand that what's being shown here is a thing that can happen, you're good to move forward.
+```
 
 <table>
-<tr><th>Sequence Alignment (max score)</th><th>HMM (max transition probabilities)</th></tr>
+<tr><th>Sequence Alignment (highest scoring alignment path)</th><th>HMM (most probable hidden path)</th></tr>
 <tr><td>
-
-With an alignment graph, each edge represents a possible alignment between an element from the first sequence and an element from the second sequence. That edge is assigned a score that measures how well those two score against each other. The goal is to find the alignment path whose edge scores sum to the maximum of all possible alignment paths.
-
- * There is no limit to low / high an edge score can be. Even negative values are allowed.
 
 ```{dot}
 digraph G {
@@ -21422,20 +21467,12 @@ digraph G {
 }
 ```
 
-Scoring matrix:
-
-|       |  h   |  i   |   -  |
-|-------|------|------|------|
-| **q** | -1.0 | -1.0 |  0.0 |
-| **i** | -1.0 |  1.0 |  0.0 |
-| **-** |  0.0 |  0.0 |      |
+| 0 | 1 | 2 |
+|---|---|---|
+| h | - | i |
+| - | q | i |
 
 </td><td>
-
-With an HMM, each node represents a hidden state and each edge represents a transition between the hidden states at the ends of that edge. That edge is assigned a probabilitiy that measures how likely it is for that transition to occur (for the edge to be taken). The goal is to find the hidden path whose probability is the maximum of all possible hidden paths.
-
- * Each hidden state transition probability must be between 0 and 1.
- * For each hidden state, its outgoing hidden state transition probabilities must sum to 1.0.
 
 ```{dot}
 digraph G {
@@ -21454,10 +21491,10 @@ digraph G {
   E22 [pos="4,-4!" label="E22\n(i)", fontcolor=red];  D22 [pos="4.2,-3.7!"];
  
   S->D01 [label=0.4]; S->E10 [fontcolor=red, color=red, label=0.6]; S->E11 [label=0.0];
-  E10->E20 [label=0.5]; E10->D11 [fontcolor=red, color=red, label=0.5]; E10->E21 [label=0.0];
+  E10->E20 [label=0.4]; E10->D11 [fontcolor=red, color=red, label=0.6]; E10->E21 [label=0.0];
   D01->D02 [label=0.5]; D01->E11 [label=0.5]; D01->E12 [label=0.0];
   D12->E22 [label=1.0];
-  E11->D12 [label=1.0]; E11->E21 [label=0.0]; E11->E22 [label=0.0];
+  E11->D12 [label=0.0]; E11->E21 [label=0.0]; E11->E22 [label=1.0];
   D11->D12 [label=0.0]; D11->E21 [label=0.0]; D11->E22 [fontcolor=red, color=red, label=1.0];
   D02->E12 [label=1.0];
   E12->E22 [label=1.0];
@@ -21467,30 +21504,13 @@ digraph G {
 }
 ```
 
-Hidden state transition probabilities:
-
-```yaml
-S:   {E10: 0.6, E11: 0.0, D01: 0.4}
-E10: {D11: 0.5, E20: 0.5, E21: 0.0}
-E20: {D21: 1.0}
-D01: {D02: 0.5, E12: 0.0, E11: 0.5}
-E11: {D12: 0.0, E22: 1.0, E21: 0.0}
-D11: {D12: 0.0, E22: 1.0, E21: 0.0}
-E21: {D22: 1.0}
-D02: {E12: 1.0}
-D12: {E22: 1.0}
-E12: {E22: 1.0}
-D21: {D22: 1.0}
-D22: {}
-E22: {}
-```
+|                  |   0   |    1    |    2    |
+|------------------|-------|---------|---------|
+| Hidden path      | S→E10 | E10→D11 | D11→E22 |
+| Symbol emissions |   h   |    -    |    i    |
 
 </td></tr>
 </table>
-
-```{note}
-This section doesn't cover how to derive the hidden state transition probabilities for an HMM. It's assumed that you already have something in place for this, similar to how a scoring matrix (e.g. BLOSUM) is used for sequence alignments.
-```
 
 ### HMM Profile Alignment
 
