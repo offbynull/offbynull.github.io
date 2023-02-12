@@ -1,4 +1,6 @@
+import math
 from math import nan
+from random import random
 from sys import stdin
 from typing import TypeVar
 
@@ -350,6 +352,7 @@ def main_v_chain():
 def hmm_most_probable_from_v_perspective(
         v_seq: list[ELEM],
         w_seq: list[ELEM],
+        transition_probability_overrides: dict[str, dict[str, float]],
         pseudocount: float
 ):
     transition_probabilities, emission_probabilities = create_hmm_chain_from_v_perspective(v_seq, w_seq)
@@ -360,6 +363,13 @@ def hmm_most_probable_from_v_perspective(
     v_seq = v_seq + [None]
     transition_probabilities, emission_probabilities = stringify_probability_keys(transition_probabilities,
                                                                                   emission_probabilities)
+    for hmm_from_n_id in transition_probabilities:
+        for hmm_to_n_id in transition_probabilities[hmm_from_n_id]:
+            value = 1.0
+            if hmm_from_n_id in transition_probability_overrides and \
+                    hmm_to_n_id in transition_probability_overrides[hmm_from_n_id]:
+                value = transition_probability_overrides[hmm_from_n_id][hmm_to_n_id]
+            transition_probabilities[hmm_from_n_id][hmm_to_n_id] = value
     hmm = to_hmm_graph_PRE_PSEUDOCOUNTS(transition_probabilities, emission_probabilities)
     hmm_add_pseudocounts_to_hidden_state_transition_probabilities(
         hmm,
@@ -372,10 +382,39 @@ def hmm_most_probable_from_v_perspective(
     hmm_source_n_id = hmm.get_root_node()
     hmm_sink_n_id = 'VITERBI_SINK'  # Fake sink node ID required for exploding HMM into Viterbi graph
     viterbi = to_viterbi_graph(hmm, hmm_source_n_id, hmm_sink_n_id, v_seq)
-    max_prob, max_prob_path = max_product_path_in_viterbi(viterbi)
-    return hmm, viterbi, max_prob, max_prob_path
+    probability, hidden_path = max_product_path_in_viterbi(viterbi)
+    hidden_path = hidden_path[:-1]  # Remove viterbi sink node from end of path: VITERBI_SINK
+    hidden_path = hidden_path[:-1]  # Remove HMM sink node from end of path: X,-1,-1
+    v_alignment = []
+    for hmm_from_n_id, hmm_to_n_id in hidden_path:
+        state_type, to_v_idx, to_w_idx = hmm_to_n_id.split(',')
+        to_v_idx = int(to_v_idx)
+        to_w_idx = int(to_w_idx)
+        if state_type == 'D':
+            v_alignment.append(None)
+        elif state_type == 'E':
+            v_alignment.append(v_seq[to_v_idx - 1])
+        else:
+            raise ValueError('Unrecognizable type')
+    return hmm, viterbi, probability, hidden_path, v_alignment
 # MARKDOWN_V_MOST_PROBABLE
 
+
+v_sequence: [h, i]
+w_sequence: [q. i]
+transition_probability_overrides:
+  S,-1,-1: {'D,0,1': 0.4, 'E,1,0': 0.6, 'E,1,1': 0.0}
+  E,1,0:   {'E,2,0': 0.4, 'D,1,1': 0.6, 'E,2,1': 0.0}
+  D,0,1:   {'D,0,2': 0.5, 'E,1,1': 0.5, 'E,1,2': 0.0}
+  D,1,2:   {'E,2,2': 1.0}
+  E,1,1:   {'D,1,2': 0.0, 'E,2,1': 0.0, 'E,2,2': 1.0}
+  D,1,1:   {'D,1,2': 0.0, 'E,2,1': 0.0, 'E,2,2': 1.0}
+  D,0,2:   {'E,1,2': 1.0}
+  E,1,2:   {'E,2,2': 1.0}
+  E,2,0:   {'D,2,1': 1.0}
+  D,2,1:   {'D,2,2': 1.0}
+  E,2,1:   {'D,2,2': 1.0}
+pseudocount: 0.0001
 
 def main_v_most_probable():
     print("<div style=\"border:1px solid black;\">", end="\n\n")
@@ -385,6 +424,7 @@ def main_v_most_probable():
         data: dict = yaml.safe_load(data_raw)
         v_seq = data['v_sequence']
         w_seq = data['w_sequence']
+        transition_probability_overrides = data['transition_probability_overrides']
         pseudocount = data['pseudocount']
         print(f'Building HMM alignment chain (from w\'s perspective), using the following settings...')
         print()
@@ -392,9 +432,10 @@ def main_v_most_probable():
         print(data_raw)
         print('```')
         print()
-        hmm, viterbi, weight, hidden_path = hmm_most_probable_from_v_perspective(
-            list(v_seq),
-            list(w_seq),
+        hmm, viterbi, weight, hidden_path, v_alignment = hmm_most_probable_from_v_perspective(
+            v_seq,
+            w_seq,
+            transition_probability_overrides,
             pseudocount
         )
         print(f'The following HMM was produced before applying pseudocounts ...')
@@ -410,7 +451,10 @@ def main_v_most_probable():
         print('```')
         print()
         print()
-        print(f'The hidden path with the max product weight in this Viterbi graph is {hidden_path} (max product weight = {weight}).')
+        print(f'The hidden path with the max product weight in this Viterbi graph is {hidden_path} (max product weight'
+              f' = {weight}), which maps to the alignment (from v\'s perspective)...')
+        print()
+        print(f'{v_alignment}')
         print()
     finally:
         print("</div>", end="\n\n")
