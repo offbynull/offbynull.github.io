@@ -103,11 +103,14 @@ def create_hmm_square_from_v_perspective(
             transition_probabilities[hmm_bottom_right_n_id_1][hmm_bottom_right_n_id_final] = nan
             transition_probabilities[hmm_bottom_right_n_id_final] = {}
             emission_probabilities[hmm_bottom_right_n_id_final] = {fake_bottom_right_emission_symbol: 1.0}
+            hmm_outgoing_n_ids.remove(hmm_bottom_right_n_id_1)
         hmm_bottom_right_n_id_2 = 'D', v_idx + 1, w_idx + 1
         if hmm_bottom_right_n_id_2 in hmm_outgoing_n_ids:
             transition_probabilities[hmm_bottom_right_n_id_2][hmm_bottom_right_n_id_final] = nan
             transition_probabilities[hmm_bottom_right_n_id_final] = {}
             emission_probabilities[hmm_bottom_right_n_id_final] = {fake_bottom_right_emission_symbol: 1.0}
+            hmm_outgoing_n_ids.remove(hmm_bottom_right_n_id_2)
+        hmm_outgoing_n_ids.add(hmm_bottom_right_n_id_final)
     # Return
     return hmm_outgoing_n_ids
 # MARKDOWN_V_SQUARE
@@ -232,11 +235,14 @@ def create_hmm_square_from_w_perspective(
             transition_probabilities[hmm_bottom_right_n_id_1][hmm_bottom_right_n_id_final] = nan
             transition_probabilities[hmm_bottom_right_n_id_final] = {}
             emission_probabilities[hmm_bottom_right_n_id_final] = {fake_bottom_right_emission_symbol: 1.0}
+            hmm_outgoing_n_ids.remove(hmm_bottom_right_n_id_1)
         hmm_bottom_right_n_id_2 = 'D', v_idx + 1, w_idx + 1
         if hmm_bottom_right_n_id_2 in hmm_outgoing_n_ids:
             transition_probabilities[hmm_bottom_right_n_id_2][hmm_bottom_right_n_id_final] = nan
             transition_probabilities[hmm_bottom_right_n_id_final] = {}
             emission_probabilities[hmm_bottom_right_n_id_final] = {fake_bottom_right_emission_symbol: 1.0}
+            hmm_outgoing_n_ids.remove(hmm_bottom_right_n_id_2)
+        hmm_outgoing_n_ids.add(hmm_bottom_right_n_id_final)
     # Return
     return hmm_outgoing_n_ids
 # MARKDOWN_W_SQUARE
@@ -296,103 +302,26 @@ def main_w_square():
 
 
 
-# MARKDOWN_V_CHAIN
-def create_hmm_chain_from_v_perspective(
-        v_seq: list[ELEM],
-        w_seq: list[ELEM]
-):
-    transition_probabilities = {}
-    emission_probabilities = {}
-    pending = set()
-    processed = set()
-    hmm_source_n_id = 'S', -1, -1
-    hmm_outgoing_n_ids = create_hmm_square_from_v_perspective(
-        transition_probabilities,
-        emission_probabilities,
-        hmm_source_n_id,
-        (0, v_seq[0]),
-        (0, w_seq[0]),
-        len(v_seq),
-        len(w_seq)
-    )
-    processed.add(hmm_source_n_id)
-    pending |= hmm_outgoing_n_ids
-    while pending:
-        hmm_n_id = pending.pop()
-        processed.add(hmm_n_id)
-        _, v_idx, w_idx = hmm_n_id
-        if v_idx <= len(v_seq) and w_idx <= len(w_seq):
-            v_elem = None if v_idx == len(v_seq) else v_seq[v_idx]
-            w_elem = None if w_idx == len(w_seq) else w_seq[w_idx]
-            hmm_outgoing_n_ids = create_hmm_square_from_v_perspective(
-                transition_probabilities,
-                emission_probabilities,
-                hmm_n_id,
-                (v_idx, v_elem),
-                (w_idx, w_elem),
-                len(v_seq),
-                len(w_seq)
-            )
-            for hmm_test_n_id in hmm_outgoing_n_ids:
-                if hmm_test_n_id not in processed:
-                    pending.add(hmm_test_n_id)
-    return transition_probabilities, emission_probabilities
-# MARKDOWN_V_CHAIN
-
-
-def main_v_chain():
-    print("<div style=\"border:1px solid black;\">", end="\n\n")
-    print("`{bm-disable-all}`", end="\n\n")
-    try:
-        data_raw = ''.join(stdin.readlines())
-        data: dict = yaml.safe_load(data_raw)
-        v_seq = data['v_sequence']
-        w_seq = data['w_sequence']
-        print(f'Building HMM alignment chain (from v\'s perspective), using the following settings...')
-        print()
-        print('```')
-        print(data_raw)
-        print('```')
-        print()
-        transition_probabilities, emission_probabilities = create_hmm_chain_from_v_perspective(
-            v_seq,
-            w_seq
-        )
-        transition_probabilities, emission_probabilities = stringify_probability_keys(transition_probabilities, emission_probabilities)
-        hmm = to_hmm_graph_PRE_PSEUDOCOUNTS(transition_probabilities, emission_probabilities)
-        print(f'The following HMM was produced ...')
-        print()
-        print('```{dot}')
-        print(f'{hmm_to_dot(hmm)}')
-        print('```')
-        print()
-    finally:
-        print("</div>", end="\n\n")
-        print("`{bm-enable-all}`", end="\n\n")
-
-
-
-
-
-
-
-
-
-
-
 # MARKDOWN_V_MOST_PROBABLE
 def hmm_most_probable_from_v_perspective(
-        v_seq: list[ELEM],
-        w_seq: list[ELEM],
+        v_elem: ELEM,
+        w_elem: ELEM,
+        t_elem: ELEM,
         transition_probability_overrides: dict[str, dict[str, float]],
         pseudocount: float
 ):
-    transition_probabilities, emission_probabilities = create_hmm_chain_from_v_perspective(v_seq, w_seq)
-    transition_probabilities['X', -1, -1] = {}
-    transition_probabilities['E', len(v_seq), len(w_seq)]['X', -1, -1] = 1.0
-    transition_probabilities['D', len(v_seq), len(w_seq)]['X', -1, -1] = 1.0
-    emission_probabilities['X', -1, -1] = {None: 1.0}
-    v_seq = v_seq + [None]
+    transition_probabilities = {}
+    emission_probabilities = {}
+    create_hmm_square_from_v_perspective(
+        transition_probabilities,
+        emission_probabilities,
+        ('S', -1, -1),
+        (0, v_elem),
+        (0, w_elem),
+        1,
+        1,
+        t_elem
+    )
     transition_probabilities, emission_probabilities = stringify_probability_keys(transition_probabilities,
                                                                                   emission_probabilities)
     for hmm_from_n_id in transition_probabilities:
@@ -413,19 +342,16 @@ def hmm_most_probable_from_v_perspective(
     )
     hmm_source_n_id = hmm.get_root_node()
     hmm_sink_n_id = 'VITERBI_SINK'  # Fake sink node ID required for exploding HMM into Viterbi graph
-    viterbi = to_viterbi_graph(hmm, hmm_source_n_id, hmm_sink_n_id, v_seq)
+    viterbi = to_viterbi_graph(hmm, hmm_source_n_id, hmm_sink_n_id, [v_elem] + [t_elem])
     probability, hidden_path = max_product_path_in_viterbi(viterbi)
-    hidden_path = hidden_path[:-1]  # Remove viterbi sink node from end of path: VITERBI_SINK
-    hidden_path = hidden_path[:-1]  # Remove HMM sink node from end of path: X,-1,-1
     v_alignment = []
-    for hmm_from_n_id, hmm_to_n_id in hidden_path:
+    # When looping, ignore phony end emission and Viterbi sink node at end: [(T, 1, 1), VITERBI_SINK].
+    for hmm_from_n_id, hmm_to_n_id in hidden_path[:-2]:
         state_type, to_v_idx, to_w_idx = hmm_to_n_id.split(',')
-        to_v_idx = int(to_v_idx)
-        to_w_idx = int(to_w_idx)
         if state_type == 'D':
             v_alignment.append(None)
         elif state_type == 'E':
-            v_alignment.append(v_seq[to_v_idx - 1])
+            v_alignment.append(v_elem)
         else:
             raise ValueError('Unrecognizable type')
     return hmm, viterbi, probability, hidden_path, v_alignment
@@ -438,8 +364,8 @@ def main_v_most_probable():
     try:
         data_raw = ''.join(stdin.readlines())
         data: dict = yaml.safe_load(data_raw)
-        v_seq = data['v_sequence']
-        w_seq = data['w_sequence']
+        v_seq = data['v_element']
+        w_seq = data['w_element']
         transition_probability_overrides = data['transition_probability_overrides']
         pseudocount = data['pseudocount']
         print(f'Building HMM alignment chain (from w\'s perspective), using the following settings...')
@@ -451,6 +377,7 @@ def main_v_most_probable():
         hmm, viterbi, weight, hidden_path, v_alignment = hmm_most_probable_from_v_perspective(
             v_seq,
             w_seq,
+            '?',
             transition_probability_overrides,
             pseudocount
         )
@@ -487,4 +414,4 @@ def main_v_most_probable():
 
 
 if __name__ == '__main__':
-    main_w_square()
+    main_v_most_probable()

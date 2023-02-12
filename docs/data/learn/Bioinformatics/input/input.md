@@ -21080,15 +21080,21 @@ Generally, profile HMMs are used to quickly test a never before seen sequence ag
  * some gene's regulatory motif.
  * etc...
 
-### HMM Sequence Alignment
+### HMM Single Element Sequence Alignment
+
+`{bm} /(Algorithms\/Profile Hidden Markov Models\/HMM Single Element Alignment)_TOPIC/`
 
 **WHAT**: Re-formulate a pair-wise sequence alignment as an HMM.
 
 **WHY**: This builds the foundation for computing profile HMMs.
 
+#### Emit-Delete Algorithm
+
+`{bm} /(Algorithms\/Profile Hidden Markov Models\/HMM Single Element Alignment\/Emit-Delete Algorithm)_TOPIC/`
+
 **ALGORITHM**:
 
-A pair-wise sequence alignment graph aligns two sequences together. For example, imagine the follow two sequences, each with a single element: \[n] and \[a]. The sequence alignment graph for these two sequences is as follows.
+A pair-wise sequence alignment graph aligns two sequences together. For example, imagine the following two sequences, each with a single element: \[n] and \[a]. The sequence alignment graph for these two sequences is as follows.
 
 ```{svgbob}
            "n"       
@@ -21136,86 +21142,420 @@ By the end, all of BAN should have been emitted.
 ```
  
 ```{svgbob}
- "SEQUENCE ALIGNMENT"                        "HMM from [n]'s perspective"
+    "Sequence alignment"                         "HMM from [n]'s perspective"
+
            "n"                                                           
-           "-"                               +----+      +----+    +- -+ 
-       *------->*                            | S  +----->|E10 +- ->: n : 
-       |\       |                            +-+--+      +--+-+    +- -+ 
-       | \      |                              |   \        |       ^    
-    "-"|  \     |"-"                           |    \       v       :    
-    "a"|   \    |"a"                           |     \   +----+     :    
-       |   n\   |                              |      \  |D11 |     :    
-       |   a \  |                              |       \ +----+     :    
-       |      \ |                              v        v           :    
-       ▼       ▼▼                            +----+      +----+     :    
-       *------->*                            |D01 +----->|E11 +- - -'    
-           "n"                               +----+      +----+          
+           "-"                                +----+      +----+          +- -+ 
+       *-------->*                            | S  +----->|E10 +- - - - ->: n : 
+       |\        |                            +-+--+      +--+-+  +- -+   +- -+ 
+       | \       |                              |   \        |    : ? :    ^    
+    "-"|  \      |"-"                           |    \       v    +- -+    :    
+    "a"|   \     |"a"                           |     \   +----+    ^      :    
+       |   n\    |                              |      \  |D11 +    |      :    
+       |   a \   |                              |       \ +--+-+  +-+-+    :    
+       |      \  |                              |        \   '--->| T |    :    
+       |       \ |                              v         v  .--->+---+    :
+       ▼        ▼▼                            +----+      +--+-+           :    
+       *-------->*                            |D01 +----->|E11 +- - - - - -'    
+           "n"                                +----+      +----+          
            "-"                                                           
                                                                          
-   "ALIGNMENT PATHS:"                             "HIDDEN PATHS:"      
--n   vs   n    vs    n-                         S -> D01 -> E11: -n      
-a-        a          -a                         S -> E11:        n       
-                                                S -> E10 -> D11: n-      
+   "ALIGNMENT PATHS:"                                "HIDDEN PATHS:"      
+-n   vs   n    vs    n-                         S -> D01 -> E11 -> T: -n      
+a-        a          -a                         S -> E11 -> T:        n       
+                                                S -> E10 -> D11 -> T: n-      
 ```
 
 ```{note}
 The alignment graph and HMM diagrams in the example above have intentially left out weights.
 ```
 
+In the HMM, the ...
+
+* S hidden state represents the alignment graph's source.
+* T hidden state represents the alignment graph's sink.
+* E hidden states represent a symbol emission (n).
+* D hidden states represent a skipping of symbol emission.
+
+The T hidden state is an emitting hidden state, but it emits a phony symbol (a question mark in this case). T's presence is to ensure that, when computing the Viterbi algorithm (to find the most probable hidden path in the HMM), the Viterbi graph doesn't have the possibility of ending at hidden state E10. If the HMM travels through E10, it then must go downward to D11 as well to indicate that there's a gap afterwards.
+
+```{svgbob}
+   "Viterbi from [n]'s perspective"                             "Viterbi from [n]'s perspective"
+         "(without T)"                                                   "(with T)"             
+
+                n                                                       n          ?      
+             +-----+                                                 +-----+             
+       .---->| E10 +--.                                        .---->| E10 |             
+      /      +--+--+   \                                      /      +--+--+             
+     /          |       \                                    /          |                
+    +           '---.    \                                  +           '---.            
+    |               |     v                                 |               |            
+  +-+-+      +-----+ \   +------+                         +-+-+      +-----+ \   +-----+    +------+
+  | S +----->| E11 +--]->| SINK |                         | S +----->| E11 +--]->| T   +--->| SINK |
+  +-+-+  .-->+-----+ /   +------+                         +-+-+  .-->+-----+ /   +-----+    +------+
+    |   /           |     ^                                 |   /           |     ^      
+    |  .         .--'    /                                  |  .         .--'    /       
+    v  |         v      /                                   v  |         v      /        
+  +----++    +-----+   /                                  +----++    +-----+   /         
+  | D01 |    | D11 +--'                                   | D01 |    | D11 +--'          
+  +-----+    +-----+                                      +-----+    +-----+          
+```
+
+```{note}
+The Viterbi graph in the example above has intentially left out weights.
+```
+
+The first Viterbi graph (without T) has the possibility to go from E10 directly to SINK. This is wrong. The equivalent action in the alignment graph would be to go start off by going right and then abruptly stop the alignment without going down to the bottom-right. If the alignment path starts off by going right, it must go down afterwards to indicate that there's a gap. Likewise, if hidden path starts off by going right (to E10), it must go down afterwards (to D11) to indicate that there's gap.
+
+The second Viterbi graph (with T) ensures a downward movement from E10 always happens. There is no possibility of abruptly ending at E10 (no possibility of going from E10 to SINK).
+
 ```{output}
-ch10_code/src/profile_hmm/HMMSequenceAlignment.py
+ch10_code/src/profile_hmm/HMMSingleElementAlignment_EmitDelete.py
 python
 # MARKDOWN_V_SQUARE\s*\n([\s\S]+)\n\s*# MARKDOWN_V_SQUARE\s*[\n$]
 ```
 
 ```{ch10}
-profile_hmm.HMMSequenceAlignment main_v_square
+profile_hmm.HMMSingleElementAlignment_EmitDelete main_v_square
 v_element: n
 w_element: a
 ```
 
-Likewise, from the perspective of the second sequence \[a], each edge that goes ...
+The example above re-formulated the sequence alignment to an HMM from the perspective of the first sequence \[n]. The process is similar to re-formulate from the perspsective of the second sequence \[a]. Each edge that goes ...
 
  * down represents an emission, which can be represented by an emitting hidden state.
  * right represents a gap, which can be represented by an non-emitting hidden state.
  * diagonal represents an emission, which can be represented by an emitting hidden state.
 
 ```{svgbob}
- "SEQUENCE ALIGNMENT"                        "HMM from [n]'s perspective"                     "HMM from [a]'s perspective"  
-           "n"                                                                                                             
-           "-"                               +----+      +----+    +- -+                      +----+      +----+           
-       *------->*                            | S  +----->|E10 +- ->: n :                      | S  +----->|D10 |
-       |\       |                            +-+--+      +--+-+    +- -+                      +-+--+      +--+-+
-       | \      |                              |   \        |       ^                           |   \        |  
-    "-"|  \     |"-"                           |    \       v       :                           |    \       v  
-    "a"|   \    |"a"                           |     \   +----+     :                           |     \   +----+    +- -+
-       |   n\   |                              |      \  |D11 |     :                           |      '->|E11 +- ->: a :
-       |   a \  |                              |       \ +----+     :                           |         +----+    +- -+
-       |      \ |                              v        v           :                           v                    ^
-       ▼       ▼▼                            +----+      +----+     :                         +----+      +----+     :
-       *------->*                            |D01 +----->|E11 +- - -'                         |E01 +----->|D11 |     :
-           "n"                               +----+      +----+                               +--+-+      +----+     :            
-           "-"                                                                                   '- - - - - - - - - -'     
-                                                                                                                           
-   "ALIGNMENT PATHS:"                              "HIDDEN PATHS:"                                "HIDDEN PATHS:"        
--n   vs   n    vs    n-                         S -> D01 -> E11: -n                             S -> E01 -> D11: a-        
-a-        a          -a                         S -> E11:        n                              S -> E11:        a
-                                                S -> E10 -> D11: n-                             S -> D10 -> E11: -a      
+    "Sequence alignment"                         "HMM from [n]'s perspective"                          "HMM from [a]'s perspective"
+
+           "n"                                                           
+           "-"                                +----+      +----+          +- -+                     +----+      +----+
+       *-------->*                            | S  +----->|E10 +- - - - ->: n :                     | S  +----->|D10 |
+       |\        |                            +-+--+      +--+-+ +- -+    +- -+                     +-+--+      +--+-+
+       | \       |                              |   \        |   : ? :     ^                          |   \        |                   
+    "-"|  \      |"-"                           |    \       v   +- -+     :                          |    \       v                   
+    "a"|   \     |"a"                           |     \   +----+   ^       :                          |     \   +----+                +- -+
+       |   n\    |                              |      \  |D11 +   |       :                          |      '->|E11 +- - - - - - - ->: a :
+       |   a \   |                              |       \ +--+-+ +-+-+     :                          |         +--+-+ +-+-+    +- -+ +- -+
+       |      \  |                              |        \   '-->| T |     :                          |            '-->| T +- ->: ? :  ^   
+       |       \ |                              v         v  .-->+---+     :                          v            .-->+---+    +- -+  :   
+       ▼        ▼▼                            +----+      +--+-+           :                        +----+      +--+-+                 :   
+       *-------->*                            |D01 +----->|E11 +- - - - - -'                        |E01 +----->|D11 |                 :   
+           "n"                                +----+      +----+                                    +--+-+      +----+                 :
+           "-"                                                                                         '- - - - - - - - - - - - - - - -'
+                                                                                                                                        
+   "ALIGNMENT PATHS:"                                "HIDDEN PATHS:"                                        "HIDDEN PATHS:"           
+-n   vs   n    vs    n-                         S -> D01 -> E11 -> T: -n                               S -> E01 -> D11 -> T: a-        
+a-        a          -a                         S -> E11 -> T:        n                                S -> E11 -> T:        a         
+                                                S -> E10 -> D11 -> T: n-                               S -> D10 -> E11 -> T: -a     
+```
+
+```{note}
+The alignment graph and HMM diagrams in the example above have intentially left out weights.
+```
+
+```{note}
+This is showing the code to do it all again from the second sequence \[a]'s perspective. However, an easier way to do this would just be to use the same code above but swap the order of sequences. Instead of submitting as (\[n], \[a]), submit as (\[a], \[n]).
 ```
 
 ```{output}
-ch10_code/src/profile_hmm/HMMSequenceAlignment.py
+ch10_code/src/profile_hmm/HMMSingleElementAlignment_EmitDelete.py
 python
 # MARKDOWN_W_SQUARE\s*\n([\s\S]+)\n\s*# MARKDOWN_W_SQUARE\s*[\n$]
 ```
 
 ```{ch10}
-profile_hmm.HMMSequenceAlignment main_w_square
+profile_hmm.HMMSingleElementAlignment_EmitDelete main_w_square
 v_element: n
 w_element: a
 ```
 
-When an alignment graph involves sequences with more than one element, the re-formulated HMMs should chain similarly to that alignment graph. However, instead of each "square" having a single bottom-right node (as in the alignment graph), each "square" in the HMM will have two bottom right nodes. These two bottom-right nodes are hidden states, where ...
+When you re-formulate an alignment graph as an HMM, the computation changes to something fundamentally different. The goal of an alignment graph is different than that of an HMM.
+
+ * **Alignment graph**: You're trying to produce an alignment path whose edge scores accumulate to the maximum of all possible alignment paths (*maximum sum* - highest scoring).
+ * **HMM**: You're trying to produce a hidden path whose transition-emission probability chain is the maximum of all possible hidden paths (*maximum product* - most probable).
+
+In an alignment, there is no limit to how low or high a score can be (even negative scores are allowed). In an HMM, a probabilitiy must be between [0, 1] and each hidden state's ...
+
+ * outgoing hidden state transition probabilities must sum to 1.
+ * symbol emission probabilities must sum to 1 (only applicable for emitting hidden states).
+
+To calculate the most probable hidden path in an HMM (hidden path with maximum product), you need to use the Viterbi algorithm. Since the HMMs above don't contain any loops, their Viterbi graphs end up being almost exactly the same as the HMM, with the only difference being that the Viterbi graphs have a sink node after the last emission column.
+
+```{svgbob}
+      "Viterbi from [n]'s perspective"
+               "(with T)"             
+
+              n          ?      
+           +-----+             
+     .---->| E10 |             
+    /      +--+--+             
+   /          |                
+  +           '---.            
+  |               |            
++-+-+      +-----+ \   +-----+    +------+
+| S +----->| E11 +--]->| T   +--->| SINK |
++-+-+  .-->+-----+ /   +-----+    +------+
+  |   /           |     ^      
+  |  .         .--'    /       
+  v  |         v      /        
++----++    +-----+   /         
+| D01 |    | D11 +--'          
++-----+    +-----+          
+```
+
+```{note}
+When you re-formulate an alignment graph as an HMM, the computation changes to one of most likely vs highest scoring. As such, it doesn't make sense to use the same edge weights in an HMM as you do in an alignment graph. Even if you normalize those weights (based on the "sum to 1" criteria discussed above), the optimal alignment path will likely be different than the the optimal hidden path.
+
+The question remains, if you were to actually do this (re-formulate an alignment graph as an HMM), how would you go about choosing the hidden state transition probabilities? That remains unclear to me. The probabilities in the example below were handpicked to force a specific optimal hidden path.
+
+This section isn't meant to be a solution to some practical problem. It's just a building block for another concept discussed further on. As long as you understand that what's being shown here is a thing that can happen, you're good to move forward.
+```
+
+```{output}
+ch10_code/src/profile_hmm/HMMSingleElementAlignment_EmitDelete.py
+python
+# MARKDOWN_V_MOST_PROBABLE\s*\n([\s\S]+)\n\s*# MARKDOWN_V_MOST_PROBABLE\s*[\n$]
+```
+
+```{ch10}
+profile_hmm.HMMSingleElementAlignment_EmitDelete main_v_most_probable
+v_element: n
+w_element: a
+# If a probability doesn't have an override listed, it'll be set to 1.0. It doesn't matter if the
+# probabilities are normalized (between 0 and 1 + each hidden state'soutgoing transitions summing
+# to 1) because the pseudocount addition (below) will normalize them.
+transition_probability_overrides:
+  S,-1,-1: {'D,0,1': 0.4, 'E,1,0': 0.6, 'E,1,1': 0.0}
+  D,0,1:   {'E,1,1': 1.0}
+  E,1,0:   {'D,1,1': 0.6}
+  E,1,1:   {'T,1,1': 1.0}
+  D,1,1:   {'T,1,1': 1.0}
+pseudocount: 0.0001
+```
+
+#### Insert-Match-Delete Algorithm
+
+`{bm} /(Algorithms\/Profile Hidden Markov Models\/HMM Single Element Alignment\/Insert-Match-Delete Algorithm)_TOPIC/`
+
+```{prereq}
+Algorithms/Profile Hidden Markov Models/HMM Single Element Alignment/Insert-Match-Delete Algorithm_TOPIC
+```
+
+**ALGORITHM**: 
+
+This algorithm extends the previous algorithm to label whether an emission was from a match or an insertion.
+
+Recall that you can re-formulate a single element alignment graph as an HMM. For example, consider the alignment graph below. From the perspective of the first sequence \[n], each edge that goes ...
+
+ * down represents a gap, which can be represented by a non-emitting hidden state.
+ * right represents an emission, which can be represented by an emitting hidden state.
+ * diagonal represents an emission, which can be represented by an emitting hidden state.
+ 
+```{svgbob}
+    "Sequence alignment"                         "HMM from [n]'s perspective"                          "HMM from [a]'s perspective"
+
+           "n"                                                           
+           "-"                                +----+      +----+          +- -+                     +----+      +----+
+       *-------->*                            | S  +----->|E10 +- - - - ->: n :                     | S  +----->|D10 |
+       |\        |                            +-+--+      +--+-+ +- -+    +- -+                     +-+--+      +--+-+
+       | \       |                              |   \        |   : ? :     ^                          |   \        |                   
+    "-"|  \      |"-"                           |    \       v   +- -+     :                          |    \       v                   
+    "a"|   \     |"a"                           |     \   +----+   ^       :                          |     \   +----+                +- -+
+       |   n\    |                              |      \  |D11 +   |       :                          |      '->|E11 +- - - - - - - ->: a :
+       |   a \   |                              |       \ +--+-+ +-+-+     :                          |         +--+-+ +-+-+    +- -+ +- -+
+       |      \  |                              |        \   '-->| T |     :                          |            '-->| T +- ->: ? :  ^   
+       |       \ |                              v         v  .-->+---+     :                          v            .-->+---+    +- -+  :   
+       ▼        ▼▼                            +----+      +--+-+           :                        +----+      +--+-+                 :   
+       *-------->*                            |D01 +----->|E11 +- - - - - -'                        |E01 +----->|D11 |                 :   
+           "n"                                +----+      +----+                                    +--+-+      +----+                 :
+           "-"                                                                                         '- - - - - - - - - - - - - - - -'
+                                                                                                                                        
+   "ALIGNMENT PATHS:"                                "HIDDEN PATHS:"                                        "HIDDEN PATHS:"           
+-n   vs   n    vs    n-                         S -> D01 -> E11 -> T: -n                               S -> E01 -> D11 -> T: a-        
+a-        a          -a                         S -> E11 -> T:        n                                S -> E11 -> T:        a         
+                                                S -> E10 -> D11 -> T: n-                               S -> D10 -> E11 -> T: -a        
+```
+
+```{note}
+The alignment graph and HMM diagrams in the example above have intentially left out weights.
+```
+
+In the HMMs above, the ...
+
+* S hidden state represents the alignment graph's source.
+* T hidden state represents the alignment graph's sink.
+* E hidden states represent a symbol emission.
+* D hidden states represent a skipping of symbol emission.
+
+This algorithm modifies the HMMs above by clearly deliminating whether a hidden state symbol emission was caused by an insertion or a match. For example, from the perspective of the first sequence \[n], E11's symbol emission could have been caused by either a ...
+
+ * insertion (e.g. D01 → E11).
+ * match (e.g. S → E11).
+
+<table>
+<tr><th>Before</th><th>After</th></tr>
+<tr><td>
+
+```{svgbob}
+   "HMM from [n]'s perspective"  
+                                 
++----+      +----+          +- -+
+| S  +----->|E10 +- - - - ->: n :
++-+--+      +--+-+ +- -+    +- -+
+  |   \        |   : ? :     ^   
+  |    \       v   +- -+     :   
+  |     \   +----+   ^       :   
+  |      \  |D11 +   |       :   
+  |       \ +--+-+ +-+-+     :   
+  |        \   '-->| T |     :   
+  v         v  .-->+---+     :   
++----+      +--+-+           :   
+|D01 +----->|E11 +- - - - - -'   
++----+      +----+               
+```
+
+</td><td>
+
+```{dot}
+digraph G {
+  label="HMM diagram for [n] vs [a] (from [n]'s perspective)"
+  labelloc=top
+  layout=fdp;
+  splines=compound;
+  node [shape=plain];
+  S [pos="0,0!"]
+  D01 [pos="0,-2!"];
+  I10 [pos="2,0!"]
+  D11 [pos="2,-1.4!"];
+  M11 [pos="2,-1.7!"];
+  I11 [pos="2,-2!"];
+  T [pos="2.5,-1.8!"]
+  n [pos="3,-0.5!" shape=circle, style=dashed, color="#7f7f7f", fontcolor="#7f7f7f"]
+  fake [pos="3.5,-2!" shape=circle, style=dashed, color="#7f7f7f", fontcolor="#7f7f7f", label="?"]
+ 
+  S->D01; S->I10; S->M11;
+  I10->D11;
+  D01->I11;
+  D11->T;
+  M11->T;
+  I11->T;
+  I10->n [style=dashed, color="#7f7f7f"]; M11->n [style=dashed, color="#7f7f7f"]; I11->n [style=dashed, color="#7f7f7f"];
+  T->fake [style=dashed, color="#7f7f7f"]
+}
+```
+
+</td></tr>
+</table>
+
+```{note}
+What's the point of this? If you look at the path and a transition to an E hidden state is coming from a hidden state that's directly to the left (e.g. D10 → E11) vs diagonal (e.g. S → E11), couldn't you just automatically tell if it's an insertion vs match?
+
+This is the way the Pevzner book is doing it, so that's what I'm going to stick to.
+```
+
+```{output}
+ch10_code/src/profile_hmm/HMMSingleElementAlignment_InsertMatchDelete.py
+python
+# MARKDOWN_V_SQUARE\s*\n([\s\S]+)\n\s*# MARKDOWN_V_SQUARE\s*[\n$]
+```
+
+```{ch10}
+profile_hmm.HMMSingleElementAlignment_InsertMatchDelete main_v_square
+v_element: n
+w_element: a
+```
+
+Similarly from the perspective of the second sequence \[a], E11's symbol emission could have been caused by either a ...
+
+ * insertion (D10 → E11).
+ * match (S → E11).
+
+<table>
+<tr><th>Before</th><th>After</th></tr>
+<tr><td>
+
+```{svgbob}
+   "HMM from [a]'s perspective"
+
++----+      +----+
+| S  +----->|D10 |
++-+--+      +--+-+
+  |   \        |                   
+  |    \       v                   
+  |     \   +----+                +- -+
+  |      '->|E11 +- - - - - - - ->: a :
+  |         +--+-+ +-+-+    +- -+ +- -+
+  |            '-->| T +- ->: ? :  ^   
+  v            .-->+---+    +- -+  :   
++----+      +--+-+                 :   
+|E01 +----->|D11 |                 :   
++--+-+      +----+                 :
+   '- - - - - - - - - - - - - - - -'   
+```
+
+</td><td>
+
+```{dot}
+digraph G {
+  label="HMM diagram for [n] vs [a] (from [a]'s perspective)"
+  labelloc=top
+  layout=fdp;
+  splines=compound;
+  node [shape=plain];
+  S [pos="0,0!"]
+  I01 [pos="0,-2!"];
+  D10 [pos="2,0!"]
+  I11 [pos="2,-1.4!"];
+  M11 [pos="2,-1.7!"];
+  D11 [pos="2,-2!"];
+  T [pos="2.5,-1.8!"]
+  a [pos="1,-2.5!" shape=circle, style=dashed, color="#7f7f7f", fontcolor="#7f7f7f"]
+  fake [pos="3,-2.5!" shape=circle, style=dashed, color="#7f7f7f", fontcolor="#7f7f7f", label="?"]
+ 
+  S->I01; S->D10; S->M11;
+  D10->I11;
+  I01->D11;
+  D11->T;
+  M11->T;
+  I11->T;
+  I01->a [style=dashed, color="#7f7f7f"]; M11->a [style=dashed, color="#7f7f7f"]; I11->a [style=dashed, color="#7f7f7f"];
+  T->fake [style=dashed, color="#7f7f7f"]
+}
+```
+
+</td></tr>
+</table>
+
+```{output}
+ch10_code/src/profile_hmm/HMMSingleElementAlignment_InsertMatchDelete.py
+python
+# MARKDOWN_W_SQUARE\s*\n([\s\S]+)\n\s*# MARKDOWN_W_SQUARE\s*[\n$]
+```
+
+```{ch10}
+profile_hmm.HMMSingleElementAlignment_InsertMatchDelete main_w_square
+v_element: n
+w_element: a
+```
+
+### HMM Sequence Alignment
+
+`{bm} /(Algorithms\/Profile Hidden Markov Models\/HMM Sequence Alignment)_TOPIC/`
+
+```{prereq}
+Algorithms/Profile Hidden Markov Models/HMM Single Element Alignment/Insert-Match-Delete Algorithm_TOPIC
+```
+
+**WHAT**: Re-formulate a pair-wise sequence alignment as an HMM.
+
+**WHY**: This builds the foundation for computing profile HMMs.
+
+**ALGORITHM**:
+
+When an alignment graph involves sequences with more than one element, the re-formulated HMM chains squares together similarly to how an alignment graph chains squares together. Except for the bottom-right square in the chain, each squares in an HMM should omit its T hidden state. That means squares emitting their T hidden state two bottom-right hidden states, where ...
 
  * one is an emitting hidden state, labelled as E.
  * one is a non-emitting hidden state, labelled as D.
@@ -21318,8 +21658,8 @@ python
 
 ```{ch10}
 profile_hmm.HMMSequenceAlignment main_v_chain
-v_sequence: hi
-w_sequence: qi
+v_sequence: [h, i]
+w_sequence: [q, i]
 ```
 
 In the alignment graph example above, each alignment path through the alignment graph is a unique way in which [h, i] and [q, i] can align. Likewise, in the HMM example above, each hidden path through the HMM is unique way in which [h, i]'s symbols get aligned.
@@ -21419,14 +21759,6 @@ In an alignment, there is no limit to how low or high a score can be (even negat
  * outgoing hidden state transition probabilities must sum to 1.
  * symbol emission probabilities must sum to 1.
 
-When you re-formulate an alignment graph as an HMM, the computation changes to one of most likely vs highest scoring. As such, it doesn't make sense to use the same edge weights in an HMM as you do in an alignment graph. Even if you normalize those weights (based on the "sum to 1" criteria discussed above), the optimal alignment path will likely be different than the the optimal hidden path.
-
-```{note}
-The question remains, if you were to actually do this (re-formulate an alignment graph as an HMM), how would you go about choosing the hidden state transition probabilities? That remains unclear at the moment. The probabilities in the example below were handpicked to force the optimal hidden path to be the one highlighted.
-
-This section isn't meant to be a solution to some practical problem. It's just a building block for another concept discussed further on. As long as you understand that what's being shown here is a thing that can happen, you're good to move forward.
-```
-
 <table>
 <tr><th>Sequence Alignment (highest scoring alignment path)</th><th>HMM (most probable hidden path)</th></tr>
 <tr><td>
@@ -21511,6 +21843,87 @@ digraph G {
 
 </td></tr>
 </table>
+
+To calculate the most probable hidden path in an HMM (hidden path with maximum product), you need to use the Viterbi algorithm. Since the HMM above doesn't contain any loops, the Viterbi graph will end up being almost exactly the same as the HMM, with the only difference being that the Viterbi graph gets a sink node after the last emission column.
+
+```{note}
+All the edges in the HMM are in the Viterbi graph. They've just been moved around to fit the layout you would expect of a Viterbi graph (each emission gets its own column). The only added nodes / edges are for the Viterbi sink node.
+```
+
+```{dot}
+digraph G {
+  label="Viterbi graph"
+  labelloc=top
+  layout=neato;
+  node [shape=plain];
+  S [pos="0,-2!" fontcolor=red]
+  D01 [pos="0,-4!"];
+  D02 [pos="0,-6!"]
+  h [pos="2,0.5!", fontsize=21]
+  E10 [pos="2,0!" label="E10\n(h)", fontcolor=red]
+  E11 [pos="2,-2!" label="E11\n(h)"];
+  E12 [pos="2,-4!" label="E12\n(h)"];
+  D11 [pos="2,-6!", fontcolor=red];
+  D12 [pos="2,-8!"];
+  i [pos="4,0.5!", fontsize=21]
+  E20 [pos="4,0!" label="E20\n(i)"]
+  E21 [pos="4,-2!" label="E21\n(i)"];
+  E22 [pos="4,-4!" label="E22\n(i)", fontcolor=red];
+  D21 [pos="4,-6!"];
+  D22 [pos="4,-8!"];
+  SINK [pos="6,-4!"];
+  
+  splines=compound;
+  S->D01 [label=0.4]; S->E10 [fontcolor=red, color=red, label=0.6]; S->E11 [label=0.0];
+  E10->E20 [label=0.4]; E10->D11 [fontcolor=red, color=red, label=0.6]; E10->E21 [label=0.0];
+  D01->D02 [label=0.5]; D01->E11 [label=0.5]; D01->E12 [label=0.0];
+  D12->E22 [label=1.0];
+  E11->D12 [label=0.0]; E11->E21 [label=0.0]; E11->E22 [label=1.0];
+  D11->D12 [label=0.0]; D11->E21 [label=0.0]; D11->E22 [fontcolor=red, color=red, label=1.0];
+  D02->E12 [label=1.0];
+  E12->E22 [label=1.0];
+  E20->D21 [label=1.0];
+  D21->D22 [label=1.0];
+  E21->D22 [label=1.0];
+  E20->SINK [label=1.0]; E21->SINK [label=1.0];  E22->SINK [label=1.0]; D21->SINK [label=1.0]; D22->SINK [label=1.0];
+}
+```
+
+```{note}
+When you re-formulate an alignment graph as an HMM, the computation changes to one of most likely vs highest scoring. As such, it doesn't make sense to use the same edge weights in an HMM as you do in an alignment graph. Even if you normalize those weights (based on the "sum to 1" criteria discussed above), the optimal alignment path will likely be different than the the optimal hidden path.
+
+The question remains, if you were to actually do this (re-formulate an alignment graph as an HMM), how would you go about choosing the hidden state transition probabilities? That remains unclear at the moment. The probabilities in the example below were handpicked to force the optimal hidden path to be the one highlighted.
+
+This section isn't meant to be a solution to some practical problem. It's just a building block for another concept discussed further on. As long as you understand that what's being shown here is a thing that can happen, you're good to move forward.
+```
+
+```{output}
+ch10_code/src/profile_hmm/HMMSequenceAlignment.py
+python
+# MARKDOWN_V_MOST_PROBABLE\s*\n([\s\S]+)\n\s*# MARKDOWN_V_MOST_PROBABLE\s*[\n$]
+```
+
+```{ch10}
+profile_hmm.HMMSequenceAlignment main_v_most_probable
+v_sequence: [h, i]
+w_sequence: [q, i]
+# If a probability doesn't have an override listed, it'll be set to 1.0. It doesn't matter if the
+# probabilities are normalized (between 0 and 1 + each hidden state'soutgoing transitions summing
+# to 1) because the pseudocount addition (below) will normalize them.
+transition_probability_overrides:
+  S,-1,-1: {'D,0,1': 0.4, 'E,1,0': 0.6, 'E,1,1': 0.0}
+  E,1,0:   {'E,2,0': 0.4, 'D,1,1': 0.6, 'E,2,1': 0.0}
+  D,0,1:   {'D,0,2': 0.5, 'E,1,1': 0.5, 'E,1,2': 0.0}
+  D,1,2:   {'E,2,2': 1.0}
+  E,1,1:   {'D,1,2': 0.0, 'E,2,1': 0.0, 'E,2,2': 1.0}
+  D,1,1:   {'D,1,2': 0.0, 'E,2,1': 0.0, 'E,2,2': 1.0}
+  D,0,2:   {'E,1,2': 1.0}
+  E,1,2:   {'E,2,2': 1.0}
+  E,2,0:   {'D,2,1': 1.0}
+  D,2,1:   {'D,2,2': 1.0}
+  E,2,1:   {'D,2,2': 1.0}
+pseudocount: 0.0001
+```
 
 ### HMM Profile Alignment
 
@@ -27373,7 +27786,9 @@ first_indexes_checkpoint_n: 20
                         +- - - -+
    ```
 
- * `{bm} non-emitting hidden state/(non-emitting hidden state|emitting hidden state|silent hidden state)/i` - A hidden state that doesn't emit symbols. An HMM typically emits a symbol after transitioning to a new hidden state. However, if that new hidden state is a non-emitting hidden state, it doesn't emit a symbol.
+ * `{bm} emitting hidden state` - A hidden state that emits a symbol. An HMM typically emits a symbol after transitioning between hidden states. However, if the hidden state being transitioned to is a non-emitting hidden state, it doesn't emit a symbol.
+
+ * `{bm} non-emitting hidden state/(non-emitting hidden state|silent hidden state)/i` - A hidden state that doesn't emit symbols. An HMM typically emits a symbol after transitioning better hidden states. However, if the hidden state being transitioned to is a non-emitting hidden state, it doesn't emit a symbol.
  
    An HMM ...
  
