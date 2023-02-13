@@ -1,8 +1,4 @@
-import math
-from math import nan
-from random import random
 from sys import stdin
-from typing import TypeVar
 
 import yaml
 
@@ -48,8 +44,7 @@ def create_hmm_square_from_v_perspective(
         transition_probabilities[hmm_replace_match_n_id] = removed_tp.copy()
         emission_probabilities[hmm_replace_match_n_id] = removed_ep.copy()
         transition_probabilities[hmm_top_left_n_id][hmm_replace_match_n_id] = transition_probabilities[hmm_top_left_n_id].pop(hmm_remove_n_id)
-        if hmm_replace_match_n_id in hmm_outgoing_n_ids:
-            hmm_outgoing_n_ids.add(hmm_replace_match_n_id)
+        hmm_outgoing_n_ids.add(hmm_replace_match_n_id)
     # Remove E11
     hmm_remove_n_id = 'E', v_idx + 1, w_idx + 1
     if hmm_remove_n_id in transition_probabilities:
@@ -62,16 +57,14 @@ def create_hmm_square_from_v_perspective(
         transition_probabilities[hmm_replace_match_n_id] = removed_tp.copy()
         emission_probabilities[hmm_replace_match_n_id] = removed_ep.copy()
         transition_probabilities[hmm_top_left_n_id][hmm_replace_match_n_id] = transition_probabilities[hmm_top_left_n_id].pop(hmm_remove_n_id)
-        if hmm_replace_match_n_id in hmm_outgoing_n_ids:
-            hmm_outgoing_n_ids.add(hmm_replace_match_n_id)
+        hmm_outgoing_n_ids.add(hmm_replace_match_n_id)
         # Replace with I11
         hmm_bottom_left_n_id = 'D', v_idx, w_idx + 1
         hmm_replace_insert_n_id = 'I', v_idx + 1, w_idx + 1
         transition_probabilities[hmm_replace_insert_n_id] = removed_tp.copy()
         emission_probabilities[hmm_replace_insert_n_id] = removed_ep.copy()
         transition_probabilities[hmm_bottom_left_n_id][hmm_replace_insert_n_id] = transition_probabilities[hmm_bottom_left_n_id].pop(hmm_remove_n_id)
-        if hmm_replace_insert_n_id in hmm_outgoing_n_ids:
-            hmm_outgoing_n_ids.add(hmm_replace_insert_n_id)
+        hmm_outgoing_n_ids.add(hmm_replace_insert_n_id)
     # Return
     return hmm_outgoing_n_ids
 # MARKDOWN_V_SQUARE
@@ -295,7 +288,7 @@ def hmm_most_probable_from_v_perspective(
         state_type, to_v_idx, to_w_idx = hmm_to_n_id.split(',')
         if state_type == 'D':
             v_alignment.append(None)
-        elif state_type == 'E':
+        elif state_type in {'M', 'I'}:
             v_alignment.append(v_elem)
         else:
             raise ValueError('Unrecognizable type')
@@ -359,4 +352,4 @@ def main_v_most_probable():
 
 
 if __name__ == '__main__':
-    main_w_square()
+    main_v_most_probable()

@@ -21330,7 +21330,7 @@ w_element: a
 transition_probability_overrides:
   S,-1,-1: {'D,0,1': 0.4, 'E,1,0': 0.6, 'E,1,1': 0.0}
   D,0,1:   {'E,1,1': 1.0}
-  E,1,0:   {'D,1,1': 0.6}
+  E,1,0:   {'D,1,1': 1.0}
   E,1,1:   {'T,1,1': 1.0}
   D,1,1:   {'T,1,1': 1.0}
 pseudocount: 0.0001
@@ -21541,6 +21541,55 @@ v_element: n
 w_element: a
 ```
 
+As before, calculate the most probable hidden path (hidden path with maximum product) using the Viterbi algorithm. Since the HMMs above don't contain any loops, their Viterbi graphs end up being almost exactly the same as the HMM, with the only difference being that the Viterbi graphs have a sink node after the last emission column.
+
+```{svgbob}
+      "Viterbi from [n]'s perspective"
+               "(with T)"             
+
+              n          ?      
+           +-----+             
+        .->| I10 +--.             
+       /   +--+--+   \
+      /       |       \
+     /        v        \
+    /      +-----+      \
+   /       | D11 +---.   +            
+  +        +-----+    \  |      
+  |                    v v       
++-+-+      +-----+     +-----+    +------+
+| S +----->| M11 +---->| T   +--->| SINK |
++-+-+      +-----+     +-----+    +------+
+  |                     ^      
+  v                    /        
++----++    +-----+    /         
+| D01 +--->| I11 +---'          
++-----+    +-----+          
+```
+
+```{output}
+ch10_code/src/profile_hmm/HMMSingleElementAlignment_InsertMatchDelete.py
+python
+# MARKDOWN_V_MOST_PROBABLE\s*\n([\s\S]+)\n\s*# MARKDOWN_V_MOST_PROBABLE\s*[\n$]
+```
+
+```{ch10}
+profile_hmm.HMMSingleElementAlignment_InsertMatchDelete main_v_most_probable
+v_element: n
+w_element: a
+# If a probability doesn't have an override listed, it'll be set to 1.0. It doesn't matter if the
+# probabilities are normalized (between 0 and 1 + each hidden state'soutgoing transitions summing
+# to 1) because the pseudocount addition (below) will normalize them.
+transition_probability_overrides:
+  S,-1,-1: {'D,0,1': 0.4, 'I,1,0': 0.6, 'M,1,1': 0.0}
+  D,0,1:   {'I,1,1': 1.0}
+  I,1,0:   {'D,1,1': 1.0}
+  M,1,1:   {'T,1,1': 1.0}
+  D,1,1:   {'T,1,1': 1.0}
+  I,1,1:   {'T,1,1': 1.0}
+pseudocount: 0.0001
+```
+
 ### HMM Sequence Alignment
 
 `{bm} /(Algorithms\/Profile Hidden Markov Models\/HMM Sequence Alignment)_TOPIC/`
@@ -21555,16 +21604,7 @@ Algorithms/Profile Hidden Markov Models/HMM Single Element Alignment/Insert-Matc
 
 **ALGORITHM**:
 
-When an alignment graph involves sequences with more than one element, the re-formulated HMM chains squares together similarly to how an alignment graph chains squares together. Except for the bottom-right square in the chain, each squares in an HMM should omit its T hidden state. That means squares emitting their T hidden state two bottom-right hidden states, where ...
-
- * one is an emitting hidden state, labelled as E.
- * one is a non-emitting hidden state, labelled as D.
- 
-For example, consider the sequence alignment [h, i] vs [q, i]. From [h, i]'s perspective, whenever an edge in the alignment graph goes ...
-
- * down, it's a gap: Must point to D (non-emitting hidden state).
- * right, it's an insertion: Must point to E (emitting hidden state).
- * diagonal, it's an match: Must point to E (emitting hidden state).
+Imagine an alignment graph where the sequences being aligned have more than 1 element (e.g. [h, i] vs [q, i]). To re-formulate such an alignment graph as an HMM, chain single element alignment square together similar to how an alignment graph chains its single alignment squares together. Except for the bottom-right square in the chain, each squares in an HMM should omit its T hidden state.
 
 <table>
 <tr><th>Sequence Alignment</th><th>HMM</th></tr>
@@ -21617,24 +21657,29 @@ digraph G {
   node [shape=plain];
   S [pos="0,0!"]
   D01 [pos="0,-2!"];  D02 [pos="0,-4!"]
-  E10 [pos="2,0!" label="E10\n(h)"]
-  E11 [pos="2,-2!" label="E11\n(h)"];  D11 [pos="2.2,-1.7!"];
-  E20 [pos="4,0!" label="E20\n(i)"]
-  E21 [pos="4,-2!" label="E21\n(i)"];  D21 [pos="4.2,-1.7!"];
-  E12 [pos="2,-4!" label="E12\n(h)"];  D12 [pos="2.2,-3.7!"];
-  E22 [pos="4,-4!" label="E22\n(i)"];  D22 [pos="4.2,-3.7!"];
+  I10 [pos="2,0!" label="I10 (h)"]
+  I11 [pos="1.8,-2!" label="I11 (h)"]; M11 [pos="1.9,-1.8!" label="M11 (h)"];  D11 [pos="2,-1.6!"];
+  I20 [pos="4,0!" label="I20 (i)"]
+  I21 [pos="3.8,-2!" label="I21 (i)"];  M21 [pos="3.9,-1.8!" label="M21 (i)"];  D21 [pos="4,-1.6!"];
+  I12 [pos="1.8,-4!" label="I12 (h)"];  M12 [pos="1.9,-3.8!" label="M12 (h)"];  D12 [pos="2,-3.6!"];
+  I22 [pos="3.8,-4!" label="I22 (i)"];  M22 [pos="3.9,-3.8!" label="M22 (i)"];  D22 [pos="4,-3.6!"];
+  T [pos="5,-4!" label="T (?)"]
  
-  S->D01; S->E10; S->E11;
-  E10->E20; E10->D11; E10->E21;
-  D01->D02; D01->E11; D01->E12;
-  D12->E22
-  E11->D12; E11->E21; E11->E22;
-  D11->D12; D11->E21; D11->E22;
-  D02->E12
-  E12->E22
-  E20->D21
+  S->D01; S->I10; S->M11;
+  I10->I20; I10->D11; I10->M21;
+  D01->D02; D01->I11; D01->M12;
+  D12->I22
+  M11->D12; M11->I21; M11->M22;
+  I11->D12; I11->I21; I11->M22;
+  D11->D12; D11->I21; D11->M22;
+  D02->I12
+  I12->I22
+  M12->I22
+  I20->D21
   D21->D22
-  E21->D22
+  I21->D22
+  M21->D22
+  D22->T; M22->T; I22->T
 }
 ```
 
@@ -21642,12 +21687,7 @@ digraph G {
 </table>
 
 ```{note}
-In the HMM above, each emitting hidden state has a 100% symbol emission probability for emitting the symbol at the sequence index that it's for vs a 0% probability of embedding all other symbols. For example, E10 has a ...
-
- * 100% probability of emitting symbol h.
- * 0% probability of emittin symbol i.
-
-As such, the HMM diagram above embeds the sole symbol emission for each E node directly in that E node vs drawing out dashed edges / nodes to symbol emission. Doing this makes it easier to understand what's going on.
+In the HMM above, each emitting hidden state has a 100% symbol emission probability for emitting the symbol at the sequence index that it's for vs a 0% probability of embedding all other symbols. For example, I10 has a 100% probability of emitting symbol h. Because of this, the HMM diagram above embeds the sole symbol emission for each emitting hidden state directly in the node vs drawing out dashed edges to dashed symbol emission nodes.
 ```
 
 ```{output}
@@ -21903,7 +21943,7 @@ python
 # MARKDOWN_V_MOST_PROBABLE\s*\n([\s\S]+)\n\s*# MARKDOWN_V_MOST_PROBABLE\s*[\n$]
 ```
 
-```{ch10}
+```{dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddch10}
 profile_hmm.HMMSequenceAlignment main_v_most_probable
 v_sequence: [h, i]
 w_sequence: [q, i]

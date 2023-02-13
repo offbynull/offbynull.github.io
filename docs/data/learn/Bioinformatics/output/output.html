@@ -25438,22 +25438,22 @@ pseudocount: 0.0001
 <li>
 <p>Transition probabilities:</p>
 <ul>
-<li>SOURCE→B = 0.0</li>
 <li>SOURCE→A = 1.0</li>
-<li>A→B = 0.3333333333333333</li>
+<li>SOURCE→B = 0.0</li>
 <li>A→A = 0.6666666666666666</li>
-<li>B→C = 0.3333333333333333</li>
+<li>A→B = 0.3333333333333333</li>
 <li>B→A = 0.6666666666666666</li>
+<li>B→C = 0.3333333333333333</li>
 <li>C→B = 1.0</li>
 </ul>
 </li>
 <li>
 <p>Emission probabilities:</p>
 <ul>
-<li>(B, z) = 0.6666666666666666</li>
-<li>(B, y) = 0.3333333333333333</li>
 <li>(A, z) = 0.5714285714285714</li>
 <li>(A, y) = 0.42857142857142855</li>
+<li>(B, z) = 0.6666666666666666</li>
+<li>(B, y) = 0.3333333333333333</li>
 </ul>
 </li>
 </ul>
@@ -25750,125 +25750,125 @@ pseudocount: 0.0001
 
 </code></pre>
 <p>The following HMM was produced (no probabilities) ...</p>
-<p><img src="dot_13e6b9f1fd4d90d6f77c78a46fc7a8e9.svg" alt="Dot diagram"></p>
+<p><img src="dot_14808b87cd50cba5a501b341bd4b8540.svg" alt="Dot diagram"></p>
 <p>The following HMM was produced after applying randomized probabilities ...</p>
-<p><img src="dot_69a87ab1e00cfa3bf644f2c0389ad698.svg" alt="Dot diagram"></p>
+<p><img src="dot_1742a7daf602e38dcf4de9eb31f07102.svg" alt="Dot diagram"></p>
 <p>Applying Viterbi learning for 3 cycles ...</p>
 <ol>
 <li>
-<p>Hidden path for emitted sequence: SOURCE→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A</p>
+<p>Hidden path for emitted sequence: SOURCE→D, D→A, A→F, F→B, B→D, D→A, A→B, B→D, D→A, A→E, E→A, A→E, E→A</p>
 <p>New transition probabilities:</p>
 <ul>
-<li>SOURCE→A = 0.9998000599820054</li>
-<li>SOURCE→D = 9.997000899730082e-05</li>
+<li>SOURCE→D = 0.9998000599820054</li>
 <li>SOURCE→B = 9.997000899730082e-05</li>
-<li>A→F = 9.997000899730082e-05</li>
-<li>A→B = 9.997000899730082e-05</li>
-<li>A→E = 0.9998000599820054</li>
-<li>B→C = 0.5</li>
-<li>B→D = 0.5</li>
+<li>SOURCE→A = 9.997000899730082e-05</li>
+<li>A→E = 0.49995001499550135</li>
+<li>A→B = 0.2500249925022493</li>
+<li>A→F = 0.2500249925022493</li>
+<li>B→D = 0.9999000199960009</li>
+<li>B→C = 9.998000399920017e-05</li>
 <li>C→F = 1.0</li>
 <li>D→A = 1.0</li>
 <li>E→A = 1.0</li>
-<li>F→B = 0.5</li>
-<li>F→E = 0.5</li>
+<li>F→E = 9.998000399920017e-05</li>
+<li>F→B = 0.9999000199960009</li>
 </ul>
 <p>New emission probabilities:</p>
 <ul>
-<li>(A, z) = 0.5713571642792876</li>
-<li>(A, x) = 0.28572856714414246</li>
-<li>(A, y) = 0.14291426857656986</li>
-<li>(D, z) = 0.3333333333333333</li>
-<li>(D, x) = 0.3333333333333333</li>
-<li>(D, y) = 0.3333333333333333</li>
-<li>(B, z) = 0.3333333333333333</li>
-<li>(B, x) = 0.3333333333333333</li>
-<li>(B, y) = 0.3333333333333333</li>
-<li>(F, z) = 0.3333333333333333</li>
-<li>(F, x) = 0.3333333333333333</li>
-<li>(F, y) = 0.3333333333333333</li>
-<li>(E, z) = 0.8331833783198375</li>
+<li>(D, z) = 0.9998000599820054</li>
+<li>(D, y) = 9.997000899730082e-05</li>
+<li>(D, x) = 9.997000899730082e-05</li>
+<li>(B, z) = 0.49995001499550135</li>
+<li>(B, y) = 0.49995001499550135</li>
+<li>(B, x) = 9.997000899730082e-05</li>
+<li>(A, z) = 0.7998600419874038</li>
+<li>(A, y) = 9.997000899730082e-05</li>
+<li>(A, x) = 0.20003998800359893</li>
+<li>(E, z) = 0.49995001499550135</li>
+<li>(E, y) = 0.49995001499550135</li>
 <li>(E, x) = 9.997000899730082e-05</li>
-<li>(E, y) = 0.1667166516711653</li>
+<li>(F, z) = 9.997000899730082e-05</li>
+<li>(F, y) = 9.997000899730082e-05</li>
+<li>(F, x) = 0.9998000599820054</li>
 </ul>
 </li>
 <li>
-<p>Hidden path for emitted sequence: SOURCE→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A</p>
+<p>Hidden path for emitted sequence: SOURCE→D, D→A, A→F, F→B, B→D, D→A, A→E, E→A, A→B, B→D, D→A, A→E, E→A</p>
 <p>New transition probabilities:</p>
 <ul>
-<li>SOURCE→A = 0.9998000599820054</li>
-<li>SOURCE→D = 9.997000899730082e-05</li>
+<li>SOURCE→D = 0.9998000599820054</li>
 <li>SOURCE→B = 9.997000899730082e-05</li>
-<li>A→F = 9.997000899730082e-05</li>
-<li>A→B = 9.997000899730082e-05</li>
-<li>A→E = 0.9998000599820054</li>
-<li>B→C = 0.5</li>
-<li>B→D = 0.5</li>
+<li>SOURCE→A = 9.997000899730082e-05</li>
+<li>A→E = 0.49995001499550135</li>
+<li>A→B = 0.2500249925022493</li>
+<li>A→F = 0.2500249925022493</li>
+<li>B→D = 0.9999000199960009</li>
+<li>B→C = 9.998000399920017e-05</li>
 <li>C→F = 1.0</li>
 <li>D→A = 1.0</li>
 <li>E→A = 1.0</li>
-<li>F→B = 0.5</li>
-<li>F→E = 0.5</li>
+<li>F→E = 9.998000399920017e-05</li>
+<li>F→B = 0.9999000199960009</li>
 </ul>
 <p>New emission probabilities:</p>
 <ul>
-<li>(A, z) = 0.5713571642792876</li>
-<li>(A, x) = 0.28572856714414246</li>
-<li>(A, y) = 0.14291426857656986</li>
-<li>(D, z) = 0.3333333333333333</li>
-<li>(D, x) = 0.3333333333333333</li>
-<li>(D, y) = 0.3333333333333333</li>
-<li>(B, z) = 0.3333333333333333</li>
-<li>(B, x) = 0.3333333333333333</li>
-<li>(B, y) = 0.3333333333333333</li>
-<li>(F, z) = 0.3333333333333333</li>
-<li>(F, x) = 0.3333333333333333</li>
-<li>(F, y) = 0.3333333333333333</li>
-<li>(E, z) = 0.8331833783198375</li>
+<li>(D, z) = 0.9998000599820054</li>
+<li>(D, y) = 9.997000899730082e-05</li>
+<li>(D, x) = 9.997000899730082e-05</li>
+<li>(B, z) = 0.9998000599820054</li>
+<li>(B, y) = 9.997000899730082e-05</li>
+<li>(B, x) = 9.997000899730082e-05</li>
+<li>(A, z) = 0.7998600419874038</li>
+<li>(A, y) = 9.997000899730082e-05</li>
+<li>(A, x) = 0.20003998800359893</li>
+<li>(E, z) = 9.997000899730082e-05</li>
+<li>(E, y) = 0.9998000599820054</li>
 <li>(E, x) = 9.997000899730082e-05</li>
-<li>(E, y) = 0.1667166516711653</li>
+<li>(F, z) = 9.997000899730082e-05</li>
+<li>(F, y) = 9.997000899730082e-05</li>
+<li>(F, x) = 0.9998000599820054</li>
 </ul>
 </li>
 <li>
-<p>Hidden path for emitted sequence: SOURCE→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A, A→E, E→A</p>
+<p>Hidden path for emitted sequence: SOURCE→D, D→A, A→F, F→B, B→D, D→A, A→E, E→A, A→B, B→D, D→A, A→E, E→A</p>
 <p>New transition probabilities:</p>
 <ul>
-<li>SOURCE→A = 0.9998000599820054</li>
-<li>SOURCE→D = 9.997000899730082e-05</li>
+<li>SOURCE→D = 0.9998000599820054</li>
 <li>SOURCE→B = 9.997000899730082e-05</li>
-<li>A→F = 9.997000899730082e-05</li>
-<li>A→B = 9.997000899730082e-05</li>
-<li>A→E = 0.9998000599820054</li>
-<li>B→C = 0.5</li>
-<li>B→D = 0.5</li>
+<li>SOURCE→A = 9.997000899730082e-05</li>
+<li>A→E = 0.49995001499550135</li>
+<li>A→B = 0.2500249925022493</li>
+<li>A→F = 0.2500249925022493</li>
+<li>B→D = 0.9999000199960009</li>
+<li>B→C = 9.998000399920017e-05</li>
 <li>C→F = 1.0</li>
 <li>D→A = 1.0</li>
 <li>E→A = 1.0</li>
-<li>F→B = 0.5</li>
-<li>F→E = 0.5</li>
+<li>F→E = 9.998000399920017e-05</li>
+<li>F→B = 0.9999000199960009</li>
 </ul>
 <p>New emission probabilities:</p>
 <ul>
-<li>(A, z) = 0.5713571642792876</li>
-<li>(A, x) = 0.28572856714414246</li>
-<li>(A, y) = 0.14291426857656986</li>
-<li>(D, z) = 0.3333333333333333</li>
-<li>(D, x) = 0.3333333333333333</li>
-<li>(D, y) = 0.3333333333333333</li>
-<li>(B, z) = 0.3333333333333333</li>
-<li>(B, x) = 0.3333333333333333</li>
-<li>(B, y) = 0.3333333333333333</li>
-<li>(F, z) = 0.3333333333333333</li>
-<li>(F, x) = 0.3333333333333333</li>
-<li>(F, y) = 0.3333333333333333</li>
-<li>(E, z) = 0.8331833783198375</li>
+<li>(D, z) = 0.9998000599820054</li>
+<li>(D, y) = 9.997000899730082e-05</li>
+<li>(D, x) = 9.997000899730082e-05</li>
+<li>(B, z) = 0.9998000599820054</li>
+<li>(B, y) = 9.997000899730082e-05</li>
+<li>(B, x) = 9.997000899730082e-05</li>
+<li>(A, z) = 0.7998600419874038</li>
+<li>(A, y) = 9.997000899730082e-05</li>
+<li>(A, x) = 0.20003998800359893</li>
+<li>(E, z) = 9.997000899730082e-05</li>
+<li>(E, y) = 0.9998000599820054</li>
 <li>(E, x) = 9.997000899730082e-05</li>
-<li>(E, y) = 0.1667166516711653</li>
+<li>(F, z) = 9.997000899730082e-05</li>
+<li>(F, y) = 9.997000899730082e-05</li>
+<li>(F, x) = 0.9998000599820054</li>
 </ul>
 </li>
 </ol>
 <p>The following HMM was produced after Viterbi learning was applied for 3 cycles ...</p>
-<p><img src="dot_721abe0d0787a3fbd2a13b7e881a01ab.svg" alt="Dot diagram"></p>
+<p><img src="dot_e1bca76f77bb61968f39e9a3345c606b.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Probability%20of%20Emitted%20Sequence"></a><h3>Probability of Emitted Sequence</h3>
@@ -27163,7 +27163,7 @@ pseudocount: 0.0001
 <li>right-hand side was backward computed.</li>
 </ul>
 <p><img src="dot_bd5290d3a3887bff18eb0b19907c3e1d.svg" alt="Dot diagram"></p>
-<p><img src="dot_2f465c100aca0fe294fd07a566bd277e.svg" alt="Dot diagram"></p>
+<p><img src="dot_6abc5d0fe5c8d5426606e7cfc6c4b7e6.svg" alt="Dot diagram"></p>
 <ul>
 <li>The left-hand side is computed to have 0.02882894308693349 at node B1.</li>
 <li>The right-hand side is is computed to have 0.8585641932491518 at node(s) B1.</li>
@@ -27237,7 +27237,7 @@ pseudocount: 0.0001
 <li>right-hand side was backward computed.</li>
 </ul>
 <p><img src="dot_bd5290d3a3887bff18eb0b19907c3e1d.svg" alt="Dot diagram"></p>
-<p><img src="dot_6abc5d0fe5c8d5426606e7cfc6c4b7e6.svg" alt="Dot diagram"></p>
+<p><img src="dot_2f465c100aca0fe294fd07a566bd277e.svg" alt="Dot diagram"></p>
 <p>The probability for ['z', 'z', 'y'] when the hidden path is limited to traveling through ...</p>
 <ul>
 <li>(0, 'A') = 0.020517988760714267</li>
@@ -27434,7 +27434,7 @@ pseudocount: 0.0001
 </code></pre>
 <p>The following HMM was produced AFTER applying pseudocounts ...</p>
 <p><img src="dot_31eaae9b2316b1fe3d867cb1b470d1bf.svg" alt="Dot diagram"></p>
-<p>The probability of ['y', 'y', 'z', 'z'] being emitted when index 1 only has the option to travel from B to A is 0.004553724543009471.</p>
+<p>The probability of ['y', 'y', 'z', 'z'] being emitted when index 1 only has the option to travel from B to A is 0.004553724543009472.</p>
 </div>
 <p></p>
 <a name="H2_Forward%20Graph%20Algorithm"></a><h4>Forward Graph Algorithm</h4>
@@ -28067,7 +28067,7 @@ pseudocount: 0.0001
 <p><img src="dot_31eaae9b2316b1fe3d867cb1b470d1bf.svg" alt="Dot diagram"></p>
 <p>The following isolated exploded HMM was produced -- index 1 only has the option to travel from B to A, then split based on that <em>edge</em>.</p>
 <p><img src="dot_c091a0b59d614dc0906c603ecabfdf68.svg" alt="Dot diagram"></p>
-<p><img src="dot_c2cf3fa72e19843afc15b75404c4d602.svg" alt="Dot diagram"></p>
+<p><img src="dot_33786ace08fe869d49957bfc42b03614.svg" alt="Dot diagram"></p>
 <ul>
 <li>The left-hand side is computed to have 0.2204782560617482 at its sink node.</li>
 <li>The middle side (the edge itself, not displayed as a graph above) is computed to 0.06864658258991009 at its sink node.</li>
@@ -28594,131 +28594,131 @@ pseudocount: 0.0001
 
 </code></pre>
 <p>The following HMM was produced (no probabilities) ...</p>
-<p><img src="dot_13e6b9f1fd4d90d6f77c78a46fc7a8e9.svg" alt="Dot diagram"></p>
+<p><img src="dot_1c05a8385b1b0e97d53d76b12eccc2e8.svg" alt="Dot diagram"></p>
 <p>The following HMM was produced after applying randomized probabilities ...</p>
-<p><img src="dot_1700cd7afdf85b1c0ea2b31acc6c0cd2.svg" alt="Dot diagram"></p>
+<p><img src="dot_d4adcfa8edea018144e3e902b5b04ec2.svg" alt="Dot diagram"></p>
 <p>Applying Baum-Welch learning for 3 cycles ...</p>
 <ol>
 <li>
 <p>New transition probabilities:</p>
 <ul>
-<li>SOURCE→B = 0.9226123403947917</li>
-<li>SOURCE→A = 0.040952567926599175</li>
-<li>SOURCE→D = 0.0364350916786091</li>
+<li>SOURCE→D = 0.057316662147615244</li>
+<li>SOURCE→A = 0.9410031449341135</li>
+<li>SOURCE→B = 0.0016801929182712085</li>
+<li>A→F = 0.18590112958022711</li>
+<li>A→E = 0.5559300264479639</li>
+<li>A→B = 0.25816884397180884</li>
+<li>B→D = 0.7771863303584333</li>
+<li>B→C = 0.22281366964156693</li>
 <li>D→A = 1.0</li>
-<li>A→B = 0.5764722621482435</li>
-<li>A→F = 0.40819275961663554</li>
-<li>A→E = 0.015334978235120904</li>
-<li>B→C = 0.8037334233202656</li>
-<li>B→D = 0.19626657667973427</li>
 <li>C→F = 1.0</li>
-<li>F→B = 0.5727518610523413</li>
-<li>F→E = 0.4272481389476588</li>
+<li>F→E = 0.5881988669040558</li>
+<li>F→B = 0.41180113309594435</li>
 <li>E→A = 1.0</li>
 </ul>
 <p>New emission probabilities:</p>
 <ul>
-<li>(A, x) = 0.28317336640721774</li>
-<li>(A, y) = 0.5691380817212273</li>
-<li>(E, z) = 0.7316341828939239</li>
-<li>(A, z) = 0.14768855187155508</li>
-<li>(C, z) = 0.7593081151609289</li>
-<li>(B, z) = 0.7596646682126519</li>
-<li>(F, y) = 0.04345571223225823</li>
-<li>(B, x) = 0.18892134289141</li>
-<li>(D, z) = 0.9960938666443724</li>
-<li>(F, z) = 0.8709114292802557</li>
-<li>(B, y) = 0.05141398889593808</li>
-<li>(D, y) = 0.0035554787420818846</li>
-<li>(E, y) = 0.15530363809333034</li>
-<li>(C, y) = 0.06693513112760656</li>
-<li>(E, x) = 0.11306217901274557</li>
-<li>(C, x) = 0.17375675371146465</li>
-<li>(D, x) = 0.0003506546135458451</li>
-<li>(F, x) = 0.08563285848748586</li>
+<li>(D, x) = 0.602585276311825</li>
+<li>(F, z) = 0.071567418640522</li>
+<li>(A, z) = 0.822397302406259</li>
+<li>(E, z) = 0.9557482806399094</li>
+<li>(C, z) = 0.6074106059429042</li>
+<li>(B, z) = 0.544748295402998</li>
+<li>(D, y) = 0.2660799663541854</li>
+<li>(D, z) = 0.13133475733398975</li>
+<li>(A, y) = 0.06999407785886932</li>
+<li>(A, x) = 0.10760861973487178</li>
+<li>(F, x) = 0.12372222946088743</li>
+<li>(C, y) = 0.10677239725358928</li>
+<li>(E, x) = 0.018268876432292868</li>
+<li>(B, x) = 0.2991104593882216</li>
+<li>(F, y) = 0.8047103518985905</li>
+<li>(C, x) = 0.28581699680350636</li>
+<li>(E, y) = 0.02598284292779777</li>
+<li>(B, y) = 0.1561412452087805</li>
 </ul>
 </li>
 <li>
 <p>New transition probabilities:</p>
 <ul>
-<li>SOURCE→B = 0.9286041399786551</li>
-<li>SOURCE→A = 0.030364812501393522</li>
-<li>SOURCE→D = 0.04103104751995143</li>
+<li>SOURCE→D = 0.002120242738120323</li>
+<li>SOURCE→A = 0.9977450539753295</li>
+<li>SOURCE→B = 0.0001347032865501758</li>
+<li>A→F = 0.2112309344951291</li>
+<li>A→E = 0.464355032642709</li>
+<li>A→B = 0.3244140328621619</li>
+<li>B→D = 0.8112826977976546</li>
+<li>B→C = 0.18871730220234503</li>
 <li>D→A = 1.0</li>
-<li>A→B = 0.5611620276386833</li>
-<li>A→F = 0.42857859438184825</li>
-<li>A→E = 0.01025937797946805</li>
-<li>B→C = 0.544334102657392</li>
-<li>B→D = 0.4556658973426077</li>
-<li>F→B = 0.630092084420863</li>
-<li>F→E = 0.369907915579137</li>
-<li>E→A = 1.0</li>
+<li>F→E = 0.6306697673066404</li>
+<li>F→B = 0.36933023269335963</li>
 <li>C→F = 1.0</li>
+<li>E→A = 1.0</li>
 </ul>
 <p>New emission probabilities:</p>
 <ul>
-<li>(A, x) = 0.37341778098229217</li>
-<li>(A, y) = 0.48776395725815647</li>
-<li>(E, z) = 0.651279516828542</li>
-<li>(A, z) = 0.1388182617595513</li>
-<li>(C, z) = 0.9314205674141743</li>
-<li>(B, z) = 0.7629553864330778</li>
-<li>(F, y) = 0.06327150018787758</li>
-<li>(B, x) = 0.16052765026146873</li>
-<li>(D, z) = 0.9987672880684514</li>
-<li>(F, z) = 0.7847857915533103</li>
-<li>(B, y) = 0.07651696330545359</li>
-<li>(D, y) = 0.0012111277393856892</li>
-<li>(E, y) = 0.318759950645521</li>
-<li>(C, y) = 0.0345246627751449</li>
-<li>(E, x) = 0.029960532525937018</li>
-<li>(C, x) = 0.03405476981068082</li>
-<li>(D, x) = 2.158419216299836e-05</li>
-<li>(F, x) = 0.1519427082588122</li>
+<li>(D, x) = 0.8757266054608124</li>
+<li>(F, z) = 0.043426399101658734</li>
+<li>(A, z) = 0.9043132607310673</li>
+<li>(E, z) = 0.9685527831575375</li>
+<li>(C, z) = 0.7845140225015985</li>
+<li>(B, z) = 0.5542110308546896</li>
+<li>(D, y) = 0.05814361399686442</li>
+<li>(D, z) = 0.06612978054232274</li>
+<li>(A, y) = 0.04003830379241178</li>
+<li>(A, x) = 0.05564843547652064</li>
+<li>(F, x) = 0.010620873637741135</li>
+<li>(C, y) = 0.014800732350948462</li>
+<li>(E, x) = 0.014571186703614365</li>
+<li>(B, x) = 0.2272111552033302</li>
+<li>(F, y) = 0.9459527272606001</li>
+<li>(C, x) = 0.20068524514745298</li>
+<li>(E, y) = 0.016876030138848176</li>
+<li>(B, y) = 0.21857781394198011</li>
 </ul>
 </li>
 <li>
 <p>New transition probabilities:</p>
 <ul>
-<li>SOURCE→B = 0.9942877159408319</li>
-<li>SOURCE→A = 0.0014257830481250741</li>
-<li>SOURCE→D = 0.0042865010110430335</li>
+<li>SOURCE→D = 8.63040249247278e-06</li>
+<li>SOURCE→A = 0.999990895866932</li>
+<li>SOURCE→B = 4.7373057555314456e-07</li>
+<li>A→F = 0.20719091823390837</li>
+<li>A→E = 0.3684323260447649</li>
+<li>A→B = 0.42437675572132666</li>
+<li>B→D = 0.8295258972794963</li>
+<li>B→C = 0.1704741027205037</li>
 <li>D→A = 1.0</li>
-<li>A→B = 0.46145323930382337</li>
-<li>A→F = 0.5347379873691611</li>
-<li>A→E = 0.003808773327015512</li>
-<li>B→C = 0.4447294493877592</li>
-<li>B→D = 0.5552705506122408</li>
-<li>F→B = 0.6591543582193055</li>
-<li>F→E = 0.34084564178069465</li>
-<li>E→A = 1.0</li>
+<li>F→E = 0.7776769783995062</li>
+<li>F→B = 0.22232302160049386</li>
 <li>C→F = 1.0</li>
+<li>E→A = 1.0</li>
 </ul>
 <p>New emission probabilities:</p>
 <ul>
-<li>(A, x) = 0.4518777759547301</li>
-<li>(A, y) = 0.42588388793289805</li>
-<li>(E, z) = 0.43353272357052164</li>
-<li>(A, z) = 0.12223833611237192</li>
-<li>(C, z) = 0.974211044074626</li>
-<li>(B, z) = 0.8174450337599177</li>
-<li>(F, y) = 0.03944446185287677</li>
-<li>(B, x) = 0.10467390489185226</li>
-<li>(D, z) = 0.9988328559679983</li>
-<li>(F, z) = 0.8033179907903832</li>
-<li>(B, y) = 0.07788106134823011</li>
-<li>(D, y) = 0.001153813066882197</li>
-<li>(E, y) = 0.5607249765762802</li>
-<li>(C, y) = 0.019982437639297697</li>
-<li>(E, x) = 0.005742299853198215</li>
-<li>(C, x) = 0.0058065182860762374</li>
-<li>(D, x) = 1.3330965119510797e-05</li>
-<li>(F, x) = 0.15723754735674025</li>
+<li>(D, x) = 0.9793971356197538</li>
+<li>(F, z) = 0.011558628089682069</li>
+<li>(A, z) = 0.9910961805720288</li>
+<li>(E, z) = 0.9851092912208763</li>
+<li>(C, z) = 0.8894151933653446</li>
+<li>(B, z) = 0.566393745251961</li>
+<li>(D, y) = 0.0009867357296941843</li>
+<li>(D, z) = 0.019616128650552195</li>
+<li>(A, y) = 0.003865811134278446</li>
+<li>(A, x) = 0.005038008293692823</li>
+<li>(F, x) = 8.677544041974953e-05</li>
+<li>(C, y) = 3.4621688581242006e-05</li>
+<li>(E, x) = 0.011675945315994274</li>
+<li>(B, x) = 0.12439624617379086</li>
+<li>(F, y) = 0.9883545964698982</li>
+<li>(C, x) = 0.11055018494607437</li>
+<li>(E, y) = 0.0032147634631295545</li>
+<li>(B, y) = 0.30921000857424824</li>
 </ul>
 </li>
 </ol>
 <p>The following HMM was produced after Baum-Welch learning was applied for 3 cycles ...</p>
-<p><img src="dot_bfde0cf7f86de7ae77916669a5fb316c.svg" alt="Dot diagram"></p>
+<p><img src="dot_48f6bb23460d226187cfc8aa5cc60e5e.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <a name="H_Most%20Probable%20Emitted%20Sequence"></a><h3>Most Probable Emitted Sequence</h3>
@@ -28987,8 +28987,8 @@ emission_len: 3
 <p>The following exploded graph was produced for the HMM and an emission length of 3 ...</p>
 <p><img src="dot_9876e3af35801fa9fdcc722a72f44129.svg" alt="Dot diagram"></p>
 <p>The following exploded graph forward and layer backtracking pointers were produced for the exploded graph...</p>
-<p><img src="dot_e97d10c7ec20ab4caf9039f0d88073dd.svg" alt="Dot diagram"></p>
-<p>Between all emissions of length 3, the emitted sequence with the max probability is 0.28752632118548793 ...</p>
+<p><img src="dot_65df56e2eb017710318041ab33429c99.svg" alt="Dot diagram"></p>
+<p>Between all emissions of length 3, the emitted sequence with the max probability is 0.287526321185488 ...</p>
 </div>
 <p></p>
 <p>To determine the <a href="#BM_(symbol%20emission%20sequence%7Cemission%20sequence%7Cemitted%20sequence)%2Fi">emitted sequence</a> with the maximum probability, the algorithm backtracks from the sink node to the source node based on which layer was used for each node's computation (layer producing the maximum value). This is similar to the backtracking algorithm used to find the path with the maximum sum (<a href="#BM_(Algorithms%5C%2FSequence%20Alignment%2FFind%20Maximum%20Path%2FBacktrack%20Algorithm)_TOPIC%2F">Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm</a>), but in this case it isn't holding backtracking edges (the incoming edge that resulted in the highest sum). Instead, it's holding backtracking layers (the layer that resulted in the highest sum).</p>
@@ -29056,8 +29056,8 @@ emission_len: 3
 <p>The following exploded graph was produced for the HMM and an emission length of 3 ...</p>
 <p><img src="dot_9876e3af35801fa9fdcc722a72f44129.svg" alt="Dot diagram"></p>
 <p>The following exploded graph forward and layer backtracking pointers were produced for the exploded graph...</p>
-<p><img src="dot_65df56e2eb017710318041ab33429c99.svg" alt="Dot diagram"></p>
-<p>The sequence ['y', 'y', 'y'] is the most probable for any emitted sequence of length 3 (probability=0.287526321185488) ...</p>
+<p><img src="dot_e97d10c7ec20ab4caf9039f0d88073dd.svg" alt="Dot diagram"></p>
+<p>The sequence ['y', 'y', 'y'] is the most probable for any emitted sequence of length 3 (probability=0.28752632118548793) ...</p>
 </div>
 <p></p>
 <a name="H_Profile%20Hidden%20Markov%20Models"></a><h2>Profile Hidden Markov Models</h2>
@@ -29540,7 +29540,7 @@ w_element: a
 transition_probability_overrides:
   S,-1,-1: {'D,0,1': 0.4, 'E,1,0': 0.6, 'E,1,1': 0.0}
   D,0,1:   {'E,1,1': 1.0}
-  E,1,0:   {'D,1,1': 0.6}
+  E,1,0:   {'D,1,1': 1.0}
   E,1,1:   {'T,1,1': 1.0}
   D,1,1:   {'T,1,1': 1.0}
 pseudocount: 0.0001
@@ -29603,7 +29603,7 @@ pseudocount: 0.0001
 <p>What's the point of this? If you look at the path and a transition to an E <a href="#BM_(hidden%20state)%2Fi">hidden state</a> is coming from a <a href="#BM_(hidden%20state)%2Fi">hidden state</a> that's directly to the left (e.g. D10 → E11) vs diagonal (e.g. S → E11), couldn't you just automatically tell if it's an insertion vs match?</p>
 <p>This is the way the Pevzner book is doing it, so that's what I'm going to stick to.</p>
 </div>
-<p><a href="ch10_code/src/profile_hmm/HMMSingleElementAlignment_InsertMatchDelete.py">ch10_code/src/profile_hmm/HMMSingleElementAlignment_InsertMatchDelete.py</a> (lines 17 to 77):</p>
+<p><a href="ch10_code/src/profile_hmm/HMMSingleElementAlignment_InsertMatchDelete.py">ch10_code/src/profile_hmm/HMMSingleElementAlignment_InsertMatchDelete.py</a> (lines 13 to 70):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_hmm_square_from_v_perspective</span>(<span class="hljs-params">
         transition_probabilities: <span class="hljs-built_in">dict</span>[SEQ_HMM_STATE, <span class="hljs-built_in">dict</span>[SEQ_HMM_STATE, <span class="hljs-built_in">float</span>]],
         emission_probabilities: <span class="hljs-built_in">dict</span>[SEQ_HMM_STATE, <span class="hljs-built_in">dict</span>[SEQ_HMM_STATE, <span class="hljs-built_in">float</span>]],
@@ -29638,8 +29638,7 @@ pseudocount: 0.0001
         transition_probabilities[hmm_replace_match_n_id] = removed_tp.copy()
         emission_probabilities[hmm_replace_match_n_id] = removed_ep.copy()
         transition_probabilities[hmm_top_left_n_id][hmm_replace_match_n_id] = transition_probabilities[hmm_top_left_n_id].pop(hmm_remove_n_id)
-        <span class="hljs-keyword">if</span> hmm_replace_match_n_id <span class="hljs-keyword">in</span> hmm_outgoing_n_ids:
-            hmm_outgoing_n_ids.add(hmm_replace_match_n_id)
+        hmm_outgoing_n_ids.add(hmm_replace_match_n_id)
     <span class="hljs-comment"># Remove E11</span>
     hmm_remove_n_id = <span class="hljs-string">'E'</span>, v_idx + <span class="hljs-number">1</span>, w_idx + <span class="hljs-number">1</span>
     <span class="hljs-keyword">if</span> hmm_remove_n_id <span class="hljs-keyword">in</span> transition_probabilities:
@@ -29652,16 +29651,14 @@ pseudocount: 0.0001
         transition_probabilities[hmm_replace_match_n_id] = removed_tp.copy()
         emission_probabilities[hmm_replace_match_n_id] = removed_ep.copy()
         transition_probabilities[hmm_top_left_n_id][hmm_replace_match_n_id] = transition_probabilities[hmm_top_left_n_id].pop(hmm_remove_n_id)
-        <span class="hljs-keyword">if</span> hmm_replace_match_n_id <span class="hljs-keyword">in</span> hmm_outgoing_n_ids:
-            hmm_outgoing_n_ids.add(hmm_replace_match_n_id)
+        hmm_outgoing_n_ids.add(hmm_replace_match_n_id)
         <span class="hljs-comment"># Replace with I11</span>
         hmm_bottom_left_n_id = <span class="hljs-string">'D'</span>, v_idx, w_idx + <span class="hljs-number">1</span>
         hmm_replace_insert_n_id = <span class="hljs-string">'I'</span>, v_idx + <span class="hljs-number">1</span>, w_idx + <span class="hljs-number">1</span>
         transition_probabilities[hmm_replace_insert_n_id] = removed_tp.copy()
         emission_probabilities[hmm_replace_insert_n_id] = removed_ep.copy()
         transition_probabilities[hmm_bottom_left_n_id][hmm_replace_insert_n_id] = transition_probabilities[hmm_bottom_left_n_id].pop(hmm_remove_n_id)
-        <span class="hljs-keyword">if</span> hmm_replace_insert_n_id <span class="hljs-keyword">in</span> hmm_outgoing_n_ids:
-            hmm_outgoing_n_ids.add(hmm_replace_insert_n_id)
+        hmm_outgoing_n_ids.add(hmm_replace_insert_n_id)
     <span class="hljs-comment"># Return</span>
     <span class="hljs-keyword">return</span> hmm_outgoing_n_ids
 </code></pre>
@@ -29689,7 +29686,7 @@ w_element: a
 <p><img src="dot_85d3d140b42db48e74913e69cc37df8d.svg" alt="Dot diagram"></p>
 </td></tr>
 </tbody></table>
-<p><a href="ch10_code/src/profile_hmm/HMMSingleElementAlignment_InsertMatchDelete.py">ch10_code/src/profile_hmm/HMMSingleElementAlignment_InsertMatchDelete.py</a> (lines 130 to 193):</p>
+<p><a href="ch10_code/src/profile_hmm/HMMSingleElementAlignment_InsertMatchDelete.py">ch10_code/src/profile_hmm/HMMSingleElementAlignment_InsertMatchDelete.py</a> (lines 123 to 186):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_hmm_square_from_w_perspective</span>(<span class="hljs-params">
         transition_probabilities: <span class="hljs-built_in">dict</span>[SEQ_HMM_STATE, <span class="hljs-built_in">dict</span>[SEQ_HMM_STATE, <span class="hljs-built_in">float</span>]],
         emission_probabilities: <span class="hljs-built_in">dict</span>[SEQ_HMM_STATE, <span class="hljs-built_in">dict</span>[SEQ_HMM_STATE, <span class="hljs-built_in">float</span>]],
@@ -29765,6 +29762,91 @@ w_element: a
 <p><img src="dot_1628b448f01329661f5bb03327b76bad.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
+<p>As before, calculate the most probable <a href="#BM_(hidden%20path)%2Fi">hidden path</a> (<a href="#BM_(hidden%20path)%2Fi">hidden path</a> with maximum product) using the <a href="#BM_(Viterbi%20algorithm%7CViterbi%20graph%7CViterbi)%2Fi">Viterbi algorithm</a>. Since the <a href="#BM_(HMM)%2F">HMM</a>s above don't contain any loops, their <a href="#BM_(Viterbi%20algorithm%7CViterbi%20graph%7CViterbi)%2Fi">Viterbi graph</a>s end up being almost exactly the same as the <a href="#BM_(HMM)%2F">HMM</a>, with the only difference being that the <a href="#BM_(Viterbi%20algorithm%7CViterbi%20graph%7CViterbi)%2Fi">Viterbi graph</a>s have a sink node after the last emission column.</p>
+<p><img src="svgbob_95bb3c44332c064c7e873fa3af2a24a20fb6cfab.svg" alt="Kroki diagram output"></p>
+<p><a href="ch10_code/src/profile_hmm/HMMSingleElementAlignment_InsertMatchDelete.py">ch10_code/src/profile_hmm/HMMSingleElementAlignment_InsertMatchDelete.py</a> (lines 244 to 296):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">hmm_most_probable_from_v_perspective</span>(<span class="hljs-params">
+        v_elem: ELEM,
+        w_elem: ELEM,
+        t_elem: ELEM,
+        transition_probability_overrides: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">float</span>]],
+        pseudocount: <span class="hljs-built_in">float</span>
+</span>):
+    transition_probabilities = {}
+    emission_probabilities = {}
+    create_hmm_square_from_v_perspective(
+        transition_probabilities,
+        emission_probabilities,
+        (<span class="hljs-string">'S'</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>),
+        (<span class="hljs-number">0</span>, v_elem),
+        (<span class="hljs-number">0</span>, w_elem),
+        <span class="hljs-number">1</span>,
+        <span class="hljs-number">1</span>,
+        t_elem
+    )
+    transition_probabilities, emission_probabilities = stringify_probability_keys(transition_probabilities,
+                                                                                  emission_probabilities)
+    <span class="hljs-keyword">for</span> hmm_from_n_id <span class="hljs-keyword">in</span> transition_probabilities:
+        <span class="hljs-keyword">for</span> hmm_to_n_id <span class="hljs-keyword">in</span> transition_probabilities[hmm_from_n_id]:
+            value = <span class="hljs-number">1.0</span>
+            <span class="hljs-keyword">if</span> hmm_from_n_id <span class="hljs-keyword">in</span> transition_probability_overrides <span class="hljs-keyword">and</span> \
+                    hmm_to_n_id <span class="hljs-keyword">in</span> transition_probability_overrides[hmm_from_n_id]:
+                value = transition_probability_overrides[hmm_from_n_id][hmm_to_n_id]
+            transition_probabilities[hmm_from_n_id][hmm_to_n_id] = value
+    hmm = to_hmm_graph_PRE_PSEUDOCOUNTS(transition_probabilities, emission_probabilities)
+    hmm_add_pseudocounts_to_hidden_state_transition_probabilities(
+        hmm,
+        pseudocount
+    )
+    hmm_add_pseudocounts_to_symbol_emission_probabilities(
+        hmm,
+        pseudocount
+    )
+    hmm_source_n_id = hmm.get_root_node()
+    hmm_sink_n_id = <span class="hljs-string">'VITERBI_SINK'</span>  <span class="hljs-comment"># Fake sink node ID required for exploding HMM into Viterbi graph</span>
+    viterbi = to_viterbi_graph(hmm, hmm_source_n_id, hmm_sink_n_id, [v_elem] + [t_elem])
+    probability, hidden_path = max_product_path_in_viterbi(viterbi)
+    v_alignment = []
+    <span class="hljs-comment"># When looping, ignore phony end emission and Viterbi sink node at end: [(T, 1, 1), VITERBI_SINK].</span>
+    <span class="hljs-keyword">for</span> hmm_from_n_id, hmm_to_n_id <span class="hljs-keyword">in</span> hidden_path[:-<span class="hljs-number">2</span>]:
+        state_type, to_v_idx, to_w_idx = hmm_to_n_id.split(<span class="hljs-string">','</span>)
+        <span class="hljs-keyword">if</span> state_type == <span class="hljs-string">'D'</span>:
+            v_alignment.append(<span class="hljs-literal">None</span>)
+        <span class="hljs-keyword">elif</span> state_type <span class="hljs-keyword">in</span> {<span class="hljs-string">'M'</span>, <span class="hljs-string">'I'</span>}:
+            v_alignment.append(v_elem)
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'Unrecognizable type'</span>)
+    <span class="hljs-keyword">return</span> hmm, viterbi, probability, hidden_path, v_alignment
+</code></pre>
+<div style="border:1px solid black;">
+<p></p>
+<p>Building HMM alignment chain (from w's perspective), using the following settings...</p>
+<pre><code>v_element: n
+w_element: a
+# If a probability doesn't have an override listed, it'll be set to 1.0. It doesn't matter if the
+# probabilities are normalized (between 0 and 1 + each hidden state'soutgoing transitions summing
+# to 1) because the pseudocount addition (below) will normalize them.
+transition_probability_overrides:
+  S,-1,-1: {'D,0,1': 0.4, 'I,1,0': 0.6, 'M,1,1': 0.0}
+  D,0,1:   {'I,1,1': 1.0}
+  I,1,0:   {'D,1,1': 1.0}
+  M,1,1:   {'T,1,1': 1.0}
+  D,1,1:   {'T,1,1': 1.0}
+  I,1,1:   {'T,1,1': 1.0}
+pseudocount: 0.0001
+
+</code></pre>
+<p>The following HMM was produced AFTER applying pseudocounts ...</p>
+<p><img src="dot_f157f1cdbe0b1b5fcde554e4d324cd63.svg" alt="Dot diagram"></p>
+<p>The following Viterbi graph was produced for the HMM and the emitted sequence n ...</p>
+<p><img src="dot_0896301d2f9d57a8c9f947dbbc722b9f.svg" alt="Dot diagram"></p>
+<p>The hidden path with the max product weight in this Viterbi graph is ...</p>
+<pre><code>n-
+</code></pre>
+<p>Most probable hidden path: [('S,-1,-1', 'I,1,0'), ('I,1,0', 'D,1,1'), ('D,1,1', 'T,1,1'), ('T,1,1', 'VITERBI_SINK')]</p>
+<p>Most probable hidden path probability: 0.5999200239928022</p>
+</div>
+<p></p>
 <a name="H_HMM%20Sequence%20Alignment"></a><h3>HMM Sequence Alignment</h3>
 <p><a name="BM_(Algorithms%5C%2FProfile%20Hidden%20Markov%20Models%2FHMM%20Sequence%20Alignment)_TOPIC%2F"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -29776,35 +29858,20 @@ w_element: a
 <p><strong>WHAT</strong>: Re-formulate a pair-wise <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> as an <a href="#BM_(HMM)%2F">HMM</a>.</p>
 <p><strong>WHY</strong>: This builds the foundation for computing profile <a href="#BM_(HMM)%2F">HMM</a>s.</p>
 <p><strong>ALGORITHM</strong>:</p>
-<p>When an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> involves <a href="#BM_(sequence)%2Fi">sequence</a>s with more than one element, the re-formulated <a href="#BM_(HMM)%2F">HMM</a> chains squares together similarly to how an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> chains squares together. Except for the bottom-right square in the chain, each squares in an <a href="#BM_(HMM)%2F">HMM</a> should omit its T <a href="#BM_(hidden%20state)%2Fi">hidden state</a>. That means squares emitting their T <a href="#BM_(hidden%20state)%2Fi">hidden state</a> two bottom-right <a href="#BM_(hidden%20state)%2Fi">hidden state</a>s, where ...</p>
-<ul>
-<li>one is an <a href="#BM_(emitting%20hidden%20state)%2Fi">emitting hidden state</a>, labelled as E.</li>
-<li>one is a <a href="#BM_(non-emitting%20hidden%20state%7Csilent%20hidden%20state)%2Fi">non-emitting hidden state</a>, labelled as D.</li>
-</ul>
-<p>For example, consider the <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> [h, i] vs [q, i]. From [h, i]'s perspective, whenever an edge in the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> goes ...</p>
-<ul>
-<li>down, it's a gap: Must point to D (<a href="#BM_(non-emitting%20hidden%20state%7Csilent%20hidden%20state)%2Fi">non-emitting hidden state</a>).</li>
-<li>right, it's an insertion: Must point to E (<a href="#BM_(emitting%20hidden%20state)%2Fi">emitting hidden state</a>).</li>
-<li>diagonal, it's an match: Must point to E (<a href="#BM_(emitting%20hidden%20state)%2Fi">emitting hidden state</a>).</li>
-</ul>
+<p>Imagine an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> where the <a href="#BM_(sequence)%2Fi">sequence</a>s being aligned have more than 1 element (e.g. [h, i] vs [q, i]). To re-formulate such an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> as an <a href="#BM_(HMM)%2F">HMM</a>, chain single element alignment square together similar to how an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> chains its single alignment squares together. Except for the bottom-right square in the chain, each squares in an <a href="#BM_(HMM)%2F">HMM</a> should omit its T <a href="#BM_(hidden%20state)%2Fi">hidden state</a>.</p>
 <table>
 <tbody><tr><th>Sequence Alignment</th><th>HMM</th></tr>
 <tr><td>
 <p><img src="dot_bd95fd1e9b79020070945357256ab920.svg" alt="Dot diagram"></p>
 </td><td>
-<p><img src="dot_b9f145242787be1fd1f6ddea4241f180.svg" alt="Dot diagram"></p>
+<p><img src="dot_e8f10861285d9d4ea4b51be5bf6e1280.svg" alt="Dot diagram"></p>
 </td></tr>
 </tbody></table>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>In the <a href="#BM_(HMM)%2F">HMM</a> above, each <a href="#BM_(emitting%20hidden%20state)%2Fi">emitting hidden state</a> has a 100% <a href="#BM_(symbol%20emission%7Cemitted%20symbol)%2Fi">symbol emission</a> probability for emitting the symbol at the <a href="#BM_(sequence)%2Fi">sequence</a> index that it's for vs a 0% probability of embedding all other symbols. For example, E10 has a ...</p>
-<ul>
-<li>100% probability of emitting symbol h.</li>
-<li>0% probability of emittin symbol i.</li>
-</ul>
-<p>As such, the <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> above embeds the sole <a href="#BM_(symbol%20emission%7Cemitted%20symbol)%2Fi">symbol emission</a> for each E node directly in that E node vs drawing out dashed edges / nodes to <a href="#BM_(symbol%20emission%7Cemitted%20symbol)%2Fi">symbol emission</a>. Doing this makes it easier to understand what's going on.</p>
+<p>In the <a href="#BM_(HMM)%2F">HMM</a> above, each <a href="#BM_(emitting%20hidden%20state)%2Fi">emitting hidden state</a> has a 100% <a href="#BM_(symbol%20emission%7Cemitted%20symbol)%2Fi">symbol emission</a> probability for emitting the symbol at the <a href="#BM_(sequence)%2Fi">sequence</a> index that it's for vs a 0% probability of embedding all other symbols. For example, I10 has a 100% probability of emitting symbol h. Because of this, the <a href="#BM_(HMM%20diagram%7CHMM%20Diagram)%2F">HMM diagram</a> above embeds the sole <a href="#BM_(symbol%20emission%7Cemitted%20symbol)%2Fi">symbol emission</a> for each <a href="#BM_(emitting%20hidden%20state)%2Fi">emitting hidden state</a> directly in the node vs drawing out dashed edges to dashed <a href="#BM_(symbol%20emission%7Cemitted%20symbol)%2Fi">symbol emission</a> nodes.</p>
 </div>
-<p><a href="ch10_code/src/profile_hmm/HMMSequenceAlignment.py">ch10_code/src/profile_hmm/HMMSequenceAlignment.py</a> (lines 300 to 340):</p>
+<p><a href="ch10_code/src/profile_hmm/HMMSequenceAlignment.py">ch10_code/src/profile_hmm/HMMSequenceAlignment.py</a> (lines 13 to 61):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_hmm_chain_from_v_perspective</span>(<span class="hljs-params">
         v_seq: <span class="hljs-built_in">list</span>[ELEM],
         w_seq: <span class="hljs-built_in">list</span>[ELEM]
@@ -29814,6 +29881,9 @@ w_element: a
     pending = <span class="hljs-built_in">set</span>()
     processed = <span class="hljs-built_in">set</span>()
     hmm_source_n_id = <span class="hljs-string">'S'</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>
+    fake_bottom_right_emission_symbol = <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> == <span class="hljs-built_in">len</span>(v_seq) - <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> == <span class="hljs-built_in">len</span>(w_seq) - <span class="hljs-number">1</span>:
+        fake_bottom_right_emission_symbol = <span class="hljs-string">'?'</span>
     hmm_outgoing_n_ids = create_hmm_square_from_v_perspective(
         transition_probabilities,
         emission_probabilities,
@@ -29821,7 +29891,8 @@ w_element: a
         (<span class="hljs-number">0</span>, v_seq[<span class="hljs-number">0</span>]),
         (<span class="hljs-number">0</span>, w_seq[<span class="hljs-number">0</span>]),
         <span class="hljs-built_in">len</span>(v_seq),
-        <span class="hljs-built_in">len</span>(w_seq)
+        <span class="hljs-built_in">len</span>(w_seq),
+        fake_bottom_right_emission_symbol
     )
     processed.add(hmm_source_n_id)
     pending |= hmm_outgoing_n_ids
@@ -29832,6 +29903,9 @@ w_element: a
         <span class="hljs-keyword">if</span> v_idx &lt;= <span class="hljs-built_in">len</span>(v_seq) <span class="hljs-keyword">and</span> w_idx &lt;= <span class="hljs-built_in">len</span>(w_seq):
             v_elem = <span class="hljs-literal">None</span> <span class="hljs-keyword">if</span> v_idx == <span class="hljs-built_in">len</span>(v_seq) <span class="hljs-keyword">else</span> v_seq[v_idx]
             w_elem = <span class="hljs-literal">None</span> <span class="hljs-keyword">if</span> w_idx == <span class="hljs-built_in">len</span>(w_seq) <span class="hljs-keyword">else</span> w_seq[w_idx]
+            fake_bottom_right_emission_symbol = <span class="hljs-literal">None</span>
+            <span class="hljs-keyword">if</span> v_idx == <span class="hljs-built_in">len</span>(v_seq) - <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> w_idx == <span class="hljs-built_in">len</span>(w_seq) - <span class="hljs-number">1</span>:
+                fake_bottom_right_emission_symbol = <span class="hljs-string">'?'</span>
             hmm_outgoing_n_ids = create_hmm_square_from_v_perspective(
                 transition_probabilities,
                 emission_probabilities,
@@ -29839,7 +29913,8 @@ w_element: a
                 (v_idx, v_elem),
                 (w_idx, w_elem),
                 <span class="hljs-built_in">len</span>(v_seq),
-                <span class="hljs-built_in">len</span>(w_seq)
+                <span class="hljs-built_in">len</span>(w_seq),
+                fake_bottom_right_emission_symbol
             )
             <span class="hljs-keyword">for</span> hmm_test_n_id <span class="hljs-keyword">in</span> hmm_outgoing_n_ids:
                 <span class="hljs-keyword">if</span> hmm_test_n_id <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> processed:
@@ -29854,7 +29929,7 @@ w_sequence: [q, i]
 
 </code></pre>
 <p>The following HMM was produced ...</p>
-<p><img src="dot_74ce0b0938c68c28377e7c18560a15ad.svg" alt="Dot diagram"></p>
+<p><img src="dot_0dfe54d576fa4f8ac7bad884478f1b62.svg" alt="Dot diagram"></p>
 </div>
 <p></p>
 <p>In the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> example above, each <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> through the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> is a unique way in which [h, i] and [q, i] can align. Likewise, in the <a href="#BM_(HMM)%2F">HMM</a> example above, each <a href="#BM_(hidden%20path)%2Fi">hidden path</a> through the <a href="#BM_(HMM)%2F">HMM</a> is unique way in which [h, i]'s symbols get aligned.</p>
@@ -29986,7 +30061,7 @@ w_sequence: [q, i]
 <p>The question remains, if you were to actually do this (re-formulate an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> as an <a href="#BM_(HMM)%2F">HMM</a>), how would you go about choosing the <a href="#BM_(hidden%20state)%2Fi">hidden state</a> transition probabilities? That remains unclear at the moment. The probabilities in the example below were handpicked to force the optimal <a href="#BM_(hidden%20path)%2Fi">hidden path</a> to be the one highlighted.</p>
 <p>This section isn't meant to be a solution to some practical problem. It's just a building block for another concept discussed further on. As long as you understand that what's being shown here is a thing that can happen, you're good to move forward.</p>
 </div>
-<p><a href="ch10_code/src/profile_hmm/HMMSequenceAlignment.py">ch10_code/src/profile_hmm/HMMSequenceAlignment.py</a> (lines 384 to 432):</p>
+<p><a href="ch10_code/src/profile_hmm/HMMSequenceAlignment.py">ch10_code/src/profile_hmm/HMMSequenceAlignment.py</a> (lines 105 to 148):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">hmm_most_probable_from_v_perspective</span>(<span class="hljs-params">
         v_seq: <span class="hljs-built_in">list</span>[ELEM],
         w_seq: <span class="hljs-built_in">list</span>[ELEM],
@@ -29994,11 +30069,6 @@ w_sequence: [q, i]
         pseudocount: <span class="hljs-built_in">float</span>
 </span>):
     transition_probabilities, emission_probabilities = create_hmm_chain_from_v_perspective(v_seq, w_seq)
-    transition_probabilities[<span class="hljs-string">'X'</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>] = {}
-    transition_probabilities[<span class="hljs-string">'E'</span>, <span class="hljs-built_in">len</span>(v_seq), <span class="hljs-built_in">len</span>(w_seq)][<span class="hljs-string">'X'</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>] = <span class="hljs-number">1.0</span>
-    transition_probabilities[<span class="hljs-string">'D'</span>, <span class="hljs-built_in">len</span>(v_seq), <span class="hljs-built_in">len</span>(w_seq)][<span class="hljs-string">'X'</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>] = <span class="hljs-number">1.0</span>
-    emission_probabilities[<span class="hljs-string">'X'</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>] = {<span class="hljs-literal">None</span>: <span class="hljs-number">1.0</span>}
-    v_seq = v_seq + [<span class="hljs-literal">None</span>]
     transition_probabilities, emission_probabilities = stringify_probability_keys(transition_probabilities,
                                                                                   emission_probabilities)
     <span class="hljs-keyword">for</span> hmm_from_n_id <span class="hljs-keyword">in</span> transition_probabilities:
@@ -30022,7 +30092,7 @@ w_sequence: [q, i]
     viterbi = to_viterbi_graph(hmm, hmm_source_n_id, hmm_sink_n_id, v_seq)
     probability, hidden_path = max_product_path_in_viterbi(viterbi)
     hidden_path = hidden_path[:-<span class="hljs-number">1</span>]  <span class="hljs-comment"># Remove viterbi sink node from end of path: VITERBI_SINK</span>
-    hidden_path = hidden_path[:-<span class="hljs-number">1</span>]  <span class="hljs-comment"># Remove HMM sink node from end of path: X,-1,-1</span>
+    hidden_path = hidden_path[:-<span class="hljs-number">1</span>]  <span class="hljs-comment"># Remove HMM sink node from end of path: T</span>
     v_alignment = []
     <span class="hljs-keyword">for</span> hmm_from_n_id, hmm_to_n_id <span class="hljs-keyword">in</span> hidden_path:
         state_type, to_v_idx, to_w_idx = hmm_to_n_id.split(<span class="hljs-string">','</span>)
@@ -30030,16 +30100,14 @@ w_sequence: [q, i]
         to_w_idx = <span class="hljs-built_in">int</span>(to_w_idx)
         <span class="hljs-keyword">if</span> state_type == <span class="hljs-string">'D'</span>:
             v_alignment.append(<span class="hljs-literal">None</span>)
-        <span class="hljs-keyword">elif</span> state_type == <span class="hljs-string">'E'</span>:
+        <span class="hljs-keyword">elif</span> state_type <span class="hljs-keyword">in</span> {<span class="hljs-string">'M'</span>, <span class="hljs-string">'I'</span>}:
             v_alignment.append(v_seq[to_v_idx - <span class="hljs-number">1</span>])
         <span class="hljs-keyword">else</span>:
             <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">'Unrecognizable type'</span>)
     <span class="hljs-keyword">return</span> hmm, viterbi, probability, hidden_path, v_alignment
 </code></pre>
-<div style="border:1px solid black;">
-<p></p>
-<p>Building HMM alignment chain (from w's perspective), using the following settings...</p>
-<pre><code>v_sequence: [h, i]
+<pre><code class="language-{dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddch10}">profile_hmm.HMMSequenceAlignment main_v_most_probable
+v_sequence: [h, i]
 w_sequence: [q, i]
 # If a probability doesn't have an override listed, it'll be set to 1.0. It doesn't matter if the
 # probabilities are normalized (between 0 and 1 + each hidden state'soutgoing transitions summing
@@ -30057,19 +30125,7 @@ transition_probability_overrides:
   D,2,1:   {'D,2,2': 1.0}
   E,2,1:   {'D,2,2': 1.0}
 pseudocount: 0.0001
-
 </code></pre>
-<p>The following HMM was produced AFTER applying pseudocounts ...</p>
-<p><img src="dot_0c2e5278505f1acb19788c11c9d50bfb.svg" alt="Dot diagram"></p>
-<p>The following Viterbi graph was produced for the HMM and the emitted sequence ['h', 'i'] ...</p>
-<p><img src="dot_6747a7405e7246195e06879a7c5c314a.svg" alt="Dot diagram"></p>
-<p>The hidden path with the max product weight in this Viterbi graph is ...</p>
-<pre><code>h-i
-</code></pre>
-<p>Most probable hidden path: [('S,-1,-1', 'E,1,0'), ('E,1,0', 'D,1,1'), ('D,1,1', 'E,2,2')]</p>
-<p>Most probable hidden path probability: 0.3598320759682526</p>
-</div>
-<p></p>
 <a name="H_HMM%20Profile%20Alignment"></a><h3>HMM Profile Alignment</h3>
 <a name="H_Stories"></a><h1>Stories</h1>
 <a name="H_Bacterial%20Genome%20Replication"></a><h2>Bacterial Genome Replication</h2>
