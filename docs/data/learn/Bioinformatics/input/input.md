@@ -16541,9 +16541,9 @@ scoring_matrix: |+2
   * -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4  1
 ```
 
-## Sequence Hidden Markov Models
+## Discriminator Hidden Markov Models
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models)_TOPIC/`
 
 ```{prereq}
 Algorithms/K-mer_TOPIC
@@ -16722,7 +16722,7 @@ Another common way of identifying sequence regions is probably deep-learning mod
 
 ### Chained Transition Probability
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Chained Transition Probability)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Chained Transition Probability)_TOPIC/`
 
 **WHAT**: The probability that, in an HMM, a sequence of hidden state transitions occur.
 
@@ -16753,7 +16753,7 @@ state_transitions: [[SOURCE,A], [A,B], [B,A], [A,B], [B,B], [B,B], [B,A], [A,A],
 
 ### Chained Emission Probability
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Chained Emission Probability)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Chained Emission Probability)_TOPIC/`
 
 **WHAT**: The probability that, in an HMM, a sequence of symbols is emitted, each from a different state.
 
@@ -16784,11 +16784,11 @@ state_emissions: [[B,z], [A,z], [A,z], [A,y], [A,x], [A,y], [A,y], [A,z], [A,z],
 
 ### Chained Transition-Emission Probability
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Chained Transition-Emission Probability)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Chained Transition-Emission Probability)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Chained Transition Probability_TOPIC
-Algorithms/Sequence Hidden Markov Models/Chained Emission Probability_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Chained Transition Probability_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Chained Emission Probability_TOPIC
 ```
 
 **WHAT**: The probability that, in an HMM, a sequence of symbols is emitted, each after a hidden state transition has occurred.
@@ -16825,7 +16825,7 @@ transition_to_symbol_pairs: [[[SOURCE,B],z], [[B,A],z], [[A,A],z], [[A,A],y], [[
 
 ### Most Probable Hidden Path
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Most Probable Hidden Path)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Most Probable Hidden Path)_TOPIC/`
 
 **WHAT**: Find the most likely hidden path within an HMM for an emitted sequence. For example, consider the HMM represented by the following HMM diagram and the emitted sequence [z, z, x, x, y]. The algorithm will determine the most likely set of hidden state transitions (hidden path) that resulted in that emitted sequence.
 
@@ -16862,10 +16862,10 @@ transition_to_symbol_pairs: [[[SOURCE,B],z], [[B,A],z], [[A,A],z], [[A,A],y], [[
 
 #### Viterbi Algorithm
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Most Probable Hidden Path\/Viterbi Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Most Probable Hidden Path\/Viterbi Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Chained Transition-Emission Probability_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Chained Transition-Emission Probability_TOPIC
 Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
 ```
 
@@ -17001,7 +17001,7 @@ emissions: [z,z,x,x,y]
 In a Viterbi graph, each path from "SOURCE" to "SINK" corresponds to a hidden path in the corresponding HMM. The goal is to find the path with the maximum product weight: The path with the maximum product weight is the most probable hidden path for the emitted sequence.
 
 ```{note}
-Why? Recall from Algorithms/Sequence Hidden Markov Models/Chained Transition-Emission Probability_TOPIC: The probability of symbol emission after a hidden state transition is Pr(source-to-destination transition) * Pr(destination's emission). The probability of a chain of such transition-emission is their individual probabilities multiplied together.
+Why? Recall from Algorithms/Discriminator Hidden Markov Models/Chained Transition-Emission Probability_TOPIC: The probability of symbol emission after a hidden state transition is Pr(source-to-destination transition) * Pr(destination's emission). The probability of a chain of such transition-emission is their individual probabilities multiplied together.
 ```
 
 The algorithm for determining the path with the maximum product weight is to first apply the logarithm function to each edge weight, then apply the dynamic programming algorithm that finds the path with the maximum sum.
@@ -17041,10 +17041,10 @@ Notice what's happening here. This can be made very memory efficient:
 
 #### Viterbi Pseudocounts Algorithm
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Most Probable Hidden Path\/Viterbi Pseudocounts Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Most Probable Hidden Path\/Viterbi Pseudocounts Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Most Probable Hidden Path/Viterbi Algorithm_TOPIC
 Algorithms/Motif/K-mer Match Probability_TOPIC
 ```
 
@@ -17127,11 +17127,11 @@ pseudocount: 0.0001
 
 #### Viterbi Non-emitting Hidden States Algorithm
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Most Probable Hidden Path\/Viterbi Non-emitting Hidden States Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Most Probable Hidden Path\/Viterbi Non-emitting Hidden States Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Most Probable Hidden Path/Viterbi Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC
 ```
 
 ```{note}
@@ -17307,11 +17307,11 @@ pseudocount: 0.0001
 
 ### Empirical Learning
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Empirical Learning)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Empirical Learning)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting Hidden States Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting Hidden States Algorithm_TOPIC
 ```
 
 **WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Empirical learning sets an HMM's probabilities by observing the machine that HMM models. Specifically, if the user is able to see the ...
@@ -17380,7 +17380,7 @@ Given two hidden states W and V, the hidden state transition probability for W�
 | C→B        | 1 / 1 = 1.0   |
 
 ```{note}
-Note that Pr(SOURCE→B) is 0.0, which means the HMM will never start by transitioning to B. As noted in Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC, this is flawed and as such pseudocounts need to be applied.
+Note that Pr(SOURCE→B) is 0.0, which means the HMM will never start by transitioning to B. As noted in Algorithms/Discriminator Hidden Markov Models/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC, this is flawed and as such pseudocounts need to be applied.
 ```
 
 ```{output}
@@ -17505,12 +17505,12 @@ pseudocount: 0.0001
 
 ### Viterbi Learning
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Viterbi Learning)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Viterbi Learning)_TOPIC/`
 
 ```{prereq}
 Algorithms/Gene Clustering/Soft K-Means Clustering_TOPIC
-Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Empirical Learning_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Most Probable Hidden Path/Viterbi Pseudocounts Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Empirical Learning_TOPIC
 ```
 
 **WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Viterbi learning sets an HMM's probabilities by observing only the symbol emissions of the machine that HMM models. Specifically, if the user is only able to observe the symbol emissions (not the transitions that resulted in those emissions), that user can derive a set of hidden state transition probabilities and symbol emission probabilities for the HMM.
@@ -17612,7 +17612,7 @@ pseudocount: 0.0001
 
 ### Probability of Emitted Sequence
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Probability of Emitted Sequence)_TOPIC/`
 
 **WHAT**: Compute the likelihood that an HMM outputs some emitted sequence. For example, determine if the following HMM is more likely to emit [z, z, x, x, y] or [z, z, z, z, z].
 
@@ -17655,11 +17655,11 @@ Why speculate? The Pevzner book never covers a good use-case for this.
 
 #### Summation Algorithm
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence\/Summation Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Probability of Emitted Sequence\/Summation Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Chained Transition-Emission Probability_TOPIC
-Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting Hidden States Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Chained Transition-Emission Probability_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting Hidden States Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
@@ -17762,11 +17762,11 @@ pseudocount: 0.0001
 
 #### Forward Graph Algorithm
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence\/Forward Graph Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Probability of Emitted Sequence\/Forward Graph Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence/Summation Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting Hidden States Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence/Summation Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting Hidden States Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
@@ -18129,11 +18129,11 @@ emissions: [z,z,y]
 
 ### Probability of Emitted Sequence Where Hidden Path Travels Through Node
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Node)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Node)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting Hidden States Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting Hidden States Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence_TOPIC
 ```
 
 ```{note}
@@ -18192,15 +18192,15 @@ The meat of this section is the forward-backward full algorithm. The Pevzner boo
 **WHY**: This is used for Baum-Welch learning, which is a learning algorithm used for HMMs (described further on).
 
 ```{note}
-See Algorithms/Sequence Hidden Markov Models/Certainty of Emitted Sequence Traveling Through Hidden Path Node_TOPIC and Algorithms/Sequence Hidden Markov Models/Baum-Welch Learning_TOPIC.
+See Algorithms/Discriminator Hidden Markov Models/Certainty of Emitted Sequence Traveling Through Hidden Path Node_TOPIC and Algorithms/Discriminator Hidden Markov Models/Baum-Welch Learning_TOPIC.
 ```
 
 #### Summation Algorithm
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Node\/Summation Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Node\/Summation Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence/Summation Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence/Summation Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
@@ -18287,12 +18287,12 @@ pseudocount: 0.0001
 
 #### Forward Graph Algorithm
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Node\/Forward Graph Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Node\/Forward Graph Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence/Summation Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence/Forward Graph Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Summation Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence/Summation Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence/Forward Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Summation Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
@@ -18502,11 +18502,11 @@ pseudocount: 0.0001
 
 #### Forward Split Graph Algorithm
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Node\/Forward Split Graph Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Node\/Forward Split Graph Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Summation Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Summation Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Graph Algorithm_TOPIC
 ```
 
 ```{note}
@@ -18779,10 +18779,10 @@ pseudocount: 0.0001
 
 #### Forward-Backward Split Graph Algorithm
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Node\/Forward-Backward Split Graph Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Node\/Forward-Backward Split Graph Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Split Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Split Graph Algorithm_TOPIC
 ```
 
 ```{note}
@@ -18957,11 +18957,11 @@ pseudocount: 0.0001
 
 #### Forward-Backward Full Graph Algorithm
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Node\/Forward-Backward Full Graph Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Node\/Forward-Backward Full Graph Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Graph Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC
 ```
 
 Recall that the forward-backward split graph algorithm ...
@@ -19134,10 +19134,10 @@ pseudocount: 0.0001
 
 ### Probability of Emitted Sequence Where Hidden Path Travels Through Edge
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC
 ```
 
 ```{note}
@@ -19200,16 +19200,16 @@ The meat of this section is the forward-backward full algorithm. The Pevzner boo
 **WHY**: This is used for Baum-Welch learning, which is a learning algorithm used for HMMs (described further on).
 
 ```{note}
-See Algorithms/Sequence Hidden Markov Models/Certainty of Emitted Sequence Traveling Through Hidden Path Edge_TOPIC and Algorithms/Sequence Hidden Markov Models/Baum-Welch Learning_TOPIC.
+See Algorithms/Discriminator Hidden Markov Models/Certainty of Emitted Sequence Traveling Through Hidden Path Edge_TOPIC and Algorithms/Discriminator Hidden Markov Models/Baum-Welch Learning_TOPIC.
 ```
 
 #### Summation Algorithm
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Summation Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Summation Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence/Summation Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Summation Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence/Summation Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Summation Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
@@ -19309,12 +19309,12 @@ pseudocount: 0.0001
 
 #### Forward Graph Algorithm
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Forward Graph Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Forward Graph Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence/Forward Graph Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Graph Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Summation Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence/Forward Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Summation Algorithm_TOPIC
 ```
 
 Recall that ...
@@ -19405,7 +19405,7 @@ This summation is then factored and grouped such that it represents an exploded 
 ```
 
 ```{note}
-This factoring/grouping is done in exactly the same way as shown in Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Graph Algorithm_TOPIC. I didn't include the re-arranged expression in the diagram above (or the diagram below) because that re-arranged expression would be huge.
+This factoring/grouping is done in exactly the same way as shown in Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Graph Algorithm_TOPIC. I didn't include the re-arranged expression in the diagram above (or the diagram below) because that re-arranged expression would be huge.
 ```
 
 This algorithm revises the exploded HMM above to only feed forward to the transition of interest after the emission index of interest. For example, to calculate the probability for only those hidden paths that travel through B→A after index 1 of the [y, y, z, z], the exploded HMM becomes ...
@@ -19533,11 +19533,11 @@ In the above diagram, SOURCE→B0→C0 is a dead-end. The graph algorithm remove
 
 #### Forward Split Graph Algorithm
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Forward Split Graph Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Forward Split Graph Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Split Graph Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Split Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward Graph Algorithm_TOPIC
 ```
 
 ```{note}
@@ -19545,7 +19545,7 @@ This algorithm seems totally useless, but it sets the foundation for other more 
 ```
 
 ```{note}
-The example below is from the prerequisite section: Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Split Graph Algorithm_TOPIC. The expressions under the left-hand side / right-hand side of the diagram are the expression derived in that section. Go back to it if you need a refresher.
+The example below is from the prerequisite section: Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward Split Graph Algorithm_TOPIC. The expressions under the left-hand side / right-hand side of the diagram are the expression derived in that section. Go back to it if you need a refresher.
 ```
 
 Recall that, when computing the probability of an emitted sequence where the hidden path must travel through a specific *node*, the forward split graph algorithm ...
@@ -19607,7 +19607,7 @@ In the example below, the forward graph below splits on B1.
 ```
 
 ```{note}
-The example below is a continuation of the example from the prerequisite section: Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward Graph Algorithm_TOPIC.
+The example below is a continuation of the example from the prerequisite section: Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward Graph Algorithm_TOPIC.
 ```
 
 The forward split graph algorithm for edges works in exactly the same way as it does for nodes, with exactly the same reasoning. In this case, the hidden path must travel through a specific edge rather than a specific node. In the example below, that edge is B1→A2. Notice how both ends of the edge are isolated at their emission index, such that its the only node at that emission index being fed into by the previous emission index:
@@ -19934,11 +19934,11 @@ pseudocount: 0.0001
 
 #### Forward-Backward Split Graph Algorithm
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Forward-Backward Split Graph Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Forward-Backward Split Graph Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward Split Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward Split Graph Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
@@ -19948,7 +19948,7 @@ This algorithm seems totally useless, but it sets the foundation for other more 
 ```
 
 ```{note}
-The example below is from the prerequisite section: Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC. The expressions under the left-hand side / right-hand side of the diagram are the expression derived in that section. Go back to it if you need a refresher.
+The example below is from the prerequisite section: Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC. The expressions under the left-hand side / right-hand side of the diagram are the expression derived in that section. Go back to it if you need a refresher.
 ```
 
 Recall that, when computing the probability of an emitted sequence where the hidden path must travel through a specific *node*, the forward-backward split graph algorithm ...
@@ -20012,7 +20012,7 @@ In the example below, the forward graph below splits on B1.
 ```
 
 ```{note}
-The example below is a continuation of the example from the prerequisite section: Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward Split Graph Algorithm_TOPIC.
+The example below is a continuation of the example from the prerequisite section: Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward Split Graph Algorithm_TOPIC.
 ```
 
 The forward-backward split graph algorithm for edges works in exactly the same way as it does for nodes, with exactly the same reasoning. In the example below, the forward graph is being split into three parts based on the edge B1→A2:
@@ -20143,11 +20143,11 @@ pseudocount: 0.0001
 
 #### Forward-Backward Full Graph Algorithm
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Forward-Backward Full Graph Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Probability of Emitted Sequence Where Hidden Path Travels Through Edge\/Forward-Backward Full Graph Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Full Graph Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward-Backward Split Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Full Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward-Backward Split Graph Algorithm_TOPIC
 ```
 
 **ALGORITHM**:
@@ -20333,10 +20333,10 @@ pseudocount: 0.0001
 
 ### Certainty of Emitted Sequence Traveling Through Hidden Path Node
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Certainty of Emitted Sequence Traveling Through Hidden Path Node)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Certainty of Emitted Sequence Traveling Through Hidden Path Node)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Full Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Full Graph Algorithm_TOPIC
 ```
 
 **WHAT**: An HMM works by transitioning from one hidden state to the next, where each transition possibly results in a symbol being emitted (non-emitting hidden states don't emit symbols). Given a ...
@@ -20470,10 +20470,10 @@ But what does the certainty mean for non-emitting hidden states such as 1C? If i
 
 ### Certainty of Emitted Sequence Traveling Through Hidden Path Edge
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Certainty of Emitted Sequence Traveling Through Hidden Path Edge)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Certainty of Emitted Sequence Traveling Through Hidden Path Edge)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward-Backward Full Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward-Backward Full Graph Algorithm_TOPIC
 ```
 
 **WHAT**: An HMM works by transitioning from one hidden state to the next, where each transition possibly results in a symbol being emitted (non-emitting hidden states don't emit symbols). Given a ...
@@ -20601,13 +20601,13 @@ pseudocount: 0.0001
 
 ### Baum-Welch Learning
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Baum-Welch Learning)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Baum-Welch Learning)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Hidden Markov Models/Empirical Learning_TOPIC
-Algorithms/Sequence Hidden Markov Models/Viterbi Learning_TOPIC
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward-Backward Split Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Empirical Learning_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Viterbi Learning_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward-Backward Split Graph Algorithm_TOPIC
 ```
 
 **WHAT**: An HMM uses probabilities to model a machine which transitions through hidden states and possibly emits a symbol after each transition (non-emitting hidden states don't emit a symbol). Baum-Welch learning sets an HMM's probabilities by observing only the symbol emissions of the machine that HMM models. Specifically, if the user is only able to observe the symbol emissions (not the transitions that resulted in those emissions), that user can derive a set of hidden state transition probabilities and symbol emission probabilities for the HMM.
@@ -20689,8 +20689,8 @@ Recall that a certainty value can be computed for each node and edge in an explo
 ```{note}
 For a refresher on computing certainties, see ...
 
-* Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC
-* Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward-Backward Split Graph Algorithm_TOPIC
+* Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Node/Forward-Backward Split Graph Algorithm_TOPIC
+* Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence Where Hidden Path Travels Through Edge/Forward-Backward Split Graph Algorithm_TOPIC
 ```
 
 Baum-Welch learning begins by randomizing the HMM's probabilities. Then, the following two steps happen in a loop:
@@ -20774,11 +20774,11 @@ pseudocount: 0.0001
 
 ### Most Probable Emitted Sequence
 
-`{bm} /(Algorithms\/Sequence Hidden Markov Models\/Most Probable Emitted Sequence)_TOPIC/`
+`{bm} /(Algorithms\/Discriminator Hidden Markov Models\/Most Probable Emitted Sequence)_TOPIC/`
 
 ```{prereq}
 Algorithms/Sequence Alignment/Find Maximum Path/Backtrack Algorithm_TOPIC
-Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence/Forward Graph Algorithm_TOPIC
+Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence/Forward Graph Algorithm_TOPIC
 ```
 
 **WHAT**: Determine the most likely emitted sequence of size n that an HMM will output. For example, the following HMM is most likely to emit ...
@@ -20824,7 +20824,7 @@ This is speculation. The Pevzner book never covers a good use-case for this.
 
 **ALGORITHM**:
 
-This algorithm extends the graph algorithm that computes the probability of emitted sequence algorithm (Algorithms/Sequence Hidden Markov Models/Probability of Emitted Sequence/Forward Graph Algorithm_TOPIC). For example, to find the probability of the HMM above emitting [z, z, y], the HMM is exploded out to the graph shown below and a set of calculations are performed on that graph using transition and emission probabilities of hidden states.
+This algorithm extends the graph algorithm that computes the probability of emitted sequence algorithm (Algorithms/Discriminator Hidden Markov Models/Probability of Emitted Sequence/Forward Graph Algorithm_TOPIC). For example, to find the probability of the HMM above emitting [z, z, y], the HMM is exploded out to the graph shown below and a set of calculations are performed on that graph using transition and emission probabilities of hidden states.
 
 ```{svgbob}
                z                  z                  y            
@@ -21046,11 +21046,11 @@ emission_len: 3
 `{bm} /(Algorithms\/Profile Hidden Markov Models)_TOPIC/`
 
 ```{prereq}
-Algorithms/Sequence Alignment/Multiple Alignment_TOPIC
-Algorithms/Sequence Hidden Markov Models_TOPIC
+Algorithms/Sequence Alignment_TOPIC
+Algorithms/Discriminator Hidden Markov Models_TOPIC
 ```
 
-Sequence alignments are expensive to compute, especially when there are more than two sequences being aligned (multiple alignment). For example, consider the following multiple alignment ...
+Sequence alignments are expensive to compute, especially when there are more than two sequences being aligned (multiple alignment). For example, consider the following sequence alignment ...
 
 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
 |---|---|---|---|---|---|---|---|---|
@@ -21061,7 +21061,7 @@ Sequence alignments are expensive to compute, especially when there are more tha
 | - | - | H | - | E | L | L | O | - |
 | O | T | H | - | E | L | L | O | - |
 
-The alignment above represents a family of sequences, which in this case is a small set of words that rhyme together. Given a never before seen word, a profile HMM for the above alignment allows for ...
+The sequence alignment above represents a family of sequences, which in this case is a small set of words that rhyme together. Given a never before seen word, a profile HMM for the above alignment allows for ...
 
  * estimating how related the word is to  that word is related to the multiple alignment (e.g. does it look like it rhymes).
  * estimating how that word would align if it were included in the multiple alignment (e.g. estimate if the suffix roughly matches up with "ELLO").
@@ -21080,9 +21080,9 @@ Generally, profile HMMs are used to quickly test a never before seen sequence ag
  * some gene's regulatory motif.
  * etc...
 
-### HMM Single Element Sequence Alignment
+### Single Element Sequence Alignment HMM
 
-`{bm} /(Algorithms\/Profile Hidden Markov Models\/HMM Single Element Alignment)_TOPIC/`
+`{bm} /(Algorithms\/Profile Hidden Markov Models\/Single Element Sequence Alignment HMM)_TOPIC/`
 
 **WHAT**: Re-formulate a pair-wise sequence alignment as an HMM.
 
@@ -21090,7 +21090,7 @@ Generally, profile HMMs are used to quickly test a never before seen sequence ag
 
 #### Emit-Delete Algorithm
 
-`{bm} /(Algorithms\/Profile Hidden Markov Models\/HMM Single Element Alignment\/Emit-Delete Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Profile Hidden Markov Models\/Single Element Sequence Alignment HMM\/Emit-Delete Algorithm)_TOPIC/`
 
 **ALGORITHM**:
 
@@ -21274,8 +21274,8 @@ w_element: a
 
 When you re-formulate an alignment graph as an HMM, the computation changes to something fundamentally different. The goal of an alignment graph is different than that of an HMM.
 
- * **Alignment graph**: You're trying to produce an alignment path whose edge scores accumulate to the maximum of all possible alignment paths (*maximum sum* - highest scoring).
- * **HMM**: You're trying to produce a hidden path whose transition-emission probability chain is the maximum of all possible hidden paths (*maximum product* - most probable).
+ * Alignment graph: You're trying to produce an alignment path whose edge scores accumulate to the maximum of all possible alignment paths (*maximum sum* - highest scoring).
+ * HMM: You're trying to produce a hidden path whose transition-emission probability chain is the maximum of all possible hidden paths (*maximum product* - most probable).
 
 In an alignment, there is no limit to how low or high a score can be (even negative scores are allowed). In an HMM, a probabilitiy must be between [0, 1] and each hidden state's ...
 
@@ -21338,10 +21338,10 @@ pseudocount: 0.0001
 
 #### Insert-Match-Delete Algorithm
 
-`{bm} /(Algorithms\/Profile Hidden Markov Models\/HMM Single Element Alignment\/Insert-Match-Delete Algorithm)_TOPIC/`
+`{bm} /(Algorithms\/Profile Hidden Markov Models\/Single Element Sequence Alignment HMM\/Insert-Match-Delete Algorithm)_TOPIC/`
 
 ```{prereq}
-Algorithms/Profile Hidden Markov Models/HMM Single Element Alignment/Insert-Match-Delete Algorithm_TOPIC
+Algorithms/Profile Hidden Markov Models/Single Element Sequence Alignment HMM/Emit-Delete Algorithm_TOPIC
 ```
 
 **ALGORITHM**: 
@@ -21590,12 +21590,12 @@ transition_probability_overrides:
 pseudocount: 0.0001
 ```
 
-### HMM Sequence Alignment
+### Sequence Alignment HMM
 
-`{bm} /(Algorithms\/Profile Hidden Markov Models\/HMM Sequence Alignment)_TOPIC/`
+`{bm} /(Algorithms\/Profile Hidden Markov Models\/Sequence Alignment HMM)_TOPIC/`
 
 ```{prereq}
-Algorithms/Profile Hidden Markov Models/HMM Single Element Alignment/Insert-Match-Delete Algorithm_TOPIC
+Algorithms/Profile Hidden Markov Models/Single Element Sequence Alignment HMM/Insert-Match-Delete Algorithm_TOPIC
 ```
 
 **WHAT**: Re-formulate a pair-wise sequence alignment as an HMM.
@@ -21604,7 +21604,9 @@ Algorithms/Profile Hidden Markov Models/HMM Single Element Alignment/Insert-Matc
 
 **ALGORITHM**:
 
-Imagine an alignment graph where the sequences being aligned have more than 1 element (e.g. [h, i] vs [q, i]). To re-formulate such an alignment graph as an HMM, chain single element alignment square together similar to how an alignment graph chains its single alignment squares together. Except for the bottom-right square in the chain, each squares in an HMM should omit its T hidden state.
+This algorithm extends the algorithm from the prerequiste section to align sequences with more than one element. Consider the sequence alignment [h, i] vs [q, i]). To re-formulate its alignment graph as an HMM, simply chain the "square" for each element alignment pair together, similar to how an alignment graph chains "squares" for each element alignment pair together.
+
+Except for the bottom-right "square" in the chain, each squares in an HMM should omit its T hidden state. The reason is that the T hidden state is intended to represent the alignment graph's sink, which exists at the bottom-right of the HMM / alignment graph.
 
 <table>
 <tr><th>Sequence Alignment</th><th>HMM</th></tr>
@@ -21725,101 +21727,6 @@ digraph G {
   E12 [pos="2,-4!"];
   E22 [pos="4,-4!"];
  
-  S->E01 [label="-\nq"];
-  S->E10 [label="h\n-", fontcolor=red, color=red];
-  S->E11 [label="h\nq"];
-  E10->E20 [label="i\n-"];
-  E10->E11 [label="-\nq", fontcolor=red, color=red];
-  E10->E21 [label="i\nq"];
-  E01->E02 [label="-\ni"];
-  E01->E11 [label="h\n-"];
-  E01->E12 [label="h\ni"];
-  E11->E12 [label="-\ni"];
-  E11->E21 [label="i\n-"];
-  E11->E22 [label="i\ni", fontcolor=red, color=red];
-  E02->E12 [label="h\n-"];
-  E12->E22 [label="i\n-"];
-  E20->E21 [label="-\nq"];
-  E21->E22 [label="-\ni"];
-}
-```
-
-| 0 | 1 | 2 |
-|---|---|---|
-| h | - | i |
-| - | q | i |
-
-</td><td>
-
-```{dot}
-digraph G {
-  label="HMM diagram for \"hi\" vs \"qi\"\n(from \"hi\"'s perspective)"
-  labelloc=top
-  layout=neato;
-  #splines=curved;
-  node [shape=plain];
-  S [pos="0,0!" fontcolor=red]
-  D01 [pos="0,-2!"];  D02 [pos="0,-4!"]
-  E10 [pos="2,0!" label="E10\n(h)", fontcolor=red]
-  E11 [pos="2,-2!" label="E11\n(h)"];  D11 [pos="2.2,-1.7!", fontcolor=red];
-  E20 [pos="4,0!" label="E20\n(i)"]
-  E21 [pos="4,-2!" label="E21\n(i)"];  D21 [pos="4.2,-1.7!"];
-  E12 [pos="2,-4!" label="E12\n(h)"];  D12 [pos="2.2,-3.7!"];
-  E22 [pos="4,-4!" label="E22\n(i)", fontcolor=red];  D22 [pos="4.2,-3.7!"];
- 
-  S->D01; S->E10 [fontcolor=red, color=red]; S->E11;
-  E10->E20; E10->D11 [fontcolor=red, color=red]; E10->E21;
-  D01->D02; D01->E11; D01->E12;
-  D12->E22
-  E11->D12; E11->E21; E11->E22;
-  D11->D12; D11->E21; D11->E22 [fontcolor=red, color=red];
-  D02->E12
-  E12->E22
-  E20->D21
-  D21->D22
-  E21->D22
-}
-```
-
-|                  |   0   |    1    |    2    |
-|------------------|-------|---------|---------|
-| Hidden path      | S→E10 | E10→D11 | D11→E22 |
-| Symbol emissions |   h   |    -    |    i    |
-
-</td></tr>
-</table>
-
-When you re-formulate an alignment graph as an HMM, the computation essentially changes to something fundamentally different. The goal of an alignment graph is different than that of an HMM.
-
- * **Alignment graph**: You're trying to produce an alignment path whose edge scores accumulate to the maximum of all possible alignment paths (*maximum sum* - highest scoring).
- * **HMM**: You're trying to produce a hidden path whose transition-emission probability chain is the maximum of all possible hidden paths (*maximum product* - most probable).
-
-In an alignment, there is no limit to how low or high a score can be (even negative scores are allowed). In an HMM, a probabilitiy must be between [0, 1] and each hidden state's ...
-
- * outgoing hidden state transition probabilities must sum to 1.
- * symbol emission probabilities must sum to 1.
-
-<table>
-<tr><th>Sequence Alignment (highest scoring alignment path)</th><th>HMM (most probable hidden path)</th></tr>
-<tr><td>
-
-```{dot}
-digraph G {
-  label="Alignment graph for \"hi\" vs \"qi\""
-  labelloc=top
-  layout=neato;
-  #splines=curved;
-  node [shape=point];
-  S [pos="0,0!"]
-  E01 [pos="0,-2!"];
-  E02 [pos="0,-4!"];
-  E10 [pos="2,0!"];
-  E11 [pos="2,-2!"];
-  E20 [pos="4,0!"];
-  E21 [pos="4,-2!"];
-  E12 [pos="2,-4!"];
-  E22 [pos="4,-4!"];
- 
   S->E01 [label="-\nq\n0.0"];
   S->E10 [label="h\n-\n0.0", fontcolor=red, color=red];
   S->E11 [label="h\nq\n-1.0"];
@@ -21853,80 +21760,101 @@ digraph G {
   layout=neato;
   #splines=curved;
   node [shape=plain];
-  S [pos="0,0!" fontcolor=red]
+  S [pos="0,0!", fontcolor=red]
   D01 [pos="0,-2!"];  D02 [pos="0,-4!"]
-  E10 [pos="2,0!" label="E10\n(h)", fontcolor=red]
-  E11 [pos="2,-2!" label="E11\n(h)"];  D11 [pos="2.2,-1.7!", fontcolor=red];
-  E20 [pos="4,0!" label="E20\n(i)"]
-  E21 [pos="4,-2!" label="E21\n(i)"];  D21 [pos="4.2,-1.7!"];
-  E12 [pos="2,-4!" label="E12\n(h)"];  D12 [pos="2.2,-3.7!"];
-  E22 [pos="4,-4!" label="E22\n(i)", fontcolor=red];  D22 [pos="4.2,-3.7!"];
+  I10 [pos="2,0!" label="I10 (h)", fontcolor=red]
+  I11 [pos="1.8,-2!" label="I11 (h)"]; M11 [pos="1.9,-1.8!" label="M11 (h)"];  D11 [pos="2,-1.6!", fontcolor=red];
+  I20 [pos="4,0!" label="I20 (i)"]
+  I21 [pos="3.8,-2!" label="I21 (i)"];  M21 [pos="3.9,-1.8!" label="M21 (i)"];  D21 [pos="4,-1.6!"];
+  I12 [pos="1.8,-4!" label="I12 (h)"];  M12 [pos="1.9,-3.8!" label="M12 (h)"];  D12 [pos="2,-3.6!"];
+  I22 [pos="3.8,-4!" label="I22 (i)"];  M22 [pos="3.9,-3.8!" label="M22 (i)", fontcolor=red];  D22 [pos="4,-3.6!"];
+  T [pos="5,-4!" label="T (?)", fontcolor=red]
  
-  S->D01 [label=0.4]; S->E10 [fontcolor=red, color=red, label=0.6]; S->E11 [label=0.0];
-  E10->E20 [label=0.4]; E10->D11 [fontcolor=red, color=red, label=0.6]; E10->E21 [label=0.0];
-  D01->D02 [label=0.5]; D01->E11 [label=0.5]; D01->E12 [label=0.0];
-  D12->E22 [label=1.0];
-  E11->D12 [label=0.0]; E11->E21 [label=0.0]; E11->E22 [label=1.0];
-  D11->D12 [label=0.0]; D11->E21 [label=0.0]; D11->E22 [fontcolor=red, color=red, label=1.0];
-  D02->E12 [label=1.0];
-  E12->E22 [label=1.0];
-  E20->D21 [label=1.0];
+  S->D01 [label=0.4]; S->I10 [label=0.6, color=red, fontcolor=red]; S->M11 [label=0.0];
+  I10->I20 [label=0.4]; I10->D11 [label=0.6, color=red, fontcolor=red]; I10->M21 [label=0.0];
+  D01->D02 [label=0.5]; D01->I11 [label=0.5]; D01->M12 [label=0.0];
+  D12->I22 [label=1.0]
+  M11->D12 [label=0.0]; M11->I21 [label=0.0]; M11->M22 [label=1.0];
+  I11->D12 [label=0.0]; I11->I21 [label=0.0]; I11->M22 [label=1.0];
+  D11->D12 [label=0.0]; D11->I21 [label=0.0]; D11->M22 [label=1.0, color=red, fontcolor=red];
+  D02->I12 [label=1.0];
+  I12->I22 [label=1.0];
+  M12->I22 [label=1.0];
+  I20->D21 [label=1.0];
   D21->D22 [label=1.0];
-  E21->D22 [label=1.0];
+  I21->D22 [label=1.0];
+  M21->D22 [label=1.0];
+  D22->T [label=1.0]; M22->T [label=1.0, color=red, fontcolor=red]; I22->T [label=1.0];
 }
 ```
 
-|                  |   0   |    1    |    2    |
-|------------------|-------|---------|---------|
-| Hidden path      | S→E10 | E10→D11 | D11→E22 |
-| Symbol emissions |   h   |    -    |    i    |
+|                  |   0   |    1    |    2    |   3   |
+|------------------|-------|---------|---------|-------|
+| Hidden path      | S→E10 | I10→D11 | D11→M22 | M22→T |
+| Symbol emissions |   h   |    -    |    i    |   ?   |
 
 </td></tr>
 </table>
 
-To calculate the most probable hidden path in an HMM (hidden path with maximum product), you need to use the Viterbi algorithm. Since the HMM above doesn't contain any loops, the Viterbi graph will end up being almost exactly the same as the HMM, with the only difference being that the Viterbi graph gets a sink node after the last emission column.
+Recall that, when you re-formulate an alignment graph as an HMM, the computation essentially changes to something fundamentally different. The goal of an alignment graph is different than that of an HMM.
 
-```{note}
-All the edges in the HMM are in the Viterbi graph. They've just been moved around to fit the layout you would expect of a Viterbi graph (each emission gets its own column). The only added nodes / edges are for the Viterbi sink node.
-```
+ * Alignment graph: You're trying to produce an alignment path whose edge scores accumulate to the maximum of all possible alignment paths (*maximum sum* - highest scoring).
+ * HMM: You're trying to produce a hidden path whose transition-emission probability chain is the maximum of all possible hidden paths (*maximum product* - most probable).
+
+To calculate the most probable hidden path in an HMM (hidden path with maximum product), you need to use the Viterbi algorithm. Since the HMM above doesn't contain any loops, the Viterbi graph will end up being almost exactly the same as the HMM, with the only difference being that the Viterbi graph gets a sink node after the last emission column.
 
 ```{dot}
 digraph G {
   label="Viterbi graph"
   labelloc=top
-  layout=neato;
+  layout=fdp;
   node [shape=plain];
   S [pos="0,-2!" fontcolor=red]
   D01 [pos="0,-4!"];
   D02 [pos="0,-6!"]
   h [pos="2,0.5!", fontsize=21]
-  E10 [pos="2,0!" label="E10\n(h)", fontcolor=red]
-  E11 [pos="2,-2!" label="E11\n(h)"];
-  E12 [pos="2,-4!" label="E12\n(h)"];
-  D11 [pos="2,-6!", fontcolor=red];
-  D12 [pos="2,-8!"];
+  I10 [pos="2,0!" label="I10\n(h)", fontcolor=red]
+  M11 [pos="2,-2!" label="M11\n(h)"];
+  I11 [pos="2,-4!" label="I11\n(h)"];
+  M12 [pos="2,-6!" label="M12\n(h)"];
+  I12 [pos="2,-8!" label="I12\n(h)"];
+  D11 [pos="2,-10!", fontcolor=red];
+  D12 [pos="2,-12!"];
   i [pos="4,0.5!", fontsize=21]
-  E20 [pos="4,0!" label="E20\n(i)"]
-  E21 [pos="4,-2!" label="E21\n(i)"];
-  E22 [pos="4,-4!" label="E22\n(i)", fontcolor=red];
-  D21 [pos="4,-6!"];
-  D22 [pos="4,-8!"];
-  SINK [pos="6,-4!"];
+  I20 [pos="4,0!" label="I20\n(i)"]
+  I21 [pos="4,-2!" label="I21\n(i)"];
+  M21 [pos="4,-4!" label="M21\n(i)"];
+  I22 [pos="4,-6!" label="I22\n(i)"];
+  M22 [pos="4,-8!" label="M22\n(i)", fontcolor=red];
+  D21 [pos="4,-10!"];
+  D22 [pos="4,-12!"];
+  _ [pos="6,0.5!", label="?", fontsize=21]
+  T [pos="6,-4!" label="T (?)", fontcolor=red]
+  SINK [pos="8,-4!", fontcolor=red];
   
   splines=compound;
-  S->D01 [label=0.4]; S->E10 [fontcolor=red, color=red, label=0.6]; S->E11 [label=0.0];
-  E10->E20 [label=0.4]; E10->D11 [fontcolor=red, color=red, label=0.6]; E10->E21 [label=0.0];
-  D01->D02 [label=0.5]; D01->E11 [label=0.5]; D01->E12 [label=0.0];
-  D12->E22 [label=1.0];
-  E11->D12 [label=0.0]; E11->E21 [label=0.0]; E11->E22 [label=1.0];
-  D11->D12 [label=0.0]; D11->E21 [label=0.0]; D11->E22 [fontcolor=red, color=red, label=1.0];
-  D02->E12 [label=1.0];
-  E12->E22 [label=1.0];
-  E20->D21 [label=1.0];
+ 
+  S->D01 [label=0.4]; S->I10 [label=0.6, color=red, fontcolor=red]; S->M11 [label=0.0];
+  I10->I20 [label=0.4]; I10->D11 [label=0.6, color=red, fontcolor=red]; I10->M21 [label=0.0];
+  D01->D02 [label=0.5]; D01->I11 [label=0.5]; D01->M12 [label=0.0];
+  D12->I22 [label=1.0]
+  M11->D12 [label=0.0]; M11->I21 [label=0.0]; M11->M22 [label=1.0];
+  I11->D12 [label=0.0]; I11->I21 [label=0.0]; I11->M22 [label=1.0];
+  D11->D12 [label=0.0]; D11->I21 [label=0.0]; D11->M22 [label=1.0, color=red, fontcolor=red];
+  D02->I12 [label=1.0];
+  I12->I22 [label=1.0];
+  M12->I22 [label=1.0];
+  I20->D21 [label=1.0];
   D21->D22 [label=1.0];
-  E21->D22 [label=1.0];
-  E20->SINK [label=1.0]; E21->SINK [label=1.0];  E22->SINK [label=1.0]; D21->SINK [label=1.0]; D22->SINK [label=1.0];
+  I21->D22 [label=1.0];
+  M21->D22 [label=1.0];
+  D22->T [label=1.0]; M22->T [label=1.0, color=red, fontcolor=red]; I22->T [label=1.0];
+  T->SINK [label=1.0, color=red, fontcolor=red];
 }
+```
+
+```{note}
+All the edges in the HMM are in the Viterbi graph. They've just been moved around to fit the layout you would expect of a Viterbi graph (each emission gets its own column). The only added nodes / edges are for the Viterbi sink node.
 ```
 
 ```{note}
@@ -21943,7 +21871,7 @@ python
 # MARKDOWN_V_MOST_PROBABLE\s*\n([\s\S]+)\n\s*# MARKDOWN_V_MOST_PROBABLE\s*[\n$]
 ```
 
-```{dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddch10}
+```{ch10}
 profile_hmm.HMMSequenceAlignment main_v_most_probable
 v_sequence: [h, i]
 w_sequence: [q, i]
@@ -21951,21 +21879,311 @@ w_sequence: [q, i]
 # probabilities are normalized (between 0 and 1 + each hidden state'soutgoing transitions summing
 # to 1) because the pseudocount addition (below) will normalize them.
 transition_probability_overrides:
-  S,-1,-1: {'D,0,1': 0.4, 'E,1,0': 0.6, 'E,1,1': 0.0}
-  E,1,0:   {'E,2,0': 0.4, 'D,1,1': 0.6, 'E,2,1': 0.0}
-  D,0,1:   {'D,0,2': 0.5, 'E,1,1': 0.5, 'E,1,2': 0.0}
-  D,1,2:   {'E,2,2': 1.0}
-  E,1,1:   {'D,1,2': 0.0, 'E,2,1': 0.0, 'E,2,2': 1.0}
-  D,1,1:   {'D,1,2': 0.0, 'E,2,1': 0.0, 'E,2,2': 1.0}
-  D,0,2:   {'E,1,2': 1.0}
-  E,1,2:   {'E,2,2': 1.0}
-  E,2,0:   {'D,2,1': 1.0}
+  S,-1,-1: {'D,0,1': 0.4, 'I,1,0': 0.6, 'M,1,1': 0.0}
+  I,1,0:   {'I,2,0': 0.4, 'D,1,1': 0.6, 'M,2,1': 0.0}
+  D,0,1:   {'D,0,2': 0.5, 'I,1,1': 0.5, 'M,1,2': 0.0}
+  D,1,2:   {'I,2,2': 1.0}
+  M,1,1:   {'D,1,2': 0.0, 'I,2,1': 0.0, 'M,2,2': 1.0}
+  I,1,1:   {'D,1,2': 0.0, 'I,2,1': 0.0, 'M,2,2': 1.0}
+  D,1,1:   {'D,1,2': 0.0, 'I,2,1': 0.0, 'M,2,2': 1.0}
+  D,0,2:   {'I,1,2': 1.0}
+  I,1,2:   {'I,2,2': 1.0}
+  M,1,2:   {'I,2,2': 1.0}
+  I,2,0:   {'D,2,1': 1.0}
   D,2,1:   {'D,2,2': 1.0}
-  E,2,1:   {'D,2,2': 1.0}
+  I,2,1:   {'D,2,2': 1.0}
+  M,2,1:   {'D,2,2': 1.0}
+  D,2,2:   {'T,2,2': 1.0}
+  M,2,2:   {'T,2,2': 1.0}
+  I,2,2:   {'T,2,2': 1.0}
 pseudocount: 0.0001
 ```
 
-### HMM Profile Alignment
+### Profile Alignment HMM
+
+`{bm} /(Algorithms\/Profile Hidden Markov Models\/Profile Alignment HMM)_TOPIC/`
+
+```{prereq}
+Algorithms/Profile Hidden Markov Models/Sequence Alignment HMM_TOPIC
+Algorithms/Sequence Alignment/Multiple Alignment_TOPIC
+```
+
+```{note}
+This algorithm deviates from the one in the Pevzner book because it's poorly explained and I didn't quite understand what it was doing (even though I did all the challenge problems). I reasoned about what's going on here myself.
+```
+
+**WHAT**: A profile HMM is an HMM that tests a sequence against a known family of sequences that already been aligned togethere, called a profile. In this case, testing means that the HMM computes a probability for how related the sequence is to the family and shows what its alignment might be if it were included in the alignment. For example, imagine the following profile of DNA sequences...
+
+| 0 | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| G | - | T | - | C |
+| - | C | T | A | - |
+| - | T | T | A | - |
+| - | - | T | - | C |
+| G | - | - | - | - |
+
+This algorithm will lets you test new DNA sequences against this profile to determine if / how related they are. For example, given the test sequence [G, T, T, A], it'll tell you...
+
+ * how probable it is that the sequence is part of the same family of sequences that make up the profile.
+ * how it might align had it been included in the profile..
+
+**WHY**: A profile HMM provides for a quick-and-dirty mechanism to determine if a new sequence is related the the existing family of sequences that make up the profile.
+
+For example, imagine that you have 5 sequences that you know are definitely in the same family and so you align them together (such as the 5 sequences in the profile above). You now have a 6th sequence that you want to test against the family. Normally, what you would do is re-do the alignment with the 6th sequence included and see how it lines up. The problem is that a sequence alignment's computational and memory requirements grow exponentially as you include more sequences, so once you add that 6th sequence, you've massively increased the time it takes to get a result.
+
+Now, imagine that instead of having a single 6th sequence to test against the profile, you have 5000 different variations of that 6th sequence. This is where profile HMMs come in handy. It performs a quick-and-dirty test against a known profile and gives you and gives you a probability of relatedness and its potential alignment within the profile.
+
+**ALGORITHM**:
+
+This algorithm "massages" a sequence alignment (profile) to extract information out of it. Consider the following profile.
+
+| 0 | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| G | - | T | - | C |
+| - | C | T | A | - |
+| - | T | T | A | - |
+| - | - | T | - | C |
+| G | - | - | - | - |
+
+Begin by classifying columns based on the number of gaps it has. If the number of gaps in a column is ...
+
+ * more than some percentage threshold, it's classified as an insertion column.
+ * not more than some percentage threshold, it's classified as an normal column.
+
+This gap percentage threshold is defined by the user. The example above, once classified based on a 59% gap percentage threshold, is as follows.
+
+| 0 (I) | 1 (I) | 2 (N) | 3 (I) | 4 (I) |
+|-------|-------|-------|-------|-------|
+|   G   |   -   |   T   |   -   |   C   |
+|   -   |   C   |   T   |   A   |   -   |
+|   -   |   T   |   T   |   A   |   -   |
+|   -   |   -   |   T   |   -   |   C   |
+|   G   |   -   |   -   |   -   |   -   |
+
+Once classified, group together contiguous groups of insertion columns. The example above, once grouped, has columns ...
+
+ * 0-1 in a single column.
+ * 3-4 in a single column.
+ 
+| 0-1 (I) | 2 (N) | 3-4 (I) |
+|---------|-------|---------|
+|   G -   |   T   |   - C   |
+|   - C   |   T   |   A -   |
+|   - T   |   T   |   A -   |
+|   - -   |   T   |   - C   |
+|   G -   |   -   |   - -   |
+
+```{output}
+ch10_code/src/profile_hmm/AlignmentToProfile.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN\s*[\n$]
+```
+
+```{ch10}
+profile_hmm.AlignmentToProfile
+alignment:
+  - [G, -, T, -, C]
+  - [-, C, T, A, -]
+  - [-, T, T, A, -]
+  - [-, -, T, -, C]
+  - [G, -, -, -, -]
+column_removal_threshold: 0.59
+```
+
+The classification and grouping happening allows you to convert the profile into a sequence alignment HMM, where the sequence alignment HMM tells you how "well" a new sequence measures up against the family of sequences in the profile. There are two parts to this:
+
+ 1. sequence alignment HMM structure.
+ 2. sequence alignment HMM probabilities.
+
+Defining the structure of the sequence alignment HMM is relatively straight forward. The profile itself is treated as a sequence, where each column in the profile is an element. However, only a profile's normal columns are allowed in the alignment. The reason for this is that a profile's normal columns represent highly stable columns of the alignment (low gap count), and as such matches should only happen against those highly stable columns.
+
+In the example above, the only stable column is column 2. Meaning, if you have a new sequence such as [A, C, C, T, T, G], the alignment would only happen against column 2.
+
+| 0-1 (I) | 2 (N) | 3-4 (I) |
+|---------|-------|---------|
+|   G -   |   T   |   - C   |
+|   - C   |   T   |   A -   |
+|   - T   |   T   |   A -   |
+|   - -   |   T   |   - C   |
+|   G -   |   -   |   - -   |
+
+```{svgbob}
+"Example of an alignment graph where an unknown sequence"
+"3 elements long matches against the normal columns of the"
+"profile above (only column 2 in this case)"
+
+                     ?   ?   ?
+                   *-->*-->*-->*
+                   |\  |\  |\  |
+            "TTTT-"| \ | \ | \ |
+                   ▼  ▼▼  ▼▼  ▼▼
+                   *-->*-->*-->*
+```
+
+```{output}
+ch10_code/src/profile_hmm/HMMProfileAlignment.py
+python
+# MARKDOWN_STRUCT\s*\n([\s\S]+)\n\s*# MARKDOWN_STRUCT\s*[\n$]
+```
+
+```{ch10}
+profile_hmm.HMMProfileAlignment main_structure
+sequence: [A, B, C]
+alignment:
+  - [G, -, T, -, C]
+  - [-, C, T, A, -]
+  - [-, T, T, A, -]
+  - [-, -, T, -, C]
+  - [G, -, -, -, -]
+column_removal_threshold: 0.59
+```
+
+Defining the probabilities of the sequence alignment HMM is a bit more tricky. Consider how each row of the profile above would align against the profile's sequence alignment HMM. In this case, the rules are, if it's ...
+
+ * an insertion column and it is a gap, do nothing.
+ * an insertion column and it isn't a gap, go right (insert).
+ * a normal column and it is a gap, go down (delete).
+ * a normal column and it isn't a gap, go diagonal (match).
+
+```{svgbob}
+"Alignment path for row 1: [G, -, T, -, C]"                       "Alignment path for row 2: [-, C, T, A, -]"
+         G   T   C                                                         C   T   A
+       o-->o   o   o                                                     o-->o   o   o
+            \                                                                 \     
+"TTTT-"      \                                                    "TTTT-"      \    
+              ▼                                                                 ▼   
+       o   o   o-->o                                                     o   o   o-->o
+
+
+"Alignment path for row 3: [-, T, T, A, -]"                       "Alignment path for row 4: [-, -, T, -, C]"
+         T   T   A                                                         T   C
+       o-->o   o   o                                                     o   o   o
+            \                                                             \     
+"TTTT-"      \                                                    "TTTT-"  \    
+              ▼                                                             ▼   
+       o   o   o-->o                                                     o   o-->o
+
+
+"Alignment path for row 5: [G, -, -, -, -]"
+         G
+       o-->o
+           |
+"TTTT-"    | 
+           ▼
+       o   o
+```
+
+```{output}
+ch10_code/src/profile_hmm/ProfileToHMMProbabilities.py
+python
+# MARKDOWN_WALK\s*\n([\s\S]+)\n\s*# MARKDOWN_WALK\s*[\n$]
+```
+
+```{ch10}
+profile_hmm.ProfileToHMMProbabilities main_walk
+alignment:
+  - [G, -, T, -, C]
+  - [-, C, T, A, -]
+  - [-, T, T, A, -]
+  - [-, -, T, -, C]
+  - [G, -, -, -, -]
+column_removal_threshold: 0.59
+```
+
+```{note}
+Recall that, in the sequence alignment HMM, each node is a hidden state and each edge is a hidden state transition. This section is telling you how to define hidden state transition probabilities.
+```
+
+For each row in the alignments happening above, count up the outgoing edges going right vs diagonal vs down (across all alignments). For example, for the top-most row of nodes, there's a total of ...
+
+ * 4 outgoing hiddens state transitions right (insertions)
+ * 4 outgoing hiddens state transitions diagonal (matches)
+ * 1 outgoing hiddens state transitions down (deletions)
+
+To determine the transition probabilities coming from nodes in a specific row, simply divide each row's outgoing edge counts by that row's total number of outgoing edges. For example, any transition coming from a node in the top-most row ...
+
+ * going right (insertion) is 4/9=0.444.
+ * going diagonal (match) is 4/9=0.444.
+ * going down (delete) is 1/9=0.111.
+
+```{output}
+ch10_code/src/profile_hmm/ProfileToHMMProbabilities.py
+python
+# MARKDOWN_TRANSITIONS\s*\n([\s\S]+)\n\s*# MARKDOWN_TRANSITIONS\s*[\n$]
+```
+
+```{ch10}
+profile_hmm.ProfileToHMMProbabilities main_transitions
+alignment:
+  - [G, -, T, -, C]
+  - [-, C, T, A, -]
+  - [-, T, T, A, -]
+  - [-, -, T, -, C]
+  - [G, -, -, -, -]
+column_removal_threshold: 0.59
+```
+
+```{note}
+Recall that, in the sequence alignment HMM, each node is a hidden state and each edge is a hidden state transition. This section is telling you how to define hidden state emission probabilities. Recall that a symbol emission happens *after* a transition (emits from the hidden state at the destination of the transition), so this section is tracking emissions by the destination of the edge.
+```
+
+Similar reasoning applies to emission probabilities. For each row in the alignments happening above, count up the symbol emission from each incoming edge grouped by the direction of that edge: Right vs diagonal vs down (across all alignments). For example, for the second row of nodes, incoming edges ...
+
+ * pointing right (insertions) emit: A, A, C, C
+ * pointing diagonally (matches) emit: T, T, T, and T 
+ * pointing down (deletions) emit nothing -- Even though there is an edge going downard to the second row, a deletion never emits anything.
+
+To determine the emission probabilities coming from nodes in a specific row, simply divide each symbol's occurrences by the total number of occurrences for that edge direction. For example, for emission caused by right edges (insertions) in the second row...
+
+ * A appears two times out of four, 2/4=0.5
+ * C appears two times out of four, 2/4=0.25
+
+```{output}
+ch10_code/src/profile_hmm/ProfileToHMMProbabilities.py
+python
+# MARKDOWN_EMISSIONS\s*\n([\s\S]+)\n\s*# MARKDOWN_EMISSIONS\s*[\n$]
+```
+
+```{ch10}
+profile_hmm.ProfileToHMMProbabilities main_emissions
+alignment:
+  - [G, -, T, -, C]
+  - [-, C, T, A, -]
+  - [-, T, T, A, -]
+  - [-, -, T, -, C]
+  - [G, -, -, -, -]
+column_removal_threshold: 0.59
+```
+
+Once the hidden state transition probabilities and symbol emission probabilities are assigned to the HMM structure, the Viterbi algorithm may be used to find the most likely hidden path, which corresponds to the alignment path. To calculate the most probable hidden path in an HMM (hidden path with maximum product), you need to use the Viterbi algorithm. If the profile alignment's most probable hidden path / alignment path has a probability equal to or greater than some minimum, the sequence is deemed to be related to the family of sequences in the profile.
+
+```{note}
+How do you determine what that minimum is? The Pevzner book doesn't say, but one idea I had is to take each sequence in the profile and align it against the profile HMM, then aggregate their most probable hidden path / alignment path probabilities (e.g. take the minimum or average it out or something).
+```
+
+```{note}
+Given a profile HMM, you can probably build a consensus string for it using the most probable emitted sequenec algorithm (Algorithms/Discriminator Hidden Markov Models/Most Probable Emitted Sequence_TOPIC). If I recall correctly, I tried to modify the algorithm to work with hidden states, so it should work with profile HMMs.
+```
+
+```{output}
+ch10_code/src/profile_hmm/HMMProfileAlignment.py
+python
+# MARKDOWN_PROFILE\s*\n([\s\S]+)\n\s*# MARKDOWN_PROFILE\s*[\n$]
+```
+
+```{ch10}
+profile_hmm.HMMProfileAlignment main_profile
+sequence: [G, A]
+alignment:
+  - [G, -, T, -, C]
+  - [-, C, T, A, -]
+  - [-, T, T, A, -]
+  - [-, -, T, -, C]
+  - [G, -, -, -, -]
+column_removal_threshold: 0.59
+pseudocount: 0.0001
+symbols: [A, C, T, G]
+```
 
 # Stories
 
@@ -28032,7 +28250,7 @@ first_indexes_checkpoint_n: 20
    ```{note}
    The example above doesn't cover non-emitting hidden states. A non-emitting hidden state's probability will be Pr(transition) because transitioning to it won't result in a symbol emission.
 
-   See Algorithms/Sequence Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting Hidden States Algorithm_TOPIC
+   See Algorithms/Discriminator Hidden Markov Models/Most Probable Hidden Path/Viterbi Non-emitting Hidden States Algorithm_TOPIC
    ```
 
    The directed graph above is called a Viterbi graph. The goal with a Viterbi graph is to determine the most likely set of hidden state transitions that resulted in the emitted symbols, which is the path from source node to sink node with the highest product (multiplication) of edge weights. In the example above, that path is ...
@@ -28105,13 +28323,13 @@ first_indexes_checkpoint_n: 20
  * `{bm} Viterbi learning` - A Monte Carlo algorithm that uses the Viterbi algorithm to derive an HMM's probabilities from an emitted sequence.
 
    ```{note}
-   See Algorithms/Sequence Hidden Markov Models/Viterbi Learning_TOPIC for more information.
+   See Algorithms/Discriminator Hidden Markov Models/Viterbi Learning_TOPIC for more information.
    ```
 
  * `{bm} Baum-Welch learning` - A Monte Carlo algorithm that uses confidence measurements to derive an HMM's probabilities from an emitted sequence.
 
    ```{note}
-   See Algorithms/Sequence Hidden Markov Models/Baum-Welch Learning_TOPIC for more information.
+   See Algorithms/Discriminator Hidden Markov Models/Baum-Welch Learning_TOPIC for more information.
    ```
 
 `{bm-ignore} !!([\w\-]+?)!!/i`

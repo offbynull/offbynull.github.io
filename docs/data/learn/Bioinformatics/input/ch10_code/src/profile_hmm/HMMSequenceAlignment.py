@@ -12,16 +12,17 @@ from profile_hmm.HMMSingleElementAlignment_InsertMatchDelete import create_hmm_s
 # MARKDOWN_V_CHAIN
 def create_hmm_chain_from_v_perspective(
         v_seq: list[ELEM],
-        w_seq: list[ELEM]
+        w_seq: list[ELEM],
+        fake_bottom_right_emission_symbol: ELEM
 ):
     transition_probabilities = {}
     emission_probabilities = {}
     pending = set()
     processed = set()
-    hmm_source_n_id = 'S', -1, -1
-    fake_bottom_right_emission_symbol = None
+    hmm_source_n_id = 'S', 0, 0
+    fake_bottom_right_emission_symbol_for_square = None
     if 0 == len(v_seq) - 1 and 0 == len(w_seq) - 1:
-        fake_bottom_right_emission_symbol = '?'
+        fake_bottom_right_emission_symbol_for_square = fake_bottom_right_emission_symbol
     hmm_outgoing_n_ids = create_hmm_square_from_v_perspective(
         transition_probabilities,
         emission_probabilities,
@@ -30,7 +31,7 @@ def create_hmm_chain_from_v_perspective(
         (0, w_seq[0]),
         len(v_seq),
         len(w_seq),
-        fake_bottom_right_emission_symbol
+        fake_bottom_right_emission_symbol_for_square
     )
     processed.add(hmm_source_n_id)
     pending |= hmm_outgoing_n_ids
@@ -41,9 +42,9 @@ def create_hmm_chain_from_v_perspective(
         if v_idx <= len(v_seq) and w_idx <= len(w_seq):
             v_elem = None if v_idx == len(v_seq) else v_seq[v_idx]
             w_elem = None if w_idx == len(w_seq) else w_seq[w_idx]
-            fake_bottom_right_emission_symbol = None
+            fake_bottom_right_emission_symbol_for_square = None
             if v_idx == len(v_seq) - 1 and w_idx == len(w_seq) - 1:
-                fake_bottom_right_emission_symbol = '?'
+                fake_bottom_right_emission_symbol_for_square = fake_bottom_right_emission_symbol
             hmm_outgoing_n_ids = create_hmm_square_from_v_perspective(
                 transition_probabilities,
                 emission_probabilities,
@@ -52,7 +53,7 @@ def create_hmm_chain_from_v_perspective(
                 (w_idx, w_elem),
                 len(v_seq),
                 len(w_seq),
-                fake_bottom_right_emission_symbol
+                fake_bottom_right_emission_symbol_for_square
             )
             for hmm_test_n_id in hmm_outgoing_n_ids:
                 if hmm_test_n_id not in processed:
@@ -77,7 +78,8 @@ def main_v_chain():
         print()
         transition_probabilities, emission_probabilities = create_hmm_chain_from_v_perspective(
             v_seq,
-            w_seq
+            w_seq,
+            '?'
         )
         transition_probabilities, emission_probabilities = stringify_probability_keys(transition_probabilities, emission_probabilities)
         hmm = to_hmm_graph_PRE_PSEUDOCOUNTS(transition_probabilities, emission_probabilities)
@@ -105,10 +107,11 @@ def main_v_chain():
 def hmm_most_probable_from_v_perspective(
         v_seq: list[ELEM],
         w_seq: list[ELEM],
+        t_elem: ELEM,
         transition_probability_overrides: dict[str, dict[str, float]],
         pseudocount: float
 ):
-    transition_probabilities, emission_probabilities = create_hmm_chain_from_v_perspective(v_seq, w_seq)
+    transition_probabilities, emission_probabilities = create_hmm_chain_from_v_perspective(v_seq, w_seq, t_elem)
     transition_probabilities, emission_probabilities = stringify_probability_keys(transition_probabilities,
                                                                                   emission_probabilities)
     for hmm_from_n_id in transition_probabilities:
@@ -129,12 +132,12 @@ def hmm_most_probable_from_v_perspective(
     )
     hmm_source_n_id = hmm.get_root_node()
     hmm_sink_n_id = 'VITERBI_SINK'  # Fake sink node ID required for exploding HMM into Viterbi graph
+    v_seq = v_seq + [t_elem]  # Add fake symbol for when exploding out Viterbi graph
     viterbi = to_viterbi_graph(hmm, hmm_source_n_id, hmm_sink_n_id, v_seq)
     probability, hidden_path = max_product_path_in_viterbi(viterbi)
-    hidden_path = hidden_path[:-1]  # Remove viterbi sink node from end of path: VITERBI_SINK
-    hidden_path = hidden_path[:-1]  # Remove HMM sink node from end of path: T
     v_alignment = []
-    for hmm_from_n_id, hmm_to_n_id in hidden_path:
+    # When looping, ignore phony end emission and Viterbi sink node at end: [(T, #, #), VITERBI_SINK].
+    for hmm_from_n_id, hmm_to_n_id in hidden_path[:-2]:
         state_type, to_v_idx, to_w_idx = hmm_to_n_id.split(',')
         to_v_idx = int(to_v_idx)
         to_w_idx = int(to_w_idx)
@@ -167,6 +170,7 @@ def main_v_most_probable():
         hmm, viterbi, weight, hidden_path, v_alignment = hmm_most_probable_from_v_perspective(
             v_seq,
             w_seq,
+            '?',
             transition_probability_overrides,
             pseudocount
         )
@@ -203,4 +207,4 @@ def main_v_most_probable():
 
 
 if __name__ == '__main__':
-    main_v_chain()
+    main_v_most_probable()

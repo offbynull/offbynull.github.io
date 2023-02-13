@@ -1,6 +1,4 @@
-import math
 from math import nan
-from random import random
 from sys import stdin
 from typing import TypeVar
 
@@ -56,63 +54,95 @@ def create_hmm_square_from_v_perspective(
     # From top-left, go right (emit)
     if v_idx < v_max_idx:
         hmm_to_n_id = 'E', v_idx + 1, w_idx
-        if hmm_to_n_id not in transition_probabilities:
-            transition_probabilities[hmm_to_n_id] = {}
-            emission_probabilities[hmm_to_n_id] = {}
-        transition_probabilities[hmm_top_left_n_id][hmm_to_n_id] = nan
-        emission_probabilities[hmm_to_n_id][v_symbol] = 1.0
-        hmm_outgoing_n_ids.add(hmm_to_n_id)
+        inject_emitable(
+            transition_probabilities,
+            emission_probabilities,
+            hmm_top_left_n_id,
+            hmm_to_n_id,
+            v_symbol,
+            hmm_outgoing_n_ids
+        )
         # From top-left, after going right (emit), go downward (gap)
         if w_idx < w_max_idx:
             hmm_from_n_id = hmm_to_n_id
             hmm_to_n_id = 'D', v_idx + 1, w_idx + 1
-            if hmm_to_n_id not in transition_probabilities:
-                transition_probabilities[hmm_to_n_id] = {}
-                emission_probabilities[hmm_to_n_id] = {}
-            transition_probabilities[hmm_from_n_id][hmm_to_n_id] = nan
-            hmm_outgoing_n_ids.add(hmm_to_n_id)
+            inject_non_emittable(
+                transition_probabilities,
+                emission_probabilities,
+                hmm_from_n_id,
+                hmm_to_n_id,
+                hmm_outgoing_n_ids
+            )
     # From top-left, go downward (gap)
     if w_idx < w_max_idx:
         hmm_to_n_id = 'D', v_idx, w_idx + 1
-        if hmm_to_n_id not in transition_probabilities:
-            transition_probabilities[hmm_to_n_id] = {}
-            emission_probabilities[hmm_to_n_id] = {}
-        transition_probabilities[hmm_top_left_n_id][hmm_to_n_id] = nan
-        hmm_outgoing_n_ids.add(hmm_to_n_id)
+        inject_non_emittable(
+            transition_probabilities,
+            emission_probabilities,
+            hmm_top_left_n_id,
+            hmm_to_n_id,
+            hmm_outgoing_n_ids
+        )
         # From top-left, after going downward (gap), go right (emit)
         if v_idx < v_max_idx:
             hmm_from_n_id = hmm_to_n_id
             hmm_to_n_id = 'E', v_idx + 1, w_idx + 1
-            if hmm_to_n_id not in transition_probabilities:
-                transition_probabilities[hmm_to_n_id] = {}
-                emission_probabilities[hmm_to_n_id] = {}
-            transition_probabilities[hmm_from_n_id][hmm_to_n_id] = nan
-            emission_probabilities[hmm_to_n_id][v_symbol] = 1.0
-            hmm_outgoing_n_ids.add(hmm_to_n_id)
+            inject_emitable(
+                transition_probabilities,
+                emission_probabilities,
+                hmm_from_n_id,
+                hmm_to_n_id,
+                v_symbol,
+                hmm_outgoing_n_ids
+            )
     # From top-left, go diagonal (emit)
     if v_idx < v_max_idx and w_idx < w_max_idx:
         hmm_to_n_id = 'E', v_idx + 1, w_idx + 1
-        transition_probabilities[hmm_top_left_n_id][hmm_to_n_id] = nan
-        emission_probabilities[hmm_to_n_id][v_symbol] = 1.0
-        hmm_outgoing_n_ids.add(hmm_to_n_id)
+        inject_emitable(
+            transition_probabilities,
+            emission_probabilities,
+            hmm_top_left_n_id,
+            hmm_to_n_id,
+            v_symbol,
+            hmm_outgoing_n_ids
+        )
     # Add fake bottom-right emission (if it's been asked for)
     if fake_bottom_right_emission_symbol is not None:
         hmm_bottom_right_n_id_final = 'T', v_idx + 1, w_idx + 1
-        hmm_bottom_right_n_id_1 = 'E', v_idx + 1, w_idx + 1
-        if hmm_bottom_right_n_id_1 in hmm_outgoing_n_ids:
-            transition_probabilities[hmm_bottom_right_n_id_1][hmm_bottom_right_n_id_final] = nan
-            transition_probabilities[hmm_bottom_right_n_id_final] = {}
-            emission_probabilities[hmm_bottom_right_n_id_final] = {fake_bottom_right_emission_symbol: 1.0}
-            hmm_outgoing_n_ids.remove(hmm_bottom_right_n_id_1)
-        hmm_bottom_right_n_id_2 = 'D', v_idx + 1, w_idx + 1
-        if hmm_bottom_right_n_id_2 in hmm_outgoing_n_ids:
-            transition_probabilities[hmm_bottom_right_n_id_2][hmm_bottom_right_n_id_final] = nan
-            transition_probabilities[hmm_bottom_right_n_id_final] = {}
-            emission_probabilities[hmm_bottom_right_n_id_final] = {fake_bottom_right_emission_symbol: 1.0}
-            hmm_outgoing_n_ids.remove(hmm_bottom_right_n_id_2)
-        hmm_outgoing_n_ids.add(hmm_bottom_right_n_id_final)
+        hmm_bottom_right_n_ids = {
+            ('E', v_idx + 1, w_idx + 1),
+            ('D', v_idx + 1, w_idx + 1)
+        }
+        for hmm_bottom_right_n_id in hmm_bottom_right_n_ids:
+            if hmm_bottom_right_n_id in hmm_outgoing_n_ids:
+                inject_emitable(
+                    transition_probabilities,
+                    emission_probabilities,
+                    hmm_bottom_right_n_id,
+                    hmm_bottom_right_n_id_final,
+                    fake_bottom_right_emission_symbol,
+                    hmm_outgoing_n_ids
+                )
+                hmm_outgoing_n_ids.remove(hmm_bottom_right_n_id)
     # Return
     return hmm_outgoing_n_ids
+
+
+def inject_non_emittable(transition_probabilities, emission_probabilities, hmm_from_n_id, hmm_to_n_id, hmm_outgoing_n_ids):
+    if hmm_to_n_id not in transition_probabilities:
+        transition_probabilities[hmm_to_n_id] = {}
+        emission_probabilities[hmm_to_n_id] = {}
+    transition_probabilities[hmm_from_n_id][hmm_to_n_id] = nan
+    hmm_outgoing_n_ids.add(hmm_to_n_id)
+
+
+def inject_emitable(transition_probabilities, emission_probabilities, hmm_from_n_id, hmm_to_n_id, symbol, hmm_outgoing_n_ids):
+    if hmm_to_n_id not in transition_probabilities:
+        transition_probabilities[hmm_to_n_id] = {}
+        emission_probabilities[hmm_to_n_id] = {}
+    transition_probabilities[hmm_from_n_id][hmm_to_n_id] = nan
+    emission_probabilities[hmm_to_n_id][symbol] = 1.0
+    hmm_outgoing_n_ids.add(hmm_to_n_id)
 # MARKDOWN_V_SQUARE
 
 
@@ -188,61 +218,76 @@ def create_hmm_square_from_w_perspective(
     # From top-left, go right (gap)
     if v_idx < v_max_idx:
         hmm_to_n_id = 'D', v_idx + 1, w_idx
-        if hmm_to_n_id not in transition_probabilities:
-            transition_probabilities[hmm_to_n_id] = {}
-            emission_probabilities[hmm_to_n_id] = {}
-        transition_probabilities[hmm_top_left_n_id][hmm_to_n_id] = nan
-        hmm_outgoing_n_ids.add(hmm_to_n_id)
+        inject_non_emittable(
+            transition_probabilities,
+            emission_probabilities,
+            hmm_top_left_n_id,
+            hmm_to_n_id,
+            hmm_outgoing_n_ids
+        )
         # From top-left, after going right (gap), go downward (emit)
         if w_idx < w_max_idx:
             hmm_from_n_id = hmm_to_n_id
             hmm_to_n_id = 'E', v_idx + 1, w_idx + 1
-            if hmm_to_n_id not in transition_probabilities:
-                transition_probabilities[hmm_to_n_id] = {}
-                emission_probabilities[hmm_to_n_id] = {}
-            transition_probabilities[hmm_from_n_id][hmm_to_n_id] = nan
-            emission_probabilities[hmm_to_n_id][w_symbol] = 1.0
-            hmm_outgoing_n_ids.add(hmm_to_n_id)
+            inject_emitable(
+                transition_probabilities,
+                emission_probabilities,
+                hmm_from_n_id,
+                hmm_to_n_id,
+                w_symbol,
+                hmm_outgoing_n_ids
+            )
     # From top-left, go downward (emit)
     if w_idx < w_max_idx:
         hmm_to_n_id = 'E', v_idx, w_idx + 1
-        if hmm_to_n_id not in transition_probabilities:
-            transition_probabilities[hmm_to_n_id] = {}
-            emission_probabilities[hmm_to_n_id] = {}
-        transition_probabilities[hmm_top_left_n_id][hmm_to_n_id] = nan
-        emission_probabilities[hmm_to_n_id][w_symbol] = 1.0
-        hmm_outgoing_n_ids.add(hmm_to_n_id)
+        inject_emitable(
+            transition_probabilities,
+            emission_probabilities,
+            hmm_top_left_n_id,
+            hmm_to_n_id,
+            w_symbol,
+            hmm_outgoing_n_ids
+        )
         # From top-left, after going downward (emit), go right (gap)
         if v_idx < v_max_idx:
             hmm_from_n_id = hmm_to_n_id
             hmm_to_n_id = 'D', v_idx + 1, w_idx + 1
-            if hmm_to_n_id not in transition_probabilities:
-                transition_probabilities[hmm_to_n_id] = {}
-                emission_probabilities[hmm_to_n_id] = {}
-            transition_probabilities[hmm_from_n_id][hmm_to_n_id] = nan
-            hmm_outgoing_n_ids.add(hmm_to_n_id)
+            inject_non_emittable(
+                transition_probabilities,
+                emission_probabilities,
+                hmm_from_n_id,
+                hmm_to_n_id,
+                hmm_outgoing_n_ids
+            )
     # From top-left, go diagonal (emit)
     if v_idx < v_max_idx and w_idx < w_max_idx:
         hmm_to_n_id = 'E', v_idx + 1, w_idx + 1
-        transition_probabilities[hmm_top_left_n_id][hmm_to_n_id] = nan
-        emission_probabilities[hmm_to_n_id][w_symbol] = 1.0
-        hmm_outgoing_n_ids.add(hmm_to_n_id)
+        inject_emitable(
+            transition_probabilities,
+            emission_probabilities,
+            hmm_top_left_n_id,
+            hmm_to_n_id,
+            w_symbol,
+            hmm_outgoing_n_ids
+        )
     # Add fake bottom-right emission (if it's been asked for)
     if fake_bottom_right_emission_symbol is not None:
         hmm_bottom_right_n_id_final = 'T', v_idx + 1, w_idx + 1
-        hmm_bottom_right_n_id_1 = 'E', v_idx + 1, w_idx + 1
-        if hmm_bottom_right_n_id_1 in hmm_outgoing_n_ids:
-            transition_probabilities[hmm_bottom_right_n_id_1][hmm_bottom_right_n_id_final] = nan
-            transition_probabilities[hmm_bottom_right_n_id_final] = {}
-            emission_probabilities[hmm_bottom_right_n_id_final] = {fake_bottom_right_emission_symbol: 1.0}
-            hmm_outgoing_n_ids.remove(hmm_bottom_right_n_id_1)
-        hmm_bottom_right_n_id_2 = 'D', v_idx + 1, w_idx + 1
-        if hmm_bottom_right_n_id_2 in hmm_outgoing_n_ids:
-            transition_probabilities[hmm_bottom_right_n_id_2][hmm_bottom_right_n_id_final] = nan
-            transition_probabilities[hmm_bottom_right_n_id_final] = {}
-            emission_probabilities[hmm_bottom_right_n_id_final] = {fake_bottom_right_emission_symbol: 1.0}
-            hmm_outgoing_n_ids.remove(hmm_bottom_right_n_id_2)
-        hmm_outgoing_n_ids.add(hmm_bottom_right_n_id_final)
+        hmm_bottom_right_n_ids = {
+            ('E', v_idx + 1, w_idx + 1),
+            ('D', v_idx + 1, w_idx + 1)
+        }
+        for hmm_bottom_right_n_id in hmm_bottom_right_n_ids:
+            if hmm_bottom_right_n_id in hmm_outgoing_n_ids:
+                inject_emitable(
+                    transition_probabilities,
+                    emission_probabilities,
+                    hmm_bottom_right_n_id,
+                    hmm_bottom_right_n_id_final,
+                    fake_bottom_right_emission_symbol,
+                    hmm_outgoing_n_ids
+                )
+                hmm_outgoing_n_ids.remove(hmm_bottom_right_n_id)
     # Return
     return hmm_outgoing_n_ids
 # MARKDOWN_W_SQUARE

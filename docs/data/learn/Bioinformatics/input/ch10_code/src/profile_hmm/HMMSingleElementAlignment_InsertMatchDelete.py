@@ -5,8 +5,8 @@ import yaml
 from hmm.MostProbableHiddenPath_ViterbiNonEmittingHiddenStates import to_hmm_graph_PRE_PSEUDOCOUNTS, hmm_to_dot, \
     to_viterbi_graph, max_product_path_in_viterbi, hmm_add_pseudocounts_to_hidden_state_transition_probabilities, \
     hmm_add_pseudocounts_to_symbol_emission_probabilities, viterbi_to_dot
-from profile_hmm import HMMSingleElementAlignment_EmitDelete
-from profile_hmm.HMMSingleElementAlignment_EmitDelete import SEQ_HMM_STATE, ELEM, stringify_probability_keys
+from profile_hmm.HMMSingleElementAlignment_EmitDelete import SEQ_HMM_STATE, ELEM, stringify_probability_keys, \
+    inject_emitable, inject_non_emittable
 
 
 # MARKDOWN_V_SQUARE
@@ -20,51 +20,87 @@ def create_hmm_square_from_v_perspective(
         w_max_idx: int,
         fake_bottom_right_emission_symbol: ELEM | None = None
 ):
-    hmm_outgoing_n_ids = HMMSingleElementAlignment_EmitDelete.create_hmm_square_from_v_perspective(
-        transition_probabilities,
-        emission_probabilities,
-        hmm_top_left_n_id,
-        v_elem,
-        w_elem,
-        v_max_idx,
-        w_max_idx,
-        fake_bottom_right_emission_symbol
-    )
     v_idx, v_symbol = v_elem
     w_idx, w_symbol = w_elem
-    # Remove E10
-    hmm_remove_n_id = 'E', v_idx + 1, w_idx
-    if hmm_remove_n_id in transition_probabilities:
-        removed_ep = emission_probabilities.pop(hmm_remove_n_id)
-        removed_tp = transition_probabilities.pop(hmm_remove_n_id)
-        if hmm_remove_n_id in hmm_outgoing_n_ids:
-            hmm_outgoing_n_ids.remove(hmm_remove_n_id)
-        # Replace with I10
-        hmm_replace_match_n_id = 'I', v_idx + 1, w_idx
-        transition_probabilities[hmm_replace_match_n_id] = removed_tp.copy()
-        emission_probabilities[hmm_replace_match_n_id] = removed_ep.copy()
-        transition_probabilities[hmm_top_left_n_id][hmm_replace_match_n_id] = transition_probabilities[hmm_top_left_n_id].pop(hmm_remove_n_id)
-        hmm_outgoing_n_ids.add(hmm_replace_match_n_id)
-    # Remove E11
-    hmm_remove_n_id = 'E', v_idx + 1, w_idx + 1
-    if hmm_remove_n_id in transition_probabilities:
-        removed_ep = emission_probabilities.pop(hmm_remove_n_id)
-        removed_tp = transition_probabilities.pop(hmm_remove_n_id)
-        if hmm_remove_n_id in hmm_outgoing_n_ids:
-            hmm_outgoing_n_ids.remove(hmm_remove_n_id)
-        # Replace with M11
-        hmm_replace_match_n_id = 'M', v_idx + 1, w_idx + 1
-        transition_probabilities[hmm_replace_match_n_id] = removed_tp.copy()
-        emission_probabilities[hmm_replace_match_n_id] = removed_ep.copy()
-        transition_probabilities[hmm_top_left_n_id][hmm_replace_match_n_id] = transition_probabilities[hmm_top_left_n_id].pop(hmm_remove_n_id)
-        hmm_outgoing_n_ids.add(hmm_replace_match_n_id)
-        # Replace with I11
-        hmm_bottom_left_n_id = 'D', v_idx, w_idx + 1
-        hmm_replace_insert_n_id = 'I', v_idx + 1, w_idx + 1
-        transition_probabilities[hmm_replace_insert_n_id] = removed_tp.copy()
-        emission_probabilities[hmm_replace_insert_n_id] = removed_ep.copy()
-        transition_probabilities[hmm_bottom_left_n_id][hmm_replace_insert_n_id] = transition_probabilities[hmm_bottom_left_n_id].pop(hmm_remove_n_id)
-        hmm_outgoing_n_ids.add(hmm_replace_insert_n_id)
+    hmm_outgoing_n_ids = set()
+    # Make sure top-left exists
+    if hmm_top_left_n_id not in transition_probabilities:
+        transition_probabilities[hmm_top_left_n_id] = {}
+        emission_probabilities[hmm_top_left_n_id] = {}
+    # From top-left, go right (emit)
+    if v_idx < v_max_idx:
+        hmm_to_n_id = 'I', v_idx + 1, w_idx
+        inject_emitable(
+            transition_probabilities,
+            emission_probabilities,
+            hmm_top_left_n_id,
+            hmm_to_n_id,
+            v_symbol,
+            hmm_outgoing_n_ids
+        )
+        # From top-left, after going right (emit), go downward (gap)
+        if w_idx < w_max_idx:
+            hmm_from_n_id = hmm_to_n_id
+            hmm_to_n_id = 'D', v_idx + 1, w_idx + 1
+            inject_non_emittable(
+                transition_probabilities,
+                emission_probabilities,
+                hmm_from_n_id,
+                hmm_to_n_id,
+                hmm_outgoing_n_ids
+            )
+    # From top-left, go downward (gap)
+    if w_idx < w_max_idx:
+        hmm_to_n_id = 'D', v_idx, w_idx + 1
+        inject_non_emittable(
+            transition_probabilities,
+            emission_probabilities,
+            hmm_top_left_n_id,
+            hmm_to_n_id,
+            hmm_outgoing_n_ids
+        )
+        # From top-left, after going downward (gap), go right (emit)
+        if v_idx < v_max_idx:
+            hmm_from_n_id = hmm_to_n_id
+            hmm_to_n_id = 'I', v_idx + 1, w_idx + 1
+            inject_emitable(
+                transition_probabilities,
+                emission_probabilities,
+                hmm_from_n_id,
+                hmm_to_n_id,
+                v_symbol,
+                hmm_outgoing_n_ids
+            )
+    # From top-left, go diagonal (emit)
+    if v_idx < v_max_idx and w_idx < w_max_idx:
+        hmm_to_n_id = 'M', v_idx + 1, w_idx + 1
+        inject_emitable(
+            transition_probabilities,
+            emission_probabilities,
+            hmm_top_left_n_id,
+            hmm_to_n_id,
+            v_symbol,
+            hmm_outgoing_n_ids
+        )
+    # Add fake bottom-right emission (if it's been asked for)
+    if fake_bottom_right_emission_symbol is not None:
+        hmm_bottom_right_n_id_final = 'T', v_idx + 1, w_idx + 1
+        hmm_bottom_right_n_ids = {
+            ('M', v_idx + 1, w_idx + 1),
+            ('D', v_idx + 1, w_idx + 1),
+            ('I', v_idx + 1, w_idx + 1)
+        }
+        for hmm_bottom_right_n_id in hmm_bottom_right_n_ids:
+            if hmm_bottom_right_n_id in hmm_outgoing_n_ids:
+                inject_emitable(
+                    transition_probabilities,
+                    emission_probabilities,
+                    hmm_bottom_right_n_id,
+                    hmm_bottom_right_n_id_final,
+                    fake_bottom_right_emission_symbol,
+                    hmm_outgoing_n_ids
+                )
+                hmm_outgoing_n_ids.remove(hmm_bottom_right_n_id)
     # Return
     return hmm_outgoing_n_ids
 # MARKDOWN_V_SQUARE
@@ -130,57 +166,87 @@ def create_hmm_square_from_w_perspective(
         w_max_idx: int,
         fake_bottom_right_emission_symbol: ELEM | None = None
 ):
-    hmm_outgoing_n_ids = HMMSingleElementAlignment_EmitDelete.create_hmm_square_from_w_perspective(
-        transition_probabilities,
-        emission_probabilities,
-        hmm_top_left_n_id,
-        v_elem,
-        w_elem,
-        v_max_idx,
-        w_max_idx,
-        fake_bottom_right_emission_symbol
-    )
     v_idx, v_symbol = v_elem
     w_idx, w_symbol = w_elem
-    # Remove E01
-    hmm_remove_n_id = 'E', v_idx, w_idx + 1
-    if hmm_remove_n_id in transition_probabilities:
-        removed_ep = emission_probabilities.pop(hmm_remove_n_id)
-        removed_tp = transition_probabilities.pop(hmm_remove_n_id)
-        if hmm_remove_n_id in hmm_outgoing_n_ids:
-            hmm_outgoing_n_ids.remove(hmm_remove_n_id)
-        # Replace with I01
-        hmm_replace_match_n_id = 'I', v_idx, w_idx + 1
-        transition_probabilities[hmm_replace_match_n_id] = removed_tp.copy()
-        emission_probabilities[hmm_replace_match_n_id] = removed_ep.copy()
-        transition_probabilities[hmm_top_left_n_id][hmm_replace_match_n_id] = transition_probabilities[
-            hmm_top_left_n_id].pop(hmm_remove_n_id)
-        if hmm_replace_match_n_id in hmm_outgoing_n_ids:
-            hmm_outgoing_n_ids.add(hmm_replace_match_n_id)
-    # Remove E11
-    hmm_remove_n_id = 'E', v_idx + 1, w_idx + 1
-    if hmm_remove_n_id in transition_probabilities:
-        removed_ep = emission_probabilities.pop(hmm_remove_n_id)
-        removed_tp = transition_probabilities.pop(hmm_remove_n_id)
-        if hmm_remove_n_id in hmm_outgoing_n_ids:
-            hmm_outgoing_n_ids.remove(hmm_remove_n_id)
-        # Replace with M11
-        hmm_replace_match_n_id = 'M', v_idx + 1, w_idx + 1
-        transition_probabilities[hmm_replace_match_n_id] = removed_tp.copy()
-        emission_probabilities[hmm_replace_match_n_id] = removed_ep.copy()
-        transition_probabilities[hmm_top_left_n_id][hmm_replace_match_n_id] = transition_probabilities[
-            hmm_top_left_n_id].pop(hmm_remove_n_id)
-        if hmm_replace_match_n_id in hmm_outgoing_n_ids:
-            hmm_outgoing_n_ids.add(hmm_replace_match_n_id)
-        # Replace with I11
-        hmm_bottom_left_n_id = 'D', v_idx + 1, w_idx
-        hmm_replace_insert_n_id = 'I', v_idx + 1, w_idx + 1
-        transition_probabilities[hmm_replace_insert_n_id] = removed_tp.copy()
-        emission_probabilities[hmm_replace_insert_n_id] = removed_ep.copy()
-        transition_probabilities[hmm_bottom_left_n_id][hmm_replace_insert_n_id] = transition_probabilities[
-            hmm_bottom_left_n_id].pop(hmm_remove_n_id)
-        if hmm_replace_insert_n_id in hmm_outgoing_n_ids:
-            hmm_outgoing_n_ids.add(hmm_replace_insert_n_id)
+    hmm_outgoing_n_ids = set()
+    # Make sure top-left exists
+    if hmm_top_left_n_id not in transition_probabilities:
+        transition_probabilities[hmm_top_left_n_id] = {}
+        emission_probabilities[hmm_top_left_n_id] = {}
+    # From top-left, go right (gap)
+    if v_idx < v_max_idx:
+        hmm_to_n_id = 'D', v_idx + 1, w_idx
+        inject_non_emittable(
+            transition_probabilities,
+            emission_probabilities,
+            hmm_top_left_n_id,
+            hmm_to_n_id,
+            hmm_outgoing_n_ids
+        )
+        # From top-left, after going right (gap), go downward (emit)
+        if w_idx < w_max_idx:
+            hmm_from_n_id = hmm_to_n_id
+            hmm_to_n_id = 'I', v_idx + 1, w_idx + 1
+            inject_emitable(
+                transition_probabilities,
+                emission_probabilities,
+                hmm_from_n_id,
+                hmm_to_n_id,
+                w_symbol,
+                hmm_outgoing_n_ids
+            )
+    # From top-left, go downward (emit)
+    if w_idx < w_max_idx:
+        hmm_to_n_id = 'I', v_idx, w_idx + 1
+        inject_emitable(
+            transition_probabilities,
+            emission_probabilities,
+            hmm_top_left_n_id,
+            hmm_to_n_id,
+            w_symbol,
+            hmm_outgoing_n_ids
+        )
+        # From top-left, after going downward (emit), go right (gap)
+        if v_idx < v_max_idx:
+            hmm_from_n_id = hmm_to_n_id
+            hmm_to_n_id = 'D', v_idx + 1, w_idx + 1
+            inject_non_emittable(
+                transition_probabilities,
+                emission_probabilities,
+                hmm_from_n_id,
+                hmm_to_n_id,
+                hmm_outgoing_n_ids
+            )
+    # From top-left, go diagonal (emit)
+    if v_idx < v_max_idx and w_idx < w_max_idx:
+        hmm_to_n_id = 'M', v_idx + 1, w_idx + 1
+        inject_emitable(
+            transition_probabilities,
+            emission_probabilities,
+            hmm_top_left_n_id,
+            hmm_to_n_id,
+            w_symbol,
+            hmm_outgoing_n_ids
+        )
+    # Add fake bottom-right emission (if it's been asked for)
+    if fake_bottom_right_emission_symbol is not None:
+        hmm_bottom_right_n_id_final = 'T', v_idx + 1, w_idx + 1
+        hmm_bottom_right_n_ids = {
+            ('M', v_idx + 1, w_idx + 1),
+            ('D', v_idx + 1, w_idx + 1),
+            ('I', v_idx + 1, w_idx + 1)
+        }
+        for hmm_bottom_right_n_id in hmm_bottom_right_n_ids:
+            if hmm_bottom_right_n_id in hmm_outgoing_n_ids:
+                inject_emitable(
+                    transition_probabilities,
+                    emission_probabilities,
+                    hmm_bottom_right_n_id,
+                    hmm_bottom_right_n_id_final,
+                    fake_bottom_right_emission_symbol,
+                    hmm_outgoing_n_ids
+                )
+                hmm_outgoing_n_ids.remove(hmm_bottom_right_n_id)
     # Return
     return hmm_outgoing_n_ids
 # MARKDOWN_W_SQUARE
