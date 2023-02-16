@@ -21912,7 +21912,7 @@ Algorithms/Sequence Alignment/Multiple Alignment_TOPIC
 This algorithm deviates from the one in the Pevzner book because the one in the Pevzner book is poorly explained and I didn't quite understand what it was doing (even though I did all the challenge problems). I reasoned about what's going on here myself.
 ```
 
-**WHAT**: A profile HMM is an HMM that tests a sequence against a known family of sequences that already been aligned togethere, called a profile. In this case, testing means that the HMM computes a probability for how related the sequence is to the family and shows what its alignment might be if it were included in the alignment. For example, imagine the following profile of DNA sequences...
+**WHAT**: A profile HMM is an HMM that tests a sequence against a known family of sequences that have already been aligned together, called a profile. In this case, testing means that the HMM computes a probability for how related the sequence is to the family and shows what its alignment might be if it were included in the alignment. For example, imagine the following profile of DNA sequences...
 
 | 0 | 1 | 2 | 3 | 4 |
 |---|---|---|---|---|
@@ -22127,7 +22127,7 @@ column_removal_threshold: 0.59
 Recall that, in the sequence alignment HMM, each node is a hidden state and each edge is a hidden state transition. This section is telling you how to define hidden state emission probabilities. Recall that a symbol emission happens *after* a transition (emits from the hidden state at the destination of the transition), so this section is tracking emissions by the destination of the edge.
 ```
 
-Similar reasoning applies to emission probabilities. For each row in the alignments happening above, count up the symbol emission from each incoming edge grouped by the direction of that edge: Right vs diagonal vs down (across all alignments). For example, for the second row of nodes, incoming edges ...
+Similar reasoning applies to emission probabilities. For each row in the alignments happening above, count up the symbol emission happening at the end of each incoming edge, grouped by the direction of that incoming edge: Coming from right vs coming in diagonal vs coming down (across all alignments). For example, for the second row of nodes, incoming edges ...
 
  * pointing right (insertions) emit: A, A, C, C
  * pointing diagonally (matches) emit: T, T, T, and T 
@@ -22137,6 +22137,10 @@ To determine the emission probabilities coming from nodes in a specific row, sim
 
  * A appears two times out of four, 2/4=0.5
  * C appears two times out of four, 2/4=0.25
+
+```{note}
+Should you not be factoring in scoring somehow as well? For example, if you're calculating symbol emission probabilities for proteins, the BLOSUM / PAM scoring matrices tell you how likely it is for one amino acid to be replaced by another -- should be mixing this into the symbol emisison probabilities?
+```
 
 ```{output}
 ch10_code/src/profile_hmm/ProfileToHMMProbabilities.py
@@ -23518,6 +23522,8 @@ first_indexes_checkpoint_n: 20
    This relates to the idea above (soft hierarchical clustering) -- You may be able to identify outliers using soft hierarchical clustering using this (e.g. the probability of being a part of some internal node is way farther than any of the other leaf nodes).
 
  * Checkpointed BWT algorithm in C++ - Implement it in modern C++ using concepts, as a generic library
+
+ * Profile HMMs for protiens that factor in BLOSUM / PAM scoring matrix - Build a basic profile HMM (as discussed in the profile HMM section), but the symbol emission probabilities for the profile HMM should factor in BLOSUM / PAM substitution likelihoods into those symbol emission probabilities. For example, a profile of protein sequences might have a column that contains all As. Even though the other amino acids don't appear in the column (R, N, D, etc..), each will still have a small non-zero probability of symbol emission once those probabilities have been normalized via psuedocounts. This is saying that the those small probabilities should increase / decrease based on something like BLOSUM62. For example, A is much more probable to be replaced by C than it is by W (0 score vs -3 score) -- that should be reflected in the symbol emission porbabilities.
 
 # Terminology
 
@@ -28330,6 +28336,31 @@ first_indexes_checkpoint_n: 20
 
    ```{note}
    See Algorithms/Discriminator Hidden Markov Models/Baum-Welch Learning_TOPIC for more information.
+   ```
+
+ * `{bm} profile HMM` - An HMM designed to test sequences against a known family of sequences that have already been aligned together, called a profile. In this case, testing means that the HMM computes a probability for how related the sequence is to the family and shows what its alignment might be if it were included in the alignment. For example, imagine the following profile of sequences...
+
+   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+   |---|---|---|---|---|---|---|---|---|
+   | - | T | - | R | E | L | L | O | - |
+   | - | - | - | M | E | L | L | O | W |
+   | Y | - | - | - | E | L | L | O | W |
+   | - | - | - | B | E | L | L | O | W |
+   | - | - | H | - | E | L | L | O | - |
+   | O | T | H | - | E | L | L | O | - |
+
+   The profile HMM for the profile above allows you test new sequences against this profile to determine how related they are and in what way. For example, given the test sequence [H, E, L, O, S], the profile HMM will tell you...
+
+   * how probable it is that the sequence is part of the same family of sequences that make up the profile.
+   * how it might align had it been included in the profile.
+
+   A profile HMM is essentially a re-formulation of a sequence alignment, where the
+   
+   * structure of the profile HMM is similar to an alignment graph.
+   * hidden path through the profile HMM is similar to an alignment path.
+
+   ```{note}
+   See Algorithms/Profile Hidden Markov Models_TOPIC for more information.
    ```
 
 `{bm-ignore} !!([\w\-]+?)!!/i`

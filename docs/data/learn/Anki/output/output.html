@@ -5092,6 +5092,102 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <li>
 <p><span class="anki-answerpattern" data-pattern="Baum-Welch learning"></span> - A Monte Carlo algorithm that uses confidence measurements to derive an HMM's probabilities from an emitted sequence.</p>
 </li>
+<li>
+<p><span class="anki-answerpattern" data-pattern="profile HMM"></span> - An HMM designed to test sequences against a known family of sequences that have already been aligned together, called a profile. In this case, testing means that the HMM computes a probability for how related the sequence is to the family and shows what its alignment might be if it were included in the alignment. For example, imagine the following profile of sequences...</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-</td>
+<td>T</td>
+<td>-</td>
+<td>R</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>-</td>
+</tr>
+<tr>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>M</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>W</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>W</td>
+</tr>
+<tr>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>B</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>W</td>
+</tr>
+<tr>
+<td>-</td>
+<td>-</td>
+<td>H</td>
+<td>-</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>-</td>
+</tr>
+<tr>
+<td>O</td>
+<td>T</td>
+<td>H</td>
+<td>-</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>The profile HMM for the profile above allows you test new sequences against this profile to determine how related they are and in what way. For example, given the test sequence [H, E, L, O, S], the profile HMM will tell you...</p>
+<ul>
+<li>how probable it is that the sequence is part of the same family of sequences that make up the profile.</li>
+<li>how it might align had it been included in the profile.</li>
+</ul>
+<p>A profile HMM is essentially a re-formulation of a sequence alignment, where the</p>
+<ul>
+<li>structure of the profile HMM is similar to an alignment graph.</li>
+<li>hidden path through the profile HMM is similar to an alignment path.</li>
+</ul>
+</li>
 </ul>
 
         </body></html>

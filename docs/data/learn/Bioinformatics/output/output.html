@@ -24967,7 +24967,7 @@ pseudocount: 0.0001
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>This section may seem useless, but it sets the foundation for a different type of <a href="#BM_(HMM)%2F">HMM</a> discussed later on: profile <a href="#BM_(HMM)%2F">HMM</a>s. Also, it may be useful for discriminator <a href="#BM_(HMM)%2F">HMM</a>s as these <a href="#BM_(non-emitting%20hidden%20state%7Csilent%20hidden%20state)%2Fi">non-emitting hidden state</a>s seem to kinda resemble nodes in a feed-forward neural network? Maybe they could potentially build out higher-order logic chains (e.g. AND, OR, NOT, etc..)?</p>
+<p>This section may seem useless, but it sets the foundation for a different type of <a href="#BM_(HMM)%2F">HMM</a> discussed later on: <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a>s. Also, it may be useful for discriminator <a href="#BM_(HMM)%2F">HMM</a>s as these <a href="#BM_(non-emitting%20hidden%20state%7Csilent%20hidden%20state)%2Fi">non-emitting hidden state</a>s seem to kinda resemble nodes in a feed-forward neural network? Maybe they could potentially build out higher-order logic chains (e.g. AND, OR, NOT, etc..)?</p>
 <p>I may be wrong about this.</p>
 </div>
 <p><strong>ALGORITHM</strong>:</p>
@@ -29153,7 +29153,7 @@ emission_len: 3
 </tr>
 </tbody>
 </table>
-<p>The <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> above represents a family of <a href="#BM_(sequence)%2Fi">sequence</a>s, which in this case is a small set of words that rhyme together. Given a never before seen word, a profile <a href="#BM_(HMM)%2F">HMM</a> for the above alignment allows for ...</p>
+<p>The <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> above represents a family of <a href="#BM_(sequence)%2Fi">sequence</a>s, which in this case is a small set of words that rhyme together. Given a never before seen word, a <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a> for the above alignment allows for ...</p>
 <ul>
 <li>estimating how related the word is to the multiple alignment (e.g. does it look like it rhymes).</li>
 <li>estimating how that word would align if it were included in the multiple alignment (e.g. estimate if the suffix roughly matches up with "ELLO").</li>
@@ -29165,7 +29165,7 @@ emission_len: 3
 <li>How does FELLOW relate to the multiple alignment?</li>
 <li>How does SELLOUTS relate to the multiple alignment?</li>
 </ul>
-<p>Generally, profile <a href="#BM_(HMM)%2F">HMM</a>s are used to quickly test a never before seen <a href="#BM_(sequence)%2Fi">sequence</a> against a known <a href="#BM_(sequence)%2Fi">sequence</a> family. The example above uses English language words that rhyme together, but in a biological context the <a href="#BM_(sequence)%2Fi">sequence</a>s would likely be an alignment of ...</p>
+<p>Generally, <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a>s are used to quickly test a never before seen <a href="#BM_(sequence)%2Fi">sequence</a> against a known <a href="#BM_(sequence)%2Fi">sequence</a> family. The example above uses English language words that rhyme together, but in a biological context the <a href="#BM_(sequence)%2Fi">sequence</a>s would likely be an alignment of ...</p>
 <ul>
 <li>homologous proteins.</li>
 <li>homologous <a href="#BM_(%5Cbgenes%5Cb%7C%5Cbgene%5Cb)%2Fi">genes</a>.</li>
@@ -29175,7 +29175,7 @@ emission_len: 3
 <a name="H_Single%20Element%20Sequence%20Alignment%20HMM"></a><h3>Single Element Sequence Alignment HMM</h3>
 <p><a name="BM_(Algorithms%5C%2FProfile%20Hidden%20Markov%20Models%2FSingle%20Element%20Sequence%20Alignment%20HMM)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>WHAT</strong>: Re-formulate a pair-wise <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> as an <a href="#BM_(HMM)%2F">HMM</a>.</p>
-<p><strong>WHY</strong>: This builds the foundation for computing profile <a href="#BM_(HMM)%2F">HMM</a>s.</p>
+<p><strong>WHY</strong>: This builds the foundation for computing <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a>s.</p>
 <a name="H_Emit-Delete%20Algorithm"></a><h4>Emit-Delete Algorithm</h4>
 <p><a name="BM_(Algorithms%5C%2FProfile%20Hidden%20Markov%20Models%2FSingle%20Element%20Sequence%20Alignment%20HMM%2FEmit-Delete%20Algorithm)_TOPIC%2F"></a><strong></strong></p>
 <p><strong>ALGORITHM</strong>:</p>
@@ -29969,7 +29969,7 @@ pseudocount: 0.0001
 </ul>
 </div>
 <p><strong>WHAT</strong>: Re-formulate a pair-wise <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> as an <a href="#BM_(HMM)%2F">HMM</a>.</p>
-<p><strong>WHY</strong>: This builds the foundation for computing profile <a href="#BM_(HMM)%2F">HMM</a>s.</p>
+<p><strong>WHY</strong>: This builds the foundation for computing <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a>s.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>This algorithm extends the algorithm from the prerequiste section to align <a href="#BM_(sequence)%2Fi">sequence</a>s with more than one element. Consider the <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> [h, i] vs [q, i]). To re-formulate its <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> as an <a href="#BM_(HMM)%2F">HMM</a>, simply chain the "square" for each element alignment pair together, similar to how an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a> chains "squares" for each element alignment pair together.</p>
 <p>Except for the bottom-right "square" in the chain, each squares in an <a href="#BM_(HMM)%2F">HMM</a> should omit its T <a href="#BM_(hidden%20state)%2Fi">hidden state</a>. The reason is that the T <a href="#BM_(hidden%20state)%2Fi">hidden state</a> is intended to represent the <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>'s sink, which exists at the bottom-right of the <a href="#BM_(HMM)%2F">HMM</a> / <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>.</p>
@@ -30220,7 +30220,7 @@ pseudocount: 0.0001
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This algorithm deviates from the one in the Pevzner book because the one in the Pevzner book is poorly explained and I didn't quite understand what it was doing (even though I did all the challenge problems). I reasoned about what's going on here myself.</p>
 </div>
-<p><strong>WHAT</strong>: A profile <a href="#BM_(HMM)%2F">HMM</a> is an <a href="#BM_(HMM)%2F">HMM</a> that tests a <a href="#BM_(sequence)%2Fi">sequence</a> against a known family of <a href="#BM_(sequence)%2Fi">sequence</a>s that already been aligned togethere, called a profile. In this case, testing means that the <a href="#BM_(HMM)%2F">HMM</a> computes a probability for how related the <a href="#BM_(sequence)%2Fi">sequence</a> is to the family and shows what its alignment might be if it were included in the alignment. For example, imagine the following profile of DNA <a href="#BM_(sequence)%2Fi">sequence</a>s...</p>
+<p><strong>WHAT</strong>: A <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a> is an <a href="#BM_(HMM)%2F">HMM</a> that tests a <a href="#BM_(sequence)%2Fi">sequence</a> against a known family of <a href="#BM_(sequence)%2Fi">sequence</a>s that have already been aligned together, called a profile. In this case, testing means that the <a href="#BM_(HMM)%2F">HMM</a> computes a probability for how related the <a href="#BM_(sequence)%2Fi">sequence</a> is to the family and shows what its alignment might be if it were included in the alignment. For example, imagine the following profile of DNA <a href="#BM_(sequence)%2Fi">sequence</a>s...</p>
 <table>
 <thead>
 <tr>
@@ -30274,9 +30274,9 @@ pseudocount: 0.0001
 <li>how probable it is that the <a href="#BM_(sequence)%2Fi">sequence</a> is part of the same family of <a href="#BM_(sequence)%2Fi">sequence</a>s that make up the profile.</li>
 <li>how it might align had it been included in the profile..</li>
 </ul>
-<p><strong>WHY</strong>: A profile <a href="#BM_(HMM)%2F">HMM</a> provides for a quick-and-dirty mechanism to determine if a new <a href="#BM_(sequence)%2Fi">sequence</a> is related the existing family of <a href="#BM_(sequence)%2Fi">sequence</a>s that make up the profile.</p>
+<p><strong>WHY</strong>: A <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a> provides for a quick-and-dirty mechanism to determine if a new <a href="#BM_(sequence)%2Fi">sequence</a> is related the existing family of <a href="#BM_(sequence)%2Fi">sequence</a>s that make up the profile.</p>
 <p>For example, imagine that you have 5 <a href="#BM_(sequence)%2Fi">sequence</a>s that you know are definitely in the same family and so you align them together (such as the 5 <a href="#BM_(sequence)%2Fi">sequence</a>s in the profile above). You now have a 6th <a href="#BM_(sequence)%2Fi">sequence</a> that you want to test against the family. Normally, what you would do is re-do the alignment with the 6th <a href="#BM_(sequence)%2Fi">sequence</a> included and see how it lines up. The problem is that a <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>'s computational and memory requirements grow exponentially as you include more <a href="#BM_(sequence)%2Fi">sequence</a>s, so once you add that 6th <a href="#BM_(sequence)%2Fi">sequence</a>, you've massively increased the time it takes to get a result.</p>
-<p>Now, imagine that instead of having a single 6th <a href="#BM_(sequence)%2Fi">sequence</a> to test against the profile, you have 5000 different variations of that 6th <a href="#BM_(sequence)%2Fi">sequence</a>. This is where profile <a href="#BM_(HMM)%2F">HMM</a>s come in handy. It performs a quick-and-dirty test against a known profile and gives you and gives you a probability of relatedness and its potential alignment within the profile.</p>
+<p>Now, imagine that instead of having a single 6th <a href="#BM_(sequence)%2Fi">sequence</a> to test against the profile, you have 5000 different variations of that 6th <a href="#BM_(sequence)%2Fi">sequence</a>. This is where <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a>s come in handy. It performs a quick-and-dirty test against a known profile and gives you and gives you a probability of relatedness and its potential alignment within the profile.</p>
 <p><strong>ALGORITHM</strong>:</p>
 <p>This algorithm "massages" a <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> (profile) to extract information out of it. Consider the following profile.</p>
 <table>
@@ -30749,7 +30749,7 @@ column_removal_threshold: 0.59
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Recall that, in the <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a> <a href="#BM_(HMM)%2F">HMM</a>, each node is a <a href="#BM_(hidden%20state)%2Fi">hidden state</a> and each edge is a <a href="#BM_(hidden%20state)%2Fi">hidden state</a> transition. This section is telling you how to define <a href="#BM_(hidden%20state)%2Fi">hidden state</a> emission probabilities. Recall that a <a href="#BM_(symbol%20emission%7Cemitted%20symbol)%2Fi">symbol emission</a> happens <em>after</em> a transition (emits from the <a href="#BM_(hidden%20state)%2Fi">hidden state</a> at the destination of the transition), so this section is tracking emissions by the destination of the edge.</p>
 </div>
-<p>Similar reasoning applies to emission probabilities. For each row in the alignments happening above, count up the <a href="#BM_(symbol%20emission%7Cemitted%20symbol)%2Fi">symbol emission</a> from each incoming edge grouped by the direction of that edge: Right vs diagonal vs down (across all alignments). For example, for the second row of nodes, incoming edges ...</p>
+<p>Similar reasoning applies to emission probabilities. For each row in the alignments happening above, count up the <a href="#BM_(symbol%20emission%7Cemitted%20symbol)%2Fi">symbol emission</a> happening at the end of each incoming edge, grouped by the direction of that incoming edge: Coming from right vs coming in diagonal vs coming down (across all alignments). For example, for the second row of nodes, incoming edges ...</p>
 <ul>
 <li>pointing right (insertions) emit: A, A, C, C</li>
 <li>pointing diagonally (matches) emit: T, T, T, and T</li>
@@ -30760,6 +30760,10 @@ column_removal_threshold: 0.59
 <li>A appears two times out of four, 2/4=0.5</li>
 <li>C appears two times out of four, 2/4=0.25</li>
 </ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Should you not be factoring in scoring somehow as well? For example, if you're calculating <a href="#BM_(symbol%20emission%7Cemitted%20symbol)%2Fi">symbol emission</a> probabilities for proteins, the <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> / <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> scoring matrices tell you how likely it is for one <a href="#BM_(amino%20acid)%2Fi">amino acid</a> to be replaced by another -- should be mixing this into the symbol emisison probabilities?</p>
+</div>
 <p><a href="ch10_code/src/profile_hmm/ProfileToHMMProbabilities.py">ch10_code/src/profile_hmm/ProfileToHMMProbabilities.py</a> (lines 85 to 101):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">profile_to_emission_probabilities</span>(<span class="hljs-params">profile: Profile[ELEM]</span>):
     stable_row_cnt = profile.row_count
@@ -30808,11 +30812,11 @@ column_removal_threshold: 0.59
 <p>Once the <a href="#BM_(hidden%20state)%2Fi">hidden state</a> transition probabilities and <a href="#BM_(symbol%20emission%7Cemitted%20symbol)%2Fi">symbol emission</a> probabilities are assigned to the <a href="#BM_(HMM)%2F">HMM</a> structure, the <a href="#BM_(Viterbi%20algorithm%7CViterbi%20graph%7CViterbi)%2Fi">Viterbi algorithm</a> may be used to find the most likely <a href="#BM_(hidden%20path)%2Fi">hidden path</a>, which corresponds to the <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>. To calculate the most probable <a href="#BM_(hidden%20path)%2Fi">hidden path</a> in an <a href="#BM_(HMM)%2F">HMM</a> (<a href="#BM_(hidden%20path)%2Fi">hidden path</a> with maximum product), you need to use the <a href="#BM_(Viterbi%20algorithm%7CViterbi%20graph%7CViterbi)%2Fi">Viterbi algorithm</a>. If the profile alignment's most probable <a href="#BM_(hidden%20path)%2Fi">hidden path</a> / <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> has a probability equal to or greater than some minimum, the <a href="#BM_(sequence)%2Fi">sequence</a> is deemed to be related to the family of <a href="#BM_(sequence)%2Fi">sequence</a>s in the profile.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>How do you determine what that minimum is? The Pevzner book doesn't say, but one idea I had is to take each <a href="#BM_(sequence)%2Fi">sequence</a> in the profile and align it against the profile <a href="#BM_(HMM)%2F">HMM</a>, then aggregate their most probable <a href="#BM_(hidden%20path)%2Fi">hidden path</a> / <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> probabilities (e.g. take the minimum or average it out or something).</p>
+<p>How do you determine what that minimum is? The Pevzner book doesn't say, but one idea I had is to take each <a href="#BM_(sequence)%2Fi">sequence</a> in the profile and align it against the <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a>, then aggregate their most probable <a href="#BM_(hidden%20path)%2Fi">hidden path</a> / <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a> probabilities (e.g. take the minimum or average it out or something).</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Given a profile <a href="#BM_(HMM)%2F">HMM</a>, you can probably build a <a href="#BM_(consensus%20string%7Cconsensus%20sequence)%2Fi">consensus string</a> for it using the most probable <a href="#BM_(symbol%20emission%20sequence%7Cemission%20sequence%7Cemitted%20sequence)%2Fi">emitted sequence</a> algorithm (<a href="#BM_(Algorithms%5C%2FDiscriminator%20Hidden%20Markov%20Models%2FMost%20Probable%20Emitted%20Sequence)_TOPIC%2F">Algorithms/Discriminator Hidden Markov Models/Most Probable Emitted Sequence</a>). If I recall correctly, I tried to modify the algorithm to work with <a href="#BM_(hidden%20state)%2Fi">hidden state</a>s, so it should work with profile <a href="#BM_(HMM)%2F">HMM</a>s.</p>
+<p>Given a <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a>, you can probably build a <a href="#BM_(consensus%20string%7Cconsensus%20sequence)%2Fi">consensus string</a> for it using the most probable <a href="#BM_(symbol%20emission%20sequence%7Cemission%20sequence%7Cemitted%20sequence)%2Fi">emitted sequence</a> algorithm (<a href="#BM_(Algorithms%5C%2FDiscriminator%20Hidden%20Markov%20Models%2FMost%20Probable%20Emitted%20Sequence)_TOPIC%2F">Algorithms/Discriminator Hidden Markov Models/Most Probable Emitted Sequence</a>). If I recall correctly, I tried to modify the algorithm to work with <a href="#BM_(hidden%20state)%2Fi">hidden state</a>s, so it should work with <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a>s.</p>
 </div>
 <p><a href="ch10_code/src/profile_hmm/HMMProfileAlignment.py">ch10_code/src/profile_hmm/HMMProfileAlignment.py</a> (lines 85 to 155):</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">hmm_profile_alignment</span>(<span class="hljs-params">
@@ -31947,6 +31951,9 @@ first_indexes_checkpoint_n: 20
 </li>
 <li>
 <p>Checkpointed <a href="#BM_(BWT)%2F">BWT</a> algorithm in C++ - Implement it in modern C++ using concepts, as a generic library</p>
+</li>
+<li>
+<p><a href="#BM_(profile%20HMM)%2Fi">Profile HMM</a>s for protiens that factor in <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> / <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> scoring matrix - Build a basic <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a> (as discussed in the <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a> section), but the <a href="#BM_(symbol%20emission%7Cemitted%20symbol)%2Fi">symbol emission</a> probabilities for the <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a> should factor in <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a> / <a href="#BM_%5Cb(PAM)%5Cd*%5Cb%2F">PAM</a> substitution likelihoods into those <a href="#BM_(symbol%20emission%7Cemitted%20symbol)%2Fi">symbol emission</a> probabilities. For example, a profile of protein <a href="#BM_(sequence)%2Fi">sequence</a>s might have a column that contains all As. Even though the other <a href="#BM_(amino%20acid)%2Fi">amino acid</a>s don't appear in the column (R, N, D, etc..), each will still have a small non-zero probability of <a href="#BM_(symbol%20emission%7Cemitted%20symbol)%2Fi">symbol emission</a> once those probabilities have been normalized via psuedocounts. This is saying that the those small probabilities should increase / decrease based on something like <a href="#BM_%5Cb(BLOSUM)%5Cd*%5Cb%2F">BLOSUM</a>62. For example, A is much more probable to be replaced by C than it is by W (0 score vs -3 score) -- that should be reflected in the <a href="#BM_(symbol%20emission%7Cemitted%20symbol)%2Fi">symbol emission</a> porbabilities.</p>
 </li>
 </ul>
 <a name="H_Terminology"></a><h1>Terminology</h1>
@@ -36939,6 +36946,106 @@ M1001 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlis
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>See <a href="#BM_(Algorithms%5C%2FDiscriminator%20Hidden%20Markov%20Models%2FBaum-Welch%20Learning)_TOPIC%2F">Algorithms/Discriminator Hidden Markov Models/Baum-Welch Learning</a> for more information.</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(profile%20HMM)%2Fi"></a><strong>profile HMM</strong> - An <a href="#BM_(HMM)%2F">HMM</a> designed to test <a href="#BM_(sequence)%2Fi">sequence</a>s against a known family of <a href="#BM_(sequence)%2Fi">sequence</a>s that have already been aligned together, called a profile. In this case, testing means that the <a href="#BM_(HMM)%2F">HMM</a> computes a probability for how related the <a href="#BM_(sequence)%2Fi">sequence</a> is to the family and shows what its alignment might be if it were included in the alignment. For example, imagine the following profile of <a href="#BM_(sequence)%2Fi">sequence</a>s...</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-</td>
+<td>T</td>
+<td>-</td>
+<td>R</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>-</td>
+</tr>
+<tr>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>M</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>W</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>W</td>
+</tr>
+<tr>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>B</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>W</td>
+</tr>
+<tr>
+<td>-</td>
+<td>-</td>
+<td>H</td>
+<td>-</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>-</td>
+</tr>
+<tr>
+<td>O</td>
+<td>T</td>
+<td>H</td>
+<td>-</td>
+<td>E</td>
+<td>L</td>
+<td>L</td>
+<td>O</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>The <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a> for the profile above allows you test new <a href="#BM_(sequence)%2Fi">sequence</a>s against this profile to determine how related they are and in what way. For example, given the test <a href="#BM_(sequence)%2Fi">sequence</a> [H, E, L, O, S], the <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a> will tell you...</p>
+<ul>
+<li>how probable it is that the <a href="#BM_(sequence)%2Fi">sequence</a> is part of the same family of <a href="#BM_(sequence)%2Fi">sequence</a>s that make up the profile.</li>
+<li>how it might align had it been included in the profile.</li>
+</ul>
+<p>A <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a> is essentially a re-formulation of a <a href="#BM_(sequence%20alignment)%2Fi">sequence alignment</a>, where the</p>
+<ul>
+<li>structure of the <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a> is similar to an <a href="#BM_(alignment%20graph%7Csequence%20alignment%20graph)%2Fi">alignment graph</a>.</li>
+<li><a href="#BM_(hidden%20path)%2Fi">hidden path</a> through the <a href="#BM_(profile%20HMM)%2Fi">profile HMM</a> is similar to an <a href="#BM_(sequence%20alignment%20graph%20path%7Csequence%20alignment%20path%7Calignment%20graph%20path%7Calignment%20path)%2Fi">alignment path</a>.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>See <a href="#BM_(Algorithms%5C%2FProfile%20Hidden%20Markov%20Models)_TOPIC%2F">Algorithms/Profile Hidden Markov Models</a> for more information.</p>
 </div>
 </li>
 </ul>

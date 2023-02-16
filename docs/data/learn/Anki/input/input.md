@@ -4881,3 +4881,24 @@ ankiListRandomSelect - When used in a list item, the parent list will keep only 
 
 
  * `{ankiAnswer} Baum-Welch learning` - A Monte Carlo algorithm that uses confidence measurements to derive an HMM's probabilities from an emitted sequence.
+
+ * `{ankiAnswer} profile HMM` - An HMM designed to test sequences against a known family of sequences that have already been aligned together, called a profile. In this case, testing means that the HMM computes a probability for how related the sequence is to the family and shows what its alignment might be if it were included in the alignment. For example, imagine the following profile of sequences...
+
+   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+   |---|---|---|---|---|---|---|---|---|
+   | - | T | - | R | E | L | L | O | - |
+   | - | - | - | M | E | L | L | O | W |
+   | Y | - | - | - | E | L | L | O | W |
+   | - | - | - | B | E | L | L | O | W |
+   | - | - | H | - | E | L | L | O | - |
+   | O | T | H | - | E | L | L | O | - |
+
+   The profile HMM for the profile above allows you test new sequences against this profile to determine how related they are and in what way. For example, given the test sequence [H, E, L, O, S], the profile HMM will tell you...
+
+   * how probable it is that the sequence is part of the same family of sequences that make up the profile.
+   * how it might align had it been included in the profile.
+
+   A profile HMM is essentially a re-formulation of a sequence alignment, where the
+   
+   * structure of the profile HMM is similar to an alignment graph.
+   * hidden path through the profile HMM is similar to an alignment path.
