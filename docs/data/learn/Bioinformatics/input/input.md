@@ -21063,7 +21063,7 @@ Sequence alignments are expensive to compute, especially when there are more tha
 
 The sequence alignment above represents a family of sequences, which in this case is a small set of words that rhyme together. Given a never before seen word, a profile HMM for the above alignment allows for ...
 
- * estimating how related the word is to  that word is related to the multiple alignment (e.g. does it look like it rhymes).
+ * estimating how related the word is to the multiple alignment (e.g. does it look like it rhymes).
  * estimating how that word would align if it were included in the multiple alignment (e.g. estimate if the suffix roughly matches up with "ELLO").
 
 Since multiple alignments are computationally expensive to perform, the HMM profile provides for a quick-and-dirty mechanism to determine if a new sequence is related to some existing family or not. For example, consider the word the example above with the following words:
@@ -21124,7 +21124,7 @@ Any path from the top-left node (source) to the bottom-right node (sink) represe
 | - | n |
 | a | - |
 
-To re-formulate the alignment graph above as a HMM, think of the paths through the alignment graph as emitting symbols in a sequence rather than alinging two sequences together. For example, from the perspective of the first sequence \[n], each edge that goes ...
+To re-formulate the alignment graph above as a HMM, think of the paths through the alignment graph as emitting symbols in a sequence rather than aligning two sequences together. For example, from the first sequence \[n]'s perspective, each edge that goes ...
 
  * down represents a gap, which can be represented by a non-emitting hidden state.
  * right represents an emission, which can be represented by an emitting hidden state.
@@ -21167,7 +21167,7 @@ a-        a          -a                         S -> E11 -> T:        n
 ```
 
 ```{note}
-The alignment graph and HMM diagrams in the example above have intentially left out weights.
+The alignment graph and HMM diagrams in the example above have intentionally left out weights.
 ```
 
 In the HMM, the ...
@@ -21257,7 +21257,7 @@ The alignment graph and HMM diagrams in the example above have intentially left 
 ```
 
 ```{note}
-This is showing the code to do it all again from the second sequence \[a]'s perspective. However, an easier way to do this would just be to use the same code above but swap the order of sequences. Instead of submitting as (\[n], \[a]), submit as (\[a], \[n]).
+This is showing the code to do it all again from the second sequence \[a]'s perspective. However, an easier way to do this would be to use the same code above but swap the order of sequences. Instead of submitting as (\[n], \[a]), submit as (\[a], \[n]).
 ```
 
 ```{output}
@@ -21909,7 +21909,7 @@ Algorithms/Sequence Alignment/Multiple Alignment_TOPIC
 ```
 
 ```{note}
-This algorithm deviates from the one in the Pevzner book because it's poorly explained and I didn't quite understand what it was doing (even though I did all the challenge problems). I reasoned about what's going on here myself.
+This algorithm deviates from the one in the Pevzner book because the one in the Pevzner book is poorly explained and I didn't quite understand what it was doing (even though I did all the challenge problems). I reasoned about what's going on here myself.
 ```
 
 **WHAT**: A profile HMM is an HMM that tests a sequence against a known family of sequences that already been aligned togethere, called a profile. In this case, testing means that the HMM computes a probability for how related the sequence is to the family and shows what its alignment might be if it were included in the alignment. For example, imagine the following profile of DNA sequences...
@@ -21927,7 +21927,7 @@ This algorithm will lets you test new DNA sequences against this profile to dete
  * how probable it is that the sequence is part of the same family of sequences that make up the profile.
  * how it might align had it been included in the profile..
 
-**WHY**: A profile HMM provides for a quick-and-dirty mechanism to determine if a new sequence is related the the existing family of sequences that make up the profile.
+**WHY**: A profile HMM provides for a quick-and-dirty mechanism to determine if a new sequence is related the existing family of sequences that make up the profile.
 
 For example, imagine that you have 5 sequences that you know are definitely in the same family and so you align them together (such as the 5 sequences in the profile above). You now have a 6th sequence that you want to test against the family. Normally, what you would do is re-do the alignment with the 6th sequence included and see how it lines up. The problem is that a sequence alignment's computational and memory requirements grow exponentially as you include more sequences, so once you add that 6th sequence, you've massively increased the time it takes to get a result.
 
@@ -21948,7 +21948,7 @@ This algorithm "massages" a sequence alignment (profile) to extract information 
 Begin by classifying columns based on the number of gaps it has. If the number of gaps in a column is ...
 
  * more than some percentage threshold, it's classified as an insertion column.
- * not more than some percentage threshold, it's classified as an normal column.
+ * not more than some percentage threshold, it's classified as a normal column.
 
 This gap percentage threshold is defined by the user. The example above, once classified based on a 59% gap percentage threshold, is as follows.
 
@@ -21990,12 +21990,12 @@ alignment:
 column_removal_threshold: 0.59
 ```
 
-The classification and grouping happening allows you to convert the profile into a sequence alignment HMM, where the sequence alignment HMM tells you how "well" a new sequence measures up against the family of sequences in the profile. There are two parts to this:
+The classification and grouping described above allows you to convert the profile into a sequence alignment HMM, where the sequence alignment HMM tells you how "well" a new sequence measures up against the family of sequences in the profile. There are two parts to this:
 
  1. sequence alignment HMM structure.
  2. sequence alignment HMM probabilities.
 
-Defining the structure of the sequence alignment HMM is relatively straight forward. The profile itself is treated as a sequence, where each column in the profile is an element. However, only a profile's normal columns are allowed in the alignment. The reason for this is that a profile's normal columns represent highly stable columns of the alignment (low gap count), and as such matches should only happen against those highly stable columns.
+Defining the structure of the sequence alignment HMM is relatively straightforward. The profile itself is treated as a sequence, where each column in the profile is an element. However, only a profile's normal columns are allowed in the alignment. This is because a profile's normal columns represent highly stable columns of the alignment (low gap count), and as such matches should only happen against those highly stable columns.
 
 In the example above, the only stable column is column 2. Meaning, if you have a new sequence such as [A, C, C, T, T, G], the alignment would only happen against column 2.
 
@@ -22096,9 +22096,9 @@ Recall that, in the sequence alignment HMM, each node is a hidden state and each
 
 For each row in the alignments happening above, count up the outgoing edges going right vs diagonal vs down (across all alignments). For example, for the top-most row of nodes, there's a total of ...
 
- * 4 outgoing hiddens state transitions right (insertions)
- * 4 outgoing hiddens state transitions diagonal (matches)
- * 1 outgoing hiddens state transitions down (deletions)
+ * 4 outgoing hidden state transitions right (insertions)
+ * 4 outgoing hidden state transitions diagonal (matches)
+ * 1 outgoing hidden state transitions down (deletions)
 
 To determine the transition probabilities coming from nodes in a specific row, simply divide each row's outgoing edge counts by that row's total number of outgoing edges. For example, any transition coming from a node in the top-most row ...
 
@@ -22162,7 +22162,7 @@ How do you determine what that minimum is? The Pevzner book doesn't say, but one
 ```
 
 ```{note}
-Given a profile HMM, you can probably build a consensus string for it using the most probable emitted sequenec algorithm (Algorithms/Discriminator Hidden Markov Models/Most Probable Emitted Sequence_TOPIC). If I recall correctly, I tried to modify the algorithm to work with hidden states, so it should work with profile HMMs.
+Given a profile HMM, you can probably build a consensus string for it using the most probable emitted sequence algorithm (Algorithms/Discriminator Hidden Markov Models/Most Probable Emitted Sequence_TOPIC). If I recall correctly, I !!tried!! to modify the algorithm to work with hidden states, so it should work with profile HMMs.
 ```
 
 ```{output}
@@ -27907,7 +27907,7 @@ first_indexes_checkpoint_n: 20
    | 32              | 5              |
    | 64              | 6              |
 
- * `{bm} methylation` - The addition of a methyl group (CH3) to a cystine or guanine nucleotide.
+ * `{bm} methylation` - The addition of a methyl group (CH3) to a cytosine or guanine nucleotide.
 
    DNA methylation is an important part of cell development. Specifically, when a stem cell converts into a specialized cell (cell differentiation), DNA methylation is an important factor in the change:
    
@@ -27916,9 +27916,9 @@ first_indexes_checkpoint_n: 20
    
    DNA methylation is typically permanent (specialized cell cannot convert back to stem cell) and inherited during cell division, except in the case of zygote formation. Also, various cancers have been linked to both DNA hypermethylation and DNA hypomethylation.
 
-   When cystine goes through DNA methylation, it has a tendency to deaminate to thymine. However, DNA methylation is often suppressed in areas of DNA dubbed CG-islands, where CG appears more frequently than the rest of the genome.
+   When cytosine goes through DNA methylation, it has a tendency to deaminate to thymine. However, DNA methylation is often suppressed in areas of DNA dubbed CG-islands, where CG appears more frequently than the rest of the genome.
 
- * `{bm} CpG island/(C[p\-]?G island|C[p\-]?G site)/i` - Regions of DNA with a high frequency of cystine followed by guanine. The reverse complementing strand will have equal regions with equally high frequencies of guanine followed by cystine.
+ * `{bm} CpG island/(C[p\-]?G island|C[p\-]?G site)/i` - Regions of DNA with a high frequency of cytosine followed by guanine. The reverse complementing strand will have equal regions with equally high frequencies of guanine followed by cytosine.
 
  * `{bm} Hidden Markov Model` `{bm} /(HMM)/` - A model of a machine that outputs a sequence.
 
@@ -27967,17 +27967,17 @@ first_indexes_checkpoint_n: 20
    HMMs are often represented using HMM diagrams.
 
    ```{note}
-   The probabilities above are totally made up. The example machine above is a bad example to model as an HMM. Only two states and emitting a single nucleotide will result in a useless HMM model. The machine should be modeled as emitting 5-mers or something else and would likely need more than 2 states?
+   The probabilities above are totally made up. The example machine above is a bad example to model as an HMM. Only 2 hidden states and emitting a single nucleotide will result in a useless HMM model. The machine should be modeled as emitting 5-mers or something else and would likely need more than 2 hidden states?
    ```
 
  * `{bm} Hidden Markov Model diagram` `{bm} /(HMM diagram|HMM Diagram)/` - A visualization of an HMM as a directed graph.
  
-   * Solid nodes represent states.
-   * Solid edges represent state-state transitions.
+   * Solid nodes represent hidden states.
+   * Solid edges represent hidden state transitions.
    * Dashed nodes represent symbols.
-   * Dashed edges represent state-symbol emissions.
+   * Dashed edges represent symbol emissions.
 
-   Edges are labeled with the probability of the state-state transmission / state-symbol emission occurring.
+   Edges are labeled with the probability of the hidden state transition / symbol emission occurring.
    
    ```{svgbob}
                        +---------+
@@ -28046,7 +28046,7 @@ first_indexes_checkpoint_n: 20
 
  * `{bm} emitting hidden state` - A hidden state that emits a symbol. An HMM typically emits a symbol after transitioning between hidden states. However, if the hidden state being transitioned to is a non-emitting hidden state, it doesn't emit a symbol.
 
- * `{bm} non-emitting hidden state/(non-emitting hidden state|silent hidden state)/i` - A hidden state that doesn't emit symbols. An HMM typically emits a symbol after transitioning better hidden states. However, if the hidden state being transitioned to is a non-emitting hidden state, it doesn't emit a symbol.
+ * `{bm} non-emitting hidden state/(non-emitting hidden state|silent hidden state)/i` - A hidden state that doesn't emit symbols. An HMM typically emits a symbol after transitioning between hidden states. However, if the hidden state being transitioned to is a non-emitting hidden state, it doesn't emit a symbol.
  
    An HMM ...
  
@@ -28217,7 +28217,7 @@ first_indexes_checkpoint_n: 20
                         +- - - -+                   
    ```
    
-   Each edge in the exploded HMM represents a hidden state transition (e.g. fouler bat → hitter bat) followed by a symbol emission (e.g. hit emitted after reaching hitter bat). The algorithm sets each exploded HMM edge's weight to that probability of that edge's transition-emission occurring: Pr(symbol|transition) = Pr(transition) * Pr(symbol). For example, Pr(fouler bat → hitter bat) is 0.1 in the HMM diagram above, and Pr(hit) once entered into the hitter bat state is 0.75, so Pr(hit|fouler bat → hitter bat) = 0.1 * 0.75 = 0.075.
+   Each edge in the exploded HMM represents a hidden state transition (e.g. fouler bat → hitter bat) followed by a symbol emission (e.g. hit emitted after reaching hitter bat). The algorithm sets each exploded HMM edge's weight to that probability of that edge's transition-emission occurring: Pr(symbol|transition) = Pr(transition) * Pr(symbol). For example, Pr(fouler bat → hitter bat) is 0.1 in the HMM diagram above, and Pr(hit) once entered into the hitter bat hidden state is 0.75, so Pr(hit|fouler bat → hitter bat) = 0.1 * 0.75 = 0.075.
 
    |                             |      Pr(hit)       |     Pr(miss)     |      Pr(foul)      | NON-EMITTABLE |
    |-----------------------------|--------------------|------------------|--------------------|---------------|

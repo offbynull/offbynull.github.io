@@ -12,13 +12,14 @@ from helpers.Utils import slide_window
 # Challenge Problem: Using the Pfam HMM for gp120 (constructed from a seed alignment of just 24 gp120 proteins),
 # construct alignments of all known gp120 proteins and identify the “most diverged” gp120 sequence.
 
-HMM HAS BEEN DOWNLOADED TO A FILE CALLED GP120.HMM
+ Im skipping this, but the solution is to use the profile HMM algorithm that I came up with against the alignment
+(profile) here, and then run each protein in the profile against the HMM to find the one with the lowest probability
 
-FIGURE OUT HOW TO READ THIS AND APPLY IT
-
-ALSO, GO BACK TO 10.12 (JUST AFTER THE CHALLENGE PROBLEM) AND 10.13 AND 10.14 AND FIGURE THOSE SECTIONS OUT AND DO THE MISSING CHALLENGE PROBLEMS.
-
-FULL SEQUENCES ARE AVAILABLE AT pfam-legacy.xfam.org/family/PF00516/alignment/full/html -- REPRODUCED TEXT IS BELOW
+# HMM HAS BEEN DOWNLOADED TO A FILE CALLED GP120.HMM
+#
+# ALSO, GO BACK TO 10.12 (JUST AFTER THE CHALLENGE PROBLEM) AND 10.13 AND 10.14 AND FIGURE THOSE SECTIONS OUT AND DO THE MISSING CHALLENGE PROBLEMS.
+#
+# FULL SEQUENCES ARE AVAILABLE AT pfam-legacy.xfam.org/family/PF00516/alignment/full/html -- REPRODUCED TEXT IS BELOW
 
 # Full sequence alignment for PF00516
 # A8E122_9HIV1/33-150............LWVTVYYGVSVWREADTTLFCAsdakaheTEAHNVWATHACVP..TDPN...PQEILLdNVTENF.N.

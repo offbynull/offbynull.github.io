@@ -1,1 +1,0 @@
-![Dot diagram](dot_46b2a12087683769628351d66b0c7568.svg)
