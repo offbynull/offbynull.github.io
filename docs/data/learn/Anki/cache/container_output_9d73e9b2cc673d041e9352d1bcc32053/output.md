@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(odds[\-\s]ratio)/i"></span>

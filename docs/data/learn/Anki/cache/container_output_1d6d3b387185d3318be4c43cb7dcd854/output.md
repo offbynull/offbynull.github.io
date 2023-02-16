@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="Hidden Markov Model diagram"></span>

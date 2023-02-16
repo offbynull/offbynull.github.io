@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(Viterbi algorithm|Viterbi graph|Viterbi)/i"></span>

@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="surface protein"></span>
