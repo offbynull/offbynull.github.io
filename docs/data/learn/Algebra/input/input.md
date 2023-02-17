@@ -522,8 +522,6 @@ also 10.4 equivalent fraction property?
 
  * `{bm} improper fraction` - A fraction with at least 1 whole (e.g. `{kt} \frac{3}{2}`, `{kt} \frac{5}{5}`, and `{kt} \frac{15}{3}`).
 
- * `{bm} equivalent fraction` - Two fractions that represent the same value even though they have different numerators and denominators (number of parts may be different, but the overall value represented by the fraction is the same). For example, `{kt} \frac{3}{2}`, `{kt} \frac{6}{4}`, and `{kt} \frac{12}{8}` are all considered equivalent fractions because they represent the same value.
-
  * `{bm} simplified fraction/(simplified fraction|simplify)/i` - Of all equivalent fractions for a fraction, the one with smallest numerator and denominator. For the example above, `{kt} \frac{3}{2}` is the simplified fraction for both `{kt} \frac{12}{8}` and `{kt} \frac{6}{4}`.
 
  * `{bm} common denominator` - Two fractions that have the same value for the denominator. For example, the fractions `{kt} \frac{1}{2}` and `{kt} \frac{1}{3}` don't have a common denominator, but their equivalent fractions `{kt} \frac{3}{6}` and `{kt} \frac{2}{6}` do.
@@ -1236,7 +1234,9 @@ also 10.4 equivalent fraction property?
    There's also another method called the vertical method that mimics multiplication.
    ```
 
- * `{bm} equivalent fraction property` - The value of a fraction doesn't change if its numerator and denominator have a common factor added or removed. For example, `{kt} \frac{a \cdot c}{b \cdot c} = \frac{a}{b}` (a and c cannot be 0).
+ * `{bm} equivalent fraction/(equivalent fraction property|equivalent fraction)/i` - The value of a fraction doesn't change if its numerator and denominator have a common factor added or removed. For example, `{kt} \frac{a \cdot c}{b \cdot c} = \frac{a}{b}` (a and c cannot be 0).
+
+  In other words, two fractions that represent the same value even though they have different numerators and denominators (number of parts may be different, but the overall value represented by the fraction is the same). For example, `{kt} \frac{3}{2}`, `{kt} \frac{6}{4}`, and `{kt} \frac{12}{8}` are all considered equivalent fractions because they represent the same value.
 
  * `{bm} scientific notation` - A number written in the form `{kt} a \cdot 10^n`, where ...
 
@@ -1252,6 +1252,95 @@ also 10.4 equivalent fraction property?
    * 750 in scientific is `{kt} 7.5 \cdot 10^2 = 7.5 \cdot 100`.
 
    See negative exponent definition and zero exponent definition.
+
+ * `{bm} graph/(graph|plot)/i` - Up to three number lines, where a line goes...
+ 
+   * left/right, called the x-axis.
+   * down/up, called the y-axis.
+   * towards/away, called the z-axis.
+
+   ```{svgbob}
+    "Graph with axis x and y"
+               |5
+               |
+               |
+               |
+               |
+   ------------+------------
+   "-5"        |0          5
+               |
+               |
+               |
+               |"-5"
+   ```
+
+   Graphs are used to visualize equations with up to 3 variables, typically denoted as x, y, and z. Each variable corresponds to the axis of the same name (e.g. variable x corresponds to the x-axis). For example, the following graph is for the equations y=2x: Each value on the y-axis is double the corresponding value on the x-axis, forming a steep diagonal line (e.g. when y=2, it !!means!! x=1).
+
+   ```{svgbob}
+               |5   /
+               |   /
+               |  /
+               | /
+               |/
+   ------------+------------
+   "-5"       /|0          5
+             / |
+            /  |
+           /   |
+          /    |"-5"
+   ```
+
+ * `{bm} quadrant` - A part of the graph that's been completely cordoned off by its axis (the axis set its border). For example, the following graph has 4 quadrants...
+
+   ```{svgbob}
+    "Graph with axis x and y"
+               |5
+               |
+        Q2     |    Q1
+               |
+               |
+   ------------+------------
+   "-5"        |0          5
+               |
+        Q3     |    Q4
+               |
+               |"-5"
+   ```
+
+   The quadrant that a point is in defines if which variable is negative vs which is positive. For example, ...
+   
+   * x and y will both be positive in Q1.
+   * x will be negative but y will be positive in Q2.
+
+   If a point lies directly on the axis, the value for that axis will be 0. For example, for any point that sits directly on the x-axis, x will be 0.
+
+ * `{bm} origin` - The center point in a graph. For example, a graph with ...
+
+   * one axis has the origin (0).
+   * two axis has the origin (0, 0),
+   * three axis has the origin (0, 0, 0).
+
+ * `{bm} linear equation` - An equation in the form `{kt} A \cdot x + B \cdot y + C \cdot z + ... = Z`, where ...
+   
+   * uppercase letters on the left-hand side are coefficients (can't be zero).
+   * lowercase letters on the left-hand side are variables.
+   * Z on the right-hand side is a constant.
+ 
+   When plotted, a linear equation produces a straight line. For example, x-2y=0 ...
+
+   ```{svgbob}
+               |5   /
+               |   /
+               |  /
+               | /
+               |/
+   ------------+------------
+   "-5"       /|0          5
+             / |
+            /  |
+           /   |
+          /    |"-5"
+   ```
 
 `{bm-error} Wrap in !! or apply suffix _EXP/(\bterms?\b)/i`
 

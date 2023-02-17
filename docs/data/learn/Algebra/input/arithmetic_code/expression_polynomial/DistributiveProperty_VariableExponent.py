@@ -81,9 +81,9 @@ if __name__ == '__main__':
     # tree = parse('(x+1)*3')
     # result = distributive(tree)
     # tree = parse('(x+1)*2+(x+1)*3')
-    for r in factor(parse('x*2+x*1')):
+    for r in factor(parse('(x*2)+(x*1)')):
         print(f'{to_string(r)}')
-    for r in factor(parse('x*2+x^3*1')):
+    for r in factor(parse('(x*2)+(x^3*1)')):
         print(f'{to_string(r)}')
-    for r in factor(parse('x^3*2+x*1')):
+    for r in factor(parse('(x^3*2)+(x*2)')):
         print(f'{to_string(r)}')

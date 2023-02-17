@@ -52,7 +52,7 @@ if __name__ == '__main__':
     # tree = parse('(x+1)*3')
     # result = distributive(tree)
     # tree = parse('(x+1)*2+(x+1)*3')
-    tree = parse('2*x^2 + 6*x')
+    tree = parse('(2*x^2)+(6*x)')
     print(to_string(tree))
     result = factor(tree)
     for r in result:
