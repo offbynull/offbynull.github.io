@@ -1,1 +1,0 @@
-<sub>\[[TB:ch1](https://worldcat.org/title/863645956):See whatever else:::\]</sub>

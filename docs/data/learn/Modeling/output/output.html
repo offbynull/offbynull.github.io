@@ -1,14 +1,132 @@
 <!DOCTYPE html><html><head>
             <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
             <meta content="utf-8" http-equiv="encoding">
-          <title>Game Theory</title><meta name="viewport" content="width=device-width,initial-scale=1"><link href=".temp_githib_css/github-markdown.css" rel="stylesheet"><link href=".temp_highlightjs_css/default.css" rel="stylesheet"></head>
+          <title>Modeling</title><meta name="viewport" content="width=device-width,initial-scale=1"><link href=".temp_githib_css/github-markdown.css" rel="stylesheet"><link href=".temp_highlightjs_css/default.css" rel="stylesheet"></head>
           <body class="markdown-body"><p></p>
 <div class="toc">
 <ul>
+<li><a href="#H_Probability">Probability</a></li>
+<ul>
+<li><a href="#H_Complement%20(NOT)">Complement (NOT)</a></li>
+<li><a href="#H_Conjunction">Conjunction</a></li>
+<li><a href="#H_Disjunction">Disjunction</a></li>
+<li><a href="#H_Conditional">Conditional</a></li>
+<li><a href="#H_Bayes%20Theorem">Bayes Theorem</a></li>
+</ul>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
 </div>
+<a name="H_Probability"></a><h1>Probability</h1>
+<p>One way to think about <a href="#BM_(probability)%2Fi">probability</a> is as a fraction of a finite set, where a ...</p>
+<ul>
+<li>finite set means a collection of items of the same class (e.g. people)</li>
+<li>fraction means some portion of a finite set (e.g. 50 out of 1000 people).</li>
+</ul>
+<p>The idea is that the fraction is representative of the likelihood of some statement, called a <a href="#BM_(proposition)%2Fi">proposition</a>, being true. For example, imagine attempting to determine the <a href="#BM_(probability)%2Fi">probability</a> of a person being a child. One possibility is to randomly find 1000 people and determine how many of them are children. For example, if 250 out of the 1000 people are children, it's reasonable to assume that the likelihood of any random person being a child is 250/1000 = 0.25. In other words, there's a 0.25 <a href="#BM_(probability)%2Fi">probability</a> that a person selected at random is a child.</p>
+<p><img src="svgbob_dd04da89e9e32769dc978f50401f4354e705120e.svg" alt="Kroki diagram output"></p>
+<pre class="hljs"><code>df = pandas.read_csv(<span class="hljs-string">'people.csv'</span>, index_col=<span class="hljs-number">0</span>, skipinitialspace=<span class="hljs-literal">True</span>)
+<span class="hljs-built_in">print</span>(df, end=<span class="hljs-string">'\n\n'</span>)
+child = df[<span class="hljs-string">'age'</span>] &lt; <span class="hljs-number">18</span>
+<span class="hljs-built_in">print</span>(child)
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">sum</span>(child == <span class="hljs-literal">True</span>), end=<span class="hljs-string">'\n\n'</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">sum</span>(child == <span class="hljs-literal">False</span>), end=<span class="hljs-string">'\n\n'</span>)
+</code></pre>
+<div style="border:1px solid black;">
+<pre><code>     age obese
+id            
+P0    40     F
+P1    39     T
+P2    12     F
+..   ...   ...
+P21   24     F
+P22   54     T
+P23   33     T
+
+[22 rows x 2 columns]
+
+id
+P0     False
+P1     False
+P2      True
+       ...  
+P21    False
+P22    False
+P23    False
+Name: age, Length: 22, dtype: bool
+2
+
+20
+
+</code></pre>
+</div>
+<p>The notation for <a href="#BM_(probability)%2Fi">probability</a> is P(A), where A is <a href="#BM_(proposition)%2Fi">proposition</a>.</p>
+<a name="H_Complement%20(NOT)"></a><h2>Complement (NOT)</h2>
+<p>Where as <a href="#BM_(probability)%2Fi">probability</a> is the likelihood of some <a href="#BM_(proposition)%2Fi">proposition</a> being true, complement <a href="#BM_(probability)%2Fi">probability</a> is the likelihood of that same <a href="#BM_(proposition)%2Fi">proposition</a> being false. If you already know what the <a href="#BM_(probability)%2Fi">probability</a> of some <a href="#BM_(proposition)%2Fi">proposition</a> being true is, denoted as P(A), its complement <a href="#BM_(probability)%2Fi">probability</a> is simply 1 - P(A).</p>
+<p>For example, if you know that the <a href="#BM_(probability)%2Fi">probability</a> of a person being a child is 0.25, then the <a href="#BM_(probability)%2Fi">probability</a> of a person not being a child is 1 - 0.25 = 0.75.</p>
+<p><img src="svgbob_9f617501b16a41981176c1a0f77b5eee2b0e6df1.svg" alt="Kroki diagram output"></p>
+<p>If you were to think of probabilities as fractions of a finite set, the fraction of people that are children is 250/1000 (0.25). That leaves 750/1000 that aren't children (0.75). 1 - 0.25 = 0.75.</p>
+<p>Where as the notation for <a href="#BM_(probability)%2Fi">probability</a> is P(A), the notation for complement <a href="#BM_(probability)%2Fi">probability</a> is P(A').</p>
+<a name="H_Conjunction"></a><h2>Conjunction</h2>
+<p>Consider two probabilities, both for the same population: P(A) and P(B). The <a href="#BM_(probability)%2Fi">probability</a> that <a href="#BM_(proposition)%2Fi">proposition</a>s A and B are both true is P(A) * P(B). For example, the <a href="#BM_(probability)%2Fi">probability</a> that a person is a ...</p>
+<ul>
+<li>child is 0.25.</li>
+<li>overweight is 0.5.</li>
+</ul>
+<p>The <a href="#BM_(probability)%2Fi">probability</a> that a person is both a child and overweight is 0.25 * 0.5 = 0.125.</p>
+<p>One way to think about this is that 0.25 of people are children. Of those 0.25, half of them are overweight. So, you're essentially isolating to the population that are children, of which half is overweight: 0.125 percent of the population. This is essentially and intersection of probabilities.</p>
+<p>Swapping the probabilities around produces some the same result: The <a href="#BM_(probability)%2Fi">probability</a> that <a href="#BM_(proposition)%2Fi">proposition</a>s B and A are both true is P(B) * P(A). The <a href="#BM_(probability)%2Fi">probability</a> that a 0.5 people are overweight. Of those 0.5, a quarter of them are children. So, you're essentially isolating to the population that are overweight, of which a quarter are children: 0.125 percent of the population.</p>
+<p>If the <a href="#BM_(proposition)%2Fi">proposition</a>s A and B aren't for the same population, the <a href="#BM_(probability)%2Fi">probability</a> that P(A) and P(B) are both true will be 0.0. For example, the <a href="#BM_(probability)%2Fi">probability</a> that ...</p>
+<ul>
+<li>a person is a child is 0.25.</li>
+<li>a rabbit is cream colored is 0.1.</li>
+</ul>
+<p>The <a href="#BM_(conjunction%20probability)%2Fi">conjunction probability</a> of the two probabilities above is 0.0 because the probabilities are for different populations. A person can't be a rabbit and a rabbit can't be a person. The populations don't overlap.</p>
+<a name="H_Disjunction"></a><h2>Disjunction</h2>
+<a name="H_Conditional"></a><h2>Conditional</h2>
+<a name="H_Bayes%20Theorem"></a><h2>Bayes Theorem</h2>
+<p><a href="#BM_(probability)%2Fi">Probability</a> rules:</p>
+<p>P(A) - <a href="#BM_(probability)%2Fi">Probability</a> of some <a href="#BM_(proposition)%2Fi">proposition</a> A.
+P(A and B) - <a href="#BM_(probability)%2Fi">Probability</a> of A and B both being true.
+P(A|B) - <a href="#BM_(probability)%2Fi">Probability</a> of A given that B is true.</p>
+<p><sub>[<a href="https://worldcat.org/title/863645956">TB:p9</a>]</sub></p>
 <a name="H_Terminology"></a><h1>Terminology</h1>
-<p><sub>[<a href="https://worldcat.org/title/863645956">TB:ch1</a>:See whatever else:::]</sub></p>
+<ul>
+<li>
+<p><a name="BM_(proposition)%2Fi"></a><strong>proposition</strong> - A declaration that either evaluated to true or false. For example, ...</p>
+</li>
+<li>
+<p>"7 is prime" is true</p>
+</li>
+<li>
+<p>"3 is greater than 4" is false.</p>
+</li>
+<li>
+<p><a name="BM_(Bayes%20theorem%7CBayes's%20theorem)%2Fi"></a><strong>Bayes theorem</strong> -</p>
+</li>
+<li>
+<p><a name="BM_(Bayesian%20statistics)%2Fi"></a><strong>Bayesian statistics</strong> -</p>
+</li>
+<li>
+<p><a name="BM_(conditional%20probability)%2Fi"></a><strong>conditional probability</strong> -</p>
+</li>
+<li>
+<p><a name="BM_(probability)%2Fi"></a><strong>probability</strong> - A fraction of a finite set. <sub>[<a href="https://worldcat.org/title/863645956">TB:p2</a>]</sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The book mentions that the term <a href="#BM_(probability)%2Fi">probability</a> is iffy to define, but this is the definition to use for now.</p>
+</div>
+<p>P(A) means the <a href="#BM_(probability)%2Fi">probability</a> of A. <sub>[<a href="https://worldcat.org/title/863645956">TB:p8</a>]</sub></p>
+</li>
+<li>
+<p><a name="BM_(conjunction)%2Fi"></a><strong>conjunction</strong> - Another name for the logical AND operator. <sub>[<a href="https://worldcat.org/title/863645956">TB:p5</a>]</sub></p>
+</li>
+<li>
+<p><a name="BM_(conjunction%20probability)%2Fi"></a><strong>conjunction probability</strong> - <a href="#BM_(probability)%2Fi">Probability</a> of both A and B being true. <sub>[<a href="https://worldcat.org/title/863645956">TB:p9</a>]</sub></p>
+</li>
+<li>
+<p><a name="BM_(conditional%20probability)%2Fi"></a><strong>conditional probability</strong> - A <a href="#BM_(probability)%2Fi">probability</a> that depends on a condition (some other <a href="#BM_(probability)%2Fi">probability</a> being true). <sub>[<a href="https://worldcat.org/title/863645956">TB:p6</a>]</sub> P(A|B) means that the <a href="#BM_(probability)%2Fi">probability</a> of A given that B is true. <sub>[<a href="https://worldcat.org/title/863645956">TB:p9</a>]</sub></p>
+</li>
+</ul>
+<p></p>
 
         </body></html>
