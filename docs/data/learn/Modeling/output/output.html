@@ -27,35 +27,19 @@
 <pre class="hljs"><code>df = pandas.read_csv(<span class="hljs-string">'people.csv'</span>, index_col=<span class="hljs-number">0</span>, skipinitialspace=<span class="hljs-literal">True</span>)
 <span class="hljs-built_in">print</span>(df, end=<span class="hljs-string">'\n\n'</span>)
 child = df[<span class="hljs-string">'age'</span>] &lt; <span class="hljs-number">18</span>
-<span class="hljs-built_in">print</span>(child)
-<span class="hljs-built_in">print</span>(<span class="hljs-built_in">sum</span>(child == <span class="hljs-literal">True</span>), end=<span class="hljs-string">'\n\n'</span>)
-<span class="hljs-built_in">print</span>(<span class="hljs-built_in">sum</span>(child == <span class="hljs-literal">False</span>), end=<span class="hljs-string">'\n\n'</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f'<span class="hljs-subst">{<span class="hljs-built_in">sum</span>(child == <span class="hljs-literal">True</span>)=}</span>'</span>, end=<span class="hljs-string">'\n\n'</span>)
 </code></pre>
 <div style="border:1px solid black;">
-<pre><code>     age obese
-id            
-P0    40     F
-P1    39     T
-P2    12     F
-..   ...   ...
-P21   24     F
-P22   54     T
-P23   33     T
+<pre><code>     age  overweight
+0     22        True
+1     53       False
+..   ...         ...
+998    1        True
+999   76       False
 
-[22 rows x 2 columns]
+[1000 rows x 2 columns]
 
-id
-P0     False
-P1     False
-P2      True
-       ...  
-P21    False
-P22    False
-P23    False
-Name: age, Length: 22, dtype: bool
-2
-
-20
+sum(child == True)=250
 
 </code></pre>
 </div>
@@ -65,6 +49,28 @@ Name: age, Length: 22, dtype: bool
 <p>For example, if you know that the <a href="#BM_(probability)%2Fi">probability</a> of a person being a child is 0.25, then the <a href="#BM_(probability)%2Fi">probability</a> of a person not being a child is 1 - 0.25 = 0.75.</p>
 <p><img src="svgbob_9f617501b16a41981176c1a0f77b5eee2b0e6df1.svg" alt="Kroki diagram output"></p>
 <p>If you were to think of probabilities as fractions of a finite set, the fraction of people that are children is 250/1000 (0.25). That leaves 750/1000 that aren't children (0.75). 1 - 0.25 = 0.75.</p>
+<pre class="hljs"><code>df = pandas.read_csv(<span class="hljs-string">'people.csv'</span>, index_col=<span class="hljs-number">0</span>, skipinitialspace=<span class="hljs-literal">True</span>)
+<span class="hljs-built_in">print</span>(df, end=<span class="hljs-string">'\n\n'</span>)
+child = df[<span class="hljs-string">'age'</span>] &lt; <span class="hljs-number">18</span>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f'<span class="hljs-subst">{<span class="hljs-built_in">sum</span>(child == <span class="hljs-literal">True</span>)=}</span>'</span>, end=<span class="hljs-string">'\n\n'</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f'<span class="hljs-subst">{<span class="hljs-built_in">sum</span>(child == <span class="hljs-literal">False</span>)=}</span>'</span>, end=<span class="hljs-string">'\n\n'</span>)
+</code></pre>
+<div style="border:1px solid black;">
+<pre><code>     age  overweight
+0     22        True
+1     53       False
+..   ...         ...
+998    1        True
+999   76       False
+
+[1000 rows x 2 columns]
+
+sum(child == True)=250
+
+sum(child == False)=750
+
+</code></pre>
+</div>
 <p>Where as the notation for <a href="#BM_(probability)%2Fi">probability</a> is P(A), the notation for complement <a href="#BM_(probability)%2Fi">probability</a> is P(A').</p>
 <a name="H_Conjunction"></a><h2>Conjunction</h2>
 <p>Consider two probabilities, both for the same population: P(A) and P(B). The <a href="#BM_(probability)%2Fi">probability</a> that <a href="#BM_(proposition)%2Fi">proposition</a>s A and B are both true is P(A) * P(B). For example, the <a href="#BM_(probability)%2Fi">probability</a> that a person is a ...</p>
@@ -72,10 +78,54 @@ Name: age, Length: 22, dtype: bool
 <li>child is 0.25.</li>
 <li>overweight is 0.5.</li>
 </ul>
-<p>The <a href="#BM_(probability)%2Fi">probability</a> that a person is both a child and overweight is 0.25 * 0.5 = 0.125.</p>
-<p>One way to think about this is that 0.25 of people are children. Of those 0.25, half of them are overweight. So, you're essentially isolating to the population that are children, of which half is overweight: 0.125 percent of the population. This is essentially and intersection of probabilities.</p>
+<p>The <a href="#BM_(probability)%2Fi">probability</a> that a person is both a child and overweight should come out to 0.125.</p>
+<pre class="hljs"><code>df = pandas.read_csv(<span class="hljs-string">'people.csv'</span>, index_col=<span class="hljs-number">0</span>, skipinitialspace=<span class="hljs-literal">True</span>)
+child = df[<span class="hljs-string">'age'</span>] &lt; <span class="hljs-number">18</span>
+overweight = df[<span class="hljs-string">'overweight'</span>]
+df = pandas.DataFrame(data={
+  <span class="hljs-string">'child'</span>: child,
+  <span class="hljs-string">'overweight'</span>: overweight,
+  <span class="hljs-string">'both'</span>: child &amp; overweight
+})
+<span class="hljs-built_in">print</span>(df, end=<span class="hljs-string">'\n\n'</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f'<span class="hljs-subst">{df[<span class="hljs-string">"child"</span>].mean()=}</span>'</span>, end=<span class="hljs-string">'\n\n'</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f'<span class="hljs-subst">{df[<span class="hljs-string">"overweight"</span>].mean()=}</span>'</span>, end=<span class="hljs-string">'\n\n'</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">f'<span class="hljs-subst">{df[<span class="hljs-string">"both"</span>].mean()=}</span>'</span>, end=<span class="hljs-string">'\n\n'</span>)
+</code></pre>
+<div style="border:1px solid black;">
+<pre><code>     child  overweight   both
+0    False        True  False
+1    False       False  False
+..     ...         ...    ...
+998   True        True   True
+999  False       False  False
+
+[1000 rows x 3 columns]
+
+df["child"].mean()=0.25
+
+df["overweight"].mean()=0.5
+
+df["both"].mean()=0.115
+
+</code></pre>
+</div>
+<p>In the Python example above, the fraction of the population that's both a child and overweight comes out to roughly 0.125. One way to think about this is as an intersection: Think of the 1000 people above as randomly standing around. If you were to select ...</p>
+<ul>
+<li>90 people at random, roughly half of them would be overweight.</li>
+<li>all children, roughly half of them would be overweight.</li>
+<li>all adults, roughly half of them would be overweight.</li>
+</ul>
+<p>If you're selecting based on some criteria that doesn't factor in overweight-ness, then chances are that roughly half of the people you select will end up being overweight. In this case, 25% of the people above are children. As such, half of those 25% should be overweight: 0.25 * 0.5 = 0.125.</p>
+<p>The reasoning works the other way as well. If you were to select ...</p>
+<ul>
+<li>90 people at random, roughly a quarter of them would be children.</li>
+<li>all overweight, roughly a quarter of them would be children.</li>
+<li>all non-overweight, roughly a quarter of them would be children.</li>
+</ul>
+<p>If you're selecting based on some criteria that doesn't factors in age, then chances are that roughly a quarter of the people you select will end up being children. In this case, 50% of the people above are overweight. As such, a quarter of those 50% should be children: 0.5 * 0.25 = 0.125.</p>
 <p>Swapping the probabilities around produces some the same result: The <a href="#BM_(probability)%2Fi">probability</a> that <a href="#BM_(proposition)%2Fi">proposition</a>s B and A are both true is P(B) * P(A). The <a href="#BM_(probability)%2Fi">probability</a> that a 0.5 people are overweight. Of those 0.5, a quarter of them are children. So, you're essentially isolating to the population that are overweight, of which a quarter are children: 0.125 percent of the population.</p>
-<p>If the <a href="#BM_(proposition)%2Fi">proposition</a>s A and B aren't for the same population, the <a href="#BM_(probability)%2Fi">probability</a> that P(A) and P(B) are both true will be 0.0. For example, the <a href="#BM_(probability)%2Fi">probability</a> that ...</p>
+<p>There is one caveat. If the <a href="#BM_(proposition)%2Fi">proposition</a>s A and B aren't for the same population, the <a href="#BM_(probability)%2Fi">probability</a> that P(A) and P(B) are both true will be 0.0. For example, the <a href="#BM_(probability)%2Fi">probability</a> that ...</p>
 <ul>
 <li>a person is a child is 0.25.</li>
 <li>a rabbit is cream colored is 0.1.</li>
