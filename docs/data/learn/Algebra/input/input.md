@@ -1253,7 +1253,7 @@ also 10.4 equivalent fraction property?
 
    See negative exponent definition and zero exponent definition.
 
- * `{bm} graph/(graph|plot)/i` - Up to three number lines, where a line goes...
+ * `{bm} graph/(graph|plot|axis)/i` - Up to three number lines, where a line goes...
  
    * left/right, called the x-axis.
    * down/up, called the y-axis.
@@ -1274,7 +1274,7 @@ also 10.4 equivalent fraction property?
                |"-5"
    ```
 
-   Graphs are used to visualize equations with up to 3 variables, typically denoted as x, y, and z. Each variable corresponds to the axis of the same name (e.g. variable x corresponds to the x-axis). For example, the following graph is for the equations y=2x: Each value on the y-axis is double the corresponding value on the x-axis, forming a steep diagonal line (e.g. when y=2, it !!means!! x=1).
+   A graph is used to visualize the relationship between the two sides of an equation. Up to to 3 variables are supported, typically denoted as x, y, and z. Each variable corresponds to the axis of the same name (e.g. variable x corresponds to the x-axis). For example, the following graph is for the equations y=2x: Each value on the y-axis is double the corresponding value on the x-axis, forming a steep diagonal line (e.g. when y=2, it !!means!! x=1).
 
    ```{svgbob}
                |5   /
@@ -1326,7 +1326,7 @@ also 10.4 equivalent fraction property?
    * lowercase letters on the left-hand side are variables.
    * Z on the right-hand side is a constant.
  
-   When plotted, a linear equation produces a straight line. For example, x-2y=0 ...
+   When plotted, a linear equation produces a straight line. For example, `{kt}2x - y = 0` ...
 
    ```{svgbob}
                |5   /
@@ -1341,6 +1341,91 @@ also 10.4 equivalent fraction property?
            /   |
           /    |"-5"
    ```
+
+ * `{bm} intercept` - The point at which a linear equation's graph crosses one of the graph's axis, denoted as ...
+ 
+   * x-intercept for the x-axis.
+   * y-intercept for the y-axis.
+   * z-intercept for the z-axis.
+  
+   Other than the coordinate for the axis of interest, an intercept's coordinates should be all 0s. For example, given the equation `{kt}2x - y = -3`, its x-intercept is (-1.5, 0).
+
+   ```{svgbob}
+               |5 /
+               | /
+               |/
+               +
+              /|
+   ----------+-+------------
+   "-5"     /  |0          5
+           /   |
+          /    |
+         /     |
+        /      |"-5"
+   ```
+
+ * `{bm} slope` - A fraction, typically denoted by the variable m, which represents the vertical and horizontal change of a linear equation. For example, the linear equation 2x-y=-3 has the slope `{kt} m=\frac{2}{1}`, where the ...
+
+   * numerator defines how far the line goes up per step (goes down if negative).
+   * denominator defines how far the line goes right per step (goes left if negative).
+
+   `{kt} m=\frac{rise}{run}`
+
+   ```{svgbob}
+               |5 /
+               | /
+               |/
+               +
+              /|
+   ----------+-+------------
+   "-5"     /  |0          5
+           /   |
+          /    |
+         /     |
+        /      |"-5"
+   ```
+   
+   If m's ...
+   
+   * denominator is 0, it represents a vertical line (no horizontal movement), in which case m is undefined (zero denominator not allowed).
+   * numerator is 0, it represents a horizontal line (no vertical movement).
+   * evaluation results in a positive number, the slope goes upward.
+   * evaluation results in a negative number, the slope goes downward.
+   
+   ```{svgbob}
+      "0 denom"           "0 num"               pos                neg
+          |   ^              |                   |  ^               |  /    
+          |   |       <------+------>            | /                | /     
+          |   |              |                   |/                 |/      
+   -------+---+---    -------+-------     -------+-------    -------+-------
+          |   |              |                  /|                 /|       
+          |   |              |                 / |                / |       
+          |   v              |                /  |               v  |       
+   ```
+
+   Given a two points `{kt}(x_1, y_1)`and `{kt}(x_2, y_2)` on the same linear equation, that equation's slope can be determined via `{kt} m=\frac{y_2-y_1}{x_2-x_1}`. Likewise, given m and a point `{kt}(x_1, y_1)`, you can find a second point `{kt}(x_2, y_2)` by
+    
+   1. adding m's numerator to y: `{kt}y_2=y_1+m_{num}`.
+   2. adding m's denominator to x: `{kt}x_2=x_1+m_{denom}`.
+
+ * `{bm} point` - A point is a position on a graph, typically represented as a tuple.
+
+   ```{svgbob}
+          |      
+          |   *  
+          |      
+   -------+-------
+          |      
+          |      
+          |      
+   ```
+
+ * `{bm} tuple/(ordered pair|tuple)/i` - A list of numbers, where each position in the list represents one of the variables in some equation. For example, the 2-tuple (x, y) is used for the equation `{kt}2x - y = -3`, where the ...
+   
+   * x in the tuple represents variable x in the equation.
+   * y in the tuple represents variable y in the equation.
+   
+   For example, (0, 3) substituted into the equation above would transform it to `{kt}2 \cdot 0 - 3 = -3`.
 
 `{bm-error} Wrap in !! or apply suffix _EXP/(\bterms?\b)/i`
 
