@@ -73,7 +73,7 @@ sum(child == False)=750
 </div>
 <p>Where as the notation for <a href="#BM_(probability)%2Fi">probability</a> is P(A), the notation for complement <a href="#BM_(probability)%2Fi">probability</a> is P(A').</p>
 <a name="H_Conjunction"></a><h2>Conjunction</h2>
-<p>Consider two probabilities, both for the same population: P(A) and P(B). The <a href="#BM_(probability)%2Fi">probability</a> that <a href="#BM_(proposition)%2Fi">proposition</a>s A and B are both true is P(A) * P(B). For example, the <a href="#BM_(probability)%2Fi">probability</a> that a person is a ...</p>
+<p>Consider two probabilities, both for the same <a href="#BM_(population)%2Fi">population</a>: P(A) and P(B). The <a href="#BM_(probability)%2Fi">probability</a> that <a href="#BM_(proposition)%2Fi">proposition</a>s A and B are both true is P(A) * P(B). For example, the <a href="#BM_(probability)%2Fi">probability</a> that a person is a ...</p>
 <ul>
 <li>child is 0.25.</li>
 <li>overweight is 0.5.</li>
@@ -110,7 +110,7 @@ df["both"].mean()=0.115
 
 </code></pre>
 </div>
-<p>In the Python example above, the fraction of the population that's both a child and overweight comes out to roughly 0.125. One way to think about this is as an intersection: Think of the 1000 people above as randomly standing around. If you were to select ...</p>
+<p>In the Python example above, the fraction of the <a href="#BM_(population)%2Fi">population</a> that's both a child and overweight comes out to roughly 0.125. One way to think about this is as an intersection: Think of the 1000 people above as randomly standing around. If you were to select ...</p>
 <ul>
 <li>90 people at random, roughly half of them would be overweight.</li>
 <li>all children, roughly half of them would be overweight.</li>
@@ -124,13 +124,13 @@ df["both"].mean()=0.115
 <li>all non-overweight, roughly a quarter of them would be children.</li>
 </ul>
 <p>If you're selecting based on some criteria that doesn't factors in age, then chances are that roughly a quarter of the people you select will end up being children. In this case, 50% of the people above are overweight. As such, a quarter of those 50% should be children: 0.5 * 0.25 = 0.125.</p>
-<p>Swapping the probabilities around produces some the same result: The <a href="#BM_(probability)%2Fi">probability</a> that <a href="#BM_(proposition)%2Fi">proposition</a>s B and A are both true is P(B) * P(A). The <a href="#BM_(probability)%2Fi">probability</a> that a 0.5 people are overweight. Of those 0.5, a quarter of them are children. So, you're essentially isolating to the population that are overweight, of which a quarter are children: 0.125 percent of the population.</p>
-<p>There is one caveat. If the <a href="#BM_(proposition)%2Fi">proposition</a>s A and B aren't for the same population, the <a href="#BM_(probability)%2Fi">probability</a> that P(A) and P(B) are both true will be 0.0. For example, the <a href="#BM_(probability)%2Fi">probability</a> that ...</p>
+<p>Swapping the probabilities around produces some the same result: The <a href="#BM_(probability)%2Fi">probability</a> that <a href="#BM_(proposition)%2Fi">proposition</a>s B and A are both true is P(B) * P(A). The <a href="#BM_(probability)%2Fi">probability</a> that a 0.5 people are overweight. Of those 0.5, a quarter of them are children. So, you're essentially isolating to the <a href="#BM_(population)%2Fi">population</a> that are overweight, of which a quarter are children: 0.125 percent of the <a href="#BM_(population)%2Fi">population</a>.</p>
+<p>There is one caveat. If the <a href="#BM_(proposition)%2Fi">proposition</a>s A and B aren't for the same <a href="#BM_(population)%2Fi">population</a>, the <a href="#BM_(probability)%2Fi">probability</a> that P(A) and P(B) are both true will be 0.0. For example, the <a href="#BM_(probability)%2Fi">probability</a> that ...</p>
 <ul>
 <li>a person is a child is 0.25.</li>
 <li>a rabbit is cream colored is 0.1.</li>
 </ul>
-<p>The <a href="#BM_(conjunction%20probability)%2Fi">conjunction probability</a> of the two probabilities above is 0.0 because the probabilities are for different populations. A person can't be a rabbit and a rabbit can't be a person. The populations don't overlap.</p>
+<p>The <a href="#BM_(conjunction%20probability)%2Fi">conjunction probability</a> of the two probabilities above is 0.0 because the probabilities are for different <a href="#BM_(population)%2Fi">population</a>s. A person can't be a rabbit and a rabbit can't be a person. The <a href="#BM_(population)%2Fi">population</a>s don't overlap.</p>
 <a name="H_Disjunction"></a><h2>Disjunction</h2>
 <a name="H_Conditional"></a><h2>Conditional</h2>
 <a name="H_Bayes%20Theorem"></a><h2>Bayes Theorem</h2>
@@ -142,13 +142,73 @@ P(A|B) - <a href="#BM_(probability)%2Fi">Probability</a> of A given that B is tr
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>
+<p><a name="BM_(statistics)%2Fi"></a><strong>statistics</strong> - The collection, analysis, interpretation, and presentation of <a href="#BM_(data)%2Fi">data</a>. <sub>[<a href="https://openstax.org/details/books/introductory-statistics">OSIS:1.1</a>]</sub></p>
+</li>
+<li>
+<p><a name="BM_(descriptive%20statistics)%2Fi"></a><strong>descriptive statistics</strong> - The organizing and summarizing of <a href="#BM_(data)%2Fi">data</a>. <sub>[<a href="https://openstax.org/details/books/introductory-statistics">OSIS:1.1</a>]</sub></p>
+</li>
+<li>
+<p><a name="BM_(inferential%20statistics)%2Fi"></a><strong>inferential statistics</strong> - Formal methods for drawing conclusions from good <a href="#BM_(data)%2Fi">data</a>, where probabilities are used as a measure of confidence for those conclusions. <sub>[<a href="https://openstax.org/details/books/introductory-statistics">OSIS:1.1</a>]</sub></p>
+</li>
+<li>
+<p><a name="BM_(population)%2Fi"></a><strong>population</strong> - A set under study. <sub>[<a href="https://openstax.org/details/books/introductory-statistics">OSIS:1.1</a>]</sub></p>
+</li>
+<li>
+<p><a name="BM_(sample%7Csampling)%2Fi"></a><strong>sample</strong> - A subset of a <a href="#BM_(population)%2Fi">population</a>, selected to represent the <a href="#BM_(population)%2Fi">population</a> for studies to gain information on the <a href="#BM_(population)%2Fi">population</a>. <sub>[<a href="https://openstax.org/details/books/introductory-statistics">OSIS:1.1</a>]</sub> For example, instead of studying all people on Earth, a <a href="#BM_(sample%7Csampling)%2Fi">sample</a> of 1000 people might be chosen as a representation of all people on Earth.</p>
+<p><a href="#BM_(sample%7Csampling)%2Fi">Sampling</a> is used because it's a more practical alternative to studying an entire <a href="#BM_(population)%2Fi">population</a>, which often times isn't feasible (e.g. studying 1000 people is more feasible than studying every single person on Earth). <sub>[<a href="https://openstax.org/details/books/introductory-statistics">OSIS:1.1</a>]</sub></p>
+</li>
+<li>
+<p><a name="BM_(statistic)%2Fi"></a><strong>statistic</strong> - A number that represents a property of a <a href="#BM_(sample%7Csampling)%2Fi">sample</a>. For example, imagine that a <a href="#BM_(sample%7Csampling)%2Fi">sample</a> of 1000 people have their heights measured. The average height across that <a href="#BM_(sample%7Csampling)%2Fi">sample</a> is a <a href="#BM_(statistic)%2Fi">statistic</a>. <sub>[<a href="https://openstax.org/details/books/introductory-statistics">OSIS:1.1</a>]</sub></p>
+<p>Each <a href="#BM_(statistic)%2Fi">statistic</a> is an estimate of a <a href="#BM_(parameter%7Cpopulation%20parameter)%2Fi">population parameter</a>. <sub>[<a href="https://openstax.org/details/books/introductory-statistics">OSIS:1.1</a>]</sub></p>
+</li>
+<li>
+<p><a name="BM_(parameter%7Cpopulation%20parameter)%2Fi"></a><strong>parameter</strong> - A number that represents the characteristic of the whole <a href="#BM_(population)%2Fi">population</a>, estimated using a <a href="#BM_(statistic)%2Fi">statistic</a>. For example, the average height across all people on Earth is a <a href="#BM_(parameter%7Cpopulation%20parameter)%2Fi">population parameter</a>, while the average height across a <a href="#BM_(sample%7Csampling)%2Fi">sample</a> of 1000 people is a <a href="#BM_(statistic)%2Fi">statistic</a>. The <a href="#BM_(statistic)%2Fi">statistic</a> is an estimation of the <a href="#BM_(parameter%7Cpopulation%20parameter)%2Fi">population parameter</a>. <sub>[<a href="https://openstax.org/details/books/introductory-statistics">OSIS:1.1</a>]</sub></p>
+</li>
+<li>
+<p><a name="BM_(representative%20sample)%2Fi"></a><strong>representative sample</strong> - A <a href="#BM_(sample%7Csampling)%2Fi">sample</a> that captures the various characteristics of the <a href="#BM_(population)%2Fi">population</a> it comes from, meaning that it's a good representation of the <a href="#BM_(population)%2Fi">population</a>. A <a href="#BM_(statistic)%2Fi">statistic</a> on a <a href="#BM_(representative%20sample)%2Fi">representative sample</a> should roughly align with the corresponding <a href="#BM_(parameter%7Cpopulation%20parameter)%2Fi">population parameter</a> that it's for. <sub>[<a href="https://openstax.org/details/books/introductory-statistics">OSIS:1.1</a>]</sub></p>
+</li>
+<li>
+<p><a name="BM_(variable%7Cnumerical%20variable%7Ccategorical%20variable)%2Fi"></a><strong>variable</strong> - A characteristic or measurement that can be determined for every member of a <a href="#BM_(population)%2Fi">population</a>. <a href="#BM_(variable%7Cnumerical%20variable%7Ccategorical%20variable)%2Fi">Variable</a>s come in two forms:</p>
+<ul>
+<li><a href="#BM_(variable%7Cnumerical%20variable%7Ccategorical%20variable)%2Fi">numerical variable</a> - A <a href="#BM_(variable%7Cnumerical%20variable%7Ccategorical%20variable)%2Fi">variable</a> that measures something (e.g. a person's weight).</li>
+<li><a href="#BM_(variable%7Cnumerical%20variable%7Ccategorical%20variable)%2Fi">categorical variable</a> - A <a href="#BM_(variable%7Cnumerical%20variable%7Ccategorical%20variable)%2Fi">variable</a> that places into a category (e.g. a person being obese vs non-obese).</li>
+</ul>
+</li>
+<li>
+<p><a name="BM_(data)%2Fi"></a><strong>data</strong> - Values for a <a href="#BM_(variable%7Cnumerical%20variable%7Ccategorical%20variable)%2Fi">variable</a>. For example, given a <a href="#BM_(sample%7Csampling)%2Fi">sample</a> of 5 people from a <a href="#BM_(population)%2Fi">population</a>, the following <a href="#BM_(data)%2Fi">data</a> represents their weights (<a href="#BM_(variable%7Cnumerical%20variable%7Ccategorical%20variable)%2Fi">numerical variable</a>): [180, 200, 144, 127, 194].  <sub>[<a href="https://openstax.org/details/books/introductory-statistics">OSIS:1.1</a>]</sub></p>
+</li>
+<li>
+<p><a name="BM_(datum)%2Fi"></a><strong>datum</strong> - A single value in <a href="#BM_(data)%2Fi">data</a>. <sub>[<a href="https://openstax.org/details/books/introductory-statistics">OSIS:1.1</a>]</sub></p>
+</li>
+</ul>
+<p>TODO: start from 1.2</p>
+<p>TODO: start from 1.2</p>
+<p>TODO: start from 1.2</p>
+<p>BUT JUMP FORWARD TO SECTION 3.1 FIRST AND CLEAN UP BELOW</p>
+<p>BUT JUMP FORWARD TO SECTION 3.1 FIRST AND CLEAN UP BELOW</p>
+<p>BUT JUMP FORWARD TO SECTION 3.1 FIRST AND CLEAN UP BELOW</p>
+<ul>
+<li>
 <p><a name="BM_(proposition)%2Fi"></a><strong>proposition</strong> - A declaration that either evaluated to true or false. For example, ...</p>
+<ul>
+<li>"7 is prime" is true</li>
+<li>"3 is greater than 4" is false.</li>
+</ul>
 </li>
 <li>
-<p>"7 is prime" is true</p>
+<p><a name="BM_(independent%20event%7Cindependent%20probability%7Cindependent%20probabilities)%2Fi"></a><strong>independent event</strong> - Two events are independent if one's occurrence doesn't effect the <a href="#BM_(probability)%2Fi">probability</a> of the other occurring. You can think of this in terms of sets. If the first event doesn't modify the set for the second event, it's an <a href="#BM_(independent%20event%7Cindependent%20probability%7Cindependent%20probabilities)%2Fi">independent event</a>. For example, ...</p>
+<ul>
+<li>flipping a coin twice - the prior flip doesn't effect the following flip.</li>
+<li>winning a lawsuit followed by a sale on Bananas - those two have nothing to do with each other.</li>
+<li>a person being overweight and flipping a coin - those two have nothing to do with each other.</li>
+</ul>
 </li>
 <li>
-<p>"3 is greater than 4" is false.</p>
+<p><a name="BM_((%3F%3Adependent%7Cnon-independent)%20(%3F%3Aevent%7Cprobability%7Cprobabilities))%2Fi"></a><strong>dependent event</strong>- Two event are dependent if one's occurrence <em>does</em> effect the <a href="#BM_(probability)%2Fi">probability</a> of the other occurring. You can think of this in terms of sets. If the first event modifies the set for the second event, it's a <a href="#BM_((%3F%3Adependent%7Cnon-independent)%20(%3F%3Aevent%7Cprobability%7Cprobabilities))%2Fi">dependent event</a>. For example, ...</p>
+<ul>
+<li>draw a card twice from the same deck - the removal of the first card will modify the set of available options for the second removal (51 vs 52).</li>
+<li>a person being overweight and a person being a child - children are being limited to overweight people only (all people vs only overweight people).</li>
+</ul>
 </li>
 <li>
 <p><a name="BM_(Bayes%20theorem%7CBayes's%20theorem)%2Fi"></a><strong>Bayes theorem</strong> -</p>
