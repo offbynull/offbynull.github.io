@@ -522,7 +522,7 @@ also 10.4 equivalent fraction property?
 
  * `{bm} improper fraction` - A fraction with at least 1 whole (e.g. `{kt} \frac{3}{2}`, `{kt} \frac{5}{5}`, and `{kt} \frac{15}{3}`).
 
- * `{bm} simplified fraction/(simplified fraction|simplify)/i` - Of all equivalent fractions for a fraction, the one with smallest numerator and denominator. For the example above, `{kt} \frac{3}{2}` is the simplified fraction for both `{kt} \frac{12}{8}` and `{kt} \frac{6}{4}`.
+ * `{bm} simplified fraction` `{bm} /(simplify|simplified|simplifies)_FRAC/i` - Of all equivalent fractions for a fraction, the one with smallest numerator and denominator. For the example above, `{kt} \frac{3}{2}` is the simplified fraction for both `{kt} \frac{12}{8}` and `{kt} \frac{6}{4}`.
 
  * `{bm} common denominator` - Two fractions that have the same value for the denominator. For example, the fractions `{kt} \frac{1}{2}` and `{kt} \frac{1}{3}` don't have a common denominator, but their equivalent fractions `{kt} \frac{3}{6}` and `{kt} \frac{2}{6}` do.
 
@@ -1084,7 +1084,7 @@ also 10.4 equivalent fraction property?
    coefficient
    ```
 
- * `{bm} coefficient` - A factor that multiplies a term_EXP. For example, `{kt}3x^2 + x - 2` has three terms_EXP with coefficients {2, 1, -2}. The last term_EXP is technically a constant but is also a coefficient because it can technically be rewritten as a factor of `x` or 1:
+ * `{bm} coefficient` - The constant in a term_EXP. For example, `{kt}3x^2 + x - 2` has three terms_EXP with coefficients {2, 1, -2}. The last term_EXP is technically a constant but is also a coefficient because it can technically be rewritten as a factor of `x` or 1:
  
    * `{kt}3x^2 + 1x^1 - 2x^0`.
    * `{kt}3x^2 + 1x^1 - 2\cdot1`
@@ -1103,7 +1103,12 @@ also 10.4 equivalent fraction property?
 
    The word coefficient applies even if the expression has multiple variables. For example, in `{kt}3x^2 + y - 2z` has three coefficients {2, 1, -2}.
 
- * `{bm} term/(\bterms?)_EXP\b/i` - A operand being added or subtracted in the top-level of an expression. When a term_EXP is ...
+ * `{bm} term/(\bterms?)_EXP/i` - A term is either ...
+ 
+   * a constant.
+   * a product of a constant and one or more variables.
+   
+   Terms are typically refer to operands being added or subtracted in the top-level of an expression. When a term_EXP is ...
  
    * on the left or right of an addition, it gets pulled out as-is. For example, `{kt}3(x+1) + x + 2` has the three terms_EXP {3(x+1), x, 2}.
    * on the right of a subtraction, it gets pulled out as a negative. For example, `{kt}3(x+1) + x - 2` has the three terms_EXP {3(x+1), x, -2}.
@@ -1113,6 +1118,11 @@ also 10.4 equivalent fraction property?
    ```{note}
    Top-level !!means!! not a sub-expression (nested expression). Recall that BEDMAS defines addition and subtraction as the lowest precedence operations, !!meaning!! additions and subtractions get computed after all other operations (brackets, exponents, and division and multiplication).
    ```
+
+ * `{bm} like terms/(like terms?)_EXP/i` - Two terms_EXP are considered like terms_EXP when either they ...
+
+   * are both constants (e.g. the terms_EXP 7 and 15).
+   * have the same variable components (e.g. the terms_EXP `{kt}5x^2y` and `{kt}12x^2y`).
 
  * `{bm} monomial` - A term_EXP that has the form `{kt} cv^m`, where ...
 
@@ -1364,6 +1374,8 @@ also 10.4 equivalent fraction property?
         /      |"-5"
    ```
 
+ * `{bm} simplified expression` `{bm} /(simplify|simplified|simplifies)_EXP/i` - An expression where all the operations that can be done are done, essentially widdling down the expression to the least number of operations as possible. For example, the expression 3+x+5 simplifies_EXP to x+8.
+
  * `{bm} slope` - A fraction, typically denoted by the variable m, which represents the vertical and horizontal change of a linear equation. For example, the linear equation 2x-y=-3 has the slope `{kt} m=\frac{2}{1}`, where the ...
 
    * numerator defines how far the line goes up per step (goes down if negative).
@@ -1427,7 +1439,17 @@ also 10.4 equivalent fraction property?
    
    For example, (0, 3) substituted into the equation above would transform it to `{kt}2 \cdot 0 - 3 = -3`.
 
+TODO: start from elementary algebra ch1
+
+TODO: start from elementary algebra ch1
+
+TODO: start from elementary algebra ch1
+
+TODO: start from elementary algebra ch1
+
 `{bm-error} Wrap in !! or apply suffix _EXP/(\bterms?\b)/i`
+
+`{bm-error} Wrap in !! or apply suffix _EXP/(like terms?\b)/i`
 
 `{bm-error} Wrap in !! or apply suffix _POW/(product property)/i`
 
@@ -1435,12 +1457,6 @@ also 10.4 equivalent fraction property?
 
 `{bm-error} Wrap in !! or apply suffix _POW/(product to power property)/i`
 
+`{bm-error} Wrap in !! or apply suffix _FRAC or _POW/(simplify|simplified|simplifies)/i`
+
 `{bm-ignore} !!([\w\-]+?)!!/i`
-
-TODO: define above, write a parser, continue from start of 10.6
-
-TODO: define above, write a parser, continue from start of 10.6
-
-TODO: define above, write a parser, continue from start of 10.6
-
-TODO: define above, write a parser, continue from start of 10.6
