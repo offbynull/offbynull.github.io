@@ -9,7 +9,7 @@ def exponent_product_to_power(fn: FunctionNode):
     if fn.op == '^':
         l_arg = fn.args[0]
         r_arg = fn.args[1]
-        if l_arg.op == '*':
+        if isinstance(l_arg, FunctionNode) and l_arg.op == '*':
             ret = FunctionNode(
                 '*',
                 [
@@ -25,7 +25,9 @@ def unexponent_product_to_power(fn: FunctionNode):
     if fn.op == '*':
         l_arg = fn.args[0]
         r_arg = fn.args[1]
-        if l_arg.op == '^' and r_arg.op == '^' and l_arg.args[1] == r_arg.args[1]:
+        if isinstance(l_arg, FunctionNode) and l_arg.op == '^'\
+                and isinstance(r_arg, FunctionNode) and r_arg.op == '^'\
+                and l_arg.args[1] == r_arg.args[1]:
             ret = FunctionNode(
                 '^',
                 [

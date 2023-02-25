@@ -5,7 +5,6 @@ from expression_parser.Printer import to_string
 
 
 def identity(fn: FunctionNode):
-    assert fn.op in '+-*/'
     if fn.op == '+':
         if fn.args[0] == Fraction(0):
             return {fn.args[1]}

@@ -524,6 +524,8 @@ also 10.4 equivalent fraction property?
 
  * `{bm} simplified fraction` `{bm} /(simplify|simplified|simplifies)_FRAC/i` - Of all equivalent fractions for a fraction, the one with smallest numerator and denominator. For the example above, `{kt} \frac{3}{2}` is the simplified fraction for both `{kt} \frac{12}{8}` and `{kt} \frac{6}{4}`.
 
+ * `{bm} complex fraction` - A fraction in which the numerator and / or denominator contains a fraction. For example, `{kt} frac{3}{\frac{3}{4}}`.
+
  * `{bm} common denominator` - Two fractions that have the same value for the denominator. For example, the fractions `{kt} \frac{1}{2}` and `{kt} \frac{1}{3}` don't have a common denominator, but their equivalent fractions `{kt} \frac{3}{6}` and `{kt} \frac{2}{6}` do.
 
  * `{bm} reciprocal` - A fraction with its numerator and denominator swapped. For example, the reciprocal of `{kt} \frac{5}{6}` is `{kt} \frac{6}{5}`.
@@ -753,7 +755,7 @@ also 10.4 equivalent fraction property?
 
  * `{bm} prime` - A counting number with only two factors (1 and itself). Examples of prime numbers: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, and 47.
 
- * `{bm} composite` - A counting number with more than 2 factors. Examples of composite numbers: 4, 6, 8, 9, 10, 12, 14, 15, 16, 18, and 20.
+ * `{bm} composite` - A counting number that isn't prime (has factors other than 1 and itself). Examples of composite numbers: 4, 6, 8, 9, 10, 12, 14, 15, 16, 18, and 20.
 
  * `{bm} prime factorization/(prime factorization|prime factor|factor tree)/i` - The process of breaking down a composite number into a product of primes. Every composite number can be written as a product of prime numbers. For example...
 
@@ -860,9 +862,9 @@ also 10.4 equivalent fraction property?
  
    For example, a bowl of marbles has 6 red marbles and 1 blue marble. Without looking, selecting a blue marble from the bowl has a probability of `{kt} \frac{1}{7}`. The desired outcome is selecting a blue marble (1 marble is blue) divided by the total number of marbles in the bowl (7 marbles total).
 
- * `{bm} ratio/\b(ratios?)\b/i` - A comparison of two numbers representing measurements of the same unit (e.g. inches, lbs, US dollars, etc..), written as either a fraction `{kt} \frac{a}{b}` or in the form `{kt} a:b`. For example, in a bag of M&Ms, there are 30 red M&Ms to 20 blue M&Ms, !!meaning!! the ratio of red to blue is `{kt} \frac{30}{20}` or `{kt} 30:20`. The fraction, once simplified, is `{kt} \frac{3}{2}`, !!meaning!! for every 3 red M&Ms there are 2 blue M&Ms.
+ * `{bm} ratio/\b(ratios?)\b/i` - A comparison of two numbers representing measurements of the same unit (e.g. inches, lbs, US dollars, etc..), written as either a fraction `{kt} \frac{a}{b}` or in the form `{kt} a:b`. For example, in a bag of M&Ms, there are 30 red M&Ms to 20 blue M&Ms, !!meaning!! the ratio of red to blue is `{kt} \frac{30}{20}` or `{kt} 30:20`. The fraction, once simplified_FRAC, is `{kt} \frac{3}{2}`, !!meaning!! for every 3 red M&Ms there are 2 blue M&Ms.
 
- * `{bm} rate` - A comparison of two numbers representing measurements of different units (e.g. inches, lbs, US dollars, etc..), written as a fraction `{kt} \frac{a}{b}`. For example, it costs $100 to fill up 2 Olympic sized swimming pool with water, !!meaning!! that the rate of money to water is `{kt} \frac{100}{2}`. The fraction, once simplified, is `{kt} \frac{50}{1}`, !!meaning!! it costs $50 to fill up each Olympic sized swimming pool.
+ * `{bm} rate` - A comparison of two numbers representing measurements of different units (e.g. inches, lbs, US dollars, etc..), written as a fraction `{kt} \frac{a}{b}`. For example, it costs $100 to fill up 2 Olympic sized swimming pool with water, !!meaning!! that the rate of money to water is `{kt} \frac{100}{2}`. The fraction, once simplified_FRAC, is `{kt} \frac{50}{1}`, !!meaning!! it costs $50 to fill up each Olympic sized swimming pool.
 
  * `{bm} unit rate` - The rate `{kt} \frac{a}{b}`, but normalized such the rate only considers a single unit of the second measurement. For example, it costs $100 to fill up 2 Olympic sized swimming pool with water, !!meaning!! that the rate of money to water is `{kt} \frac{100}{2}`. Once converted to a unit rate, it becomes $50 to fill up a single Olympic sized swimming pool.
 
@@ -916,7 +918,9 @@ also 10.4 equivalent fraction property?
 
  * `{bm} cube root` - The root when the exponent is 3. For example, the cube root of 8, written as `{kt} \sqrt[3]{8}`,  is 2 because `{kt} 2^3=8`.
 
- * `{bm} root` - Given the result of an exponentiation and the exponent used, determines the original number that the exponentiation was performed on. For example, given the result 125 and the exponent 3, the original number that the exponent was applied on is 5: `{kt} \sqrt[3]{125} = 5` vs `{kt} 5^3=125`.
+ * `{bm} root/(root|radical)/i` - Given the result of an exponentiation and the exponent used, determines the original number that the exponentiation was performed on. For example, given the result 125 and the exponent 3, the original number that the exponent was applied on is 5: `{kt} \sqrt[3]{125} = 5` vs `{kt} 5^3=125`.
+
+   The symbol for root is called the radical sign.
 
  * `{bm} power/(exponent|power)/i` - Iteratively multiply a number by itself a certain number of times. For example `{kt} 5^3=5 \cdot 5 \cdot 5 = 125`.
 
@@ -1018,7 +1022,7 @@ also 10.4 equivalent fraction property?
 
    Similarly, the distributive property makes the reverse possible as well. When a common factor exists between all the terms_EXP in a chain of additions or subtractions, that common factor can be pulled out on its own. For example, 15+6 = 3\*5+3\*2 = 3\*(5+2) = 21.
 
- * `{bm} identity property/(identity property|identity)/i` - A property of an operation that states the conditions for when that operation returns its left operand as its result.
+ * `{bm} identity property/(identity property|identity|additive identity|multiplicative identity)/i` - A property of an operation that states the conditions for when that operation returns its left operand as its result.
 
    * Addition identity: Anything added to 0 is itself and vice versa (e.g. 5+0=5 and 0+5=5).
    * Multiplication identity: Anything multiplied by 1 is itself and vice versa (e.g. 5\*1=5 and 1\*5=5).
@@ -1029,7 +1033,7 @@ also 10.4 equivalent fraction property?
    Most places just list addition and multiplication. Inferred subtractions and division.
    ```
 
- * `{bm} inverse property/(inverse property|inverse)/i` - A property of an operation that states the conditions for when that operation returns its identity as its result.
+ * `{bm} inverse property/(inverse property|inverse|additive inverse|multiplicative inverse)/i` - A property of an operation that states the conditions for when that operation returns its identity as its result.
 
    * Addition inverse: Anything added to its negative is 0 and vice versa (e.g. 5+-5=0 and -5+5=0).
    * Multiplication inverse: Anything (other than 0) multiplied by its reciprocal is 1 and vice versa (e.g. `{kt} 5\cdot\frac{1}{5}=1` and `{kt} \frac{1}{5}\cdot5=1`).
@@ -1056,7 +1060,7 @@ also 10.4 equivalent fraction property?
 
  * `{bm} evaluate/(evaluate|evaluation)/i` - To calculate an expression and produce a final numeric result. For example, evaluating (5+2)\*3 results in 21.
 
- * `{bm} equation` - Two expressions separated by an equal sign, where those two expressions are said to evaluate to the same value. For example, 7+7+7=3\*7. 
+ * `{bm} equation` - Two expressions separated by an equal sign, where those two expressions are said to evaluate to the same value. For example, `{kt} 7+7+7=3 \cdot 7`. 
 
    Equations often contain variables. An equation is said to be solved once a set of numbers have been found for its variables such that, when substituted in for those variables, both expressions evaluate to the same number. For example, in x+2=3\*7, both expressions evaluate to 21 when x is set to 19.
 
@@ -1103,12 +1107,7 @@ also 10.4 equivalent fraction property?
 
    The word coefficient applies even if the expression has multiple variables. For example, in `{kt}3x^2 + y - 2z` has three coefficients {2, 1, -2}.
 
- * `{bm} term/(\bterms?)_EXP/i` - A term is either ...
- 
-   * a constant.
-   * a product of a constant and one or more variables.
-   
-   Terms are typically refer to operands being added or subtracted in the top-level of an expression. When a term_EXP is ...
+ * `{bm} term/(\bterms?)_EXP/i` - Terms_EXP typically refer to operands being added or subtracted in the top-level of an expression. When a term_EXP is ...
  
    * on the left or right of an addition, it gets pulled out as-is. For example, `{kt}3(x+1) + x + 2` has the three terms_EXP {3(x+1), x, 2}.
    * on the right of a subtraction, it gets pulled out as a negative. For example, `{kt}3(x+1) + x - 2` has the three terms_EXP {3(x+1), x, -2}.
@@ -1119,23 +1118,38 @@ also 10.4 equivalent fraction property?
    Top-level !!means!! not a sub-expression (nested expression). Recall that BEDMAS defines addition and subtraction as the lowest precedence operations, !!meaning!! additions and subtractions get computed after all other operations (brackets, exponents, and division and multiplication).
    ```
 
- * `{bm} like terms/(like terms?)_EXP/i` - Two terms_EXP are considered like terms_EXP when either they ...
+   ```{note}
+   Someone on Reddit gave a more formal definition for this. See [here](https://www.reddit.com/r/askmath/comments/11ar2h7/definition_of_a_term/).
+   ```
 
-   * are both constants (e.g. the terms_EXP 7 and 15).
-   * have the same variable components (e.g. the terms_EXP `{kt}5x^2y` and `{kt}12x^2y`).
+ * `{bm} like terms/(like terms?)_EXP/i` - Two terms_EXP are considered like terms_EXP when ...
 
- * `{bm} monomial` - A term_EXP that has the form `{kt} cv^m`, where ...
+   * they are both constants (e.g. 7 and 15).
+   * the only thing that differs between them is their coefficient (e.g. the terms_EXP `{kt}5x^2` and `{kt}12x^2`).
 
-   * c is a constant.
-   * v is a variable.
-   * m is a whole number.
+   An expression's like terms_EXP are typically combined together using the distributive property. For example, `{kt}5x^2 + 12x^2 = (5 + 12)x^2 = 17x^2`.
+
+ * `{bm} monomial` - A monomial is either a ...
+ 
+   1. constant (e.g `{kt} 5`).
+   2. variable raised to a non-negative exponent (e.g `{kt} x^2`).
+   3. product of many instances of 2 (e.g `{kt} x^2y^3`). 
+   4. product of 1 and 3 (e.g `{kt} 5x^2y^2`).
+   
+   For example, the following are monomials:
+
+   * `{kt} x^2y^2`
+   * `{kt} 5x^2y^2`
+   * `{kt} 5x^2`
+   * `{kt} 5x` (equivalent to `{kt} 5x^1`)
+   * `{kt} 5`
 
  * `{bm} polynomial/(polynomial|binomial|trinomial)/i` - A list of monomials combined together as terms_EXP. For example, ...
 
-   * `{kt} 4y` - Equivalent to `{kt} 4y^1`
-   * `{kt} 4y^2+2y` - Equivalent to `{kt} 4y^2+2y^1`
-   * `{kt} 4y^2-7y+5` - Equivalent to `{kt} 4y^2-7y+5y^0`
-   * `{kt} z+1` - Equivalent to `{kt} z^1+z^0`
+   * `{kt} 4y`
+   * `{kt} 4y^2+2y`
+   * `{kt} 4y^2-7y+5`
+   * `{kt} z+1`
 
    A polynomial with ...
 
@@ -1246,7 +1260,7 @@ also 10.4 equivalent fraction property?
 
  * `{bm} equivalent fraction/(equivalent fraction property|equivalent fraction)/i` - The value of a fraction doesn't change if its numerator and denominator have a common factor added or removed. For example, `{kt} \frac{a \cdot c}{b \cdot c} = \frac{a}{b}` (a and c cannot be 0).
 
-  In other words, two fractions that represent the same value even though they have different numerators and denominators (number of parts may be different, but the overall value represented by the fraction is the same). For example, `{kt} \frac{3}{2}`, `{kt} \frac{6}{4}`, and `{kt} \frac{12}{8}` are all considered equivalent fractions because they represent the same value.
+   In other words, two fractions that represent the same value even though they have different numerators and denominators (number of parts may be different, but the overall value represented by the fraction is the same). For example, `{kt} \frac{3}{2}`, `{kt} \frac{6}{4}`, and `{kt} \frac{12}{8}` are all considered equivalent fractions because they represent the same value.
 
  * `{bm} scientific notation` - A number written in the form `{kt} a \cdot 10^n`, where ...
 
@@ -1439,13 +1453,21 @@ also 10.4 equivalent fraction property?
    
    For example, (0, 3) substituted into the equation above would transform it to `{kt}2 \cdot 0 - 3 = -3`.
 
-TODO: start from elementary algebra ch1
+ * `{bm} absolute value` - A number's distance from 0 on the number line. For example, ...
+ 
+   * 5 is a distance of 5 from 0.
+   * -5 is a distance of 5 from 0.
+   * 0 is a distance of 0 from 0.
 
-TODO: start from elementary algebra ch1
+   There's a common way to implement absolute value: If the number is non-zero, set the number's sign to a positive.
 
-TODO: start from elementary algebra ch1
+TODO: start from elementary algebra ch2
 
-TODO: start from elementary algebra ch1
+TODO: start from elementary algebra ch2
+
+TODO: start from elementary algebra ch2
+
+TODO: start from elementary algebra ch2
 
 `{bm-error} Wrap in !! or apply suffix _EXP/(\bterms?\b)/i`
 

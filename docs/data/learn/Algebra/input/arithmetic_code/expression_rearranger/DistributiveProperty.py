@@ -1,11 +1,11 @@
 from expression_parser.Parser import FunctionNode, parse
 from expression_parser.Printer import to_string
-from expression_parser.TermExtractor import pull_expressions
+from expression_polynomial.TermExtractor import pull_terms
 
 
 def distributive(fn: FunctionNode):
     def _attempt(arg1, arg2):
-        nested_terms = pull_expressions(arg2)
+        nested_terms = pull_terms(arg2)
         distributed_n = None
         for term in nested_terms:
             _fn = FunctionNode('*', [arg1, term])
@@ -14,7 +14,8 @@ def distributive(fn: FunctionNode):
             else:
                 distributed_n = FunctionNode('+', [distributed_n, _fn])
         return {distributed_n}
-    assert fn.op in '*'
+    if fn.op != '*':
+        return set()
     options = set()
     options |= _attempt(fn.args[0], fn.args[1])
     options |= _attempt(fn.args[1], fn.args[0])
@@ -34,7 +35,8 @@ def undistributive(fn: FunctionNode):
                 )
                 return {_fn}
         return set()
-    assert fn.op in '+'
+    if fn.op not in '+':
+        return set()
     options = set()
     options |= _attempt(fn.args[0], fn.args[1])
     options |= _attempt(fn.args[1], fn.args[0])

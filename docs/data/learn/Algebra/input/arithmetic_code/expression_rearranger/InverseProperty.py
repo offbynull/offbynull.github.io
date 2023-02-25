@@ -6,7 +6,6 @@ from expression_rearranger import AssociativeProperty
 
 
 def inverse(fn: FunctionNode):
-    assert fn.op in '+-*/'
     if fn.op == '+':
         for fn in AssociativeProperty.associative(fn):
             if isinstance(fn.args[0], FunctionNode) and fn.args[1] == FunctionNode('*', [Fraction(-1), fn.args[0]]):
