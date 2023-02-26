@@ -1,5 +1,5 @@
-from expression_parser.Parser import FunctionNode, parse
-from expression_parser.Printer import to_string
+from expression.parser.Parser import FunctionNode, parse
+from expression.parser.Printer import to_string
 
 
 def commutative(fn: FunctionNode):
@@ -8,7 +8,8 @@ def commutative(fn: FunctionNode):
         variations.add(fn)
         _fn = FunctionNode(
             fn.op,
-            fn.args[::-1]
+            fn.args[::-1],
+            fn.annotations
         )
         variations.add(_fn)
     return variations
@@ -17,6 +18,7 @@ def commutative(fn: FunctionNode):
 
 if __name__ == '__main__':
     tree = parse('x+3*y')
+    tree.annotations['x'] = 'hi'
     result = commutative(tree)
     for r in result:
-        print(f'{to_string(r)}')
+        print(f'{to_string(r)} {r.annotations}')

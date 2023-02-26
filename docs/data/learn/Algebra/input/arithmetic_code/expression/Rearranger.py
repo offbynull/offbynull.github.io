@@ -1,37 +1,51 @@
 import math
 from fractions import Fraction
 
-from expression_parser.Parser import FunctionNode, parse, VariableNode
-from expression_rearranger import AssociativeProperty, CommutativeProperty, DistributiveProperty, \
-    EquivalentFractionProperty, ExponentPowerProperty, ExponentProductProperty, ExponentQuotientProperty, \
-    ExponentProductToPowerProperty, ExponentQuotientToPowerProperty, IdentityProperty, InverseProperty, \
-    NegativeExponentDefinition, ZeroExponentDefinition
+from expression.Utils import count_functions
+from expression.parser.Parser import FunctionNode, parse, VariableNode
+from expression.parser.Printer import to_string
+from expression.properties import InverseProperty, IdentityProperty, ExponentProductProperty, \
+    ExponentProductToPowerProperty, NegativeExponentDefinition, ZeroExponentDefinition, EquivalentFractionProperty, \
+    ExponentQuotientProperty, AssociativeProperty, ExponentQuotientToPowerProperty, ExponentPowerProperty, \
+    DistributiveProperty, CommutativeProperty, AdditionSubtractionConversionProperty
 
 
-def evaluate(x: FunctionNode | VariableNode | Fraction):
-    if not isinstance(x, FunctionNode):
-        return {x}
+def evaluate(x: FunctionNode):
     if x.op == '+' and isinstance(x.args[0], Fraction) and isinstance(x.args[1], Fraction):
-        return {Fraction(x.args[0] + x.args[1])}
+        return Fraction(x.args[0] + x.args[1])
     elif x.op == '-' and isinstance(x.args[0], Fraction) and isinstance(x.args[1], Fraction):
-        return {Fraction(x.args[0] - x.args[1])}
+        return Fraction(x.args[0] - x.args[1])
     elif x.op == '*' and isinstance(x.args[0], Fraction) and isinstance(x.args[1], Fraction):
-        return {Fraction(x.args[0] * x.args[1])}
+        return Fraction(x.args[0] * x.args[1])
     elif x.op == '/' and isinstance(x.args[0], Fraction) and isinstance(x.args[1], Fraction):
-        return {Fraction(x.args[0] / x.args[1])}
+        return Fraction(x.args[0] / x.args[1])
     elif x.op == '^' and isinstance(x.args[0], Fraction) and isinstance(x.args[1], Fraction):
-        return {Fraction(x.args[0] ** x.args[1])}
+        return Fraction(x.args[0] ** x.args[1])
     elif x.op == 'log' and isinstance(x.args[0], Fraction) and isinstance(x.args[1], Fraction):
-        return {Fraction(math.log(x.args[1], x.args[0]))}
+        return Fraction(math.log(x.args[1], x.args[0]))
     # elif x.op == 'root' and isinstance(x.args[0], Fraction) and isinstance(x.args[1], Fraction):
     #     return {x.args[0]**(1/x.args[1])}
-    return {x}
+    return None
+
+
+def drill_evaluate(x: FunctionNode | VariableNode | Fraction):
+    if not isinstance(x, FunctionNode):
+        return x
+    found = evaluate(x)
+    if found is not None:
+        return found
+    x = FunctionNode(x.op, x.args[:], x.annotations)
+    for arg_idx, arg in enumerate(x.args):
+        x.args[arg_idx] = drill_evaluate(arg)
+    return x
 
 
 def drill(x: FunctionNode | VariableNode | Fraction):
     if not isinstance(x, FunctionNode):
         return {x}
     options = {x}
+    options |= AdditionSubtractionConversionProperty.sub_to_add(x)
+    options |= AdditionSubtractionConversionProperty.add_to_sub(x)
     options |= CommutativeProperty.commutative(x)
     options |= AssociativeProperty.associative(x)
     options |= DistributiveProperty.distributive(x)
@@ -53,7 +67,6 @@ def drill(x: FunctionNode | VariableNode | Fraction):
     options |= NegativeExponentDefinition.negative_exponent(x)
     options |= NegativeExponentDefinition.unnegative_exponent(x)
     options |= ZeroExponentDefinition.zero_exponent(x)
-    options |= evaluate(x)
     inner_options = set()
     for new_fn in options:
         if not isinstance(new_fn, FunctionNode):
@@ -64,12 +77,13 @@ def drill(x: FunctionNode | VariableNode | Fraction):
                 for t in tweaked:
                     new_fn_args = new_fn.args[:]
                     new_fn_args[arg_idx] = t
-                    new_fn = FunctionNode(new_fn.op, new_fn_args)
+                    new_fn = FunctionNode(new_fn.op, new_fn_args, new_fn.annotations)
                     inner_options.add(new_fn)
     return options | inner_options
 
 
 def rearrange(x: FunctionNode | VariableNode | Fraction):
+    x = drill_evaluate(x)
     processed = {}
     options = {x: [x]}
     while options:
@@ -77,6 +91,7 @@ def rearrange(x: FunctionNode | VariableNode | Fraction):
         tree_chain = options[tree]
         new_options = drill(tree)
         for t in new_options:
+            t = drill_evaluate(t)
             new_chain = tree_chain + [t]
             if t in processed:
                 old_chain = processed[t]
@@ -91,11 +106,21 @@ def rearrange(x: FunctionNode | VariableNode | Fraction):
         tree_chain = options[tree]
         processed[tree] = tree_chain
         options.pop(tree)
+        print(f'{to_string(tree)}: {tree_chain} {tree.annotations}')
     return processed
 
 
+def simplify(x: FunctionNode | VariableNode | Fraction):
+    variations = rearrange(x)
+    simplifed = min(variations.keys(), key=lambda x: count_functions(x))
+    return simplifed, variations[simplifed]
+
+
 if __name__ == '__main__':
-    tree = parse('5 + -4 ^ x + 3 * 8 / log(2, 32)')
+    # tree = parse('5 + -4 ^ x + 3 * 8 / log(2, 32)')
+    # tree = parse('4*x-2')
+    tree = parse('x*x-2')
     variations = rearrange(tree)
-    for tree, tree_path in variations.items():
-        print(f'{tree}: {tree_path}')
+    for _tree, _tree_path in variations.items():
+        print(f'{_tree}: {_tree_path}')
+    print(f'{simplify(tree)}')

@@ -1,8 +1,7 @@
 from fractions import Fraction
 
-from expression_parser.Parser import FunctionNode, parse, VariableNode
-from expression_parser.Printer import to_string
-from expression_rearranger import AssociativeProperty
+from expression.parser.Parser import FunctionNode, parse
+from expression.parser.Printer import to_string
 
 
 def zero_exponent(fn: FunctionNode):

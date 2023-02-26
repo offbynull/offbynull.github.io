@@ -1,8 +1,7 @@
 from fractions import Fraction
 
-from Factor import factor_fastest
-from expression_parser.Parser import FunctionNode, parse, VariableNode
-from expression_parser.Printer import to_string
+from expression.parser.Parser import FunctionNode, parse, VariableNode
+from expression.parser.Printer import to_string
 
 
 def factor(fn: FunctionNode):

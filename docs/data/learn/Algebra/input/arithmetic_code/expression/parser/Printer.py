@@ -1,6 +1,6 @@
 from fractions import Fraction
 
-from expression_parser.Parser import FunctionNode, VariableNode, parse
+from expression.parser.Parser import FunctionNode, VariableNode, parse
 
 
 def to_string(n: FunctionNode | VariableNode | Fraction | str):

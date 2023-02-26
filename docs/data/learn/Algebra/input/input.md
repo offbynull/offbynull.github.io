@@ -1062,7 +1062,7 @@ also 10.4 equivalent fraction property?
 
  * `{bm} equation` - Two expressions separated by an equal sign, where those two expressions are said to evaluate to the same value. For example, `{kt} 7+7+7=3 \cdot 7`. 
 
-   Equations often contain variables. An equation is said to be solved once a set of numbers have been found for its variables such that, when substituted in for those variables, both expressions evaluate to the same number. For example, in x+2=3\*7, both expressions evaluate to 21 when x is set to 19.
+   Equations often contain variables. An equation is said to be solved once a set of numbers have been found for its variables such that, when substituted in for those variables, both expressions evaluate to the same number. That set of numbers is said to be a solution to the equation. For example, in x+2=3\*7, both expressions evaluate to 21 when x is set to 19.
 
  * `{bm} variable` - A placeholder for an unknown number in an expression. For example, x+3 has the variable x.
 

@@ -1,6 +1,6 @@
-from expression_parser.Parser import FunctionNode, parse
-from expression_parser.Printer import to_string
-from expression_polynomial.TermExtractor import pull_terms
+from expression.parser.Parser import FunctionNode, parse
+from expression.parser.Printer import to_string
+from expression.TermExtractor import pull_terms
 
 
 def distributive(fn: FunctionNode):

@@ -1,7 +1,7 @@
 from fractions import Fraction
 
-from expression_parser.Parser import FunctionNode, parse
-from expression_parser.Printer import to_string
+from expression.parser.Parser import FunctionNode, parse
+from expression.parser.Printer import to_string
 
 
 def identity(fn: FunctionNode):

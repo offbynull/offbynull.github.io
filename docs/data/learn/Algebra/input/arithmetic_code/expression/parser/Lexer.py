@@ -1,6 +1,6 @@
 from fractions import Fraction
 
-from expression_parser.StringStream import StringStream
+from expression.parser.StringStream import StringStream
 
 
 class StringLiteral:

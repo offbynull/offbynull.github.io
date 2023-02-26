@@ -1,15 +1,18 @@
 from fractions import Fraction
 from typing import Any
 
-from expression_parser import LexerStream
-from expression_parser.Lexer import Identifier, tokenize
-from expression_parser.LexerStream import LexerStream
+from expression.parser import LexerStream
+from expression.parser.Lexer import Identifier, tokenize
+from expression.parser.LexerStream import LexerStream
 
 
 class FunctionNode:
-    def __init__(self, op: str, args: list[Any]):
+    def __init__(self, op: str, args: list[Any], annotations: dict[str, Any] | None = None):
+        if annotations is None:
+            annotations = {}
         self.op = op
         self.args = args
+        self.annotations = annotations
 
     def __str__(self):
         return f'{self.op}({", ".join(str(x) for x in self.args)})'

@@ -1,7 +1,7 @@
 from fractions import Fraction
 
-from expression_parser.Parser import VariableNode, FunctionNode, parse
-from expression_polynomial.TermExtractor import pull_terms
+from expression.parser.Parser import VariableNode, FunctionNode, parse
+from expression.TermExtractor import pull_terms
 
 
 def is_monomial(n: FunctionNode | VariableNode | Fraction):
