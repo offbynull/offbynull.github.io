@@ -1,14 +1,14 @@
 from fractions import Fraction
 
-from expression.parser.Parser import FunctionNode, parse
+from expression.parser.Parser import FunctionNode, parse, ConstantNode, Node
 from expression.parser.Printer import to_string
 
 
-def zero_exponent(fn: FunctionNode):
-    if fn.op == '^':
+def zero_exponent(fn: Node):
+    if isinstance(fn, FunctionNode) and fn.op == '^':
         r_arg = fn.args[1]
-        if r_arg == Fraction(0):
-            return {Fraction(1)}
+        if r_arg == 0:
+            return {ConstantNode(1)}
     return set()
 
 

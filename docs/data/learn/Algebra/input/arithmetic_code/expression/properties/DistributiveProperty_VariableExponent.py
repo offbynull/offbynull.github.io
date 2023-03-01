@@ -1,10 +1,10 @@
-from fractions import Fraction
-
-from expression.parser.Parser import FunctionNode, parse, VariableNode
+from expression.parser.Parser import FunctionNode, parse, VariableNode, ConstantNode, Node
 from expression.parser.Printer import to_string
 
 
-def factor(fn: FunctionNode):
+def factor(fn: Node):
+    if not isinstance(fn, FunctionNode):
+        return set()
     assert fn.op in '+'
     arg1 = fn.args[0]
     arg2 = fn.args[1]
@@ -23,7 +23,7 @@ def factor(fn: FunctionNode):
             )
             return {_fn}
         elif isinstance(p1, VariableNode) \
-                and (isinstance(p2, FunctionNode) and p2.op == '^' and isinstance(p2.args[0], VariableNode) and isinstance(p2.args[1], Fraction)) \
+                and (isinstance(p2, FunctionNode) and p2.op == '^' and isinstance(p2.args[0], VariableNode) and isinstance(p2.args[1], ConstantNode)) \
                 and p1 == p2.args[0]:
             _fn = FunctionNode(
                 '*',
@@ -39,7 +39,7 @@ def factor(fn: FunctionNode):
                 ]
             )
             return {_fn}
-        elif (isinstance(p1, FunctionNode) and p1.op == '^' and isinstance(p1.args[0], VariableNode) and isinstance(p1.args[1], Fraction)) \
+        elif (isinstance(p1, FunctionNode) and p1.op == '^' and isinstance(p1.args[0], VariableNode) and isinstance(p1.args[1], ConstantNode)) \
                 and isinstance(p2, VariableNode) \
                 and p1.args[0] == p2:
             _fn = FunctionNode(
@@ -56,8 +56,8 @@ def factor(fn: FunctionNode):
                 ]
             )
             return {_fn}
-        elif (isinstance(p1, FunctionNode) and p1.op == '^' and isinstance(p1.args[0], VariableNode) and isinstance(p1.args[1], Fraction)) \
-                and (isinstance(p2, FunctionNode) and p2.op == '^' and isinstance(p2.args[0], VariableNode) and isinstance(p2.args[1], Fraction)) \
+        elif (isinstance(p1, FunctionNode) and p1.op == '^' and isinstance(p1.args[0], VariableNode) and isinstance(p1.args[1], ConstantNode)) \
+                and (isinstance(p2, FunctionNode) and p2.op == '^' and isinstance(p2.args[0], VariableNode) and isinstance(p2.args[1], ConstantNode)) \
                 and p1.args[0] == p2.args[0]:
             _fn = FunctionNode(
                 '*',

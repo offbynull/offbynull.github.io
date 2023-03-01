@@ -1,16 +1,12 @@
-from fractions import Fraction
 from itertools import product
 
-from expression.Rearranger import simplify, rearrange
+from expression.Rearranger import rearrange
 from expression.Utils import extract_all
-from expression.parser.Parser import FunctionNode, VariableNode, parse
+from expression.parser.Parser import FunctionNode, parse, Node
 from expression.parser.Printer import to_string
 
 
-def addition(
-        lhs: FunctionNode | VariableNode | Fraction,
-        rhs: FunctionNode | VariableNode | Fraction,
-) -> set[tuple[FunctionNode | VariableNode | Fraction, FunctionNode | VariableNode | Fraction]]:
+def addition(lhs: Node, rhs: Node) -> set[tuple[Node, Node]]:
     options = {(lhs, rhs)}
     for operand in extract_all(lhs) | extract_all(rhs):
         _lhs = FunctionNode('+', [lhs, operand])

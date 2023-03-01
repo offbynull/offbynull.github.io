@@ -1,24 +1,27 @@
 from fractions import Fraction
 
-from expression.parser.Parser import VariableNode, FunctionNode, parse
-from expression.TermExtractor import pull_terms
+from expression.parser.Parser import VariableNode, FunctionNode, parse, Node
+from expression.Utils import extract_terms
 
 
-def is_monomial(n: FunctionNode | VariableNode | Fraction):
+def is_monomial(n: Node):
     if isinstance(n, VariableNode) or isinstance(n, Fraction):
         return True
-    if n.op == '*':
-        return is_monomial(n.args[0]) and is_monomial(n.args[1])
-    elif n.op == '^'\
-            and isinstance(n.args[0], VariableNode)\
-            and isinstance(n.args[1], Fraction) and n.args[1] >= 0:
-        return True
+    elif isinstance(n, FunctionNode):
+        if n.op == '*':
+            return is_monomial(n.args[0]) and is_monomial(n.args[1])
+        elif n.op == '^'\
+                and isinstance(n.args[0], VariableNode)\
+                and isinstance(n.args[1], Fraction) and n.args[1] >= 0:
+            return True
+        else:
+            return False
     else:
-        return False
+        raise ValueError('???')
 
 
-def is_polynomial(n: FunctionNode | VariableNode | Fraction):
-    terms = pull_terms(n)
+def is_polynomial(n: Node):
+    terms = extract_terms(n)
     return all(is_monomial(t) for t in terms)
 
 

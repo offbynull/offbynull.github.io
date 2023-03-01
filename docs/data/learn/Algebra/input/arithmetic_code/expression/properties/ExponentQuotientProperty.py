@@ -1,10 +1,12 @@
 from fractions import Fraction
 
-from expression.parser.Parser import FunctionNode, parse
+from expression.parser.Parser import FunctionNode, parse, ConstantNode, Node
 from expression.parser.Printer import to_string
 
 
-def exponent_quotient(fn: FunctionNode):
+def exponent_quotient(fn: Node):
+    if not isinstance(fn, FunctionNode):
+        return set()
     if fn.op == '/':
         l_arg = fn.args[0]
         r_arg = fn.args[1]
@@ -21,7 +23,7 @@ def exponent_quotient(fn: FunctionNode):
                     )
                 else:
                     ret = FunctionNode('/', [
-                        Fraction(1),
+                        ConstantNode(1),
                         FunctionNode(
                             '^',
                             [
@@ -43,7 +45,9 @@ def exponent_quotient(fn: FunctionNode):
     return set()
 
 
-def unexponent_quotient(fn: FunctionNode):
+def unexponent_quotient(fn: Node):
+    if not isinstance(fn, FunctionNode):
+        return set()
     if fn.op == '^':
         l_arg = fn.args[0]
         r_arg = fn.args[1]
@@ -56,9 +60,9 @@ def unexponent_quotient(fn: FunctionNode):
                 ]
             )
             return {ret}
-    elif fn.op == '/' and fn.args[0] == Fraction(1):
+    elif fn.op == '/' and fn.args[0] == 1:
         _fn = fn.args[1]
-        if _fn.op == '^':
+        if isinstance(_fn, FunctionNode) and _fn.op == '^':
             l_arg = _fn.args[0]
             r_arg = _fn.args[1]
             if isinstance(r_arg, FunctionNode) and r_arg.op == '-':

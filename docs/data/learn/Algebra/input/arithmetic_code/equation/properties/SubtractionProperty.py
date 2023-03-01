@@ -1,16 +1,12 @@
-from fractions import Fraction
 from itertools import product
 
-from expression.Rearranger import simplify, rearrange
+from expression.Rearranger import rearrange
 from expression.Utils import extract_all
-from expression.parser.Parser import FunctionNode, VariableNode, parse
+from expression.parser.Parser import FunctionNode, parse, Node
 from expression.parser.Printer import to_string
 
 
-def subtraction(
-        lhs: FunctionNode | VariableNode | Fraction,
-        rhs: FunctionNode | VariableNode | Fraction,
-) -> set[tuple[FunctionNode | VariableNode | Fraction, FunctionNode | VariableNode | Fraction]]:
+def subtraction(lhs: Node, rhs: Node) -> set[tuple[Node, Node]]:
     options = {(lhs, rhs)}
     for operand in extract_all(lhs) | extract_all(rhs):
         _lhs = FunctionNode('-', [lhs, operand])
@@ -25,7 +21,7 @@ def subtraction(
 
 
 if __name__ == '__main__':
-    lhs, rhs = parse('x-2'), parse('0')
+    lhs, rhs = parse('x+2'), parse('0')
     options = subtraction(lhs, rhs)
     for _lhs, _rhs in options:
         print(f'{to_string(_lhs)} = {to_string(_rhs)}')

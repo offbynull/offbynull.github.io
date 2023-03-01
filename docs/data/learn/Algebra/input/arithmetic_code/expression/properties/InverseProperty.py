@@ -1,33 +1,33 @@
-from fractions import Fraction
-
-from expression.parser.Parser import FunctionNode, parse, VariableNode
+from expression.parser.Parser import FunctionNode, parse, VariableNode, ConstantNode, Node
 from expression.parser.Printer import to_string
 from expression.properties import AssociativeProperty
 
 
-def inverse(fn: FunctionNode):
+def inverse(fn: Node):
+    if not isinstance(fn, FunctionNode):
+        return set()
     if fn.op == '+':
         for fn in AssociativeProperty.associative(fn):
-            if isinstance(fn.args[0], FunctionNode) and fn.args[1] == FunctionNode('*', [Fraction(-1), fn.args[0]]):
-                return {Fraction(0)}
-            if isinstance(fn.args[0], VariableNode) and fn.args[1] == FunctionNode('*', [Fraction(-1), fn.args[0]]):
-                return {Fraction(0)}
-            elif isinstance(fn.args[0], Fraction) and fn.args[1] == -fn.args[0]:
-                return {Fraction(0)}
+            if isinstance(fn.args[0], FunctionNode) and fn.args[1] == FunctionNode('*', [ConstantNode(-1), fn.args[0]]):
+                return {ConstantNode(0)}
+            if isinstance(fn.args[0], VariableNode) and fn.args[1] == FunctionNode('*', [ConstantNode(-1), fn.args[0]]):
+                return {ConstantNode(0)}
+            elif isinstance(fn.args[0], ConstantNode) and fn.args[1] == -fn.args[0]:
+                return {ConstantNode(0)}
     elif fn.op == '*':
         for fn in AssociativeProperty.associative(fn):
-            if isinstance(fn.args[0], FunctionNode) and fn.args[1] == FunctionNode('/', [Fraction(1), fn.args[0]]):
-                return {Fraction(1)}
-            if isinstance(fn.args[0], VariableNode) and fn.args[1] == FunctionNode('/', [Fraction(1), fn.args[0]]):
-                return {Fraction(1)}
-            elif isinstance(fn.args[0], Fraction) and fn.args[0] != Fraction(0) and fn.args[1] == (1 / fn.args[0]):
-                return {Fraction(1)}
+            if isinstance(fn.args[0], FunctionNode) and fn.args[1] == FunctionNode('/', [ConstantNode(1), fn.args[0]]):
+                return {ConstantNode(1)}
+            if isinstance(fn.args[0], VariableNode) and fn.args[1] == FunctionNode('/', [ConstantNode(1), fn.args[0]]):
+                return {ConstantNode(1)}
+            elif isinstance(fn.args[0], ConstantNode) and fn.args[0] != 0 and fn.args[1] == (1 / fn.args[0]):
+                return {ConstantNode(1)}
     elif fn.op == '-':
         if fn.args[0] == fn.args[1]:
-            return {Fraction(0)}
+            return {ConstantNode(0)}
     elif fn.op == '/':
-        if fn.args[0] == fn.args[1] and fn.args[0] != Fraction(0):
-            return {Fraction(1)}
+        if fn.args[0] == fn.args[1] and fn.args[1] != 0:
+            return {ConstantNode(1)}
     return set()
 
 

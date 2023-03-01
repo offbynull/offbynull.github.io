@@ -1,9 +1,9 @@
 from fractions import Fraction
 
-from expression.parser.Parser import VariableNode, FunctionNode, parse
+from expression.parser.Parser import VariableNode, FunctionNode, parse, Node, ConstantNode
 
 
-def is_variable_part(n: FunctionNode | VariableNode | Fraction):
+def is_variable_part(n: Node):
     if isinstance(n, FunctionNode):
         for a in n.args:
             if is_variable_part(a):
@@ -12,28 +12,31 @@ def is_variable_part(n: FunctionNode | VariableNode | Fraction):
         return True
     return False
 
-def is_numeric_part(n: FunctionNode | VariableNode | Fraction):
-    if isinstance(n, Fraction):
+def is_numeric_part(n: Node):
+    if isinstance(n, ConstantNode):
         return True
     return False
 
 # Must be a single term to work.
 # Term must be simplified to work (e.g. simplify 2*2*4*x^2 to 16*x^2)
 # Coefficient must be first item in the list (e.g. 16*x^2 vs x^2*16)
-def pull_coefficient(term_n: FunctionNode | VariableNode | Fraction):
+def pull_coefficient(term_n: Node):
     if isinstance(term_n, VariableNode):
         return Fraction(1)
-    elif isinstance(term_n, Fraction):
+    elif isinstance(term_n, ConstantNode):
         return term_n
-    if term_n.op == '*':
-        if term_n.args[0] and is_numeric_part(term_n.args[1]):
-            return term_n.args[1]
-        elif is_numeric_part(term_n.args[0]) and is_variable_part(term_n.args[1]):
-            return term_n.args[0]
+    elif isinstance(term_n, FunctionNode):
+        if term_n.op == '*':
+            if term_n.args[0] and is_numeric_part(term_n.args[1]):
+                return term_n.args[1]
+            elif is_numeric_part(term_n.args[0]) and is_variable_part(term_n.args[1]):
+                return term_n.args[0]
+            else:
+                return ConstantNode(1)
         else:
-            return Fraction(1)
+            return ConstantNode(1)
     else:
-        return Fraction(1)
+        raise ValueError('???')
 
 
 if __name__ == '__main__':

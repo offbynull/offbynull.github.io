@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+from abc import ABC
 from fractions import Fraction
 from typing import Any
 
@@ -6,13 +9,18 @@ from expression.parser.Lexer import Identifier, tokenize
 from expression.parser.LexerStream import LexerStream
 
 
-class FunctionNode:
-    def __init__(self, op: str, args: list[Any], annotations: dict[str, Any] | None = None):
+class Node(ABC):
+    def __init__(self, annotations: dict[str, Any] | None = None):
         if annotations is None:
             annotations = {}
+        self.annotations = annotations
+
+
+class FunctionNode(Node):
+    def __init__(self, op: str, args: list[Node], annotations: dict[str, Any] | None = None):
+        super().__init__(annotations)
         self.op = op
         self.args = args
-        self.annotations = annotations
 
     def __str__(self):
         return f'{self.op}({", ".join(str(x) for x in self.args)})'
@@ -30,9 +38,10 @@ class FunctionNode:
         return hash((self.op, tuple(self.args)))
 
 
-class VariableNode:
-    def __init__(self):
-        self.name = None
+class VariableNode(Node):
+    def __init__(self, name: str, annotations: dict[str, Any] | None = None):
+        super().__init__(annotations)
+        self.name = name
 
     def __str__(self):
         return f'{self.name}'
@@ -40,11 +49,108 @@ class VariableNode:
     def __format__(self, format_spec):
         return str(self)
 
+    def __repr__(self):
+        return str(self)
+
     def __eq__(self, other):
         return isinstance(other, VariableNode) and self.name == other.name
 
     def __hash__(self):
         return hash(self.name)
+
+
+class ConstantNode(Node):
+    def __init__(self, value: int | float | Fraction | str, annotations: dict[str, Any] | None = None):
+        super().__init__(annotations)
+        if isinstance(value, int) or isinstance(value, float):
+            self.value = Fraction(value)
+        else:
+            self.value = value
+
+    def __lt__(self, other: ConstantNode | int | float | Fraction | str):
+        if isinstance(other, ConstantNode):
+            return self.value < other.value
+        else:
+            return self < ConstantNode(other)
+
+    def __gt__(self, other: ConstantNode | int | float | Fraction | str):
+        if isinstance(other, ConstantNode):
+            return self.value > other.value
+        else:
+            return self > ConstantNode(other)
+
+    def __eq__(self, other: ConstantNode | int | float | Fraction | str):
+        if isinstance(other, ConstantNode):
+            return self.value == other.value
+        else:
+            return self == ConstantNode(other)
+
+    def __ne__(self, other: ConstantNode | int | float | Fraction | str):
+        if isinstance(other, ConstantNode):
+            return self.value != other.value
+        else:
+            return self != ConstantNode(other)
+
+    def __add__(self, other: ConstantNode | int | float | Fraction | str):
+        if isinstance(other, ConstantNode):
+            return ConstantNode(self.value + other.value)
+        else:
+            return self + ConstantNode(other)
+
+    def __radd__(self, other: ConstantNode | int | float | Fraction | str):
+        if isinstance(other, ConstantNode):
+            return ConstantNode(self.value + other.value)
+        else:
+            return self + ConstantNode(other)
+
+    def __sub__(self, other: ConstantNode | int | float | Fraction | str):
+        if isinstance(other, ConstantNode):
+            return ConstantNode(self.value - other.value)
+        else:
+            return self - ConstantNode(other)
+
+    def __rsub__(self, other: ConstantNode | int | float | Fraction | str):
+        if isinstance(other, ConstantNode):
+            return ConstantNode(self.value - other.value)
+        else:
+            return self - ConstantNode(other)
+
+    def __mul__(self, other: ConstantNode | int | float | Fraction | str):
+        if isinstance(other, ConstantNode):
+            return ConstantNode(self.value * other.value)
+        else:
+            return self * ConstantNode(other)
+
+    def __rmul__(self, other: ConstantNode | int | float | Fraction | str):
+        if isinstance(other, ConstantNode):
+            return ConstantNode(self.value * other.value)
+        else:
+            return self * ConstantNode(other)
+
+    def __truediv__(self, other: ConstantNode | int | float | Fraction | str):
+        if isinstance(other, ConstantNode):
+            return ConstantNode(self.value / other.value)
+        else:
+            return self / ConstantNode(other)
+
+    def __rtruediv__(self, other: ConstantNode | int | float | Fraction | str):
+        if isinstance(other, ConstantNode):
+            return ConstantNode(other.value / self.value)
+        else:
+            return ConstantNode(other) / self
+
+    def __neg__(self):
+        return ConstantNode(-self.value)
+
+    def __str__(self):
+        return f'{self.value}'
+
+    def __format__(self, format_spec):
+        return str(self)
+
+    def __hash__(self):
+        return hash(self.value)
+
 
 def function(s: LexerStream):
     s.mark()
@@ -76,8 +182,7 @@ def variable(s: LexerStream):
         name = s.read()
         if not isinstance(name, Identifier):
             raise ValueError('Not identifier')
-        n = VariableNode()
-        n.name = name.value
+        n = VariableNode(name.value)
         s.release()
         return n
     except Exception as e:
@@ -121,23 +226,24 @@ def expression(s: LexerStream):
             item = s.peek()
             if isinstance(item, Fraction):
                 s.read()  # discard
+                tree = ConstantNode(item)
                 if negate:
-                    item = -item
+                    tree.value = -tree.value
                     negate = False
-                chain.append(item)
+                chain.append(tree)
             elif isinstance(item, Identifier):
                 tree = variable_or_function(s)
                 if negate:
-                    tree = FunctionNode('*', [Fraction(-1), tree])
+                    tree = FunctionNode('*', [ConstantNode(-1), tree])
                     negate = False
                 chain.append(tree)
             elif item == '(':
                 tree = brackets(s)
                 if negate:
-                    if isinstance(tree, Fraction):
+                    if isinstance(tree, ConstantNode):
                         tree = -tree
                     elif isinstance(tree, FunctionNode) or isinstance(tree, VariableNode):
-                        tree = FunctionNode('*', [Fraction(-1), tree])
+                        tree = FunctionNode('*', [ConstantNode(-1), tree])
                     else:
                         raise ValueError('Unknown type')
                     negate = False

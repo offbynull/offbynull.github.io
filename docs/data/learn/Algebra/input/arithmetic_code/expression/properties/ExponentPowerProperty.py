@@ -1,8 +1,10 @@
-from expression.parser.Parser import FunctionNode, parse
+from expression.parser.Parser import FunctionNode, parse, Node
 from expression.parser.Printer import to_string
 
 
-def exponent_product(fn: FunctionNode):
+def exponent_product(fn: Node):
+    if not isinstance(fn, FunctionNode):
+        return set()
     if fn.op == '^':
         l_arg = fn.args[0]
         r_arg = fn.args[1]
@@ -18,7 +20,9 @@ def exponent_product(fn: FunctionNode):
     return set()
 
 
-def unexponent_product(fn: FunctionNode):
+def unexponent_product(fn: Node):
+    if not isinstance(fn, FunctionNode):
+        return set()
     if fn.op == '^':
         l_arg = fn.args[0]
         r_arg = fn.args[1]

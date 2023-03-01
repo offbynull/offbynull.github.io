@@ -1,35 +1,35 @@
-from fractions import Fraction
-
 from Factor import factor_fastest
-from expression.parser.Parser import FunctionNode, parse
+from expression.parser.Parser import FunctionNode, parse, ConstantNode, Node
 from expression.parser.Printer import to_string
 
 
-def factor(fn: FunctionNode):
+def factor(fn: Node):
+    if not isinstance(fn, FunctionNode):
+        return set()
     assert fn.op in '+'
     arg1 = fn.args[0]
     arg2 = fn.args[1]
     if isinstance(arg1, FunctionNode) and arg1.op == '*' and isinstance(arg2, FunctionNode) and arg2.op == '*':
         p1 = arg1.args[0]
         p2 = arg2.args[0]
-        if isinstance(p1, Fraction) and isinstance(p2, Fraction) \
-                and p1.denominator == 1 and p2.denominator == 1:
+        if isinstance(p1, ConstantNode) and isinstance(p2, ConstantNode) \
+                and p1.value.denominator == 1 and p2.value.denominator == 1:
             if p1 > 0:
-                factors1 = factor_fastest(int(p1))
+                factors1 = factor_fastest(int(p1.value))
             elif p1 < 0:
-                factors1 = factor_fastest(-int(p1))
+                factors1 = factor_fastest(-int(p1.value))
                 factors1 = {-f for f in factors1}
             else:
                 return set()
             if p2 > 0:
-                factors2 = factor_fastest(int(p2))
+                factors2 = factor_fastest(int(p2.value))
             elif p2 < 0:
-                factors2 = factor_fastest(-int(p2))
+                factors2 = factor_fastest(-int(p2.value))
                 factors2 = {-f for f in factors2}
             else:
                 return set()
             factor = max(factors1 & factors2)
-            factor = Fraction(factor)
+            factor = ConstantNode(factor)
             _fn = FunctionNode(
                 '*',
                 [

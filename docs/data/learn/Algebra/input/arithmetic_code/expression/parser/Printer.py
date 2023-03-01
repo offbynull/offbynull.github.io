@@ -1,25 +1,30 @@
 from fractions import Fraction
 
-from expression.parser.Parser import FunctionNode, VariableNode, parse
+from expression.parser.Parser import FunctionNode, VariableNode, parse, ConstantNode, Node
 
 
-def to_string(n: FunctionNode | VariableNode | Fraction | str):
-    if isinstance(n, Fraction):
-        if n.denominator == 1:
-            return str(n)
-        else:
-            return str(n.numerator) + ':' + str(n.denominator)
-    elif isinstance(n, str):
-        ret = '\''
-        for c in n:
-            if c == '\'':
-                ret += '\\\''
-            elif c == '\\':
-                ret += '\\\\'
+def to_string(n: Node):
+    if isinstance(n, ConstantNode):
+        if isinstance(n.value, Fraction):
+            n = n.value
+            if n.denominator == 1:
+                return str(n)
             else:
-                ret += c
-        ret += '\''
-        return ret
+                return str(n.numerator) + ':' + str(n.denominator)
+        elif isinstance(n.value, str):
+            n = n.value
+            ret = '\''
+            for c in n:
+                if c == '\'':
+                    ret += '\\\''
+                elif c == '\\':
+                    ret += '\\\\'
+                else:
+                    ret += c
+            ret += '\''
+            return ret
+        else:
+            raise ValueError()
     elif isinstance(n, VariableNode):
         return n.name
     elif isinstance(n, FunctionNode):
