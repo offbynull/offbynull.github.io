@@ -1,8 +1,7 @@
 import math
-from fractions import Fraction
 
 from expression.Utils import count_functions
-from expression.parser.Parser import FunctionNode, parse, VariableNode, ConstantNode, Node
+from expression.parser.Parser import FunctionNode, parse, ConstantNode, Node
 from expression.parser.Printer import to_string
 from expression.properties import InverseProperty, IdentityProperty, ExponentProductProperty, \
     ExponentProductToPowerProperty, NegativeExponentDefinition, ZeroExponentDefinition, EquivalentFractionProperty, \
@@ -67,7 +66,7 @@ def drill(x: Node):
     options |= NegativeExponentDefinition.negative_exponent(x)
     options |= NegativeExponentDefinition.unnegative_exponent(x)
     options |= ZeroExponentDefinition.zero_exponent(x)
-    options |= OneExponentDefinition.one_exponent(x)
+    options |= OneExponentDefinition.from_one_exponent(x)
     inner_options = set()
     for new_fn in options:
         if not isinstance(new_fn, FunctionNode):
@@ -107,7 +106,7 @@ def rearrange(x: Node):
         tree_chain = options[tree]
         processed[tree] = tree_chain
         options.pop(tree)
-        # print(f'{to_string(tree)}: {tree_chain} {tree.annotations}')
+        print(f'{to_string(tree)}: {tree_chain} {tree.annotations}')
     return processed
 
 
@@ -118,7 +117,8 @@ def simplify(x: Node):
 
 
 if __name__ == '__main__':
-    tree = parse('5 + -4 ^ x + 3 * 8 / log(2, 32)')
+    # tree = parse('5 + -4 ^ x + 3 * 8 / log(2, 32)')
+    tree = parse('x+y+z')
     # tree = parse('4*x-2')
     # tree = parse('x*x-2')
     variations = rearrange(tree)
