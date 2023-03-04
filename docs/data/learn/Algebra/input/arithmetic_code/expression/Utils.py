@@ -1,12 +1,11 @@
-from fractions import Fraction
-
-from expression.parser.Parser import FunctionNode, VariableNode, parse, Node, ConstantNode
+from expression.Node import Node, ConstantNode, FunctionNode, VariableNode
+from expression.parser.Parser import parse
 from expression.parser.Printer import to_string
 
 
 def swap_variables(
         n: Node,
-        var_replacements: dict[VariableNode, ConstantNode]
+        var_replacements: dict[VariableNode, Node]
 ) -> Node:
     if isinstance(n, VariableNode):
         if n in var_replacements:
@@ -45,10 +44,13 @@ def extract_numeric_constants(n: Node) -> set[ConstantNode]:
     elif isinstance(n, FunctionNode):
         ret = set()
         for a in n.args:
-            ret |= extract_functions(a)
+            ret |= extract_numeric_constants(a)
         return ret
-    elif isinstance(n, ConstantNode) and isinstance(n.value, Fraction):
-        return {n}
+    elif isinstance(n, ConstantNode):
+        if isinstance(n.value, int):
+            return {n}
+        else:
+            return set()
     else:
         raise ValueError('???')
 
@@ -81,17 +83,6 @@ def extract_all(n: Node) -> set[Node]:
         raise ValueError('???')
 
 
-def count_functions(n: Node) -> int:
-    if isinstance(n, VariableNode):
-        return 0
-    elif isinstance(n, FunctionNode):
-        return 1 + sum(count_functions(a) for a in n.args)
-    elif isinstance(n, ConstantNode):
-        return 0
-    else:
-        raise ValueError('???')
-
-
 def negate(n: Node):
     if isinstance(n, ConstantNode):
         return -n
@@ -112,41 +103,42 @@ def extract_terms(n: Node):
         raise ValueError('???')
 
 
-def extract_multipliers(n: Node):
-    def __internal(_n: Node):
-        if isinstance(_n, VariableNode):
-            return [_n]
-        elif isinstance(_n, ConstantNode):
-            return [_n]
-        elif isinstance(_n, FunctionNode):
-            if _n.op == '*':
-                return __internal(_n.args[0]) + __internal(_n.args[1])
-            else:
-                return [_n]
+def top(n: Node) -> Node:
+    if isinstance(n, FunctionNode):
+        if n.op == '/':
+            return n.args[0]
         else:
-            raise ValueError('???')
-
-    if isinstance(n, FunctionNode) and n.op == '*':
-        return __internal(n)
+            return n
+    elif isinstance(n, VariableNode):
+        return n
+    elif isinstance(n, ConstantNode) and isinstance(n.value, int):
+        return ConstantNode(n.value)
     else:
-        raise ValueError('Not multiplication')
+        raise ValueError('???')
+
+
+def bottom(n: Node) -> Node:
+    if isinstance(n, FunctionNode):
+        if n.op == '/':
+            return n.args[1]
+        else:
+            return ConstantNode(1)
+    elif isinstance(n, VariableNode):
+        return ConstantNode(1)
+    elif isinstance(n, ConstantNode) and isinstance(n.value, int):
+        return ConstantNode(1)
+    else:
+        raise ValueError('???')
 
 
 if __name__ == '__main__':
     tree = parse('5 + -4 ^ x + 3 * 8 / log(2, 32) - 2 - y')
     print(f'{to_string(tree)}')
     print(f'{extract_variables(tree)}')
-    print(f'{count_functions(tree)}')
     tree = swap_variables(tree, {VariableNode('x'): ConstantNode(1), VariableNode('y'): ConstantNode(2)})
     print(f'{to_string(tree)}')
     print(f'{extract_variables(tree)}')
-    print(f'{count_functions(tree)}')
     tree = parse('5 + -4 ^ x + 3 * 8 / log(2, 32) - 2 - y')
     terms = extract_terms(tree)
     for t in terms:
         print(f'{t}')
-    print('---')
-    tree = parse('5*4*(x+1)+1')
-    multipliers = extract_multipliers(tree)
-    for m in multipliers:
-        print(f'{m}')

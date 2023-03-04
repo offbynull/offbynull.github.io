@@ -1,11 +1,12 @@
-from expression.parser.Parser import FunctionNode, parse, ConstantNode, Node
+from expression.Node import Node, ConstantNode, FunctionNode
+from expression.parser.Parser import parse
 from expression.parser.Printer import to_string
 
 
-def negative_exponent(fn: Node):
-    if isinstance(fn, FunctionNode) and fn.op == '^':
-        l_arg = fn.args[0]
-        r_arg = fn.args[1]
+def from_negative_exponent(n: Node):
+    if isinstance(n, FunctionNode) and n.op == '^':
+        l_arg = n.args[0]
+        r_arg = n.args[1]
         if isinstance(r_arg, ConstantNode) and r_arg < 0:
             ret = FunctionNode(
                 '/',
@@ -27,7 +28,7 @@ def negative_exponent(fn: Node):
     return set()
 
 
-def unnegative_exponent(fn: Node):
+def to_negative_exponent(fn: Node):
     if isinstance(fn, FunctionNode) and fn.op == '/' and fn.args[0] == 1:
         _fn = fn.args[1]
         if isinstance(_fn, FunctionNode) and _fn.op == '^':
@@ -49,11 +50,11 @@ def unnegative_exponent(fn: Node):
 
 
 if __name__ == '__main__':
-    for r in negative_exponent(parse('x^-5')):
+    for r in from_negative_exponent(parse('x^-5')):
         print(f'{to_string(r)}')
-    for r in negative_exponent(parse('x^-y')):
+    for r in from_negative_exponent(parse('x^-y')):
         print(f'{to_string(r)}')
-    for r in unnegative_exponent(parse('1/(x^5)')):
+    for r in to_negative_exponent(parse('1/(x^5)')):
         print(f'{to_string(r)}')
-    for r in unnegative_exponent(parse('1/(x^y)')):
+    for r in to_negative_exponent(parse('1/(x^y)')):
         print(f'{to_string(r)}')

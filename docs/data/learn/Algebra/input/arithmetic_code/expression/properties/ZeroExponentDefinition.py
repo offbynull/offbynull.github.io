@@ -1,12 +1,11 @@
-from fractions import Fraction
-
-from expression.parser.Parser import FunctionNode, parse, ConstantNode, Node
+from expression.Node import Node, ConstantNode, FunctionNode
+from expression.parser.Parser import parse
 from expression.parser.Printer import to_string
 
 
-def zero_exponent(fn: Node):
-    if isinstance(fn, FunctionNode) and fn.op == '^':
-        r_arg = fn.args[1]
+def zero_exponent(n: Node):
+    if isinstance(n, FunctionNode) and n.op == '^':
+        r_arg = n.args[1]
         if r_arg == 0:
             return {ConstantNode(1)}
     return set()

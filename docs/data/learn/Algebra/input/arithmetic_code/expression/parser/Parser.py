@@ -1,155 +1,16 @@
 from __future__ import annotations
 
-from abc import ABC
-from fractions import Fraction
-from typing import Any
+import inspect
+import sys
+from pathlib import Path
+from sys import stdin
 
+import yaml
+
+from expression.Node import FunctionNode, VariableNode, ConstantNode
 from expression.parser import LexerStream
 from expression.parser.Lexer import Identifier, tokenize
 from expression.parser.LexerStream import LexerStream
-
-
-class Node(ABC):
-    def __init__(self, annotations: dict[str, Any] | None = None):
-        if annotations is None:
-            annotations = {}
-        self.annotations = annotations
-
-
-class FunctionNode(Node):
-    def __init__(self, op: str, args: list[Node], annotations: dict[str, Any] | None = None):
-        super().__init__(annotations)
-        self.op = op
-        self.args = args
-
-    def __str__(self):
-        return f'{self.op}({", ".join(str(x) for x in self.args)})'
-
-    def __format__(self, format_spec):
-        return str(self)
-
-    def __repr__(self):
-        return str(self)
-
-    def __eq__(self, other):
-        return isinstance(other, FunctionNode) and self.op == other.op and self.args == other.args
-
-    def __hash__(self):
-        return hash((self.op, tuple(self.args)))
-
-
-class VariableNode(Node):
-    def __init__(self, name: str, annotations: dict[str, Any] | None = None):
-        super().__init__(annotations)
-        self.name = name
-
-    def __str__(self):
-        return f'{self.name}'
-
-    def __format__(self, format_spec):
-        return str(self)
-
-    def __repr__(self):
-        return str(self)
-
-    def __eq__(self, other):
-        return isinstance(other, VariableNode) and self.name == other.name
-
-    def __hash__(self):
-        return hash(self.name)
-
-
-class ConstantNode(Node):
-    def __init__(self, value: int | float | Fraction | str, annotations: dict[str, Any] | None = None):
-        super().__init__(annotations)
-        if isinstance(value, int) or isinstance(value, float):
-            self.value = Fraction(value)
-        else:
-            self.value = value
-
-    def __lt__(self, other: ConstantNode | int | float | Fraction | str):
-        if isinstance(other, ConstantNode):
-            return self.value < other.value
-        else:
-            return self < ConstantNode(other)
-
-    def __gt__(self, other: ConstantNode | int | float | Fraction | str):
-        if isinstance(other, ConstantNode):
-            return self.value > other.value
-        else:
-            return self > ConstantNode(other)
-
-    def __eq__(self, other: ConstantNode | int | float | Fraction | str):
-        if isinstance(other, ConstantNode):
-            return self.value == other.value
-        else:
-            return self == ConstantNode(other)
-
-    def __ne__(self, other: ConstantNode | int | float | Fraction | str):
-        if isinstance(other, ConstantNode):
-            return self.value != other.value
-        else:
-            return self != ConstantNode(other)
-
-    def __add__(self, other: ConstantNode | int | float | Fraction | str):
-        if isinstance(other, ConstantNode):
-            return ConstantNode(self.value + other.value)
-        else:
-            return self + ConstantNode(other)
-
-    def __radd__(self, other: ConstantNode | int | float | Fraction | str):
-        if isinstance(other, ConstantNode):
-            return ConstantNode(self.value + other.value)
-        else:
-            return self + ConstantNode(other)
-
-    def __sub__(self, other: ConstantNode | int | float | Fraction | str):
-        if isinstance(other, ConstantNode):
-            return ConstantNode(self.value - other.value)
-        else:
-            return self - ConstantNode(other)
-
-    def __rsub__(self, other: ConstantNode | int | float | Fraction | str):
-        if isinstance(other, ConstantNode):
-            return ConstantNode(self.value - other.value)
-        else:
-            return self - ConstantNode(other)
-
-    def __mul__(self, other: ConstantNode | int | float | Fraction | str):
-        if isinstance(other, ConstantNode):
-            return ConstantNode(self.value * other.value)
-        else:
-            return self * ConstantNode(other)
-
-    def __rmul__(self, other: ConstantNode | int | float | Fraction | str):
-        if isinstance(other, ConstantNode):
-            return ConstantNode(self.value * other.value)
-        else:
-            return self * ConstantNode(other)
-
-    def __truediv__(self, other: ConstantNode | int | float | Fraction | str):
-        if isinstance(other, ConstantNode):
-            return ConstantNode(self.value / other.value)
-        else:
-            return self / ConstantNode(other)
-
-    def __rtruediv__(self, other: ConstantNode | int | float | Fraction | str):
-        if isinstance(other, ConstantNode):
-            return ConstantNode(other.value / self.value)
-        else:
-            return ConstantNode(other) / self
-
-    def __neg__(self):
-        return ConstantNode(-self.value)
-
-    def __str__(self):
-        return f'{self.value}'
-
-    def __format__(self, format_spec):
-        return str(self)
-
-    def __hash__(self):
-        return hash(self.value)
 
 
 def function(s: LexerStream):
@@ -224,12 +85,12 @@ def expression(s: LexerStream):
         negate = False
         while not s.is_finished():
             item = s.peek()
-            if isinstance(item, Fraction):
+            if isinstance(item, int):
                 s.read()  # discard
-                tree = ConstantNode(item)
                 if negate:
-                    tree.value = -tree.value
+                    item = -item
                     negate = False
+                tree = ConstantNode(item)
                 chain.append(tree)
             elif isinstance(item, Identifier):
                 tree = variable_or_function(s)
@@ -295,6 +156,34 @@ def parse(s: str):
     return parse_stream(LexerStream(tokens))
 
 
+def main():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    funcs = {n: o for n, o in inspect.getmembers(sys.modules[__name__]) if (inspect.isfunction(o) and n != 'main')}
+    try:
+        data_raw = ''.join(stdin.readlines())
+        data: list = yaml.safe_load(data_raw)
+        print(f'{Path(__file__).name} produced the following ...')
+        print()
+        # print('```')
+        # print(data_raw)
+        # print('```')
+        # print()
+        # print(f'The following alternative forms were produced ...')
+        # print()
+        print('```')
+        for exp in data:
+            exp = str(exp)
+            print(f'Parse {exp} ...')
+            print(f'    {parse(exp)}')
+        print('```')
+        print()
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
 if __name__ == '__main__':
-    tree = parse('5:2 + -4.5 ^ -x + -(3 * 8) / -log(2, 32)')
-    print(f'{tree}')
+    main()
+    # tree = parse('5/2 + -45/50 ^ -x + -(3 * 8) / -log(2, 32)')
+    # print(f'{tree}')

@@ -1,13 +1,14 @@
-from expression.parser.Parser import FunctionNode, parse, Node
+from expression.Node import Node, FunctionNode
+from expression.parser.Parser import parse
 from expression.parser.Printer import to_string
 
 
-def exponent_quotient_to_power(fn: Node):
-    if not isinstance(fn, FunctionNode):
+def exponent_quotient_to_power(n: Node):
+    if not isinstance(n, FunctionNode):
         return set()
-    if fn.op == '^':
-        l_arg = fn.args[0]
-        r_arg = fn.args[1]
+    if n.op == '^':
+        l_arg = n.args[0]
+        r_arg = n.args[1]
         if isinstance(l_arg, FunctionNode) and l_arg.op == '/':
             ret = FunctionNode(
                 '/',
@@ -20,12 +21,12 @@ def exponent_quotient_to_power(fn: Node):
     return set()
 
 
-def unexponent_product_to_power(fn: Node):
-    if not isinstance(fn, FunctionNode):
+def unexponent_quotient_to_power(n: Node):
+    if not isinstance(n, FunctionNode):
         return set()
-    if fn.op == '/':
-        l_arg = fn.args[0]
-        r_arg = fn.args[1]
+    if n.op == '/':
+        l_arg = n.args[0]
+        r_arg = n.args[1]
         if isinstance(l_arg, FunctionNode) and l_arg.op == '^'\
                 and isinstance(r_arg, FunctionNode) and r_arg.op == '^'\
                 and l_arg.args[1] == r_arg.args[1]:
@@ -43,5 +44,5 @@ def unexponent_product_to_power(fn: Node):
 if __name__ == '__main__':
     for r in exponent_quotient_to_power(parse('(x/y)^3')):
         print(f'{to_string(r)}')
-    for r in unexponent_product_to_power(parse('(x^3)/(y^3)')):
+    for r in unexponent_quotient_to_power(parse('(x^3)/(y^3)')):
         print(f'{to_string(r)}')

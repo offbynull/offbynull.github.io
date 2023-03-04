@@ -1,0 +1,200 @@
+import inspect
+import sys
+from pathlib import Path
+from sys import stdin
+
+import yaml
+
+from Factor import factor_fastest
+from expression.parser.Parser import FunctionNode, parse, Node, ConstantNode, VariableNode
+from expression.parser.Printer import to_string
+
+
+# MARKDOWN
+def distributive(n: Node):
+    if not isinstance(n, FunctionNode) or n.op != '*':
+        return set()
+    lhs = n.args[0]
+    rhs = n.args[1]
+    if isinstance(rhs, FunctionNode) and rhs.op == '+':
+        _n = FunctionNode(
+            '+',
+            [
+                FunctionNode('*', [lhs, rhs.args[0]]),
+                FunctionNode('*', [lhs, rhs.args[1]]),
+            ]
+        )
+        return {_n}
+    return set()
+
+
+def undistributive_basic(n: Node):
+    if not isinstance(n, FunctionNode) or n.op not in '+':
+        return set()
+    lhs = n.args[0]
+    rhs = n.args[1]
+    if isinstance(lhs, FunctionNode) and lhs.op == '*'\
+            and isinstance(rhs, FunctionNode) and rhs.op == '*'\
+            and lhs.args[0] == rhs.args[0]:
+        _n = FunctionNode(
+            '*',
+            [
+                lhs.args[0],
+                FunctionNode('+', [lhs.args[1], rhs.args[1]])
+            ]
+        )
+        return {_n}
+    return set()
+# MARKDOWN
+
+
+def undistributive_constant_shortcircuit(n: Node):
+    if not isinstance(n, FunctionNode) or n.op != '+':
+        return set()
+    arg1 = n.args[0]
+    arg2 = n.args[1]
+    if isinstance(arg1, FunctionNode) and arg1.op == '*' and isinstance(arg2, FunctionNode) and arg2.op == '*':
+        p1 = arg1.args[0]
+        p2 = arg2.args[0]
+        if isinstance(p1, ConstantNode) and isinstance(p2, ConstantNode) \
+                and p1.value.denominator == 1 and p2.value.denominator == 1:
+            if p1 > 0:
+                factors1 = factor_fastest(int(p1.value))
+            elif p1 < 0:
+                factors1 = factor_fastest(-int(p1.value))
+                factors1 = {-f for f in factors1} | factors1
+            else:
+                return set()
+            if p2 > 0:
+                factors2 = factor_fastest(int(p2.value))
+            elif p2 < 0:
+                factors2 = factor_fastest(-int(p2.value))
+                factors2 = {-f for f in factors2} | factors2
+            else:
+                return set()
+            factor = max(factors1 & factors2)
+            factor = ConstantNode(factor)
+            _n = FunctionNode(
+                '*',
+                [
+                    factor,
+                    FunctionNode(
+                        '+',
+                        [
+                            FunctionNode('*', [p1 // factor, arg1.args[1]]),
+                            FunctionNode('*', [p2 // factor, arg2.args[1]])
+                        ]
+                    )
+                ]
+            )
+            return {_n}
+    return set()
+
+
+def undistributive_exponent_shortcircuit(n: Node):
+    def normalize_to_exponents(n1: Node, n2: Node):
+        if isinstance(n1, FunctionNode) and n1.op == '^'\
+                and isinstance(n2, FunctionNode) and n2.op == '^'\
+                and n1.args[0] == n2.args[0]:
+            return n1, n2
+        elif isinstance(n1, FunctionNode) and n1.op == '^'\
+                and n1.args[0] == n2:
+            return n1, FunctionNode('^', [n2, ConstantNode(1)])
+        elif isinstance(n2, FunctionNode) and n2.op == '^'\
+                and n2.args[0] == n1:
+            return FunctionNode('^', [n1, ConstantNode(1)]), n2
+        else:
+            return FunctionNode('^', [n1, ConstantNode(1)]), FunctionNode('^', [n2, ConstantNode(1)])
+
+    if not isinstance(n, FunctionNode) or n.op != '+':
+        return set()
+    arg1 = n.args[0]
+    arg2 = n.args[1]
+    if isinstance(arg1, FunctionNode) and arg1.op == '*' and isinstance(arg2, FunctionNode) and arg2.op == '*':
+        p1 = arg1.args[0]
+        p2 = arg2.args[0]
+        p1, p2 = normalize_to_exponents(p1, p2)
+        assert p1.op == '^' and p2.op == '^'
+        if p1.args[0] == p2.args[0] and isinstance(p1.args[1], ConstantNode) and isinstance(p2.args[1], ConstantNode):
+            p_min_exp = min(p1.args[1], p2.args[1])
+            lhs = p1.args[0]
+            p1_rhs = p1.args[1] - p_min_exp
+            p2_rhs = p2.args[1] - p_min_exp
+            _n = FunctionNode(
+                '*',
+                [
+                    FunctionNode('^', [lhs, p_min_exp]),
+                    FunctionNode(
+                        '+',
+                        [
+                            FunctionNode('*', [
+                                FunctionNode('^', [lhs, p1_rhs]),
+                                arg1.args[1]
+                            ]),
+                            FunctionNode('*', [
+                                FunctionNode('^', [lhs, p2_rhs]),
+                                arg2.args[1]
+                            ])
+                        ]
+                    )
+                ]
+            )
+            return {_n}
+    return set()
+
+
+def undistributive(n: Node):
+    return undistributive_basic(n) | undistributive_constant_shortcircuit(n) | undistributive_exponent_shortcircuit(n)
+
+
+def main():
+    print("<div style=\"border:1px solid black;\">", end="\n\n")
+    print("`{bm-disable-all}`", end="\n\n")
+    funcs = {n: o for n, o in inspect.getmembers(sys.modules[__name__]) if (inspect.isfunction(o) and n != 'main')}
+    try:
+        data_raw = ''.join(stdin.readlines())
+        data: list = yaml.safe_load(data_raw)
+        print(f'{Path(__file__).name} produced the following alternate forms ...')
+        print()
+        # print('```')
+        # print(data_raw)
+        # print('```')
+        # print()
+        # print(f'The following alternative forms were produced ...')
+        # print()
+        print('```')
+        for func_name, exp in data:
+            exp = str(exp)
+            n = parse(exp)
+            func = funcs[func_name]
+            print(f'{func_name} with input {exp} ...')
+            for alt_n in func(n):
+                print(f'    {to_string(n)} = {to_string(alt_n)}')
+        print('```')
+        print()
+    finally:
+        print("</div>", end="\n\n")
+        print("`{bm-enable-all}`", end="\n\n")
+
+
+if __name__ == '__main__':
+    for r in distributive(parse('3*x')):
+        print(f'{to_string(r)}')
+    for r in distributive(parse('c*(a+b)')):
+        print(f'{to_string(r)}')
+    for r in distributive(parse('1*(x+1)')):
+        print(f'{to_string(r)}')
+    for r in distributive(parse('3*(x+y+1)')):
+        print(f'{to_string(r)}')
+    print('----')
+    for r in undistributive(parse('x+3')):
+        print(f'{to_string(r)}')
+    for r in undistributive(parse('(x+1)*2+(x+1)*3')):
+        print(f'{to_string(r)}')
+    for r in undistributive(parse('(x+1)*(1+2)+(x+1)*3')):
+        print(f'{to_string(r)}')
+    print('----')
+    for r in undistributive_exponent_shortcircuit(parse('((x+y)^2*5)+((x+y)^5*10)')):
+        print(f'{to_string(r)}')
+    for r in undistributive_exponent_shortcircuit(parse('((x+y)^5*5)+((x+y)^2*10)')):
+        print(f'{to_string(r)}')

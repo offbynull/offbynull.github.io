@@ -11,11 +11,9 @@ PREREQ OF NEEDING TO KNOW ABOUT REAL NUMBERS AND ARITHMETIC OPERATIONS ON THOSE 
 
 TODO: continue with openstax elementary algebra, then intermediate algebra, then college algebra DO NOT DO THE PROBLEMS, JUST DO PROCESS AND TERMINOLOGY
 
-# Algorithms
+# Prime Factorization
 
-## Prime Factorization
-
-`{bm} /(Algorithms\/Prime Factorization)_TOPIC/i`
+`{bm} /(Prime Factorization)_TOPIC/i`
 
 Every composite number can be written as a product of prime numbers. For example...
 
@@ -104,12 +102,12 @@ The process of breaking down a composite number into a product of primes is call
    24
    ```
 
-## Least Common Multiple
+# Least Common Multiple
 
-`{bm} /(Algorithms\/Least Common Multiple)_TOPIC/i`
+`{bm} /(Least Common Multiple)_TOPIC/i`
 
 ```{prereq}
-Algorithms\/Prime Factorization_TOPIC
+Prime Factorization_TOPIC
 ```
 
 The least common multiple is the process of taking 2 numbers and finding the smallest multiple between them. That is, if you listed out their multiples starting from 1, the first match between them would be the least common multiple.
@@ -183,12 +181,12 @@ LeastCommonMultiplePFLauncher
 12 18
 ```
 
-## Greatest Common Divisor
+# Greatest Common Divisor
 
-`{bm} /(Algorithms\/Greatest Common Divisor)_TOPIC/i`
+`{bm} /(Greatest Common Divisor)_TOPIC/i`
 
 ```{prereq}
-Algorithms\/Prime Factorization_TOPIC
+Prime Factorization_TOPIC
 ```
 
 The greatest common divisor is the process of taking 2 numbers and finding the largest possible divisor between the two of them. In other words, finding the greatest number that evenly divides both numbers.
@@ -297,7 +295,7 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
 
  * Geometric explanation
 
-   Conceptually, you can think of Euclid's algorithm as recursively breaking off square chunks out of a rectangular area until it finds the smallest possible chunk that can be evenly copied to recreate the original rectangle. For example, imagine the numbers 21 and 6...
+   Conceptually, you can think of Euclid's algorithm as recursively breaking off !!square!! chunks out of a rectangular area until it finds the smallest possible chunk that can be evenly copied to recreate the original rectangle. For example, imagine the numbers 21 and 6...
    
    ```{svgbob}
                   21
@@ -491,23 +489,743 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
    * ...
 ````
 
-## Expression Parsing
+# Expressions
 
-## Expression Properties
+`{bm} /(Expressions)_TOPIC/i`
 
-### Associative Property
+An expression is a hierarchy of operations, variables, and constants glued together as a pipeline. In this case, an ...
 
-### Commutative Property
+ * operation is transforms one or more inputs into one output (e.g. addition).
+ * constant is a number (e.g. 5).
+ * variable is a letter that represents an arbitrary / unknown number (e.g. x).
 
-### Distributive Property
+For example, in the expression 5+x-3, ...
 
-also 10.4 equivalent fraction property?
+ * addition (+) and subtraction (-) are operations.
+ * 5 and 3 are constants.
+ * x is a variable.
 
-### Product Property
+When the variables of an expression are swapped out for constants, the expression can be performed, typically referred to as evaluation. In the example above, swapping x with 2 results in the expression 5+2-3, which evaluates to 4.
 
-### Power Property
+Expressions have rules that govern the order in which certain operations get evaluated, and those operations have certain properties that allow the expression's operation to be shuffled around in various ways while still producing the same output when evaluated. These rules and properties are explained in the subsections below.
 
-### Product to a Power Property
+## Order of Operations
+
+`{bm} /(Expressions\/Order of Operations)_TOPIC/i`
+
+When evaluating an expression, certain arithmetic operators must be evaluated before others. The general rule of thumb to remember is BEDMAS, which is an acronym for the operator precedence in an expression:
+
+ 1. Brackets
+ 2. Exponents
+ 3. Division and Multiplication
+ 4. Addition and Subtraction
+
+The list above essentially says that if your expression contains ...
+
+ * exponents (E), evaluate them first.
+
+   ```
+   1 + 2 - 3 + 10^2 * 4 * 5 ÷ 6
+               ^^^^
+               evaluate this first
+   ```
+
+ * divisions or multiplications (DM), evaluate them second (chains evaluated left-to-right).
+
+   ```
+   1 + 2 - 3 + 10^2 * 4 * 5 ÷ 6
+                      ^^^^^^^^^
+                      evaluate these next (left-to-right)
+   ```
+
+ * additions or subtractions (AS), evaluate them third (chains evaluated left-to-right).
+
+   ```
+   1 + 2 - 3 + 10^2 * 4 * 5 ÷ 6
+   ^^^^^^^^^
+   evaluate these next (left-to-right)
+   ```
+
+However, if the expression contains brackets (B), the contents of each bracket needs to be evaluated before evaluating the list above. This is a recursive process, !!meaning!! if there are nested brackets, the most deeply nested go first, then the second-most deeply nested, then the third most deeply nested, etc..
+
+For example, the expression (4*(8+0-1))÷2+3 is evaluated as ...
+
+ * Brackets: <b>(4*(8+0-1))</b>÷2+3
+   * Brackets: (4*<b>(8+0-1)</b>)÷2+3
+     * Addition: (4*(<b>8+0-1</b>))÷2+3 ⟶ (4*<b>7</b>)÷2+3
+   * Multiplication: (<b>4*7</b>)÷2+3 ⟶ <b>28</b>÷2+3
+ * Division: <b>28÷2</b>+3 ⟶ <b>14</b>+3
+ * Addition: <b>14+3</b> ⟶ <b>17</b>
+
+````{note}
+The left-to-right evaluation for chains of division/multiplication (DM) and addition/subtraction (AS) is short-hand for implicitly adding brackets. For example, consider 8 + 0 - 1. Evaluating it left-to-right is the same as evaluating if brackets were added around each operation starting with the left-most pair going right-ward ... 
+
+```
+8 + 0 - 1      ... vs ...     ((8 + 0) - 1)
+```
+````
+
+You can effectively think BEDMAS as the rules for how an expression's evaluation nest. In the context of a traditional programming language, this would be nested function calls:
+
+```python
+# Nesting (4*(6+1))÷2+3 ...
+add(div(mul(4, add(6, 1)), 2), 3)
+# Nesting (4*(6+1))÷2+3, using symbols as function names (+, -, *, / vs add, sub, mul, div) ...
++(/(*(4, +(6, 1)), 2), 3)
+```
+
+Another way to think of this is as a tree, where the tree is computed from leaf nodes to root nodes.
+
+```{svgbob}
+     div
+     / \
+    /   \
+   /     \
+ mul     add
+ / \     / \
+4  add   2   3
+   / \
+  6   1
+```
+
+```{note}
+The expression parsing code is too large to post here, but the execution of that code is shown below. There are key differences with how the code treats expressions vs how you were probably taught expressions in high school / college ...
+
+ 1. **All constants are integers**
+ 
+    Only integer numbers are allowed as constants in the expressions. For rational numbers that aren't integers, those numbers can be expressed as ratios / fractions (e.g. 4.5 is `{kt} \frac{45}{10}`).
+
+ 1. **Fractions and division are the same thing**
+ 
+    There is no distinction between fractions and divisions (e.g. `{kt} \frac{5+x}{10}` is the same as `{kt}(5+x) \div 10`). The code uses the `/` for both.
+
+ 1. **Variables can't be negative**
+ 
+    A variable can't be positive or negative in the same way that an integer can be. Instead, a negated variable is represented by multiplying that variable by -1 (e.g. -x becomes -1*x).
+```
+
+```{arithmetic}
+expression.parser.Parser
+- "(4 * (6 + 1)) / 2 + 3"
+- "5/2 + (-45/10)^-x + -(3 * 8) / -log(2, 32)"
+```
+
+## Arithmetic Conversions
+
+`{bm} /(Expressions\/Arithmetic Conversions)_TOPIC/i`
+
+The following subsections detail common rules / properties around condensing and expanding arithmetic operations. 
+
+### Constant to Prime Factors
+
+`{bm} /(Expressions\/Arithmetic Conversions\/Constant to Prime Factors)_TOPIC/i`
+
+```{prereq}
+Prime Factorization_TOPIC
+Expressions/Equivalent Fraction Property_TOPIC
+```
+
+Given a counting number, there exists a set_S of prime numbers that can be multiplied together to produce that number: Prime factors.
+
+`{kt} 12 = 2 \cdot 2 \cdot 3`
+
+The conversion to prime factors is useful for fractions. By cancelling out common prime factors between the numerator and denominator of a fraction, you end up with a simplified fraction.
+
+`{kt} \frac{12}{18}`
+
+* `{kt} \frac{12}{18} = \frac{2 \cdot 2 \cdot 3}{2 \cdot 3 \cdot 3}` (to prime factors)
+* `{kt} \frac{2 \cdot 2 \cdot 3}{2 \cdot 3 \cdot 3} = \frac{2}{3}` (equivalent fraction property)
+
+It's common to always have fractions in their simplified_FRAC forms because it's easier to check if two fractions are equivalent when they're both simplified_FRAC. For example, most people can't immediately tell that `{kt} \frac{12}{18}` and `{kt} \frac{2}{3}` are equivalent.
+
+```{seealso}
+Expressions/Equivalent Fraction Property_TOPIC
+```
+
+```{output}
+arithmetic_code/expression/properties/ArithmeticConversions.py
+python
+# MARKDOWN_PRIME_FACTORS\s*\n([\s\S]+)\n\s*# MARKDOWN_PRIME_FACTORS
+```
+
+```{arithmetic}
+expression.properties.ArithmeticConversions
+- [prime_factors, 18]
+- [prime_factors, -18]
+```
+
+### Addition-Subtraction
+
+`{bm} /(Expressions\/Arithmetic Conversions\/Addition-Subtraction)_TOPIC/i`
+
+A subtraction operation can be converted to an addition operation and vice-versa.
+
+`{kt} a-b = a+(-b)`
+
+`{kt} a+b = a-(-b)`
+
+The conversion from subtraction to addition is useful because subtraction is missing the commutative property and associative property. If you convert subtraction to addition, it enables you to shuffle around the expression in more ways.
+
+```{seealso}
+Expressions/Addition Properties/Commutative_TOPIC
+Expressions/Addition Properties/Associative_TOPIC
+```
+
+```{output}
+arithmetic_code/expression/properties/ArithmeticConversions.py
+python
+# MARKDOWN_ADD_SUB\s*\n([\s\S]+)\n\s*# MARKDOWN_ADD_SUB
+```
+
+```{arithmetic}
+expression.properties.ArithmeticConversions
+- [add_to_sub, a+b]
+- [add_to_sub, 0+9]
+- [sub_to_add, a-b]
+- [sub_to_add, 0-9]
+```
+
+### Addition-Multiplication
+
+`{bm} /(Expressions\/Arithmetic Conversions\/Addition-Multiplication)_TOPIC/i`
+
+Adding the same thing (expression) together many times can be condensed into a single multiplication.
+
+`{kt} a+a = 2a`
+
+```{output}
+arithmetic_code/expression/properties/ArithmeticConversions.py
+python
+# MARKDOWN_ADD_MUL\s*\n([\s\S]+)\n\s*# MARKDOWN_ADD_MUL
+```
+
+```{arithmetic}
+expression.properties.ArithmeticConversions
+- [add_to_mul, a+a]
+- [add_to_mul, 9+9]
+- [mul_to_add, 3*a]
+- [mul_to_add, 3*9]
+```
+
+### Multiplication-Exponent
+
+`{bm} /(Expressions\/Arithmetic Conversions\/Multiplication-Exponent)_TOPIC/i`
+
+Multiplying the same thing (expression) together many times can be condensed into a single exponentiation.
+
+`{kt} a \cdot a = a^2`
+
+```{output}
+arithmetic_code/expression/properties/ArithmeticConversions.py
+python
+# MARKDOWN_MUL_EXP\s*\n([\s\S]+)\n\s*# MARKDOWN_MUL_EXP
+```
+
+```{arithmetic}
+expression.properties.ArithmeticConversions
+- [mul_to_exp, a*a]
+- [mul_to_exp, 9*9]
+- [exp_to_mul, a^3]
+- [exp_to_mul, 9^3]
+```
+
+## Addition Properties
+
+`{bm} /(Expressions\/Addition Properties)_TOPIC/i`
+
+The following subsections detail common rules / properties around addition.
+
+### Commutative
+
+`{bm} /(Expressions\/Addition Properties\/Commutative)_TOPIC/i`
+
+`{kt} a+b = b+a`
+
+The commutative property of addition states the addition produces the same result regardless of the order in which operands are submitted.
+
+```{output}
+arithmetic_code/expression/properties/RatioAdditionProperties.py
+python
+# MARKDOWN_COMMUTATIVE\s*\n([\s\S]+)\n\s*# MARKDOWN_COMMUTATIVE
+```
+
+```{arithmetic}
+expression.properties.RatioAdditionProperties
+- [commutative, a+b]
+- [commutative, 5+6]
+```
+
+### Associative
+
+`{bm} /(Expressions\/Addition Properties\/Associative)_TOPIC/i`
+
+`{kt} (a+b)+c = a+(b+c)`
+
+The associative property of addition states that a chain of additions produce the same result regardless of the order in which those addition operations are performed.
+
+```{output}
+arithmetic_code/expression/properties/RatioAdditionProperties.py
+python
+# MARKDOWN_ASSOCIATIVE\s*\n([\s\S]+)\n\s*# MARKDOWN_ASSOCIATIVE
+```
+
+```{arithmetic}
+expression.properties.RatioAdditionProperties
+- [associative, (a+b)+c]
+- [associative, (5+6)+1]
+```
+
+### Identity
+
+`{bm} /(Expressions\/Addition Properties\/Identity)_TOPIC/i`
+
+`{kt} a+0=a`
+
+The identity property of addition states that adding a number to 0 (identity of addition) results in that same number.
+
+```{output}
+arithmetic_code/expression/properties/RatioAdditionProperties.py
+python
+# MARKDOWN_IDENTITY\s*\n([\s\S]+)\n\s*# MARKDOWN_IDENTITY
+```
+
+```{arithmetic}
+expression.properties.RatioAdditionProperties
+- [identity, x+0]
+- [identity, 9+0]
+```
+
+### Inverse
+
+`{bm} /(Expressions\/Addition Properties\/Inverse)_TOPIC/i`
+
+`{kt}a+(-a)=0`
+
+The inverse property of addition states that adding a number to its negative results in 0 (identity of addition).
+
+```{output}
+arithmetic_code/expression/properties/RatioAdditionProperties.py
+python
+# MARKDOWN_INVERSE\s*\n([\s\S]+)\n\s*# MARKDOWN_INVERSE
+```
+
+```{arithmetic}
+expression.properties.RatioAdditionProperties
+- [inverse, x+-x]
+- [inverse, 9+-9]
+```
+
+### Combine
+
+`{bm} /(Expressions\/Addition Properties\/Combine)_TOPIC/i`
+
+```{prereq}
+Expressions/Equivalent Fraction Property_TOPIC
+```
+
+`{kt} \frac{a}{b} + \frac{c}{d} = \frac{a}{b}\frac{d}{d} + \frac{c}{d}\frac{b}{b} = \frac{ad}{bd} + \frac{bc}{bd} = \frac{ad + bc}{bd}`
+
+Adding two fractions together requires that their denominators be the same. That is, if the denominators aren't already the same, both fractions must be converted to equivalent fractions that share the same denominator. 
+
+```{output}
+arithmetic_code/expression/properties/RatioAdditionProperties.py
+python
+# MARKDOWN_COMBINE\s*\n([\s\S]+)\n\s*# MARKDOWN_COMBINE
+```
+
+```{arithmetic}
+expression.properties.RatioAdditionProperties
+- [combine, a+b]
+- [combine, (a/b)+(c/d)]
+- [combine, (a/b)+c]
+- [uncombine, a+b]
+- [uncombine, (a+c)/b]
+- [uncombine, ((a*d)+(c*b))/(b*d)]
+```
+
+## Subtraction Properties
+
+`{bm} /(Expressions\/Subtraction Properties)_TOPIC/i`
+
+```{prereq}
+Expressions/Arithmetic Conversions/Addition-Subtraction_TOPIC
+Expressions/Addition Properties_TOPIC
+```
+
+The following subsections detail common rules / properties around subtraction.
+
+Recall that subtraction can be converted to addition: `{kt} a-b=a+(-b)`. The conversion from subtraction to addition is useful because subtraction is missing the commutative property and associative property. If you convert subtraction to addition, it enables you to shuffle around the expression in more ways.
+
+### Identity
+
+`{bm} /(Expressions\/Subtraction Properties\/Identity)_TOPIC/i`
+
+The identity property of subtraction states that subtracting 0 (identity of subtraction) from a number results in that same number.
+
+`{kt} a-0=a`
+
+```{output}
+arithmetic_code/expression/properties/RatioSubtractionProperties.py
+python
+# MARKDOWN_IDENTITY\s*\n([\s\S]+)\n\s*# MARKDOWN_IDENTITY
+```
+
+```{arithmetic}
+expression.properties.RatioSubtractionProperties
+- [identity, x-0]
+- [identity, 9-0]
+```
+
+### Inverse
+
+`{bm} /(Expressions\/Subtraction Properties\/Inverse)_TOPIC/i`
+
+The inverse property of subtraction states that subtracting a number from itself results in 0 (identity of subtraction).
+
+`{kt}a-a=0`
+
+```{note}
+If the subtraction were converted to addition, this would be the inverse property of addition.
+```
+
+```{seealso}
+Expressions/Addition-Subtraction Property_TOPIC
+Expressions/Addition Properties/Inverse_TOPIC
+```
+
+```{output}
+arithmetic_code/expression/properties/RatioSubtractionProperties.py
+python
+# MARKDOWN_INVERSE\s*\n([\s\S]+)\n\s*# MARKDOWN_INVERSE
+```
+
+```{arithmetic}
+expression.properties.RatioSubtractionProperties
+- [inverse, x-x]
+- [inverse, 9-9]
+```
+
+### Combine
+
+`{bm} /(Expressions\/Subtraction Properties\/Combine)_TOPIC/i`
+
+`{kt} \frac{a}{b} - \frac{c}{d} = \frac{a}{b}\frac{d}{d} - \frac{c}{d}\frac{b}{b} = \frac{ad}{bd} - \frac{bc}{bd} = \frac{ad - bc}{bd}`
+
+Subtracting a fraction from another fraction requires that both fractions have the same denominator. That is, if the denominators aren't already the same, both fractions must be converted to equivalent fractions that share the same denominator. 
+
+```{output}
+arithmetic_code/expression/properties/RatioSubtractionProperties.py
+python
+# MARKDOWN_COMBINE\s*\n([\s\S]+)\n\s*# MARKDOWN_COMBINE
+```
+
+```{arithmetic}
+expression.properties.RatioSubtractionProperties
+- [combine, a-b]
+- [combine, (a/b)-(c/d)]
+- [combine, (a/b)-c]
+- [uncombine, a-b]
+- [uncombine, (a-c)/b]
+- [uncombine, ((a*d)+(c-b))/(b*d)]
+```
+
+## Multiplication Properties
+
+`{bm} /(Expressions\/Multiplication Properties)_TOPIC/i`
+
+The following subsections detail common rules / properties around multiplication.
+
+### Commutative
+
+`{bm} /(Expressions\/Multiplication Properties\/Commutative)_TOPIC/i`
+
+`{kt} ab = ba`
+
+The commutative property of multiplication states that multiplication produces the same result regardless of the order in which operands are submitted.
+
+```{output}
+arithmetic_code/expression/properties/RatioMultiplicationProperties.py
+python
+# MARKDOWN_COMMUTATIVE\s*\n([\s\S]+)\n\s*# MARKDOWN_COMMUTATIVE
+```
+
+```{arithmetic}
+expression.properties.RatioMultiplicationProperties
+- [commutative, a*b]
+- [commutative, 5*6]
+```
+
+### Associative
+
+`{bm} /(Expressions\/Multiplication Properties\/Associative)_TOPIC/i`
+
+`{kt} (ab)c = a(bc)`
+
+The associative property of multiplication states that a chain of multiplications produce the same result regardless of the order in which those multiplication operations are performed.
+
+```{output}
+arithmetic_code/expression/properties/RatioMultiplicationProperties.py
+python
+# MARKDOWN_ASSOCIATIVE\s*\n([\s\S]+)\n\s*# MARKDOWN_ASSOCIATIVE
+```
+
+```{arithmetic}
+expression.properties.RatioMultiplicationProperties
+- [associative, (a*b)*c]
+- [associative, (5*6)*1]
+```
+
+### Identity
+
+`{bm} /(Expressions\/Multiplication Properties\/Identity)_TOPIC/i`
+
+`{kt} a \cdot 1=a`
+
+The identity property of multiplication states that multiplying a number by 1 (identity of multiplication) results in that same number.
+
+```{output}
+arithmetic_code/expression/properties/RatioMultiplicationProperties.py
+python
+# MARKDOWN_IDENTITY\s*\n([\s\S]+)\n\s*# MARKDOWN_IDENTITY
+```
+
+```{arithmetic}
+expression.properties.RatioMultiplicationProperties
+- [identity, x*1]
+- [identity, 9*1]
+```
+
+### Inverse
+
+`{bm} /(Expressions\/Multiplication Properties\/Inverse)_TOPIC/i`
+
+`{kt} a \cdot \frac{1}{a}=1`
+
+The inverse property of multiplication states that multiplying a number by its reciprocal results in 1 (identity of multiplication). The number can't be 0, because the reciprocal of 0 is undefined (a denominator of 0 is undefined).
+
+```{output}
+arithmetic_code/expression/properties/RatioMultiplicationProperties.py
+python
+# MARKDOWN_INVERSE\s*\n([\s\S]+)\n\s*# MARKDOWN_INVERSE
+```
+
+```{arithmetic}
+expression.properties.RatioMultiplicationProperties
+- [inverse, x*(1/x)]
+- [inverse, 9*(1/9)]
+```
+
+### Zero
+
+`{bm} /(Expressions\/Multiplication Properties\/Zero)_TOPIC/i`
+
+`{kt} a \cdot 0=0`
+
+The zero property of multiplication states that multiplying a number by 0 results in 0.
+
+```{output}
+arithmetic_code/expression/properties/RatioMultiplicationProperties.py
+python
+# MARKDOWN_ZERO\s*\n([\s\S]+)\n\s*# MARKDOWN_ZERO
+```
+
+```{arithmetic}
+expression.properties.RatioMultiplicationProperties
+- [zero, x*0]
+- [zero, 9*0]
+```
+
+### Combine
+
+`{bm} /(Expressions\/Multiplication Properties\/Combine)_TOPIC/i`
+
+`{kt} \frac{a}{b} + \frac{c}{d} = \frac{ac}{bd}`
+
+Multiplying two fractions together just requires multiplying their numerators and denominators.
+
+```{output}
+arithmetic_code/expression/properties/RatioMultiplicationProperties.py
+python
+# MARKDOWN_COMBINE\s*\n([\s\S]+)\n\s*# MARKDOWN_COMBINE
+```
+
+```{arithmetic}
+expression.properties.RatioMultiplicationProperties
+- [combine, a*b]
+- [combine, (a/b)*(c/d)]
+- [combine, (a/b)*c]
+- [uncombine, a*b]
+- [uncombine, (a*c)/b]
+```
+
+## Division Properties
+
+`{bm} /(Expressions\/Division Properties)_TOPIC/i`
+
+The following subsections detail common rules / properties around division (fractions).
+
+### Identity
+
+`{bm} /(Expressions\/Division Properties\/Identity)_TOPIC/i`
+
+`{kt} \frac{a}{1} = a`
+
+The identity property of division states that dividing a number by 1 (identity of division) results in that same number.
+
+```{output}
+arithmetic_code/expression/properties/RatioDivisionProperties.py
+python
+# MARKDOWN_IDENTITY\s*\n([\s\S]+)\n\s*# MARKDOWN_IDENTITY
+```
+
+```{arithmetic}
+expression.properties.RatioDivisionProperties
+- [identity, x/1]
+- [identity, 9/1]
+```
+
+### Inverse
+
+`{bm} /(Expressions\/Division Properties\/Inverse)_TOPIC/i`
+
+`{kt} \frac{a}{a} = 1`
+
+The inverse property of division states that dividing a number by itself results in 1 (identity of division). The number can't be 0, because a denominator of 0 is undefined.
+
+```{output}
+arithmetic_code/expression/properties/RatioDivisionProperties.py
+python
+# MARKDOWN_INVERSE\s*\n([\s\S]+)\n\s*# MARKDOWN_INVERSE
+```
+
+```{arithmetic}
+expression.properties.RatioDivisionProperties
+- [inverse, x/x]
+- [inverse, 9/9]
+```
+
+### Zero
+
+`{bm} /(Expressions\/Division Properties\/Zero)_TOPIC/i`
+
+`{kt} \frac{0}{a} = 0`
+
+The zero property of division states that a fraction with a numerator of 0 will always result in 0, so long as the denominator isn't 0. A fraction with a denominator of 0 is undefined.
+
+```{output}
+arithmetic_code/expression/properties/RatioDivisionProperties.py
+python
+# MARKDOWN_ZERO\s*\n([\s\S]+)\n\s*# MARKDOWN_ZERO
+```
+
+```{arithmetic}
+expression.properties.RatioDivisionProperties
+- [zero, 0/x]
+- [zero, 0/9]
+```
+
+### Combine
+
+`{bm} /(Expressions\/Division Properties\/Combine)_TOPIC/i`
+
+```{prereq}
+Expressions/Multiplication Properties/Inverse_TOPIC
+Expressions/Multiplication Properties/Combine_TOPIC
+Expressions/Division Properties/Identity_TOPIC
+Expressions/Division Properties/Inverse_TOPIC
+Expressions/Equivalent Fraction Property_TOPIC
+```
+
+`{kt} \frac{\frac{a}{b}}{\frac{c}{d}} = \frac{ad}{bc}`
+
+Dividing two fractions (complex fraction) requires applying the equivalent fraction property, inverse property, and identity property. The idea is to remove the denominator of the complex fraction by taking the reciprocal of that denominator and multiplying both the numerator and denominator by it.
+
+* `{kt} \frac{\frac{a}{b}}{\frac{c}{d}} = \frac{\frac{a}{b} \cdot \frac{d}{c}}{\frac{c}{d} \cdot \frac{d}{c}}` (multiply by reciprocal of denominator)
+* `{kt} \frac{\frac{a}{b} \cdot \frac{d}{c}}{\frac{c}{d} \cdot \frac{d}{c}} = \frac{\frac{ad}{bc}}{\frac{cd}{cd}}` (perform the multiplication)
+* `{kt} \frac{\frac{ad}{bc}}{\frac{cd}{cd}} = \frac{\frac{ad}{bc}}{1}` (inverse property of multiplication)
+* `{kt} \frac{\frac{ad}{bc}}{1} = \frac{ad}{bc}` (identity property of division)
+
+```{output}
+arithmetic_code/expression/properties/RatioDivisionProperties.py
+python
+# MARKDOWN_COMBINE\s*\n([\s\S]+)\n\s*# MARKDOWN_COMBINE
+```
+
+```{arithmetic}
+expression.properties.RatioDivisionProperties
+- [combine, a/b]
+- [combine, (a/b)/(c/d)]
+- [combine, (9/3)/(5/1)]
+- [uncombine, (a*d)/(b*c)]
+- [uncombine, (9*1)/(3*5)]
+```
+
+## Equivalent Fraction Property
+
+`{bm} /(Expressions\/Equivalent Fraction Property)_TOPIC/i`
+
+```{prereq}
+Expressions/Multiplication Properties/Combine_TOPIC
+Expressions/Multiplication Properties/Identity_TOPIC
+Expressions/Division Properties/Inverse_TOPIC
+```
+
+`{kt} \frac{ac}{bc} = \frac{a}{b}`
+
+The equivalent fraction property states that the quantity of a fraction doesn't change if its numerator and denominator have a common factor added or removed.
+
+* `{kt} \frac{ac}{bc} = \frac{a}{b} \cdot \frac{c}{c}` (pull out common factor)
+* `{kt} \frac{a}{b} \cdot \frac{c}{c} = \frac{a}{b} \cdot 1` (inverse property)
+* `{kt} \frac{a}{b} \cdot 1 = \frac{a}{b}` (identity property)
+
+```{output}
+arithmetic_code/expression/properties/EquivalentFractionProperty.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{arithmetic}
+expression.properties.EquivalentFractionProperty
+- [equivalent_fraction_basic, (a*b)/(c*b)]
+- [equivalent_fraction_basic, (5*7)/(3*7)]
+```
+
+## Distributive Property
+
+`{bm} /(Expressions\/Distributive Property)_TOPIC/i`
+
+`{kt} a(b+c) = ab+ac`
+
+The distributive property states that, when multiplying by a a chain of additions, the multiplication can be exploded out into each of the terms_EXP in that chain.
+
+Note that...
+
+ 1. subtraction can be converted to addition: `{kt} a(b-c) = a(b+(-c)) = ab+(-ac) = ab-ac`.
+ 2. division can be converted to multiplication: `{kt} \frac{b+c}{a} = \frac{1}{a}(b+c) = \frac{1}{a}b+\frac{1}{a}c = \frac{b}{a} + \frac{c}{a}`.
+
+```{output}
+arithmetic_code/expression/properties/DistributiveProperty.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{arithmetic}
+expression.properties.DistributiveProperty
+- [distributive, 1*(x+1)]
+- [distributive, 3*(x+y+1)]
+- [undistributive_basic, (x+1)*2+(x+1)*3]
+- [undistributive_basic, (x+1)*(1+2)+(x+1)*3]
+```
+
+## Exponent Properties
+
+## Logarithm Properties
+
+# Relation
+
+A relation is a special class of operation that takes n sets_S as input and evaluates each item in the cartesian product of those sets_S to either true or false.
+
+In other words, it establishes the relationship between two entities. The subsections below describe relations 
 
 # Terminology
 
@@ -524,7 +1242,7 @@ also 10.4 equivalent fraction property?
 
  * `{bm} simplified fraction` `{bm} /(simplify|simplified|simplifies)_FRAC/i` - Of all equivalent fractions for a fraction, the one with smallest numerator and denominator. For the example above, `{kt} \frac{3}{2}` is the simplified fraction for both `{kt} \frac{12}{8}` and `{kt} \frac{6}{4}`.
 
- * `{bm} complex fraction` - A fraction in which the numerator and / or denominator contains a fraction. For example, `{kt} frac{3}{\frac{3}{4}}`.
+ * `{bm} complex fraction` - A fraction in which the numerator and / or denominator contains a fraction. For example, `{kt} 3 \frac{3}{4}`.
 
  * `{bm} common denominator` - Two fractions that have the same value for the denominator. For example, the fractions `{kt} \frac{1}{2}` and `{kt} \frac{1}{3}` don't have a common denominator, but their equivalent fractions `{kt} \frac{3}{6}` and `{kt} \frac{2}{6}` do.
 
@@ -870,7 +1588,7 @@ also 10.4 equivalent fraction property?
 
    To figure out the unit rate, convert the fraction to a decimal (divide its numerator by its denominator).
 
- * `{bm} square` - Power of two. For example, 5 squared is `{kt} 5^2`. The word square is used because power of 2 visually represents a square (e.g. 5 rows stacked on top of each other, where each row has 5 cells).
+ * `{bm} square/(square[ds]?)_POW/i` - Power of two. For example, 5 squared_POW is `{kt} 5^2`. The word square_POW is used because power of 2 visually represents a square_POW (e.g. 5 rows stacked on top of each other, where each row has 5 cells).
 
    ```{svgbob}
    +---+---+---+---+---+
@@ -886,9 +1604,9 @@ also 10.4 equivalent fraction property?
    +---+---+---+---+---+
    ```
 
- * `{bm} perfect square` - The result of a whole number being squared. For example, because `{kt} 3^2=9`, 9 is a perfect square.
+ * `{bm} perfect square` - The result of a whole number being squared_POW. For example, because `{kt} 3^2=9`, 9 is a perfect square_POW.
 
- * `{bm} cube` - Power of three. For example, 5 cubed is `{kt} 5^3`. The word cube is used because power of 3 visually represents a cube (e.g. `{kt}5^2` represents a square, and stacking together 5 of those squares makes a cube: `{kt} 5^3`)
+ * `{bm} cube/(cube[ds]?)_POW/i` - Power of three. For example, 5 cubed_POW is `{kt} 5^3`. The word cube_POW is used because power of 3 visually represents a cube_POW (e.g. `{kt}5^2` represents a square_POW, and stacking together 5 of those squares_POW makes a !!cube!!: `{kt} 5^3`)
 
    ```{svgbob}
              +---+---+---+---+---+
@@ -940,9 +1658,9 @@ also 10.4 equivalent fraction property?
  
  * `{bm} counting number/(natural number|counting number|cardinal number)/i` - Numbers that begin at 1 and increment by 1. For example, 0, 1, 2, 3, ... are whole numbers while 0 and 2.2 are not.
   
-    Counting numbers start where you start counting / where set of something has at least one element. For example, if you're counting apples, you start counting at 1. There needs to be at least 1 apple to start.
+    Counting numbers start where you start counting / where set_S of something has at least one element. For example, if you're counting apples, you start counting at 1. There needs to be at least 1 apple to start.
  
- * `{bm} integer number/(integer number|integer)/i` - 2 sets of counting numbers separated by 0, where everything to the...
+ * `{bm} integer number/(integer number|integer)/i` - 2 sets_S of counting numbers separated by 0, where everything to the...
  
    * right of 0 is called a positive number (signified by a + prefix)
    * left of 0 is called a negative number (signified by a - prefix)
@@ -1056,13 +1774,21 @@ also 10.4 equivalent fraction property?
    * When a chain of divisions and multiplications are encountered, evaluate left-to-right (e.g. 5÷2\*3 should first divide, then multiply the result of the division).
    * When a chain of additions and subtractions are encountered, evaluate left-to-right (e.g. 5-2+3 should first subtract, then add the result of the subtraction).
 
- * `{bm} expression` - A set of operations chained together. For example, (5+x)\*3. Expressions are typically made up of coefficients, variables, and constants.
+ * `{bm} expression` - A hierarchy of operations, variables, and constants glued together as a pipeline. For example, (5+x)\*3 is an expression.
 
- * `{bm} evaluate/(evaluate|evaluation)/i` - To calculate an expression and produce a final numeric result. For example, evaluating (5+2)\*3 results in 21.
+    Performing the operations in the pipeline is typically referred to as evaluation.
+
+ * `{bm} evaluate/(evaluate|evaluation|evaluating)/i` - To calculate an expression and produce a final numeric result. Evaluating an expression requires calculating certain operators before others, commonly referred to as BEDMAS. For example, evaluating (5+2)\*3 results in 21.
 
  * `{bm} equation` - Two expressions separated by an equal sign, where those two expressions are said to evaluate to the same value. For example, `{kt} 7+7+7=3 \cdot 7`. 
 
-   Equations often contain variables. An equation is said to be solved once a set of numbers have been found for its variables such that, when substituted in for those variables, both expressions evaluate to the same number. That set of numbers is said to be a solution to the equation. For example, in x+2=3\*7, both expressions evaluate to 21 when x is set to 19.
+   Equations often contain variables. An equation is said to be solved once numbers have been found for its variables such that, when substituted in for those variables, both expressions evaluate to the same number. Those numbers is said to be a solution to the equation. For example, in x+2=3\*7, both expressions evaluate to 21 when x is !!set!! to 19.
+
+ * `{bm} conditional equation` - An equation with variables, where only some variable substitutions will result in both sides of the equation evaluating to the same result. For example, x+5=6 is only true when x is 1. Setting x to any other value will result in the left-hand side not evaluating to the same value as the right-hand side.
+
+ * `{bm} identity equation` - An equation with variables, where all variable substitutions will result in both sides of the equation evaluating to the same result. For example, x*0=0/x is true for any x.
+
+ * `{bm} contradiction equation` - An equation with variables, where there is no variable substitution that will result in both sides of the equation evaluating to the same result. For example, x+1=x*2 will never be true regardless of which x is used.
 
  * `{bm} variable` - A placeholder for an unknown number in an expression. For example, x+3 has the variable x.
 
@@ -1171,7 +1897,7 @@ also 10.4 equivalent fraction property?
 
  * `{bm} pythagorean theorem/(pythagorean theorem|pythagoras)/i` - The equation `{kt} a^2+b^2 = c^2` used for solving a right triangle's edge lengths. The variables a and b correspond to the legs of the triangle while the variable c refers to the hypotenuse.
 
-   The algorithm is exploiting the fact that adding up the square of the legs will equal the square of the hypotenuse.
+   The algorithm is exploiting the fact that adding up the !!square!! of the legs will equal the square_POW of the hypotenuse.
 
    ```{svgbob}
                                   .`.
@@ -1314,7 +2040,7 @@ also 10.4 equivalent fraction property?
           /    |"-5"
    ```
 
- * `{bm} quadrant` - A part of the graph that's been completely cordoned off by its axis (the axis set its border). For example, the following graph has 4 quadrants...
+ * `{bm} quadrant` - A part of the graph that's been completely cordoned off by its axis (the axis !!set!! its border). For example, the following graph has 4 quadrants...
 
    ```{svgbob}
     "Graph with axis x and y"
@@ -1335,8 +2061,14 @@ also 10.4 equivalent fraction property?
    
    * x and y will both be positive in Q1.
    * x will be negative but y will be positive in Q2.
+   * x and y will both be negative in Q3.
+   * x will be positive but y will be negative in Q4.
 
    If a point lies directly on the axis, the value for that axis will be 0. For example, for any point that sits directly on the x-axis, x will be 0.
+
+   ```{note}
+   Recall that 0 is neither negative nor positive.
+   ```
 
  * `{bm} origin` - The center point in a graph. For example, a graph with ...
 
@@ -1344,11 +2076,18 @@ also 10.4 equivalent fraction property?
    * two axis has the origin (0, 0),
    * three axis has the origin (0, 0, 0).
 
- * `{bm} linear equation` - An equation in the form `{kt} A \cdot x + B \cdot y + C \cdot z + ... = Z`, where ...
+ * `{bm} linear equation/(linear equation in standard form|linear equation)/i` `{bm} /(standard form)_LE/i` - An equation in the form `{kt} A \cdot x + B \cdot y + C \cdot z + ... = Z`, where ...
    
-   * uppercase letters on the left-hand side are coefficients (can't be zero).
+   * uppercase letters on the left-hand side are coefficients (can't all be zero).
    * lowercase letters on the left-hand side are variables.
    * Z on the right-hand side is a constant.
+
+   ```{note}
+   Why can't all coefficients be 0? Consider `{kt} Ax+By=C`.
+   
+    * If A=0, B=0, and C≠0, no (x, y) ordered pair that would satisfy the equation (contradiction equation).
+    * If A=0, B=0, and C=0, all (x, y) ordered pairs satisfy the equation (identity equation -- every point is on the line).
+   ```
  
    When plotted, a linear equation produces a straight line. For example, `{kt}2x - y = 0` ...
 
@@ -1390,7 +2129,7 @@ also 10.4 equivalent fraction property?
 
  * `{bm} simplified expression` `{bm} /(simplify|simplified|simplifies)_EXP/i` - An expression where all the operations that can be done are done, essentially widdling down the expression to the least number of operations as possible. For example, the expression 3+x+5 simplifies_EXP to x+8.
 
- * `{bm} slope` - A fraction, typically denoted by the variable m, which represents the vertical and horizontal change of a linear equation. For example, the linear equation 2x-y=-3 has the slope `{kt} m=\frac{2}{1}`, where the ...
+ * `{bm} slope/(slope|positive slope|negative slope)/i` - A fraction, typically denoted by the variable m, which represents the vertical and horizontal change of a linear equation. For example, the linear equation 2x-y=-3 has the slope `{kt} m=\frac{2}{1}`, where the ...
 
    * numerator defines how far the line goes up per step (goes down if negative).
    * denominator defines how far the line goes right per step (goes left if negative).
@@ -1429,10 +2168,25 @@ also 10.4 equivalent fraction property?
           |   v              |                /  |               v  |       
    ```
 
-   Given a two points `{kt}(x_1, y_1)`and `{kt}(x_2, y_2)` on the same linear equation, that equation's slope can be determined via `{kt} m=\frac{y_2-y_1}{x_2-x_1}`. Likewise, given m and a point `{kt}(x_1, y_1)`, you can find a second point `{kt}(x_2, y_2)` by
+   There are different ways of deriving slope depending on what pieces of information are available: 
+
+   * Given a two points `{kt}(x_1, y_1)`and `{kt}(x_2, y_2)` on the same line, that line's slope can be determined using `{kt} m=\frac{y_2-y_1}{x_2-x_1}`.
+   * Given a linear equation in standard form `{kt} Ax+By=C`, that linear equation can be re-arranged into slope-intercept form to reveal m: `{kt} y=\frac{-Ax}{B}+\frac{C}{B}`, where `{kt} m=\frac{-Ax}{B}`.
+   
+   Given m and a point `{kt}(x_1, y_1)`, you can find a second point `{kt}(x_2, y_2)` by ...
     
    1. adding m's numerator to y: `{kt}y_2=y_1+m_{num}`.
    2. adding m's denominator to x: `{kt}x_2=x_1+m_{denom}`.
+
+ * `{bm} slope-intercept form/(linear equation in slope[-\s]intercept form|slope[-\s]intercept form)/i` - A linear equation in standard form with 2 variables (`{kt} Ax + By = C`) that has been re-arranged to be in the form `{kt} y=\frac{-Ax}{B}+\frac{C}{B}=\frac{-A}{B}x+\frac{C}{B}`, more commonly written as `{kt} y=mx+B` where ...
+
+   * m is the slope of the line.
+   * B is the y-intercept of the line.
+
+ * `{bm} point-slope form/(linear equation in point[-\s]slope form|point[-\s]slope form)/i` - A linear equation in standard form with 2 variables (`{kt} Ax + By = C`) that has been re-arranged to be in the form `{kt} y-y_1=m(x-x_1)`, where ...
+
+   * m is the slope of the line.
+   * `{kt} (x_1, y_1)` is a point on the line.
 
  * `{bm} point` - A point is a position on a graph, typically represented as a tuple.
 
@@ -1459,15 +2213,171 @@ also 10.4 equivalent fraction property?
    * -5 is a distance of 5 from 0.
    * 0 is a distance of 0 from 0.
 
-   There's a common way to implement absolute value: If the number is non-zero, set the number's sign to a positive.
+   There's a common way to implement absolute value: If the number is non-zero, !!set!! the number's sign to a positive.
 
-TODO: start from elementary algebra ch2
+ * `{bm} interval` - A notation that identifies a numeric range. The notation provides a number pair nested in a pair of brackets, where any number in between the range is included. For example, [5, 10] !!means!! any interval containing every number from 5 to 10.
+ 
+   Each of the brackets can either be a parenthesis or a !!square!! bracket. If the ...
+ 
+   * opening bracket is a !!square!!, it !!means!! the beginning number is included: [5, 9] is from 5 to 9, where 5 itself is included.
+   * opening bracket is a parenthesis, it !!means!! the beginning number isn't included: (5, 9] is from 5 to 9, where 5 itself _isn't_ included.
+   * closing bracket is a !!square!!, it !!means!! the ending number is included: [5, 9] is from 5 to 9, where 9 itself is included.
+   * closing bracket is a parenthesis, it !!means!! the beginning number isn't included: [5, 9) is from 5 to 9, where 9 itself _isn't_ included.
 
-TODO: start from elementary algebra ch2
+   On a number line, if an ...
+   
+   * opening bracket (non-inclusive) is typically represented as an open circle.
+   * closing bracket (inclusive) is typically represented as a closed circle.
 
-TODO: start from elementary algebra ch2
+   For example, the number line showing [3, 6) is as follows ...
 
-TODO: start from elementary algebra ch2
+   ```{svgbob}
+   |---|---|---*---|---|---o---|---|---|
+   0   1   2   3   4   5   6   7   8   9
+   ```
+
+ * `{bm} linear inequality` - An equation in the form `{kt} A \cdot x + B \cdot y + C \cdot z + ... = Z`, where ...
+   An inequality in the form  `{kt} A \cdot x + B \cdot y + C \cdot z + ... ? Z`, where ...
+   
+   * the operation between the left-hand side and right-hand side (? in the example above) can be any inequality (>, >=, <. <=).
+   * uppercase letters on the left-hand side are coefficients (can't all be zero).
+   * lowercase letters on the left-hand side are variables.
+   * Z on the right-hand side is a constant.
+
+   ```{note}
+   Why can't all coefficients be 0? For similar reasons as the "all coefficients can't be 0" restriction for linear equations.
+   ```
+
+   A linear inequality is similar to a linear equation, except rather than just being a line, the line acts as a boundary line for a partition. For example, `{kt} 2x - y > 0` will place a boundary line at `{kt} 2x - y = 0` and satisfy any (x, y) on the right-half of the the diagonal (not including points on the boundary line itself -- if the relationship operation was >= instead, it'd include points on the line).
+
+   ```{svgbob}
+               |5   /
+               |   /
+               |  /
+               | /
+               |/
+   ------------+------------
+   "-5"       /|0          5
+             / |
+            /  |
+           /   |
+          /    |"-5"
+   ```
+
+ * `{bm} boundary line` - A linear equation that acts as separates two regions defined by a linear inequality. For example, the boundary line `{kt} Ax + By = C` separates the inequalities `{kt} Ax + By < C` and `{kt} Ax + By > C`.
+
+   If the inequality is ...
+   
+    * inclusive (e.g. >= or <=), it's drawn as a solid line to indicate as such.
+    * exclusive (e.g. > or <), it's drawn as a dashed line to indicate as such.
+  
+   For example, the boundary line for `{kt} 0x+y>2` is drawn as ...
+
+   ```{svgbob}
+               |5    
+               |    
+               |   
+    - - - - - -+- - - - - - 
+               | 
+   ------------+------------
+   "-5"        |0          5
+               |
+               |
+               |
+               |"-5"
+   ```
+
+ * `{bm} parallel lines/(parallel lines?|parallel)/i` - Lines on the same plane that share the same slope are said to be parallel lines. Parallel lines never intersect with each other.
+
+   ```{svgbob}
+        ^      ^
+       /      /
+      /      /
+     /      /
+    /      /
+   v      v
+   ```
+
+   ```{note}
+   Recall that linear equations containing exactly two variables are on a single plane. More variables increases the dimensions, which !!means!! many planes.
+   ```
+
+   If lines that aren't on the same plane, it's possible for them to not be parallel and still never intersect. For example, in 3D, it's possible that two non-intersecting lines to also be non-parallel. Consider a vehicle overpass vs a vehicle intersection. In a ...
+   
+    * vehicle overpass, one road goes over the other but the roads never intersect.
+    * vehicle intersection, the roads intersect with each other.
+
+ * `{bm} perpendicular lines/(perpendicular lines?|perpendicular)/i` - Lines on the same plane where one line's slope is the negative reciprocal of other line's slope. Perpendicular lines always intersect at a right angle.
+   
+   ```{svgbob}
+          ^
+          |
+          |
+   <------+------>
+          |
+          |
+          v
+   ```
+
+   ```{note}
+   Recall that linear equations containing exactly two variables are on a single plane. More variables increases the dimensions, which !!means!! many planes.
+   ```
+
+ * `{bm} set/(\bsets?\b)_S/i` `{bm} /(\bmembers?\b)/` - A collection of unique entities (e.g. numbers, symbols, ordered pairs, tuples, etc..), where each entity is referred to as a member. For example, ...
+ 
+   * counting numbers can be represented as a set_S.
+   * car models can be represented as a set_S.
+   * street names can be represented as a set_S.
+  
+   On its own, a set_S doesn't supply ordering information for its members. For example, while counting numbers may have order defined (e.g. 2 is before 3), there is nothing intrinsic in a set_S that represents that ordering information.
+
+   ```{note}
+   There does seem to be a [variant that supports ordering](https://math.stackexchange.com/q/4215574)?
+   ```
+
+ * `{bm} subset` - A set_S T is a subset of set_S U if all members of T are members of U. That is, each member of T is in U.
+ 
+   U can have other members as well, but it must contain those members in T. For example, given sets T={1, 3, 5}, U={1, 3, 7, 5} and V={1, 3, 7, 5, 8}, ...
+
+    * T is a subset of both U and V, because all members of T are members of both U and V.
+    * U is a subset of V, because all members of U are members of V.
+
+ * `{bm} cartesian product` - The explosion of two sets_S, such that a new set_S is formed where each element from the first set_S is joined against each element of the other set_S. For example, given two sets_S {0, 1, 2} and {x, y, z}, the cartesian product of those two sets_S will have the following set_S of 2-tuples.
+
+   |   |   0   |   1   |   2   |
+   |---|-------|-------|-------|
+   | x | (x,0) | (x,1) | (x,2) |
+   | y | (y,0) | (y,1) | (y,2) |
+   | z | (z,0) | (z,1) | (z,2) |
+
+   When n sets_S are involved, simply apply cartesian product from left-to-right and flatten any nested tuples. For example, given the sets_S {1, 2}, {3}, and {4, 5}, first take the cartesian product of the first two sets_S.
+
+   |   |   1   |   2   |
+   |---|-------|-------|
+   | 3 | (1,3) | (2,3) |
+
+   Then, take the cartesian product of the result and the third set_S.
+
+   |   |   (1,3)   |   (2,3)   |
+   |---|-----------|-----------|
+   | 4 | ((1,3),4) | ((2,3),4) |
+   | 5 | ((1,3),5) | ((2,3),5) |
+   
+   Then, flatten the tuples, resulting in {(1, 3, 4), (1, 3, 5), (2, 3, 4), (2, 3, 5)}.
+
+   Cartesian product is often denoted using the x symbol. For example, the cartesian product of A and B is typically written as AxB.
+
+ * `{bm} relation` - An operation that filters the cartesian product of n sets_S into a subset. For example, consider two sets_S A={3, -5, 7} and B={-3, 1, 9}. Given the cartesian product AxB, a relation that states that the ordered pair from the cartesian product must sum to a positive number will filter that cartesian product to the subset {(3, 1), (3, 9), (-5, 9), (7, -3), (7, 1), (7, 9)}.
+
+TODO: CONTINUE FROM CHAPTER 5.1, BUT CODING IS STILL AT CH2.7 ON INEQUALITIES
+
+TODO: start from elementary algebra ch2.7 - start at inequalities section
+
+TODO: start from elementary algebra ch2.7 - start at inequalities section
+
+TODO: start from elementary algebra ch2.7 - start at inequalities section
+
+TODO: start from elementary algebra ch2.7 - start at inequalities section
 
 `{bm-error} Wrap in !! or apply suffix _EXP/(\bterms?\b)/i`
 
@@ -1479,6 +2389,20 @@ TODO: start from elementary algebra ch2
 
 `{bm-error} Wrap in !! or apply suffix _POW/(product to power property)/i`
 
+`{bm-error} Wrap in !! or apply suffix _POW/(square[ds]?)/i`
+
+`{bm-error} Don't apply suffix _POW/(square[d]?_POW root)/i`
+
+`{bm-error} Wrap in !! or apply suffix _POW/(cube[ds]?)/i`
+
+`{bm-error} Don't apply suffix _POW/(cube[d]?_POW root)/i`
+
 `{bm-error} Wrap in !! or apply suffix _FRAC or _POW/(simplify|simplified|simplifies)/i`
+
+`{bm-error} Wrap in !! or apply suffix _LE/(standard form)/i`
+
+`{bm-error} Wrap in !! or apply suffix _S/(\bsets?\b)/i`
+
+`{bm-error} Use sets_S instead/(\bset_S?\b)/i`
 
 `{bm-ignore} !!([\w\-]+?)!!/i`

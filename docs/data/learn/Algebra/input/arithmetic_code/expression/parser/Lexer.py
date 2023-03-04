@@ -1,5 +1,3 @@
-from fractions import Fraction
-
 from expression.parser.StringStream import StringStream
 
 
@@ -54,30 +52,7 @@ def decimal(ss: StringStream):
             while ss.is_more() and ss.peek_char() in '0123456789':
                 v_str += ss.read_char()
             ss.skip_whitespace()
-        ret = Fraction(v_str)
-        ss.release()
-        return ret
-    except Exception as e:
-        ss.revert()
-        raise e
-
-def fraction(ss: StringStream):
-    ss.mark()
-    try:
-        ss.skip_whitespace()
-        num_str = ''
-        if ss.peek_char() not in '0123456789':
-            raise ValueError('Bad fraction')
-        while ss.is_more() and ss.peek_char() in '0123456789':
-            num_str += ss.read_char()
-        if ss.read_char() != ':':
-            raise ValueError('Bad fraction')
-        denom_str = ''
-        if ss.peek_char() not in '0123456789':
-            raise ValueError('Bad fraction')
-        while ss.is_more() and ss.peek_char() in '0123456789':
-            denom_str += ss.read_char()
-        ret = Fraction(int(num_str), int(denom_str))
+        ret = int(v_str)
         ss.release()
         return ret
     except Exception as e:
@@ -141,11 +116,6 @@ def tokenize_stream(ss: StringStream):
             except Exception as e:
                 ...
             try:
-                ret.append(fraction(ss))
-                continue
-            except Exception as e:
-                ...
-            try:
                 ret.append(decimal(ss))
                 continue
             except Exception as e:
@@ -174,5 +144,5 @@ def tokenize(s: str):
 
 
 if __name__ == '__main__':
-    tokens = tokenize('5:2 + 4.5 ^ -x + 3 * 8 / log(2, 32, \'hello\')')
+    tokens = tokenize('5/2 + 45/100 ^ -x <= 3 * 8 / log(2, 32, \'hello\')')
     print(f'{tokens}')

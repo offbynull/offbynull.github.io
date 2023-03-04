@@ -1,1 +1,1 @@
-FROM python:3.7.6-alpine3.11
+FROM continuumio/miniconda3:4.8.2

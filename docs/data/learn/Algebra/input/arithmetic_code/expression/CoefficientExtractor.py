@@ -1,6 +1,7 @@
 from fractions import Fraction
 
-from expression.parser.Parser import VariableNode, FunctionNode, parse, Node, ConstantNode
+from expression.Node import Node, ConstantNode, FunctionNode, VariableNode
+from expression.parser.Parser import parse
 
 
 def is_variable_part(n: Node):
