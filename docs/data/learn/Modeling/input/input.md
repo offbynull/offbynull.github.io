@@ -155,10 +155,106 @@ Probability rules:
 
  * `{bm} population` - A set under study. `{ref}osis:1.1`
 
- * `{bm} sample/(sample|sampling)/i` - A subset of a population, selected to represent the population for studies to gain information on the population. `{ref}osis:1.1` For example, instead of studying all people on Earth, a sample of 1000 people might be chosen as a representation of all people on Earth.
+ * `{bm} sample/(sample|sampling)/i` - A subset of a population, selected to represent the population in studies that produce information about the population. For example, instead of studying all people on Earth, a sample of 1000 people might be chosen as a representation of all people on Earth. `{ref}osis:1.1`
 
-   Sampling is used because it's a more practical alternative to studying an entire population, which often times isn't feasible (e.g. studying 1000 people is more feasible than studying every single person on Earth). `{ref}osis:1.1`
+   Sampling is used because it's a more practical alternative to studying an entire population, which often times isn't feasible (e.g. studying 1000 people is more feasible than studying every single person on Earth). `{ref}osis:1.1` However, the sample should retain the characteristics of the population that it's from, meaning that results of studies done on the sample translate to the population. In that sense, samples are typically random samples. `{ref}osis:1.2`
 
+ * `{bm} random sample/(random sample|random sampling)/i` - A sample where members of the population are randomly selected for the sample, intended to reduce / eliminate bias. `{ref}osis:1.2`
+
+   True random sampling is performed with replacement. `{ref}osis:1.2`
+
+ * `{bm} simple random sample/(simple random sample|simple random sampling)/i` - A form of sampling where where each member of a population had an equal chance of being selected for the sample. `{ref}osis:1.2`
+
+ * `{bm} stratified sample/(stratified sample|stratified sampling)/i` - A form of random sampling where the population is first placed into groups (strata), then a proportionate number of members from each group are randomly selected to be part of the sample. `{ref}osis:1.2`
+
+ * `{bm} cluster sample/(cluster sample|cluster sampling)/i` - A form of random sampling where the population is first placed into groups (clusters), then a set of the groups are randomly selected, where the members of those selected groups make up the sample. `{ref}osis:1.2`
+
+ * `{bm} systematic sample/(systematic sample|systematic sampling)/i` - A form of random sampling where the population is lined up, a random starting point in the line is selected, and every nth member after the start of the line is selected to be part of the sample. For example, imagine being given a list of stores in the city you live in. Picking a random starting point in that list and selecting every 5th store after that starting point is systematic sampling. `{ref}osis:1.2`
+
+ * `{bm} convenience sample/(convenience sample|convenience sampling)/i` - A form of sampling where, rather than randomly selecting members of the population somehow, members of the population are selected in some other non-random fashion. For example, selecting a sample of restaurant goers by choosing those who are already currently eating at the local Burger King restaurant. `{ref}osis:1.2`
+
+ * `{bm} with replacement/(with replacement|without replacement)/i` - A form of random sampling where a member of the population can get placed in the sample more than once. That is, once a member is selected for a sample, that member is re-inserted back into the population and may get selected again. `{ref}osis:1.2`
+
+   While true random sampling is performed with replacement, it's sometimes more practical to sample without replacement. For example, having members of a population fill out a survey is an example of sampling without replacement (once a member fills out a survey, that member won't be selected to fill out the survey again). For large populations where a small number of members are being sampled, it typically won't matter if the sample is with replacement or without replacement. It becomes an issue when the population size is small. `{ref}osis:1.2`
+
+ * `{bm} sampling error` - An error in analysis due to the sample not being representative of the population it represents. For example, the sample might have been too small or biased in some way. `{ref}osis:1.2`
+
+   In most cases, a sample will never be truly representative of it the population it was chosen from. There will always be some level of sampling error. `{ref}osis:1.2`
+
+ * `{bm} non-sampling error/(non[-\s]?sampling error)/i` - An error in analysis unrelated to sampling error (all errors other than those caused by poorly choosing a sample). These are typically errors caused by faulty data collection. For example, incorrectly counting up the answers in a set of surveys is a non-sampling error. `{ref}osis:1.2`
+
+ * `{bm} sampling bias/(sampling bias|bias)/i` - When a sample isn't representative as of its population because some members of the population were more likely to be selected than others for the sample. `{ref}osis:1.2`
+
+ * `{bm} variation` - How spread out data is around the center of data. For example, the manufacturer that makes Snickers chocolate bar may intend for each bar to be 1.86 ounces, but realistically the weight of each Snickers will fluctuate one way or the other by some marginal amount. `{ref}osis:1.2`
+
+ * `{bm} measurement levels/(measurement levels|levels of measurement|measurement scales|scales of measurement|nominal scale|ordinal scale|interval scale|ratio scale)/i` - There are four different classes in which data is measured, depending on the data's properties. `{ref}osis:1.3`
+
+   * nominal scale - A form of measuring categorical data that is unordered. For example, smartphone models are categories and there is no inherit order to them, so they would be measured on a nominal scale. `{ref}osis:1.3`
+
+   * ordinal scale - A form of measuring categorical data that is ordered / ranked (unlike nominal scale), but the degree of difference between the measured items isn't captured. For example, the top 5 smartphone models is ordinal scale data. A smartphone model that comes before another one is ranked higher, but the difference in how much better it is isn't captured by the ordinal scale. `{ref}osis:1.3`
+
+   * interval scale - A form of measuring quantitative data that is ordered / ranked, where the distance between the measured items is captured (unlike ordinal scale). However, there is no base value / fixed beginning with interval scale data. For example, 2:15pm is one hour ahead of 1:15pm (distance is captured), but you can't say that 2:15pm is n times more than 1:15pm (not representable as a ratio) because there is no definitive starting point in which time starts. `{ref}osis:1.3`
+
+   * ratio scale - A form of measuring quantitative data that is ordered / ranked, where the distance between the measured items is captured and there is a fixed beginning (unlike interval scale). When there is a fixed beginning, it's possible to compute ratios. For example, 30 feet below sea-level is twice as deep as 15 feet below sea-level. `{ref}osis:1.3`
+
+   |                      | Nominal scale | Ordinal scale | Interval scale | Ratio scale |
+   |----------------------|---------------|---------------|----------------|-------------|
+   | Labelled (has names) |        x      |       x       |         x      |      x      |
+   | Ordered (has ranks)  |               |       x       |         x      |      x      |
+   | Distance             |               |               |         x      |      x      |
+   | Fixed beginning      |               |               |                |      x      |
+
+   ```{note}
+   For interval scale, can't you just make a arbitrary starting point? For example, treat midnight as the starting point. Then you would be able to take a ratio.
+
+   I suppose if you gave it a starting point, it wouldn't be interval scale anymore. It would be ratio scale.
+   ```
+
+ * `{bm} frequency` - The number of times some value occurs in data. For example, in the list [9, 8, 1, 1, 5, 7, 9, 7, 6], 7 has a frequency of two. `{ref}osis:1.3`
+
+ * `{bm} relative frequency` - A ratio representing the number of times some value occurs in the data vs the total number of items in that data. In other words, the relative frequency is the frequency as a ratio. For example, in the list [9, 8, 1, 1, 5, 7, 9, 7, 6], 7 has a relative frequency of `{kt} \frac{2}{9}`. `{ref}osis:1.3`
+
+ * `{bm} cumulative frequency/(cumulative frequency|cumulative relative frequency)/i` - The accumulation of frequencies down a list, where that list has a meaningful incrementing order. This is useful when the data is interval scale / ratio scale because it gives an "up-until" view. For example, consider data that tracks the month in which a fridge was sold: [Jan, Jan, Feb, Feb, Mar, Mar, Mar, ...]. The cumulative frequency will let you know how many fridges were sold in total by each month. `{ref}osis:1.3`
+
+   | Month | Fridges Sold (Frequency) | Total Fridges Sold (Cumulative Frequency) |
+   |-------|--------------------------|-------------------------------------------|
+   | Jan   |         3                |   3                                       |
+   | Feb   |         2                |   3+2=5                                   |
+   | Mar   |         2                |   3+2+2=7                                 |
+   | ...   |        ...               |   ...                                     |
+
+   ```{note}
+   For cumulative relative frequency, the ending frequency in the list should sum to 1.
+
+   Beware floating point rounding errors. It may not sum to exactly 1.
+   ```
+
+ * `{bm} explanatory / response variable/(explanatory variable|response variable)/i` - Two variables that have a relationship with each other, where changes in the explanatory variable causes changes in the response variable. Researchers manipulate an explanatory variable and measure the resulting changes in the response variable. For example, imagine a clinical trial that's testing the effectiveness of a flu drug. The amount of the drug administered is the explanatory variable while the degree to which flu symptoms are expressed is the response variable. `{ref}osis:1.4`
+
+   ```{note}
+   See treatment experimental unit, and lurking variable.
+   ```
+
+ * `{bm} treatment` - One specific value within an exploratory variable. Treatments are applied to experimental units. For example, if the exploratory variable is the amount of some drug that gets administered, the treatments may be 50mg, 70mg, 200mg, etc.. `{ref}osis:1.4`
+
+ * `{bm} experimental unit` - A single entity that can have a treatment applied to it. Once treatment is applied, the experimental unit is measured. For example, if treatment is the administrating of a drug, the experimental unit may be a person. That is, each treatment of the drug (exploratory variable) is given to a single person, where that person's symptoms are measured (response variable). `{ref}osis:1.4`
+
+ * `{bm} lurking variable` - A variable that is neither an explanatory variable nor a response variable, but still could influence the relationship between the two variables. For example, imagine a clinical trial that's testing the effectiveness of a flu drug. Age can be a lurking variable in that older people typically have less active immune systems, and as such may not show as much improvement in symptoms unless given higher dosages (treatments). `{ref}osis:1.4`
+
+   Studies typically limit the influence of lurking variables by randomly assigning experimental units to treatment groups. The random assignment should make it so that lurking variables are equally spread out between those groups, and as such their impact won't be an outsized influence on the relationship between explanatory variable and response variable. `{ref}osis:1.4`
+
+   ```{note}
+   Does "random assignment" in this case just mean random sampling? Random assignment is what the book uses.
+   ```
+
+ CONTINUE FROM: When participation in a study prompts a physical response from a participant, it is ...
+
+ CONTINUE FROM: When participation in a study prompts a physical response from a participant, it is ...
+
+ CONTINUE FROM: When participation in a study prompts a physical response from a participant, it is ...
+
+ CONTINUE FROM: When participation in a study prompts a physical response from a participant, it is ...
+ 
  * `{bm} statistic` - A number that represents a property of a sample. For example, imagine that a sample of 1000 people have their heights measured. The average height across that sample is a statistic. `{ref}osis:1.1`
 
    Each statistic is an estimate of a population parameter. `{ref}osis:1.1`
@@ -175,6 +271,14 @@ Probability rules:
  * `{bm} data` - Values for a variable. For example, given a sample of 5 people from a population, the following data represents their weights (numerical variable): [180, 200, 144, 127, 194].  `{ref}osis:1.1`
 
  * `{bm} datum` - A single value in data. `{ref}osis:1.1`
+
+ * `{bm} quantitative data` - Data that measures or counts the attributes of a population. Household income, number of family members, and distance to the nearest Burger King are all examples of quantitative data. `{ref}osis:1.2`
+
+ * `{bm} qualitative data/(qualitative data|categorical data)/i` - Data that falls into a category but typically can't be measured or expressed using numbers. Hair color, car model, and brand of shoes are all examples of qualitative data. `{ref}osis:1.2`
+
+ * `{bm} discrete quantitative data/(discrete|discrete data|discrete quantitative data)/i` - Quantitative data that can only be counted (no fractions / ratios). For example, imagine measuring the number of emails you send throughout the day. The value would end up being a whole number. There's no such thing as a sending a fractional number of e-mails (e.g. half e-mail or a quarter e-mail). `{ref}osis:1.2`
+
+ * `{bm} continuous quantitative data/(discrete|discrete data|discrete quantitative data)/i` - Quantitative data that can be fractional. For example, imagine measuring how many hours it took someone to drive to work. The value may end up being a fractional number (e.g. 2.15 hours). `{ref}osis:1.2`
 
 TODO: start from 1.2
 
@@ -234,5 +338,7 @@ BUT JUMP FORWARD TO SECTION 3.1 FIRST AND CLEAN UP BELOW
  * `{bm} conjunction probability` - Probability of both A and B being true. `{ref} tb:p9`
 
  * `{bm} conditional probability` - A probability that depends on a condition (some other probability being true). `{ref} tb:p6` P(A|B) means that the probability of A given that B is true. `{ref} tb:p9`
+
+ * `{bm-error} Did you mean cumulative relative frequency?/(relative cumulative frequency)/i` 
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
