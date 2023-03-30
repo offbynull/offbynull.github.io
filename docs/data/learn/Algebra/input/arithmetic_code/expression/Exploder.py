@@ -201,7 +201,7 @@ def explode(n: Node, cache: ExplosionCache):
         n_rules = options[n]
         processed[n] = n_rules
         options.pop(n)
-        print(f'{to_string(n)}   >>> {", ".join(f"{c_op}: {to_string(c_tree)}" for c_op, c_tree in n_rules)}')
+        # print(f'{to_string(n)}   >>> {", ".join(f"{c_op}: {to_string(c_tree)}" for c_op, c_tree in n_rules)}')
     cache.explode_cache[n] = processed
     return processed
 

@@ -153,7 +153,7 @@ def main():
             func = funcs[func_name]
             print(f'{func_name} with input {exp} ...')
             for alt_n in func(n):
-                print(f'    {to_string(n)} = {to_string(alt_n)}')
+                print(f'    {to_string(n)} ⟶ {to_string(alt_n)}')
         print('```')
         print()
     finally:

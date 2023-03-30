@@ -489,9 +489,9 @@ The following is my attempt at explaining Euclid's algorithm after reading sever
    * ...
 ````
 
-# Expressions
+# Expression Operator Properties
 
-`{bm} /(Expressions)_TOPIC/i`
+`{bm} /(Expression Operator Properties)_TOPIC/i`
 
 An expression is a hierarchy of operations, variables, and constants glued together as a pipeline. In this case, an ...
 
@@ -511,7 +511,7 @@ Expressions have rules that govern the order in which certain operations get eva
 
 ## Order of Operations
 
-`{bm} /(Expressions\/Order of Operations)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Order of Operations)_TOPIC/i`
 
 When evaluating an expression, certain arithmetic operators must be evaluated before others. The general rule of thumb to remember is BEDMAS, which is an acronym for the operator precedence in an expression:
 
@@ -612,17 +612,17 @@ expression.parser.Parser
 
 ## Arithmetic Conversions
 
-`{bm} /(Expressions\/Arithmetic Conversions)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Arithmetic Conversions)_TOPIC/i`
 
 The following subsections detail common rules / properties around condensing and expanding arithmetic operations. 
 
 ### Constant to Prime Factors
 
-`{bm} /(Expressions\/Arithmetic Conversions\/Constant to Prime Factors)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Arithmetic Conversions\/Constant to Prime Factors)_TOPIC/i`
 
 ```{prereq}
 Prime Factorization_TOPIC
-Expressions/Equivalent Fraction Property_TOPIC
+Expression Operator Properties/Division/Equivalent Fraction_TOPIC
 ```
 
 Given a counting number, there exists a set_S of prime numbers that can be multiplied together to produce that number: Prime factors.
@@ -639,7 +639,7 @@ The conversion to prime factors is useful for fractions. By cancelling out commo
 It's common to always have fractions in their simplified_FRAC forms because it's easier to check if two fractions are equivalent when they're both simplified_FRAC. For example, most people can't immediately tell that `{kt} \frac{12}{18}` and `{kt} \frac{2}{3}` are equivalent.
 
 ```{seealso}
-Expressions/Equivalent Fraction Property_TOPIC
+Expression Operator Properties/Division/Equivalent Fraction_TOPIC
 ```
 
 ```{output}
@@ -656,7 +656,7 @@ expression.properties.ArithmeticConversions
 
 ### Addition-Subtraction
 
-`{bm} /(Expressions\/Arithmetic Conversions\/Addition-Subtraction)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Arithmetic Conversions\/Addition-Subtraction)_TOPIC/i`
 
 A subtraction operation can be converted to an addition operation and vice-versa.
 
@@ -667,8 +667,8 @@ A subtraction operation can be converted to an addition operation and vice-versa
 The conversion from subtraction to addition is useful because subtraction is missing the commutative property and associative property. If you convert subtraction to addition, it enables you to shuffle around the expression in more ways.
 
 ```{seealso}
-Expressions/Addition Properties/Commutative_TOPIC
-Expressions/Addition Properties/Associative_TOPIC
+Expression Operator Properties/Addition/Commutative_TOPIC
+Expression Operator Properties/Addition/Associative_TOPIC
 ```
 
 ```{output}
@@ -687,7 +687,7 @@ expression.properties.ArithmeticConversions
 
 ### Addition-Multiplication
 
-`{bm} /(Expressions\/Arithmetic Conversions\/Addition-Multiplication)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Arithmetic Conversions\/Addition-Multiplication)_TOPIC/i`
 
 Adding the same thing (expression) together many times can be condensed into a single multiplication.
 
@@ -709,7 +709,7 @@ expression.properties.ArithmeticConversions
 
 ### Multiplication-Exponent
 
-`{bm} /(Expressions\/Arithmetic Conversions\/Multiplication-Exponent)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Arithmetic Conversions\/Multiplication-Exponent)_TOPIC/i`
 
 Multiplying the same thing (expression) together many times can be condensed into a single exponentiation.
 
@@ -729,15 +729,15 @@ expression.properties.ArithmeticConversions
 - [exp_to_mul, 9^3]
 ```
 
-## Addition Properties
+## Addition
 
-`{bm} /(Expressions\/Addition Properties)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Addition)_TOPIC/i`
 
 The following subsections detail common rules / properties around addition.
 
 ### Commutative
 
-`{bm} /(Expressions\/Addition Properties\/Commutative)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Addition\/Commutative)_TOPIC/i`
 
 `{kt} a+b = b+a`
 
@@ -757,7 +757,7 @@ expression.properties.RatioAdditionProperties
 
 ### Associative
 
-`{bm} /(Expressions\/Addition Properties\/Associative)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Addition\/Associative)_TOPIC/i`
 
 `{kt} (a+b)+c = a+(b+c)`
 
@@ -777,7 +777,7 @@ expression.properties.RatioAdditionProperties
 
 ### Identity
 
-`{bm} /(Expressions\/Addition Properties\/Identity)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Addition\/Identity)_TOPIC/i`
 
 `{kt} a+0=a`
 
@@ -797,7 +797,7 @@ expression.properties.RatioAdditionProperties
 
 ### Inverse
 
-`{bm} /(Expressions\/Addition Properties\/Inverse)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Addition\/Inverse)_TOPIC/i`
 
 `{kt}a+(-a)=0`
 
@@ -817,10 +817,10 @@ expression.properties.RatioAdditionProperties
 
 ### Combine
 
-`{bm} /(Expressions\/Addition Properties\/Combine)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Addition\/Combine)_TOPIC/i`
 
 ```{prereq}
-Expressions/Equivalent Fraction Property_TOPIC
+Expression Operator Properties/Division/Equivalent Fraction_TOPIC
 ```
 
 `{kt} \frac{a}{b} + \frac{c}{d} = \frac{a}{b}\frac{d}{d} + \frac{c}{d}\frac{b}{b} = \frac{ad}{bd} + \frac{bc}{bd} = \frac{ad + bc}{bd}`
@@ -843,13 +843,13 @@ expression.properties.RatioAdditionProperties
 - [uncombine, ((a*d)+(c*b))/(b*d)]
 ```
 
-## Subtraction Properties
+## Subtraction
 
-`{bm} /(Expressions\/Subtraction Properties)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Subtraction)_TOPIC/i`
 
 ```{prereq}
-Expressions/Arithmetic Conversions/Addition-Subtraction_TOPIC
-Expressions/Addition Properties_TOPIC
+Expression Operator Properties/Arithmetic Conversions/Addition-Subtraction_TOPIC
+Expression Operator Properties/Addition_TOPIC
 ```
 
 The following subsections detail common rules / properties around subtraction.
@@ -858,7 +858,7 @@ Recall that subtraction can be converted to addition: `{kt} a-b=a+(-b)`. The con
 
 ### Identity
 
-`{bm} /(Expressions\/Subtraction Properties\/Identity)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Subtraction\/Identity)_TOPIC/i`
 
 The identity property of subtraction states that subtracting 0 (identity of subtraction) from a number results in that same number.
 
@@ -878,7 +878,7 @@ expression.properties.RatioSubtractionProperties
 
 ### Inverse
 
-`{bm} /(Expressions\/Subtraction Properties\/Inverse)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Subtraction\/Inverse)_TOPIC/i`
 
 The inverse property of subtraction states that subtracting a number from itself results in 0 (identity of subtraction).
 
@@ -889,8 +889,8 @@ If the subtraction were converted to addition, this would be the inverse propert
 ```
 
 ```{seealso}
-Expressions/Addition-Subtraction Property_TOPIC
-Expressions/Addition Properties/Inverse_TOPIC
+Expression Operator Properties/Arithmetic Conversions/Addition-Subtraction_TOPIC
+Expression Operator Properties/Addition/Inverse_TOPIC
 ```
 
 ```{output}
@@ -907,7 +907,7 @@ expression.properties.RatioSubtractionProperties
 
 ### Combine
 
-`{bm} /(Expressions\/Subtraction Properties\/Combine)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Subtraction\/Combine)_TOPIC/i`
 
 `{kt} \frac{a}{b} - \frac{c}{d} = \frac{a}{b}\frac{d}{d} - \frac{c}{d}\frac{b}{b} = \frac{ad}{bd} - \frac{bc}{bd} = \frac{ad - bc}{bd}`
 
@@ -929,15 +929,15 @@ expression.properties.RatioSubtractionProperties
 - [uncombine, ((a*d)+(c-b))/(b*d)]
 ```
 
-## Multiplication Properties
+## Multiplication
 
-`{bm} /(Expressions\/Multiplication Properties)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Multiplication)_TOPIC/i`
 
 The following subsections detail common rules / properties around multiplication.
 
 ### Commutative
 
-`{bm} /(Expressions\/Multiplication Properties\/Commutative)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Multiplication\/Commutative)_TOPIC/i`
 
 `{kt} ab = ba`
 
@@ -957,7 +957,7 @@ expression.properties.RatioMultiplicationProperties
 
 ### Associative
 
-`{bm} /(Expressions\/Multiplication Properties\/Associative)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Multiplication\/Associative)_TOPIC/i`
 
 `{kt} (ab)c = a(bc)`
 
@@ -977,7 +977,7 @@ expression.properties.RatioMultiplicationProperties
 
 ### Identity
 
-`{bm} /(Expressions\/Multiplication Properties\/Identity)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Multiplication\/Identity)_TOPIC/i`
 
 `{kt} a \cdot 1=a`
 
@@ -997,7 +997,7 @@ expression.properties.RatioMultiplicationProperties
 
 ### Inverse
 
-`{bm} /(Expressions\/Multiplication Properties\/Inverse)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Multiplication\/Inverse)_TOPIC/i`
 
 `{kt} a \cdot \frac{1}{a}=1`
 
@@ -1017,7 +1017,7 @@ expression.properties.RatioMultiplicationProperties
 
 ### Zero
 
-`{bm} /(Expressions\/Multiplication Properties\/Zero)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Multiplication\/Zero)_TOPIC/i`
 
 `{kt} a \cdot 0=0`
 
@@ -1037,7 +1037,7 @@ expression.properties.RatioMultiplicationProperties
 
 ### Combine
 
-`{bm} /(Expressions\/Multiplication Properties\/Combine)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Multiplication\/Combine)_TOPIC/i`
 
 `{kt} \frac{a}{b} + \frac{c}{d} = \frac{ac}{bd}`
 
@@ -1058,15 +1058,42 @@ expression.properties.RatioMultiplicationProperties
 - [uncombine, (a*c)/b]
 ```
 
-## Division Properties
+### Distributive
 
-`{bm} /(Expressions\/Division Properties)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Multiplication\/Distributive)_TOPIC/i`
+
+`{kt} a(b+c) = ab+ac`
+
+The distributive property states that, when multiplying by a a chain of additions, the multiplication can be exploded out into each of the terms_EXP in that chain.
+
+Note that...
+
+ 1. subtraction can be converted to addition: `{kt} a(b-c) = a(b+(-c)) = ab+(-ac) = ab-ac`.
+ 2. division can be converted to multiplication: `{kt} \frac{b+c}{a} = \frac{1}{a}(b+c) = \frac{1}{a}b+\frac{1}{a}c = \frac{b}{a} + \frac{c}{a}`.
+
+```{output}
+arithmetic_code/expression/properties/DistributiveProperty.py
+python
+# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+```
+
+```{arithmetic}
+expression.properties.DistributiveProperty
+- [distributive, 1*(x+1)]
+- [distributive, 3*(x+y+1)]
+- [undistributive_basic, (x+1)*2+(x+1)*3]
+- [undistributive_basic, (x+1)*(1+2)+(x+1)*3]
+```
+
+## Division
+
+`{bm} /(Expression Operator Properties\/Division)_TOPIC/i`
 
 The following subsections detail common rules / properties around division (fractions).
 
 ### Identity
 
-`{bm} /(Expressions\/Division Properties\/Identity)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Division\/Identity)_TOPIC/i`
 
 `{kt} \frac{a}{1} = a`
 
@@ -1086,7 +1113,7 @@ expression.properties.RatioDivisionProperties
 
 ### Inverse
 
-`{bm} /(Expressions\/Division Properties\/Inverse)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Division\/Inverse)_TOPIC/i`
 
 `{kt} \frac{a}{a} = 1`
 
@@ -1106,7 +1133,7 @@ expression.properties.RatioDivisionProperties
 
 ### Zero
 
-`{bm} /(Expressions\/Division Properties\/Zero)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Division\/Zero)_TOPIC/i`
 
 `{kt} \frac{0}{a} = 0`
 
@@ -1126,14 +1153,14 @@ expression.properties.RatioDivisionProperties
 
 ### Combine
 
-`{bm} /(Expressions\/Division Properties\/Combine)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Division\/Combine)_TOPIC/i`
 
 ```{prereq}
-Expressions/Multiplication Properties/Inverse_TOPIC
-Expressions/Multiplication Properties/Combine_TOPIC
-Expressions/Division Properties/Identity_TOPIC
-Expressions/Division Properties/Inverse_TOPIC
-Expressions/Equivalent Fraction Property_TOPIC
+Expression Operator Properties/Multiplication/Inverse_TOPIC
+Expression Operator Properties/Multiplication/Combine_TOPIC
+Expression Operator Properties/Division/Identity_TOPIC
+Expression Operator Properties/Division/Inverse_TOPIC
+Expression Operator Properties/Division/Equivalent Fraction_TOPIC
 ```
 
 `{kt} \frac{\frac{a}{b}}{\frac{c}{d}} = \frac{ad}{bc}`
@@ -1160,14 +1187,14 @@ expression.properties.RatioDivisionProperties
 - [uncombine, (9*1)/(3*5)]
 ```
 
-## Equivalent Fraction Property
+### Equivalent Fraction
 
-`{bm} /(Expressions\/Equivalent Fraction Property)_TOPIC/i`
+`{bm} /(Expression Operator Properties\/Division\/Equivalent Fraction)_TOPIC/i`
 
 ```{prereq}
-Expressions/Multiplication Properties/Combine_TOPIC
-Expressions/Multiplication Properties/Identity_TOPIC
-Expressions/Division Properties/Inverse_TOPIC
+Expression Operator Properties/Multiplication/Combine_TOPIC
+Expression Operator Properties/Multiplication/Identity_TOPIC
+Expression Operator Properties/Division/Inverse_TOPIC
 ```
 
 `{kt} \frac{ac}{bc} = \frac{a}{b}`
@@ -1190,42 +1217,816 @@ expression.properties.EquivalentFractionProperty
 - [equivalent_fraction_basic, (5*7)/(3*7)]
 ```
 
-## Distributive Property
+## Exponent
 
-`{bm} /(Expressions\/Distributive Property)_TOPIC/i`
+## Logarithm
 
-`{kt} a(b+c) = ab+ac`
+# Relation Operator Properties
 
-The distributive property states that, when multiplying by a a chain of additions, the multiplication can be exploded out into each of the terms_EXP in that chain.
+`{bm} /(Relation Operator Properties)_TOPIC/i`
 
-Note that...
+```{prereq}
+Expression Operator Properties_TOPIC
+```
 
- 1. subtraction can be converted to addition: `{kt} a(b-c) = a(b+(-c)) = ab+(-ac) = ab-ac`.
- 2. division can be converted to multiplication: `{kt} \frac{b+c}{a} = \frac{1}{a}(b+c) = \frac{1}{a}b+\frac{1}{a}c = \frac{b}{a} + \frac{c}{a}`.
+A relation tests two expressions, typically with variables, to see if some condition is met. The notation for a relation is A op B, where ...
+
+ * op is the relational operator.
+ * A is the left-hand side expression.
+ * B is the right-hand side expression.
+
+| Relational Operator   | Symbol(s)     | Description                                                             |
+|-----------------------|---------------|-------------------------------------------------------------------------|
+| equal                 | =             | Test if items are the same, such as x+1 = 5.                            |
+| not equal             | ≠, !=, ~=, /= | Test if items are the different, such as x+1 != 0.                      |
+| less than             | <             | Test if item 1 is less than item 2, such as x+1 < 5.                    |
+| greater than          | >             | Test if item 1 is greater than item 2, such as x+1 > 4.                 |
+| less than or equal    | ≤, <=         | Test if item 1 is less than or the sam as item 2, such as x+1 <= 5.     |
+| greater than or equal | ≥, >=         | Test if item 1 is greater than or the same as item 2, such as x+1 >= 5. |
+
+The relational operators above fall into two categories:
+
+ * Equality, which encompasses just equals (=).
+ * Inequality, which encompasses operators that aren't equals (≠, <, \>, ≤, ≥).
+
+```{note}
+The !!term!! inequality is overloaded. Introductory math books sometimes use the !!term!! inequality to !!mean!! the class described above, while other sources use inequality as a synonym for not equal (≠).
+```
+
+For example, imagine the inequality x+4 > 8. The condition it represents is met (it holds) so long as the left-hand side evaluates to more than 8: x+4 > 8, if x > 4. 
+
+| x   | (x+4) > 8      |
+|-----|----------------|
+| 0   | 4 > 8 (false)  |
+| 1   | 5 > 8 (false)  |
+| 2   | 6 > 8 (false)  |
+| 3   | 7 > 8 (false)  |
+| 4   | 8 > 8 (false)  |
+| 5   | 9 > 8 (true)   |
+| 6   | 10 > 8 (true)  |
+| 7   | 11 > 8 (true)  |
+| ... | ...            |
+
+The typical action to take when given a relation is to solve for some variable within that relation, which !!means!! to determine what possible values that variable can have for the relation to hold. In the example above, there's only one variable: x. To solve for x, you need to come up with extra math operations that, once those operations are applied to both expressions in the equation, one of the expressions consists of only x (once simplified_EXP).
+
+ * x+4 > 8
+ * x+4-4 > 8-4 (subtract both sides by 4)
+ * x > 4 (simplify_EXP both sides)
+
+For the example relation above, x must be more than 4 for the relation to hold: x+4 > 8, if x > 4.
+
+```{note}
+Why do you need to apply to both sides? The math operations being tacked onto the expressions are essentially shifting / scaling those expressions. Since both sides are shifting / scaling by the same amount, balance is maintained. For example, imagine shifting 5 > 4 by the same amount on both sides ...
+
+ * 5 > 4 (condition is met)
+ * 5+1 > 4+1 (condition is met)
+ * 5+999 > 4+999 (condition is met)
+
+Likewise, imagine scaling 5 > 4 by the same non-zero amount on both sides (special cases like zero are handled in the upcoming text outside this note block)...
+
+ * 5 > 4 (condition is met)
+ * 5\*5 > 4\*5 (condition is met)
+ * 5\*1000 > 4\*1000 (condition is met)
+
+Other operations other than shifting / scaling may be allowed as well so long as they balance (I can't think of any more at the moment).
+```
+
+Depending on the math operation applied, there may be gotchas to be aware of:
+
+ 1. *Information loss*: Certain math operations may need to be restricted because they lead to information loss. For example, imagine the example relation above, but this time both sides are multiplied by 0: (x+4)\*0 > 8\*0, which simplifies_EXP to 0 > 0. In this case, there are no variables, and so only one condition is being tested ...
+ 
+    * 0 > 0 (condition is _not_ met)
+ 
+    When both sides are multiplied by 0, it results in information loss to the point that this relation no longer holds. This concept extends to variables as well. For example, if you multiply both sides by the variable w, an extra check is needed saying that w cannot be 0: (x+4)\*w > 8\*w, if w ≠ 0.
+
+    ```{note}
+    Other, less drastic, forms of information loss exist as well. These will be documented in the subsections below. 
+    ```
+
+ 2. *Relational operator change*: Certain math operations may cause the relational operator itself to change. For example, imagine the example relation above, but this time both sides are multiplied by -1. When you multiply an something by -1, it gets mirrored across 0 on the number line.
+
+    ```{svgbob}
+                                                             "8 vs -8"
+                 *                                                                                               * 
+     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|  
+     "-10" "-9"  "-8"  "-7"  "-6"  "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5     6     7     8     9     10
+    ```
+
+    Because of this mirroring, the relational operator needs to be swapped from > to < for the relation to remain valid: (x+4)\*-1 **<** 8\*-1.
+
+    | x  | (x+4) > 8      | (x+4)\*-1 < 8\*-1 |
+    |----|----------------|-------------------|
+    | -2 | 2 > 8 (false)  | -2 < -8 (false)   |
+    | -1 | 3 > 8 (false)  | -3 < -8 (false)   |
+    | 0  | 4 > 8 (false)  | -4 < -8 (false)   |
+    | 1  | 5 > 8 (false)  | -5 < -8 (false)   |
+    | 2  | 6 > 8 (false)  | -6 < -8 (false)   |
+    | 3  | 7 > 8 (false)  | -7 < -8 (false)   |
+    | 4  | 8 > 8 (false)  | -8 < -8 (false)   |
+    | 5  | 9 > 8 (true)   | -9 < -8 (true)    |
+    | 6  | 10 > 8 (true)  | -10 < -8 (true)   |
+
+    ```{svgbob}
+                                                     "RELATION: x+4 > 8"
+                                                                                                                 o------------> 
+     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|  
+     "-10" "-9"  "-8"  "-7"  "-6"  "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5     6     7     8     9     10
+    
+    
+    
+                                                   "RELATION: (x+4)*-1 < 8*-1"
+    <------------o
+     |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|   
+     "-10" "-9"  "-8"  "-7"  "-6"  "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5     6     7     8     9     10
+    ```
+
+    Whenever the condition was originally met for the original expression, it must be met for the mirrored expression. That's why the relational operator needs to be changed.
+
+Algebra's relations have rules, such as the gotchas discussed above, that govern how the manipulations of their expressions effects them. These rules and properties are explained in further details in the subsections below.
+
+## Equal
+
+`{bm} /(Relational Operator Properties\/Equal)_TOPIC/i`
+
+The following subsections detail common rules / properties around equal.
+
+### Addition and Subtraction
+
+`{kt} a+?=b+?`
+
+Rules / Gotchas:
+
+ * None.
 
 ```{output}
-arithmetic_code/expression/properties/DistributiveProperty.py
+arithmetic_code/relation/properties/EqualProperties.py
 python
-# MARKDOWN\s*\n([\s\S]+)\n\s*# MARKDOWN
+# MARKDOWN_ADD\s*\n([\s\S]+)\n\s*# MARKDOWN_ADD
 ```
 
 ```{arithmetic}
-expression.properties.DistributiveProperty
-- [distributive, 1*(x+1)]
-- [distributive, 3*(x+y+1)]
-- [undistributive_basic, (x+1)*2+(x+1)*3]
-- [undistributive_basic, (x+1)*(1+2)+(x+1)*3]
+relation.properties.EqualProperties
+- [addition, x = y, 1]
 ```
 
-## Exponent Properties
+`{kt} a-?=b-?`
 
-## Logarithm Properties
+Rules / Gotchas:
 
-# Relation
+ * None.
 
-A relation is a special class of operation that takes n sets_S as input and evaluates each item in the cartesian product of those sets_S to either true or false.
+```{output}
+arithmetic_code/relation/properties/EqualProperties.py
+python
+# MARKDOWN_SUB\s*\n([\s\S]+)\n\s*# MARKDOWN_SUB
+```
 
-In other words, it establishes the relationship between two entities. The subsections below describe relations 
+```{arithmetic}
+relation.properties.EqualProperties
+- [subtraction, x = y, 1]
+- [subtraction, 9 = 9, 1]
+```
+
+### Multiplication and Division
+
+`{kt} a \cdot ? = b \cdot ?`
+
+Rules / Gotchas:
+
+ * None.
+
+```{output}
+arithmetic_code/relation/properties/EqualProperties.py
+python
+# MARKDOWN_MUL\s*\n([\s\S]+)\n\s*# MARKDOWN_MUL
+```
+
+```{arithmetic}
+relation.properties.EqualProperties
+- [multiplication, x = y, 2]
+- [multiplication, x = y, 0]
+```
+
+`{kt} \frac{a}{?}=\frac{b}{?}`
+
+Rules / Gotchas:
+
+ * No division by zero: Any number divided by zero is undefined.
+
+```{output}
+arithmetic_code/relation/properties/EqualProperties.py
+python
+# MARKDOWN_DIV\s*\n([\s\S]+)\n\s*# MARKDOWN_DIV
+```
+
+```{arithmetic}
+relation.properties.EqualProperties
+- [division, x = y, a*1]
+- [division, x = y, 2]
+- [division, x = y, 0]
+```
+
+## Not Equal
+
+`{bm} /(Relational Operator Properties\/Not Equal)_TOPIC/i`
+
+The following subsections detail common rules / properties around not equal.
+
+### Addition and Subtraction
+
+`{kt} a+? \neq b+?`
+
+Rules / Gotchas:
+
+ * None.
+
+```{output}
+arithmetic_code/relation/properties/NotEqualProperties.py
+python
+# MARKDOWN_ADD\s*\n([\s\S]+)\n\s*# MARKDOWN_ADD
+```
+
+```{arithmetic}
+relation.properties.NotEqualProperties
+- [addition, x != y, 1]
+```
+
+`{kt} a-? \neq b-?`
+
+Rules / Gotchas:
+
+ * None.
+
+```{output}
+arithmetic_code/relation/properties/NotEqualProperties.py
+python
+# MARKDOWN_SUB\s*\n([\s\S]+)\n\s*# MARKDOWN_SUB
+```
+
+```{arithmetic}
+relation.properties.NotEqualProperties
+- [subtraction, x != y, 1]
+- [subtraction, 9 != 9, 1]
+```
+
+### Multiplication and Division
+
+`{kt} a \cdot ? \neq b \cdot ?`
+
+Rules / Gotchas:
+
+ * No multiplication by zero: Multiplying by zero will end up making the relation 0≠0, which is not true.
+
+```{output}
+arithmetic_code/relation/properties/NotEqualProperties.py
+python
+# MARKDOWN_MUL\s*\n([\s\S]+)\n\s*# MARKDOWN_MUL
+```
+
+```{arithmetic}
+relation.properties.NotEqualProperties
+- [multiplication, x != y, 2]
+- [multiplication, x != y, 0]
+```
+
+`{kt} \frac{a}{?} \neq \frac{b}{?}`
+
+Rules / Gotchas:
+
+ * No division by zero: Any number divided by zero is undefined.
+
+```{output}
+arithmetic_code/relation/properties/NotEqualProperties.py
+python
+# MARKDOWN_DIV\s*\n([\s\S]+)\n\s*# MARKDOWN_DIV
+```
+
+```{arithmetic}
+relation.properties.NotEqualProperties
+- [division, x != y, a*1]
+- [division, x != y, 2]
+- [division, x != y, 0]
+```
+
+## Less Than
+
+`{bm} /(Relational Operator Properties\/Less Than)_TOPIC/i`
+
+The following subsections detail common rules / properties around less than.
+
+### Addition and Subtraction
+
+`{kt} a+?<b+?`
+
+Rules / Gotchas:
+
+ * None.
+
+```{output}
+arithmetic_code/relation/properties/LessThanProperties.py
+python
+# MARKDOWN_ADD\s*\n([\s\S]+)\n\s*# MARKDOWN_ADD
+```
+
+```{arithmetic}
+relation.properties.LessThanProperties
+- [addition, x < y, 1]
+```
+
+`{kt} a-?<b-?`
+
+Rules / Gotchas:
+
+ * None.
+
+```{output}
+arithmetic_code/relation/properties/LessThanProperties.py
+python
+# MARKDOWN_SUB\s*\n([\s\S]+)\n\s*# MARKDOWN_SUB
+```
+
+```{arithmetic}
+relation.properties.LessThanProperties
+- [subtraction, x < y, 1]
+- [subtraction, 9 < 9, 1]
+```
+
+### Multiplication and Division
+
+`{kt} a \cdot ? < b \cdot ?`
+
+Rules / Gotchas:
+
+ * Negative operand swaps relation's direction When you multiply an something by -1, it gets mirrored across 0 on the number line.
+
+   ```{svgbob}
+                              "8 vs -8"
+          *                                               *      
+    |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----| 
+    "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5
+   ```
+
+   Because of this mirroring, the relational operator needs to be swapped for the relation to remain valid. Any position on the number line where the original relation's condition was met is mirrored across 0.
+
+   ```{svgbob}
+                           "RELATION: x < -2"
+   <------------------o                        
+    |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|  
+    "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5
+
+
+    
+                           "RELATION: x > 2"
+                                              o------------------> 
+    |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|  
+    "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5
+   ```
+
+```{output}
+arithmetic_code/relation/properties/LessThanProperties.py
+python
+# MARKDOWN_MUL\s*\n([\s\S]+)\n\s*# MARKDOWN_MUL
+```
+
+```{arithmetic}
+relation.properties.LessThanProperties
+- [multiplication, x < y, 2]
+- [multiplication, x < y, 0]
+```
+
+`{kt} \frac{a}{?} < \frac{b}{?}`
+
+Rules / Gotchas:
+
+ * No division by zero: Any number divided by zero is undefined.
+ * Negative operand swaps relation's direction: When you multiply an something by -1, it gets mirrored across 0 on the number line.
+
+   ```{note}
+   See diagrams above for reasoning -- same reasoning applied.
+   ```
+
+```{output}
+arithmetic_code/relation/properties/LessThanProperties.py
+python
+# MARKDOWN_DIV\s*\n([\s\S]+)\n\s*# MARKDOWN_DIV
+```
+
+```{arithmetic}
+relation.properties.LessThanProperties
+- [division, x < y, a*1]
+- [division, x < y, 2]
+- [division, x < y, 0]
+```
+
+## Less Than or Equal
+
+`{bm} /(Relational Operator Properties\/Less Than or Equal)_TOPIC/i`
+
+The following subsections detail common rules / properties around less than  or equal.
+
+### Addition and Subtraction
+
+`{kt} a+? \leq b+?`
+
+Rules / Gotchas:
+
+ * None.
+
+```{output}
+arithmetic_code/relation/properties/LessThanOrEqualProperties.py
+python
+# MARKDOWN_ADD\s*\n([\s\S]+)\n\s*# MARKDOWN_ADD
+```
+
+```{arithmetic}
+relation.properties.LessThanOrEqualProperties
+- [addition, x <= y, 1]
+```
+
+`{kt} a-? \leq b-?`
+
+Rules / Gotchas:
+
+ * None.
+
+```{output}
+arithmetic_code/relation/properties/LessThanOrEqualProperties.py
+python
+# MARKDOWN_SUB\s*\n([\s\S]+)\n\s*# MARKDOWN_SUB
+```
+
+```{arithmetic}
+relation.properties.LessThanOrEqualProperties
+- [subtraction, x <= y, 1]
+- [subtraction, 9 <= 9, 1]
+```
+
+### Multiplication and Division
+
+`{kt} a \cdot ? \leq b \cdot ?`
+
+Rules / Gotchas:
+
+ * Negative operand swaps relation's direction When you multiply an something by -1, it gets mirrored across 0 on the number line.
+
+   ```{svgbob}
+                              "8 vs -8"
+          *                                               *      
+    |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----| 
+    "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5
+   ```
+
+   Because of this mirroring, the relational operator needs to be swapped for the relation to remain valid. Any position on the number line where the original relation's condition was met is mirrored across 0.
+
+   ```{svgbob}
+                           "RELATION: x <= -2"
+   <------------------*                        
+    |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|  
+    "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5
+
+
+    
+                           "RELATION: x >= 2"
+                                              *------------------> 
+    |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|  
+    "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5
+   ```
+
+```{output}
+arithmetic_code/relation/properties/LessThanOrEqualProperties.py
+python
+# MARKDOWN_MUL\s*\n([\s\S]+)\n\s*# MARKDOWN_MUL
+```
+
+```{arithmetic}
+relation.properties.LessThanOrEqualProperties
+- [multiplication, x <= y, 2]
+- [multiplication, x <= y, 0]
+```
+
+`{kt} \frac{a}{?} \leq \frac{b}{?}`
+
+Rules / Gotchas:
+
+ * No division by zero: Any number divided by zero is undefined.
+ * Negative operand swaps relation's direction: When you multiply an something by -1, it gets mirrored across 0 on the number line.
+
+   ```{note}
+   See diagrams above for reasoning -- same reasoning applied.
+   ```
+
+```{output}
+arithmetic_code/relation/properties/LessThanProperties.py
+python
+# MARKDOWN_DIV\s*\n([\s\S]+)\n\s*# MARKDOWN_DIV
+```
+
+```{arithmetic}
+relation.properties.LessThanOrEqualProperties
+- [division, x <= y, a*1]
+- [division, x <= y, 2]
+- [division, x <= y, 0]
+```
+
+## Greater Than
+
+`{bm} /(Relational Operator Properties\/Greater)_TOPIC/i`
+
+The following subsections detail common rules / properties around greater than.
+
+### Addition and Subtraction
+
+`{kt} a+?>b+?`
+
+Rules / Gotchas:
+
+ * None.
+
+```{output}
+arithmetic_code/relation/properties/GreaterThanProperties.py
+python
+# MARKDOWN_ADD\s*\n([\s\S]+)\n\s*# MARKDOWN_ADD
+```
+
+```{arithmetic}
+relation.properties.GreaterThanProperties
+- [addition, x > y, 1]
+```
+
+`{kt} a-?>b-?`
+
+Rules / Gotchas:
+
+ * None.
+
+```{output}
+arithmetic_code/relation/properties/GreaterThanProperties.py
+python
+# MARKDOWN_SUB\s*\n([\s\S]+)\n\s*# MARKDOWN_SUB
+```
+
+```{arithmetic}
+relation.properties.GreaterThanProperties
+- [subtraction, x > y, 1]
+- [subtraction, 9 > 9, 1]
+```
+
+### Multiplication and Division
+
+`{kt} a \cdot ? > b \cdot ?`
+
+Rules / Gotchas:
+
+ * Negative operand swaps relation's direction When you multiply an something by -1, it gets mirrored across 0 on the number line.
+
+   ```{svgbob}
+                              "8 vs -8"
+          *                                               *      
+    |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----| 
+    "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5
+   ```
+
+   Because of this mirroring, the relational operator needs to be swapped for the relation to remain valid. Any position on the number line where the original relation's condition was met is mirrored across 0.
+
+   ```{svgbob}
+                           "RELATION: x > 2"
+                                              o------------------> 
+    |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|  
+    "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5
+   
+
+
+                           "RELATION: x < -2"
+   <------------------o                        
+    |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|  
+    "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5
+   ```
+
+```{output}
+arithmetic_code/relation/properties/GreaterThanProperties.py
+python
+# MARKDOWN_MUL\s*\n([\s\S]+)\n\s*# MARKDOWN_MUL
+```
+
+```{arithmetic}
+relation.properties.GreaterThanProperties
+- [multiplication, x > y, 2]
+- [multiplication, x > y, 0]
+```
+
+`{kt} \frac{a}{?} > \frac{b}{?}`
+
+Rules / Gotchas:
+
+ * No division by zero: Any number divided by zero is undefined.
+ * Negative operand swaps relation's direction: When you multiply an something by -1, it gets mirrored across 0 on the number line.
+
+   ```{note}
+   See diagrams above for reasoning -- same reasoning applied.
+   ```
+
+```{output}
+arithmetic_code/relation/properties/GreaterThanProperties.py
+python
+# MARKDOWN_DIV\s*\n([\s\S]+)\n\s*# MARKDOWN_DIV
+```
+
+```{arithmetic}
+relation.properties.GreaterThanProperties
+- [division, x > y, a*1]
+- [division, x > y, 2]
+- [division, x > y, 0]
+```
+
+## Greater Than or Equal
+
+`{bm} /(Relational Operator Properties\/Greater Than or Equal)_TOPIC/i`
+
+The following subsections detail common rules / properties around greater than or equal.
+
+### Addition and Subtraction
+
+`{kt} a+? \geq b+?`
+
+Rules / Gotchas:
+
+ * None.
+
+```{output}
+arithmetic_code/relation/properties/GreaterThanOrEqualProperties.py
+python
+# MARKDOWN_ADD\s*\n([\s\S]+)\n\s*# MARKDOWN_ADD
+```
+
+```{arithmetic}
+relation.properties.GreaterThanOrEqualProperties
+- [addition, x >= y, 1]
+```
+
+`{kt} a-? \geq b-?`
+
+Rules / Gotchas:
+
+ * None.
+
+```{output}
+arithmetic_code/relation/properties/GreaterThanOrEqualProperties.py
+python
+# MARKDOWN_SUB\s*\n([\s\S]+)\n\s*# MARKDOWN_SUB
+```
+
+```{arithmetic}
+relation.properties.GreaterThanOrEqualProperties
+- [subtraction, x >= y, 1]
+- [subtraction, 9 >= 9, 1]
+```
+
+### Multiplication and Division
+
+`{kt} a \cdot ? \geq b \cdot ?`
+
+Rules / Gotchas:
+
+ * Negative operand swaps relation's direction When you multiply an something by -1, it gets mirrored across 0 on the number line.
+
+   ```{svgbob}
+                              "8 vs -8"
+          *                                               *      
+    |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----| 
+    "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5
+   ```
+
+   Because of this mirroring, the relational operator needs to be swapped for the relation to remain valid. Any position on the number line where the original relation's condition was met is mirrored across 0.
+
+   ```{svgbob}
+                           "RELATION: x >= 2"
+                                              *------------------> 
+    |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|  
+    "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5
+
+
+
+                           "RELATION: x <= -2"
+   <------------------*                        
+    |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|  
+    "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5
+   ```
+
+```{output}
+arithmetic_code/relation/properties/GreaterThanOrEqualProperties.py
+python
+# MARKDOWN_MUL\s*\n([\s\S]+)\n\s*# MARKDOWN_MUL
+```
+
+```{arithmetic}
+relation.properties.GreaterThanOrEqualProperties
+- [multiplication, x >= y, 2]
+- [multiplication, x >= y, 0]
+```
+
+`{kt} \frac{a}{?} \geq \frac{b}{?}`
+
+Rules / Gotchas:
+
+ * No division by zero: Any number divided by zero is undefined.
+ * Negative operand swaps relation's direction: When you multiply an something by -1, it gets mirrored across 0 on the number line.
+
+   ```{note}
+   See diagrams above for reasoning -- same reasoning applied.
+   ```
+
+```{output}
+arithmetic_code/relation/properties/GreaterThanOrEqualProperties.py
+python
+# MARKDOWN_DIV\s*\n([\s\S]+)\n\s*# MARKDOWN_DIV
+```
+
+```{arithmetic}
+relation.properties.GreaterThanOrEqualProperties
+- [division, x >= y, a*1]
+- [division, x >= y, 2]
+- [division, x >= y, 0]
+```
+
+# Restricted Inputs
+
+`{bm} /(Restricted Inputs)_TOPIC/i`
+
+One way to think of a relation is as an operation that filters the cartesian product of 2 sets_S into a subset. For example, consider two sets_S A={3, -5, 7} and B={-3, 1, 9}. Given the cartesian product AxB, a relation that states that the ordered pair from the cartesian product must sum to a positive number will filter that cartesian product to the subset {(3, 1), (3, 9), (-5, 9), (7, -3), (7, 1), (7, 9)}.
+
+```{svgbob}
+ "AxB"            "AxB, if sum is positive"
+
+"(3, -3)"                   
+"(3, 1)"                      
+"(3, 9)"  -----------> "(3, 9)"  
+"(-5, -3)"           
+"(-5, 1)"             
+"(-5, 9)" -----------> "(-5, 9)" 
+"(7, -3)" -----------> "(7, -3)" 
+"(7, 1)"  -----------> "(7, 1)"  
+"(7, 9)"  -----------> "(7, 9)"  
+```
+
+In algebra, the relational operators represent conditions that should be evaluated, described in the table below. Each relational operator takes in 2 sets_S of numbers as input, where those sets_S are represented as expressions. For example, imagine the relation x+4 ≥ 8. Each side of the relation is an expression, which represents a set_S. The set_S on the ...
+
+ * left-hand side is the set_S of all numbers.
+ * right-hand side is the set_S {8}.
+
+The relation returns a subset of the cartesian product for those two sets_S. That subset contains only ordered pairs where the 1st item is at least as high as the 2nd. For example, (8, 8) and (8.5, 8) will be in the returned subset, but (7.5, 8) won't because 7.5 is lower than 8.
+
+```{svgbob}
+                                                 "RELATION: x+4 ≥ 8"
+                                                                                                             *------------> 
+ |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|  
+ "-10" "-9"  "-8"  "-7"  "-6"  "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5     6     7     8     9     10
+```
+
+The expressions into a relation can be changed (shifted, scaled, etc..), but those changes must be balanced for that relation's condition to still hold. In this context, "change" !!means!! a mathematical operation such as addition or multiplication, and "balanced" !!means!! that the mathematical operation must be applied to both expressions. For example, imagine subtracting 3 from both sides of the relation above: x+4-3 ≥ 8-3. The subset returned will have ordered pairs shifted back by 3, but the condition of being greater than or equal still holds.
+
+ * x+4 ≥ 8:     {(8, 8), ..., (8.5, 8), ..., (9, 8), ...}
+ * x+4-3 ≥ 8-3: {(5, 5), ..., (5.5, 5), ..., (6, 5), ...}
+
+```{svgbob}
+                                                 "RELATION: x+4 ≥ 8"
+                                                                                                             *------------> 
+ |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|  
+ "-10" "-9"  "-8"  "-7"  "-6"  "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5     6     7     8     9     10
+
+
+
+                                               "RELATION: x+4-3 ≥ 8-3"
+                                                                                           *------------------------------> 
+ |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|   
+ "-10" "-9"  "-8"  "-7"  "-6"  "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5     6     7     8     9     10
+```
+
+Certain manipulations may change the relational operator itself. Had the example above instead had both sides multiplied by -1, the relation would have to be swapped from ≥ to ≤. That is, when you multiply both sides by -1, the original relation of ≥ no longer holds because the ordered pairs get are mirrored across 0 on the number line. When mirrored across 0, the relation becomes ≤ instead.
+
+ * x+4 ≥ 8:           {(8, 8),   ..., (8.5, 8),   ..., (9, 8),   ...}
+ * (x+4)\*-1 ≤ 8\*-1: {(-8, -8), ..., (-8.5, -8), ..., (-9, -8), ...}
+
+```{svgbob}
+                                                 "RELATION: x+4 ≥ 8"
+                                                                                                             *------------> 
+ |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|  
+ "-10" "-9"  "-8"  "-7"  "-6"  "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5     6     7     8     9     10
+
+
+
+                                               "RELATION: (x+4)*-1 ≤ 8*-1"
+<------------*
+ |-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|   
+ "-10" "-9"  "-8"  "-7"  "-6"  "-5"  "-4"  "-3"  "-2"  "-1"  0     1     2     3     4     5     6     7     8     9     10
+```
+
+Thinking about relations as operations on sets_S is useful because it allows blocking off certain invalid members of a set_S. For example, for the relation 6/x = 3, there is a value for x in which the expression on the left-hand is undefined: 0 (cannot divide by 0). By plugging in progressively larger values of x, you get a feel for what number is missing from the set_S representing the left-hand side.
+
+ * 6/10 evaluates to 0.6
+ * 6/500 evaluates to 0.012
+ * 6/60000 evaluates to 0.0001
+
+As x gets larger, the value gets closer and closer to 0. It will never reach 0. As such, 0 is excluded from the set_S represented by the left-hand side expression.
 
 # Terminology
 
@@ -2070,7 +2871,7 @@ In other words, it establishes the relationship between two entities. The subsec
    Recall that 0 is neither negative nor positive.
    ```
 
- * `{bm} origin` - The center point in a graph. For example, a graph with ...
+ * `{bm} origin/(\borigin\b)/i` - The center point in a graph. For example, a graph with ...
 
    * one axis has the origin (0).
    * two axis has the origin (0, 0),
@@ -2323,7 +3124,7 @@ In other words, it establishes the relationship between two entities. The subsec
    Recall that linear equations containing exactly two variables are on a single plane. More variables increases the dimensions, which !!means!! many planes.
    ```
 
- * `{bm} set/(\bsets?\b)_S/i` `{bm} /(\bmembers?\b)/` - A collection of unique entities (e.g. numbers, symbols, ordered pairs, tuples, etc..), where each entity is referred to as a member. For example, ...
+ * `{bm} set/(\bsets?)_S\b/i` `{bm} /(\bmembers?\b)/` - A collection of unique entities (e.g. numbers, symbols, ordered pairs, tuples, etc..), where each entity is referred to as a member. For example, ...
  
    * counting numbers can be represented as a set_S.
    * car models can be represented as a set_S.
@@ -2337,7 +3138,7 @@ In other words, it establishes the relationship between two entities. The subsec
 
  * `{bm} subset` - A set_S T is a subset of set_S U if all members of T are members of U. That is, each member of T is in U.
  
-   U can have other members as well, but it must contain those members in T. For example, given sets T={1, 3, 5}, U={1, 3, 7, 5} and V={1, 3, 7, 5, 8}, ...
+   U can have other members as well, but it must contain those members in T. For example, given sets_S T={1, 3, 5}, U={1, 3, 7, 5} and V={1, 3, 7, 5, 8}, ...
 
     * T is a subset of both U and V, because all members of T are members of both U and V.
     * U is a subset of V, because all members of U are members of V.
@@ -2367,7 +3168,62 @@ In other words, it establishes the relationship between two entities. The subsec
 
    Cartesian product is often denoted using the x symbol. For example, the cartesian product of A and B is typically written as AxB.
 
- * `{bm} relation` - An operation that filters the cartesian product of n sets_S into a subset. For example, consider two sets_S A={3, -5, 7} and B={-3, 1, 9}. Given the cartesian product AxB, a relation that states that the ordered pair from the cartesian product must sum to a positive number will filter that cartesian product to the subset {(3, 1), (3, 9), (-5, 9), (7, -3), (7, 1), (7, 9)}.
+ * `{bm} relation/(relational operator|relation operator|relation)/i` - An operation that filters the cartesian product of n sets_S into a subset. For example, consider two sets_S A={3, -5, 7} and B={-3, 1, 9}. Given the cartesian product AxB, a relation that states that the ordered pair from the cartesian product must sum to a positive number will filter that cartesian product to the subset {(3, 1), (3, 9), (-5, 9), (7, -3), (7, 1), (7, 9)}.
+
+    ```{note}
+   You can sometimes think of a relation as a evaluation to a boolean. That is, rather than filtering to a subset of the cartesian product, it instead returns a true/false for each member of the cartesian product.
+   ```
+
+   When it comes to standard algebra, the relations of interest are described in the table below.
+
+   | Relational Operator   | Symbol(s)     | Condition                                                         |
+   |-----------------------|---------------|-------------------------------------------------------------------|
+   | equal                 | =             | Test if items are the same.                                       |
+   | not equal             | ≠, !=, ~=, /= | Test if expressions are the different.                            |
+   | less than             | <             | Test if expression 1 is less than expression 2.                   |
+   | greater than          | >             | Test if expression 1 is greater than expression 2.                |
+   | less than or equal    | ≤, <=         | Test if expression 1 is less than or the same as expression 2.    |
+   | greater than or equal | ≥, >=         | Test if expression 1 is greater than or the same as expression 2. |
+   
+   These relations test two expressions to check if they meet some condition / in which cases those conditions are met. You can think of the two expressions as sets_S of numbers, where the relation filters the cartesian product of those numbers to those that meet the condition. For example, the equation 15=3*x is comprised of the ...
+  
+    * left-hand side expression, which can be interpreted as the set_S {15}.
+    * relational operator, which tests that the left-hand side and right-hand side evaluate to the same value (equality).
+    * right-hand side expression, which can be interpreted as the set_S of all possible numbers.
+
+   The result is a subset of cartesian product of the two sets_S, filtered to the condition being tested for by the relational operator: {(15,15)}.
+
+   ```{note}
+   The relations in the table above are classed into categories: equality and inequality.
+   ```
+
+   When given such a relation with variables, the typical task is to solve for the variables within that relation. Solving for a variable is the process of determining which values that variable can be for the relation to hold (for it to evaluate to true). For example, the relation 15=3*x only holds if if x=5.
+
+ * `{bm} equality/(equality|equalities)/i` - A relation that tests to see if two expressions are equal. For example, ...
+ 
+    * 5=5
+    * 15=3*x, if x=5
+    * x+1=4+x
+
+ * `{bm} inequality/(inequality|inequalities)/i` - A class of relations that are not equality (but may include equality):
+
+   | Relational Operator   | Symbol(s)     | Condition                                                         |
+   |-----------------------|---------------|-------------------------------------------------------------------|
+   | not equal             | ≠, !=, ~=, /= | Test if expressions are the different.                            |
+   | less than             | <             | Test if expression 1 is less than expression 2.                   |
+   | greater than          | >             | Test if expression 1 is greater than expression 2.                |
+   | less than or equal    | ≤, <=         | Test if expression 1 is less than or the same as expression 2.    |
+   | greater than or equal | ≥, >=         | Test if expression 1 is greater than or the same as expression 2. |
+ 
+   For example, ...
+    
+    * 5>6
+    * 5≠6
+    * 15>3*x, if x>5
+   
+   ```{note}
+   In certain cases, people will use !!term!! inequality to !!mean!! the not equal relational operator.
+   ```
 
 TODO: CONTINUE FROM CHAPTER 5.1, BUT CODING IS STILL AT CH2.7 ON INEQUALITIES
 
@@ -2397,12 +3253,16 @@ TODO: start from elementary algebra ch2.7 - start at inequalities section
 
 `{bm-error} Don't apply suffix _POW/(cube[d]?_POW root)/i`
 
-`{bm-error} Wrap in !! or apply suffix _FRAC or _POW/(simplify|simplified|simplifies)/i`
+`{bm-error} Wrap in !! or apply suffix _FRAC or _EXP/(simplify|simplified|simplifies)/i`
 
 `{bm-error} Wrap in !! or apply suffix _LE/(standard form)/i`
 
 `{bm-error} Wrap in !! or apply suffix _S/(\bsets?\b)/i`
 
-`{bm-error} Use sets_S instead/(\bset_S?\b)/i`
+`{bm-error} Use sets_S instead/(\bset_Ss\b)/i`
+
+`{bm-error} Remove the _S/(subset_S|subsets_S|subset_Ss)/i`
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
+
+`{bm-error} Missing topic reference/(_TOPIC)/i`

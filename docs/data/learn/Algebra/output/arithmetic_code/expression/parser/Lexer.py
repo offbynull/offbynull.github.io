@@ -144,5 +144,5 @@ def tokenize(s: str):
 
 
 if __name__ == '__main__':
-    tokens = tokenize('5:2 + 4.5 ^ -x + 3 * 8 / log(2, 32, \'hello\')')
+    tokens = tokenize('5/2 + 45/100 ^ -x <= 3 * 8 / log(2, 32, \'hello\')')
     print(f'{tokens}')

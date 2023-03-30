@@ -6,7 +6,8 @@ from sys import stdin
 import yaml
 
 from Factor import factor_tree
-from expression.parser.Parser import Node, ConstantNode, FunctionNode, VariableNode, parse
+from expression.Node import Node, ConstantNode, FunctionNode, VariableNode
+from expression.parser.Parser import parse
 from expression.parser.Printer import to_string
 
 
@@ -152,7 +153,7 @@ def main():
             func = funcs[func_name]
             print(f'{func_name} with input {exp} ...')
             for alt_n in func(n):
-                print(f'    {to_string(n)} = {to_string(alt_n)}')
+                print(f'    {to_string(n)} ⟶ {to_string(alt_n)}')
         print('```')
         print()
     finally:

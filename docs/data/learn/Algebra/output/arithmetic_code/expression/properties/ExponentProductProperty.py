@@ -1,4 +1,5 @@
-from expression.parser.Parser import FunctionNode, parse, Node
+from expression.Node import Node, FunctionNode
+from expression.parser.Parser import parse
 from expression.parser.Printer import to_string
 
 

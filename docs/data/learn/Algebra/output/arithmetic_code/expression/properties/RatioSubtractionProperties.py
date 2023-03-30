@@ -5,8 +5,9 @@ from sys import stdin
 
 import yaml
 
+from expression.Node import Node, ConstantNode, FunctionNode
 from expression.Utils import top, bottom
-from expression.parser.Parser import FunctionNode, parse, Node, ConstantNode
+from expression.parser.Parser import parse
 from expression.parser.Printer import to_string
 
 
@@ -100,7 +101,7 @@ def main():
             func = funcs[func_name]
             print(f'{func_name} with input {exp} ...')
             for alt_n in func(n):
-                print(f'    {to_string(n)} = {to_string(alt_n)}')
+                print(f'    {to_string(n)} ⟶ {to_string(alt_n)}')
         print('```')
         print()
     finally:
