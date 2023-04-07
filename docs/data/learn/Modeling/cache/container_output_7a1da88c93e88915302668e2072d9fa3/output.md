@@ -1,1 +1,0 @@
-<sub>\[[TB:p8](https://worldcat.org/title/863645956)\]</sub>

@@ -6,10 +6,20 @@ if [[ $NAME != *$ENV_NAMES* ]]; then
   conda env create -f /tmp/conda_env.yml -n $NAME
 fi
 
+filename=$(head -n 1 /input/input.data)
+if [[ $filename == "# name:"* ]]
+then
+    filename=${filename:7}                # remove prefix
+    filename=$(echo "$filename" | xargs)  # trim whitespace
+    mkdir -p /output/__run
+    cp /input/input.data /output/__run
+    mv /output/__run/input.data /output/__run/$filename
+fi
+
 # https://stackoverflow.com/a/821419
 set -e
 
-grep -v '^#>>>' /input/input.data > /tmp/input.data
+grep -v '^# include_file:' /input/input.data > /tmp/input.data
 
 source /opt/conda/etc/profile.d/conda.sh
 conda activate $NAME

@@ -1,0 +1,1 @@
+<sub>\[[WIKI:Pascal's Triangle](https://en.wikipedia.org/w/index.php?title=Pascal%27s_triangle&oldid=1150902427)\]</sub>

@@ -13,17 +13,14 @@ try {
 
 const input = fs.readFileSync('/input/input.data', { encoding: 'utf8' }).trim();
 const refs = JSON.parse(fs.readFileSync('/input/refs.json', { encoding: 'utf8' }).trim());
-const inputSplit = /([^:]+):([^:]+)(?::(.+))?/g.exec(input);
+const inputSplit = /([^:]+)(?::(.+))?/g.exec(input);
 // throw inputSplit.length
 const refKey = inputSplit[1].trim();
-const srcText = inputSplit[2].trim();
-const srcOther = inputSplit[3] !== undefined ? inputSplit[3].trim() : null;
+const srcText = inputSplit[2] !== undefined ? inputSplit[2].trim() : '';
 const srcName = refs[refKey]["name"].trim();
 const srcLink = refs[refKey]["link"].trim();
 if (srcName === undefined || srcLink === undefined) {
     throw Error(`Unrecognized type: ${inputSplit}`)
 }
-const output = `<sub>\\[`
-        + `[${srcName}` + (srcText === '' ? '' : `:${srcText}`) + `](${srcLink})`
-        + (srcOther === null ? '' : `:${srcOther}`) + `\\]</sub>`;
+const output = `<sub>\\[[${srcName}](${srcLink})${srcText === '' ? '' : ':'+srcText}\\]</sub>`;
 fs.writeFileSync('/output/output.md', output, { encoding: 'utf8' });

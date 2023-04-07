@@ -1,0 +1,1 @@
+<sub>\[[WIKI:Random Variable](https://en.wikipedia.org/w/index.php?title=Random_variable&oldid=1149147948)\]</sub>
