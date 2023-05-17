@@ -1,1 +1,0 @@
-<sub>\[[FCP](https://worldcat.org/title/803961222):p7-8\]</sub>

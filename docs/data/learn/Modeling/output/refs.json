@@ -5,5 +5,7 @@
     "wiki_event": {"name": "WIKI:Event", "link": "https://en.wikipedia.org/w/index.php?title=Event_(probability_theory)&oldid=1100784657"},
     "wiki_contingency_table": {"name": "WIKI:Contingency Table", "link": "https://en.wikipedia.org/w/index.php?title=Contingency_table&oldid=1055319221"},
     "wiki_rv": {"name": "WIKI:Random Variable", "link": "https://en.wikipedia.org/w/index.php?title=Random_variable&oldid=1149147948"},
-    "wiki_pascals_triangle": {"name": "WIKI:Pascal's Triangle", "link": "https://en.wikipedia.org/w/index.php?title=Pascal%27s_triangle&oldid=1150902427"}
+    "wiki_pascals_triangle": {"name": "WIKI:Pascal's Triangle", "link": "https://en.wikipedia.org/w/index.php?title=Pascal%27s_triangle&oldid=1150902427"},
+    "wiki_binomial_coefficient": {"name": "WIKI:Binomial Coefficient", "link": "https://en.wikipedia.org/w/index.php?title=Binomial_coefficient&oldid=1152175128"},    
+    "wiki_multinomial_coefficient": {"name": "WIKI:Multinomial Coefficient", "link": "https://en.wikipedia.org/w/index.php?title=Multinomial_theorem&oldid=1126115463"}
 }

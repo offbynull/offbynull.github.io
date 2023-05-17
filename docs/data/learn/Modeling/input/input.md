@@ -284,7 +284,7 @@ Pascal's identity states `{kt} {n \choose r} = {n-1 \choose r-1} + {n-1 \choose 
 * include Steve, then he still must choose 4 of the 9 remaining team members: `{kt} {9 \choose 4}`.
 * not include Steve, then he still must choose 5 of the 9 remaining team members: `{kt} {9 \choose 5}`.
 
-Combining these two scenarios together !!means!! that the coach is indecisive about Steve, !!meaning!! Steve can potentially be included in the 5 team members that go up: `{kt} {9 \choose 4} + {9 \choose 5} = {10 \choose 5}`.  `{ref} fcp:p7`
+Combining these two scenarios together !!means!! that the coach is indecisive about Steve, !!meaning!! Steve can potentially be included in the 5 team members that go up just like each of the other 9 players: `{kt} {9 \choose 4} + {9 \choose 5} = {10 \choose 5}`.  `{ref} fcp:p7`
 
 Another way to think about about Pascal's identity is using Pascal's triangle. Pascal's triangle is a triangle of stacked numbers where ...
 
@@ -315,7 +315,7 @@ C(4,0)  C(4,1)  C(4,2)  C(4,3)  C(4,4)
 
 Other than the number at the very top and the numbers along the left and right edges (all 1s), each number in Pascal's triangle is a sum of the two numbers immediately above it. For example, in the triangle above, the 2nd number of the last row is `{kt} {4 \choose 1} = 4`, which is a sum of the two numbers immediately above it: `{kt} {3 \choose 0} + {3 \choose 1} = 1 + 3 = 4`.
 
-This summation is Pascal's identity. Given a position (n, r) in Pascal's triangle, where that position is not at the top and not along the left or right edge, that position contains the sum of the two numbers immediately above it: `{kt} {n \choose r} = {n-1 \choose r-1} + {n-1 \choose r}`. `{ref} wiki_pascals_triangle`.
+This summation is Pascal's identity. Given a position in Pascal's triangle, where that position is not at the top and not along the left or right edge, that position is the sum of the two numbers immediately above it: `{kt} {n \choose r} = {n-1 \choose r-1} + {n-1 \choose r}`. `{ref} wiki_pascals_triangle`.
 
 ```{output}
 stats_code/combinatorics/Combinations.py
@@ -332,7 +332,125 @@ print(f"{count_combinations(4, 3)=}")
 
 ## Binomial Coefficients
 
-FILL ME IN
+Given a binomial that's been raised to some power, a binomial coefficient is the coefficient of a term in the _expanded_ form of that raised binomial. For example, the raised binomial `{kt} (x+y)^4` expands out to `{kt} x^4 + 4x^3y + 6x^2y^2 + 4xy^3 + y^4`, which has the binomial coefficients [1, 4, 6, 4, 1].
+
+The counting of combinations, such as `{kt} {4 \choose 2}`, is sometimes referred to as a binomial coefficient (e.g. `{kt} {4 \choose 2}` is a binomial coefficient).  The reason for this is that, in the _expanded_ form of a raised binomial, the coefficients map to a row within Pascal's triangle. In the example above, `{kt} (x+y)^4 = x^4 + 4x^3y + 6x^2y^2 + 4xy^3 + y^4` maps to the 5th row of Pascal's triangle: [1, 4, 6, 4, 1].
+
+```
+Pascal's triangle              Pascal's triangle in combination notation
+
+       1                                         C(0,0)
+      1 1                                    C(1,0)  C(1,1)
+     1 2 1                               C(2,0)  C(2,1)  C(2,2)
+    1 3 3 1                          C(3,0)  C(3,1)  C(3,2)  C(3,3)
+   1 4 6 4 1                     C(4,0)  C(4,1)  C(4,2)  C(4,3)  C(4,4)
+```
+
+Since Pascal's triangle can be written in combination notation, the binomial coefficients in the expanded expression can be written in combination notation as well. In the example above, `{kt} x^4 + 4x^3y + 6x^2y^2 + 4xy^3 + y^4` can be rewritten as `{kt} {4 \choose 0}x^4 + {4 \choose 1}x^3y + {4 \choose 2}x^2y^2 + {4 \choose 3}xy^3 + {4 \choose 4}y^4`.
+
+In general, given a binomial raised to the power of n (non-negative integer), its binomial coefficients map to row n+1 of Pascal's triangle. `{ref} fcp:p7-9` `{ref} wiki_binomial_coefficient`
+
+```{output}
+stats_code/combinatorics/Combinations.py
+python
+# MARKDOWN_BINOMIAL_COEFFICIENTS\s*\n([\s\S]+?)\n\s*# MARKDOWN_BINOMIAL_COEFFICIENTS
+no_preamble
+```
+
+```{stats}
+combinatorics.Combinations
+print(f"{binomial_coefficients(4)=}")
+```
+
+```{note}
+The book shows the binomial theorem as `{kt} (x+y)^n = \sum_{k=0}^n{x^ky^{n-k}}`.
+```
+
+## Multinomial Coefficients
+
+A multinomial coefficient is the number of ways that a set of n objects can be divided into r subsets. The subsets can have different sizes, but in total they must cover all objects in the original set: `{kt} g_1 + g_2 + ... + g_r = n`.
+   
+To understand how, consider counting how many different ways there are of organizing 10 books across 3 bookshelves, where ...
+
+ * shelf 1 must have 2 books,
+ * shelf 2 must have 3 books,
+ * shelf 3 must have 5 books.
+
+```{svgbob}
+|.-..-.            |
+|| || |            | "shelf 1 has 2 books"
+++-++-+------------+
+|.-..-..-.         |
+|| || || |         | "shelf 2 has 3 books"
+++-++-++-+---------+
+|.-..-..-..-..-.   |
+|| || || || || |   | "shelf 3 has 5 books"
+++-++-++-++-++-+---+
+```
+   
+ * For shelf 1, there `{kt} {10 \choose 2} = 45` possible combinations of books. Once the books for shelf 1 have been chosen, 10-2=8 books remain.
+ * For shelf 2, there are `{kt} {8 \choose 3} = 56` possible combinations of books. Once the books for shelf 2 have been chosen, 8-3=5 books remain.
+ * For shelf 3, there are `{kt} {5 \choose 5} = 1` possible combinations of books. Once the books for shelf 2 have been chosen, 5-5=0 books remain.
+
+In total, there are `{kt} {10 \choose 2} {8 \choose 3} {5 \choose 5} = 45 \cdot 56 \cdot 1 = 2520` different ways of grouping the books across the shelves. You'll get this same number even if you re-arrange which shelf appears first / re-arrange which shelf you start placing books on first. For example, had you chosen to start placing books in the opposite order (shelf 3, then 2, then 1), the number of ways would be exactly the same: `{kt} {10 \choose 5} {5 \choose 3} {2 \choose 2} = 2520`.
+
+The reasoning above, once simplified, in the example above is generalized as the formula `{kt} \frac{n!}{g_1!g_2!...g_r}`, where `{kt} g_1 + g_2 + ... + g_r = n`. The variable n is the number of objects in the set and the variables g1...gn map to the individual group sizes: `{kt} {10 \choose 2, 3, 5} = \frac{10!}{2!3!5!} = 2520`.
+
+```{note}
+This is the way the book shows the simplification.
+
+* `{kt} {n \choose g_1} {(n - g_1) \choose g_2} ... {(n - g_1 - g_2 - ... g_{r-1}) \choose g_{r-1}}` 
+* `{kt} = \frac{n!}{(n - g_1)!g_1!} \frac{(n - g_1)!}{(n - g_1 - g_2)!g_2!} ...  \frac{(n - g_1 - g_2 - ... -  - g_{r-1})!}{0!g_r!}`
+* `{kt} = \frac{n!}{g_1!g_2!...g_r}`
+```
+
+The name multinomial coefficient comes from the fact that the formula can be used to determine the coefficient in the expanded form of a multinomial raised to some power. For example, the raised binomial `{kt} (x+y)^4` expands out to `{kt} x^4 + 4x^3y + 6x^2y^2 + 4xy^3 + y^4`, which has the multinomial coefficients [1, 4, 6, 4, 1]. Each coefficient in the expanded expression (multinomial coefficient) can be calculated using the formula mentioned above: `{kt} {n \choose g_1, g_2, ..., g_r} = \frac{n!}{g_1!g_2!...g_r!}`, where `{kt} g_1 + g_2 + ... + g_r = n`. The variable n is the exponent of the multinomial while the variables g1...gr map to the exponents within a term in the expanded expression. For example, ...
+
+ * `{kt} (x+y)^4` expands out to `{kt} x^4 + 4x^3y + 6x^2y^2 + 4xy^3 + y^4`, which can be rewritten as `{kt} {4 \choose 4, 0}x^4 + {4 \choose 3, 1}x^3y + {4 \choose 2, 2}x^2y^2 + {4 \choose 1, 3}xy^3 + {4 \choose 0, 4}y^4`.
+
+ * `{kt} (x+y+z)^3` expands out to `{kt} x^3 + 3x^2y + 3x^2z + 3xy^2 + 6xyz + 3xz^2 + y^3 + 3y^2z+ 3yz^2 + z^3`, which can be rewritten as `{kt} {3 \choose 3, 0, 0}x^3 + {3 \choose 2, 1, 0}x^2y + {3 \choose 2, 0, 1}x^2z + {3 \choose 1, 2, 0}xy^2 + {3 \choose 1, 1, 1}xyz + {3 \choose 1, 0, 2}xz^2 + {3 \choose 0, 3, 0}y^3 + {3 \choose 0, 2, 1}y^2z + {3 \choose 0, 1, 2}yz^2 + {3 \choose 0, 0, 3}z^3`.
+
+Note the mapping between the coefficient's notation and value. For example, the first term in the example above is `{kt} x^3`, which is essentially `{kt} x^3y^0z^0`. The exponents of x, y, and z map to the group sizes in the notation: `{kt} {3 \choose 3, 0, 0}`.
+
+```{output}
+stats_code/combinatorics/Combinations.py
+python
+# MARKDOWN_MULTINOMIAL_COEFFICIENTS\s*\n([\s\S]+?)\n\s*# MARKDOWN_MULTINOMIAL_COEFFICIENTS
+no_preamble
+```
+
+```{stats}
+combinatorics.Combinations
+print(f"{multinomial_coefficients(4, 2)=}")
+print(f"{multinomial_coefficients(3, 3)=}")
+```
+
+The first example above is a binomial (two terms). Binomial coefficients are a special case of multinomial coefficients. Where as binomial coefficients (two terms) map to a row of Pascal's triangle, trinomial coefficients (three terms) map to a row in the 3D version of Pascal's triangle, called Pascal's pyramid. When more than three terms are involved, the generalized form of Pascal's triangle is referred to as Pascal's simplex.
+
+```{svgbob}
+"Slices of Pascal's simplex where m=3 (Pascal's pyramid)"
+
+   "Layer 1"     "Layer 2"     "Layer 3"     "Layer 4"            
+                                                 1                
+                                   1                              
+                     1                          3 3               
+       1                          2 2                             
+                    1 1                        3 6 3              
+                                 1 2 1                            
+                                              1 3 3 1             
+```
+
+```{note}
+If you stack the slices/layers shown above, you'd get the first 4 layers of the 3-simplex (3-simples as in 3 dimensions, Pascal's pyramid). A pyramid has 4 sides: 1 bottom and 3 others that combine to form the top. Each of the 3 top-forming sides isolated is Pascal's triangle.
+
+For example, just stacking the right edge of the layers above will give you Pascal's triangle. The Wikipedia page has a more helpful 3D diagram.
+```
+
+For binomial coefficients, standard combination notation can be used instead of the notation used here. For the binomial example above, `{kt} {4 \choose 4, 0}x^4 + {4 \choose 3, 1}x^3y + {4 \choose 2, 2}x^2y^2 + {4 \choose 1, 3}xy^3 + {4 \choose 0, 4}y^4` is equivalent to `{kt} {4 \choose 0}x^4 + {4 \choose 1}x^3y + {4 \choose 2}x^2y^2 + {4 \choose 3}xy^3 + {4 \choose 4}y^4`. `{ref} fcp:p9-10` `{ref} wiki_multinomial_coefficient`
+
+```{note}
+The book shows the multinomial theorem as `{kt} (x_1+x_2+...+x_r)^n = \sum_{(g_1,...,g_r): g_1+...+g_r=n}{{n \choose g_1,g_2,...,g_r}x_1^{g_1}x_2^{g_2}...x_r^{g_r}}`.
+```
 
 ## Restrictions
 
@@ -385,7 +503,7 @@ To process of counting the number of combinations where each subset avoids certa
 2. Compute the number of combinations with where the objects must be present.
 3. Subtract the result of 1 from the result of 2.
 
-Given the same example above, to compute the number of subsets where b and d are both *not present*, `{kt} {(5 \choose 4} - {(5-2) \choose (4-2)} = 5 - 3 = 2`, `{ref} fcp:p6`
+Given the same example above, to compute the number of subsets where b and d are both *not present*, `{kt} {(5 \choose 4} - {(5-2) \choose (4-2)} = 5 - 3 = 2`. `{ref} fcp:p6`
 
 ```{output}
 stats_code/combinatorics/Combinations.py
@@ -1411,13 +1529,9 @@ print(f"{count_combinations_with_exclude_restrictions(5, 4, 2)=}")
    
    Pascal's triangle is effectively an enumeration / visualization of Pascal's identity: `{kt} {n \choose r} = {n-1 \choose r-1} + {n-1 \choose r}`. In the example, n=4 and r=1, !!meaning!! `{kt} {4-1 \choose 1-1} + {4-1 \choose 1} = {3 \choose 0} + {3 \choose 1} = 1 + 3 = 4`. `{ref} wiki_pascals_triangle`.
 
- * `{bm} binomial coefficient/(binomial coefficient|binomial theorem)/i` - A coefficient in a term of a binomial that's been raised to some power, once that raised binomial has been expanded. For example, the raised binomial `{kt} (x+y)^4` expands out to `{kt} x^4 + 4x^3y + 6x^2y^2 + 4xy^3 + y^4`, which has the binomial coefficients [1, 4, 6, 4, 1].
+ * `{bm} binomial coefficient/(binomial coefficient|binomial theorem)/i` - A term's coefficient in a binomial that's been raised to some power, once that raised binomial has been expanded. For example, the raised binomial `{kt} (x+y)^4` expands out to `{kt} x^4 + 4x^3y + 6x^2y^2 + 4xy^3 + y^4`, which has the binomial coefficients [1, 4, 6, 4, 1].
 
-   ```{note}
-   Recall that a monomial is a single term (e.g. `{kt} x^3`), binomial is two terms (e.g. `{kt} x^3+y^2`), etc..
-   ```
-
-   Given a binomial raised to n, where n is a non-negative integer, its binomial coefficients map to row n+1 of Pascal's triangle. In the example above, `{kt} (x+y)^4` maps to the 5th row of Pascal's triangle: [1, 4, 6, 4, 1].
+   A binomial raised to n (non-negative integer), once expanded, has binomial coefficients that map to row n+1 of Pascal's triangle. In the example above, `{kt} (x+y)^4` maps to the 5th row of Pascal's triangle: [1, 4, 6, 4, 1].
 
    ```
    Pascal's triangle              Pascal's triangle in combination notation
@@ -1429,17 +1543,44 @@ print(f"{count_combinations_with_exclude_restrictions(5, 4, 2)=}")
       1 4 6 4 1                     C(4,0)  C(4,1)  C(4,2)  C(4,3)  C(4,4)
    ```
 
-   Given that Pascal's triangle can be written in combination notation, the binomial coefficients in an expression can be written in combination notation as well. In the example above, `{kt} x^4 + 4x^3y + 6x^2y^2 + 4xy^3 + y^4` can be rewritten as `{kt} {4 \choose 0}x^4 + {4 \choose 1}x^3y + {4 \choose 2}x^2y^2 + {4 \choose 3}xy^3 + {4 \choose 4}y^4`.
+   `{ref} fcp:p7-9` `{ref} wiki_binomial_coefficient`
 
-   The binomial theorem uses combination notation to generalize this expansion: `{kt} (x+y)^n = \sum_{k=0}^n{x^ky^{n-k}}`. `{ref} fcp:p7-8`
+ * `{bm} multinomial coefficient/(multinomial coefficient|multinomial theorem)/i` - A term's coefficient in a multinomial that's been raised to some power, once that raised multinomial has been expanded. For example, the raised binomial `{kt} (x+y)^4` expands out to `{kt} x^4 + 4x^3y + 6x^2y^2 + 4xy^3 + y^4`, which has the multinomial coefficients [1, 4, 6, 4, 1].
 
-   CONTINUE HERE
+   Where as a binomial coefficient only applies to two terms, a multinomial coefficient applies to a multinomial with any number of terms. For example, ...
 
-   CONTINUE HERE
+   * `{kt} (x+y)^4` expands out to `{kt} x^4 + 4x^3y + 6x^2y^2 + 4xy^3 + y^4`, which has multinomial coefficients [1, 4, 6, 4, 1].
+   * `{kt} (x+y)^4` expands out to `{kt} x^3 + 3x^2y + 3x^2z + 3xy^2 + 6xyz + 3xz^2 + y^3 + 3y^2z+ 3yz^2 + z^3`,  which has multinomial coefficients [1, 3, 3, 3, 6, 3, 1, 3, 3, 1].
 
-   CONTINUE HERE
+   Each multinomial coefficient can be calculated as `{kt} {n \choose g_1, g_2, ..., g_r} = \frac{n!}{g_1!g_2!...g_r!}`, where `{kt} g_1 + g_2 + ... + g_r = n`. The variable n is the exponent of the multinomial while the variables g1...gr map to the exponents within a term in the expanded expression. For examples, above the expanded form of ...
+   
+   * `{kt} (x+y)^4` can be written as `{kt} {4 \choose 4, 0}x^4 + {4 \choose 3, 1}x^3y + {4 \choose 2, 2}x^2y^2 + {4 \choose 1, 3}xy^3 + {4 \choose 0, 4}y^4`.
 
-   CONTINUE HERE
+   * `{kt} (x+y+z)^3` can be written as `{kt} {3 \choose 3, 0, 0}x^3 + {3 \choose 2, 1, 0}x^2y + {3 \choose 2, 0, 1}x^2z + {3 \choose 1, 2, 0}xy^2 + {3 \choose 1, 1, 1}xyz + {3 \choose 1, 0, 2}xz^2 + {3 \choose 0, 3, 0}y^3 + {3 \choose 0, 2, 1}y^2z + {3 \choose 0, 1, 2}yz^2 + {3 \choose 0, 0, 3}z^3`.
+
+   ```{note}
+   Note the mapping between the coefficient's notation and value. For example, the first term in the example above ix `{kt} x^3`, which is essentially `{kt} x^3y^0z^0`. The exponents of x, y, and z map to the group sizes in the notation: `{kt} {3 \choose 3, 0, 0}`.
+   ```
+
+   ```{note}
+   Binomial coefficients are a special case of multinomial coefficients. For example, `{kt} (x+y)^4` expands out to `{kt} {4 \choose 4, 0}x^4 + {4 \choose 3, 1}x^3y + {4 \choose 2, 2}x^2y^2 + {4 \choose 1, 3}xy^3 + {4 \choose 0, 4}y^4`, which is equivalent to `{kt} {4 \choose 0}x^4 + {4 \choose 1}x^3y + {4 \choose 2}x^2y^2 + {4 \choose 3}xy^3 + {4 \choose 4}y^4`.
+   ```
+
+   A multinomial coefficient represents the number of ways that a set of n objects can be divided into r subsets. The subsets can have different sizes, but in total they must cover all objects in the original set: `{kt} g_1 + g_2 + ... + g_r = n`. For example, consider counting how many different ways there are of organizing 10 books across 3 bookshelves, where the 1st shelf has 2 books, 2nd shelf has 3 books, and 3rd shelf has 5 books.
+
+   ```{svgbob}
+   |.-..-.            |
+   || || |            | "shelf 1 has 2 books"
+   ++-++-+------------+
+   |.-..-..-.         |
+   || || || |         | "shelf 2 has 3 books"
+   ++-++-++-+---------+
+   |.-..-..-..-..-.   |
+   || || || || || |   | "shelf 3 has 5 books"
+   ++-++-++-++-++-+---+
+   ```
+   
+   Using the multinomial coefficient formula shown above, `{kt} {10 \choose 2, 3, 5} = \frac{10!}{2!3!5!} = 2520`. `{ref} fcp:p9-10` `{ref} wiki_multinomial_coefficient`
 
 TODO: start from ch4: openstax intro stats.
 

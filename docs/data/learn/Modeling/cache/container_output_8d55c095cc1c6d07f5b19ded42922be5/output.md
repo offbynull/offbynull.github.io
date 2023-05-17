@@ -1,0 +1,1 @@
+<sub>\[[WIKI:Binomial Coefficient](https://en.wikipedia.org/w/index.php?title=Binomial_coefficient&oldid=1152175128)\]</sub>

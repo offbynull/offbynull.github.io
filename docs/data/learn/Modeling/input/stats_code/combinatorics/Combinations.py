@@ -1,4 +1,5 @@
 from collections import Counter
+from itertools import product
 from math import factorial
 from sys import stdin
 from typing import Any
@@ -35,6 +36,38 @@ def count_combinations_via_pascal_recurrence(n: int, r: int) -> int:
     return count_combinations_via_pascal_recurrence(n - 1, r - 1)\
         + count_combinations_via_pascal_recurrence(n - 1, r)
 # MARKDOWN_PASCAL
+
+
+# MARKDOWN_BINOMIAL_COEFFICIENTS
+def binomial_coefficients(exp: int) -> list[int]:
+    ret = []
+    for r in range(exp + 1):
+        c = count_combinations(exp, r)
+        ret.append(c)
+    return ret
+# MARKDOWN_BINOMIAL_COEFFICIENTS
+
+
+# MARKDOWN_MULTINOMIAL_COEFFICIENTS
+def multinomial_coefficient(exp: int, group_counts: list[int]) -> int:
+    assert sum(group_counts) == exp
+    num = factorial(exp)
+    denom = 1
+    for g in group_counts:
+        denom *= factorial(g)
+    return num // denom
+
+
+def multinomial_coefficients(exp: int, nomial_count: int) -> list[int]:
+    ret = []
+    for term_exponents in product(range(exp+1), repeat=nomial_count):
+        term_exponents = list(term_exponents)
+        if sum(term_exponents) != exp:
+            continue
+        c = multinomial_coefficient(exp, term_exponents)
+        ret.append(c)
+    return ret
+# MARKDOWN_MULTINOMIAL_COEFFICIENTS
 
 
 def main():

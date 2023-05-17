@@ -1,0 +1,1 @@
+<sub>\[[WIKI:Multinomial Coefficient](https://en.wikipedia.org/w/index.php?title=Multinomial_theorem&oldid=1126115463)\]</sub>
