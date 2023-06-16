@@ -334,7 +334,7 @@ print(f"{count_combinations(4, 3)=}")
 
 Given a binomial that's been raised to some power, a binomial coefficient is the coefficient of a term in the _expanded_ form of that raised binomial. For example, the raised binomial `{kt} (x+y)^4` expands out to `{kt} x^4 + 4x^3y + 6x^2y^2 + 4xy^3 + y^4`, which has the binomial coefficients [1, 4, 6, 4, 1].
 
-The counting of combinations, such as `{kt} {4 \choose 2}`, is sometimes referred to as a binomial coefficient (e.g. `{kt} {4 \choose 2}` is a binomial coefficient).  The reason for this is that, in the _expanded_ form of a raised binomial, the coefficients map to a row within Pascal's triangle. In the example above, `{kt} (x+y)^4 = x^4 + 4x^3y + 6x^2y^2 + 4xy^3 + y^4` maps to the 5th row of Pascal's triangle: [1, 4, 6, 4, 1].
+Combinations such as `{kt} {4 \choose 2}` are often referred to as a binomial coefficient (e.g. `{kt} {4 \choose 2}` is a binomial coefficient). The reason is that, in the _expanded_ form of a raised binomial, the coefficients map to a row within Pascal's triangle. For example, the binomial above `{kt} (x+y)^4 = x^4 + 4x^3y + 6x^2y^2 + 4xy^3 + y^4` maps to the 5th row of Pascal's triangle: [1, 4, 6, 4, 1].
 
 ```
 Pascal's triangle              Pascal's triangle in combination notation
@@ -430,7 +430,8 @@ The first example above is a binomial (two terms). Binomial coefficients are a s
 ```{svgbob}
 "Slices of Pascal's simplex where m=3 (Pascal's pyramid)"
 
-   "Layer 1"     "Layer 2"     "Layer 3"     "Layer 4"            
+    "Layer 1"     "Layer 2"     "Layer 3"     "Layer 4"   
+                                                               
                                                  1                
                                    1                              
                      1                          3 3               
@@ -497,10 +498,10 @@ combinatorics.Combinations
 print(f"{count_combinations_with_include_restrictions(5, 4, 2)=}")
 ```
 
-To process of counting the number of combinations where each subset avoids certain elements uses the algorithm described above:
+The process of counting the number of combinations where each subset avoids certain elements uses the algorithm described above:
 
 1. Compute the number of combinations normally.
-2. Compute the number of combinations with where the objects must be present.
+2. Compute the number of combinations where the objects must be present.
 3. Subtract the result of 1 from the result of 2.
 
 Given the same example above, to compute the number of subsets where b and d are both *not present*, `{kt} {(5 \choose 4} - {(5-2) \choose (4-2)} = 5 - 3 = 2`. `{ref} fcp:p6`
@@ -1582,13 +1583,74 @@ print(f"{count_combinations_with_exclude_restrictions(5, 4, 2)=}")
    
    Using the multinomial coefficient formula shown above, `{kt} {10 \choose 2, 3, 5} = \frac{10!}{2!3!5!} = 2520`. `{ref} fcp:p9-10` `{ref} wiki_multinomial_coefficient`
 
-TODO: start from ch4: openstax intro stats.
 
-TODO: start from ch4: openstax intro stats.
 
-TODO: start from ch4: openstax intro stats.
 
-TODO: start from ch4: openstax intro stats.
+
+
+
+
+
+ * `{bm} partition` - Given a set, a partition is a collection of its subsets where each element of that set is in exactly one of those subsets. For example, given the set S={a,b,c}, one possible partition is {a,c} and {b}.
+ 
+   These subsets that make up a partition are often referred to as the parts of that partition. `{ref} ic:p27-28`
+
+ * `{bm} addition principle` - A formula for determining the size of a set from its partition: |S| = |S1| + |S2| + ... + |Sm|.
+ 
+   Given the partition {S1, S2, ..., Sm} representing set S, the size of S can be determined by adding together the size of the subsets that make up its partition. For example, given the partition {{a,c}, {b}, {d}}, the addition principle can be used to determine the size of the set that partition is for: 2+1+1=4.
+
+   The addition principle counts the number of ways one object can be selected from n different sets, where those sets are disjoint sets. For a more practical example, consider a person shopping for a hat. Of all the hats at the store, they're only interested in baseball hats and fedora hats. If the number of ...
+
+   * baseball hats the store has in inventory is 15 (set represented as {B1, B2, ..., B15})
+   * fedora hats the store has in inventory is 7 (set represented as {F1, F2, ..., F7})
+   
+   ..., then the number of hats the person has to choose from is 15+7=22. `{ref} ic:p28`
+
+   ```{note}
+   Given a partition of set S, by definition those subsets shouldn't have any overlapping objects. But if they do, the inclusion-exclusion principle can be used to count the number of objects in S.
+   ```
+
+ * `{bm} multiplication principle` - A formula for determining the number of n-tuples that can be formed from the explosion of n sets (cartesian product): |N1| * |N2| * |N3| = |N1 x N2 x N3|. For example, given the cartesian product of two sets {0, 1, 2} and {x, y, z}, the multiplication principle can be used to determine the size of the cartesian product of those two sets: 3*3=9.
+
+   |   |   0   |   1   |   2   |
+   |---|-------|-------|-------|
+   | x | (x,0) | (x,1) | (x,2) |
+   | y | (y,0) | (y,1) | (y,2) |
+   | z | (z,0) | (z,1) | (z,2) |
+
+   The multiplication principle counts the number of ways n selections can be made from n sets, provided that a selection from one set doesn't alter in anyway the selection from the next set. For a more practical example, consider a person shopping for a shirt and a hat. At the store, ...
+
+   * 10 hats are available for purchase (H={H1, H2, ..., H10})
+   * 3 shirts are available for purchase (S={S1, S2, S3})
+   
+   ..., then the total possible pairings of 1 hat and 1 shirt that the person can purchase is 10*3=30. `{ref} ic:p28-p29`
+
+   A cartesian product n sets results in a set of n-tuples where the object at position i of a tuple is guaranteed to be from set i. In the example sets above, the tuples resulting HxS={(H1, S1), (H1, S2), (H1, S3), (H2, S1), ..., (H10, S3)} have hats at position 1 and shirts at position 2 of each tuple. In contrast to computing the cartesian product, the multiplication principle doesn't require that the objects within position i come from the same set. Instead, position i can come from different sets so long as those sets are all of the same size. For example, consider a person selecting two shirts to buy at a store that has 4 shirts available for purchase: {S1, S2, S3, S4}. The person can't choose to buy the same shirt twice. That is, if a shirt is purchased, 3 other shirts are available for the next purchase (e.g. if you choose to buy S2 first, you only have S1, S3, and S4 remaining to buy).
+   
+   |    |         |         |         |
+   |----|---------|---------|---------|
+   | S1 | (S1,S2) | (S1,S3) | (S1,S4) |
+   | S2 | (S2,S1) | (S2,S3) | (S2,S4) |
+   | S3 | (S3,S1) | (S3,S2) | (S3,S4) |
+   | S4 | (S4,S1) | (S4,S2) | (S4,S3) |
+
+   Even though the second position of the tuples aren't from the same set, each set that makes up the second position is the same size (3 shirts). As such, the multiplication principle still applies. A person selecting two shirts to buy at a store that has 4 shirts available for purchase has 4*3=12 possible pairs of shirts. `{ref} ic:p30`
+
+   ```{note}
+   For the addition principle, the sets being input have to be disjoint sets. For the multiplication principle, the sets don't have to be disjoint sets. For example, multiplication principle applied to set {0,1,2} and {0,1,2} is 9.
+
+   |   |   0   |   1   |   2   |
+   |---|-------|-------|-------|
+   | 0 | (0,0) | (0,1) | (0,2) |
+   | 1 | (1,0) | (1,1) | (1,2) |
+   | 2 | (2,0) | (2,1) | (2,2) |
+   ```
+
+TODO: start from p30: just after 2 digit example
+
+TODO: start from p30: just after 2 digit example
+
+TODO: start from p30: just after 2 digit example
 
 `{bm-error} Did you mean cumulative relative frequency?/(relative cumulative frequency)/i`
 

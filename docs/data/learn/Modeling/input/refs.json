@@ -2,6 +2,8 @@
     "tb": {"name": "TB", "link": "https://worldcat.org/title/863645956"},
     "osis": {"name": "OSIS", "link": "https://openstax.org/details/books/introductory-statistics"},
     "fcp": {"name": "FCP", "link": "https://worldcat.org/title/803961222"},
+    "wtc": {"name": "WTC", "link": "https://worldcat.org/title/952567256"},
+    "ic": {"name": "IC", "link": "https://www.worldcat.org/title/1121436656"},
     "wiki_event": {"name": "WIKI:Event", "link": "https://en.wikipedia.org/w/index.php?title=Event_(probability_theory)&oldid=1100784657"},
     "wiki_contingency_table": {"name": "WIKI:Contingency Table", "link": "https://en.wikipedia.org/w/index.php?title=Contingency_table&oldid=1055319221"},
     "wiki_rv": {"name": "WIKI:Random Variable", "link": "https://en.wikipedia.org/w/index.php?title=Random_variable&oldid=1149147948"},
