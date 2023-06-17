@@ -1591,6 +1591,16 @@ print(f"{count_combinations_with_exclude_restrictions(5, 4, 2)=}")
 
 
 
+
+
+
+
+
+
+
+
+
+
  * `{bm} partition` - Given a set, a partition is a collection of its subsets where each element of that set is in exactly one of those subsets. For example, given the set S={a,b,c}, one possible partition is {a,c} and {b}.
  
    These subsets that make up a partition are often referred to as the parts of that partition. `{ref} ic:p27-28`
@@ -1601,10 +1611,10 @@ print(f"{count_combinations_with_exclude_restrictions(5, 4, 2)=}")
 
    The addition principle counts the number of ways one object can be selected from n different sets, where those sets are disjoint sets. For a more practical example, consider a person shopping for a hat. Of all the hats at the store, they're only interested in baseball hats and fedora hats. If the number of ...
 
-   * baseball hats the store has in inventory is 15 (set represented as {B1, B2, ..., B15})
-   * fedora hats the store has in inventory is 7 (set represented as {F1, F2, ..., F7})
+   * baseball hats the store has in inventory is 15 (set represented as {B1, B2, ..., B15}),
+   * fedora hats the store has in inventory is 7 (set represented as {F1, F2, ..., F7}),
    
-   ..., then the number of hats the person has to choose from is 15+7=22. `{ref} ic:p28`
+   ... then the number of hats the person has to choose from is 15+7=22. `{ref} ic:p28`
 
    ```{note}
    Given a partition of set S, by definition those subsets shouldn't have any overlapping objects. But if they do, the inclusion-exclusion principle can be used to count the number of objects in S.
@@ -1625,6 +1635,16 @@ print(f"{count_combinations_with_exclude_restrictions(5, 4, 2)=}")
    
    ..., then the total possible pairings of 1 hat and 1 shirt that the person can purchase is 10*3=30. `{ref} ic:p28-p29`
 
+   ```{note}
+   For the addition principle, the sets being input have to be disjoint sets. For the multiplication principle, the sets don't have to be disjoint sets. For example, multiplication principle applied to set {0,1,2} and {0,1,2} is 9.
+
+   |   |   0   |   1   |   2   |
+   |---|-------|-------|-------|
+   | 0 | (0,0) | (0,1) | (0,2) |
+   | 1 | (1,0) | (1,1) | (1,2) |
+   | 2 | (2,0) | (2,1) | (2,2) |
+   ```
+
    A cartesian product n sets results in a set of n-tuples where the object at position i of a tuple is guaranteed to be from set i. In the example sets above, the tuples resulting HxS={(H1, S1), (H1, S2), (H1, S3), (H2, S1), ..., (H10, S3)} have hats at position 1 and shirts at position 2 of each tuple. In contrast to computing the cartesian product, the multiplication principle doesn't require that the objects within position i come from the same set. Instead, position i can come from different sets so long as those sets are all of the same size. For example, consider a person selecting two shirts to buy at a store that has 4 shirts available for purchase: {S1, S2, S3, S4}. The person can't choose to buy the same shirt twice. That is, if a shirt is purchased, 3 other shirts are available for the next purchase (e.g. if you choose to buy S2 first, you only have S1, S3, and S4 remaining to buy).
    
    |    |         |         |         |
@@ -1636,21 +1656,56 @@ print(f"{count_combinations_with_exclude_restrictions(5, 4, 2)=}")
 
    Even though the second position of the tuples aren't from the same set, each set that makes up the second position is the same size (3 shirts). As such, the multiplication principle still applies. A person selecting two shirts to buy at a store that has 4 shirts available for purchase has 4*3=12 possible pairs of shirts. `{ref} ic:p30`
 
-   ```{note}
-   For the addition principle, the sets being input have to be disjoint sets. For the multiplication principle, the sets don't have to be disjoint sets. For example, multiplication principle applied to set {0,1,2} and {0,1,2} is 9.
+ * `{bm} subtraction principle` - A formula for determining the size of subset A, given that you have both the ...
+ 
+   * size of the original set U that subset A came from
+   * size of the complement of subset A, called A' (A' contains all elements in U that are not in A)
 
-   |   |   0   |   1   |   2   |
-   |---|-------|-------|-------|
-   | 0 | (0,0) | (0,1) | (0,2) |
-   | 1 | (1,0) | (1,1) | (1,2) |
-   | 2 | (2,0) | (2,1) | (2,2) |
+   , ...: |A| = |U| - |A'|. For example, given that U={a,b,c,d,e} and A'={c,d,a}, the subtraction principle can be used to determine the size of the A: A=5-3=2.
+
+   The subtraction principle is commonly used to count when it's easier to count excluded objects (A') rather than the objects you're interested in (A). For example, consider 90 people lined up by shoe size from smallest to largest, starting at 5.5 to 12. If you're only interested in people that have a shoe size of at least 7, it might be easier to count people that with shoe sizes smaller than 7 and subtract from 90.
+   
+   In relation to the subtraction principle formula |A| = |U| - |A'|, ...
+
+   * U is all people in the line.
+   * A' is people with shoe sizes < 7.
+   * A is people with shoe sizes >= 7.
+   
+   `{ref} ic:p31-32`
+
+   ```{note}
+   The example above involves the physical act of counting, but the subtraction principle applies even in the case of algorithmic counting. For example, if you know the size of the universal set (set U) and it's easy to determine the number of excluded objects (set A') via the multiplication principle, then you can use the multiplication principle to determine the number of objects that you're interested in (set A).
    ```
 
-TODO: start from p30: just after 2 digit example
+ * `{bm} division principle/(division principle|division rule)/i` - A formula for determining the number of subsets in a partition, given that ...
+ 
+   * the size of the original set (S) is known
+   * all subsets in the partition have equal size and that size is known (v) and all subsets are off equal size
+   
+   , ...: k = |S| / v. For example, given the partition {{a,f} {b,e}, {c,d}}, the division principle can be used to determine the number of subsets in the partition: 6/2=3.
+   
 
-TODO: start from p30: just after 2 digit example
+   The division principle derives the count of a smaller set through the count of a larger set, provided that each object in the smaller set fans out to v distinct objects in the larger set. For example, an apartment complex has a maximum capacity of 250 people, and each apartment has a maximum of 5 people, meaning there are 250/5=50 apartments in the complex. In this example, ...
+   
+   * the larger set has a size of 250.
+   * the number of times each element in the smaller set is represented in the larger set is 5.
+   * the smaller set has a size of 250/5=50.
+   
+   `{ref} ic:p31`
 
-TODO: start from p30: just after 2 digit example
+ * `{bm} multiset/(multiset|repetition number)/i` - An unordered collection whose members are not distinct. In other words, unlike a set, a multiset can contain multiple the same object multiple times. Multisets are denoted by condensing n repeating objects as a multiplication. For example, {2\*a, 1\*b, 1\*c} represents the same multiset as the previous example.
+ 
+   It's possible for a multiset to include an object an infinite number of times. For example, {∞\*a, 3\*b}.
+
+   For each distinct object in a multiset, the number of times it repeats is called its repetition number. In the example above, a repeats an infinite number of times and b repeats times. `{ref} ic:p33`
+
+ * `{bm} permutation` - An arrangement or selection from a set / multiset, where the order of the arrangement matters. `{ref} ic:p33`
+
+ * `{bm} combination` - An arrangement or selection from a set / multiset, where the order of the arrangement is irrelevant. `{ref} ic:p33`
+
+
+
+
 
 `{bm-error} Did you mean cumulative relative frequency?/(relative cumulative frequency)/i`
 
