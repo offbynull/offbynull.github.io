@@ -177,7 +177,7 @@ The book states that key name itself can be at most 63 chars. If a prefix is inc
 
 `{bm} /(Introduction\/Configuration)_TOPIC/i`
 
-Objects can be created, accessed, and modified through either a REST web interface or a standard command-line interface called kubectl. Changes can be supplied in two ways:
+Objects can be created, accessed, and modified through either a REST web interface or a command-line interface called kubectl. Changes can be supplied in two ways:
 
  * Imperative configuration - specify which actions to take on which objects (via kubectl).
 
@@ -6073,6 +6073,108 @@ spec:
           averageValue: 1000
 ```
 
+## Vault
+
+`{bm} /(Extensions\/Vault)_TOPIC/i`
+
+```{prereq}
+Kinds/Secret_TOPIC
+Security/API Access Control/Role-based Access Control_TOPIC
+```
+
+```{note}
+A full exploration of Vault is out of scope here. This is just the basics of how to use the basics.
+
+Look into Vault more sometime in the future.
+```
+
+Vault is a !!secrets!! management system that can integrate with Kubernetes (among other tools) to support a broader range of use-cases than normal Kubernetes secrets:
+
+ * Static !!secrets!!: Store and retrieve !!secrets!! you already have, similar to Kubernetes secrets.
+ * Dynamic !!secrets!!: Generate !!secrets!! on-the-fly (e.g. each pod gets its own dynamically generated MySQL credentials).
+ * Versioned !!secrets!!: Roll-back to previous versions of a !!secret!! (e.g. revert to a previous API key used for accessing some !!service!!).
+ * Time-boxed !!secrets!!: Invalidate !!secrets!! after a certain duration (e.g. API tokens are only valid for 5 mins).
+ * Decoupled authentication: Authenticate users and !!services!! against Vault using existing identity management systems (e.g. LDAP, Google, Okta).
+ * Key management: Manage the workflow for distributing and managing cryptographic keys across cloud KMS providers. 
+
+There are 3 main pillars to Vault: Authentication, Policies, and Secret engines.
+
+```{svgbob}
+Authentication
+  |       '.
+  |         '.
+  |           '.
+  |             '.
+  |               '.
+Polices -------- Secret engines
+```
+
+ 1. Authentication: Both human users and !!services!!, collectively referred to as clients, authenticate themselves with Vault prior to being granted access. Vault supports several authentication backends: Tokens, username and passwords, active directory, AWS, Google, Okta, etc...
+
+    ```{svgbob}
+    Client              Vault          Authenticator
+      |                   |                  |
+      +------------------>|                  |
+      |   Credentials     +----------------->|
+      |                   |   Credentials    |
+      |                   |                  |
+      |                   |<-----------------+
+      |<------------------| "Client details" |
+      |   "Access token"  |                  |
+    ```
+
+    Once authenticated, Vault returns an access token that the client can use to access functionality in Vault.
+
+ 2. Policies: Policies dictate which API functions (HTTP paths on the Vault API server) that a client can invoke. These functions almost always have something to do with accessing or managing !!secrets!!. For example, user A may have a policy assigned that allows them to read the credentials for a MySQL server, but not update or delete those credentials.
+
+    ```{svgbob}
+    Client ----------------- Policy
+           "0..*"       "0..*"
+    ```
+
+ 3. Secret engines: High-level components that store, generate, or encrypt data. For example, the secret engine for MySQL can dynamically create, revoke, and rotate credentials.
+
+    ```{svgbob}
+    * "Secrets engine using root MySQL credentials"
+      "to generate an manage credentials with lesser"
+      "access."
+
+                        .---------------.
+                        | "root MySQL"  |
+                        | "credentials" |
+                        '-------+-------'
+                                |
+                                |
+                    .-----------+------------.
+                    | "MySQL secrets engine" |
+                    '-----------+------------'
+                                |       
+            .-------------------+--------------------.
+            |                   |                    |
+            |                   |                    |
+    .-------+-------.   .---------------.    .-------+-------.
+    | "temp MySQL"  |   | "temp MySQL"  |    | "temp MySQL"  |
+    | "credentials" |   | "credentials" |    | "credentials" |
+    '---------------'   '---------------'    '---------------'
+    ```
+
+Most Vault interactions can be viewed through the prism of the 3 pillars mentioned above. This includes the administration of the Vault server itself. For example, setting up a new secret engine requires the admin to first authenticate with Vault, where that admin's policy defines if they have the necessary privileges to set up a new secret engine. Likewise, a !!service!! needing access to a !!secret!! will first authenticate with Vault, where its policy defines if it has the necessary privileges to read (or generate) that !!secret!!.
+
+```{note}
+There are other parts to Vault that may not fit these pillars. For example, Vault has an auditing interface that hooks into different auditing backends (e.g. syslog).
+```
+
+Vault can be accessed through a web API or a command-line interface, where the CLI is a thin-wrapper around the API.
+
+```sh
+# These examples are specifically for the key-value secret engine.
+
+vault kv put -mount=secret foo bar=baz  # Create/update key "foo" in the "secret" mount with value "bar=baz"
+vault kv get -mount=secret foo  # Read "foo"'s value (at current version of the key)
+vault kv get -mount=secret -version=1 foo  # Read "foo"'s value (at a specific version of the key)
+vault kv metadata get -mount=secret foo  # Get "foo"'s metadata
+```
+
 # Patterns
 
 `{bm} /(Patterns)_TOPIC/`
@@ -6681,6 +6783,10 @@ The option `--from-file` can also point to a directory, in which case an entry w
  * `{bm} chart` - A set of files that instructs Helm on how to install, manage, and upgrade some application(s). Each chart is comprised of a set of configurations, templated manifests, and dependencies to other charts.
 
  * `{bm} chart repository/(chart repository|chart repositories)/i` - A server that stores and distributes charts.
+
+ * `{bm} Vault` - A !!secrets!! management system that integrates with Kubernetes to support a broader range of use-cases than normal Kubernetes secrets.
+
+ * `{bm} secret engine` - A Vault component that can store, generate, and / or encrypt data. For example, the MySQL secret engine can generates new MySQL credentials for any client that requests access to a MySQL server, as well as revokes those credentials.
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 

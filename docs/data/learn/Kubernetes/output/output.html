@@ -151,6 +151,7 @@
 </ul>
 </ul>
 <li><a href="#H_Prometheus">Prometheus</a></li>
+<li><a href="#H_Vault">Vault</a></li>
 </ul>
 <li><a href="#H_Patterns">Patterns</a></li>
 <ul>
@@ -308,7 +309,7 @@
 </div>
 <a name="H_Configuration"></a><h2>Configuration</h2>
 <p><a name="BM_(Introduction%5C%2FConfiguration)_TOPIC%2Fi"></a><strong></strong></p>
-<p><a href="#BM_(object)%2Fi">Object</a>s can be created, accessed, and modified through either a REST web interface or a standard command-line interface called <a href="#BM_(kubectl)%2Fi">kubectl</a>. Changes can be supplied in two ways:</p>
+<p><a href="#BM_(object)%2Fi">Object</a>s can be created, accessed, and modified through either a REST web interface or a command-line interface called <a href="#BM_(kubectl)%2Fi">kubectl</a>. Changes can be supplied in two ways:</p>
 <ul>
 <li>
 <p><a href="#BM_(imperative%20configuration)%2Fi">Imperative configuration</a> - specify which actions to take on which <a href="#BM_(object)%2Fi">object</a>s (via <a href="#BM_(kubectl)%2Fi">kubectl</a>).</p>
@@ -5525,6 +5526,59 @@ helm install my-prometheus-adapter prometheus-community/prometheus-adapter \
           <span class="hljs-attr">type:</span> <span class="hljs-string">AverageValue</span>
           <span class="hljs-attr">averageValue:</span> <span class="hljs-number">1000</span>
 </code></pre>
+<a name="H_Vault"></a><h2>Vault</h2>
+<p><a name="BM_(Extensions%5C%2FVault)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Kinds%5C%2FSecret)_TOPIC%2F">Kinds/Secret</a></li>
+<li><a href="#BM_(Security%5C%2FAPI%20Access%20Control%2FRole-based%20Access%20Control)_TOPIC%2Fi">Security/API Access Control/Role-based Access Control</a></li>
+</ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>A full exploration of <a href="#BM_(Vault)%2Fi">Vault</a> is out of scope here. This is just the basics of how to use the basics.</p>
+<p>Look into <a href="#BM_(Vault)%2Fi">Vault</a> more sometime in the future.</p>
+</div>
+<p><a href="#BM_(Vault)%2Fi">Vault</a> is a secrets management system that can integrate with <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> (among other tools) to support a broader range of use-cases than normal <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(secret)%2Fi">secret</a>s:</p>
+<ul>
+<li>Static secrets: Store and retrieve secrets you already have, similar to <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(secret)%2Fi">secret</a>s.</li>
+<li>Dynamic secrets: Generate secrets on-the-fly (e.g. each <a href="#BM_%5Cb(pod)s%3F%5Cb%2Fi">pod</a> gets its own dynamically generated MySQL credentials).</li>
+<li>Versioned secrets: Roll-back to previous versions of a secret (e.g. revert to a previous API key used for accessing some service).</li>
+<li>Time-boxed secrets: Invalidate secrets after a certain duration (e.g. API tokens are only valid for 5 mins).</li>
+<li>Decoupled authentication: Authenticate users and services against <a href="#BM_(Vault)%2Fi">Vault</a> using existing identity management systems (e.g. LDAP, Google, Okta).</li>
+<li>Key management: Manage the workflow for distributing and managing cryptographic keys across cloud KMS providers.</li>
+</ul>
+<p>There are 3 main pillars to <a href="#BM_(Vault)%2Fi">Vault</a>: Authentication, Policies, and <a href="#BM_(secret%20engine)%2Fi">Secret engine</a>s.</p>
+<p><img src="svgbob_921062c27f509c84f4c96814afdad2dfeaf9e3b8.svg" alt="Kroki diagram output"></p>
+<ol>
+<li>
+<p>Authentication: Both human users and services, collectively referred to as clients, authenticate themselves with <a href="#BM_(Vault)%2Fi">Vault</a> prior to being granted access. <a href="#BM_(Vault)%2Fi">Vault</a> supports several authentication backends: Tokens, username and passwords, active directory, AWS, Google, Okta, etc...</p>
+<p><img src="svgbob_a27b7fbad32d1e0700429d7c57d74a585f3461d3.svg" alt="Kroki diagram output"></p>
+<p>Once authenticated, <a href="#BM_(Vault)%2Fi">Vault</a> returns an access token that the client can use to access functionality in <a href="#BM_(Vault)%2Fi">Vault</a>.</p>
+</li>
+<li>
+<p>Policies: Policies dictate which API functions (HTTP paths on the <a href="#BM_(Vault)%2Fi">Vault</a> API server) that a client can invoke. These functions almost always have something to do with accessing or managing secrets. For example, user A may have a policy assigned that allows them to read the credentials for a MySQL server, but not update or delete those credentials.</p>
+<p><img src="svgbob_1f1e77ec6a8f6698b7f7b94ecb0c12736c294b4c.svg" alt="Kroki diagram output"></p>
+</li>
+<li>
+<p><a href="#BM_(secret%20engine)%2Fi">Secret engine</a>s: High-level components that store, generate, or encrypt data. For example, the <a href="#BM_(secret%20engine)%2Fi">secret engine</a> for MySQL can dynamically create, revoke, and rotate credentials.</p>
+<p><img src="svgbob_d34e1c9f4f48e0cea450bded06c205d019de17dd.svg" alt="Kroki diagram output"></p>
+</li>
+</ol>
+<p>Most <a href="#BM_(Vault)%2Fi">Vault</a> interactions can be viewed through the prism of the 3 pillars mentioned above. This includes the administration of the <a href="#BM_(Vault)%2Fi">Vault</a> server itself. For example, setting up a new <a href="#BM_(secret%20engine)%2Fi">secret engine</a> requires the admin to first authenticate with <a href="#BM_(Vault)%2Fi">Vault</a>, where that admin's policy defines if they have the necessary privileges to set up a new <a href="#BM_(secret%20engine)%2Fi">secret engine</a>. Likewise, a service needing access to a secret will first authenticate with <a href="#BM_(Vault)%2Fi">Vault</a>, where its policy defines if it has the necessary privileges to read (or generate) that secret.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There are other parts to <a href="#BM_(Vault)%2Fi">Vault</a> that may not fit these pillars. For example, <a href="#BM_(Vault)%2Fi">Vault</a> has an auditing interface that hooks into different auditing backends (e.g. syslog).</p>
+</div>
+<p><a href="#BM_(Vault)%2Fi">Vault</a> can be accessed through a web API or a command-line interface, where the CLI is a thin-wrapper around the API.</p>
+<pre class="hljs"><code><span class="hljs-comment"># These examples are specifically for the key-value secret engine.</span>
+
+vault kv put -mount=secret foo bar=baz  <span class="hljs-comment"># Create/update key "foo" in the "secret" mount with value "bar=baz"</span>
+vault kv get -mount=secret foo  <span class="hljs-comment"># Read "foo"'s value (at current version of the key)</span>
+vault kv get -mount=secret -version=1 foo  <span class="hljs-comment"># Read "foo"'s value (at a specific version of the key)</span>
+vault kv metadata get -mount=secret foo  <span class="hljs-comment"># Get "foo"'s metadata</span>
+</code></pre>
 <a name="H_Patterns"></a><h1>Patterns</h1>
 <p><a name="BM_(Patterns)_TOPIC%2F"></a><strong></strong></p>
 <p>The following subsections are guides and patterns related to various aspects of <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a>.</p>
@@ -6185,6 +6239,12 @@ helm install my-prometheus-adapter prometheus-community/prometheus-adapter \
 </li>
 <li>
 <p><a name="BM_(chart%20repository%7Cchart%20repositories)%2Fi"></a><strong>chart repository</strong> - A server that stores and distributes <a href="#BM_(chart)%2Fi">chart</a>s.</p>
+</li>
+<li>
+<p><a name="BM_(Vault)%2Fi"></a><strong>Vault</strong> - A secrets management system that integrates with <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> to support a broader range of use-cases than normal <a href="#BM_(Kubernetes)%2Fi">Kubernetes</a> <a href="#BM_(secret)%2Fi">secret</a>s.</p>
+</li>
+<li>
+<p><a name="BM_(secret%20engine)%2Fi"></a><strong>secret engine</strong> - A <a href="#BM_(Vault)%2Fi">Vault</a> component that can store, generate, and / or encrypt data. For example, the MySQL <a href="#BM_(secret%20engine)%2Fi">secret engine</a> can generates new MySQL credentials for any client that requests access to a MySQL server, as well as revokes those credentials.</p>
 </li>
 </ul>
 <p></p>
