@@ -80,7 +80,7 @@
 <ul>
 <li>eliminate <a href="#BM_(capital%20expenditure)%2Fi">capital expenditure</a>s (<a href="#BM_%5Cb(CapEx)%5Cb%2F">CapEx</a>) for large infrastructure: <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> provides hardware on-demand, meaning no need for your own data centers.</li>
 <li>eliminate capacity planning for forecasted usage increases / decreases: <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> resources can be scaled up and down on-demand, meaning no need to worry about resources being over capacity or under-utilized.</li>
-<li>reduce <a href="#BM_(operational%20expenses%7Coperating%20expenses)%2Fi">operating expenses</a> (<a href="#BM_%5Cb(OpEx)%5Cb%2F">OpEx</a>) for providing services: <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> provides platform services on-demand, meaning less need for technology staff to maintain said services (e.g. <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> takes care of providing and managing a database for you, meaning less database experts are needed).</li>
+<li>reduce <a href="#BM_(operational%20expenses%7Coperating%20expenses)%2Fi">operating expenses</a> (<a href="#BM_%5Cb(OpEx)%5Cb%2F">OpEx</a>) for providing services: <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> provides platform services on-demand, meaning less need for technology staff to maintain said services (e.g. <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> takes care of providing and managing a database for you, meaning fewer database experts are needed).</li>
 </ul>
 <p>This document covers general concepts for commonly used <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> services. The document ...</p>
 <ul>
@@ -90,7 +90,7 @@
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The reason for this is that the underlying technology and prices will change as years go by, but the concepts will likely stay the time.</p>
+<p>The reason for this is that the underlying technology and prices will change as years go by, but the concepts are likely to remain relevant over time.</p>
 <p>There are too many <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> services to cover everything in this document.</p>
 </div>
 <a name="H_Geography"></a><h1>Geography</h1>
@@ -101,20 +101,20 @@
 <li><a href="#BM_(Introduction)_TOPIC%2Fi">Introduction</a></li>
 </ul>
 </div>
-<p><a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> infrastructure is spread out across the world, broken up by <a href="#BM_(region)%2Fi">region</a>s and <a href="#BM_(availability%20zone)%2Fi">availability zone</a>s:</p>
+<p><a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> infrastructure is spread out across the world, divided into <a href="#BM_(region)%2Fi">region</a>s and <a href="#BM_(availability%20zone)%2Fi">availability zone</a>s:</p>
 <ul>
 <li><a href="#BM_(region)%2Fi">Region</a>: A geographical location within which <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> operates.</li>
 <li><a href="#BM_(availability%20zone)%2Fi">Availability Zone</a> (<a href="#BM_%5Cb(AZs%3F)%5Cb%2F">AZ</a>): An isolated set of resources within a <a href="#BM_(region)%2Fi">region</a>.</li>
 </ul>
-<p>Each <a href="#BM_(region)%2Fi">region</a> is said to have at least 2 <a href="#BM_%5Cb(AZs%3F)%5Cb%2F">AZs</a>, where those <a href="#BM_%5Cb(AZs%3F)%5Cb%2F">AZs</a> are connected together using high-speed network connections. Those high-speed network connections serve two purposes:</p>
+<p>Each <a href="#BM_(region)%2Fi">region</a> is said to have at least 2 <a href="#BM_%5Cb(AZs%3F)%5Cb%2F">AZs</a>, where those <a href="#BM_%5Cb(AZs%3F)%5Cb%2F">AZs</a> are connected together using high-speed network connections. The high-speed network connections between <a href="#BM_%5Cb(AZs%3F)%5Cb%2F">AZs</a> serve two purposes:</p>
 <ol>
 <li>Abstraction: A <a href="#BM_(region)%2Fi">region</a> can be thought of as a single data center.</li>
-<li>Redundancy: An outage in one <a href="#BM_%5Cb(AZs%3F)%5Cb%2F">AZ</a> shouldn't effect other <a href="#BM_%5Cb(AZs%3F)%5Cb%2F">AZs</a> in the same <a href="#BM_(region)%2Fi">region</a>.</li>
+<li>Redundancy: An outage in one <a href="#BM_%5Cb(AZs%3F)%5Cb%2F">AZ</a> shouldn't affect other <a href="#BM_%5Cb(AZs%3F)%5Cb%2F">AZs</a> in the same <a href="#BM_(region)%2Fi">region</a>.</li>
 </ol>
 <p><img src="svgbob_99c7aaa7e22d7223ba5974c698d8bbe5e9e8716c.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Not all <a href="#BM_(region)%2Fi">region</a>s have all <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> services available.</p>
+<p>Not all <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> services are available in every <a href="#BM_(region)%2Fi">region</a>.</p>
 </div>
 <a name="H_Amazon%20Resource%20Name"></a><h1>Amazon Resource Name</h1>
 <p><a name="BM_(Amazon%20Resource%20Name)_TOPIC%2Fi"></a><strong></strong></p>
@@ -124,7 +124,7 @@
 <li><a href="#BM_(Geography)_TOPIC%2Fi">Geography</a></li>
 </ul>
 </div>
-<p>An <a href="#BM_(Amazon%20resource%20name)%2Fi">Amazon Resource Name</a> (<a href="#BM_%5Cb(ARN)s%3F%5Cb%2F">ARN</a>) is an identifier that uniquely identifies a resource across all <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>, not just a single <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> account. Generally, an <a href="#BM_%5Cb(ARN)s%3F%5Cb%2F">ARN</a> should be in one of the following formats, ...</p>
+<p>An <a href="#BM_(Amazon%20resource%20name)%2Fi">Amazon Resource Name</a> (<a href="#BM_%5Cb(ARN)s%3F%5Cb%2F">ARN</a>) is an identifier for a resource. <a href="#BM_%5Cb(ARN)s%3F%5Cb%2F">ARN</a>s are unique across all of <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>, not just a single account. Generally, an <a href="#BM_%5Cb(ARN)s%3F%5Cb%2F">ARN</a> should follow one of the following formats, ...</p>
 <ul>
 <li><code>arn:{partition}:{service}:{region}:{account-id}:{resource-id}</code></li>
 <li><code>arn:{partition}:{service}:{region}:{account-id}:{resource-type}/{resource-id}</code></li>
@@ -146,14 +146,14 @@
 <a name="H_Identity%20and%20Access%20Management"></a><h1>Identity and Access Management</h1>
 <p><a name="BM_(Identity%20and%20Access%20Management)_TOPIC%2Fi"></a><strong></strong></p>
 <p><a href="#BM_(identity%20and%20access%20management%7Cidentity%20%26%20access%20management)%2Fi">Identity and access management</a> (<a href="#BM_%5Cb(IAM)%5Cb%2F">IAM</a>) is <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>'s mechanism of managing authentication and authorization. It controls which entities (e.g. authenticates human users or software services) can access which parts of an <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> account (e.g. authorizes access to delete a database).</p>
-<p><a href="#BM_%5Cb(IAM)%5Cb%2F">IAM</a> breaks down access control as policies. An <a href="#BM_(IAM%20policy%7CIAM%20policies)%2Fi">IAM policy</a> defines whether particular action can be performed of particular resource (e.g. if you can creating an <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>). That <a href="#BM_(IAM%20policy%7CIAM%20policies)%2Fi">IAM policy</a> can then be applied to a ...</p>
+<p><a href="#BM_%5Cb(IAM)%5Cb%2F">IAM</a> breaks down access control as policies. An <a href="#BM_(IAM%20policy%7CIAM%20policies)%2Fi">IAM policy</a> defines whether particular action can be performed of particular resource (e.g. if you can create an <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>). That <a href="#BM_(IAM%20policy%7CIAM%20policies)%2Fi">IAM policy</a> can then be applied to a ...</p>
 <ul>
 <li><a href="#BM_(IAM%20user)%2Fi">IAM user</a>, which is a user under the <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> account.</li>
 <li><a href="#BM_(IAM%20group)%2Fi">IAM group</a>, which is a collection of <a href="#BM_(IAM%20user)%2Fi">IAM user</a>s (a <a href="#BM_(IAM%20user)%2Fi">IAM user</a> can be under multiple groups).</li>
 <li><a href="#BM_(IAM%20role)%2Fi">IAM role</a>, which is a collection of policies to be assigned to other entities at some later point in time (e.g. service accounts, giving access to other <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> accounts, giving access to federated accounts / accounts outside of <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>, etc..).</li>
 </ul>
 <p><img src="svgbob_567f547b3f936dc4d02cb6bd3c4a41085ce55e62.svg" alt="Kroki diagram output"></p>
-<p><a href="#BM_(IAM%20user)%2Fi">IAM user</a>s / <a href="#BM_(IAM%20group)%2Fi">IAM group</a>s / <a href="#BM_(IAM%20role)%2Fi">IAM role</a>s are forked off from the <a href="#BM_(root%20user)%2Fi">root user</a>, which is the user that gets created when the <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> account is created. Where as the default behavior for a <a href="#BM_(root%20user)%2Fi">root user</a> is to have unrestricted access to all services and resources under the <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> account, the default behavior for these forked off entities is to deny access. Policies can then be assigned to these entities to allow access to particular services and resources.</p>
+<p><a href="#BM_(IAM%20user)%2Fi">IAM user</a>s / <a href="#BM_(IAM%20group)%2Fi">IAM group</a>s / <a href="#BM_(IAM%20role)%2Fi">IAM role</a>s are forked off from the <a href="#BM_(root%20user)%2Fi">root user</a>, which is the user that gets created when the <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> account is created. Whereas the default behavior for a <a href="#BM_(root%20user)%2Fi">root user</a> is to have unrestricted access to all services and resources under the <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> account, the default behavior for these forked off entities is to deny access. Policies can then be assigned to these entities to allow access to particular services and resources.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Standard practice is for the <a href="#BM_(root%20user)%2Fi">root user</a> to not make changes directly, but to create various <a href="#BM_(IAM%20user)%2Fi">IAM user</a>s / <a href="#BM_(IAM%20group)%2Fi">IAM group</a>s / <a href="#BM_(IAM%20role)%2Fi">IAM role</a>s, each limited to only the permissions necessary to do the tasks needed.</p>
@@ -261,11 +261,11 @@
 <p>Policies come in two varieties:</p>
 <ul>
 <li>Managed policies can be attached to multiple <a href="#BM_(IAM%20user)%2Fi">IAM user</a>s, <a href="#BM_(IAM%20group)%2Fi">IAM group</a>s, and / or <a href="#BM_(IAM%20role)%2Fi">IAM role</a>s. Each managed policy has its own <a href="#BM_%5Cb(ARN)s%3F%5Cb%2F">ARN</a>.</li>
-<li>Inline policies are embedded into a single <a href="#BM_(IAM%20user)%2Fi">IAM user</a>, <a href="#BM_(IAM%20group)%2Fi">IAM group</a>, or <a href="#BM_(IAM%20role)%2Fi">IAM role</a>. An inline policy can't be attached to any identity other than the one its embedded in.</li>
+<li>Inline policies are embedded into a single <a href="#BM_(IAM%20user)%2Fi">IAM user</a>, <a href="#BM_(IAM%20group)%2Fi">IAM group</a>, or <a href="#BM_(IAM%20role)%2Fi">IAM role</a>. An inline policy can't be attached to any identity other than the one it's embedded in.</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The learning material advises against inline policies. Instead, if says you can create a managed policy and set a condition on it such that it only applied when attached to the identity of interest: <code>"StringEquals": { "aws:username": "johndoe" }</code>.</p>
+<p>The learning material advises against inline policies. Instead, it says you can create a managed policy and set a condition on it such that it only applied when attached to the identity of interest: <code>"StringEquals": { "aws:username": "johndoe" }</code>.</p>
 </div>
 <a name="H_Boundaries"></a><h2>Boundaries</h2>
 <p><a name="BM_(Identity%20and%20Access%20Management%5C%2FBoundaries)_TOPIC%2Fi"></a><strong></strong></p>
@@ -303,7 +303,7 @@
 <li>a <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">secret access key</a>, which is analogous to a password.</li>
 </ol>
 <p>Both the <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key ID</a> and the <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">secret access key</a> must be used together to authenticate against <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>.</p>
-<p>Where as a human typically uses a single username and password to access <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>, programmatic access typically has one <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key</a> per program. Should a program's <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key</a> need to be rotated or disabled, it can be done without interfering with <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key</a>s used by other programs.</p>
+<p>Whereas a human typically uses a single username and password to access <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>, programmatic access typically has one <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key</a> per program. Should a program's <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key</a> need to be rotated or disabled, it can be done without interfering with <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key</a>s used by other programs.</p>
 <a name="H_Virtual%20Private%20Cloud"></a><h1>Virtual Private Cloud</h1>
 <p><a name="BM_(Virtual%20Private%20Cloud)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -316,7 +316,7 @@
 <p><img src="svgbob_d0e0b15e071045bcff1c42e6b3256f023d3c4e7a.svg" alt="Kroki diagram output"></p>
 <p>Each <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> has an IP address range associated with it, defined as a <a href="#BM_%5Cb(CIDR%7CCIDR%20block)s%3F%5Cb%2F">CIDR</a> block. For ...</p>
 <ul>
-<li>IPv4, the <a href="#BM_%5Cb(CIDR%7CCIDR%20block)s%3F%5Cb%2F">CIDR</a> block is allowed a prefix size of between 16 to 28 bits.</li>
+<li>IPv4, the <a href="#BM_%5Cb(CIDR%7CCIDR%20block)s%3F%5Cb%2F">CIDR</a> block is allowed a prefix size of between 16 and 28 bits.</li>
 <li>IPv6, the <a href="#BM_%5Cb(CIDR%7CCIDR%20block)s%3F%5Cb%2F">CIDR</a> block is allowed a prefix size of between 44 and 64 bits.</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -325,7 +325,7 @@
 </div>
 <p>Since a <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> is tied to a specific <a href="#BM_(region)%2Fi">region</a>, and each <a href="#BM_(region)%2Fi">region</a> has multiple <a href="#BM_%5Cb(AZs%3F)%5Cb%2F">AZs</a>, each <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> has its IP address range further partitioned to uniquely target <a href="#BM_%5Cb(AZs%3F)%5Cb%2F">AZs</a> within the <a href="#BM_(region)%2Fi">region</a> it's in (via a further restricted <a href="#BM_%5Cb(CIDR%7CCIDR%20block)s%3F%5Cb%2F">CIDR</a> block). This further partitioned IP address space is referred to as a <a href="#BM_(subnet)%2Fi">subnet</a>.</p>
 <p><img src="svgbob_86c0ab53b6e6470bd5a70cfc7ecdd6a0b606dc2a.svg" alt="Kroki diagram output"></p>
-<p>Regardless of the <a href="#BM_(subnet)%2Fi">subnet</a> <a href="#BM_%5Cb(CIDR%7CCIDR%20block)s%3F%5Cb%2F">CIDR</a> block's prefix size, <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> reserves first 4 addresses and last address in the IP address range. For example, a <a href="#BM_(subnet)%2Fi">subnet</a> of 10.0.1.0/24 has addresses 10.0.1.0-3 and 10.0.1.255 are reserved by <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>.</p>
+<p>Regardless of the <a href="#BM_(subnet)%2Fi">subnet</a> <a href="#BM_%5Cb(CIDR%7CCIDR%20block)s%3F%5Cb%2F">CIDR</a> block's prefix size, <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> reserves the first 4 addresses and last address in the IP address range. For example, a <a href="#BM_(subnet)%2Fi">subnet</a> of 10.0.1.0/24 has addresses 10.0.1.0-3 and 10.0.1.255 are reserved by <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>.</p>
 <a name="H_Implicit%20Router"></a><h2>Implicit Router</h2>
 <p><a name="BM_(Virtual%20Private%20Cloud%5C%2FImplicit%20Router)_TOPIC%2Fi"></a><strong></strong></p>
 <p>Each <a href="#BM_(subnet)%2Fi">subnet</a> has an <a href="#BM_(implicit%20router)%2Fi">implicit router</a> associated with it, located at the first address in the <a href="#BM_(subnet)%2Fi">subnet</a>'s IP address range plus 1. For example, if a <a href="#BM_(subnet)%2Fi">subnet</a>'s <a href="#BM_%5Cb(CIDR%7CCIDR%20block)s%3F%5Cb%2F">CIDR</a> block is 10.0.1.0/24, its <a href="#BM_(implicit%20router)%2Fi">implicit router</a> will be located at 10.0.1.1. This <a href="#BM_(implicit%20router)%2Fi">implicit router</a> directs all of the <a href="#BM_(subnet)%2Fi">subnet</a>'s traffic, whether that traffic is ...</p>
@@ -404,7 +404,7 @@
 <p>A single <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s can have many <a href="#BM_%5Cb(ENI)s%3F%5Cb%2F">ENI</a>s from different <a href="#BM_(subnet)%2Fi">subnet</a>s attached, so long as those <a href="#BM_(subnet)%2Fi">subnet</a>s are within the same <a href="#BM_%5Cb(AZs%3F)%5Cb%2F">AZ</a> as the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>. However, ...</p>
 <ol>
 <li>there must always be a primary <a href="#BM_%5Cb(ENI)s%3F%5Cb%2F">ENI</a> attached to the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>.</li>
-<li>there is a maximum number ot <a href="#BM_%5Cb(ENI)s%3F%5Cb%2F">ENI</a>s an <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> can have attached (depends on the <a href="#BM_(elastic%20compute%20instance%7Celastic%20cloud%20compute%20instance%7Cinstance%20type%7CEC2%20instance%20type)%2Fi">instance type</a>).</li>
+<li>there is a maximum number of <a href="#BM_%5Cb(ENI)s%3F%5Cb%2F">ENI</a>s an <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> can have attached (depends on the <a href="#BM_(elastic%20compute%20instance%7Celastic%20cloud%20compute%20instance%7Cinstance%20type%7CEC2%20instance%20type)%2Fi">instance type</a>).</li>
 </ol>
 <p><img src="svgbob_a54d4c70831dd09d72720ecedb9fc8af92d415e1.svg" alt="Kroki diagram output"></p>
 <a name="H_Security%20Group"></a><h2>Security Group</h2>
@@ -418,7 +418,7 @@
 <p>A <a href="#BM_(security%20group)%2Fi">security group</a> is a firewall that defines what traffic is allowed in to and out of an <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>. A rule for ...</p>
 <ul>
 <li>inbound traffic is defined using source IP address range (as <a href="#BM_%5Cb(CIDR%7CCIDR%20block)s%3F%5Cb%2F">CIDR</a> block), source port range, and protocol.</li>
-<li>outbound traffic is defined using destination IP address range(as <a href="#BM_%5Cb(CIDR%7CCIDR%20block)s%3F%5Cb%2F">CIDR</a> block), destination port range, and protocol.</li>
+<li>outbound traffic is defined using destination IP address range (as <a href="#BM_%5Cb(CIDR%7CCIDR%20block)s%3F%5Cb%2F">CIDR</a> block), destination port range, and protocol.</li>
 </ul>
 <p><a href="#BM_(security%20group)%2Fi">Security group</a>s control traffic to an <a href="#BM_%5Cb(EC2)%5Cb%2F">EC2</a> by attaching to their <a href="#BM_%5Cb(ENI)s%3F%5Cb%2F">ENI</a>s. If an <a href="#BM_%5Cb(ENI)s%3F%5Cb%2F">ENI</a> is moved from one <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> to another, its <a href="#BM_(security%20group)%2Fi">security group</a> move with it.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -442,7 +442,7 @@
 <li>Port range, which defines which ports to look for (e.g. 8080-8088)</li>
 <li>Source IP <a href="#BM_%5Cb(CIDR%7CCIDR%20block)s%3F%5Cb%2F">CIDR</a> block, which defines which inbound IPs to look for.</li>
 <li>Destination IP CDR block, which defines which outbound IPs to look for.</li>
-<li>Allow/deny flag, which defines if the a matching packet should be denied or allowed.</li>
+<li>Allow/deny flag, which defines if a matching packet should be denied or allowed.</li>
 </ol>
 <p>Unlike <a href="#BM_(security%20group)%2Fi">security group</a>s, <a href="#BM_%5Cb(NACL)s%3F%5Cb%2F">NACL</a>s are applied at the <a href="#BM_(subnet)%2Fi">subnet</a> level (instead of the <a href="#BM_%5Cb(ENI)s%3F%5Cb%2F">ENI</a> / <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> level) and are stateless in that each incoming / outgoing packet is evaluated individually (it don't keep track of action connections). A <a href="#BM_%5Cb(NACL)s%3F%5Cb%2F">NACL</a> can be associated with multiple <a href="#BM_(subnet)%2Fi">subnet</a>s, but each <a href="#BM_(subnet)%2Fi">subnet</a> can be associated with at most one <a href="#BM_%5Cb(NACL)s%3F%5Cb%2F">NACL</a>. If a <a href="#BM_(subnet)%2Fi">subnet</a> is not associated with a <a href="#BM_%5Cb(NACL)s%3F%5Cb%2F">NACL</a>, a default <a href="#BM_%5Cb(NACL)s%3F%5Cb%2F">NACL</a> is used.</p>
 <p><img src="svgbob_8762c5ad7895bc87c99d986818a6f05a19e39af9.svg" alt="Kroki diagram output"></p>
@@ -517,7 +517,7 @@
 </div>
 <p>While <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a>s are isolated from each other, they may be peered together such that resources between them (e.g. <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s) can communicate as if they're on the same network. This peering can span between accounts and / or <a href="#BM_(region)%2Fi">region</a>s.</p>
 <p><img src="svgbob_cba22baac3108266b0e3a7d3f42a83e88255e000.svg" alt="Kroki diagram output"></p>
-<p><a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> peering is a two step process:</p>
+<p><a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> peering is a two-step process:</p>
 <ol>
 <li>
 <p>To peer <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a>s, a <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> peering request must first be made. The initiator sends a request to the recipient, which the recipient can either accept or deny. The initiator and recipient may be the same account or completely different accounts. Either way, the recipient must explicitly accept the <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> peering request before the <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a>s peer.</p>
@@ -581,7 +581,7 @@
 <li>p - GPU accelerated</li>
 </ul>
 </li>
-<li>Instance generation: A number indicating he generation of <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a> family, where that generation typically corresponds to generations of hardware (e.g. a newer <a href="#BM_(elastic%20compute%20instance%7Celastic%20cloud%20compute%20instance%7Cinstance%20type%7CEC2%20instance%20type)%2Fi">EC2 instance type</a> generation may use a newer CPU).</li>
+<li>Instance generation: A number indicating the generation of <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a> family, where that generation typically corresponds to generations of hardware (e.g. a newer <a href="#BM_(elastic%20compute%20instance%7Celastic%20cloud%20compute%20instance%7Cinstance%20type%7CEC2%20instance%20type)%2Fi">EC2 instance type</a> generation may use a newer CPU).</li>
 <li>Processor family: The brand of processor used by the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>.
 <ul>
 <li>a - AMD processor</li>
@@ -627,7 +627,7 @@ m6in.4xlarge
 <p>The lists above for <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a> families, additional capabilities, etc.. are non-exhaustive. Two particular classes of compute resource that are important to enterprise but not listed above are ...</p>
 <ol>
 <li>
-<p>dedicated <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a>s: Your <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s are guaranteed to run on physical machines exclusive to you, meaning no other <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> customer will have an <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s on those physical machines. However, there may be multiple physical machines running your <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s. For example, if you were to ask for 2 large and 6 small m6in <a href="#BM_(elastic%20compute%20instance%7Celastic%20cloud%20compute%20instance%7Cinstance%20type%7CEC2%20instance%20type)%2Fi">instance type</a>s, one of the large <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a>s could be on physical machine A while the other large and small <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a>s could be on physical machine B. <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> decides which physical machine runs what and <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a>s can hop between physical machines on restart, but all physical machines are guaranteed to only be running your <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a>s (no other <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> customer will be running <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a>s on those phsyical machines).</p>
+<p>dedicated <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a>s: Your <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s are guaranteed to run on physical machines exclusive to you, meaning no other <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> customer will have an <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s on those physical machines. However, there may be multiple physical machines running your <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s. For example, if you were to ask for 2 large and 6 small m6in <a href="#BM_(elastic%20compute%20instance%7Celastic%20cloud%20compute%20instance%7Cinstance%20type%7CEC2%20instance%20type)%2Fi">instance type</a>s, one of the large <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a>s could be on physical machine A while the other large and small <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a>s could be on physical machine B. <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> decides which physical machine runs what and <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a>s can hop between physical machines on restart, but all physical machines are guaranteed to only be running your <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a>s (no other <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> customer will be running <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a>s on those physical machines).</p>
 </li>
 <li>
 <p>dedicated hosts: Your <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s are guaranteed to <em>always run on the same</em> physical machine, which is exclusive to you. That is, you rent the machine and decide how you want it split up into <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a>s.</p>
@@ -655,7 +655,7 @@ m6in.4xlarge
 <li>
 <p><a href="#BM_(spot%20instance%7Cspot%20EC2%20instance%7CEC2%20spot%20instance)%2Fi">Spot instance</a>: <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s offered at a discounted price because no one is currently renting them.</p>
 <p>A <a href="#BM_(spot%20instance%7Cspot%20EC2%20instance%7CEC2%20spot%20instance)%2Fi">spot instance</a> is similar to an <a href="#BM_(on-demand%20instance%7Con-demand%20EC2%20instance%7CEC2%20on-demand%20instance)%2Fi">on-demand instance</a>, with the exception that the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> terminates should a renter paying a higher price come along. A 2-minute grace window is provided prior to termination.</p>
-<p>The offer price for an <a href="#BM_(spot%20instance%7Cspot%20EC2%20instance%7CEC2%20spot%20instance)%2Fi">spot EC2 instance</a> is known as the spot price, which constantly fluctuates based on demand. A renter specifies the maximum price they're willing to pay, and so long as the spot price doesn't go above that maximum price, the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> will remain active. To guard against abrupt terminations, the buyer can purchase a spot block, which is a guaranteed block of time between 1 to 6 hours.</p>
+<p>The offer price for a <a href="#BM_(spot%20instance%7Cspot%20EC2%20instance%7CEC2%20spot%20instance)%2Fi">spot EC2 instance</a> is known as the spot price, which constantly fluctuates based on demand. A renter specifies the maximum price they're willing to pay, and so long as the spot price doesn't go above that maximum price, the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> will remain active. To guard against abrupt terminations, the buyer can purchase a spot block, which is a guaranteed block of time between 1 and 6 hours.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>As of writing, <a href="#BM_(spot%20instance%7Cspot%20EC2%20instance%7CEC2%20spot%20instance)%2Fi">spot instance</a>s without spot blocks can get a termination notice at any time, even within seconds after starting, It sounds like you'll only get billed for the time you're active.</p>
@@ -663,7 +663,7 @@ m6in.4xlarge
 <p><a href="#BM_(spot%20instance%7Cspot%20EC2%20instance%7CEC2%20spot%20instance)%2Fi">Spot instance</a>s can be deployed as a fleet. <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> selects <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s for your fleet based on your preferences:</p>
 <ul>
 <li>
-<p>Minimum performance characteristics: Rather than targeting specific <a href="#BM_(elastic%20compute%20instance%7Celastic%20cloud%20compute%20instance%7Cinstance%20type%7CEC2%20instance%20type)%2Fi">instance type</a>s, you can target minimum amount of CPU, memory, and IO that the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a> needs to have. For example, you may be interested in <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a>s that have at least 24gb RAM.</p>
+<p>Minimum performance characteristics: Rather than targeting specific <a href="#BM_(elastic%20compute%20instance%7Celastic%20cloud%20compute%20instance%7Cinstance%20type%7CEC2%20instance%20type)%2Fi">instance type</a>s, you can target the minimum amount of CPU, memory, and IO that the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a> needs to have. For example, you may be interested in <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a>s that have at least 24gb RAM.</p>
 </li>
 <li>
 <p><a href="#BM_(spot%20capacity%20pool)%2Fi">Spot capacity pool</a>s: The pool of unused <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a>s of a particular <a href="#BM_(elastic%20compute%20instance%7Celastic%20cloud%20compute%20instance%7Cinstance%20type%7CEC2%20instance%20type)%2Fi">instance type</a> and within a particular <a href="#BM_(region)%2Fi">region</a> and <a href="#BM_%5Cb(AZs%3F)%5Cb%2F">AZ</a> are referred to as a <a href="#BM_(spot%20capacity%20pool)%2Fi">spot capacity pool</a>. You can target <a href="#BM_(spot%20capacity%20pool)%2Fi">spot capacity pool</a>s that you're interested in. For example, you may be interested in m5 <a href="#BM_(elastic%20compute%20instance%7Celastic%20cloud%20compute%20instance%7Cinstance%20type%7CEC2%20instance%20type)%2Fi">instance type</a>s in us-east-1 and t2 <a href="#BM_(elastic%20compute%20instance%7Celastic%20cloud%20compute%20instance%7Cinstance%20type%7CEC2%20instance%20type)%2Fi">instance type</a>s in us-west-2.</p>
@@ -693,7 +693,7 @@ m6in.4xlarge
 <p>Each type of storage device has its own unique set of restrictions / properties. Regardless of which you pick, it's a one-to-one mapping between the storage device and <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>: A <a href="#BM_(single%5B-%5Cs%5Dinstance)%2Fi">single instance</a> store or <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS volume</a> is tied to a single <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>, but a single <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> can have multiple storage devices.</p>
 <p><img src="svgbob_00b0b503b065d77a6611d1aa3d360c67782dafd7.svg" alt="Kroki diagram output"></p>
 <p>Since these storage devices can't be tied to multiple <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s at the same time, it means you can't use them for sharing data between <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s. For data sharing between <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s, there's <a href="#BM_(Elastic%20File%20System)%2Fi">Elastic File System</a> (<a href="#BM_%5Cb(EFS)s%3F%5Cb%2F">EFS</a>), which is a <a href="#BM_%5Cb(NFS)s%3F%5Cb%2F">NFS</a> service provided by <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>.</p>
-<p><a href="#BM_(instance%20store)%2Fi">Instance store</a>s, <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS</a>, and <a href="#BM_%5Cb(EFS)s%3F%5Cb%2F">EFS</a> are discussed in the sub-sections below.</p>
+<p><a href="#BM_(instance%20store)%2Fi">Instance store</a>s, <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS</a>, and <a href="#BM_%5Cb(EFS)s%3F%5Cb%2F">EFS</a> are discussed in the subsections below.</p>
 <a name="H_Instance%20Store"></a><h3>Instance Store</h3>
 <p><a name="BM_(Elastic%20Cloud%20Compute%5C%2FStorage%2FInstance%20Store)_TOPIC%2Fi"></a><strong></strong></p>
 <p>An <a href="#BM_(instance%20store)%2Fi">instance store</a> is a storage device attached to the physical machine that the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a> runs on. That storage device is ...</p>
@@ -702,8 +702,7 @@ m6in.4xlarge
 <li>not persisted: <a href="#BM_(instance%20store)%2Fi">Instance store</a>s are deleted once an <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a> stops.</li>
 <li>not configurable: No control over size or performance characteristics of <a href="#BM_(instance%20store)%2Fi">instance store</a>s.</li>
 </ul>
-<p>Due to the above restrictions, most customer choose to use <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS volume</a>s over <a href="#BM_(instance%20store)%2Fi">instance store</a>s.
-volumes</p>
+<p>Due to the above restrictions, most customer choose to use <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS volume</a>s over <a href="#BM_(instance%20store)%2Fi">instance store</a>s.</p>
 <a name="H_Elastic%20Block%20Store"></a><h3>Elastic Block Store</h3>
 <p><a name="BM_(Elastic%20Cloud%20Compute%5C%2FStorage%2FElastic%20Block%20Store)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -765,8 +764,8 @@ volumes</p>
 <p>live configuration changes: <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS volume</a>s may be resized and change type while they're in use.</p>
 </li>
 <li>
-<p>live snapshotting: <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS</a> snapshots accurately capture the state of the <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS volume</a> at the moment which a snapshot was triggered. The <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS volume</a> is still usable as snapshotting occurs, but subsequent reads/writes won't included in the <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS</a> snapshot.</p>
-<p>Likewise, an <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS volume</a> is usable while restoring from a snapshot. If a block is accessed before it's been restored from the snapshot, the restoration process will prioritize to be retrieved it immediately, blocking until it's available.</p>
+<p>live snapshotting: <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS</a> snapshots accurately capture the state of the <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS volume</a> at the moment which a snapshot was triggered. The <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS volume</a> is still usable as snapshotting occurs, but subsequent reads/writes won't be included in the <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS</a> snapshot.</p>
+<p>Likewise, an <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS volume</a> is usable while restoring from a snapshot. If a block is accessed before it's been restored from the snapshot, the restoration process will prioritize it to be retrieved immediately, blocking until it's available.</p>
 <p><a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS</a> snapshotting is incremental, meaning that subsequent snapshots only store changed blocks.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -819,7 +818,7 @@ volumes</p>
 <ul>
 <li>Standard: For actively used data.</li>
 <li>Infrequent Access: For dormant data intended to be accessed a few times per quarter, providing lower cost but higher latency (access fee applied as well).</li>
-<li>Archive: For formant data intended to be accessed a few times per year, providing lower cost but higher latency (access fee applied as well).</li>
+<li>Archive: For dormant data intended to be accessed a few times per year, providing lower cost but higher latency (access fee applied as well).</li>
 </ul>
 <p><a href="#BM_%5Cb(EFS)s%3F%5Cb%2F">EFS</a> volumes are durable (data automatically replicated) and automatically scale storage capacity up/down as required. Data on <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS volume</a>s are stored either ...</p>
 <ul>
@@ -855,7 +854,7 @@ sudo mount -t efs {efs-identifier}:/ ./my-efs
 <p>The <code>amazon-efs-utils</code> helper utility streamlines the use of features specific to <a href="#BM_%5Cb(EFS)s%3F%5Cb%2F">EFS</a>, such as automatically handling encryption during transit.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Is updating <a href="#BM_(security%20group)%2Fi">security group</a>s a hard requirement or does <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> automatically handle this somehow? If so, are there other access control mechanisms in the <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> that need to updated as well? Maybe <a href="#BM_%5Cb(NACL)s%3F%5Cb%2F">NACL</a>?</p>
+<p>Is updating <a href="#BM_(security%20group)%2Fi">security group</a>s a hard requirement or does <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> automatically handle this somehow? If so, are there other access control mechanisms in the <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> that need to be updated as well? Maybe <a href="#BM_%5Cb(NACL)s%3F%5Cb%2F">NACL</a>?</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -888,14 +887,14 @@ sudo mount -t nfs -o rsize=..,wsize=..,... {efs-dns-name}:/ ./my-efs
 <li><a href="#BM_(instance%20store)%2Fi">Instance store</a>-backed, where the source <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> has a root device that's an <a href="#BM_(instance%20store)%2Fi">instance store</a>, and that <a href="#BM_(instance%20store)%2Fi">instance store</a> is copied to <a href="#BM_%5Cb(S3)%5Cb%2F">S3</a>.</li>
 <li><a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS</a>-backed, where the source <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> has a root device that's an <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS volume</a>, and that <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS volume</a> is copied to an <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS</a> snapshot.</li>
 </ul>
-<p>For <a href="#BM_(instance%20store)%2Fi">instance store</a>-backed <a href="#BM_%5Cb(AMI)s%3F%5Cb%2F">AMI</a>s, if the newly create <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> has a larger <a href="#BM_(instance%20store)%2Fi">instance store</a> than the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> used to create the <a href="#BM_%5Cb(AMI)s%3F%5Cb%2F">AMI</a>, some of the space may go unused. You'll likely need to manually expand the file system.</p>
+<p>For <a href="#BM_(instance%20store)%2Fi">instance store</a>-backed <a href="#BM_%5Cb(AMI)s%3F%5Cb%2F">AMI</a>s, if the newly created <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> has a larger <a href="#BM_(instance%20store)%2Fi">instance store</a> than the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> used to create the <a href="#BM_%5Cb(AMI)s%3F%5Cb%2F">AMI</a>, some of the space may go unused. You'll likely need to manually expand the file system.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>An <a href="#BM_%5Cb(AMI)s%3F%5Cb%2F">AMI</a> is more than a disk / volume image. Each <a href="#BM_%5Cb(AMI)s%3F%5Cb%2F">AMI</a> may contain multiple volumes.</p>
 </div>
 <a name="H_Access"></a><h2>Access</h2>
 <p><a name="BM_(Elastic%20Cloud%20Compute%5C%2FAccess)_TOPIC%2Fi"></a><strong></strong></p>
-<p>Linux-based <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s can be connected to through a variety of mechanisms. Traditionally, the connection mechanism of choice has been SSH pre-configured with a <a href="#BM_(public)%2Fi">public</a>/<a href="#BM_(private%7Cinternal)%2Fi">private</a> keypair rather than password credentials. This mechanism requires at least some of your <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s to be <a href="#BM_(public)%2Fi">public</a>ly exposed to (<a href="#BM_(public)%2Fi">public</a> IP address and open ports). However, newer connection mechanisms don't require <a href="#BM_(public)%2Fi">public</a> exposure.</p>
+<p>Linux-based <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s can be connected to through a variety of mechanisms. Traditionally, the connection mechanism of choice has been SSH pre-configured with a <a href="#BM_(public)%2Fi">public</a>/<a href="#BM_(private%7Cinternal)%2Fi">private</a> keypair rather than password credentials. This mechanism requires at least some of your <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s to be <a href="#BM_(public)%2Fi">public</a>ly exposed (<a href="#BM_(public)%2Fi">public</a> IP address and open ports). However, newer connection mechanisms don't require <a href="#BM_(public)%2Fi">public</a> exposure.</p>
 <p>The subsections below describe the various connection mechanisms for Linux-based <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s. Non-Linux <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s aren't covered.</p>
 <a name="H_SSH"></a><h3>SSH</h3>
 <p><a name="BM_(Elastic%20Cloud%20Compute%5C%2FAccess%2FSSH)_TOPIC%2Fi"></a><strong></strong></p>
@@ -905,7 +904,7 @@ sudo mount -t nfs -o rsize=..,wsize=..,... {efs-dns-name}:/ ./my-efs
 <li><a href="#BM_(Virtual%20Private%20Cloud%5C%2FSecurity%20Group)_TOPIC%2Fi">Virtual Private Cloud/Security Group</a></li>
 </ul>
 </div>
-<p>SSH is the connection mechanism traditionally used to connect to an <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>. In it's simplest form, it requires that the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> be created with a <a href="#BM_(public)%2Fi">public</a>/<a href="#BM_(private%7Cinternal)%2Fi">private</a> keypair, have a <a href="#BM_(public)%2Fi">public</a> IP address, and be assigned a <a href="#BM_(security%20group)%2Fi">security group</a> that allows listening on port 22 (SSH port).</p>
+<p>SSH is the connection mechanism traditionally used to connect to an <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>. In its simplest form, it requires that the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> be created with a <a href="#BM_(public)%2Fi">public</a>/<a href="#BM_(private%7Cinternal)%2Fi">private</a> keypair, have a <a href="#BM_(public)%2Fi">public</a> IP address, and be assigned a <a href="#BM_(security%20group)%2Fi">security group</a> that allows listening on port 22 (SSH port).</p>
 <pre class="hljs"><code>chmod 400 ./my-private-key.pem  <span class="hljs-comment"># SSH/SCP requires these permissions on the private key</span>
 ssh -i ./my-private-key.pem ec2-user@ipaddress                             <span class="hljs-comment"># Connect to instance</span>
 scp -I ./my-private-key.pem ./my-dir/my-local-file.txt ec2-user@ipaddress  <span class="hljs-comment"># Download from instance</span>
@@ -921,7 +920,7 @@ scp -I ./my-private-key.pem ec2-user@ipaddress ./my-dir/my-remote-file.txt <span
 <li><a href="#BM_(Identity%20and%20Access%20Management%5C%2FAccess%20Keys)_TOPIC%2Fi">Identity and Access Management/Access Keys</a></li>
 </ul>
 </div>
-<p>!!<a href="#BM_%5Cb(EC2)%5Cb%2F">EC2</a> Instance Connect Endpoint!! is a <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> component that, once added to a <a href="#BM_(subnet)%2Fi">subnet</a> in a <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a>, allows for secure shell connections to any <a href="#BM_(private%7Cinternal)%2Fi">private</a> <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> in that <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> (no <a href="#BM_(public)%2Fi">public</a> IP or open ports required). The endpoint uses the account's <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key</a>s as its authentication and authorization mechanism, meaning the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> doesn't need to be assigned a kaypair on creation. However, port 22 (SSH port) still needs to be open on the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>'s <a href="#BM_(private%7Cinternal)%2Fi">private</a> IP.</p>
+<p>!!<a href="#BM_%5Cb(EC2)%5Cb%2F">EC2</a> Instance Connect Endpoint!! is a <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> component that, once added to a <a href="#BM_(subnet)%2Fi">subnet</a> in a <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a>, allows for secure shell connections to any <a href="#BM_(private%7Cinternal)%2Fi">private</a> <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> in that <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> (no <a href="#BM_(public)%2Fi">public</a> IP or open ports required). The endpoint uses the account's <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key</a>s as its authentication and authorization mechanism, meaning the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> doesn't need to be assigned a keypair on creation. However, port 22 (SSH port) still needs to be open on the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>'s <a href="#BM_(private%7Cinternal)%2Fi">private</a> IP.</p>
 <p>Once in place, connections can be made either through the ...</p>
 <ul>
 <li>
@@ -988,7 +987,7 @@ scp -I ./my-private-key.pem ec2-user@ipaddress ./my-dir/my-remote-file.txt <span
 </div>
 <a name="H_Horizontal%20Scaling"></a><h3>Horizontal Scaling</h3>
 <p><a name="BM_(Elastic%20Cloud%20Compute%5C%2FScaling%2FHorizontal%20Scaling)_TOPIC%2Fi"></a><strong></strong></p>
-<p>Horizontal scaling, referred to as <a href="#BM_(EC2%20Auto%5Cs%3FScaling%7CAuto%5Cs%3FScaling%20Group)%2Fi">EC2 Autoscaling</a>, changes the number of <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s that are working together on the same goal (e.g. serving websites, serving data, computing something, etc..). <a href="#BM_(EC2%20Auto%5Cs%3FScaling%7CAuto%5Cs%3FScaling%20Group)%2Fi">EC2 Autoscaling</a> groups together <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s it controls into groups, referred to as <a href="#BM_(EC2%20Auto%5Cs%3FScaling%7CAuto%5Cs%3FScaling%20Group)%2Fi">auto scaling group</a>s. An <a href="#BM_(EC2%20Auto%5Cs%3FScaling%7CAuto%5Cs%3FScaling%20Group)%2Fi">auto scaling group</a> has its <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s increased and decreased based on ...</p>
+<p>Horizontal scaling, referred to as <a href="#BM_(EC2%20Auto%5Cs%3FScaling%7CAuto%5Cs%3FScaling%20Group)%2Fi">EC2 Autoscaling</a>, changes the number of <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s that are working together on the same goal (e.g. serving websites, serving data, computing something, etc..). <a href="#BM_(EC2%20Auto%5Cs%3FScaling%7CAuto%5Cs%3FScaling%20Group)%2Fi">EC2 Autoscaling</a> groups together <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s it controls into groups, referred to as <a href="#BM_(EC2%20Auto%5Cs%3FScaling%7CAuto%5Cs%3FScaling%20Group)%2Fi">autoscaling group</a>s. An <a href="#BM_(EC2%20Auto%5Cs%3FScaling%7CAuto%5Cs%3FScaling%20Group)%2Fi">autoscaling group</a> has its <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s increased and decreased based on ...</p>
 <ul>
 <li>
 <p>health / status checks, where <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s are periodically queried to determine if they're overburdened, underburdened, or otherwise unhealthy. If it's determined that an <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> is ...</p>
@@ -1009,7 +1008,7 @@ scp -I ./my-private-key.pem ec2-user@ipaddress ./my-dir/my-remote-file.txt <span
 <li>Manual scaling: The number of <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s is set directly by the user.</li>
 <li>Dynamic scaling: The number of <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s changes based on metrics such as CPU usage (requires <a href="#BM_(CloudWatch)%2Fi">CloudWatch</a>).</li>
 <li>Scheduled scaling: The number of <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s changes based on a time schedule (e.g. scale down number of <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">instance</a>s on Mondays and Wednesdays after 5pm).</li>
-<li>Predictive scaling: The number of <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s changed based on past historical load, similar to scheduled scaling but schedules are captures automatically.</li>
+<li>Predictive scaling: The number of <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s changes based on past historical load, similar to scheduled scaling but schedules are captures automatically.</li>
 </ul>
 </li>
 </ul>
@@ -1050,7 +1049,7 @@ scp -I ./my-private-key.pem ec2-user@ipaddress ./my-dir/my-remote-file.txt <span
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>This might be useful for steamlining application access to <a href="#BM_%5Cb(S3)%5Cb%2F">S3</a>? That is, your <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> may need access to specific <a href="#BM_%5Cb(S3%20bucket)s%3F%5Cb%2F">S3 bucket</a>s / objects, and this might easily enable that by giving the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> the correct <a href="#BM_(IAM%20role)%2Fi">IAM role</a>?</p>
+<p>This might be useful for streamlining application access to <a href="#BM_%5Cb(S3)%5Cb%2F">S3</a>? That is, your <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> may need access to specific <a href="#BM_%5Cb(S3%20bucket)s%3F%5Cb%2F">S3 bucket</a>s / objects, and this might easily enable that by giving the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> the correct <a href="#BM_(IAM%20role)%2Fi">IAM role</a>?</p>
 </div>
 <a name="H_Simple%20Storage%20Service"></a><h1>Simple Storage Service</h1>
 <p><a name="BM_(Simple%20Storage%20Service)_TOPIC%2Fi"></a><strong></strong></p>
@@ -1151,7 +1150,7 @@ scp -I ./my-private-key.pem ec2-user@ipaddress ./my-dir/my-remote-file.txt <span
 <p><a href="#BM_%5Cb(SNS)%5Cb%2F">SNS</a> heavily integrates with other <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> services. Integrations come in two forms:</p>
 <ul>
 <li>system-to-system: Services are linked together using <a href="#BM_%5Cb(SNS)%5Cb%2F">SNS</a> queues. For example, it's common to have <a href="#BM_%5Cb(SNS)%5Cb%2F">SNS</a> link together <a href="#BM_(CloudWatch)%2Fi">CloudWatch</a> alarms and <a href="#BM_(Lambda)%2Fi">Lambda</a> functions, such that alarms trigger a <a href="#BM_(Lambda)%2Fi">lambda</a> function to run, which then goes on to make configuration changes to mitigate the cause of that alarm (e.g. provision more resources).</li>
-<li>system-to-user: Services are linked to user-facing communication: Email, SMS, and push notifications. For example, it's common to have <a href="#BM_%5Cb(SNS)%5Cb%2F">SNS</a> link <a href="#BM_(CloudWatch)%2Fi">CloudWatch</a> alarms to send out an email (e.g. notify developers of problem).</li>
+<li>system-to-user: Services are linked to user-facing communication: Email, SMS, and push notifications. For example, it's common to have <a href="#BM_%5Cb(SNS)%5Cb%2F">SNS</a> link <a href="#BM_(CloudWatch)%2Fi">CloudWatch</a> alarms to send out an email (e.g. notify developers of a problem).</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -1257,8 +1256,8 @@ scp -I ./my-private-key.pem ec2-user@ipaddress ./my-dir/my-remote-file.txt <span
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>See <a href="https://docs.aws.amazon.com/lambda/latest/dg/images-create.html">here</a> for a list of base images with language runtimes that have "runtime interface client" support already builtin.</p>
-<p>See <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-api.html">here</a> for specs on how the "runtime interface client" should be implemented. It sounds like this is a client that queries a server? So the container starts and the first thing it does it pulls a domain from the environment variables and queries a web service at that domain for the payload to run? They have pre-built clients up on GitHub for each language runtime.</p>
+<p>See <a href="https://docs.aws.amazon.com/lambda/latest/dg/images-create.html">here</a> for a list of base images with language runtimes that have "runtime interface client" support already built-in.</p>
+<p>See <a href="https://docs.aws.amazon.com/lambda/latest/dg/runtimes-api.html">here</a> for specs on how the "runtime interface client" should be implemented. It sounds like this is a client that queries a server? So the container starts and the first thing it does is pull a domain from the environment variables and queries a web service at that domain for the payload to run? They have pre-built clients up on GitHub for each language runtime.</p>
 </div>
 <p>Assuming a custom "runtime interface client" isn't used, a function typically has the entry point ...</p>
 <pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">handler_name</span>(<span class="hljs-params">event, context</span>):
@@ -1346,7 +1345,7 @@ dynamodb = boto3.resource(<span class="hljs-string">'dynamodb'</span>)
 <li>Limit usage: Rate limit users and / or throttle them on excessive usage. Throttling may be enabled by version / stage, method, or client.</li>
 <li>SDK wrappers: Create thin-wrappers around the API for various programming languages.</li>
 <li>Cache responses: Cache API responses for later re-use.</li>
-<li>Custom errors: Customize what response is sent back when request fails (e.g. on bad API key).</li>
+<li>Custom errors: Customize what response is sent back when a request fails (e.g. on bad API key).</li>
 </ul>
 <a name="H_Staged%20Deployments"></a><h2>Staged Deployments</h2>
 <p><a name="BM_(API%20Gateway%5C%2FStaged%20Deployments)_TOPIC%2Fi"></a><strong></strong></p>
@@ -1369,7 +1368,7 @@ dynamodb = boto3.resource(<span class="hljs-string">'dynamodb'</span>)
 <li><a href="#BM_(Lambda)%2Fi">Lambda</a> authorizers, which are <a href="#BM_(Lambda)%2Fi">Lambda</a> functions used for custom authorization (e.g. look through a custom database to validate credentials).</li>
 </ul>
 <p>To limit access to an API, <a href="#BM_(API%20Gateway)%2Fi">API Gateway</a> allows setting policies on individual resources (paths). These policies can limit access based on <a href="#BM_%5Cb(CIDR%7CCIDR%20block)s%3F%5Cb%2F">CIDR</a> blocks, <a href="#BM_(IAM%20role)%2Fi">IAM role</a>s, and or <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a>s / <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> endpoints. <a href="#BM_(IAM%20policy%7CIAM%20policies)%2Fi">IAM policies</a> can also be used to define which <a href="#BM_%5Cb(IAM)%5Cb%2F">IAM</a> entities (<a href="#BM_(IAM%20role)%2Fi">IAM role</a>s, <a href="#BM_(IAM%20group)%2Fi">IAM group</a>s, etc..) have access to the API.</p>
-<p>To secure an API, Web Application Firewall (WAF) may be placed in front of <a href="#BM_(API%20Gateway)%2Fi">API Gateway</a> to protect it form common exploits and abuse (e.g. SQL injection).</p>
+<p>To secure an API, Web Application Firewall (WAF) may be placed in front of <a href="#BM_(API%20Gateway)%2Fi">API Gateway</a> to protect it from common exploits and abuse (e.g. SQL injection).</p>
 <a name="H_Endpoint%20Types"></a><h2>Endpoint Types</h2>
 <p><a name="BM_(API%20Gateway%5C%2FEndpoint%20Types)_TOPIC%2Fi"></a><strong></strong></p>
 <p>An API can be one of several endpoint types:</p>
@@ -1420,7 +1419,7 @@ dynamodb = boto3.resource(<span class="hljs-string">'dynamodb'</span>)
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>There's also a feature you can enable called "Elastic Fabric Adapter" thats' useful for workloads that require a high-degree of inter-node communication.</p>
+<p>There's also a feature you can enable called "Elastic Fabric Adapter" that's useful for workloads that require a high-degree of inter-node communication.</p>
 </div>
 </li>
 </ul>
@@ -1545,7 +1544,7 @@ dynamodb = boto3.resource(<span class="hljs-string">'dynamodb'</span>)
 <p><a name="BM_(private%20subnet)%2Fi"></a><strong>private subnet</strong> - A <a href="#BM_(subnet)%2Fi">subnet</a> that doesn't have a <a href="#BM_(route%20table%7Croute)%2Fi">route</a> to an <a href="#BM_(Internet%20gateway)%2Fi">internet gateway</a> in its <a href="#BM_(route%20table%7Croute)%2Fi">route table</a>.</p>
 </li>
 <li>
-<p><a name="BM_(identity%20and%20access%20management%7Cidentity%20%26%20access%20management)%2Fi"></a><strong>identity and access management</strong> <a name="BM_%5Cb(IAM)%5Cb%2F"></a><strong></strong> - Security and control mechanism used by an account to control access to different parts of <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>.</p>
+<p><a name="BM_(identity%20and%20access%20management%7Cidentity%20%26%20access%20management)%2Fi"></a><strong>identity and access management</strong> <a name="BM_%5Cb(IAM)%5Cb%2F"></a><strong></strong> - Service that controls access to other <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> services and resources through the use of users, groups, roles, and policies.</p>
 </li>
 <li>
 <p><a name="BM_(root%20user)%2Fi"></a><strong>root user</strong> - An identity associated with an account, which has complete access to all <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> services and resources for that account.</p>
@@ -1650,7 +1649,7 @@ m6in.4xlarge
 <p><a name="BM_(input%5B%5C%2F%5Cs%5C-%5Doutput%20operations%20per%20second)%2Fi"></a><strong>input-output operations per second</strong> <a name="BM_%5Cb(IOPS%7CIOP)%5Cb%2F"></a><strong></strong> - The number of inputs/outputs allowed per second for some storage device (e.g. <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS</a>), where the underlying drive technology determines the maximum amount of data that a volume type considers as a single input/output operation.</p>
 </li>
 <li>
-<p><a name="BM_(EC2%20Auto%5Cs%3FScaling%7CAuto%5Cs%3FScaling%20Group)%2Fi"></a><strong>EC2 Auto Scaling</strong> - A service that scales the number of <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s running a distributed service (e.g. shareded database) to appropriately handle changes in application load.</p>
+<p><a name="BM_(EC2%20Auto%5Cs%3FScaling%7CAuto%5Cs%3FScaling%20Group)%2Fi"></a><strong>EC2 AutoScaling</strong> - A service that scales the number of <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s running a distributed service (e.g. shareded database) to appropriately handle changes in application load.</p>
 </li>
 <li>
 <p><a name="BM_(Simple%20Storage%20Service)%2Fi"></a><strong>Simple Storage Service</strong> <a name="BM_%5Cb(S3)%5Cb%2F"></a><strong></strong> - A service for storing and accessing data objects through an API interface.</p>

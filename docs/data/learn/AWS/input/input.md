@@ -17,7 +17,7 @@ Because these services can be scaled on-demand, it allows organizations to ...
 
  * eliminate capital expenditures (CapEx) for large infrastructure: AWS provides hardware on-demand, meaning no need for your own data centers.
  * eliminate capacity planning for forecasted usage increases / decreases: AWS resources can be scaled up and down on-demand, meaning no need to worry about resources being over capacity or under-utilized.
- * reduce operating expenses (OpEx) for providing services: AWS provides platform services on-demand, meaning less need for technology staff to maintain said services (e.g. AWS takes care of providing and managing a database for you, meaning less database experts are needed).
+ * reduce operating expenses (OpEx) for providing services: AWS provides platform services on-demand, meaning less need for technology staff to maintain said services (e.g. AWS takes care of providing and managing a database for you, meaning fewer database experts are needed).
 
 This document covers general concepts for commonly used AWS services. The document ...
 
@@ -26,7 +26,7 @@ This document covers general concepts for commonly used AWS services. The docume
 * doesn't contain quantifiable metrics such as pricing or exact performance characteristics.
 
 ```{note}
-The reason for this is that the underlying technology and prices will change as years go by, but the concepts will likely stay the time.
+The reason for this is that the underlying technology and prices will change as years go by, but the concepts are likely to remain relevant over time.
 
 There are too many AWS services to cover everything in this document.
 ```
@@ -39,15 +39,15 @@ There are too many AWS services to cover everything in this document.
 Introduction_TOPIC
 ```
 
-AWS infrastructure is spread out across the world, broken up by regions and availability zones:
+AWS infrastructure is spread out across the world, divided into regions and availability zones:
 
  * Region: A geographical location within which AWS operates. 
  * Availability Zone (AZ): An isolated set of resources within a region.
 
-Each region is said to have at least 2 AZs, where those AZs are connected together using high-speed network connections. Those high-speed network connections serve two purposes:
+Each region is said to have at least 2 AZs, where those AZs are connected together using high-speed network connections. The high-speed network connections between AZs serve two purposes:
 
 1. Abstraction: A region can be thought of as a single data center.
-2. Redundancy: An outage in one AZ shouldn't effect other AZs in the same region.
+2. Redundancy: An outage in one AZ shouldn't affect other AZs in the same region.
 
 ```{svgbob}
 .--------.                 .----.
@@ -56,7 +56,7 @@ Each region is said to have at least 2 AZs, where those AZs are connected togeth
 ```
 
 ```{note}
-Not all regions have all AWS services available.
+Not all AWS services are available in every region.
 ```
 
 # Amazon Resource Name
@@ -67,7 +67,7 @@ Not all regions have all AWS services available.
 Geography_TOPIC
 ```
 
-An Amazon Resource Name (ARN) is an identifier that uniquely identifies a resource across all AWS, not just a single AWS account. Generally, an ARN should be in one of the following formats, ...
+An Amazon Resource Name (ARN) is an identifier for a resource. ARNs are unique across all of AWS, not just a single account. Generally, an ARN should follow one of the following formats, ...
 
   * `arn:{partition}:{service}:{region}:{account-id}:{resource-id}`
   * `arn:{partition}:{service}:{region}:{account-id}:{resource-type}/{resource-id}`
@@ -96,7 +96,7 @@ An ARN may include wildcards. For example, `arn:aws:s3:::my_bucket` targets an i
 
 Identity and access management (IAM) is AWS's mechanism of managing authentication and authorization. It controls which entities (e.g. authenticates human users or software services) can access which parts of an AWS account (e.g. authorizes access to delete a database).
 
-IAM breaks down access control as policies. An IAM policy defines whether particular action can be performed of particular resource (e.g. if you can creating an EC2 instance). That IAM policy can then be applied to a ...
+IAM breaks down access control as policies. An IAM policy defines whether particular action can be performed of particular resource (e.g. if you can create an EC2 instance). That IAM policy can then be applied to a ...
 
  * IAM user, which is a user under the AWS account.
  * IAM group, which is a collection of IAM users (a IAM user can be under multiple groups). 
@@ -114,7 +114,7 @@ IAM breaks down access control as policies. An IAM policy defines whether partic
 '----------' *     * '-----------'           '----------'
 ```
 
-IAM users / IAM groups / IAM roles are forked off from the root user, which is the user that gets created when the AWS account is created. Where as the default behavior for a root user is to have unrestricted access to all services and resources under the AWS account, the default behavior for these forked off entities is to deny access. Policies can then be assigned to these entities to allow access to particular services and resources.
+IAM users / IAM groups / IAM roles are forked off from the root user, which is the user that gets created when the AWS account is created. Whereas the default behavior for a root user is to have unrestricted access to all services and resources under the AWS account, the default behavior for these forked off entities is to deny access. Policies can then be assigned to these entities to allow access to particular services and resources.
 
 ```{note}
 Standard practice is for the root user to not make changes directly, but to create various IAM users / IAM groups / IAM roles, each limited to only the permissions necessary to do the tasks needed.
@@ -221,10 +221,10 @@ Recall that when there are multiple policies for the same resource and action (e
 Policies come in two varieties:
 
  * Managed policies can be attached to multiple IAM users, IAM groups, and / or IAM roles. Each managed policy has its own ARN.
- * Inline policies are embedded into a single IAM user, IAM group, or IAM role. An inline policy can't be attached to any identity other than the one its embedded in. 
+ * Inline policies are embedded into a single IAM user, IAM group, or IAM role. An inline policy can't be attached to any identity other than the one it's embedded in. 
 
 ```{note}
-The learning material advises against inline policies. Instead, if says you can create a managed policy and set a condition on it such that it only applied when attached to the identity of interest: `"StringEquals": { "aws:username": "johndoe" }`.
+The learning material advises against inline policies. Instead, it says you can create a managed policy and set a condition on it such that it only applied when attached to the identity of interest: `"StringEquals": { "aws:username": "johndoe" }`.
 ```
 
 ## Boundaries
@@ -270,7 +270,7 @@ Access keys are credentials that allow users (either the root user or an IAM use
 
 Both the access key ID and the secret access key must be used together to authenticate against AWS.
 
-Where as a human typically uses a single username and password to access AWS, programmatic access typically has one access key per program. Should a program's access key need to be rotated or disabled, it can be done without interfering with access keys used by other programs.
+Whereas a human typically uses a single username and password to access AWS, programmatic access typically has one access key per program. Should a program's access key need to be rotated or disabled, it can be done without interfering with access keys used by other programs.
 
 # Virtual Private Cloud
 
@@ -296,7 +296,7 @@ A Virtual Private Cloud (VPC) is an isolated network within AWS that resembles t
 
 Each VPC has an IP address range associated with it, defined as a CIDR block. For ...
 
- * IPv4, the CIDR block is allowed a prefix size of between 16 to 28 bits.
+ * IPv4, the CIDR block is allowed a prefix size of between 16 and 28 bits.
  * IPv6, the CIDR block is allowed a prefix size of between 44 and 64 bits.
 
 ```{note}
@@ -323,7 +323,7 @@ Since a VPC is tied to a specific region, and each region has multiple AZs, each
                           '--------' 1+      1 '----'
 ```
 
-Regardless of the subnet CIDR block's prefix size, AWS reserves first 4 addresses and last address in the IP address range. For example, a subnet of 10.0.1.0/24 has addresses 10.0.1.0-3 and 10.0.1.255 are reserved by AWS.
+Regardless of the subnet CIDR block's prefix size, AWS reserves the first 4 addresses and last address in the IP address range. For example, a subnet of 10.0.1.0/24 has addresses 10.0.1.0-3 and 10.0.1.255 are reserved by AWS.
 
 ## Implicit Router
 
@@ -427,7 +427,7 @@ An elastic network interface (ENI) is a virtual network card tied to a specific 
 A single EC2 instances can have many ENIs from different subnets attached, so long as those subnets are within the same AZ as the EC2 instance. However, ...
 
  1. there must always be a primary ENI attached to the EC2 instance.
- 2. there is a maximum number ot ENIs an EC2 instance can have attached (depends on the instance type).
+ 2. there is a maximum number of ENIs an EC2 instance can have attached (depends on the instance type).
 
 ```{svgbob}
    .-----.   
@@ -450,7 +450,7 @@ Virtual Private Cloud/Elastic Network Interface_TOPIC
 A security group is a firewall that defines what traffic is allowed in to and out of an EC2 instance. A rule for ...
 
  * inbound traffic is defined using source IP address range (as CIDR block), source port range, and protocol.
- * outbound traffic is defined using destination IP address range(as CIDR block), destination port range, and protocol.
+ * outbound traffic is defined using destination IP address range (as CIDR block), destination port range, and protocol.
 
 Security groups control traffic to an EC2 by attaching to their ENIs. If an ENI is moved from one EC2 instance to another, its security group move with it.
 
@@ -492,7 +492,7 @@ A network access control list (NACL) is a set rules that defines what traffic is
 4. Port range, which defines which ports to look for (e.g. 8080-8088)
 5. Source IP CIDR block, which defines which inbound IPs to look for.
 6. Destination IP CDR block, which defines which outbound IPs to look for.
-7. Allow/deny flag, which defines if the a matching packet should be denied or allowed.
+7. Allow/deny flag, which defines if a matching packet should be denied or allowed.
 
 Unlike security groups, NACLs are applied at the subnet level (instead of the ENI / EC2 instance level) and are stateless in that each incoming / outgoing packet is evaluated individually (it don't keep track of action connections). A NACL can be associated with multiple subnets, but each subnet can be associated with at most one NACL. If a subnet is not associated with a NACL, a default NACL is used.
 
@@ -663,7 +663,7 @@ While VPCs are isolated from each other, they may be peered together such that r
 '-----'     "peering connection"    '-----'
 ```
 
-VPC peering is a two step process:
+VPC peering is a two-step process:
 
 1. To peer VPCs, a VPC peering request must first be made. The initiator sends a request to the recipient, which the recipient can either accept or deny. The initiator and recipient may be the same account or completely different accounts. Either way, the recipient must explicitly accept the VPC peering request before the VPCs peer.
 
@@ -717,7 +717,7 @@ There are multiple types of EC2 instances available. EC2 instance types are cate
    * i - Storage optimized
    * r - Memory optimized
    * p - GPU accelerated
- * Instance generation: A number indicating he generation of instance family, where that generation typically corresponds to generations of hardware (e.g. a newer EC2 instance type generation may use a newer CPU).
+ * Instance generation: A number indicating the generation of instance family, where that generation typically corresponds to generations of hardware (e.g. a newer EC2 instance type generation may use a newer CPU).
  * Processor family: The brand of processor used by the EC2 instance.
    * a - AMD processor
    * g - AWS Graviton processor (ARM)
@@ -755,7 +755,7 @@ m6in.4xlarge
 ```{note}
 The lists above for instance families, additional capabilities, etc.. are non-exhaustive. Two particular classes of compute resource that are important to enterprise but not listed above are ...
 
- 1. dedicated instances: Your EC2 instances are guaranteed to run on physical machines exclusive to you, meaning no other AWS customer will have an EC2 instances on those physical machines. However, there may be multiple physical machines running your EC2 instances. For example, if you were to ask for 2 large and 6 small m6in instance types, one of the large instances could be on physical machine A while the other large and small instances could be on physical machine B. AWS decides which physical machine runs what and instances can hop between physical machines on restart, but all physical machines are guaranteed to only be running your instances (no other AWS customer will be running instances on those phsyical machines).
+ 1. dedicated instances: Your EC2 instances are guaranteed to run on physical machines exclusive to you, meaning no other AWS customer will have an EC2 instances on those physical machines. However, there may be multiple physical machines running your EC2 instances. For example, if you were to ask for 2 large and 6 small m6in instance types, one of the large instances could be on physical machine A while the other large and small instances could be on physical machine B. AWS decides which physical machine runs what and instances can hop between physical machines on restart, but all physical machines are guaranteed to only be running your instances (no other AWS customer will be running instances on those physical machines).
 
  2. dedicated hosts: Your EC2 instances are guaranteed to *always run on the same* physical machine, which is exclusive to you. That is, you rent the machine and decide how you want it split up into instances.
 ```
@@ -781,7 +781,7 @@ EC2 instances can be rented using a variety of pricing models:
 
   A spot instance is similar to an on-demand instance, with the exception that the EC2 instance terminates should a renter paying a higher price come along. A 2-minute grace window is provided prior to termination.
   
-  The offer price for an spot EC2 instance is known as the spot price, which constantly fluctuates based on demand. A renter specifies the maximum price they're willing to pay, and so long as the spot price doesn't go above that maximum price, the EC2 instance will remain active. To guard against abrupt terminations, the buyer can purchase a spot block, which is a guaranteed block of time between 1 to 6 hours.
+  The offer price for a spot EC2 instance is known as the spot price, which constantly fluctuates based on demand. A renter specifies the maximum price they're willing to pay, and so long as the spot price doesn't go above that maximum price, the EC2 instance will remain active. To guard against abrupt terminations, the buyer can purchase a spot block, which is a guaranteed block of time between 1 and 6 hours.
 
   ```{note}
   As of writing, spot instances without spot blocks can get a termination notice at any time, even within seconds after starting, It sounds like you'll only get billed for the time you're active.
@@ -789,7 +789,7 @@ EC2 instances can be rented using a variety of pricing models:
 
   Spot instances can be deployed as a fleet. AWS selects EC2 instances for your fleet based on your preferences:
   
-  * Minimum performance characteristics: Rather than targeting specific instance types, you can target minimum amount of CPU, memory, and IO that the instance needs to have. For example, you may be interested in instances that have at least 24gb RAM.
+  * Minimum performance characteristics: Rather than targeting specific instance types, you can target the minimum amount of CPU, memory, and IO that the instance needs to have. For example, you may be interested in instances that have at least 24gb RAM.
 
   * Spot capacity pools: The pool of unused instances of a particular instance type and within a particular region and AZ are referred to as a spot capacity pool. You can target spot capacity pools that you're interested in. For example, you may be interested in m5 instance types in us-east-1 and t2 instance types in us-west-2.
 
@@ -822,7 +822,7 @@ Each type of storage device has its own unique set of restrictions / properties.
 
 Since these storage devices can't be tied to multiple EC2 instances at the same time, it means you can't use them for sharing data between EC2 instances. For data sharing between EC2 instances, there's Elastic File System (EFS), which is a NFS service provided by AWS.
 
-Instance stores, EBS, and EFS are discussed in the sub-sections below.
+Instance stores, EBS, and EFS are discussed in the subsections below.
 
 ### Instance Store
 
@@ -835,7 +835,6 @@ An instance store is a storage device attached to the physical machine that the 
 * not configurable: No control over size or performance characteristics of instance stores.
 
 Due to the above restrictions, most customer choose to use EBS volumes over instance stores.
-volumes
 
 ### Elastic Block Store
 
@@ -890,9 +889,9 @@ EBS volumes support ...
 
 * live configuration changes: EBS volumes may be resized and change type while they're in use.
 
-* live snapshotting: EBS snapshots accurately capture the state of the EBS volume at the moment which a snapshot was triggered. The EBS volume is still usable as snapshotting occurs, but subsequent reads/writes won't included in the EBS snapshot.
+* live snapshotting: EBS snapshots accurately capture the state of the EBS volume at the moment which a snapshot was triggered. The EBS volume is still usable as snapshotting occurs, but subsequent reads/writes won't be included in the EBS snapshot.
 
-  Likewise, an EBS volume is usable while restoring from a snapshot. If a block is accessed before it's been restored from the snapshot, the restoration process will prioritize to be retrieved it immediately, blocking until it's available.
+  Likewise, an EBS volume is usable while restoring from a snapshot. If a block is accessed before it's been restored from the snapshot, the restoration process will prioritize it to be retrieved immediately, blocking until it's available.
 
   EBS snapshotting is incremental, meaning that subsequent snapshots only store changed blocks.
 
@@ -944,7 +943,7 @@ EFS volumes are categorized by storage class:
 
  * Standard: For actively used data.
  * Infrequent Access: For dormant data intended to be accessed a few times per quarter, providing lower cost but higher latency (access fee applied as well).
- * Archive: For formant data intended to be accessed a few times per year, providing lower cost but higher latency (access fee applied as well).
+ * Archive: For dormant data intended to be accessed a few times per year, providing lower cost but higher latency (access fee applied as well).
 
 EFS volumes are durable (data automatically replicated) and automatically scale storage capacity up/down as required. Data on EBS volumes are stored either ...
 
@@ -985,7 +984,7 @@ sudo mount -t efs {efs-identifier}:/ ./my-efs
 The `amazon-efs-utils` helper utility streamlines the use of features specific to EFS, such as automatically handling encryption during transit. 
 
 ```{note}
-Is updating security groups a hard requirement or does AWS automatically handle this somehow? If so, are there other access control mechanisms in the VPC that need to updated as well? Maybe NACL?
+Is updating security groups a hard requirement or does AWS automatically handle this somehow? If so, are there other access control mechanisms in the VPC that need to be updated as well? Maybe NACL?
 ```
 
 ````{note}
@@ -1024,7 +1023,7 @@ Any AWS account can have its own set of AMIs, which may be private or publicly-a
  * Instance store-backed, where the source EC2 instance has a root device that's an instance store, and that instance store is copied to S3.
  * EBS-backed, where the source EC2 instance has a root device that's an EBS volume, and that EBS volume is copied to an EBS snapshot.
 
-For instance store-backed AMIs, if the newly create EC2 instance has a larger instance store than the EC2 instance used to create the AMI, some of the space may go unused. You'll likely need to manually expand the file system. 
+For instance store-backed AMIs, if the newly created EC2 instance has a larger instance store than the EC2 instance used to create the AMI, some of the space may go unused. You'll likely need to manually expand the file system. 
 
 ```{note}
 An AMI is more than a disk / volume image. Each AMI may contain multiple volumes.
@@ -1034,7 +1033,7 @@ An AMI is more than a disk / volume image. Each AMI may contain multiple volumes
 
 `{bm} /(Elastic Cloud Compute\/Access)_TOPIC/i`
 
-Linux-based EC2 instances can be connected to through a variety of mechanisms. Traditionally, the connection mechanism of choice has been SSH pre-configured with a public/private keypair rather than password credentials. This mechanism requires at least some of your EC2 instances to be publicly exposed to (public IP address and open ports). However, newer connection mechanisms don't require public exposure.
+Linux-based EC2 instances can be connected to through a variety of mechanisms. Traditionally, the connection mechanism of choice has been SSH pre-configured with a public/private keypair rather than password credentials. This mechanism requires at least some of your EC2 instances to be publicly exposed (public IP address and open ports). However, newer connection mechanisms don't require public exposure.
 
 The subsections below describe the various connection mechanisms for Linux-based EC2 instances. Non-Linux EC2 instances aren't covered.
 
@@ -1046,7 +1045,7 @@ The subsections below describe the various connection mechanisms for Linux-based
 Virtual Private Cloud/Security Group_TOPIC
 ```
 
-SSH is the connection mechanism traditionally used to connect to an EC2 instance. In it's simplest form, it requires that the EC2 instance be created with a public/private keypair, have a public IP address, and be assigned a security group that allows listening on port 22 (SSH port).
+SSH is the connection mechanism traditionally used to connect to an EC2 instance. In its simplest form, it requires that the EC2 instance be created with a public/private keypair, have a public IP address, and be assigned a security group that allows listening on port 22 (SSH port).
 
 ```sh
 chmod 400 ./my-private-key.pem  # SSH/SCP requires these permissions on the private key
@@ -1066,7 +1065,7 @@ Virtual Private Cloud_TOPIC
 Identity and Access Management/Access Keys_TOPIC
 ```
 
-!!EC2 Instance Connect Endpoint!! is a VPC component that, once added to a subnet in a VPC, allows for secure shell connections to any private EC2 instance in that VPC (no public IP or open ports required). The endpoint uses the account's access keys as its authentication and authorization mechanism, meaning the EC2 instance doesn't need to be assigned a kaypair on creation. However, port 22 (SSH port) still needs to be open on the EC2 instance's private IP.
+!!EC2 Instance Connect Endpoint!! is a VPC component that, once added to a subnet in a VPC, allows for secure shell connections to any private EC2 instance in that VPC (no public IP or open ports required). The endpoint uses the account's access keys as its authentication and authorization mechanism, meaning the EC2 instance doesn't need to be assigned a keypair on creation. However, port 22 (SSH port) still needs to be open on the EC2 instance's private IP.
 
 Once in place, connections can be made either through the ...
 
@@ -1136,7 +1135,7 @@ I doubt hibernate can be used when changing instance type. If the instance is us
 
 `{bm} /(Elastic Cloud Compute\/Scaling\/Horizontal Scaling)_TOPIC/i`
 
-Horizontal scaling, referred to as EC2 Autoscaling, changes the number of EC2 instances that are working together on the same goal (e.g. serving websites, serving data, computing something, etc..). EC2 Autoscaling groups together EC2 instances it controls into groups, referred to as auto scaling groups. An auto scaling group has its EC2 instances increased and decreased based on ...
+Horizontal scaling, referred to as EC2 Autoscaling, changes the number of EC2 instances that are working together on the same goal (e.g. serving websites, serving data, computing something, etc..). EC2 Autoscaling groups together EC2 instances it controls into groups, referred to as autoscaling groups. An autoscaling group has its EC2 instances increased and decreased based on ...
 
  * health / status checks, where EC2 instances are periodically queried to determine if they're overburdened, underburdened, or otherwise unhealthy. If it's determined that an EC2 instance is ...
 
@@ -1155,7 +1154,7 @@ Horizontal scaling, referred to as EC2 Autoscaling, changes the number of EC2 in
    * Manual scaling: The number of EC2 instances is set directly by the user.
    * Dynamic scaling: The number of EC2 instances changes based on metrics such as CPU usage (requires CloudWatch).
    * Scheduled scaling: The number of EC2 instances changes based on a time schedule (e.g. scale down number of instances on Mondays and Wednesdays after 5pm).
-   * Predictive scaling: The number of EC2 instances changed based on past historical load, similar to scheduled scaling but schedules are captures automatically.
+   * Predictive scaling: The number of EC2 instances changes based on past historical load, similar to scheduled scaling but schedules are captures automatically.
 
 EC2 Autoscaling has two ways of launching and configuring EC2 instances: Launch configuration and launch templates. While launch configurations are simpler to configure, launch templates enable advanced features such as mixing-and-matching instance types as well as combining on-demand instances and spot instances.
 
@@ -1197,7 +1196,7 @@ I don't know this works under the hood, but it seems to work. The EC2 instance c
 ```
 
 ```{note}
-This might be useful for steamlining application access to S3? That is, your EC2 instance may need access to specific S3 buckets / objects, and this might easily enable that by giving the EC2 instance the correct IAM role?
+This might be useful for streamlining application access to S3? That is, your EC2 instance may need access to specific S3 buckets / objects, and this might easily enable that by giving the EC2 instance the correct IAM role?
 ```
 
 # Simple Storage Service
@@ -1303,7 +1302,7 @@ Subscribers can filter SNS messages by setting filter policies that test attribu
 SNS heavily integrates with other AWS services. Integrations come in two forms: 
 
  * system-to-system: Services are linked together using SNS queues. For example, it's common to have SNS link together CloudWatch alarms and Lambda functions, such that alarms trigger a lambda function to run, which then goes on to make configuration changes to mitigate the cause of that alarm (e.g. provision more resources).
- * system-to-user: Services are linked to user-facing communication: Email, SMS, and push notifications. For example, it's common to have SNS link CloudWatch alarms to send out an email (e.g. notify developers of problem).
+ * system-to-user: Services are linked to user-facing communication: Email, SMS, and push notifications. For example, it's common to have SNS link CloudWatch alarms to send out an email (e.g. notify developers of a problem).
 
 ```{note}
 For a full list of services, see [here](https://docs.aws.amazon.com/sns/latest/dg/sns-event-sources.html) and [here](https://docs.aws.amazon.com/sns/latest/dg/sns-event-destinations.html).
@@ -1412,9 +1411,9 @@ If using a zip, one common pattern is to include dependencies within the zip via
 ```
 
 ```{note}
-See [here](https://docs.aws.amazon.com/lambda/latest/dg/images-create.html) for a list of base images with language runtimes that have "runtime interface client" support already builtin.
+See [here](https://docs.aws.amazon.com/lambda/latest/dg/images-create.html) for a list of base images with language runtimes that have "runtime interface client" support already built-in.
 
-See [here](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-api.html) for specs on how the "runtime interface client" should be implemented. It sounds like this is a client that queries a server? So the container starts and the first thing it does it pulls a domain from the environment variables and queries a web service at that domain for the payload to run? They have pre-built clients up on GitHub for each language runtime.
+See [here](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-api.html) for specs on how the "runtime interface client" should be implemented. It sounds like this is a client that queries a server? So the container starts and the first thing it does is pull a domain from the environment variables and queries a web service at that domain for the payload to run? They have pre-built clients up on GitHub for each language runtime.
 ```
 
 Assuming a custom "runtime interface client" isn't used, a function typically has the entry point ...
@@ -1521,7 +1520,7 @@ API Gateway streamlines several common aspects of API management:
 * Limit usage: Rate limit users and / or throttle them on excessive usage. Throttling may be enabled by version / stage, method, or client.
 * SDK wrappers: Create thin-wrappers around the API for various programming languages.
 * Cache responses: Cache API responses for later re-use. 
-* Custom errors: Customize what response is sent back when request fails (e.g. on bad API key).
+* Custom errors: Customize what response is sent back when a request fails (e.g. on bad API key).
 
 ## Staged Deployments
 
@@ -1563,7 +1562,7 @@ To authorize access to an API, API Gateway has built-in support for ...
 
 To limit access to an API, API Gateway allows setting policies on individual resources (paths). These policies can limit access based on CIDR blocks, IAM roles, and or VPCs / VPC endpoints. IAM policies can also be used to define which IAM entities (IAM roles, IAM groups, etc..) have access to the API.
 
-To secure an API, Web Application Firewall (WAF) may be placed in front of API Gateway to protect it form common exploits and abuse (e.g. SQL injection).
+To secure an API, Web Application Firewall (WAF) may be placed in front of API Gateway to protect it from common exploits and abuse (e.g. SQL injection).
 
 ## Endpoint Types
 
@@ -1616,7 +1615,7 @@ Batch organizes workloads into the following components:
    ```
 
    ```{note}
-   There's also a feature you can enable called "Elastic Fabric Adapter" thats' useful for workloads that require a high-degree of inter-node communication.
+   There's also a feature you can enable called "Elastic Fabric Adapter" that's useful for workloads that require a high-degree of inter-node communication.
    ```
 
 ```{svgbob}
@@ -1721,7 +1720,7 @@ Batch integrates with CloudWatch to support monitoring and logging.
 
 * `{bm} private subnet` - A subnet that doesn't have a route to an internet gateway in its route table.
 
-* `{bm} identity and access management/(identity and access management|identity & access management)/i` `{bm}/\b(IAM)\b/` - Security and control mechanism used by an account to control access to different parts of AWS.
+* `{bm} identity and access management/(identity and access management|identity & access management)/i` `{bm}/\b(IAM)\b/` - Service that controls access to other AWS services and resources through the use of users, groups, roles, and policies.
 
 * `{bm} root user` - An identity associated with an account, which has complete access to all AWS services and resources for that account.
 
@@ -1803,7 +1802,7 @@ Batch integrates with CloudWatch to support monitoring and logging.
 
 * `{bm} input-output operations per second/(input[\/\s\-]output operations per second)/i` `{bm}/\b(IOPS|IOP)\b/` - The number of inputs/outputs allowed per second for some storage device (e.g. EBS), where the underlying drive technology determines the maximum amount of data that a volume type considers as a single input/output operation.
 
-* `{bm} EC2 Auto Scaling/(EC2 Auto\s?Scaling|Auto\s?Scaling Group)/i` - A service that scales the number of EC2 instances running a distributed service (e.g. shareded database) to appropriately handle changes in application load.
+* `{bm} EC2 AutoScaling/(EC2 Auto\s?Scaling|Auto\s?Scaling Group)/i` - A service that scales the number of EC2 instances running a distributed service (e.g. shareded database) to appropriately handle changes in application load.
 
 * `{bm} Simple Storage Service` `{bm}/\b(S3)\b/` - A service for storing and accessing data objects through an API interface. 
 

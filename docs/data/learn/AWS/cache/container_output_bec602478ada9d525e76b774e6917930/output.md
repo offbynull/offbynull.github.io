@@ -2,6 +2,6 @@
 
 <strong>⚠️NOTE️️️⚠️</strong>
 
-Not all regions have all AWS services available.
+Not all AWS services are available in every region.
 </div>
 
