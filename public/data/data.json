@@ -1,13 +1,15 @@
 {
     "finishedStudyList": [
         {
+            "year": 2024,
+            "name": "Amazon Web Services",
+            "notesUrl": "data/learn/Amazon Web Services/output/output.html",
+            "source": []
+        },
+        {
             "name": "Bioinformatics Algorithms",
             "notesUrl": "data/learn/Bioinformatics/output/output.html",
-            "source": {
-                "type": "book",
-                "isbn": "978-0990374633",
-                "url": "https://www.bioinformaticsalgorithms.org/"
-            }
+            "source": []
         },
         {
             "name": "C++",
