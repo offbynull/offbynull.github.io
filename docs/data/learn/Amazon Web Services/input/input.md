@@ -1633,6 +1633,79 @@ Batch organizes workloads into the following components:
 
 Batch integrates with CloudWatch to support monitoring and logging.
 
+# Cognito
+
+`{bm} /(Cognito_TOPIC)/i`
+
+```{prereq}
+Identity and Access Management_TOPIC
+```
+
+Cognito is a service for authentication and authorization that can either integrate with third-party identity providers (e.g. Google, Facebook, Apple, Active Directory, custom enterprise identity providers, etc..) or act as its own identity provider (e.g. Cognito directly stores and manages identities).
+
+Cognito handles authentication and authorization using the concepts of user pools and identity pools:
+
+ * A user pool is a user directory and platform for authentication / authorization.
+ * An identity pool is a user directory for entities that are allowed temporary access to AWS (for direct access to AWS services).
+
+```{note}
+The documentation for identity pools explicitly mentions "federated" identities, probably meaning that it's used for linking outside identities to IAM roles.
+```
+
+Both pool types are covered in the subsections below.
+
+## User Pool
+
+`{bm} /(Cognito\/User Pool_TOPIC)/i`
+
+```{prereq}
+Identity and Access Management_TOPIC
+Lambda_TOPIC
+```
+
+Cognito integrates with an application / client via a user pool: A user pool stores and maintains a user directory and provides control over the authentication and authorization flow. For example, a user pool can control ...
+
+ * attributes a user is required to submit (e.g. name, address, DOB, phone, email, website, etc..).
+ * password requirements (e.g. must contain uppercase characters, lowercase characters, and numbers).
+ * multi-factor authentication (MFA) requirements.
+ * account verification requirements (e.g. user must respond to an email or SMS).
+ * account recovery requirements (e.g. user may only recover account via email).
+ * remembering authenticated devices (e.g. user already logged in before under this Android device).
+ * identity providers supported (e.g. user pool A may depend on Lambda functions for authentication while user pool B may depend on Google).
+ * custom Lambda function "triggers" (e.g. function executes when a user signs up).
+
+User pools support placing users into groups, where each group may have a certain set of privileges (e.g. admin group vs normal group). A user can belong to multiple groups. Each group may be assigned ...
+
+ * IAM role: Users in the group will be granted the same permissions as the IAM role, allowing those users to access resources within AWS.
+ * precedence: Users belonging to many groups disambiguate which group's IAM role is applied based on group precedence. The group with the lowest precedence (lower is more preferred) will have its IAM role applied to the user.
+
+In the background, each user pool acts as an OpenID Connect (OIDC) identity provider (IdP). Once authenticated, the client receives JSON Web Tokens (JWT) for ...
+
+ * identity details: Contains information on the user (e.g.).
+ * access rights: Contains information on the user's authorization (e.g. groups they're apart of, who issued access, etc..).
+ * token refreshing: Allows tokens to be refreshed to avoid expiration (tokens expire after some time).
+
+A client proves it has necessary access rights by passing along JWTs in its request. To authenticate, Cognito provides a hosted authentication page or other AWS services either integrate directly with Cognito or provide integration functionality. For example, AWS provides a suite of development tools called Amplify, which provides React components for authentication with Cognito.
+
+## Identity Pool
+
+`{bm} /(Cognito\/Identity Pool_TOPIC)/i`
+
+An identity pool allows authenticated and unauthenticated users to assume an IAM role. Those users are given temporary credentials which they can then use to interface with the AWS API directly as the IAM role.
+
+```{note}
+The documentation for identity pools explicitly mentions "federated" identities, probably meaning that it's used for linking outside identities.
+```
+
+```{note}
+Learning material says there are two modes of operation here, but Google isn't showing anything.
+
+* direct service integration: Useful to have app interact directly with AWS service (e.g. S3).
+* permission passthrough: Lambda function uses the permission for the user as opposed to the permissions on the function itself.
+```
+
+Different IAM roles can be assigned for authenticated vs unauthenticated users.
+
 # Terminology
 
 * `{bm} Amazon Web Services` `{bm}/\b(AWS)\b/` - An cloud computing platform provided by [Amazon](https://aws.amazon.com/).
@@ -1830,7 +1903,15 @@ Batch integrates with CloudWatch to support monitoring and logging.
 
 * `{bm} Elastic Kubernetes Service` `{bm}/\b(EKS)s?\b//true/true` - Kubernetes service provided by AWS.
 
-`{bm-ignore} !!([\w\-]+?)!!/i`
+* `{bm} Cognito` - A service for authentication and authorization that can either integrate with third-party identity providers (e.g. Google, Facebook, a corporate Active Directory, etc..) or act as its own identity provider (e.g. Cognito directly stores and manages identities).
+
+* `{bm} authentication/(authentication|authenticate)/i` - The process of verifying an identity  (e.g. confirming a user is who they say they are by validating their credentials).
+
+* `{bm} authorization/(authorization|authorize)/i` - The process of identifying what an entity has access to (e.g. full access to a file, read-only access to a file, etc..).
+
+* `{bm} Key Management Service` `{bm}/\b(KMS)\b/` - A service for creating and controlling cryptographic keys. KMS operates directly with other services like EFS, EBS, and S3 to automatically encrypt data at-rest.
+
+`{bm-ignore} !!([\w\s\-]+?)!!/i`
 
 `{bm-error} Did you mean virtual PRIVATE cloud?/(virtual public cloud)/i`
 

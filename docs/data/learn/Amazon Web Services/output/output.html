@@ -65,6 +65,11 @@
 <li><a href="#H_Endpoint%20Types">Endpoint Types</a></li>
 </ul>
 <li><a href="#H_Batch">Batch</a></li>
+<li><a href="#H_Cognito">Cognito</a></li>
+<ul>
+<li><a href="#H_User%20Pool">User Pool</a></li>
+<li><a href="#H_Identity%20Pool">Identity Pool</a></li>
+</ul>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
 </div>
@@ -145,7 +150,7 @@
 <p>An <a href="#BM_%5Cb(ARN)s%3F%5Cb%2F">ARN</a> may include wildcards. For example, <code>arn:aws:s3:::my_bucket</code> targets an individual <a href="#BM_%5Cb(S3%20bucket)s%3F%5Cb%2F">S3 bucket</a>, but <code>arn:aws:s3:::my_bucket/*</code> targets all the contents of that bucket.</p>
 <a name="H_Identity%20and%20Access%20Management"></a><h1>Identity and Access Management</h1>
 <p><a name="BM_(Identity%20and%20Access%20Management)_TOPIC%2Fi"></a><strong></strong></p>
-<p><a href="#BM_(identity%20and%20access%20management%7Cidentity%20%26%20access%20management)%2Fi">Identity and access management</a> (<a href="#BM_%5Cb(IAM)%5Cb%2F">IAM</a>) is <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>'s mechanism of managing authentication and authorization. It controls which entities (e.g. authenticates human users or software services) can access which parts of an <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> account (e.g. authorizes access to delete a database).</p>
+<p><a href="#BM_(identity%20and%20access%20management%7Cidentity%20%26%20access%20management)%2Fi">Identity and access management</a> (<a href="#BM_%5Cb(IAM)%5Cb%2F">IAM</a>) is <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>'s mechanism of managing <a href="#BM_(authentication%7Cauthenticate)%2Fi">authentication</a> and <a href="#BM_(authorization%7Cauthorize)%2Fi">authorization</a>. It controls which entities (e.g. <a href="#BM_(authentication%7Cauthenticate)%2Fi">authenticate</a>s human users or software services) can access which parts of an <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> account (e.g. <a href="#BM_(authorization%7Cauthorize)%2Fi">authorize</a>s access to delete a database).</p>
 <p><a href="#BM_%5Cb(IAM)%5Cb%2F">IAM</a> breaks down access control as policies. An <a href="#BM_(IAM%20policy%7CIAM%20policies)%2Fi">IAM policy</a> defines whether particular action can be performed of particular resource (e.g. if you can create an <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>). That <a href="#BM_(IAM%20policy%7CIAM%20policies)%2Fi">IAM policy</a> can then be applied to a ...</p>
 <ul>
 <li><a href="#BM_(IAM%20user)%2Fi">IAM user</a>, which is a user under the <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> account.</li>
@@ -302,7 +307,7 @@
 <li>an <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key ID</a>, which is analogous to a username.</li>
 <li>a <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">secret access key</a>, which is analogous to a password.</li>
 </ol>
-<p>Both the <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key ID</a> and the <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">secret access key</a> must be used together to authenticate against <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>.</p>
+<p>Both the <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key ID</a> and the <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">secret access key</a> must be used together to <a href="#BM_(authentication%7Cauthenticate)%2Fi">authenticate</a> against <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>.</p>
 <p>Whereas a human typically uses a single username and password to access <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>, programmatic access typically has one <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key</a> per program. Should a program's <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key</a> need to be rotated or disabled, it can be done without interfering with <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key</a>s used by other programs.</p>
 <a name="H_Virtual%20Private%20Cloud"></a><h1>Virtual Private Cloud</h1>
 <p><a name="BM_(Virtual%20Private%20Cloud)_TOPIC%2Fi"></a><strong></strong></p>
@@ -920,14 +925,14 @@ scp -I ./my-private-key.pem ec2-user@ipaddress ./my-dir/my-remote-file.txt <span
 <li><a href="#BM_(Identity%20and%20Access%20Management%5C%2FAccess%20Keys)_TOPIC%2Fi">Identity and Access Management/Access Keys</a></li>
 </ul>
 </div>
-<p>!!<a href="#BM_%5Cb(EC2)%5Cb%2F">EC2</a> Instance Connect Endpoint!! is a <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> component that, once added to a <a href="#BM_(subnet)%2Fi">subnet</a> in a <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a>, allows for secure shell connections to any <a href="#BM_(private%7Cinternal)%2Fi">private</a> <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> in that <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> (no <a href="#BM_(public)%2Fi">public</a> IP or open ports required). The endpoint uses the account's <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key</a>s as its authentication and authorization mechanism, meaning the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> doesn't need to be assigned a keypair on creation. However, port 22 (SSH port) still needs to be open on the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>'s <a href="#BM_(private%7Cinternal)%2Fi">private</a> IP.</p>
+<p>EC2 Instance Connect Endpoint is a <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> component that, once added to a <a href="#BM_(subnet)%2Fi">subnet</a> in a <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a>, allows for secure shell connections to any <a href="#BM_(private%7Cinternal)%2Fi">private</a> <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> in that <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> (no <a href="#BM_(public)%2Fi">public</a> IP or open ports required). The endpoint uses the account's <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key</a>s as its <a href="#BM_(authentication%7Cauthenticate)%2Fi">authentication</a> and <a href="#BM_(authorization%7Cauthorize)%2Fi">authorization</a> mechanism, meaning the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> doesn't need to be assigned a keypair on creation. However, port 22 (SSH port) still needs to be open on the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>'s <a href="#BM_(private%7Cinternal)%2Fi">private</a> IP.</p>
 <p>Once in place, connections can be made either through the ...</p>
 <ul>
 <li>
 <p><a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> CLI: <code>aws ec2-instance-connect ssh --instance-id i-1234567890example --connection-type eice</code>.</p>
 </li>
 <li>
-<p><a href="#BM_%5Cb(EC2)%5Cb%2F">EC2</a> console: Selecting the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> will enable a "Connect" action, which should then gives the option of connecting through a <a href="#BM_(private%7Cinternal)%2Fi">private</a> !!<a href="#BM_%5Cb(EC2)%5Cb%2F">EC2</a> Instance Connect Endpoint!!. The shell will open up as a browser tab.</p>
+<p><a href="#BM_%5Cb(EC2)%5Cb%2F">EC2</a> console: Selecting the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a> will enable a "Connect" action, which should then gives the option of connecting through a <a href="#BM_(private%7Cinternal)%2Fi">private</a> EC2 Instance Connect Endpoint. The shell will open up as a browser tab.</p>
 </li>
 </ul>
 <a name="H_Session%20Manager"></a><h3>Session Manager</h3>
@@ -939,7 +944,7 @@ scp -I ./my-private-key.pem ec2-user@ipaddress ./my-dir/my-remote-file.txt <span
 <li><a href="#BM_(Elastic%20Cloud%20Compute%5C%2FAmazon%20Machine%20Image)_TOPIC%2Fi">Elastic Cloud Compute/Amazon Machine Image</a></li>
 </ul>
 </div>
-<p>Session Manager is a way to create secure shell connections to a <a href="#BM_(private%7Cinternal)%2Fi">private</a> <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>. It's part of a larger suite of services for customers that have many <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s to manage and maintain (patching, configuration, automation, etc..), referred to as <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> Systems Manager. Unlike !!<a href="#BM_%5Cb(EC2)%5Cb%2F">EC2</a> Instance Connect!!, session manager ...</p>
+<p>Session Manager is a way to create secure shell connections to a <a href="#BM_(private%7Cinternal)%2Fi">private</a> <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>. It's part of a larger suite of services for customers that have many <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s to manage and maintain (patching, configuration, automation, etc..), referred to as <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> Systems Manager. Unlike EC2 Instance Connect, session manager ...</p>
 <ul>
 <li>works for both Linux and Windows, where Windows uses PowerShell for the terminal.</li>
 <li>doesn't require port 22 (SSH port) to be open on the <a href="#BM_(private%7Cinternal)%2Fi">private</a> IP.</li>
@@ -951,7 +956,7 @@ scp -I ./my-private-key.pem ec2-user@ipaddress ./my-dir/my-remote-file.txt <span
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Session Manager claims that it can handle virtual machines that aren't <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s but still managed by <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> (e.g. on-perm VMs that have been linked up to / are managed by <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>). Does !!<a href="#BM_%5Cb(EC2)%5Cb%2F">EC2</a> Instance Connect!! also support this?</p>
+<p>Session Manager claims that it can handle virtual machines that aren't <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s but still managed by <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> (e.g. on-perm VMs that have been linked up to / are managed by <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>). Does EC2 Instance Connect also support this?</p>
 </div>
 <p>For session manager to work, it requires that the "SSM agent" be installed on the <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>. Common Windows and Linux <a href="#BM_%5Cb(AMI)s%3F%5Cb%2F">AMI</a>s should already have this agent installed. If not, a standalone installer is available.</p>
 <p>Once in place, connections can be made either through the ...</p>
@@ -1087,7 +1092,7 @@ scp -I ./my-private-key.pem ec2-user@ipaddress ./my-dir/my-remote-file.txt <span
 <p>encryption: <a href="#BM_%5Cb(S3%20bucket)s%3F%5Cb%2F">S3 bucket</a>s support encryption both during transit (network communication with the physical storage device) and at-rest (data saved on the storage device). Individual <a href="#BM_%5Cb(S3%20object)s%3F%5Cb%2F">S3 object</a>s within an <a href="#BM_%5Cb(S3%20bucket)s%3F%5Cb%2F">S3 bucket</a> may also be encrypted at rest.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>As of Jan 2023, <a href="#BM_%5Cb(S3%20bucket)s%3F%5Cb%2F">S3 bucket</a>s have encryption enabled by default using <a href="#BM_%5Cb(S3)%5Cb%2F">S3</a> managed keys (SSE-<a href="#BM_%5Cb(S3)%5Cb%2F">S3</a>). You may use KMS if you need more control over keys.</p>
+<p>As of Jan 2023, <a href="#BM_%5Cb(S3%20bucket)s%3F%5Cb%2F">S3 bucket</a>s have encryption enabled by default using <a href="#BM_%5Cb(S3)%5Cb%2F">S3</a> managed keys (SSE-<a href="#BM_%5Cb(S3)%5Cb%2F">S3</a>). You may use <a href="#BM_%5Cb(KMS)%5Cb%2F">KMS</a> if you need more control over keys.</p>
 </div>
 </li>
 <li>
@@ -1306,7 +1311,7 @@ dynamodb = boto3.resource(<span class="hljs-string">'dynamodb'</span>)
 <li><a href="#BM_(Elastic%20Cloud%20Compute%5C%2FStorage%2FElastic%20File%20System)_TOPIC%2Fi">Elastic Cloud Compute/Storage/Elastic File System</a></li>
 </ul>
 </div>
-<p>A function is configurable using environment variables. Environment variables are typically set when the function is deployed onto <a href="#BM_(Lambda)%2Fi">Lambda</a>. For example, an environment variable might provide the URL of the database server the function communicates with. Environment variables may be encrypted at-rest via KMS.</p>
+<p>A function is configurable using environment variables. Environment variables are typically set when the function is deployed onto <a href="#BM_(Lambda)%2Fi">Lambda</a>. For example, an environment variable might provide the URL of the database server the function communicates with. Environment variables may be encrypted at-rest via <a href="#BM_%5Cb(KMS)%5Cb%2F">KMS</a>.</p>
 <p>Functions may also be configured to use a shared <a href="#BM_%5Cb(EFS)s%3F%5Cb%2F">EFS</a>, such that data and/or configurations may be shared across invocations.</p>
 <a name="H_Invocation%20Modes"></a><h2>Invocation Modes</h2>
 <p><a name="BM_(Lambda%5C%2FInvocation%20Modes)_TOPIC%2Fi"></a><strong></strong></p>
@@ -1338,7 +1343,7 @@ dynamodb = boto3.resource(<span class="hljs-string">'dynamodb'</span>)
 <p>Each combination of API path (resources) and HTTP method can be bound to a different computing service, typically referred to as an integration. For example, an HTTP <code>GET</code> on the path <code>/my_resource</code> may direct the request to integrate with a <a href="#BM_(Lambda)%2Fi">Lambda</a> function for processing, while an HTTP <code>POST</code> on the same path may direct the request to integrate with <a href="#BM_%5Cb(ECS)s%3F%5Cb%2F">ECS</a>.</p>
 <p><a href="#BM_(API%20Gateway)%2Fi">API Gateway</a> streamlines several common aspects of API management:</p>
 <ul>
-<li>Authentication and authorization: Authenticate users via API keys, <a href="#BM_(IAM%20role)%2Fi">IAM role</a>s, or other mechanisms (e.g. Amazon Cognito, <a href="#BM_(Lambda)%2Fi">Lambda</a> authorizers).</li>
+<li><a href="#BM_(authentication%7Cauthenticate)%2Fi">Authentication</a> and <a href="#BM_(authorization%7Cauthorize)%2Fi">authorization</a>: <a href="#BM_(authentication%7Cauthenticate)%2Fi">Authenticate</a> users via API keys, <a href="#BM_(IAM%20role)%2Fi">IAM role</a>s, or other mechanisms (e.g. Amazon <a href="#BM_(Cognito)%2Fi">Cognito</a>, <a href="#BM_(Lambda)%2Fi">Lambda</a> <a href="#BM_(authorization%7Cauthorize)%2Fi">authorize</a>rs).</li>
 <li>Versioning: Launch several versions of an API in tandem (e.g. v1, v2, v3, etc..).</li>
 <li>Staging: Launch several versions of an API in tandem (e.g. dev, prod, etc..).</li>
 <li>Track usage: Collect metrics on per-user API usage.</li>
@@ -1361,11 +1366,11 @@ dynamodb = boto3.resource(<span class="hljs-string">'dynamodb'</span>)
 <li><a href="#BM_(Identity%20and%20Access%20Management)_TOPIC%2Fi">Identity and Access Management</a></li>
 </ul>
 </div>
-<p>To authorize access to an API, <a href="#BM_(API%20Gateway)%2Fi">API Gateway</a> has built-in support for ...</p>
+<p>To <a href="#BM_(authorization%7Cauthorize)%2Fi">authorize</a> access to an API, <a href="#BM_(API%20Gateway)%2Fi">API Gateway</a> has built-in support for ...</p>
 <ul>
 <li>API keys, which are set and maintained directly through <a href="#BM_(API%20Gateway)%2Fi">API Gateway</a>.</li>
-<li>Cognito user pools, which is an Amazon service for authenticating with third-party identity providers (e.g. Facebook)</li>
-<li><a href="#BM_(Lambda)%2Fi">Lambda</a> authorizers, which are <a href="#BM_(Lambda)%2Fi">Lambda</a> functions used for custom authorization (e.g. look through a custom database to validate credentials).</li>
+<li><a href="#BM_(Cognito)%2Fi">Cognito</a> user pools, which is an Amazon service for authenticating with third-party identity providers (e.g. Facebook)</li>
+<li><a href="#BM_(Lambda)%2Fi">Lambda</a> <a href="#BM_(authorization%7Cauthorize)%2Fi">authorize</a>rs, which are <a href="#BM_(Lambda)%2Fi">Lambda</a> functions used for custom <a href="#BM_(authorization%7Cauthorize)%2Fi">authorization</a> (e.g. look through a custom database to validate credentials).</li>
 </ul>
 <p>To limit access to an API, <a href="#BM_(API%20Gateway)%2Fi">API Gateway</a> allows setting policies on individual resources (paths). These policies can limit access based on <a href="#BM_%5Cb(CIDR%7CCIDR%20block)s%3F%5Cb%2F">CIDR</a> blocks, <a href="#BM_(IAM%20role)%2Fi">IAM role</a>s, and or <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a>s / <a href="#BM_%5Cb(VPC)s%3F%5Cb%2F">VPC</a> endpoints. <a href="#BM_(IAM%20policy%7CIAM%20policies)%2Fi">IAM policies</a> can also be used to define which <a href="#BM_%5Cb(IAM)%5Cb%2F">IAM</a> entities (<a href="#BM_(IAM%20role)%2Fi">IAM role</a>s, <a href="#BM_(IAM%20group)%2Fi">IAM group</a>s, etc..) have access to the API.</p>
 <p>To secure an API, Web Application Firewall (WAF) may be placed in front of <a href="#BM_(API%20Gateway)%2Fi">API Gateway</a> to protect it from common exploits and abuse (e.g. SQL injection).</p>
@@ -1425,6 +1430,73 @@ dynamodb = boto3.resource(<span class="hljs-string">'dynamodb'</span>)
 </ul>
 <p><img src="svgbob_eb97609fa938398b5759e213bd12640ecf6dfc21.svg" alt="Kroki diagram output"></p>
 <p>Batch integrates with <a href="#BM_(CloudWatch)%2Fi">CloudWatch</a> to support monitoring and logging.</p>
+<a name="H_Cognito"></a><h1>Cognito</h1>
+<p><a name="BM_(Cognito_TOPIC)%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Identity%20and%20Access%20Management)_TOPIC%2Fi">Identity and Access Management</a></li>
+</ul>
+</div>
+<p><a href="#BM_(Cognito)%2Fi">Cognito</a> is a service for <a href="#BM_(authentication%7Cauthenticate)%2Fi">authentication</a> and <a href="#BM_(authorization%7Cauthorize)%2Fi">authorization</a> that can either integrate with third-party identity providers (e.g. Google, Facebook, Apple, Active Directory, custom enterprise identity providers, etc..) or act as its own identity provider (e.g. <a href="#BM_(Cognito)%2Fi">Cognito</a> directly stores and manages identities).</p>
+<p><a href="#BM_(Cognito)%2Fi">Cognito</a> handles <a href="#BM_(authentication%7Cauthenticate)%2Fi">authentication</a> and <a href="#BM_(authorization%7Cauthorize)%2Fi">authorization</a> using the concepts of user pools and identity pools:</p>
+<ul>
+<li>A user pool is a user directory and platform for <a href="#BM_(authentication%7Cauthenticate)%2Fi">authentication</a> / <a href="#BM_(authorization%7Cauthorize)%2Fi">authorization</a>.</li>
+<li>An identity pool is a user directory for entities that are allowed temporary access to <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> (for direct access to <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> services).</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The documentation for identity pools explicitly mentions "federated" identities, probably meaning that it's used for linking outside identities to <a href="#BM_(IAM%20role)%2Fi">IAM role</a>s.</p>
+</div>
+<p>Both pool types are covered in the subsections below.</p>
+<a name="H_User%20Pool"></a><h2>User Pool</h2>
+<p><a name="BM_(Cognito%5C%2FUser%20Pool_TOPIC)%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Identity%20and%20Access%20Management)_TOPIC%2Fi">Identity and Access Management</a></li>
+<li><a href="#BM_(Lambda)_TOPIC%2Fi">Lambda</a></li>
+</ul>
+</div>
+<p><a href="#BM_(Cognito)%2Fi">Cognito</a> integrates with an application / client via a user pool: A user pool stores and maintains a user directory and provides control over the <a href="#BM_(authentication%7Cauthenticate)%2Fi">authentication</a> and <a href="#BM_(authorization%7Cauthorize)%2Fi">authorization</a> flow. For example, a user pool can control ...</p>
+<ul>
+<li>attributes a user is required to submit (e.g. name, address, DOB, phone, email, website, etc..).</li>
+<li>password requirements (e.g. must contain uppercase characters, lowercase characters, and numbers).</li>
+<li>multi-factor <a href="#BM_(authentication%7Cauthenticate)%2Fi">authentication</a> (MFA) requirements.</li>
+<li>account verification requirements (e.g. user must respond to an email or SMS).</li>
+<li>account recovery requirements (e.g. user may only recover account via email).</li>
+<li>remembering <a href="#BM_(authentication%7Cauthenticate)%2Fi">authenticate</a>d devices (e.g. user already logged in before under this Android device).</li>
+<li>identity providers supported (e.g. user pool A may depend on <a href="#BM_(Lambda)%2Fi">Lambda</a> functions for <a href="#BM_(authentication%7Cauthenticate)%2Fi">authentication</a> while user pool B may depend on Google).</li>
+<li>custom <a href="#BM_(Lambda)%2Fi">Lambda</a> function "triggers" (e.g. function executes when a user signs up).</li>
+</ul>
+<p>User pools support placing users into groups, where each group may have a certain set of privileges (e.g. admin group vs normal group). A user can belong to multiple groups. Each group may be assigned ...</p>
+<ul>
+<li><a href="#BM_(IAM%20role)%2Fi">IAM role</a>: Users in the group will be granted the same permissions as the <a href="#BM_(IAM%20role)%2Fi">IAM role</a>, allowing those users to access resources within <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>.</li>
+<li>precedence: Users belonging to many groups disambiguate which group's <a href="#BM_(IAM%20role)%2Fi">IAM role</a> is applied based on group precedence. The group with the lowest precedence (lower is more preferred) will have its <a href="#BM_(IAM%20role)%2Fi">IAM role</a> applied to the user.</li>
+</ul>
+<p>In the background, each user pool acts as an OpenID Connect (OIDC) identity provider (IdP). Once <a href="#BM_(authentication%7Cauthenticate)%2Fi">authenticate</a>d, the client receives JSON Web Tokens (JWT) for ...</p>
+<ul>
+<li>identity details: Contains information on the user (e.g.).</li>
+<li>access rights: Contains information on the user's <a href="#BM_(authorization%7Cauthorize)%2Fi">authorization</a> (e.g. groups they're apart of, who issued access, etc..).</li>
+<li>token refreshing: Allows tokens to be refreshed to avoid expiration (tokens expire after some time).</li>
+</ul>
+<p>A client proves it has necessary access rights by passing along JWTs in its request. To <a href="#BM_(authentication%7Cauthenticate)%2Fi">authenticate</a>, <a href="#BM_(Cognito)%2Fi">Cognito</a> provides a hosted <a href="#BM_(authentication%7Cauthenticate)%2Fi">authentication</a> page or other <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> services either integrate directly with <a href="#BM_(Cognito)%2Fi">Cognito</a> or provide integration functionality. For example, <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> provides a suite of development tools called Amplify, which provides React components for <a href="#BM_(authentication%7Cauthenticate)%2Fi">authentication</a> with <a href="#BM_(Cognito)%2Fi">Cognito</a>.</p>
+<a name="H_Identity%20Pool"></a><h2>Identity Pool</h2>
+<p><a name="BM_(Cognito%5C%2FIdentity%20Pool_TOPIC)%2Fi"></a><strong></strong></p>
+<p>An identity pool allows <a href="#BM_(authentication%7Cauthenticate)%2Fi">authenticate</a>d and un<a href="#BM_(authentication%7Cauthenticate)%2Fi">authenticate</a>d users to assume an <a href="#BM_(IAM%20role)%2Fi">IAM role</a>. Those users are given temporary credentials which they can then use to interface with the <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> API directly as the <a href="#BM_(IAM%20role)%2Fi">IAM role</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The documentation for identity pools explicitly mentions "federated" identities, probably meaning that it's used for linking outside identities.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Learning material says there are two modes of operation here, but Google isn't showing anything.</p>
+<ul>
+<li>direct service integration: Useful to have app interact directly with <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a> service (e.g. <a href="#BM_%5Cb(S3)%5Cb%2F">S3</a>).</li>
+<li>permission passthrough: <a href="#BM_(Lambda)%2Fi">Lambda</a> function uses the permission for the user as opposed to the permissions on the function itself.</li>
+</ul>
+</div>
+<p>Different <a href="#BM_(IAM%20role)%2Fi">IAM role</a>s can be assigned for <a href="#BM_(authentication%7Cauthenticate)%2Fi">authenticate</a>d vs un<a href="#BM_(authentication%7Cauthenticate)%2Fi">authenticate</a>d users.</p>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>
@@ -1580,12 +1652,12 @@ dynamodb = boto3.resource(<span class="hljs-string">'dynamodb'</span>)
 <li>an <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">access key ID</a>, which is analogous to a username.</li>
 <li>a <a href="#BM_(access%20key%20ID%7Caccess%20key%7Csecret%20access%20key)%2Fi">secret access key</a>, which is analogous to a password.</li>
 </ol>
-<p>Both of these parts must be used together to authenticate against <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>.</p>
+<p>Both of these parts must be used together to <a href="#BM_(authentication%7Cauthenticate)%2Fi">authenticate</a> against <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>.</p>
 </li>
 <li>
 <p><a name="BM_(elastic%20load%20balancer%7Celastic%20load%20balancing)%2Fi"></a><strong>elastic load balancer</strong> <a name="BM_%5Cb(ELB)s%3F%5Cb%2F"></a><strong></strong> - A self-scaling load balancer that <a href="#BM_(route%20table%7Croute)%2Fi">route</a>s incoming traffic to a specific target group (e.g. <a href="#BM_%5Cb(instance%7CEC2%20instance)s%3F%5Cb%2F">EC2 instance</a>s, <a href="#BM_%5Cb(ECS)s%3F%5Cb%2F">ECS</a> deployment, <a href="#BM_%5Cb(EKS)s%3F%5Cb%2F">EKS</a> deployment, <a href="#BM_(Lambda)%2Fi">lambda</a> function, <a href="#BM_(private%7Cinternal)%2Fi">internal</a> IP addresses, etc..) across a set of <a href="#BM_%5Cb(AZs%3F)%5Cb%2F">AZs</a> (us-east-1 and us-east-2). There are two <a href="#BM_%5Cb(ELB)s%3F%5Cb%2F">ELB</a> types:</p>
 <ul>
-<li>application load balancer - HTTP/HTTPS traffic that supports certificate management, SSL/TLS decryption, user authentication, sticky sessions, and redirects.</li>
+<li>application load balancer - HTTP/HTTPS traffic that supports certificate management, SSL/TLS decryption, user <a href="#BM_(authentication%7Cauthenticate)%2Fi">authentication</a>, sticky sessions, and redirects.</li>
 <li>network load balancer - TCP/TLS traffic that supports long-lived connections.</li>
 </ul>
 <p>An <a href="#BM_%5Cb(ELB)s%3F%5Cb%2F">ELB</a> uses health checks to decide which resources in a target group to <a href="#BM_(route%20table%7Croute)%2Fi">route</a> traffic to. Specific endpoints on those resources are queried by the <a href="#BM_%5Cb(ELB)s%3F%5Cb%2F">ELB</a> to determine if the resource can accept traffic (e.g. a special path on a web server that returns "OK" if healthy).</p>
@@ -1689,6 +1761,18 @@ m6in.4xlarge
 </li>
 <li>
 <p><a name="BM_(Elastic%20Kubernetes%20Service)%2Fi"></a><strong>Elastic Kubernetes Service</strong> <a name="BM_%5Cb(EKS)s%3F%5Cb%2F"></a><strong></strong> - Kubernetes service provided by <a href="#BM_%5Cb(AWS)%5Cb%2F">AWS</a>.</p>
+</li>
+<li>
+<p><a name="BM_(Cognito)%2Fi"></a><strong>Cognito</strong> - A service for <a href="#BM_(authentication%7Cauthenticate)%2Fi">authentication</a> and <a href="#BM_(authorization%7Cauthorize)%2Fi">authorization</a> that can either integrate with third-party identity providers (e.g. Google, Facebook, a corporate Active Directory, etc..) or act as its own identity provider (e.g. <a href="#BM_(Cognito)%2Fi">Cognito</a> directly stores and manages identities).</p>
+</li>
+<li>
+<p><a name="BM_(authentication%7Cauthenticate)%2Fi"></a><strong>authentication</strong> - The process of verifying an identity  (e.g. confirming a user is who they say they are by validating their credentials).</p>
+</li>
+<li>
+<p><a name="BM_(authorization%7Cauthorize)%2Fi"></a><strong>authorization</strong> - The process of identifying what an entity has access to (e.g. full access to a file, read-only access to a file, etc..).</p>
+</li>
+<li>
+<p><a name="BM_(Key%20Management%20Service)%2Fi"></a><strong>Key Management Service</strong> <a name="BM_%5Cb(KMS)%5Cb%2F"></a><strong></strong> - A service for creating and controlling cryptographic keys. <a href="#BM_%5Cb(KMS)%5Cb%2F">KMS</a> operates directly with other services like <a href="#BM_%5Cb(EFS)s%3F%5Cb%2F">EFS</a>, <a href="#BM_%5Cb(EBS%20volume%7CEBS)s%3F%5Cb%2F">EBS</a>, and <a href="#BM_%5Cb(S3)%5Cb%2F">S3</a> to automatically encrypt data at-rest.</p>
 </li>
 </ul>
 <p></p>
