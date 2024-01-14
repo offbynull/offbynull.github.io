@@ -3,193 +3,102 @@
 
 # Review
 
-## Factoring Polynomials
-
-To factor a quadratic `{kt} ax^2+bx+c`, find two numbers r and s such that when ...
-
- * added, `{kt} ar+s=b`.
- * multiplied, `{kt} rs=c`.
-
-`{kt} ax^2+arx+sx+rs = ax(x+r)+s(x+r) = (ax+s)(x+r)`
-
-For example, `{kt} 2x^2-7x-4 = 2x^2-8x+1x-4 = (2x+1)(x-4)`.
-
-Factoring quadratics is useful for finding their roots_POLY (where x=0) as well as algebraic manipulations such as simplifying.
-
-```{note}
-You often see explained online for the special case where a=1: `{kt} x^2+bx+c`, which means you're trying to find two numbers r and s where `{kt} r+s=b` and `{kt} rs=c`...
-
- * added, equal b: `{kt} r+s=b`.
- * multiplied, equal c: `{kt} rs=c`.
-
-`{kt} x^2+rx+sx+rs = x(x+r)+s(x+s) = (x+r)(x+s)`.
-```
-
-Expressions that follow the pattern ...
-
- * `{kt} a^2-b^2`, called difference of squares, factor as `{kt} a^2-b^2 = (a-b)(a+b)`.
- * `{kt} a^3-b^3`, called difference of cubes, factor as `{kt} a^3-b^3 = (a-b)(a^2+ab+b^2)`.
- * `{kt} a^3+b^3`, called sum of cubes, factor as `{kt} a^3+b^3 = (a+b)(a^2-ab+b^2)`.
-
-## Completing the Square
-
-To complete the square for a `{kt} ax^2+bx+c`, begin by pulling out a from first two terms: `{kt} a(x^2+\frac{b}{a}x)+c`.
-
-Then, rewrite the inner group `{kt} x^2+\frac{b}{a}x` to be in the form `{kt} (x+s)^2`. To do this, a constant term needs to be added to the inner group such that it can be factored. `{kt} (x+s)^2` expands out to `{kt} x^2+2sx+s^2`, meaning the constant term should map to `{kt} s^2`.
-
-To determine what s should be for the inner group, use algebra. It's known that the ...
-
- * inner group's middle term `{kt} \frac{a}{b}` maps to `{kt} 2sx`.
- * inner group's constant term should map to `{kt} s^2`.
-
-```{kt}
-\frac{b}{a}x = 2sx
-\frac{b}{a} = 2s
-\frac{b}{2a} = s
-```
-
-Since `s = \frac{b}{2a}`, adding `{kt} \frac{b}{2a}^2` to the inner group makes it factorable into the form `{kt} (x+s)^2`: `{kt} a(x^2+\frac{b}{a}x+\frac{b}{2a}^2)+c`. However, the problem with adding this term to the inner group is that the overall expression is now different from the original: `{kt} a(x^2+\frac{b}{a}x)+c \neq a(x^2+\frac{b}{a}x+\frac{b}{2a})+c`. A quantity of `{kt} a(\frac{b}{2a}^2)` has been added in, and so that same quantity needs to be removed: `{kt} a(x^2+\frac{b}{a}x)+c = a(x^2+\frac{b}{a}x+\frac{b}{2a}^2)+c-a(\frac{b}{2a}^2)`.
-
-For example, to complete the square for `{kt} 2x^2-12x+11` ...
-
- * pull out a from first two terms: `{kt} 2(x^2-6x)+11`.
- * add and remove quantity to make factorable: `{kt} 2(x^2-6x+9)+11-18`.
- * factor inner group to `{kt} (x+s)^2` form: `{kt} 2(x-3)^2+11-18`.
- * add together constant terms: `{kt} 2(x-3)^2-7`.
-
-Completing the square is useful because it gets your equation into graph transformation format. For the example above, just by looking at the completed formula `{kt} 2(x-3)^2-7` you can tell that it's a parabola ...
-
- * shifted down by 7.
- * shifted right by 3.
- * stretched up by 2 times.
-
-```{note}
-The material also mentions that this is useful for integrating rational functions.
-```
-
-## Quadratic Formula
-
-The quadratic formula determines the x-intercepts of a quadratic (where `{kt} ax^2+bx+c=0`, as in where the quadratic evaluates to 0, also called roots_POLY): `{kt} x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}`. For example, the quadratic `{kt} 2x^2-7x-4` has the x-intercepts `{kt} x=\frac{-(-7)\pm\sqrt{(-7)^2-4(2)(-4)}}{2(2)}=\frac{7\pm\sqrt{81}}{4}=\frac{7\pm9}{4}=\{-0.5,4\}`.
-
-`{kt} b^2-4ac` is referred to as the discriminant. When the discriminant is ...
-
- * `{kt} b^2-4ac > 0`, there are two real roots_POLY.
- * `{kt} b^2-4ac = 0`, there's one real root_POLY.
- * `{kt} b^2-4ac < 0`, there's no real root_POLY.
-
-The last case is a quadratic that can't be factored. A quadratic that can't be factored is called irreducible.
-
-The quadratic formula is derived by completing the square:
-
-```{kt}
-ax^2+bx+c=0 \\
-ax^2+bx=-c \\
-x^2+\frac{b}{a}x=\frac{-c}{a} \\
-x^2+\frac{b}{a}x+(\frac{b}{2a})^2=\frac{-c}{a}+(\frac{b}{2a})^2 \\
-(x+\frac{b}{2a})^2=\frac{-c}{a}+(\frac{b}{2a})^2 \\
-(x+\frac{b}{2a})^2=\frac{-c}{a}+\frac{b^2}{4a^2} \\
-(x+\frac{b}{2a})^2=\frac{-4ac}{4a^2}+\frac{b^2}{4a^2} \\
-(x+\frac{b}{2a})^2=\frac{-4ac+b^2}{4a^2} \\
-(x+\frac{b}{2a})^2=\frac{b^2-4ac}{4a^2} \\
-x+\frac{b}{2a}=\pm\sqrt(\frac{b^2-4ac}{4a^2}) \\
-x=\pm\sqrt(\frac{b^2-4ac}{4a^2})-\frac{b}{2a}
-```
-
-```{note}
-The completing the square step is from step 2 to 3.
-```
-
-## Binomial Theorem
-
-The binomial theorem is used for quickly expanding expressions in the form `{kt} (a+b)^n` where k is a positive integer: `{kt} (a + b)^n = \sum_{k=0}^{n} \binom{n}{k} a^{n-k} b^k`.
-
-```{note}
-`{kt} \binom{n}{k}` is "k choose n", something covered in statistics / probability theory / combinatorics. For now, just know `{kt} \binom{n}{k} = \frac{n!}{k!(n-k)!}`.
-```
-
-For example, ...
-
- * `{kt} (a + b)^2 = a^2+2ab+b^2`
- * `{kt} (a + b)^3 = a^3+3a^2b+3ab^2+b^3`
- * `{kt} (a + b)^4 = a^4+4a^3b+6a^2b^2+4ab^3+b^4`
- * etc..
-
-## Polynomial Division
-
-Polynomial division is a process that breaks a polynomial into two factors, given that one of the factors is already known. The process works similarly to long division in that you're dividing the polynomial by that known factor to determine the other factor. For example, consider the polynomial `{kt} 2x^3+x^2-6x-8`. If you already know that `{kt} (x-2)` is a factor, you can divide the polynomial by that known factor to determine the other factor:
-
-```
-               2x^2  + 5x  + 4
-    .-------------------------
-x-2 |    2x^3 +  x^2 -  6x - 8
-      - (2x^3 - 4x^2)
-	    -------------
-		        5x^2 -  6x
-			 - (5x^2 - 10x)
-			   ------------
-			            4x - 8
-				     - (4x - 8)
-					  ---------
-					         0
-```
-
-```{note}
-Note what's happening here. The first term in the quotient is `{kt} 2x^2` because when you multiply it by the divisor `{kt} (x-2)` it results in `{kt} 2x^3+x^2`. Subtracting `{kt} 2x^3+x^2` from the dividend completely eliminates the 2x^3 from the dividend.
-
-This same process continues for each term in the quotient.
-```
-
-In the example, polynomial division determined that the other factor is `{kt} 2x^2+5x+4`. That is, `{kt} (x-2)(2x^2+5x+4)=2x^3+x^2-6x-8`. The other factor can then go on to be factored again by some other method (or potentially the same method), assuming it's factorable.
-
-For polynomial division to work, you must already know one of the polynomial's factors. If you don't already have a starting factor, there are multiple ways to find one:
-
- * Graphing calculator: Try using a graphing calculator to see if you can find one of the roots_POLY. The roots_POLY are values of x where the graph touches or crosses the x-axis.
-
- * Trial-and-error: Try plugging values for x into the polynomial until one evaluates to 0. For example, `{kt} 2x^3+x^2-6x-8` when ...
-
-   * x=0 evaluates to -8
-   * x=1 evaluates to -11  
-   * x=2 evaluates to 0 
-
-   When x=2, the polynomial evaluates to 0, meaning `{kt} (x-2)` is a factor.
-
- * Rational root theorem: Assuming `P(x)` is a polynomial with integer coefficients, a root_POLY of the equation `{kt} P(x)=0` can be expressed in the form `{kt} \frac{p}{q}`, where ...
- 
-   * p is a factor of the constant term.
-   * q is a factor of the leading coefficient.
- 
-   In other words, you can find a factor by testing all possible `{kt} \frac{p}{q}` to see if it's a root_POLY / factor of the polynomial. For example, the polynomial `{kt} P(x)=2x^3+x^2-6x-8` has ...
-
-   * constant term factors p={-8,-6,-4,-2,-1,1,2,4,6,8}.
-   * leading coefficient factors q={1,2}.
-
-   Testing possible `{kt} \frac{p}{q}` within `P(x)` shows that `{kt} \frac{4}{2}=2` is a root_POLY: `{kt} P(2) = 0`. Since `{kt} 2` is a root_POLY, `{kt} (x-2)` is a factor.
-   
-   ```{note}
-   It's called "rational root theorem" because the coefficients have to be rational / real numbered coefficients? (e.g. coefficients can't be an imaginary or complex number).
-   ```
-
-You can use the methods described above to iteratively pull out roots_POLY using polynomial division until the entire polynomial is factored. For example, ...
-
- 1. use rational root theorem to determine `(x-2)` is a factor of `{kt} x^3-3x^2-10x+24`.
- 2. use polynomial division to factorize `{kt} x^3-3x^2-10x+24` to `{kt} (x-2)(x^2-x-12)`.
- 3. use rational root theorem to determine `(x-4)` is a factor of `{kt} x^2-x-12`.
- 4. use polynomial division to factorize `{kt} x^2-x-12` to `{kt} (x-2)(x-4)`.
-
-`{kt} x^3-3x^2-10x+24 = (x-2)(x-2)(x-4)`.
-
 
 # Terminology
 
 * `{bm} quadratic` - An expression where the highest exponent on the top-level terms is 2. For example, `{kt} 2x^2+4x+4` is a quadratic.
 
-* `{bm} root/(roots?)_POLY/i` - Given a polynomial `P(x)`, its roots_POLY are x values where `{kt} P(x)=0`. If you were to graph `P(x)`, the roots_POLY would be values of x that touch the x-axis.
+* `{bm} root/(roots?)_POLY/i` - Given a polynomial `{kt} P(x)`, its roots_POLY are x values where `{kt} P(x)=0`. If you were to graph `{kt} P(x)`, the roots_POLY would be values of x that touch the x-axis.
 
   ```{note}
-  Tough thinking about this? Think of it as finding the x-coordinate values on the graph `{kt} y=ax^2+bx+c` at `y=0`.
+  Roots_POLY can be thought of as factors? If a polynomial's root_POLY is x=0.5, then it should have the factor (2x-1)?
   ```
 
-* `{bm} quadratic formula` - A formula determines a quadratic's roots_POLY: `{kt} x=\frac{-b\pm\sqrt{b^2-4ac}{2a}`.
+* `{bm} product-sum factoring/(product[-\s]factoring)/i` - A process that factors a quadratic `{kt} ax^2+bx+c` by finding two numbers r and s that when ...
+
+  * added, `{kt} ar+s=b`.
+  * multiplied, `{kt} rs=c`.
+
+  `{kt} ax^2+arx+sx+rs = ax(x+r)+s(x+r) = (ax+s)(x+r)`
+
+  Factoring quadratics is useful for finding their roots_POLY (where x=0 / where they touch x-intercepts) as well as for algebraic manipulations such as simplifying.
+
+  ```{note}
+  You often see explained online for the special case where a=1: `{kt} x^2+bx+c`, which means you're trying to find two numbers r and s where `{kt} r+s=b` and `{kt} rs=c`...
+  
+   * added, equal b: `{kt} r+s=b`.
+   * multiplied, equal c: `{kt} rs=c`.
+  
+  `{kt} x^2+rx+sx+rs = x(x+r)+s(x+s) = (x+r)(x+s)`.
+  ```
+
+* `{bm} complete the square/(complete the square|completing the square)/i` - A technique for converting a quadratic in the form `{kt} ax^2+bx+c` into the form `{kt} a(x-h)^2+k`. To complete the square for a `{kt} ax^2+bx+c`, begin by pulling out a from first two terms: `{kt} a(x^2+\frac{b}{a}x)+c`.
+
+  Then, rewrite the inner group `{kt} x^2+\frac{b}{a}x` to be in the form `{kt} (x+s)^2`. To do this, a constant term needs to be added to the inner group such that it can be factored. `{kt} (x+s)^2` expands out to `{kt} x^2+2sx+s^2`, meaning the constant term should map to `{kt} s^2`.
+  
+  To determine what s should be for the inner group, use algebra. It's known that the ...
+  
+   * inner group's middle term `{kt} \frac{a}{b}` maps to `{kt} 2sx`.
+   * inner group's constant term should map to `{kt} s^2`.
+  
+  ```{kt}
+  \frac{b}{a}x = 2sx
+  \frac{b}{a} = 2s
+  \frac{b}{2a} = s
+  ```
+  
+  Since `s = \frac{b}{2a}`, adding `{kt} \frac{b}{2a}^2` to the inner group makes it factorable into the form `{kt} (x+s)^2`: `{kt} a(x^2+\frac{b}{a}x+\frac{b}{2a}^2)+c`. However, the problem with adding this term to the inner group is that the overall expression is now different from the original: `{kt} a(x^2+\frac{b}{a}x)+c \neq a(x^2+\frac{b}{a}x+\frac{b}{2a})+c`. A quantity of `{kt} a(\frac{b}{2a}^2)` has been added in, and so that same quantity needs to be removed: `{kt} a(x^2+\frac{b}{a}x)+c = a(x^2+\frac{b}{a}x+\frac{b}{2a}^2)+c-a(\frac{b}{2a}^2)`.
+  
+  For example, to complete the square for `{kt} 2x^2-12x+11` ...
+  
+   * pull out a from first two terms: `{kt} 2(x^2-6x)+11`.
+   * add and remove quantity to make factorable: `{kt} 2(x^2-6x+9)+11-18`.
+   * factor inner group to `{kt} (x+s)^2` form: `{kt} 2(x-3)^2+11-18`.
+   * add together constant terms: `{kt} 2(x-3)^2-7`.
+  
+  Completing the square is useful because it gets your equation into graph transformation format. For the example above, just by looking at the completed formula `{kt} 2(x-3)^2-7` you can tell that it's a parabola ...
+  
+   * shifted down by 7.
+   * shifted right by 3.
+   * stretched up by 2 times.
+  
+  ```{note}
+  The material also mentions that this is useful for integrating rational functions.
+  ```
+
+* `{bm} quadratic formula` - The quadratic formula determines the x-intercepts of a quadratic (where `{kt} ax^2+bx+c=0`, as in where the quadratic evaluates to 0, also called roots_POLY): `{kt} x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}`. For example, the quadratic `{kt} 2x^2-7x-4` has the x-intercepts `{kt} x=\frac{-(-7)\pm\sqrt{(-7)^2-4(2)(-4)}}{2(2)}=\frac{7\pm\sqrt{81}}{4}=\frac{7\pm9}{4}=\{-0.5,4\}`.
+
+  `{kt} b^2-4ac` is referred to as the discriminant, and can be used to determine the number of real numbered roots_POLY that a quadratic has.
+  
+  The quadratic formula is derived by completing the square:
+  
+  ```{kt}
+  ax^2+bx+c=0 \\
+  \\
+  ax^2+bx=-c \\
+  \\
+  x^2+\frac{b}{a}x=\frac{-c}{a} \\
+  \\
+  x^2+\frac{b}{a}x+(\frac{b}{2a})^2=\frac{-c}{a}+(\frac{b}{2a})^2 \\
+  \\
+  (x+\frac{b}{2a})^2=\frac{-c}{a}+(\frac{b}{2a})^2 \\
+  \\
+  (x+\frac{b}{2a})^2=\frac{-c}{a}+\frac{b^2}{4a^2} \\
+  \\
+  (x+\frac{b}{2a})^2=\frac{-4ac}{4a^2}+\frac{b^2}{4a^2} \\
+  \\
+  (x+\frac{b}{2a})^2=\frac{-4ac+b^2}{4a^2} \\
+  \\
+  (x+\frac{b}{2a})^2=\frac{b^2-4ac}{4a^2} \\
+  \\
+  x+\frac{b}{2a}=\pm\sqrt(\frac{b^2-4ac}{4a^2}) \\
+  \\
+  x=\pm\sqrt(\frac{b^2-4ac}{4a^2})-\frac{b}{2a}
+  ```
+  
+  ```{note}
+  The completing the square step is from step 2 to 3.
+  ```
 
 * `{bm} discriminant` - The expression `{kt} b^2-4ac` within the quadratic formula. When the discriminant is ...
 
@@ -197,6 +106,18 @@ You can use the methods described above to iteratively pull out roots_POLY using
   * `{kt} b^2-4ac = 0`, there's one real root_POLY.
   * `{kt} b^2-4ac < 0`, there's no real root_POLY.
 
+* `{bm} binomial theorem` - A formula to quick expansion of expressions in the form `{kt} (a+b)^n` where k is a positive integer: `{kt} (a + b)^n = \sum_{k=0}^{n} \binom{n}{k} a^{n-k} b^k`.
+
+  ```{note}
+  `{kt} \binom{n}{k}` is "k choose n", something covered in statistics / probability theory / combinatorics. For now, just know `{kt} \binom{n}{k} = \frac{n!}{k!(n-k)!}`.
+  ```
+
+  For example, ...
+
+  * `{kt} (a + b)^2 = a^2+2ab+b^2`
+  * `{kt} (a + b)^3 = a^3+3a^2b+3ab^2+b^3`
+  * `{kt} (a + b)^4 = a^4+4a^3b+6a^2b^2+4ab^3+b^4`
+  * etc..
 
 * `{bm} difference of squares` - Quadratic expressions that follow the pattern `{kt} a^2-b^2`. Difference of squares factor as `{kt} a^2-b^2 = (a-b)(a+b)`.
 
@@ -204,7 +125,7 @@ You can use the methods described above to iteratively pull out roots_POLY using
 
 * `{bm} sum of cubes` - Cubic expressions that follow the pattern `{kt} a^3+b^3`. Sum of cubes factor as `{kt} a^3+b^3 = (a+b)(a^2-ab+b^2)`.
 
-* `{bm} polynomial division` - A process that breaks a polynomial into two factors, given that one of the factors is already known. For example, consider the polynomial `{kt} 2x^3+x^2-6x-8`. If you already know that `{kt} (x-2)` is a factor, you can divide the polynomial by that known factor to determine the other factor:
+* `{bm} polynomial division` - A process that breaks a polynomial into two factors, given that one of the factors is already known. The process works similarly to long division in that you're dividing the polynomial by that known factor to determine the other factor. For example, consider the polynomial `{kt} 2x^3+x^2-6x-8`. If you already know that `{kt} (x-2)` is a factor, you can divide the polynomial by that known factor to determine the other factor:
 
   ```
                  2x^2  + 5x  + 4
@@ -220,10 +141,44 @@ You can use the methods described above to iteratively pull out roots_POLY using
   					  ---------
   					         0
   ```
+  
+  ```{note}
+  Note what's happening here. The first term in the quotient is `{kt} 2x^2` because when you multiply it by the divisor `{kt} (x-2)` it results in `{kt} 2x^3+x^2`. Subtracting `{kt} 2x^3+x^2` from the dividend completely eliminates the 2x^3 from the dividend.
+  
+  This same process continues for each term in the quotient.
+  ```
+  
+  In the example, polynomial division determined that the other factor is `{kt} 2x^2+5x+4`. That is, `{kt} (x-2)(2x^2+5x+4)=2x^3+x^2-6x-8`. The other factor can then go on to be factored again by some other method (or potentially the same method), assuming it's factorable.
+  
+  For polynomial division to work, you must already know one of the polynomial's factors. If you don't already have a starting factor, there are multiple ways to find one:
+  
+   * Graphing calculator: Try using a graphing calculator to see if you can find one of the roots_POLY. The roots_POLY are values of x where the graph touches or crosses the x-axis.
+  
+   * Trial-and-error: Try plugging values for x into the polynomial until one evaluates to 0. For example, `{kt} 2x^3+x^2-6x-8` when ...
+  
+     * x=0 evaluates to -8
+     * x=1 evaluates to -11  
+     * x=2 evaluates to 0 
+  
+     When x=2, the polynomial evaluates to 0, meaning `{kt} (x-2)` is a factor.
+  
+   * Rational root theorem: Assuming `{kt} P(x)` is a polynomial with integer coefficients, a root_POLY of the equation `{kt} P(x)=0` can be expressed in the form `{kt} \frac{p}{q}`, where ...
+   
+     * p is a factor of the constant term.
+     * q is a factor of the leading coefficient.
+   
+     In other words, you can find a factor by testing all possible `{kt} \frac{p}{q}` to see if it's a root_POLY / factor of the polynomial.
+  
+  You can use the methods described above to iteratively pull out roots_POLY using polynomial division until the entire polynomial is factored. For example, ...
+  
+  1. use rational root theorem to determine `(x-2)` is a factor of `{kt} x^3-3x^2-10x+24`.
+  2. use polynomial division to factorize `{kt} x^3-3x^2-10x+24` to `{kt} (x-2)(x^2-x-12)`.
+  3. use rational root theorem to determine `(x-4)` is a factor of `{kt} x^2-x-12`.
+  4. use polynomial division to factorize `{kt} x^2-x-12` to `{kt} (x-2)(x-4)`.
+  
+  `{kt} x^3-3x^2-10x+24 = (x-2)(x-2)(x-4)`.
 
-  As shown in the example above, the process works similarly to long division. The polynomial is being divided by the known factor to determine the other factor: `{kt} (x-2)(2x^2+5x+4)=2x^3+x^2-6x-8`.
-
-* `{bm} Rational root theorem` - A theorem that states a root_POLY of the polynomial equation `{kt} P(x)=0` can be expressed in the form `{kt} \frac{p}{q}` (assuming `P(x)` is a polynomial with integer coefficients), where ...
+* `{bm} Rational root theorem` - A theorem that states a root_POLY of the polynomial equation `{kt} P(x)=0` can be expressed in the form `{kt} \frac{p}{q}` (assuming `{kt} P(x)` is a polynomial with integer coefficients), where ...
  
   * p is a factor of the constant term.
   * q is a factor of the leading coefficient.
@@ -233,13 +188,164 @@ You can use the methods described above to iteratively pull out roots_POLY using
   * constant term factors p={-8,-6,-4,-2,-1,1,2,4,6,8}.
   * leading coefficient factors q={1,2}.
 
-  Testing possible `{kt} \frac{p}{q}` within `P(x)` shows that `{kt} \frac{4}{2}=2` is a root_POLY: `{kt} P(2) = 0`. Since `{kt} 2` is a root_POLY, `{kt} (x-2)` is a factor.
+  Testing possible `{kt} \frac{p}{q}` within `{kt} P(x)` shows that `{kt} \frac{4}{2}=2` is a root_POLY: `{kt} P(2) = 0`. Since `{kt} 2` is a root_POLY, `{kt} (x-2)` is a factor.
 
   `{bm-error} Remove _POLY from the word root/(rational root_POLY theorem)/i`
+
+* `{bm} function` - A mapping between two sets I and O, where each element in I maps to _exactly one_ element in set O. A function is written in the format `{kt} f(x)`, where ...
+
+  * f is the name of the function.
+  * x is an element in set I.
+  * `{kt} f(x)` is an element in set O (the element corresponding to x).
+
+  ```{note}
+  `{kt} f(x)` is typically spoken "f of x".
+  ```
+
+  If the mapping performed by the function is a mathematical expression, that expression is typically written alongside the function: `{kt} f(x)=x^2`. Not all functions are representable as an expression. For example, a function that maps time to a company's stock price typically isn't representable as an expression (but it may be approximated using an expression, called a mathematical model).
+
+  * The set I is referred to as the function's domain. For example, in `{kt} f(x)=\frac{1}{x}`, the domain is all real numbers except 0 because division by 0 isn't a valid and so the function has no output (no corresponding element in set O).
+  * The set O is referred to as the function's range. For example, in `{kt} f(x)=x^2`, the range is all real numbers >=0 because there is no element in set I will produce a negative output.
+
+  A function can be thought of as a mapping (as described above) or as a machine that transforms inputs. As long as the input is in the domain of that function, then the machine accepts it and produces an output. For example, the function `{kt} g(x)=\frac{1}{x}` can be thought of as a machine named g, which takes in an input named x and produces an output named `{kt} g(x)`. 
+
+  ```{svgbob}
+           .-------.
+       ----'       '----
+  x ---->      g      ----> "g(x)"
+       ----.       .----
+	       '-------'
+  ```
+
+* `{bm} domain` - The set of all of valid inputs for a function. For example, in `{kt} f(x)=\frac{1}{x}`, the domain is all real numbers except 0 because division by 0 isn't a valid and so the function has no output (no corresponding element in set O).
+
+  Some functions explicitly state domain. If a function is mapped as an expression and its domain isn't explicitly stated, such as in the example above, the convention is that its domain is the set of all *real numbers* for which the expression evaluates to a *real number*. For example, `{kt} f(x)=\sqrt{x-2}` has the domain `{kt} x \ge 2` because `{kt} x < 2` would result in a negative number being fed into the square root, resulting in an imaginary number rather than a real number.
+
+* `{bm} range` - The set of all valid outputs for a function. For example, in `{kt} f(x)=x^2`, the range is all real numbers >= 0 because there is no element in set I will produce a negative output.
+
+* `{bm} independent variable` - A symbol that represents some value in a function's domain. For example,  x in `{kt} a=x^2` is an independent variable. In other words, a depends on x, making x the independent variable and a the dependent variable.
+
+  ```{note}
+  Normally the function would be written as `{kt} f(x)=x^2`, but f(x) is replaced with a to illustrate the point?
+  ```
+
+* `{bm} dependent variable` - A symbol that represents some value in a function's range. For example, a in `{kt} a=x^2` is a dependent variable. In other words, a depends on x, making x the independent variable and a the dependent variable.
+
+  ```{note}
+  Normally the function would be written as `{kt} f(x)=x^2`, but f(x) is replaced with a to illustrate the point?
+  ```
+
+* `{bm} mathematical model` - A function mapped using an expression, where that expression is an approximation for some other function that isn't mapped using an expression. For example, a function `{kt} f(x)` with the mapping ...
+
+  | x | f(x)  |
+  |---|-------|
+  | 1 | 1.01  | 
+  | 2 | 3.99  |
+  | 3 | 9.02  |
+  | 4 | 15.98 |
+
+  ... may be approximated using the mathematical model `{kt} g(x)=x^2`.
+
+* `{bm} vertical line test` - A test to determine if a curve (bendy line graphed on a 2D coordinate plane) is representable as a function. The test involves scanning a vertical line over the curve, checking to see if the vertical line ever intersects the curve more than once.
+
+  The test assumes that the x-axis is the function's input and the y-axis is the function's output. More than one intersection with a vertical line means that there's a case where the function has 2 outputs for 1 input, which breaks the definition of a function: A function requires that each input have exactly one output.
+
+  ```{svgbob}
+  "Not representable as a function"         "Representable as a function"
+
+              | /                                        | /  
+              |/                                         |/   
+          ----+----                                  ----+----
+              |                                          |\   
+              |                                          | \  
+  ```
+
+* `{bm} piecewise function/(piece[-\s]?wise function|piece[-\s]?wise defined function)/i` - A collection of functions combined together to form a single function, where each function in the collection is used for a different part of the parent function's domain.
+
+  The notation for piecewise functions is to stack the collection of functions on top of each other, listing out the domain where each function is active. For example, the piecewise function below uses `{kt} 1-x` when `{kt} x \lte -1` but `{kt} x^2` when `{kt} x > 1`
+
+  ```{kt}
+  f{x} = \begin{cases}
+   1-x &\text{if } x \lte -1 \\
+   x^2 &\text{if } x > -1
+  \end{cases}
+  ```
+
+  ```{note}
+  Recall that a function maps exactly 1 output for each input, meaning that the domains can't intersect.
+  ```
+
+* `{bm} even function` - A function that reflects across the y-axis: `{kt} f(-x) = f(x)`. For example, `{kt} f(x)=x^2` and `{kt} f(x)=|x|` are both even functions.
+
+  ```{svgbob}
+    \ | /  
+     \|/   
+  ----+----
+      |    
+      |       
+  ```
+
+* `{bm} odd function` - A function that, when `{kt} x<0` reflects across both the x-axis and y-axis: `{kt} f(-x) = -f(x)`. For example, `{kt} f(x)=x^3` and `{kt} f(x)=x` is an even functions.
+
+  ```{svgbob}
+      | .-- 
+      |/   
+  ----+----
+     /|    
+  --' |       
+  ```
+
+* `{bm} increasing function/(increasing function|increasing)/i` - A function is said to be increasing across some interval `{kt} [x1, x2]` if `{kt} f(x_1) < f(x_2)` whenever `{kt} x_1 < x_2`. In other words, the function is increasing across an interval if the y-coordinate raises as the x-coordinate moves to the right.
+
+  ```{svgbob}
+  "f(x) increases between [A,B]"
+
+      |     .--.
+      |    /    \
+      |   /      \
+      |--'        '---
+  ----+---------------
+      |  A  B  C  D
+      |       
+  ```
+
+* `{bm} decreasing function/(decreasing function|decreasing)/i` - A function is said to be decreasing across some interval `{kt} [x1, x2]` if `{kt} f(x_1) > f(x_2)` whenever `{kt} x_1 < x_2`. In other words, the function is decreasing across an interval if the y-coordinate as the x-coordinate moves to the right.
+
+  ```{svgbob}
+  "f(x) decreases between [C,D]"
+
+      |     .--.
+      |    /    \
+      |   /      \
+      |--'        '---
+  ----+---------------
+      |  A  B  C  D
+      |       
+  ```
+
+* `{bm} set-builder notation`
+
+* `{bm} interval notation`
+
+
+START FROM PAGE 19,  DO EXERCISES
+
+START FROM PAGE 19,  DO EXERCISES
+
+START FROM PAGE 19,  DO EXERCISES
+
+START FROM PAGE 19,  DO EXERCISES
+
+START FROM PAGE 19,  DO EXERCISES
+
+START FROM PAGE 19,  DO EXERCISES
+ 
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 
 `{bm-error} Wrap in !! or apply suffix _POLY/(roots?)/i`
+`{bm-ignore} square root`
+`{bm-error} Remove _POLY/(square roots?_POLY)/i`
 
 `{bm-error} Did you mean discriminant?/(discriminator)/i`
 
@@ -251,6 +357,7 @@ You can use the methods described above to iteratively pull out roots_POLY using
 
 `{bm-disable-all}`
 
+<!--
 Diagnostic tests
 
 1a) (-3)^4  = -3*-3*-3*-3=9*9=81
@@ -698,5 +805,5 @@ FAILED BOTH 3 AND 4
 8) FAIL I DONT KNOW THIS
 
 9) almost
-
+-->
 
