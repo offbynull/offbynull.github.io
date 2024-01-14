@@ -1,0 +1,1 @@
+<span class="katex-error" title="ParseError: KaTeX parse error: Expected &#x27;}&#x27;, got &#x27;EOF&#x27; at end of input: …rt{b^2-4ac}{2a}" style="color:#cc0000">x=\frac{-b\pm\sqrt{b^2-4ac}{2a}</span>
