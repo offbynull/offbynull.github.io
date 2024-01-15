@@ -323,22 +323,45 @@
       |       
   ```
 
+* `{bm} difference quotient` - The expression `{kt} \frac{f(a+h)-f(a)}{h}`. It represents the average rate of change for f(x) between x=a and x=a+h.
+
+* `{bm} step function` - A piecewise function that's finite and each interval is made up of a constant value. For example, ...
+
+  ```{kt}
+  f{x} = \begin{cases}
+   1 &\text{if } 1 \lte x \lt 11 \\
+   2 &\text{if } 11 \lte x \lt 21 \\
+   3 &\text{if } 21 \lte x \lt 31 \\
+  \end{cases}
+  ```
+
+  ```{svgbob}
+  3 |                    *----------o
+    |
+  2 |          *---------o
+    |
+  1 |*---------o
+    |
+    +---------------------------------
+    0         10         20        30
+  ```
+
+  ```{note}
+  This is referred to as a step function because the horizontal lines look like steps?
+  ```
+
+START AT PAGE 23 BEGINNING OF SECTION
+
+START AT PAGE 23 BEGINNING OF SECTION
+
+START AT PAGE 23 BEGINNING OF SECTION
+
+START AT PAGE 23 BEGINNING OF SECTION
+
+
 * `{bm} set-builder notation`
 
 * `{bm} interval notation`
-
-
-START FROM PAGE 19,  DO EXERCISES
-
-START FROM PAGE 19,  DO EXERCISES
-
-START FROM PAGE 19,  DO EXERCISES
-
-START FROM PAGE 19,  DO EXERCISES
-
-START FROM PAGE 19,  DO EXERCISES
-
-START FROM PAGE 19,  DO EXERCISES
  
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
@@ -805,5 +828,214 @@ FAILED BOTH 3 AND 4
 8) FAIL I DONT KNOW THIS
 
 9) almost
+
+---- 1.1 EXERCISES
+
+1. yes
+2. no
+
+3a) 3
+3b) -0.25
+3c) 3
+3d) -0.75
+3e) domain=[-2,4] range=[-1,4]
+
+4a) -2 4
+ b) -2 2
+ c) -3 and 4
+ d) [0,4]
+ e) [-4,4]
+ f) [-4,3]
+
+5) [-75,140]
+
+7) no
+8) yes
+9) yes
+10)no
+
+11a)13
+  b) ~1990-1995
+  c) smallest=~1910 largest=final year in graph
+  d) [-11.5,16]
+
+12a) (0,1.6]
+  b) trees growing faster in 1900s; yes?
+
+13) ice melts making the water colder, water gets cold relatively rapidly? then reaches a low point, then moves back to room temp
+
+14) A win, everyone finished (reached 100 meters).
+    C kept a consistent pace
+    B bursted in the beginning, stopped, then bursted again
+	C started slow and sped up in the middle
+
+15a) 500mw
+  b) around 3-4am -- yes they seem reasonable
+
+23b) ~68.5
+
+26) v(r)=1.25pir^3
+    v(r+1)1.25pi(r+1)^3
+
+	1.25pi(r+1)^3-1.25pir^3=a
+	(r+1)^3-r^3=a/(1.25pi)
+	(r^2+2r+1)(r+1)-r^3=a/(1.25pi)
+	(r^3+2r^2+r+r^2+2r+1)-r^3=a/(1.25pi)
+	(r^3+3r^2+3r+1)-r^3=a/(1.25pi)
+	3r^2+3r+1=a/(1.25pi)
+	(3r^2+3r)+1=a/(1.25pi)
+	3(r^2+r)+1=a/(1.25pi)
+	3(r^2+r-2)+1-6=a/(1.25pi)
+	3(r^2-1r+2r-2)+1-6=a/(1.25pi)
+	3(r(r-1)+2(r-1))+1-6=a/(1.25pi)
+    3(r-1)(r+2)+5=a/(1.25pi)
+	4pi/3*3(r-1)(r+2)+5=a
+	4pi(r-1)(r+2)+5=a
+
+	I think this is right? a is the amount of extra air needed to go for r to r+1
+
+27) f(x)=-x^2+3x+4
+
+    (f(3+h) - f(3)) / h
+    (f(3+h) - 4) / h
+	(-9-6h-h^2+9+3h+4 - 4) / h
+	(-3h-h^2) / h
+	h(-3-h) / h
+	-3-h
+
+30) f(x)=(x+3)/(x+1)
+
+    (f(x)-f(1))/(x-1)
+    (((x+3)/(x+1))-2)/(x-1)
+	(((x+3)/(x+1))-2(x+1)/(x+1))/(x-1)
+	(((x+3)-2(x+1))/(x+1))/(x-1)
+	... dont want to bother with the rest of this, but i think i know what i have to do
+
+31) x!=-3,+3
+32) x^2+x-6=(x+3)(x-2)  x!=-3,2
+33) root(3, 2t-1) -- x in reals?
+34) t>=3
+35) x^2-5x=x(x-5)  x!=0 (because of 1st factor) AND x>=5 (because of 2nd factor) AND x>5 (because quad root will be 0 when x=5, meaning the denominator will be 0 which is invalid).  x>5 covers all the other cases, so x>5 is the domain
+36) u != -1  AND 1+1/u+1 != 0, which means u != -2 -- so, u != -1 and -2
+37) p >= 0 AND p >= 4
+
+38) sqrt(4-x^2)
+    sqrt(-(-4+x^2))
+    sqrt(-(x^2-4))
+	sqrt(-(x+2)(x-2))  -- the domain is [-2,2]
+
+39) all reals
+40) t!=-1
+
+51-52) these are lines -- subtract to get the slope, then solve the y-intercept (b)
+       limit the domain explicit to the bounds given
+53) (y-1)^2=-x
+    y-1=sqrt(-x)
+	y=sqrt(-x) + 1
+
+	this is the top half, so the bottom half would be ...
+
+	y=-(sqrt(-x) - 1) you subtract 1 to get the origin to the same place
+
+    THIS IS WRONG. ocrrect answer is 1-sqrt(-x)?? looks like i almost got it right?
+
+54) (y-2)^2=4-x^2
+    y-2=+-(4-x^2)^0.5
+	y=+-(4-x^2)^0.5+2
+
+    you want the top one, so the answer is y=(4-x^2)^0.5+2?
+
+55-56) unsure about these? but looks like abs is involved
+
+57) 2w+2h=20
+    2h=20/w
+	h=10/w
+
+	so the answer is f(w)=2w+10/w
+
+58) w*h=16
+    h=16/w
+
+	so the answer is f(w)=w*16/w
+
+59) area of an equilateral traingle is A=sqrt(3)a^2/4
+
+    f(a)=sqrt(3)a^2/4
+
+60) w*2w*h=8
+   2w^2*h=8
+   h=8/(2w^2)
+   h=4/(w^2)
+
+   f(w)=4/(w^2)
+
+61) w*w*h=2
+    h=2/(w^2)
+    
+	f(w)=w*w+4(w*h)
+	f(w)=w^2+4(w*(2/(w^2)))
+	f(w)=w^2+4(2w/w^2)
+	f(w)=w^2+4(2/w)
+	f(w)=w^2+(8/w)
+
+62) perimeter: 2x+h+pir=30
+    area:      x*h+pir^2
+
+	r=x/2
+
+    perimeter: 2x+h+pi(x/2)=30
+    area:      x*h+pi(x/2)^2
+
+	2x+h+pi(x/2)=30
+	h+pi(x/2)=30-2x
+	h=30-2x-pi(x/2)
+
+    f(x) = x*(30-2x-pi(x/2))+pi(x/2)^2
+	     = 30x-2x^2-(pix^2)/2 + pi(x/2)^2
+		 = 30x-2x^2-(pix^2)/2 + pi(x^2/4)
+		 = 30x-2x^2-(2pix^2)/4 + pi(x^2/4)
+
+		 something like this, there's probably more simplication that can be done
+
+63) area with cutouts: 12*20-4x^2
+    volume: (20-2x)*(12-2x)*x
+
+	f(x)=(20-2x)*(12-2x)*x
+
+64) $35/month 400mins free + 10cents per min'
+
+    f(x) = 35      if x in [0,400]
+	       35+0.1x if x in (400,600]
+
+65) 65mi/h max on freeway, $15 for each mile above max
+    
+    F(x) = 0    if x in [0,65]
+	       x*15 if x in (65,100]
+
+69) f is odd (symmetric across y, where mirroed portion is flipped across x) and g is even (symmetric across y-axis)
+
+70) f is neither odd nor even? mirrored portion needs to be flipped across x, g is even
+pg23
+
+71a) (-5,3)
+  b) (-5,-3)
+
+72) skipped as too obvious
+
+73) odd
+74) even 
+75) none? got it right
+76) odd  -- got it wrong, forgot to apply negative sign properly
+77) 1+ 3x^2-x^4 -- i don't know, if i were to guess i'd say even because exponents are eve n
+78) 1+ 3x^4-x^5 -- gonna say odd, same reason as above
+
+79) yes? -- you're jsut adding the y coordinates together, both of which are even meaning the result will also be even
+    yes? -- you're just adding the y coordinates together
+	no? -- uneven displacement between the quadrants
+
+80) yes? -- you're jsut multing the y coordinates together, both of which are even meaning the result will also be even
+    yes? -- same reasoning, you're displacing the similarly across the relevant quadrants
+	no? -- looks like i mightb e wrong on this one
 -->
 
+<!-- ANSWERS START AT A57>
