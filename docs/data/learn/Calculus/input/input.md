@@ -6,7 +6,26 @@
 
 # Terminology
 
-* `{bm} quadratic` - An expression where the highest exponent on the top-level terms is 2. For example, `{kt} 2x^2+4x+4` is a quadratic.
+* `{bm} polynomial function/(polynomial function|polynomial)/i` - A function in the form `{kt} a_nx^n+a_{n-1}x^{n-1}+...+a_2x^2+a_1x^1+a_0x^0`, where n is a non-negative integer and `{kt} a_n,...,a_2,a_1,a_0` are referred to as the coefficients of the polynomial. 
+
+  The form shown above for a polynomial simplifies to `{kt} a_nx^n+a_{n-1}x^{n-1}+...+a_2x^2+a_1x+a_0` (last two terms simplified).
+  
+  A polynomial's ...
+  
+  * domain is all real numbers.
+  * degree is the highest exponent across all terms that have a coefficient other than 0.
+
+* `{bm} degree` - Highest exponent across all terms of a polynomial that have a coefficient other than 0. For example, ...
+
+  * `{kt} f(x)=10x^2+3` has a degree of 2.
+  * `{kt} f(x)=0x^4+3x` has a degree of 1.
+  * `{kt} f(x)=0x^4+3` has a degree of 0.
+
+  A polynomial function of degree ...
+
+  * 1 is called a linear function.
+  * 2 is called a quadratic function.
+  * 3 is called a cubic function.
 
 * `{bm} root/(roots?)_POLY/i` - Given a polynomial `{kt} P(x)`, its roots_POLY are x values where `{kt} P(x)=0`. If you were to graph `{kt} P(x)`, the roots_POLY would be values of x that touch the x-axis.
 
@@ -235,16 +254,24 @@
   Normally the function would be written as `{kt} f(x)=x^2`, but f(x) is replaced with a to illustrate the point?
   ```
 
-* `{bm} mathematical model` - A function mapped using an expression, where that expression is an approximation for some other function that isn't mapped using an expression. For example, a function `{kt} f(x)` with the mapping ...
+* `{bm} mathematical model` - An approximation of a real-world phenomenon, often by means of a function or equation, used to understand or make predictions about that phenomenon. For example, imagine a device monitoring the growth of bacteria within a petri dish. The device captures the number of bacterial cells within the dish, every hour, over a 4 hour duration:
 
-  | x | f(x)  |
-  |---|-------|
-  | 1 | 1.01  | 
-  | 2 | 3.99  |
-  | 3 | 9.02  |
-  | 4 | 15.98 |
+  | t | cell count |
+  |---|------------|
+  | 1 | 1010       | 
+  | 2 | 3990       |
+  | 3 | 9022       |
+  | 4 | 15981      |
 
-  ... may be approximated using the mathematical model `{kt} g(x)=x^2`.
+  The growth of bacteria over time may be approximated using the mathematical model `{kt} g(t)=1000t^2`.
+
+  The process of building a mathematical model typically involves identifying the dependent variables, identifying independent variables, formulating the model (e.g. devising a function or equation), and testing the model against measurements of the real-world phenomenon.
+
+* `{bm} empirical model` - A mathematical model based solely on collected data rather than physical laws / principles. Empirical models aim to find curves that follow the trend shown by the data, referred to as fit / fitting the data. 
+
+* `{bm} interpolation` - Estimating a value between observations.
+
+* `{bm} extrapolation` - Estimating a value before observations the first observation or after the last observation. In other words, estimating a value outside the window of observations.
 
 * `{bm} vertical line test` - A test to determine if a curve (bendy line graphed on a 2D coordinate plane) is representable as a function. The test involves scanning a vertical line over the curve, checking to see if the vertical line ever intersects the curve more than once.
 
@@ -329,9 +356,9 @@
 
   ```{kt}
   f{x} = \begin{cases}
-   1 &\text{if } 1 \lte x \lt 11 \\
-   2 &\text{if } 11 \lte x \lt 21 \\
-   3 &\text{if } 21 \lte x \lt 31 \\
+   1 &\text{if } 1 \le x \lt 11 \\
+   2 &\text{if } 11 \le x \lt 21 \\
+   3 &\text{if } 21 \le x \lt 31 \\
   \end{cases}
   ```
 
@@ -350,13 +377,32 @@
   This is referred to as a step function because the horizontal lines look like steps?
   ```
 
-START AT PAGE 23 BEGINNING OF SECTION
+* `{bm} linear function/(linear function|linear)/i` - A polynomial of degree 1. For example, `{kt} f(x)=10x+3` is a linear function.
 
-START AT PAGE 23 BEGINNING OF SECTION
+  A linear function is the equation of a line written in slope-intercept form `{kt} y=f(x)=mx+b`. Linear functions grow at a constant rate. The rate of growth is dictated by the slope m. For example, `{kt} f(x)=10x+3` has a slope of 10, meaning whenever x increases by 1, `{kt} f(x)` increases by 10.
 
-START AT PAGE 23 BEGINNING OF SECTION
+* `{bm} quadratic function/(quadratic function|quadratic)/i` - A polynomial of degree 2. For example, `{kt} f(x)=2x^2+4x+4` is a quadratic function.
 
-START AT PAGE 23 BEGINNING OF SECTION
+  A quadratic function graphs as a parabola.
+
+* `{bm} cubic function/(cubic function|cubic)/i` - A polynomial of degree 3. For example, `{kt} f(x)=5x^3+2x^2+4x+4` is a cubic function.
+
+* `{bm} power function` - A function in the form `{kt} x^a`, where a is a constant.
+
+  ```{calculus}
+  Graph
+  funcs: [x^2, x^3, x^4, x^5, x^6, x^7]
+  x_lim: [-4, 4]
+  y_lim: [-4, 4]
+  ```
+
+START AT PAGE 29 a=n, where n is a positive integer
+
+START AT PAGE 29 a=n, where n is a positive integer
+
+START AT PAGE 29 a=n, where n is a positive integer
+
+START AT PAGE 29 a=n, where n is a positive integer
 
 
 * `{bm} set-builder notation`
