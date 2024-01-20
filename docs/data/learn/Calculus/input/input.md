@@ -383,31 +383,204 @@
 
 * `{bm} quadratic function/(quadratic function|quadratic)/i` - A polynomial of degree 2. For example, `{kt} f(x)=2x^2+4x+4` is a quadratic function.
 
-  A quadratic function graphs as a parabola.
-
 * `{bm} cubic function/(cubic function|cubic)/i` - A polynomial of degree 3. For example, `{kt} f(x)=5x^3+2x^2+4x+4` is a cubic function.
 
-* `{bm} power function` - A function in the form `{kt} x^a`, where a is a constant.
+* `{bm} power function/(power function|square root function|cube root function|root function|reciprocal function)/i` - A function in the form `{kt} x^a`, where a is a constant.
+
+  * When `{kt} a=n`, where n is a positive integer, the power function is ...
+  
+    * an even function if n is even.
+    * an odd function if n is odd.
+
+    In both cases, as a gets larger, the graph of the power function gets flatter near the base (looks more and more squared off).
+
+    <table><tr><td>
+  
+      ```{calculus}
+      Graph
+      funcs: [x^2, x^4, x^6]
+      x_lim: [-3, 3]
+      y_lim: [-3, 3]
+      ```
+  
+    </td><td>
+  
+      ```{calculus}
+      Graph
+      funcs: [x^1, x^3, x^5, x^7]
+      x_lim: [-3, 3]
+      y_lim: [-3, 3]
+      ```
+    
+    </td></tr></table>
+    
+    ```{note}
+    x^0 is also an even function? It's just a horizontal line at 0.
+    ```
+  
+  * When `{kt} a=\frac{1}{n}`, where n is a positive integer, the power function is sometimes also referred to as a root function: `{kt} x^{\frac{1}{n}} = \sqrt[n]{x}`. The graph is similar to `{kt} x^n` but rotated 90 degrees to the right.
+  
+    ```{calculus}
+    Graph
+    funcs: [x^(1/2), x^(1/4), x^(1/6)]
+    x_lim: [-3, 3]
+    y_lim: [-3, 3]
+    ```
+
+    ```{note}
+    If `{kt} x^n` is even, its `{kt} \frac{1}{n}` counterpart will only show one half of the graph. This is because a function can only have 1 output for each input (1 y for each x -- if both halves are kept it'd violate the rules of a function).
+    ```
+  
+    ```{note}
+    There's some strangeness when n is odd and > 1. Desmos graphs things out similar to how the book has them graphed out, but for my grapher negative x values are returning complex numbers. Not sure how to handle it. Some discussion [here](https://www.reddit.com/r/learnpython/comments/egd3tt/cube_root_of_a_negative_number_returns_a_complex/).
+    ```
+
+  * When `{kt} a=-1`, the power function is sometimes also referred to as a reciprocal function: `{kt} x^{-1}=\frac{1}{x}`. The graph is a hyperbola with its asymptotes at x=0 and y=0.
+
+    ```{calculus}
+    Graph
+    funcs: [x^-1]
+    x_lim: [-3, 3]
+    y_lim: [-3, 3]
+    ```
+
+  `{bm-error} Remove _POLY from the word root/(root_POLY function)/i`
+
+* `{bm} algebraic function` - A function that can be constructed using algebraic operations (addition, subtraction, multiplication, division, powers, !!roots!!).
+
+  All rational functions are algebraic functions.
+
+* `{bm} rational function` - A function that's a ratio of two polynomials: `{kt} f(x) = \frac{P(x)}{Q(x)}`. The domain consists of all values where `{kt} Q(x) \neq 0`.
+
+  All rational functions are algebraic functions.
+
+* `{bm} periodic function/(periodic function|cyclic function)/i` - A function that repeats its values at regular intervals. For example, `{kt} sin(x)` repeats every `{kt} 2\pi`: `{kt} sin(x+2\pi) = sin(x)`.
 
   ```{calculus}
   Graph
-  funcs: [x^2, x^3, x^4, x^5, x^6, x^7]
-  x_lim: [-4, 4]
-  y_lim: [-4, 4]
+  funcs: [sin(x)]
+  x_lim: [-15, 15]
+  y_lim: [-1.1, 1.1]
+  fig_size: [6, 2]
   ```
 
-START AT PAGE 29 a=n, where n is a positive integer
+* `{bm} trigonometric function/(trigonometric function|trigonometry function|trig function)/i` - A function which relates an angle of a right-triangle to the length of two of its sides: sine / cosecant, cosine / secant,  and tangent / cotangent.
 
-START AT PAGE 29 a=n, where n is a positive integer
+* `{bm} sine` - A trigonometric function relates an angle of a right-triangle to the length of the side opposite of the angle and the hypotenuse: `{kt} sin(x)=\frac{opposite}{hypotenuse}`.
 
-START AT PAGE 29 a=n, where n is a positive integer
+  ```{calculus}
+  Graph
+  funcs: [sin(x)]
+  x_lim: [-15, 15]
+  y_lim: [-1.1, 1.1]
+  fig_size: [6, 2]
+  ```
 
-START AT PAGE 29 a=n, where n is a positive integer
+  * Domain: (-inf, inf)
+  * Range: [-1, 1]
+  * Period: `{kt} sin(x+2\pi) = sin(x)`
+  * Relationships: `{kt} sin(x)=cos(\frac{\pi}{2}-x)=\frac{1}{csc(x)}`
 
+  Sine's reciprocal is cosecant.
+
+* `{bm} cosecant` - The reciprocal of sine: `{kt} csc(x) = \frac{1}{sin(x)} = \frac{hypotenuse}{opposite}`
+  
+  ```{calculus}
+  Graph
+  funcs: [csc(x)]
+  x_lim: [-6, 6]
+  y_lim: [-6, 6]
+  ```
+  
+  * Domain: `{kt} x \neq n \frac{pi}{2}`, where n is even
+  * Range: (-inf, inf)
+  * Period: `{kt} csc(x+2\pi) = csc(x)`
+  * Relationships: `{kt} csc(x)=sec(\frac{\pi}{2}-x)=\frac{1}{sin(x)}`
+
+  Cosecant's reciprocal is sine.
+
+* `{bm} cosine` - A trigonometric function relates an angle of a right-triangle to the length of the side adjacent to the angle and the hypotenuse: `{kt} cos(x) = \frac{adjacent}{hypotenuse}`.
+
+  ```{calculus}
+  Graph
+  funcs: [cos(x)]
+  x_lim: [-15, 15]
+  y_lim: [-1.1, 1.1]
+  fig_size: [6, 2]
+  ```
+
+  * Domain: (-inf, inf)
+  * Range: [-1, 1]
+  * Period: `{kt} cos(x+2\pi) = cos(x)`
+  * Relationships: `{kt} cos(x)=sin(\frac{\pi}{2}-x)=\frac{1}{sec(x)}`
+
+  Cosine's reciprocal is secant.
+
+* `{bm} secant` - The reciprocal of cosine: `{kt} sec(x) = \frac{1}{cos(x)} = \frac{hypotenuse}{adjacent}`.
+
+  ```{calculus}
+  Graph
+  funcs: [sec(x)]
+  x_lim: [-6, 6]
+  y_lim: [-6, 6]
+  ```
+
+  * Domain: `{kt} x \neq n \frac{pi}{2}`, where n is odd
+  * Range: (-inf, inf)
+  * Period: `{kt} sec(x+2\pi) = sec(x)`
+  * Relationships: `{kt} sec(x)=csc(\frac{\pi}{2}-x)=\frac{1}{cos(x)}`
+
+  Secant's reciprocal is cosine.
+
+* `{bm} tangent` - A trigonometric function relates an angle of a right-triangle to the length of the sides opposite of and adjacent to the angle: `{kt} tan(x) = \frac{opposite}{adjacent}`.
+
+  ```{calculus}
+  Graph
+  funcs: [tan(x)]
+  x_lim: [-6, 6]
+  y_lim: [-6, 6]
+  ```
+
+  * Domain: `{kt} x \neq n \frac{pi}{2}`, where n is odd
+  * Range: (-inf, inf)
+  * Period: `{kt} tan(x+\pi) = tan(x)`
+  * Relationships: `{kt} tan(x)=\frac{sin(x)}{cos(x)}=cot(\frac{\pi}{2}-x)=\frac{1}{cot(x)}`
+
+  Tangent's reciprocal is cotangent.
+
+* `{bm} cotangent` - The reciprocal of tangent: `{kt} cot(x) = \frac{1}{tan(x)} = \frac{adjacent}{opposite}`.
+
+  ```{calculus}
+  Graph
+  funcs: [cot(x)]
+  x_lim: [-6, 6]
+  y_lim: [-6, 6]
+  ```
+
+  * Domain: `{kt} x \neq n \frac{pi}{2}`, where n is even
+  * Range: (-inf, inf)
+  * Period: `{kt} cot(x+\pi) = cot(x)`
+  * Relationships: `{kt} cot(x)=\frac{cos(x)}{sin(x)}=tan(\frac{\pi}{2}-x)=\frac{1}{tan(x)}`
+
+  Cotangent is the reciprocal of tangent.
+
+PAGE 31 TRIGONOMETRIC FUNCTIONS
+
+PAGE 31 TRIGONOMETRIC FUNCTIONS
+
+PAGE 31 TRIGONOMETRIC FUNCTIONS
+
+PAGE 31 TRIGONOMETRIC FUNCTIONS
+
+PAGE 31 TRIGONOMETRIC FUNCTIONS
+
+PAGE 31 TRIGONOMETRIC FUNCTIONS
+
+PAGE 31 TRIGONOMETRIC FUNCTIONS
 
 * `{bm} set-builder notation`
 
-* `{bm} interval notation`
+* `{bm} interval notation` - FILL ME IN, never include infinity in the set? (e.g. [0, inf) pr (-inf, 0])
  
 
 `{bm-ignore} !!([\w\-]+?)!!/i`

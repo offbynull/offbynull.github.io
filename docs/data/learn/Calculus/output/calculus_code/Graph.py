@@ -1,5 +1,6 @@
 import inspect
 import sys
+from math import sin, cos, tan
 from pathlib import Path
 from sys import stdin
 
@@ -27,9 +28,23 @@ def _evaluate(n: Node, vars: dict[str, float | int]):
             return _evaluate(n.args[0], vars) / _evaluate(n.args[1], vars)
         elif n.op == '^':
             return _evaluate(n.args[0], vars) ** _evaluate(n.args[1], vars)
+        elif n.op == 'abs':
+            return abs(_evaluate(n.args[0], vars))
+        elif n.op == 'sin':
+            return sin(_evaluate(n.args[0], vars))
+        elif n.op == 'cos':
+            return cos(_evaluate(n.args[0], vars))
+        elif n.op == 'tan':
+            return tan(_evaluate(n.args[0], vars))
+        elif n.op == 'cot':
+            return 1/tan(_evaluate(n.args[0], vars))
+        elif n.op == 'sec':
+            return 1/cos(_evaluate(n.args[0], vars))
+        elif n.op == 'csc':
+            return 1/sin(_evaluate(n.args[0], vars))
 
-def graph(funcs: list[str], x_lim: tuple[float, float], y_lim: tuple[float, float] | None):
-    fig = plt.figure()
+def graph(funcs: list[str], x_lim: tuple[float, float], y_lim: tuple[float, float] | None, fig_size: tuple[float, float] | None = None):
+    fig = plt.figure(figsize=fig_size)
     ax = fig.add_subplot(1, 1, 1)
 
     x_min, x_max = x_lim
@@ -39,7 +54,7 @@ def graph(funcs: list[str], x_lim: tuple[float, float], y_lim: tuple[float, floa
         node = parse(func)
         y_vals = [_evaluate(node, {'x': x}) for x in x_vals]
         y_val_max = max(y_val_max, abs(y_vals[-1]))
-        plt.plot(x_vals, y_vals, label=func)
+        plt.scatter(x_vals, y_vals, label=func, marker='o', s=(72./fig.dpi)**2)
     plt.legend(loc="upper left")
     ax.spines['left'].set_position(('data', 0.0))
     ax.spines['bottom'].set_position(('data', 0.0))
@@ -50,12 +65,13 @@ def graph(funcs: list[str], x_lim: tuple[float, float], y_lim: tuple[float, floa
         ax.set_ylim(y_min, y_max)
     else:
         ax.set_ylim(-y_val_max, y_val_max)
+    ax.set_xlim(x_min, x_max)
     in_path = Path('/input/.__UNIQUE_INPUT_ID')
     if in_path.exists():
         _id = in_path.read_text().strip()
-        out_path = Path(f'/output/{_id}.svg')
+        out_path = Path(f'/output/{_id}.png')
         plt.savefig(out_path, bbox_inches='tight')
-        print(f'![Graph(s) of {",".join(funcs)}]({_id}.svg)')
+        print(f'![Graph(s) of {",".join(funcs)}]({_id}.png)')
     else:
         plt.show()
 
@@ -69,12 +85,13 @@ def main():
         funcs = data['funcs']
         x_lim = tuple(data['x_lim'])
         y_lim = tuple(data['y_lim']) if 'y_lim' in data else None
-        graph(funcs, x_lim, y_lim)
+        fig_size = tuple(data['fig_size']) if 'fig_size' in data else None
+        graph(funcs, x_lim, y_lim, fig_size)
     finally:
         # print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
 
 
 if __name__ == '__main__':
-    graph(['x^2', 'x^3', 'x^4', 'x^5'], (-5, 5), (-5, 5))
+    graph(['x^(1/3)'], (-3, 3), (-3, 3))
     # main()
