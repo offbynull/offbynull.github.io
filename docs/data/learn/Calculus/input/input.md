@@ -466,6 +466,8 @@
 
 * `{bm} trigonometric function/(trigonometric function|trigonometry function|trig function)/i` - A function which relates an angle of a right-triangle to the length of two of its sides: sine / cosecant, cosine / secant,  and tangent / cotangent.
 
+  In calculus, the convention is to always use radians as opposed to degrees.
+
 * `{bm} sine` - A trigonometric function relates an angle of a right-triangle to the length of the side opposite of the angle and the hypotenuse: `{kt} sin(x)=\frac{opposite}{hypotenuse}`.
 
   ```{calculus}
@@ -564,19 +566,54 @@
 
   Cotangent is the reciprocal of tangent.
 
-PAGE 31 TRIGONOMETRIC FUNCTIONS
+* `{bm} exponential function` - A function in the form `{kt} b^x`, where b is a positive constant.
 
-PAGE 31 TRIGONOMETRIC FUNCTIONS
+  ```{calculus}
+  Graph
+  funcs: [2^x, (1/2)^x]
+  x_lim: [-6, 6]
+  y_lim: [-6, 6]
+  ```
 
-PAGE 31 TRIGONOMETRIC FUNCTIONS
+  * Domain: (-inf, inf)
+  * Range: (0, inf)
 
-PAGE 31 TRIGONOMETRIC FUNCTIONS
+* `{bm} logarithmic function` - A function in the form `{kt} log_{b}x`, where b is a positive constant.
 
-PAGE 31 TRIGONOMETRIC FUNCTIONS
+  ```{calculus}
+  Graph
+  funcs: ["log(2,x)", "log(1/2,x)"]
+  x_lim: [-6, 6]
+  y_lim: [-6, 6]
+  ```
 
-PAGE 31 TRIGONOMETRIC FUNCTIONS
+  * Domain: (0, inf)
+  * Range: (-inf, inf)
 
-PAGE 31 TRIGONOMETRIC FUNCTIONS
+  A logarithmic function inverts an exponential function:
+ 
+  * Exponential function: (base, exponent) ⟶ result (e.g. `{kt} 2^6=64`)
+  * Logarithmic function: (base, result) ⟶ exponent (e.g. `{kt} log_{2}64=6`)
+
+  ```{svgbob}
+                                    .--------.
+                                    v        |
+  "(base, exponent) to result"    2^6 = 64   |
+                                  ^     ^    |
+                                  |     |    |
+                                  '---. |    |
+                                      | |    |
+                                      v v    v
+  "(base, result) to exponent"    log 2 64 = 6
+  ```
+
+PAGE 36 question 30
+
+PAGE 36 question 30
+
+PAGE 36 question 30
+
+PAGE 36 question 30
 
 * `{bm} set-builder notation`
 
@@ -598,6 +635,422 @@ PAGE 31 TRIGONOMETRIC FUNCTIONS
 # Questions
 
 `{bm-disable-all}`
+
+<!-- ANSWERS AT A58>
+
+<!--
+---- 1.2 EXERCISES
+
+1a) logarithmic function
+ b) root function
+ c) rational function
+ d) polynomial function of degree 2
+ e) exponential function
+ f) trigonometric function
+
+2a) exponential function
+ b) power function
+ c) algebraic function
+ d) trigonometric function
+ e) rational function
+ f) rational function
+
+3a) blue line, even exponent means both prongs pointing up and an exponent of 2 is less steep than an exponent of 8
+ b) red line, odd function reflects across both axis
+ c) green line, exponent of 8 means more squared off than exponent of 2
+
+4a) G -- only straight line
+ b) f -- shape of a exponential function
+ c) F -- only odd function, power of 3
+ d) g -- root 3 is inverted version of power of 3 (F)
+
+5) 1-sin(x) != 0
+   when does sin(x) = 1? pi/2 + n*2pi, for all integers n
+   so x!=pi/2+n*2pi where n is an integer
+
+6) 1-tan(x) != 0
+   when does tan(x) = 1? pi/4 + n*pi, for all integers n
+   so x!=pi/4+n*pi where n is an integer
+
+7a) y=2x+b  -- no need to sketch they're all parallel to each other because the slope is the same
+ b) 1=m2+b  -- no need to sketch
+ c) 1=2(2)+b
+    1-4=b
+	-3=b
+	y=2x-3
+
+8) f(x)=m(x+3)+1
+   if it was just x, the y intercept would be at 1
+   since it's x+3, the graph moves to the right by 3 units (where x=0, which was previously the y-intercept, is now x=3)
+   meaning that regardless of the slope, the lines intercept at x=3 (instead of x=0)
+
+9) they're all parallel (same slope)?
+
+10) y=x^2  x=0 y=0
+           x=1 y=1
+		   x=2 y=4
+		   x=3 y=9
+
+    y=(x-3)^2  x=3 y=0
+	           x=4 y=1
+			   x=5 y=4
+	
+	y=2(x-3)^2  x=3 y=0
+	            x=4 y=2
+
+    ----------
+
+	y=-x^2  x=0 y=0
+	        x=1 y=-1
+			x=2 y=-4
+	
+	y=-x^2+2  x=0 y=2
+	          x=1 y=1
+			  x=2 y=-2
+	
+	y=-n(x+2)^2+2
+	1=-n(0+2)^2+2
+	1=-n2^2+2
+	1=-4n+2
+	1-2=-4n
+    -1=-4/n
+	1/4=n
+
+	y=-(1/4)(x+2)^2+2
+
+11) f(x)=ax^3+bx^2+cx+d
+
+    6=a(1)^3 +b(1)^2 +c(1) +(1)
+	0=a(-1)^3+b(-1)^2+c(-1)+(-1)
+	0=a(0)^3 +b(0)^2 +c(0) +(0)
+	0=a(2)^3 +b(2)^2 +c(2) +(2)
+
+	4 equations with 4 variables, you can solve this?
+
+12a) slope is the rate at which temp is increasing
+     t-intercept is temp at 1900?
+  b) 0.02(200)+8.50 -- 12.5 celsius
+
+13a) c=0.0417D(a+1)
+     c=0.0417(200)(a+1)
+	 c=8.34a+8.34
+
+	 slope=8.34, its the shift in dosage by age?
+  b) 8.34mg?
+
+14a) y=-4x+200  (x dollars means he can rent out y spaces)
+     no point in graphing
+
+  b) y-intercept: x=0 is the x (dollar amount) at which all spaces will be rented out
+     x-intercept: y=0 is the x (dollar amount) at which no spaces will be rented out
+	 slope: the ratio of dollar amount to space rented out (e.g. for each every 4 dollar increase, 1 less space can be rented out?)
+
+15a) no
+  b) ratio of celsius to fahrenheit
+     F-intercept is fahrenheit at 0 celsius?
+
+16a) x=50 y=40 -- y=mx+b -- y=4x/5+0
+  b) done
+  c) 4/5 -- 4 miles traveled every 5 mins
+
+17a) m=(173-113)/(80-70)=60/10=6/1=6
+     y=6x+b             y=6x+b
+     173=6(80)+b        113=6(70)+b
+     173-6(80)=b        113-6(70)=b
+     -307=b
+
+     y=6x-307
+   b) 6
+   c) 150=6(x)-307
+      150+307=6x
+	  (150+307)/6=x
+
+18a) y=$2200 makes x=100 chairs, y=$4800 makes x=300 chairs
+     m=(4800-2200)/(300-100)=13
+
+	 y=13x+b
+	 2200=13(100)+b
+	 2200=1300+b
+	 2200-1300=b
+	 900=b
+
+	 y=13x+900
+
+  b)13/1 -- dollars spent for each chair
+  c)the dollar amount at which you'll make no chairs
+
+19) surface, water pressure = air pressure -- 15lb/in^2
+    below surface, water pressure increases by 4.34lb/in^2 for every 10 feet
+
+  a) m=4.34/10=0.434
+     y=0.434x+b
+	 15=0.434(0)+b
+	 15=b
+
+	 y=0.434x+15
+
+  b) 100=0.434x+15
+     100-15=0.434x
+	 85=0.434x
+	 x=85/0.434=~195.85 feet
+
+20)  monthly cost depends on miles driven
+     drive 480, cost 380
+	 drive 800, cost 460
+
+  a) C(d)=md+b
+     m=(460-380)/(800-480)=0.25
+      
+     C(d)=0.25d+b
+	 380=0.25(480)+b
+	 260=b
+
+	 C(d)=0.25d+260
+
+   b) C(1500)=635
+   c) not graphing, but slope is dollars per mile?
+   d) the point at which you can't drive? you need more than this to operate the car
+   e) maybe? depends what costs you're factoring in, some of htem might not be linear (e.g. the cost to repair a car gets more and more the more wear you put on the car)
+
+21a) trig function
+  b) linear function (polynomial function of degree 1 aka algebraic function?)
+
+22a) polynomial function of degree 2 (aka algebriac function?)
+  b) logarithmic function
+
+23a) linear is appropriate
+  b) m=(8.2-14.1)/(60-4)=−0.105357143
+     y=−0.105357143x+b
+	 8.2=−0.105357143(60)+b
+	 8.2=−6.32142858+b
+	 8.2+6.32142858=+b
+	 14.52142858=b
+	 y=−0.105357143x+14.52142858
+  c) done
+  d) 11.45
+  e) 6 in 100, or 6%
+  f) no, at some point it probably starts to flatten
+
+24-25) skip -- same thing as 23
+
+26c) the number of mice that develop tumors when there's no asbestos?
+
+27-28) skip
+
+29) I guess it depends on how far back you're starting point is? closer you get to x=0, the more illumination you get? thats what the curve looks like
+
+30)
+-->
+
+<!--
+---- 1.1 EXERCISES
+
+1. yes
+2. no
+
+3a) 3
+3b) -0.25
+3c) 3
+3d) -0.75
+3e) domain=[-2,4] range=[-1,4]
+
+4a) -2 4
+ b) -2 2
+ c) -3 and 4
+ d) [0,4]
+ e) [-4,4]
+ f) [-4,3]
+
+5) [-75,140]
+
+7) no
+8) yes
+9) yes
+10)no
+
+11a)13
+  b) ~1990-1995
+  c) smallest=~1910 largest=final year in graph
+  d) [-11.5,16]
+
+12a) (0,1.6]
+  b) trees growing faster in 1900s; yes?
+
+13) ice melts making the water colder, water gets cold relatively rapidly? then reaches a low point, then moves back to room temp
+
+14) A win, everyone finished (reached 100 meters).
+    C kept a consistent pace
+    B bursted in the beginning, stopped, then bursted again
+	C started slow and sped up in the middle
+
+15a) 500mw
+  b) around 3-4am -- yes they seem reasonable
+
+23b) ~68.5
+
+26) v(r)=1.25pir^3
+    v(r+1)1.25pi(r+1)^3
+
+	1.25pi(r+1)^3-1.25pir^3=a
+	(r+1)^3-r^3=a/(1.25pi)
+	(r^2+2r+1)(r+1)-r^3=a/(1.25pi)
+	(r^3+2r^2+r+r^2+2r+1)-r^3=a/(1.25pi)
+	(r^3+3r^2+3r+1)-r^3=a/(1.25pi)
+	3r^2+3r+1=a/(1.25pi)
+	(3r^2+3r)+1=a/(1.25pi)
+	3(r^2+r)+1=a/(1.25pi)
+	3(r^2+r-2)+1-6=a/(1.25pi)
+	3(r^2-1r+2r-2)+1-6=a/(1.25pi)
+	3(r(r-1)+2(r-1))+1-6=a/(1.25pi)
+    3(r-1)(r+2)+5=a/(1.25pi)
+	4pi/3*3(r-1)(r+2)+5=a
+	4pi(r-1)(r+2)+5=a
+
+	I think this is right? a is the amount of extra air needed to go for r to r+1
+
+27) f(x)=-x^2+3x+4
+
+    (f(3+h) - f(3)) / h
+    (f(3+h) - 4) / h
+	(-9-6h-h^2+9+3h+4 - 4) / h
+	(-3h-h^2) / h
+	h(-3-h) / h
+	-3-h
+
+30) f(x)=(x+3)/(x+1)
+
+    (f(x)-f(1))/(x-1)
+    (((x+3)/(x+1))-2)/(x-1)
+	(((x+3)/(x+1))-2(x+1)/(x+1))/(x-1)
+	(((x+3)-2(x+1))/(x+1))/(x-1)
+	... dont want to bother with the rest of this, but i think i know what i have to do
+
+31) x!=-3,+3
+32) x^2+x-6=(x+3)(x-2)  x!=-3,2
+33) root(3, 2t-1) -- x in reals?
+34) t>=3
+35) x^2-5x=x(x-5)  x!=0 (because of 1st factor) AND x>=5 (because of 2nd factor) AND x>5 (because quad root will be 0 when x=5, meaning the denominator will be 0 which is invalid).  x>5 covers all the other cases, so x>5 is the domain
+36) u != -1  AND 1+1/u+1 != 0, which means u != -2 -- so, u != -1 and -2
+37) p >= 0 AND p >= 4
+
+38) sqrt(4-x^2)
+    sqrt(-(-4+x^2))
+    sqrt(-(x^2-4))
+	sqrt(-(x+2)(x-2))  -- the domain is [-2,2]
+
+39) all reals
+40) t!=-1
+
+51-52) these are lines -- subtract to get the slope, then solve the y-intercept (b)
+       limit the domain explicit to the bounds given
+53) (y-1)^2=-x
+    y-1=sqrt(-x)
+	y=sqrt(-x) + 1
+
+	this is the top half, so the bottom half would be ...
+
+	y=-(sqrt(-x) - 1) you subtract 1 to get the origin to the same place
+
+    THIS IS WRONG. ocrrect answer is 1-sqrt(-x)?? looks like i almost got it right?
+
+54) (y-2)^2=4-x^2
+    y-2=+-(4-x^2)^0.5
+	y=+-(4-x^2)^0.5+2
+
+    you want the top one, so the answer is y=(4-x^2)^0.5+2?
+
+55-56) unsure about these? but looks like abs is involved
+
+57) 2w+2h=20
+    2h=20/w
+	h=10/w
+
+	so the answer is f(w)=2w+10/w
+
+58) w*h=16
+    h=16/w
+
+	so the answer is f(w)=w*16/w
+
+59) area of an equilateral traingle is A=sqrt(3)a^2/4
+
+    f(a)=sqrt(3)a^2/4
+
+60) w*2w*h=8
+   2w^2*h=8
+   h=8/(2w^2)
+   h=4/(w^2)
+
+   f(w)=4/(w^2)
+
+61) w*w*h=2
+    h=2/(w^2)
+    
+	f(w)=w*w+4(w*h)
+	f(w)=w^2+4(w*(2/(w^2)))
+	f(w)=w^2+4(2w/w^2)
+	f(w)=w^2+4(2/w)
+	f(w)=w^2+(8/w)
+
+62) perimeter: 2x+h+pir=30
+    area:      x*h+pir^2
+
+	r=x/2
+
+    perimeter: 2x+h+pi(x/2)=30
+    area:      x*h+pi(x/2)^2
+
+	2x+h+pi(x/2)=30
+	h+pi(x/2)=30-2x
+	h=30-2x-pi(x/2)
+
+    f(x) = x*(30-2x-pi(x/2))+pi(x/2)^2
+	     = 30x-2x^2-(pix^2)/2 + pi(x/2)^2
+		 = 30x-2x^2-(pix^2)/2 + pi(x^2/4)
+		 = 30x-2x^2-(2pix^2)/4 + pi(x^2/4)
+
+		 something like this, there's probably more simplication that can be done
+
+63) area with cutouts: 12*20-4x^2
+    volume: (20-2x)*(12-2x)*x
+
+	f(x)=(20-2x)*(12-2x)*x
+
+64) $35/month 400mins free + 10cents per min'
+
+    f(x) = 35      if x in [0,400]
+	       35+0.1x if x in (400,600]
+
+65) 65mi/h max on freeway, $15 for each mile above max
+    
+    F(x) = 0    if x in [0,65]
+	       x*15 if x in (65,100]
+
+69) f is odd (symmetric across y, where mirroed portion is flipped across x) and g is even (symmetric across y-axis)
+
+70) f is neither odd nor even? mirrored portion needs to be flipped across x, g is even
+pg23
+
+71a) (-5,3)
+  b) (-5,-3)
+
+72) skipped as too obvious
+
+73) odd
+74) even 
+75) none? got it right
+76) odd  -- got it wrong, forgot to apply negative sign properly
+77) 1+ 3x^2-x^4 -- i don't know, if i were to guess i'd say even because exponents are eve n
+78) 1+ 3x^4-x^5 -- gonna say odd, same reason as above
+
+79) yes? -- you're jsut adding the y coordinates together, both of which are even meaning the result will also be even
+    yes? -- you're just adding the y coordinates together
+	no? -- uneven displacement between the quadrants
+
+80) yes? -- you're jsut multing the y coordinates together, both of which are even meaning the result will also be even
+    yes? -- same reasoning, you're displacing the similarly across the relevant quadrants
+	no? -- looks like i mightb e wrong on this one
+-->
 
 <!--
 Diagnostic tests
@@ -1047,214 +1500,4 @@ FAILED BOTH 3 AND 4
 8) FAIL I DONT KNOW THIS
 
 9) almost
-
----- 1.1 EXERCISES
-
-1. yes
-2. no
-
-3a) 3
-3b) -0.25
-3c) 3
-3d) -0.75
-3e) domain=[-2,4] range=[-1,4]
-
-4a) -2 4
- b) -2 2
- c) -3 and 4
- d) [0,4]
- e) [-4,4]
- f) [-4,3]
-
-5) [-75,140]
-
-7) no
-8) yes
-9) yes
-10)no
-
-11a)13
-  b) ~1990-1995
-  c) smallest=~1910 largest=final year in graph
-  d) [-11.5,16]
-
-12a) (0,1.6]
-  b) trees growing faster in 1900s; yes?
-
-13) ice melts making the water colder, water gets cold relatively rapidly? then reaches a low point, then moves back to room temp
-
-14) A win, everyone finished (reached 100 meters).
-    C kept a consistent pace
-    B bursted in the beginning, stopped, then bursted again
-	C started slow and sped up in the middle
-
-15a) 500mw
-  b) around 3-4am -- yes they seem reasonable
-
-23b) ~68.5
-
-26) v(r)=1.25pir^3
-    v(r+1)1.25pi(r+1)^3
-
-	1.25pi(r+1)^3-1.25pir^3=a
-	(r+1)^3-r^3=a/(1.25pi)
-	(r^2+2r+1)(r+1)-r^3=a/(1.25pi)
-	(r^3+2r^2+r+r^2+2r+1)-r^3=a/(1.25pi)
-	(r^3+3r^2+3r+1)-r^3=a/(1.25pi)
-	3r^2+3r+1=a/(1.25pi)
-	(3r^2+3r)+1=a/(1.25pi)
-	3(r^2+r)+1=a/(1.25pi)
-	3(r^2+r-2)+1-6=a/(1.25pi)
-	3(r^2-1r+2r-2)+1-6=a/(1.25pi)
-	3(r(r-1)+2(r-1))+1-6=a/(1.25pi)
-    3(r-1)(r+2)+5=a/(1.25pi)
-	4pi/3*3(r-1)(r+2)+5=a
-	4pi(r-1)(r+2)+5=a
-
-	I think this is right? a is the amount of extra air needed to go for r to r+1
-
-27) f(x)=-x^2+3x+4
-
-    (f(3+h) - f(3)) / h
-    (f(3+h) - 4) / h
-	(-9-6h-h^2+9+3h+4 - 4) / h
-	(-3h-h^2) / h
-	h(-3-h) / h
-	-3-h
-
-30) f(x)=(x+3)/(x+1)
-
-    (f(x)-f(1))/(x-1)
-    (((x+3)/(x+1))-2)/(x-1)
-	(((x+3)/(x+1))-2(x+1)/(x+1))/(x-1)
-	(((x+3)-2(x+1))/(x+1))/(x-1)
-	... dont want to bother with the rest of this, but i think i know what i have to do
-
-31) x!=-3,+3
-32) x^2+x-6=(x+3)(x-2)  x!=-3,2
-33) root(3, 2t-1) -- x in reals?
-34) t>=3
-35) x^2-5x=x(x-5)  x!=0 (because of 1st factor) AND x>=5 (because of 2nd factor) AND x>5 (because quad root will be 0 when x=5, meaning the denominator will be 0 which is invalid).  x>5 covers all the other cases, so x>5 is the domain
-36) u != -1  AND 1+1/u+1 != 0, which means u != -2 -- so, u != -1 and -2
-37) p >= 0 AND p >= 4
-
-38) sqrt(4-x^2)
-    sqrt(-(-4+x^2))
-    sqrt(-(x^2-4))
-	sqrt(-(x+2)(x-2))  -- the domain is [-2,2]
-
-39) all reals
-40) t!=-1
-
-51-52) these are lines -- subtract to get the slope, then solve the y-intercept (b)
-       limit the domain explicit to the bounds given
-53) (y-1)^2=-x
-    y-1=sqrt(-x)
-	y=sqrt(-x) + 1
-
-	this is the top half, so the bottom half would be ...
-
-	y=-(sqrt(-x) - 1) you subtract 1 to get the origin to the same place
-
-    THIS IS WRONG. ocrrect answer is 1-sqrt(-x)?? looks like i almost got it right?
-
-54) (y-2)^2=4-x^2
-    y-2=+-(4-x^2)^0.5
-	y=+-(4-x^2)^0.5+2
-
-    you want the top one, so the answer is y=(4-x^2)^0.5+2?
-
-55-56) unsure about these? but looks like abs is involved
-
-57) 2w+2h=20
-    2h=20/w
-	h=10/w
-
-	so the answer is f(w)=2w+10/w
-
-58) w*h=16
-    h=16/w
-
-	so the answer is f(w)=w*16/w
-
-59) area of an equilateral traingle is A=sqrt(3)a^2/4
-
-    f(a)=sqrt(3)a^2/4
-
-60) w*2w*h=8
-   2w^2*h=8
-   h=8/(2w^2)
-   h=4/(w^2)
-
-   f(w)=4/(w^2)
-
-61) w*w*h=2
-    h=2/(w^2)
-    
-	f(w)=w*w+4(w*h)
-	f(w)=w^2+4(w*(2/(w^2)))
-	f(w)=w^2+4(2w/w^2)
-	f(w)=w^2+4(2/w)
-	f(w)=w^2+(8/w)
-
-62) perimeter: 2x+h+pir=30
-    area:      x*h+pir^2
-
-	r=x/2
-
-    perimeter: 2x+h+pi(x/2)=30
-    area:      x*h+pi(x/2)^2
-
-	2x+h+pi(x/2)=30
-	h+pi(x/2)=30-2x
-	h=30-2x-pi(x/2)
-
-    f(x) = x*(30-2x-pi(x/2))+pi(x/2)^2
-	     = 30x-2x^2-(pix^2)/2 + pi(x/2)^2
-		 = 30x-2x^2-(pix^2)/2 + pi(x^2/4)
-		 = 30x-2x^2-(2pix^2)/4 + pi(x^2/4)
-
-		 something like this, there's probably more simplication that can be done
-
-63) area with cutouts: 12*20-4x^2
-    volume: (20-2x)*(12-2x)*x
-
-	f(x)=(20-2x)*(12-2x)*x
-
-64) $35/month 400mins free + 10cents per min'
-
-    f(x) = 35      if x in [0,400]
-	       35+0.1x if x in (400,600]
-
-65) 65mi/h max on freeway, $15 for each mile above max
-    
-    F(x) = 0    if x in [0,65]
-	       x*15 if x in (65,100]
-
-69) f is odd (symmetric across y, where mirroed portion is flipped across x) and g is even (symmetric across y-axis)
-
-70) f is neither odd nor even? mirrored portion needs to be flipped across x, g is even
-pg23
-
-71a) (-5,3)
-  b) (-5,-3)
-
-72) skipped as too obvious
-
-73) odd
-74) even 
-75) none? got it right
-76) odd  -- got it wrong, forgot to apply negative sign properly
-77) 1+ 3x^2-x^4 -- i don't know, if i were to guess i'd say even because exponents are eve n
-78) 1+ 3x^4-x^5 -- gonna say odd, same reason as above
-
-79) yes? -- you're jsut adding the y coordinates together, both of which are even meaning the result will also be even
-    yes? -- you're just adding the y coordinates together
-	no? -- uneven displacement between the quadrants
-
-80) yes? -- you're jsut multing the y coordinates together, both of which are even meaning the result will also be even
-    yes? -- same reasoning, you're displacing the similarly across the relevant quadrants
-	no? -- looks like i mightb e wrong on this one
 -->
-
-<!-- ANSWERS START AT A57>

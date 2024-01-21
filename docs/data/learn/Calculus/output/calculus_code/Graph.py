@@ -1,6 +1,7 @@
 import inspect
+import math
 import sys
-from math import sin, cos, tan
+from math import sin, cos, tan, log
 from pathlib import Path
 from sys import stdin
 
@@ -42,6 +43,11 @@ def _evaluate(n: Node, vars: dict[str, float | int]):
             return 1/cos(_evaluate(n.args[0], vars))
         elif n.op == 'csc':
             return 1/sin(_evaluate(n.args[0], vars))
+        elif n.op == 'log':
+            try:
+                return log(_evaluate(n.args[1], vars)) / log(_evaluate(n.args[0], vars))
+            except ValueError:
+                return math.nan
 
 def graph(funcs: list[str], x_lim: tuple[float, float], y_lim: tuple[float, float] | None, fig_size: tuple[float, float] | None = None):
     fig = plt.figure(figsize=fig_size)
