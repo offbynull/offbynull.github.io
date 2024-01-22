@@ -75,11 +75,19 @@
    * factor inner group to `{kt} (x+s)^2` form: `{kt} 2(x-3)^2+11-18`.
    * add together constant terms: `{kt} 2(x-3)^2-7`.
   
-  Completing the square is useful because it gets your equation into graph transformation format. For the example above, just by looking at the completed formula `{kt} 2(x-3)^2-7` you can tell that it's a parabola ...
-  
-   * shifted down by 7.
-   * shifted right by 3.
-   * stretched up by 2 times.
+  Completing the square is useful because it makes explicit the translation and scaling applied to `{kt} x^2`. For example, completing the square of `{kt} 2x^2+8x+6` results in `{kt} 2(x+2)^2-2`, which is `{kt}x^2` shifted left by 2 and down by 2, and compressed horizontally by half.
+
+  ```{calculus}
+  Graph
+  funcs: [x^2, 2*(x+2)^2-2]
+  x_lim: [-12, 12]
+  y_lim: [-12, 12]
+  fig_size: [4, 4]
+  ```
+
+  ```{note}
+  Note that this is completing the square, not factor. Factoring will tell you the roots_POLY (where it crosses the x-axis): `{kt} (2x+6)(x+1)` crosses the x-axis as -3 and -1.
+  ```
   
   ```{note}
   The material also mentions that this is useful for integrating rational functions.
@@ -607,18 +615,121 @@
   "(base, result) to exponent"    log 2 64 = 6
   ```
 
-PAGE 36 question 30
+* `{bm} set-builder notation/(set[-\s]builder notation|set[-\s]builder)/i` - A notation for describing the members of a set: {variable | predicate}. For example, `{kt} \{x | x>5 and x \le 10\}`. The number system the variable is confined to may be included on the right-hand side. For example, `{kt} \{x \exists \Z | x>5 and x\le10\}` is equivalent to `{kt} \{x | x \exists \Z and x>5 and x\le10\}`.
 
-PAGE 36 question 30
+  ```{note}
+  There are extensions that can include more elaborate expressions on the left-hand side. See [here](https://en.wikipedia.org/wiki/Set-builder_notation#More_complex_expressions_on_the_left_side_of_the_notation).
+  ```
 
-PAGE 36 question 30
+* `{bm} interval notation` - A notation for describing a span of numbers by listing out its two endpoints. The two endpoints are listed out in order (lesser comes first), separated by a comma, and wrapped in either square or circular brackets (potentially mismatching). For example, ...
 
-PAGE 36 question 30
+  * `{kt} [a, b]`
+  * `{kt} [-5, 10)`
+  * `{kt} (-5, x]`
+  * `{kt} (-5, 20)`
 
-* `{bm} set-builder notation`
+  If the bracket preceding/succeeding an endpoint is a ...
 
-* `{bm} interval notation` - FILL ME IN, never include infinity in the set? (e.g. [0, inf) pr (-inf, 0])
- 
+  * square bracket, it means that endpoint is included in the span (e.g. `{kt} [-5, 10)` includes -5 in the span). 
+  * circular bracket, it  means that endpoint isn't included in the span, but everything up to / just before is (e.g. `{kt} [-5, 10)` does not include 10, but everything before 10).
+
+  ```{note}
+  If using -∞ / ∞, you must use circular brackets, because infinity isn't something that can be reached. It just indicates a direction that goes on forever. For example, `{kt} (-\infty, 10]` or `{kt} (-\infty, \infty)`.
+  ```
+
+* `{bm} transformation/(transformation|transform)/i` - A function that changes the output of some other function in some related way, typically within the context of its graph:
+
+  * Translation shifts the output horizontally / vertically.
+  * Scaling expands/compresses/mirrors the output horizontally / vertically.
+
+  ```{calculus}
+  Graph
+  funcs: [x^7, 100*((x-3)^7)+2]
+  x_lim: [-6, 6]
+  y_lim: [-6, 6]
+  fig_size: [4, 4]
+  ```
+
+  ```{seealso}
+  Complete the square - Convert expression of a quadratic to one that explicitly shows transformations.
+  ```
+
+* `{bm} translate/(translation|translate)/i` - A transformation that shifts a function's output vertically and / or horizontally.
+
+  * Shift `{kt} f(x)` vertically: `{kt} g(x)=f(x)+c`, where negative c goes down / positive c goes up.
+  * Shift `{kt} f(x)` horizontally: `{kt} g(x)=f(x-d)`, where negative d goes right / positive d goes left.
+
+  <table><tr><td>
+
+  ```{calculus}
+  Graph
+  funcs: [x^7, (x^7)+3, (x^7)-3]
+  x_lim: [-6, 6]
+  y_lim: [-6, 6]
+  fig_size: [4, 4]
+  ```
+
+  </td><td>
+
+  ```{calculus}
+  Graph
+  funcs: [x^2, (x-3)^2, (x+3)^2]
+  x_lim: [-6, 6]
+  y_lim: [-6, 6]
+  fig_size: [4, 4]
+  ```
+
+  </td></tr></table>
+
+  ```{seealso}
+  Complete the square (convert expression of a quadratic to one that explicitly shows transformations)
+  ```
+
+* `{bm} scale/(scale|scaling|reflect|reflection)/i` - A transformation that stretches/compresses a function's output and/or mirrors it across the coordinate axes. 
+
+  <table><tr><td>
+
+  * Stretch `{kt} f(x)` vertically: `{kt} g(x)=c \cdot f(x)` where c is `{kt} (1, \infty)`.
+  * Compress `{kt} f(x)` vertically: `{kt} g(x)=c \cdot f(x)` where c is `{kt} [0, 1)`.
+  * Flip `{kt} f(x)` across x-axis: `{kt} g(x)=c \cdot f(x)` where c is negative.
+
+  ```{calculus}
+  Graph
+  funcs: [x^2, 2*(x^2), (1/2)*(x^2), -4*(x^2)]
+  x_lim: [-6, 6]
+  y_lim: [-6, 6]
+  fig_size: [4, 4]
+  ```
+
+  </td><td>
+
+  * Compress `{kt} f(x)` horizontally: `{kt} g(x)=f(bx)` where b is `{kt} (1, \infty)`.
+  * Stretch `{kt} f(x)` horizontally: `{kt} g(x)=f(bx)` where b is `{kt} (0, 1)`.
+  * Flip `{kt} f(x)` across y-axis: `{kt} g(x)=f(bx)` where b is negative.
+
+  ```{calculus}
+  Graph
+  funcs: [x^7, (2*x)^7, ((1/2)*x)^7, ((-1/4)*x)^7]
+  x_lim: [-6, 6]
+  y_lim: [-6, 6]
+  fig_size: [4, 4]
+  ```
+
+  </td></tr></table>
+
+  ```{seealso}
+  Complete the square (convert expression of a quadratic to one that explicitly shows transformations)
+  ```
+
+PAGE 40 combinations of functions
+
+PAGE 40 combinations of functions
+
+PAGE 40 combinations of functions
+
+PAGE 40 combinations of functions
+
+PAGE 40 combinations of functions
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 
@@ -636,7 +747,7 @@ PAGE 36 question 30
 
 `{bm-disable-all}`
 
-<!-- ANSWERS AT A58>
+<!-- ANSWERS AT A59 -->
 
 <!--
 ---- 1.2 EXERCISES
@@ -839,7 +950,24 @@ PAGE 36 question 30
 
 29) I guess it depends on how far back you're starting point is? closer you get to x=0, the more illumination you get? thats what the curve looks like
 
-30)
+30) larger, more species
+    S is num of bats
+	A is area
+	S=0.7A^0.3
+
+  a) S=0.7(60)^0.3
+     S=2.39
+  b) 4=0.7(A)^0.3
+     5.714=A^(3/10)
+	 5.714^(10/3)=A
+	 333.529=A
+
+31a) am i supposed to do this through trial-and-error? if so, i got 0.00067*x^1.15
+  b) 0.456 -- this is wrong, the function 0.00067*x^1.15 is a poor fit
+
+  it sounds like you can use linear regression to for a power function, but you need to apply logarithms to various parts of the equation to get it linear? this is for exponential and power functions. there's also polynomial regression, logistic regression, etc..
+
+32) skip
 -->
 
 <!--
