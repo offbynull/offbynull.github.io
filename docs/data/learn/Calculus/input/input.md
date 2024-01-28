@@ -13,15 +13,15 @@
   A polynomial's ...
   
   * domain is all real numbers.
-  * degree is the highest exponent across all terms that have a coefficient other than 0.
+  * degree_POLY is the highest exponent across all terms that have a coefficient other than 0.
 
-* `{bm} degree` - Highest exponent across all terms of a polynomial that have a coefficient other than 0. For example, ...
+* `{bm} degree/(degrees?)_POLY/i` - Highest exponent across all terms of a polynomial that have a coefficient other than 0. For example, ...
 
-  * `{kt} f(x)=10x^2+3` has a degree of 2.
-  * `{kt} f(x)=0x^4+3x` has a degree of 1.
-  * `{kt} f(x)=0x^4+3` has a degree of 0.
+  * `{kt} f(x)=10x^2+3` has a degree_POLY of 2.
+  * `{kt} f(x)=0x^4+3x` has a degree_POLY of 1.
+  * `{kt} f(x)=0x^4+3` has a degree_POLY of 0.
 
-  A polynomial function of degree ...
+  A polynomial function of degree_POLY ...
 
   * 1 is called a linear function.
   * 2 is called a quadratic function.
@@ -297,11 +297,11 @@
 
 * `{bm} piecewise function/(piece[-\s]?wise function|piece[-\s]?wise defined function)/i` - A collection of functions combined together to form a single function, where each function in the collection is used for a different part of the parent function's domain.
 
-  The notation for piecewise functions is to stack the collection of functions on top of each other, listing out the domain where each function is active. For example, the piecewise function below uses `{kt} 1-x` when `{kt} x \lte -1` but `{kt} x^2` when `{kt} x > 1`
+  The notation for piecewise functions is to stack the collection of functions on top of each other, listing out the domain where each function is active. For example, the piecewise function below uses `{kt} 1-x` when `{kt} x \le -1` but `{kt} x^2` when `{kt} x > 1`
 
   ```{kt}
   f{x} = \begin{cases}
-   1-x &\text{if } x \lte -1 \\
+   1-x &\text{if } x \le -1 \\
    x^2 &\text{if } x > -1
   \end{cases}
   ```
@@ -385,13 +385,13 @@
   This is referred to as a step function because the horizontal lines look like steps?
   ```
 
-* `{bm} linear function/(linear function|linear)/i` - A polynomial of degree 1. For example, `{kt} f(x)=10x+3` is a linear function.
+* `{bm} linear function/(linear function|linear)/i` - A polynomial of degree_POLY 1. For example, `{kt} f(x)=10x+3` is a linear function.
 
   A linear function is the equation of a line written in slope-intercept form `{kt} y=f(x)=mx+b`. Linear functions grow at a constant rate. The rate of growth is dictated by the slope m. For example, `{kt} f(x)=10x+3` has a slope of 10, meaning whenever x increases by 1, `{kt} f(x)` increases by 10.
 
-* `{bm} quadratic function/(quadratic function|quadratic)/i` - A polynomial of degree 2. For example, `{kt} f(x)=2x^2+4x+4` is a quadratic function.
+* `{bm} quadratic function/(quadratic function|quadratic)/i` - A polynomial of degree_POLY 2. For example, `{kt} f(x)=2x^2+4x+4` is a quadratic function.
 
-* `{bm} cubic function/(cubic function|cubic)/i` - A polynomial of degree 3. For example, `{kt} f(x)=5x^3+2x^2+4x+4` is a cubic function.
+* `{bm} cubic function/(cubic function|cubic)/i` - A polynomial of degree_POLY 3. For example, `{kt} f(x)=5x^3+2x^2+4x+4` is a cubic function.
 
 * `{bm} power function/(power function|square root function|cube root function|root function|reciprocal function)/i` - A function in the form `{kt} x^a`, where a is a constant.
 
@@ -426,7 +426,7 @@
     x^0 is also an even function? It's just a horizontal line at 0.
     ```
   
-  * When `{kt} a=\frac{1}{n}`, where n is a positive integer, the power function is sometimes also referred to as a root function: `{kt} x^{\frac{1}{n}} = \sqrt[n]{x}`. The graph is similar to `{kt} x^n` but rotated 90 degrees to the right.
+  * When `{kt} a=\frac{1}{n}`, where n is a positive integer, the power function is sometimes also referred to as a root function: `{kt} x^{\frac{1}{n}} = \sqrt[n]{x}`. The graph is similar to `{kt} x^n` but rotated 90 !!degrees!! to the right.
   
     ```{calculus}
     Graph
@@ -462,7 +462,7 @@
 
   All rational functions are algebraic functions.
 
-* `{bm} periodic function/(periodic function|cyclic function)/i` - A function that repeats its values at regular intervals. For example, `{kt} sin(x)` repeats every `{kt} 2\pi`: `{kt} sin(x+2\pi) = sin(x)`.
+* `{bm} periodic function/(periodic function|cyclic function)/i` - A function that repeats its values at regular intervals. For example, sine repeats every `{kt} 2\pi`: `{kt} sin(x+2\pi) = sin(x)`.
 
   ```{calculus}
   Graph
@@ -472,11 +472,28 @@
   fig_size: [6, 2]
   ```
 
-* `{bm} trigonometric function/(trigonometric function|trigonometry function|trig function)/i` - A function which relates an angle of a right-triangle to the length of two of its sides: sine / cosecant, cosine / secant,  and tangent / cotangent.
+* `{bm} trigonometric function/(trigonometric function|trigonometry function|trig function)/i` - A function which relates an rangle within a right-triangle to the length of two of its sides:
 
-  In calculus, the convention is to always use radians as opposed to degrees.
+  * sine / arcsine / cosecant
+  * cosine / arccosine / secant
+  * tangent / arctangent / cotangent.
 
-* `{bm} sine` - A trigonometric function relates an angle of a right-triangle to the length of the side opposite of the angle and the hypotenuse: `{kt} sin(x)=\frac{opposite}{hypotenuse}`.
+  ```{svgbob}
+          +
+         /|
+        / |
+       /  |
+  hyp /   | opp
+     /    |
+    /     |
+   / a    |
+  +-------+
+      adj
+  ```
+
+  In calculus, the convention is to always use radians as opposed to !!degrees!!.
+
+* `{bm} sine` - A trigonometric function that converts right-triangle's angle to the side-length ratio opposite vs hypotenuse: `{kt} sin(\theta)=\frac{opposite}{hypotenuse}`.
 
   ```{calculus}
   Graph
@@ -489,11 +506,48 @@
   * Domain: (-inf, inf)
   * Range: [-1, 1]
   * Period: `{kt} sin(x+2\pi) = sin(x)`
+  * Inverse: Arcsine
+  * Reciprocal: Cosecant
   * Relationships: `{kt} sin(x)=cos(\frac{\pi}{2}-x)=\frac{1}{csc(x)}`
 
-  Sine's reciprocal is cosecant.
+  ```{note}
+  The notation ...
+  
+  * `{kt} sin^k \space x` means `{kt} (sin(x))^k`, but it may mean `{kt} arcsin(x)` if `{kt} k=-1`: `{kt} sin^{-1} \space x`.
+  * `{kt} sin \space x^k` means `{kt} sin(x^k)`.
+  * `{kt} sin \space cx` means `{kt} sin(cx)`.
+  ```
 
-* `{bm} cosecant` - The reciprocal of sine: `{kt} csc(x) = \frac{1}{sin(x)} = \frac{hypotenuse}{opposite}`
+* `{bm} arcsine` - The inverse of sine: `{kt}arcsin(\frac{opposite}{hypotenuse})=\theta` vs  `{kt} sin(\theta)=\frac{opposite}{hypotenuse}`. In other words, arcsine swaps each of sine's (x, y) to (y, x) for where `{kt} \theta` is [-1, 1].
+
+  ```{calculus}
+  Graph
+  funcs: [arcsin(x), sin(x)]
+  x_lim: [-7, 7]
+  y_lim: [-3.14, 3.14]
+  fig_size: [6, 3]
+  ```
+
+  ```{note}
+  * Any more than [-1, 1] and there'd be multiple y's for each x (violates definition of function).
+  * For a right-triangle, `{kt} \frac{opposite}{hypotenuse}` can't go past (0, 1] anyways?
+  ```
+
+  `{kt} arcsin(r)` is sometimes written as `{kt} sin^{-1} \space r`.
+
+  ```{note}
+  The notation `{kt} sin^k \space x` means `{kt} (sin(x))^k`, but it may mean `{kt} arcsin(x)` if `{kt} sin^{-1} \space x`.
+  ```
+
+  ```{note}
+  The notation ...
+  
+  * `{kt} arcsin^k \space x` means `{kt} (arcsin(x))^k`. Is there a special case for `{kt} k=-1`where `{kt} arcsin^{-1} \space x = sin(x)`?
+  * `{kt} arcsin \space x^k` means `{kt} arcsin(x^k)`.
+  * `{kt} arcsin \space cx` means `{kt} arcsin(cx)`.
+  ```
+
+* `{bm} cosecant` - The reciprocal of sine: `{kt} csc(\theta) = \frac{1}{sin(\theta)} = \frac{hypotenuse}{opposite}`
   
   ```{calculus}
   Graph
@@ -505,11 +559,18 @@
   * Domain: `{kt} x \neq n \frac{pi}{2}`, where n is even
   * Range: (-inf, inf)
   * Period: `{kt} csc(x+2\pi) = csc(x)`
+  * Reciprocal: Sine
   * Relationships: `{kt} csc(x)=sec(\frac{\pi}{2}-x)=\frac{1}{sin(x)}`
 
-  Cosecant's reciprocal is sine.
+  ```{note}
+  The notation ...
+  
+  * `{kt} csc^k \space x` means `{kt} (csc(x))^k`.
+  * `{kt} csc \space x^k` means `{kt} csc(x^k)`.
+  * `{kt} csc \space cx` means `{kt} csc(cx)`.
+  ```
 
-* `{bm} cosine` - A trigonometric function relates an angle of a right-triangle to the length of the side adjacent to the angle and the hypotenuse: `{kt} cos(x) = \frac{adjacent}{hypotenuse}`.
+* `{bm} cosine` - A trigonometric function that converts right-triangle's angle to a side-length ratio adjacent vs hypotenuse: `{kt} cos(\theta) = \frac{adjacent}{hypotenuse}`.
 
   ```{calculus}
   Graph
@@ -522,11 +583,43 @@
   * Domain: (-inf, inf)
   * Range: [-1, 1]
   * Period: `{kt} cos(x+2\pi) = cos(x)`
+  * Inverse: Arccosine
+  * Reciprocal: Secant
   * Relationships: `{kt} cos(x)=sin(\frac{\pi}{2}-x)=\frac{1}{sec(x)}`
 
-  Cosine's reciprocal is secant.
+  ```{note}
+  The notation ...
+  
+  * `{kt} cos^k \space x` means `{kt} (cos(x))^k`, but it may mean `{kt} arccos(x)` if `{kt} k=-1`: `{kt} cos^{-1} \space x`.
+  * `{kt} cos \space x^k` means `{kt} cos(x^k)`.
+  * `{kt} cos \space cx` means `{kt} cos(cx)`.
+  ```
 
-* `{bm} secant` - The reciprocal of cosine: `{kt} sec(x) = \frac{1}{cos(x)} = \frac{hypotenuse}{adjacent}`.
+* `{bm} arccosine` - The inverse of cosine: `{kt}arccos(\frac{adjacent}{hypotenuse})=\theta` vs `{kt} cos(\theta) = \frac{adjacent}{hypotenuse}`. In other words, arcsine swaps each of cosine's (x, y) to (y, x) for where `{kt} \theta` is [-1, 1].
+
+  ```{calculus}
+  Graph
+  funcs: [arccos(x), cos(x)]
+  x_lim: [-7, 7]
+  y_lim: [-3.14, 3.14]
+  fig_size: [6, 3]
+  ```
+
+  `{kt} arccos(r)` is sometimes written as `{kt} cos^{-1} \space r`.
+
+  ```{note}
+  The notation `{kt} cos^k \space x` means `{kt} (cos(x))^k`, but it may mean `{kt} arccos(x)` if `{kt} cos^{-1} \space x`.
+  ```
+
+  ```{note}
+  The notation ...
+  
+  * `{kt} arccos^k \space x` means `{kt} (arccos(x))^k`. Is there a special case for `{kt} k=-1` where `{kt} arccos^{-1} \space x = cos(x)`?
+  * `{kt} arccos \space x^k` means `{kt} arccos(x^k)`.
+  * `{kt} arccos \space cx` means `{kt} arccos(cx)`.
+  ```
+
+* `{bm} secant` - The reciprocal of cosine: `{kt} sec(\theta) = \frac{1}{cos(\theta)} = \frac{hypotenuse}{adjacent}`.
 
   ```{calculus}
   Graph
@@ -538,11 +631,18 @@
   * Domain: `{kt} x \neq n \frac{pi}{2}`, where n is odd
   * Range: (-inf, inf)
   * Period: `{kt} sec(x+2\pi) = sec(x)`
+  * Reciprocal: Cosine
   * Relationships: `{kt} sec(x)=csc(\frac{\pi}{2}-x)=\frac{1}{cos(x)}`
 
-  Secant's reciprocal is cosine.
+  ```{note}
+  The notation ...
+  
+  * `{kt} sec^k \space x` means `{kt} (sec(x))^k`.
+  * `{kt} sec \space x^k` means `{kt} sec(x^k)`.
+  * `{kt} sec \space cx` means `{kt} sec(cx)`.
+  ```
 
-* `{bm} tangent` - A trigonometric function relates an angle of a right-triangle to the length of the sides opposite of and adjacent to the angle: `{kt} tan(x) = \frac{opposite}{adjacent}`.
+* `{bm} tangent` - A trigonometric function that converts right-triangle's angle to a side-length ratio opposite vs adjacent: `{kt} tan(\theta) = \frac{opposite}{adjacent}`.
 
   ```{calculus}
   Graph
@@ -554,11 +654,43 @@
   * Domain: `{kt} x \neq n \frac{pi}{2}`, where n is odd
   * Range: (-inf, inf)
   * Period: `{kt} tan(x+\pi) = tan(x)`
+  * Inverse: Arctangent
+  * Reciprocal: Cotangent
   * Relationships: `{kt} tan(x)=\frac{sin(x)}{cos(x)}=cot(\frac{\pi}{2}-x)=\frac{1}{cot(x)}`
 
-  Tangent's reciprocal is cotangent.
+  ```{note}
+  The notation ...
+  
+  * `{kt} tan^k \space x` means `{kt} (tan(x))^k`, but it may mean `{kt} arctan(x)` if `{kt} k=-1`: `{kt} tan^{-1} \space x`.
+  * `{kt} tan \space x^k` means `{kt} tan(x^k)`.
+  * `{kt} tan \space cx` means `{kt} tan(cx)`.
+  ```
 
-* `{bm} cotangent` - The reciprocal of tangent: `{kt} cot(x) = \frac{1}{tan(x)} = \frac{adjacent}{opposite}`.
+* `{bm} arctangent` - The inverse of tangent: `{kt}arctan(\frac{opposite}{adjacent})=\theta` vs `{kt} tan(\theta) = \frac{opposite}{adjacent}`. In other words, arctangent swaps each of tangent's (x, y) to (y, x) for where `{kt} \theta` is [-1, 1].
+
+  ```{calculus}
+  Graph
+  funcs: [arctan(x), tan(x)]
+  x_lim: [-6, 6]
+  y_lim: [-6, 6]
+  fig_size: [6, 6]
+  ```
+
+  `{kt} arctan(r)` is sometimes written as `{kt} tan^{-1} \space r`.
+
+  ```{note}
+  The notation `{kt} tan^k \space x` means `{kt} (tan(x))^k`, but it may mean `{kt} arctan(x)` if `{kt} tan^{-1} \space x`.
+  ```
+
+  ```{note}
+  The notation ...
+  
+  * `{kt} arctan^k \space x` means `{kt} (arctan(x))^k`. Is there a special case for `{kt} k=-1` where `{kt} arctan^{-1} \space x = tan(x)`?
+  * `{kt} arctan \space x^k` means `{kt} arctan(x^k)`.
+  * `{kt} arctan \space cx` means `{kt} arctan(cx)`.
+  ```
+
+* `{bm} cotangent` - The reciprocal of tangent: `{kt} cot(\theta) = \frac{1}{tan(\theta)} = \frac{adjacent}{opposite}`.
 
   ```{calculus}
   Graph
@@ -570,9 +702,16 @@
   * Domain: `{kt} x \neq n \frac{pi}{2}`, where n is even
   * Range: (-inf, inf)
   * Period: `{kt} cot(x+\pi) = cot(x)`
+  * Reciprocal: Tangent
   * Relationships: `{kt} cot(x)=\frac{cos(x)}{sin(x)}=tan(\frac{\pi}{2}-x)=\frac{1}{tan(x)}`
 
-  Cotangent is the reciprocal of tangent.
+  ```{note}
+  The notation ...
+  
+  * `{kt} cot^k \space x` means `{kt} (cot(x))^k`.
+  * `{kt} cot \space x^k` means `{kt} cot(x^k)`.
+  * `{kt} cot \space cx` means `{kt} cot(cx)`.
+  ```
 
 * `{bm} exponential function` - A function in the form `{kt} b^x`, where b is a positive constant.
 
@@ -615,7 +754,7 @@
   "(base, result) to exponent"    log 2 64 = 6
   ```
 
-* `{bm} set-builder notation/(set[-\s]builder notation|set[-\s]builder)/i` - A notation for describing the members of a set: {variable | predicate}. For example, `{kt} \{x | x>5 and x \le 10\}`. The number system the variable is confined to may be included on the right-hand side. For example, `{kt} \{x \exists \Z | x>5 and x\le10\}` is equivalent to `{kt} \{x | x \exists \Z and x>5 and x\le10\}`.
+* `{bm} set-builder notation/(set[-\s]builder notation|set[-\s]builder)/i` - A notation for describing the members of a set: {variable | predicate}. For example, `{kt} \{x | x>5 and x \le 10\}`. The values that the variable is confined to may be included on the right-hand side. For example, `{kt} \{x \exists \Z | x>5 and x\le10\}` is equivalent to `{kt} \{x | x \exists \Z and x>5 and x\le10\}`.
 
   ```{note}
   There are extensions that can include more elaborate expressions on the left-hand side. See [here](https://en.wikipedia.org/wiki/Set-builder_notation#More_complex_expressions_on_the_left_side_of_the_notation).
@@ -721,21 +860,80 @@
   Complete the square (convert expression of a quadratic to one that explicitly shows transformations)
   ```
 
-PAGE 40 combinations of functions
+* `{bm} function operation` - Given two functions `{kt} f(x)` and `{kt} g(x)`, ...
 
-PAGE 40 combinations of functions
+  * `{kt} (f+g)(x) = f(x)+g(x)`, referred to as sum of functions.
+  * `{kt} (f-g)(x) = f(x)-g(x)`, referred to as difference of functions.
+  * `{kt} (f \cdot g)(x) = f(x) \cdot g(x)`, referred to as product of functions.
+  * `{kt} (\frac{f}{g})(x) = \frac{f(x)}{g(x)}`, referred to as quotient of functions.
+  * `{kt} (f \circ g)(x) = f(g(x))`, referred to as composition of functions.
 
-PAGE 40 combinations of functions
+* `{bm} sum of functions/(sum of functions|function addition)/i` - A function operation where two functions are summed: `{kt} (f+g)(x) = f(x)+g(x)`. The domain of `{kt} (f+g)(x)` is the intersection of `{kt} f(x)`'s domain and `g(x)`'s domain (x must be defined for both functions).
 
-PAGE 40 combinations of functions
+* `{bm} difference of functions/(difference of functions|function subtraction|function difference)/i` - A function operation where two functions are subtracted: `{kt} (f-g)(x) = f(x)-g(x)`. The domain of `{kt} (f-g)(x)` is the intersection of `{kt} f(x)`'s domain and `g(x)`'s domain (x must be defined for both functions).
 
-PAGE 40 combinations of functions
+* `{bm} product of functions/(product of functions|multiplication of functions|function product|function multiplication)/i` - A function operation where two functions are multiplied: `{kt} (f \cdot g)(x) = f(x) \cdot g(x)`. The domain of `{kt} (f \cdot g)(x)` is the intersection of `{kt} f(x)`'s domain and `g(x)`'s domain (x must be defined for both functions).
+
+* `{bm} quotient of functions/(quotient of functions|function division)/i` - A function operation where two functions are divided: `{kt} (\frac{f}{g})(x) = \frac{f(x)}{g(x)}`. The domain of `{kt} (\frac{f}{g})(x)` has the following conditions:
+
+  * x must be defined for both functions (intersection of `{kt} f(x)`'s domain and `{kt} g(x)`'s domain).
+  * x resulting in `{kt} g(x)=0` isn't in the domain because the denominator would be 0.
+
+  In set builder notation, the domain is `{kt} \{x \in A \cap B | g(x) \neq 0\}` where A is `{kt} f(x)`'s domain and B is `{kt} g(x)`'s domain.
+
+* `{bm} function composition/(composition of functions|function composition|composite function|composition|composite)/i` - A function operation where one function's output is fed as the input of another function: `{kt} (f \circ g)(x) = f(g(x))`.
+
+  ```{svgbob}
+           .-------.                      .-------.    
+       ----'       '----              ----'       '----
+  x ---->      g      ----> "g(x)" ---->      f      ----> "f(g(x))"
+       ----.       .----              ----.       .----
+           '-------'                      '-------'    
+  ```
+
+  For example, given `{kt} f(u) = |u|` and `{kt} g(w) = w - 1`, the function composition `{kt} (f \circ g)(x^2) = f(g(x)) = f(x^2 - 1) = |x^2 - 1|`.
+
+  ```{svgbob}
+              .-------.                      .-------.    
+          ----'       '----              ----'       '----
+  "x^2" ---->     g      ----> "x^2-1" ---->     f      ----> "|x^2-1|"
+          ----.       .----              ----.       .----
+              '-------'                      '-------'    
+  ```
+
+  The domain of a composite function `{kt} (f \circ g)(x) = f(g(x))` is any x that can pass through the chain and result in an output. For example, imagine that the function ...
+
+  * g is the mapping {1: 3000, 5: 100, 10: 100, 15: 3000}.
+  * f is the mapping {10: 1, 100: 2}.
+
+  When x is ...
+
+  * is 5 or 10, g outputs 100, which is then fed into f to output 2.
+  * is 1 or 15, g outputs 3000, which can't be fed into f because 3000 isn't in f's domain (undefined).
+  * x is some value other than {1,5,10,15}, it isn't in g's domain (undefined).
+
+  ```{svgbob}
+             .-------.                  
+         ----'   g   '----                  .-------.    
+       ---->  1=  3000                  ----'   f   '----
+       ---->  5=  100   -----.               10=  1
+       ---->  10= 100   -----+------------>  100= 2    ----> 2
+       ---->  15= 3000                  ----.       .----
+         ----.       .----                  '-------'    
+             '-------'                
+  ```
+
+  Therefore, `{kt} (f \circ g)(x) = f(g(x))`'s domain is `{kt} x \in \{5,10\}`.
+
+* `{bm} function decomposition/(decomposition of a function|function decomposition|decompose function|decomposition|decompose)/i` - The process of breaking up a function into a composition of smaller functions. For example, `{kt} f(x)=\sqrt{x^2 - 1}` can be decomposed into `{kt} g(x) = x^2` and `{kt} h(x) = \sqrt{x-1}`, such that `{kt} (f \circ g)(x) = f(g(x)) = f(x^2) = \sqrt{x-1}`.
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 
 `{bm-error} Wrap in !! or apply suffix _POLY/(roots?)/i`
 `{bm-ignore} square root`
 `{bm-error} Remove _POLY/(square roots?_POLY)/i`
+
+`{bm-error} Wrap in !! or apply suffix _POLY/(degrees?)/i`
 
 `{bm-error} Did you mean discriminant?/(discriminator)/i`
 
@@ -747,7 +945,396 @@ PAGE 40 combinations of functions
 
 `{bm-disable-all}`
 
-<!-- ANSWERS AT A59 -->
+PAGE 44 exercises
+
+<!-- ANSWERS AT A60 -->
+
+<!--
+-------- 1.3 EXERCISES
+
+1a) f(x)+3
+ b) f(x)-3
+ c) f(x-3)
+ d) f(x+3)
+ e) -f(x)
+ f) f(-x)
+ g) 3f(x)
+ h) (1/3)f(x)
+
+2a) move it up by 8
+ b) move it left by 8
+ c) scale it vertically by 8
+ d) compress it horizontally by 8
+ e) flip it across the x-axis and move it down by 1
+ f) blow it up 8x
+
+3a) 3
+ b) 1
+ c) 4
+ d) 5
+ e) 2
+
+4-5) skip
+
+6) y=2sqrt(3x-x^2)
+
+7) y=-sqrt(3x-x^2) - 1
+
+8a) former has been stretched out horizontally 2x. not graphing.
+ b) former has been shifted up by 1. not graphing.
+
+9) parabola flipped
+10) parabola shifted right by 3
+11) shifted down up by 1
+12) the 2 curves and their asymptotes get flipped across x and shifted up by 1
+13) cos curve is squeezed horizontally by 3 and stretched vertically by 2x.
+    - where as cos curve's x-intercepts are pi/2+(pi)*n, the new x-intercepts will be (pi/2+(pi)*n)/3
+    - high/low points are not 2/-2
+14) move sqrt(x) left by 1 and stretch it vertically 2x
+    - point 0,0 on x now becomes -1,0
+    - point 1,1 on sqrt(x) now becomes 0,2
+15) you need to try to factor this (or use quadratic equation) and complete the square.
+    - factoring/quadratic formula will give you x-intercepts 
+      - not possible, discriminant says there's no root
+    - completing the square will give you origin, translation, and scaling
+        x^2-4x+5
+        (x^2-4x)+5
+        (x-2x-2x+4)+5-4
+        (x-2)^2+1
+        x^2 shift right 2 and up 1
+16) graph of sin is compressed by pi, meaning ...
+    * where as sin's x-intercepts are at n*pi, sin(pi*x) compresses it by horizontally pi, meaning it scales it by 1/pi -- (n*pi)/pi = n, meaning the x-intercepts of sin(pi*x) are integers
+    * shift it up by 1
+17) sqrt graph flipped over x-axis and moved up by 2
+18) cos graph flipped over x-axis and stretched vertically by 2, shift up by 3
+19) sin graph by is stretched by 2, meaning x-intercepts are now at 2n*pi rather than n*pi (where n is an integer)
+20) |x| is a V shape at origin 0,0 -- shift it down by 2
+21) |x| is a V shape at origin 0,0 -- shift it right by 2
+22) tan's asymptotes are at (pi/2)+n*(pi) and is an "odd function" (center at 0,0)
+    - shift it over by pi/4, meaning asymptotes ar know at (pi/4)+(pi/2)+n*(pi)
+                                                           (pi/4)+(2pi/4)+n*(pi)
+                                                           (3pi/4)+n*(pi)
+    - squish vertically to a quarter of original size, meaning make hte curve a bit steeper?
+      there's no hard and fast coordinates (that don't sit on x-axis) to use as reference points for drawing horizontally scaled
+23) shift sqrt(x) down by 1, and reflect the points that are below x-axis (x between 0 and 1)
+24) cos x-intercepts scaled horizontally from pi/2+n*pi to (pi/2+n*pi)/pi
+                                                           (pi/2)/pi+(n*pi)/pi
+                                                           (pi/2)*(1/pi)+n
+                                                           (1/2)+n
+    then, any point below the x-axis is reflected, meaning you're going to get a bunch of humps with sharp edges
+
+25) skip
+
+26) variable star, brightness oscillates
+    delta cephei, 5.4 days to oscillate 1 time
+                  4.0 avg brightness, +/- 0.35 brightness, so brightness goes form 4.35 to 3.65
+
+    
+    since it oscillates, you can start with cos(x)
+    1. 0.35cos(x) to get wave between +0.35 and -0.35
+    2. 0.35cos(x)+4 to get wave between +4.35 and -4.35
+    3. 0.35cos(2pi*x)+4 to get 1 full wave in 1 unit
+    4. 0.35cos(2pi*x)+4 to get 1 full wave in 1 unit
+    5. 0.35cos((10/54)*2pi*x)+4 to get 1 full wave in 5.4 units
+
+27) low = 2 and high = 12, difference = 12-2=10, middle = (12-2)/2+2=5+2=7
+    1 full oscillation = 12 hours
+
+    1. 5cos(x) to get it between -5 and 5
+    2. 5cos(x)+7 to get it between 2 and 12
+    3. 5cos(2pi*x)+7 to get 1 full cycle per unit
+    4. 5cos((1/12)*2pi*x)+7 to get a full cycle in 12 units (12 hours)
+
+    at this point x=0 is midnight and is also high tide, but the problem says high tide happens at 6:45AM. That means we need to shift x such that the top is at x=6.75 (6:45 -- 60 mins in an hour, 45/60=0.75)
+
+    5cos((1/12)*2pi*x-6.75)+7
+
+28) low=2000 high=2500 1cycle=4seconds
+    this is exactly like prev question
+
+    250sin(x)+2250 -- make it go from 2000 to 2500
+    250sin((1/4)2pi*x)+2250 -- 1 cycle = 4 seconds
+
+29a) y=f(|x|) -- when x=-1, it's the same as x=1
+                 when x=-2, it's the same as x=2
+                 etc..
+
+                 so the function mirrors the positive side of the graph f onto the negative side?
+
+  b) already did it, it mirrors as described above
+  c) already did it, it mirrors as described above
+
+30) 1/f(x) -- x can't = 0? so i'd imagine there'd be asymptotes or something at the roots?
+
+    i didn't know enough about this to do it, but i graphed it and it looks like the asymptotes are right. the graph has curves that hug the asymptotes, where the prongs of those curves point in the direction that y is going on the original graph for those sections?
+
+31a) x^3+2x^2+3x^2-1
+     x^3+2x^2+3x^2-1
+     -- TODO: i need to factor this to find its roots? which gives the domain?
+              NO - you would need to do this if this polynomial were part of a denominator
+     domain is (-inf, inf)
+  b) x^3+2x^2-3x^2-1  domain: (-inf, inf)
+  c) (x^3)(3x^2-1)  domain: (-inf, inf)
+  d) (x^3)/(3x^2-1)  domain: 3x^2-1 != 0   3x^2+0x-1 !=0
+                                           use quadratic formula?
+                                           (-0+/-sqrt(0^2-4(3)(-1)))/(2(3))
+                                           +/-sqrt(0^2-4(3)(-1))/6
+                                           +/-sqrt(-4(3)(-1))/6
+                                           +/-sqrt(-4(-3))/6
+                                           +/-sqrt(12)/6
+                                           x is undefined on sqrt(12)/6=0 and -sqrt(12)/6
+                                           x!=sqrt(12)/6=0 and x!=-sqrt(12)/6
+
+32a) sqrt(3-x)+sqrt(x^2-1)  domain 3-x>=0         x^2-1>=0
+                                   -x>=-3         x^2>=1
+                                   x<=3           x>=1 and x>=-1
+                                   x<=3     and   x>=1 and x>=-1
+
+                                             *------*-----*
+                                   ---------------------------
+                                             -1  0  1  2  3
+                                   
+                                   THE SECOND INEQUALITY IS WRONG:
+
+                                   x^2>=1
+                                   sqrt(x)>=sqrt(1)  -- sqrt(x) means x could be -x or x (-5^2 = 5^2 = 25)
+                                   -x>=1 and x>=1
+                                   x<=-1 and x>=1
+
+                                   so the real answer is x<=3 and x<=-1 and x>=1
+
+                                      <-------*      *-----*
+                                   ---------------------------
+                                             -1  0  1  2  3
+
+  b) sqrt(3-x)-sqrt(x^2-1)  domain is the same as above, for the same reason as above.
+
+  c) sqrt(3-x)*sqrt(x^2-1)  domain is the same as above, for the same reason as above
+                            i'd originally thought there'd be some exponent/root rules applied but this wasn't the case
+
+  d) sqrt(3-x)/sqrt(x^2-1)  for numerator: x<=3 for same reason as above
+                            for denominator: x<=-1 and x>=1 for same reason as above
+                                             BUT, denom can't be 0, meaning sqrt(x^2-1)!=0
+                                                  sqrt(a)=0 when a=0 -- when does x^2-1=0?
+                                                                                  (x+1)(x-1)=0
+                                                  when x=1 and x=-1, x^2-1=0
+                                                  x=1 and x=-1 need to be removed from domain
+                                                  MEANING ...
+                                                  x<=-1 and x>=1 BUT x!=1 and x!=-1
+                                                  SIMPLIFYING TO...
+                                                  x<-1 and x>1
+                                             x<-1 and x>1 
+
+                            domain is x<=3 and x<-1 and x>1
+
+33a) f(g(x)) = g(x^2+x) = 3(x^2+x)+5 = 3x^2+3x+5 domain:all x
+  b) g(f(x)) = g(3x+5) = (3x+5)^2+(3x+5)
+                         (3x+5)(3x+5)+(3x+5)
+                         9x^2+15x+15x+25+3x+5
+                         9x^2+33x+30 domain: all x
+  c) f(f(x)) = f(3x+5) = 3(3x+5) = 6x+15 domain:all x
+  d) g(g(x)) = g(x^2+x) = (x^2+x)^2+(x^2+x)
+                        = (x^2+x)(x^2+x) + x^2+x
+                        = x^4+x^3+x^3+x^2+x^2+x
+                        = x^4+2x^3+2x^2+x domain: all x
+
+34) skip -- no operation in here indicates that the domain will be anything other than all x for all sub-questions
+
+35a) f(g(x)) = f(4x-3) = sqrt((4x-3)+1)
+                       = sqrt(4x+2)  domain: 4x+2>=0
+                                             4x>=-2
+                                             x>=-1/2
+  b) g(f(x)) = g(sqrt(x+1)) = 4(sqrt(x+1))-3  domain: x+1>=0
+                                                      x>=-1
+  c) f(f(x) = f(sqrt(x+1)) = sqrt(sqrt(x+1)+1)
+                             ((x+1)^(1/2)+1)^(1/2)
+                             ((x+1)^(1/2)+1^(1/2))^(1/2)
+                             (x+1)^(1/4)+1^(1/4)
+                             (x+1)^(1/4)+1
+                             root(4, x+1)+1  domain: x+1>=0
+                                                     x>=-1
+  d) g(g(x)) domain: all x
+
+36a) f(g(x)) = f(x^2+1) = sin(x^2+1)  domain: all x
+  b) g(f(x)) = g(sin(x)) = sin(x)^2+1 domain: all x
+  c) domain: all x
+  d) domain: all x
+
+37a) f(g(x)) = f((x+1)/(x+2)) = (x+1)/(x+2)+1/(x+1)/(x+2)  domain: x!=-2 and (x+1)/(x+2)!=0
+                                                                             x!=-1
+                                 
+                              
+                              REMEMBER: the convention is to take the domain from the source expression -- don't re-work it?
+  b) g(f(x)) = g(x+(1/x)) = ((x+(1/x))+1)/((x+(1/x))+2)  x != 0 AND (x+(1/x))+2!=0
+                                                                    (x+(1/x))!=-2
+                                                                    1/x!=-2-x
+                                                                    1!=-2x-x^2
+                                                                    0!=-2x-x^2-1
+                                                                    0!=-x^2-2x-1
+                                                                    0!=-(x^2+2x+1)
+                                                                    0!=-(x+1)^2
+                                                          x !=0 AND x!=-1
+                                                          I HAD A VERY HARD TIME WITH THIS
+  c) f(f(x)) = f(x+(1/x)) = (x+(1/x))+(1/(x+(1/x))) x != 0 AND x+(1/x) != 0
+                                                               x != -1/x
+                                                               x^2 != -1
+                                                               x != sqrt(-1)
+                                                               x IS NOT A REAL NUMBER, meaning that for this case,there is no situation where the denom will be 0
+                                                    x != 0 AND (other case is invalid)
+  d) g(g(x)) = g((x+1)/(x+2)) = (((x+1)/(x+2))+1)/(((x+1)/(x+2))+2)
+                                                    x+2!=0  AND ((x+1)/(x+2))+2!=0
+                                                    x!=-2       (x+1)/(x+2)!=-2
+                                                                x+1!=-2(x+2)
+                                                                x+1!=-2x-4
+                                                                x!=-2x-4-1
+                                                                x!=-2x-5
+                                                                x+2x!=-5
+                                                                3x!=-5
+                                                                x!=-5/3
+                                                    x!=-2 AND x!=-5/3
+
+38a) f(g(x))=f(sin(2x))=sin(2x)/(1+sin(2x))    1+sin(2x) != 0
+                                               sin(2x) != -1
+                                               sin2x does 1 full cycle every pi
+                                               sin2x=-1 is its min point and at (n*pi)+3pi/4
+                                               that means, x!=(n*pi)+3pi/4 for any integer n
+
+  b) g(f(x))=g(x/(1+x))=sin(2(x/(1+x)))        x!=-1
+
+  c) f(f(x))=f(x/(1+x))=(x/(1+x))/(1+(x/(1+x))) x!=-1 AND 1+(x/(1+x))!=0
+                                                          x/(1+x)!=-1
+                                                          x=-(1+x)
+                                                          x=-1-x
+                                                          2x=-1
+                                                          x=-1/2
+  
+  g) g(g(x))=g(sin(2x))=sin(2(sin(2x)))  domain is all x
+
+39-42) skip -- not useful
+
+43) f(x)=x^4 g(x)=2x+x^2 
+44) f(x)=x^2 g(x)=cos(x)
+45) f(x)=x/(1+x) g(x)=root(3,x)
+46) f(x)=root(3,x) g(x)=x/(1+x)
+47) f(x)=sec(x)tan(x) g(x)=x^2
+48) f(x)=x/1+x g(x)=tan(x)
+
+49) f(x)=sqrt(x) g(x)=x-1 h(x)=sqrt(x)
+50) f(x)=root(8,x) g(x)=2+x h(x)=|x|
+51) f(x)=x^2 g(x)=sin(x) h(x)=cos(x)
+
+52) skip -- not useful, you're just mapping numbers
+
+53a)4
+  b)3
+  c)0
+  d)undefined -- no g(x) at x=6
+  e)4
+  f)-2
+
+54) skip
+
+55a) r(t)=60t
+  b) A(t)=pi*r(t)^2
+
+56a) r(t)=2t
+  b) V(t)=I DONT KNOW HOW TO CALCULATE VOLUME OF A SPHERE
+
+57a) sin(x)=opposite/hypotenuse cos=adjacent/hypotenuse tan=opposite/adjacent
+     we know ...
+        opposite = 6km, the distance from the shoreline
+        adjacent = distance traveled since noon
+      tan(x)=6/d
+      x=arctan(6/d) -- x is the angle
+     now that you know x (the angle), you know ...
+      sin(x)=6/hypotenuse
+      hypotenuse*sin(x)=6
+      hypotenuse=6/sin(x)
+     the hypotenuse is the distance from the boat to the lighthouse
+     all together, that makes ...
+      f(d)=6/sin(arctan(6/d))
+  b) g(t)=30t=d
+  c) f(g(t)) where t is hours past noon calculates distance from lighthouse at t hours
+
+58) airplane height=1mile speed=350mile/hr, at t=0 it's over radar station
+  a) d(t)=350t
+  b) radar station is on the ground, so you have to use a trig function
+     1. you know the altitude is 1 mile (vertical, adjacent side)
+     2. you know the length flown is 350t (horizontal. opposite side)
+
+     tan(angle) = opposite/adjacent
+     tan(angle) = 350t/1
+     tan(angle) = 350t
+     angle = arctan(350t)
+
+     cos(angle) = adjacent/hypotenuse
+     cos(angle) = 1/hypotenuse
+     hypotenuse*cos(angle) = 1
+     hypotenuse=1/cos(angle)
+     hypotenuse=1/cos(arctan(350t))
+
+     f(t)=1/cos(arctan(350t))
+  c) d(t)=350t
+     f(z)=1/cos(arctan(z))
+     f(d(t))=1/cos(arctan(350t))
+
+59a) sketched it
+  b) V(t)=120 if t>=0
+         =0   if t<0
+     V(t) in terms of H(t) is V(t)=120H(t)?
+  c) V(t)=240 if t>=5
+         =0   if t<5
+     V(t)=240H(t)
+          240H(t-5)
+
+60a) it's flat up until 0, then its slope changes to 1
+  b) skip
+  c) skip -- this is just a transformation function
+
+61) f(x)=mx+b g(x)=ax+c f(g(x))=m(ax+c)+b=max+mc+b
+    yes it is a linear function
+    its slope is ma -- the slope from f(x) and g(x) multipled together
+
+62) A(x)=1.04x
+    A(A(x)) = 1.04(1.04x)=(1.04)^2x
+    A(A(A(x)))=1.04^3x
+    A(A(A(A(x))))=1.04^4x
+
+    1.04^kx, where k is some integer >=1
+  
+63a) (2x+1)*something=4x^2+4x+7
+     you can use polynomial division here?
+           2x  +1
+     2x+1| 4x^2+4x+7
+         - 4x^2+2x
+                2x+7
+                2x+1
+                   6
+     i'm not an expert in polynomial division, but just like regular division, the remainder is extra
+     this becomes (2x+1)^2+6 -- graphing both the original and this shows that they're the same
+    
+     g(x)=2x+1
+     f(x)=x^2+6
+     f(g(x))=(2x+1)^2+6=4x^2+4x+7=h(x)
+
+  b) COULD NOT FIGURE OUT HOW TO DO THIS so i just graphed out the original and transformed g(x)=x^2 until I found a fit
+      f(x)=3x+5
+      g(x)=(x+0.5)^2-15/12
+      f(g(x))=3((x+0.5)^2-15/12)+5
+
+64) f(x)=x+4 h(x)=4x-1
+    g(x)=4x-17   <--- found this by playing with graph
+    g(f(x))=g(x+4)=4(x+4)-17=4x+16-17=4x-1
+
+65) no? -- g(x)=x^2 f(x)=sqrt(x)  h(x)=f(g(x))
+                                      =f(x^2)
+                                      =sqrt(x^2)
+                                      =x  <--   not even?
+
+66) no? -- g(x)=x  f(x)=x^2       h(x)=f(g(x))
+                                      =f(x)
+                                      =x^2 <-- not odd?
+-->
 
 <!--
 ---- 1.2 EXERCISES

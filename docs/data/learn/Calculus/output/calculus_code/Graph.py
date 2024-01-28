@@ -1,7 +1,7 @@
 import inspect
 import math
 import sys
-from math import sin, cos, tan, log
+from math import sin, cos, tan, log, asin, acos, atan
 from pathlib import Path
 from sys import stdin
 
@@ -37,6 +37,21 @@ def _evaluate(n: Node, vars: dict[str, float | int]):
             return cos(_evaluate(n.args[0], vars))
         elif n.op == 'tan':
             return tan(_evaluate(n.args[0], vars))
+        elif n.op == 'arcsin':
+            try:
+                return asin(_evaluate(n.args[0], vars))
+            except ValueError:
+                return math.nan
+        elif n.op == 'arccos':
+            try:
+                return acos(_evaluate(n.args[0], vars))
+            except ValueError:
+                return math.nan
+        elif n.op == 'arctan':
+            try:
+                return atan(_evaluate(n.args[0], vars))
+            except ValueError:
+                return math.nan
         elif n.op == 'cot':
             return 1/tan(_evaluate(n.args[0], vars))
         elif n.op == 'sec':
