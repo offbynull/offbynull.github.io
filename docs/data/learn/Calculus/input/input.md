@@ -659,6 +659,18 @@
   * Relationships: `{kt} tan(x)=\frac{sin(x)}{cos(x)}=cot(\frac{\pi}{2}-x)=\frac{1}{cot(x)}`
 
   ```{note}
+  Why does `{kt} tan(x)=\frac{sin(x)}{cos(x)}`?
+  
+  1. `{kt} sin(x)=\frac{opp}{hyp}` <br>
+     `{kt} hyp*sin(x)=opp`
+  2. `{kt} cos(x)=\frac{adj}{hyp}` <br>
+     `{kt} hyp*cos(x)=adj`
+  3. `{kt} tan(x)=\frac{opp}{adj}` <br>
+     `{kt} tan(x)=\frac{hyp*sin(x)}{hyp*cos(x)}` <br>
+     `{kt} tan(x)=\frac{sin(x)}{cos(x)}`
+  ```
+
+  ```{note}
   The notation ...
   
   * `{kt} tan^k \space x` means `{kt} (tan(x))^k`, but it may mean `{kt} arctan(x)` if `{kt} k=-1`: `{kt} tan^{-1} \space x`.
@@ -927,6 +939,232 @@
 
 * `{bm} function decomposition/(decomposition of a function|function decomposition|decompose function|decomposition|decompose)/i` - The process of breaking up a function into a composition of smaller functions. For example, `{kt} f(x)=\sqrt{x^2 - 1}` can be decomposed into `{kt} g(x) = x^2` and `{kt} h(x) = \sqrt{x-1}`, such that `{kt} (f \circ g)(x) = f(g(x)) = f(x^2) = \sqrt{x-1}`.
 
+* `{bm} Heaviside function/(Heaviside function|unit step function)/i` - A step function H(x) where ...
+
+  * 0 is returned for negative x values.
+  * 1 is returned for non-negative x values.
+
+  ```{kt}
+  H(x) = \begin{cases}
+   0 &\text{if } x \lt 0 \\
+   1 &\text{if } x \ge 0
+  \end{cases}
+  ```
+
+  ```{svgbob} 
+  1         *------------
+
+
+  0 --------o
+            0
+  ```
+
+* `{bm} ramp function` - A piecewise function f(x) where ...
+
+  * 0 is returned for negative x values.
+  * x is returned for non-negative x values.
+
+  ```{kt}
+  f(x) = \begin{cases}
+   0 &\text{if } x \lt 0 \\
+   x &\text{if } x \ge 0
+  \end{cases}
+  ```
+
+  The shape of a ramp function resembles a ramp.
+
+  ```{svgbob} 
+                .'
+              .'
+            .'
+  --------.'
+          0
+  ```
+
+* `{bm} tangent line` - A line that touches a curve at a specific point, having the same direction/slope of the curve at that point.
+
+  ```{note}
+  The learning material says the Latin word !!tangens!! means to "touching". How is this related to the trig function tangent? How is this related to secant line?
+
+  Go over unit-circle definitions again.
+  ```
+
+* `{bm} secant line` - A line that intersects a curve more than once.
+
+  ```{note}
+  The learning material says the Latin word !!secan!! means to cut. How is this related to the trig function secant? How is this related to tangent line?
+  ```
+
+* `{bm} point-slope form` - The equation of a line written in the form `{kt}y-y_1=m(x-x_1)`, where `{kt} (x_1, y_1)` is a known point on the line and m is the slope.
+
+* `{bm} limit` - The value that a function approaches as its input approaches some other value. For example, given the function `f(x)=x^2-x+2`, `{kt} f(x)` (the output) approaches 4 as x (the input) approaches.
+
+  `{kt} \lim\limits_{x \rarr 2}f(x) = 4`
+
+  | x     | f(x)                  |
+  |-------|-----------------------|
+  | 1.9   | 3.71                  |
+  | 1.99  | 3.9701                |
+  | 1.999 | 3.9970                |
+  | 2     | *explicitly left out* |
+  | 2.001 | 4.0030                |
+  | 2.01  | 4.0301                |
+  | 2.1   | 4.31                  |
+
+  The table above hints that the closer and closer x gets to 2 (written as `{kt} \lim\limits_{x \rarr 2}`), the closer and closer `{kt} f(x)` gets to 4.
+
+  <u>Limits explicitly exclude the x being approached</u>, and are typically used when it isn't possible to determine `{kt} f(x)` directly for some x. For example, `{kt} g(x)=\frac{x-1}{x^2-1}` has the domain `{kt} x \neq 1`, but `{kt} \lim\limits_{x \rarr 1}g(x) = 0.5`.
+
+  | x     | g(x)                  |
+  |-------|-----------------------|
+  | 0.9   | 0.5263                |
+  | 0.99  | 0.5025                |
+  | 0.999 | 0.5002                |
+  | 1     | *explicitly left out* |
+  | 1.001 | 0.4997                |
+  | 1.01  | 0.4975                |
+  | 1.1   | 0.4761                |
+
+  Likewise, the example above would be exactly the same had `{kt} g(x)` been the piecewise function ...
+
+  ```{kt}
+  g{x} = \begin{cases}
+   \frac{x-1}{x^2-1} &\text{if } x \neq 1 \\
+   999               &\text{if } x = 1
+  \end{cases}
+  ```
+
+  If `{kt} \lim\limits_{x \rarr a} f(x)` does not approach a fixed number as x approaches a, the limit does not exist. For example, ...
+  
+  * `{kt} \lim\limits_{x \rarr 0} sin(\frac{\pi}{x})` does not exist because as x approaches 0, it oscillates quicker and quicker (it doesn't home in on a single number).
+
+    ```{calculus}
+    Graph
+    funcs: [sin(pi/x)]
+    x_lim: [-1, 1]
+    y_lim: [-1, 1]
+    ```
+
+  * `{kt} \lim\limits_{x \rarr 0} H(x)`, where `{kt} H(x)` is the Heaviside function, does not exist because the limit changes depending on the direction which x approaches 0. If x approaches ...
+
+    * from the left, the limit is 0.
+    * from the right, the limit is 1.
+
+    Since it doesn't home in on the same number from both sides, the limit does not exist.
+
+    ```{svgbob} 
+    1         *------------
+  
+  
+    0 --------o
+              0
+    ```
+
+    ```{seealso}
+    One-sided limit
+    ```
+  
+  * `{kt} \lim\limits_{x \rarr 0} \frac{1}{x^2}` does not exist because as x approaches 0, it approaches infinity and infinity isn't a number.
+
+    ```{calculus}
+    Graph
+    funcs: [1/x^2]
+    x_lim: [-10, 10]
+    y_lim: [-10, 10]
+    ```
+
+    Although the limit does not exist, the notation ...
+    
+    * `{kt} \lim\limits_{x \rarr a} f(x) = \infty` is used to indicate `{kt} f(x)` increases without bound as it approaches a.
+    * `{kt} \lim\limits_{x \rarr a} f(x) = -\infty` is used to indicate `{kt} f(x)` decreases without bound as it approaches a.
+
+    ```{seealso}
+    Infinite limit
+    ```
+
+* `{bm} one-sided limit/(one[\s-]sided limit|left[\s-]hand limit|right[\s-]hand limit|left[\s-]handed limit|right[\s-]handed limit)/i` - A limit as approached from a single direction. The limit as approached ...
+
+  * from the left is referred to as the left-hand limit: `{kt} x \rarr a^-`.
+  * from the right is referred to as the left-hand limit `{kt} x \rarr a^+`.
+
+  The minus / plus superscript at the end denotes if it's a left-handed limit or a right-handed limit.
+
+  For example, as the Heaviside function approaches x=0 ...
+
+  * from the left, the left-hand limit is 0: `{kt} \lim\limits_{x \rarr 0^-}H(x) = 0`.
+  * from the right, the right-hand limit is 1: `{kt} \lim\limits_{x \rarr 0^+}H(x) = 1`.
+
+  ```{svgbob} 
+  1         *------------
+
+
+  0 --------o
+            0
+  ```
+
+  ```{note}
+  The book explicitly mentions that, for a limit to exist, the left-hand limit and right-hand limit must result in the same number.
+  ```
+
+  ```{seealso}
+  Infinite limit
+  ```
+
+* `{bm} infinite limit` - An unbounded increase or decrease as a function approaches some value:
+
+  * `{kt} \lim\limits_{x \rarr a} f(x) = \infty` is used to indicate `{kt} f(x)` increases without bound as it approaches a.
+  * `{kt} \lim\limits_{x \rarr a} f(x) = -\infty` is used to indicate `{kt} f(x)` decreases without bound as it approaches a.
+
+  Although the notation for a limit is used, this is not a limit. A limit requires that `{kt} f(x)` approach a fixed number as x approaches a. Infinity is not a number. For example, the limit `{kt} \lim\limits_{x \rarr 0} \frac{1}{x^2} = \infty` does not exist because as x approaches 0, it approaches infinity and infinity isn't a number.
+
+  ```{calculus}
+  Graph
+  funcs: [1/x^2]
+  x_lim: [-10, 10]
+  y_lim: [-10, 10]
+  ```
+
+  One-sided limit notation also apply to infinite limits. For example, ...
+  
+  * `{kt} \lim\limits_{x \rarr a^+} \frac{1}{x} = \infty`.
+  * `{kt} \lim\limits_{x \rarr a^-} \frac{1}{x} = -\infty`.
+
+  ```{calculus}
+  Graph
+  funcs: [1/x]
+  x_lim: [-10, 10]
+  y_lim: [-10, 10]
+  ```
+
+  ```{note}
+  Another common notation for an infinite limit is `{kt} f(x) \rarr \infty \text{as } x \rarr a`. Change accordingly for the cases/variations discussed above (e.g. negative infinity, and one-sided limits).
+  ```
+
+* `{bm} vertical asymptote` - A vertical line x=a defined by at least one of the following infinite limits: 
+
+  * `{kt} \lim\limits_{x \rarr a} f(x) = \infty`.
+  * `{kt} \lim\limits_{x \rarr a^-} f(x) = \infty`
+  * `{kt} \lim\limits_{x \rarr a^+} f(x) = \infty`
+  * `{kt} \lim\limits_{x \rarr a} f(x) = -\infty`.
+  * `{kt} \lim\limits_{x \rarr a^-} f(x) = -\infty`
+  * `{kt} \lim\limits_{x \rarr a^+} f(x) = -\infty`
+
+  For example, the vertical asymptote x=-3 exists in the infinite limit `{kt} \lim\limits_{x \rarr 0} \frac{1}{(x+3)^2} = \infty`.
+
+  ```{calculus}
+  Graph
+  funcs: [1/(x+3)^2]
+  v_asymptotes: [-3]
+  x_lim: [-10, 10]
+  y_lim: [-10, 10]
+  ```
+
+CONTINUE FROM PAGE 61 exercise 1.5
+
+CONTINUE FROM PAGE 61 exercise 1.5
+
+CONTINUE FROM PAGE 61 exercise 1.5
+
 `{bm-ignore} !!([\w\-]+?)!!/i`
 
 `{bm-error} Wrap in !! or apply suffix _POLY/(roots?)/i`
@@ -941,13 +1179,322 @@
 
 `{bm-error} Use you instead of we/\b(we)\b/i`
 
-# Questions
-
 `{bm-disable-all}`
 
-PAGE 44 exercises
-
 <!-- ANSWERS AT A60 -->
+
+<!--
+-------- 1.5 EXERCISES
+1) as x approaches 2, f(x) will approach 5
+   it is possible, because we aren't considering x=2, we're just considering values for x that approach 2
+
+2) as x approaches 1 from the left (only considering x values left of 1 / smaller than 1), f(x) approaches 3
+   as x approaches 1 from the right (only considering x values right of 1 / larger than 1), f(x) approaches 7
+   
+   NO the limit doesn't exist -- for the limit to exist, both one-sided limits must converge to a fixed number
+
+3a) this is an "infinite limit". in other words, the limit doesn't exist, but the notation is there to tell us that as x approaches -3, f(x) increases without bound (keeps going up and up without end).
+ b) this is an "infinite limit". in other words, the limit doesn't exist, but the notation is there to tell us that as x approaches 4 (from the right), f(x) decreases without bound (keeps going down and down without end).
+
+4a) f(x) approaches 3
+ b) f(x) approaches 1
+ c) limit doesn't exist (because one-sided limits approach different numbers -- see a/b above)
+ d) f(2)=3
+ e) limit as x approaches 4 is f(x)=4
+ f) f(4) is undefined
+
+5a) as x approaches 1, f(x) approaches 2
+ b) as x approaches 3 from the left, f(x) approaches 1
+ c) as x approaches 3 from the right, f(x) approaches 4
+ d) the limit doesn't exist as x approaches 3 (because one-sided limits approach different numbers -- see b/c above)
+ e) f(3)=3
+
+6a) as x approaches -3 from the left, h(x) approaches 4
+ b) as x approaches -3 from the right, h(x) approaches 4
+ c) as x approaches -3, h(x) approaches 4
+ d) h(-3) is undefined
+ e) as x approaches 0 from the left, h(x) approaches 1
+ f) as x approaches 0 from the right, h(x) approaches -1
+ g) as x approaches 0, h(x) doesn't approach a limit (because one-sides limits approach different numbers).
+ h) h(0)=1
+ i) as x approaches 2, h(x) approaches 2
+ j) h(2) is undefined
+ k) as x approaches 5 from the right, h(x) approaches 3
+ l) as x approaches 5 from the left, h(x) doesn't approach a limit (it looks like its an infinitely compressing oscillation, meaning it isn't homing on a single number)
+
+7a) as x approaches 0 from the left, g(x) approaches -1
+ b) as x approaches 0 from the right, g(x) approaches -2
+ c) as x approaches 0, g(x) doesn't approach a limit (because one-sides limits approach different numbers).
+ d) as x approaches 2 from the left, g(x) approaches 2
+ e) as x approaches 2 from the right, g(x) approaches 0
+ f) as x approaches 2, g(x) doesn't approach a limit (because one-sides limits approach different numbers).
+ g) g(2) = 1
+ h) as x approaches 4, g(x) approaches 3
+
+8a) inf
+ b) -inf
+ c) inf
+ d) -inf
+ e) x=-3, x=-1, x=2
+
+9a) -inf
+ b) inf
+ c) inf
+ d) -inf
+ e) inf
+ f) x=-6, x=-3, x=0, x=6
+
+10) 150mg every 4 hrs
+    as t approaches 12 from the left, f(t) approaches 150
+    as t approaches 12 from the right, f(t) approaches 300
+
+    its the saturation of drugs before/after? I don't know what this is asking. Maybe it has something to do with the way the lines bend? the halflife?
+
+11) limit of x doesn't exist when approaching pi -- for all other x, you can get the limit?
+12) limit of x doesn't exist when approaching pi -- for all other x, you can get the limit?
+
+13a) exists
+  b) exists
+  c) does not exist (doesn't home in on the same num from both sides)
+14a) exists
+  b) exists
+  c) looks like it exists -- both sides look like they're homing in on f(x)=0
+
+15-18) skip
+
+19) 0.5
+20) doesn't exist? one side decreases without bound while the other increases without bound
+21) 0.5
+22) if not 80, somewhere around 80
+
+23-26) skip
+
+27a) -1.5
+  b) looks fine to me, got hte table of values from the calculator
+
+28) skip
+
+29-39) skip -- whats there to determine, you already said there's an infinite limit at the point -- it just wants you to say if its going down (-inf) or going up (inf)?
+
+40) skip
+
+41a) approaches -inf from left and inf from right
+     0.9, -3.6900
+     0.99, -33.6689
+     0.999, -333.6669
+     0.9999, -3333.6667
+     1.0001, 3333.0000
+     1.001, 333.0002
+     1.01, 33.0022
+     1.1, 3.0211
+  b) x^3-1 != 0
+     x^3 != 1
+     x != (1)^(1/3)
+     x != 1
+
+     x can't be 1
+     when coming into 1 from 0 (non-inclusive):
+                 x^3 evaluates to (0,1)
+                 x^3-1 evaluates to (-1,0)
+                 1 over a number between (-1,0) - the denominator is a fraction < -1, flip and negate
+                                                  1/(-1/2) becomes -2/1=-2
+                                                  1/(-1/3) becomes -3/1=-3
+                                                  1/(-1/4) becomes -4/1=-4
+                                                  1/(-1/5) becomes -5/1=-5
+                                                  the closer it get, the higher the magnitude of the negative
+     when going out from 1 from 2 (non-inclusive):
+                 x^3 evaluates to (1,2)
+                 x^3-1 evaluates to (0,1)
+                 1 over a number between (0,1) - the denominator is a fraction > 1
+                                                  1/(1/2) becomes 2/1=2
+                                                  1/(1/3) becomes 3/1=3
+                                                  1/(1/4) becomes 4/1=4
+                                                  1/(1/5) becomes 5/1=5
+                                                  the closer it gets, the higher the number
+ c) graphed it
+
+42a) approaches 4
+  b) approaches 4
+     -0.1, 4.2279
+     -0.01, 4.0021
+     -0.001, 4.0000
+     -0.0001, 4.0000
+     0.0001, 4.0000
+     0.001, 4.0000
+     0.01, 4.0021
+     0.1, 4.2279
+
+43a) looks like it approaches 0?
+     0.05, 0.001464735
+     0.1, 0.008928227
+     0.2, 0.038851302
+     0.4, 0.158680492
+     0.6, 0.358484283
+     0.8, 0.638258899
+     1, 0.998000000
+  b) looks like it approaches -0.01?
+     0.001, -0.000999693
+     0.003, -0.000993082
+     0.005, -0.000978472
+     0.01, -0.000906956
+     0.02, -0.000613959
+     0.04, 0.000571886
+
+44) skip
+
+45) the closer it gets to 0, the more he oscillations compress, the oscillations seem to be compressing infinitely as it gets closer and closer to 0
+
+46) tan(1/x)
+
+  a) show that tan(1/x) is 0 for x=1/pi,1/2pi,1/3pi,...
+     
+     tan(1/x) = sin(1/x)/cos(1/x)
+
+     for tan(1/x) to be 0, sin(1/x) should evaluate to 0? sin(1/x) oscillates compress infinitely as they reach x=0. where as sin(x)   has its zeros at x=pi,2pi,3pi
+                         sin(1/x) has its zeros at x=1/pi,1/2pi,1/3pi
+
+  b) show that tan(1/x) is 1 for x=4/pi,4/5pi,4/9pi,...
+
+     tan(1/x) = sin(1/x)/cos(1/x)    
+
+     for tan(1/x) to evaluate to 1, sin(1/x) and cos(1/x) need to evaluate to the same number (where they intersect). if you plot out normal sin and normal cos, you see this happens starting at pi/4 and repeats every +/-pi. where as sin(x)=cos(x)=1 is at x=pi/4,5pi/4,9pi/3
+                                   sin(1/x)=cos(1/x)=1 is at x=1/(pi/4), 1/(5pi/4), 1/(9pi/4)
+                                                               4/pi    , 4/5pi    , 4/9pi
+
+  c) where as before .. sin(x)   has its zeros at x=pi,2pi,3pi
+                        sin(1/x) has its zeros at x=1/pi,1/2pi,1/3pi
+     where as before .. sin(x)=cos(x)=1     is at x=pi/4,5pi/4,9pi/3
+                        sin(1/x)=cos(1/x)=1 is at x=4/pi,4/5pi,4/9pi
+     before they were spaced out evenly at intervals of pi
+     they've transformed such that each interval is shorter than the next, and it's going towards 0 instead of away from 0
+
+47) 
+-->
+
+<!--
+-------- 1.4 EXERCISES
+
+1) 1000 gallons, drains fully out of the bottom in 30 mins
+   t=time in minutes
+   V=volume of water in tank
+
+   
+ a) slope=(y2-y1)/(x2-x1)
+          (y2-250)/(x2-15)
+
+    5->(694-250)/(5-15)-44.4
+    10->(444-250)/(10-15)=-38.8
+    15->THIS
+    20->(111-250)/(20-15)-27.8
+    25->(28-250)/(25-15)=-22.2
+    30->(0-250)/(30-15)=-16.666
+
+  b) change_in_volume/time_elapsed = (444-111)/-10=-33.3
+  c) ??? graphed it in desmos, not sure what this is asking for because the answer would be the same as b?
+
+2) cardiac monitor -- counts the num of heartbeats after t minutes
+   when graphed, tangent line represents heartrate in beats-per-min
+   estimate heart rate between the given time points
+
+   the heart rate estimate is the slope between the two points?
+
+ a) m=(2948-2530)/(42-36)=69.666
+ b) m=(2948-2661)/(42-38)=71.75
+ c) m=(2948-2806)/(42-40)=71
+ d) m=(3080-2948)/(44-42)=66
+
+3a) P=(2,-1)  Q=(x, 1/(1-x))
+    m=(y2-y1)/(x2-x1)=((-1)-(1/(1-x)))/(2-x)
+    [2.0, 1.111, 1.010, 1.001, 0.666, 0.909, 0.990, 0.999]
+3b) 1
+3c) m=1 and (2,-1) is on the line
+    y=mx+b
+    -1=1(2)+b
+    -1=2+b
+    -1-2=b
+    -3=b
+    y=1x-3
+
+4a) P=(0.5,0) y=math.cos(math.pi*x)
+    x=0.000000 y=1.000000 m=-2.000000
+    x=0.400000 y=0.309017 m=-3.090170
+    x=0.490000 y=0.031411 m=-3.141076
+    x=0.499000 y=0.003142 m=-3.141587
+    x=1.000000 y=-1.000000 m=-2.000000
+    x=0.600000 y=-0.309017 m=-3.090170
+    x=0.510000 y=-0.031411 m=-3.141076
+    x=0.501000 y=-0.003142 m=-3.141587
+4b)-pi
+4c)y=(-pi)x+b
+   0=(-pi)0.5+b
+   0=-0.5pi+b
+   0.5pi=b
+   y=(-pi)x+0.5pi
+4d) skip
+
+5) ball thrown @ 40ft/s
+   height @ t secs = 40t-16t^2
+   a) find avg velocity @ t=2 and lasting...
+    1) 0.5secs
+       t=2    40*2-16*2^2=80-64=16
+       t=0.5  40*0.5-16*0.5^2=20-4=16
+       slope=(16-16)/(2-0.5)=0/1.5=0
+    2) 0.1secs
+       t=2    40*2-16*2^2=80-64=16
+       t=0.1  40*0.1-16*0.1^2=3.84
+       slope=(16-3.84)/(2-0.1)=6.4
+    3) 0.05secs
+       t=2    40*2-16*2^2=80-64=16
+       t=0.05 40*0.05-16*0.05^2=1.96
+       slope=(16-1.96)/(2-0.05)=7.2
+    4) 0.01secs
+       t=2    40*2-16*2^2=80-64=16
+       t=0.01 40*0.01-16*0.01^2=0.3984
+       slope=(16-0.3984)/(2-0.01)=7.84
+   b) t=1.9    y=18.24    slope=(16-18.24)/(2-1.9)=-22.4
+      t=1.99   y=16.2384  slope=(16-16.2384)/(2-1.99)=−23.84
+      t=2.01   y=15.7584  slope=(16-15.7584)/(2-2.01)=−24.16
+      t=2.1    y=13.44    slope=(16-13.44)/(2-2.1)=−25.6
+      it looks like at t=2 the slope will be exactly 24?
+
+6) rock thrown @ 10m/s
+   height @ t secs = 10t-1.86t^2
+   a1) t=1     10*1-1.86*1^2=8.14
+       t=2     10*2-1.86*2^2=12.56
+       slope=(8.14-12.56)/(1-2)-4.42
+   a2) t=1     10*1-1.86*1^2=8.14
+       t=1.5   10*1.5-1.86*1.5^2=10.815
+       slope=(8.14-10.815)/(1-1.5)=5.35
+   a3) t=1     10*1-1.86*1^2=8.14
+       t=1.01  10*1.01-1.86*1.01^2=8.202614
+       slope=(8.14-8.202614)/(1-1.01)=6.2614
+   a4) t=1     10*1-1.86*1^2=8.14
+       t=1.001 10*1.001-1.86*1.001^2=8.14627814
+       slope=(8.14-8.14627814)/(1-1.001)=6.2781
+   b) t=0.9   y=7.4934      slope=(8.14-7.4934)/(1-0.9)=6.466
+      t=0.99  y=8.077014    slope=(8.14-8.077014)/(1-0.99)=6.2986
+      t=0.999 y=8.13371814  slope=(8.14-8.13371814)/(1-0.999)=6.28186
+      t=1.001 y=8.14627814  slope=(8.14-8.14627814)/(1-1.001)=6.27814
+      t=1.01  y=8.202614    slope=(8.14-8.202614)/(1-1.01)=6.2614
+      t=1.1   y=8.7494      slope=(8.14-8.7494)/(1-1.1)=6.094
+      it looks like at t=1 the slope is around 6.28? maybe just under 6.28?
+
+7) a1) (20.6-79.2)/(2-4)=29.3
+   a2) (46.5-79.2)/(3-4)=32.7
+   a3) (79.2-124.8)/(4-5)=45.6
+   a4) (79.2-176.7)/(4-6)=48.75
+   b) i can eyeball it from the graph -- not gonna estimate a number
+
+8) skip
+
+9) P=(1,0) is on y=sin(10pi/x)
+ a) Q=(x,sin(10pi/x))
+    0.0000, 1.7321, -1.0847, -2.7433, 4.3301, -2.8173, 0.0000, -2.1651, -2.6061, -5.0000, 3.4202
+    no they don't appear to be approaching a limit? its oscillating? this is a periodic function?
+ b) ??? i don't understand what this is getting at? maybe it has tsomething to do with the fact that the graph looks like it's infinitely compressing the closer it gets to x=0 (period is getting shorter and shorter)
+ c) P=(1,0), so maybe get slope at x=0.999 and x=1.001 and average out to get hte slope?
+    (-31.4422 + -31.3794) / 2 = −31.4108
+-->
 
 <!--
 -------- 1.3 EXERCISES

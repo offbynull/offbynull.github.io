@@ -1,7 +1,3 @@
-import inspect
-import math
-import sys
-from math import sin, cos, tan, log, asin, acos, atan
 from pathlib import Path
 from sys import stdin
 
@@ -9,62 +5,17 @@ import yaml
 from matplotlib import pyplot as plt
 import numpy as np
 
-from expression.Node import Node, ConstantNode, FunctionNode, VariableNode
+from Evaluator import evaluate
 from expression.parser.Parser import parse
 
 
-def _evaluate(n: Node, vars: dict[str, float | int]):
-    if isinstance(n, ConstantNode):
-        return n.value
-    elif isinstance(n, VariableNode):
-        return vars[n.name]
-    elif isinstance(n, FunctionNode):
-        if n.op == '+':
-            return _evaluate(n.args[0], vars) + _evaluate(n.args[1], vars)
-        elif n.op == '-':
-            return _evaluate(n.args[0], vars) - _evaluate(n.args[1], vars)
-        elif n.op == '*':
-            return _evaluate(n.args[0], vars) * _evaluate(n.args[1], vars)
-        elif n.op == '/':
-            return _evaluate(n.args[0], vars) / _evaluate(n.args[1], vars)
-        elif n.op == '^':
-            return _evaluate(n.args[0], vars) ** _evaluate(n.args[1], vars)
-        elif n.op == 'abs':
-            return abs(_evaluate(n.args[0], vars))
-        elif n.op == 'sin':
-            return sin(_evaluate(n.args[0], vars))
-        elif n.op == 'cos':
-            return cos(_evaluate(n.args[0], vars))
-        elif n.op == 'tan':
-            return tan(_evaluate(n.args[0], vars))
-        elif n.op == 'arcsin':
-            try:
-                return asin(_evaluate(n.args[0], vars))
-            except ValueError:
-                return math.nan
-        elif n.op == 'arccos':
-            try:
-                return acos(_evaluate(n.args[0], vars))
-            except ValueError:
-                return math.nan
-        elif n.op == 'arctan':
-            try:
-                return atan(_evaluate(n.args[0], vars))
-            except ValueError:
-                return math.nan
-        elif n.op == 'cot':
-            return 1/tan(_evaluate(n.args[0], vars))
-        elif n.op == 'sec':
-            return 1/cos(_evaluate(n.args[0], vars))
-        elif n.op == 'csc':
-            return 1/sin(_evaluate(n.args[0], vars))
-        elif n.op == 'log':
-            try:
-                return log(_evaluate(n.args[1], vars)) / log(_evaluate(n.args[0], vars))
-            except ValueError:
-                return math.nan
-
-def graph(funcs: list[str], x_lim: tuple[float, float], y_lim: tuple[float, float] | None, fig_size: tuple[float, float] | None = None):
+def graph(
+        funcs: list[str],
+        x_lim: tuple[float, float],
+        y_lim: tuple[float, float] | None,
+        fig_size: tuple[float, float] | None = None,
+        v_asymptotes: list[float] | None = None
+):
     fig = plt.figure(figsize=fig_size)
     ax = fig.add_subplot(1, 1, 1)
 
@@ -73,9 +24,12 @@ def graph(funcs: list[str], x_lim: tuple[float, float], y_lim: tuple[float, floa
     y_val_max = 0.0
     for func in funcs:
         node = parse(func)
-        y_vals = [_evaluate(node, {'x': x}) for x in x_vals]
+        y_vals = [evaluate(node, {'x': x}) for x in x_vals]
         y_val_max = max(y_val_max, abs(y_vals[-1]))
         plt.scatter(x_vals, y_vals, label=func, marker='o', s=(72./fig.dpi)**2)
+    if v_asymptotes is not None:
+        for x in v_asymptotes:
+            plt.axvline(x=x, linestyle='--', color='000000')
     plt.legend(loc="upper left")
     ax.spines['left'].set_position(('data', 0.0))
     ax.spines['bottom'].set_position(('data', 0.0))
@@ -104,15 +58,16 @@ def main():
         data_raw = ''.join(stdin.readlines())
         data: dict = yaml.safe_load(data_raw)
         funcs = data['funcs']
+        v_asymptotes  = data['v_asymptotes'] if 'v_asymptotes' in data else None
         x_lim = tuple(data['x_lim'])
         y_lim = tuple(data['y_lim']) if 'y_lim' in data else None
         fig_size = tuple(data['fig_size']) if 'fig_size' in data else None
-        graph(funcs, x_lim, y_lim, fig_size)
+        graph(funcs, x_lim, y_lim, fig_size, v_asymptotes)
     finally:
         # print("</div>", end="\n\n")
         print("`{bm-enable-all}`", end="\n\n")
 
 
 if __name__ == '__main__':
-    graph(['x^(1/3)'], (-3, 3), (-3, 3))
+    graph(['x^(1/3)', 'x'], (-3, 3), (-3, 3), None, [-.5, .5])
     # main()
