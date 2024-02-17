@@ -33,7 +33,7 @@
   Roots_POLY can be thought of as factors? If a polynomial's root_POLY is x=0.5, then it should have the factor (2x-1)?
   ```
 
-* `{bm} product-sum factoring/(product[-\s]factoring)/i` - A process that factors a quadratic `{kt} ax^2+bx+c` by finding two numbers r and s that when ...
+* `{bm} product-sum factoring/(product[-\s]sum factoring)/i` - A process that factors a quadratic `{kt} ax^2+bx+c` by finding two numbers r and s that when ...
 
   * added, `{kt} ar+s=b`.
   * multiplied, `{kt} rs=c`.
@@ -310,6 +310,10 @@
   Recall that a function maps exactly 1 output for each input, meaning that the domains can't intersect.
   ```
 
+  ```{note}
+  A piecewise function doesn't have to exhaustively list out its cases. It may have infintely many cases? See greatest integer function.
+  ```
+
 * `{bm} even function` - A function that reflects across the y-axis: `{kt} f(-x) = f(x)`. For example, `{kt} f(x)=x^2` and `{kt} f(x)=|x|` are both even functions.
 
   ```{svgbob}
@@ -381,8 +385,8 @@
     0         10         20        30
   ```
 
-  ```{note}
-  This is referred to as a step function because the horizontal lines look like steps?
+  ```{seealso}
+  Greatest integer function
   ```
 
 * `{bm} linear function/(linear function|linear)/i` - A polynomial of degree_POLY 1. For example, `{kt} f(x)=10x+3` is a linear function.
@@ -1082,7 +1086,12 @@
     Infinite limit
     ```
 
-* `{bm} one-sided limit/(one[\s-]sided limit|left[\s-]hand limit|right[\s-]hand limit|left[\s-]handed limit|right[\s-]handed limit)/i` - A limit as approached from a single direction. The limit as approached ...
+  ```{seealso}
+  Limit laws
+  Direct substitution property
+  ```
+
+* `{bm} one-sided limit/(one[\s-]sided limit|left[\s-]hand limit|right[\s-]hand limit|left[\s-]handed limit|right[\s-]handed limit|left[\s-]side limit|right[\s-]side limit|left[\s-]sided limit|right[\s-]sided limit)/i` - A limit as approached from a single direction. The limit as approached ...
 
   * from the left is referred to as the left-hand limit: `{kt} x \rarr a^-`.
   * from the right is referred to as the left-hand limit `{kt} x \rarr a^+`.
@@ -1140,6 +1149,20 @@
   Another common notation for an infinite limit is `{kt} f(x) \rarr \infty \text{as } x \rarr a`. Change accordingly for the cases/variations discussed above (e.g. negative infinity, and one-sided limits).
   ```
 
+  ````{note}
+  When a denominator of a rational function approaches 0, it doesn't automatically mean you get an infinite limit. The learning material says: "When both numerator and denominator approach 0, it may be an infinite limit or some finite value. For example, `{kt} \lim\limits_{x \rarr 1} \frac{x^2-1}{x-1}` is *not* an infinite (if you graph it, it's a straight line where x=1 is undefined) but `{kt} \lim\limits_{x \rarr 0} \frac{sin(x)}{x^3}` is an infinite limit (both the numerator and denominator approach 0).
+
+  ```{calculus}
+  Graph
+  funcs: [(x^2-1)/(x-1), sin(x)/x^3]
+  x_lim: [-5, 5]
+  y_lim: [-5, 5]
+  fig_size: [3, 3]
+  ```
+
+  Why isn't `{kt} \lim\limits_{x \rarr 1} \frac{x^2-1}{x-1}` an infinite limit? `{kt} \frac{x^2-1}{x-1}`'s numerator factors to `{kt} \frac{(x-1)(x+1)}{x-1}` (difference of square). From there, you can eliminate the denominator: `{kt} x+1`.
+  ````
+
 * `{bm} vertical asymptote` - A vertical line x=a defined by at least one of the following infinite limits: 
 
   * `{kt} \lim\limits_{x \rarr a} f(x) = \infty`.
@@ -1159,21 +1182,444 @@
   y_lim: [-10, 10]
   ```
 
-CONTINUE FROM PAGE 61 exercise 1.5
+* `{bm} limit law` - A set of the laws that state how a limit may be broken into two limits and vice versa. Given the limits `{kt} \lim\limits_{x \rarr a} f(x)` and `{kt} \lim\limits_{x \rarr a} g(x)` both exist, the limit laws are as follows.
 
-CONTINUE FROM PAGE 61 exercise 1.5
+  ```{note}
+  Recall that for a limit to exist, both of its one-sided limits must end up at the same number (infinity is not a number).
+  ```
 
-CONTINUE FROM PAGE 61 exercise 1.5
+  * Sum law: `{kt} \lim\limits_{x \rarr a} [f(x)+g(x)] = \lim\limits_{x \rarr a} f(x) + \lim\limits_{x \rarr a} g(x)`
+  * Difference law: `{kt} \lim\limits_{x \rarr a} [f(x)-g(x)] = \lim\limits_{x \rarr a} f(x) - \lim\limits_{x \rarr a} g(x)`
+  * Constant multiple law: `{kt} \lim\limits_{x \rarr a} [c \cdot f(x)] = c \cdot \lim\limits_{x \rarr a} f(x)`
+  * Product law: `{kt} \lim\limits_{x \rarr a} [f(x) \cdot g(x)] = \lim\limits_{x \rarr a} f(x) \cdot \lim\limits_{x \rarr a} g(x)`
+  * Quotient law: `{kt} \lim\limits_{x \rarr a} \frac{f(x)}{g(x)} = \frac{\lim\limits_{x \rarr a} f(x)}{\lim\limits_{x \rarr a} g(x)} \text{ if} \lim\limits_{x \rarr a} g(x) \neq 0`
+  * Power law: `{kt} \lim\limits_{x \rarr a} [f(x)]^n = [\lim\limits_{x \rarr a} f(x)]^n \text{ if} n \in \Z+`
+  * Root law: `{kt} \lim\limits_{x \rarr a} \sqrt[n]{f(x)} = \sqrt[n]{\lim\limits_{x \rarr a} f(x)} \text{ if} n \in \Z+` -- If n is even, you can assume that `{kt} \lim\limits_{x \rarr a} f(x) > 0`.
+
+  In addition to the limit laws described above, the following are two special limits of note that are often used alongside limit laws:
+
+  * Limit of a constant function: If `{kt} f(x)=c`, then `{kt} \lim\limits_{x \rarr a} f(x)=c`.
+  * Limit of the identity function: If `{kt} f(x)=x`, then `{kt} \lim\limits_{x \rarr a} x=a`.
+
+  The laws described above are used to analytically determine a limit by breaking it down. For example, `{kt} \lim\limits_{x \rarr 0} 2x^2-3x+4` can be determined as follows:
+
+  * `{kt} \lim\limits_{x \rarr 0} 2x^2-3x+4`
+  * `{kt} \lim\limits_{x \rarr 0} 2x^2-3x + \lim\limits_{x \rarr 0} 4` - Sum law
+  * `{kt} \lim\limits_{x \rarr 0} 2x^2 - \lim\limits_{x \rarr 0} 3x + \lim\limits_{x \rarr 0} 4` - Difference law
+  * `{kt} 2\lim\limits_{x \rarr 0} x^2 - 3\lim\limits_{x \rarr 0} x + \lim\limits_{x \rarr 0} 4` - Constant multiple law
+  * `{kt} 2(\lim\limits_{x \rarr 0} x)^2 - 3\lim\limits_{x \rarr 0} x + \lim\limits_{x \rarr 0} 4` - Power law
+  * `{kt} 2(\lim\limits_{x \rarr 0} x)^2 - 3\lim\limits_{x \rarr 0} x + 4` - Limit of a constant function
+  * `{kt} 2(0)^2 - 3(0) + 4` - Limit of the identity function
+  * `{kt} 4`
+
+  ```{note}
+  The book doesn't explicitly mention it, but there seems to be an order when breaking up using limit laws? It should be in the order shown above, which is reverse of BEDMAS/PEMDAS: First apply addition/subtraction, then apply multiplication/division related laws, then power/!!root!! laws? For example, given `{kt} \lim\limits_{x \rarr 0} 5x^3`, you don't want to apply power law before constant multiple law:
+
+  * `{kt} \lim\limits_{x \rarr 3} 5x^3`
+  * `{kt} (\lim\limits_{x \rarr 3} 5x)^3` -- Power law
+  * `{kt} (5\lim\limits_{x \rarr 3} x)^3` -- Constant multiple law
+  * `{kt} (5(3))^3` -- Limit of the identity function
+  * `{kt} (5(3))^3 = 15^3 = 3375` -- THIS IS WRONG
+
+  The correct way to do this is to swap the power law and constant multiple law steps:
+
+  * `{kt} \lim\limits_{x \rarr 3} 5x^3`
+  * `{kt} 5\lim\limits_{x \rarr 3} x^3` -- Constant multiple law
+  * `{kt} 5(\lim\limits_{x \rarr 3} x)^3` -- Power law
+  * `{kt} 5(3)^3` -- Limit of the identity function
+  * `{kt} 5(3)^3 = 5(9) = 45` -- THIS IS RIGHT
+
+  You can validate that the above is correct through the direct substitution property.
+  ```
+
+  ```{note}
+  The limit laws above expect both limits to exist. If a limit doesn't exist (e.g. its one-sided limits end up at different numbers (infinity is not a number) / one of its one-sided limits doesn't exist), limit laws may still be applicable for one of its one-sided limits. That is, you may apply limit laws to a one-sided limit provided that one-sided limit exists.
+  ```
+
+  **LIMIT LAW VIOLATIONS**
+
+  In cases where a limit can't be broken down using limit laws, it may be possible to do some algebra beforehand such that it can be broken down. For example, `{kt} \lim\limits_{x \rarr 1} \frac{x^2-1}{x-1}` can't be broken down due to the quotient law not being applicable:
+
+  * `{kt} \lim\limits_{x \rarr 1} \frac{x^2-1}{x-1}`
+  * `{kt} \frac{\lim\limits_{x \rarr 1} x^2-1}{\lim\limits_{x \rarr 1} x-1}` - Invalid application of quotient law (limit in the denominator is approaching 0, which is not allowed)
+  
+  However, applying some algebra on `{kt} \frac{x^2-1}{x-1}` before hand results in `{kt} x+1`, which can be broken down:
+
+  * `{kt} \frac{x^2-1}{x-1}`
+  * `{kt} \frac{(x-1)(x+1)}{x-1}` - Difference of squares on numerator
+  * `{kt} x+1` - Cancel out denominator
+
+  With this new expression, the limit becomes `{kt} \lim\limits_{x \rarr 1} x+1`, which can be broken down as follows:
+
+  * `{kt} \lim\limits_{x \rarr 1} x+1`
+  * `{kt} \lim\limits_{x \rarr 1} x + \lim\limits_{x \rarr 1} 1` - Sum law
+  * `{kt} 1 + \lim\limits_{x \rarr 1} 1` - Limit of the identity function
+  * `{kt} 1 + 1` - Limit of a constant function
+  * `{kt} 2`
+
+  In general, `{kt} \lim\limits_{x \rarr a} f(x) = \lim\limits_{x \rarr 1} g(x)` if `{kt} f(x) = g(x) \text{ when } x \neq a`, <u>provided the limit exists</u>. The example above reworked `{kt} f(x)=\frac{x^2-1}{x-1}` to `{kt} g(x)=x+1`, and the two were equal for all x except the x being approached in the limit (`{kt} x \rarr 1`). Therefore, `{kt} \lim\limits_{x \rarr a} \frac{x^2-1}{x-1} = \lim\limits_{x \rarr 1} x+1`.
+
+  ```{seealso}
+  Direct substitution property (The property when there are no limit law violations / no algebra is needed).
+  Squeeze theorem (Another potential way of solving a limit if algebra and limit laws don't work)
+  ```
+
+  ```{note}
+  There's a more interesting example in the learning material when it comes to the quotient law: `{kt} \lim\limits_{x \rarr 0} \frac{\sqrt{x^2+9}-3}{x^2}`. The quotient law can't be directly applied because the denominator's limit would approach 0, which is not allowed.
+
+  * `{kt} \lim\limits_{x \rarr 0} \frac{\sqrt{x^2+9}-3}{x^2}`
+  * `{kt} \frac{\lim\limits_{x \rarr 0} \sqrt{x^2+9}-3}{\lim\limits_{x \rarr 0} x^2}` - Invalid application of quotient law (limit in the denominator is approaching 0, which is not allowed)
+
+  To get past this, the book reworks the equation by rationalizing the numerator:
+  
+  * `{kt} \frac{\sqrt{x^2+9}-3}{x^2} \cdot \frac{\sqrt{x^2+9}+3}{\sqrt{x^2+9}+3}`
+  * `{kt} \frac{x^2+9+3\sqrt{x^2+9}-3\sqrt{x^2+9}-9}{x^2(\sqrt{x^2+9}+3)}`
+  * `{kt} \frac{x^2+9-9}{x^2(\sqrt{x^2+9}+3)}`
+  * `{kt} \frac{x^2}{x^2(\sqrt{x^2+9}+3)}`
+  * `{kt} \frac{1}{\sqrt{x^2+9}+3}`
+
+  In this updated form, the quotient law doesn't have the same problem. As x approaches 0, the denominator approaches 3. The limit laws can now be applied.
+
+  This isn't something that I would have considered doing had I seen this problem?
+  ```
+
+  **PIECEWISE FUNCTION**
+
+  In cases where `{kt} f{x}` is a piecewise function, it may make sense to calculate the left-hand limit and right-hand limit independently. Recall that for the limit to exist, the left-hand limit and right-hand limit must end up at the same number (infinity is not a number).
+
+  For example, `{kt} \lim\limits_{x \rarr 0^+} |x|` and `{kt} \lim\limits_{x \rarr 0^-} |x|` are both 0, meaning that `{kt} \lim\limits_{x \rarr 0} |x|` exists and is 0. However. `{kt} \lim\limits_{x \rarr 0^+} \frac{|x|}{x}` is 0 and `{kt} \lim\limits_{x \rarr 0^-} \frac{|x|}{x}` 1, meaning that `{kt} \lim\limits_{x \rarr 0} \frac{|x|}{x}` does not exist.
+
+  ````{note}
+  ```{kt}
+  |x| = \begin{cases}
+   x  &\text{if } x \ge 0 \\
+   -x &\text{if } x < 0
+  \end{cases}
+  ```
+  ````
+
+  ```{seealso}
+  Absolute function
+  ```
+
+  **PIECEWISE FUNCTION GOTCHA: EXCLUSIONARY CASES**
+
+  In cases where `{kt} f{x}` is a piecewise function, special care needs to be taken: If `{kt} f(x)` is a piecewise function, `{kt} \lim\limits_{x \rarr a} f(x)` should exclude any cases in that piecewise function with the condition `{kt} x=a`. For example, consider `{kt} \lim\limits_{x \rarr 1} f(x)` where ...
+  
+  ```{kt}
+  f(x) = \begin{cases}
+   x+1  &\text{if } x \ne 1 \\
+   \pi  &\text{if } x = 1
+  \end{cases}
+  ```
+
+  Recall that <u>limits explicitly exclude the x being approached</u>, which in this case is x=1. If the direct substitution property were used directly on the piecewise function above, the result would be incorrect: As x approaches 1, `{kt} f(x)` does not approach π. Instead, the limit laws should be directly applied to the other case of the piecewise function:
+  
+  * `{kt} \lim\limits_{x \rarr 1} x+1`
+  * `{kt} \lim\limits_{x \rarr 1} x + \lim\limits_{x \rarr 1} 1` - Sum law
+  * `{kt} 1 + \lim\limits_{x \rarr 1} 1` - Limit of the identity function
+  * `{kt} 1 + 1` - Limit of a constant function
+  * `{kt} 2`
+
+* `{bm} sum law` - A limit law that state the limit of a sum is the sum of the limits: `{kt} \lim\limits_{x \rarr a} [f(x)+g(x)] = \lim\limits_{x \rarr a} f(x) + \lim\limits_{x \rarr a} g(x)`.
+
+* `{bm} difference law` - A limit law that states the limit of a difference is the difference of the limits: `{kt} \lim\limits_{x \rarr a} [f(x)-g(x)] = \lim\limits_{x \rarr a} f(x) - \lim\limits_{x \rarr a} g(x)`.
+
+* `{bm} constant multiple law` - A limit law that states the limit of a constant times a function is the constant times the limit of the function: `{kt} \lim\limits_{x \rarr a} [c \cdot f(x)] = c \cdot \lim\limits_{x \rarr a} f(x)`.
+
+* `{bm} product law` - A limit law that states the limit of a product is the product of the limits: `{kt} \lim\limits_{x \rarr a} [f(x) \cdot g(x)] = \lim\limits_{x \rarr a} f(x) \cdot \lim\limits_{x \rarr a} g(x)`.
+
+* `{bm} quotient law` - A limit law that states the limit of a quotient is the quotient of the limits, provided that *the limit of the denominator isn't 0*: `{kt} \lim\limits_{x \rarr a} \frac{f(x)}{g(x)} = \frac{\lim\limits_{x \rarr a} f(x)}{\lim\limits_{x \rarr a} g(x)} \text{ if} \lim\limits_{x \rarr a} g(x) \neq 0`.
+
+* `{bm} power law` - A limit law that states the limit of a power is the power of the limit, provided that *the exponent is a positive integer*: `{kt} \lim\limits_{x \rarr a} [f(x)]^n = [\lim\limits_{x \rarr a} f(x)]^n \text{ if} n \in \Z+`.
+
+* `{bm} root law` - A limit law that states the limit of a !!root!! is the !!root!! of a limit, provided that *the exponent is a positive integer*: `{kt} \lim\limits_{x \rarr a} \sqrt[n]{f(x)} = \sqrt[n]{\lim\limits_{x \rarr a} f(x)} \text{ if} n \in \Z+`
+
+  If n is even, you can assume that `{kt} \lim\limits_{x \rarr a} f(x) > 0`.
+
+* `{bm} limit of a constant function/(limit of a constant function|constant function limit)/i` - The limit of a constant function is always the constant being output: If `{kt} f(x)=c`, then `{kt} \lim\limits_{x \rarr a} f(x)=c`. For example, think of the graph f(x)=5. As x approaches any value, the limit will always be 5: `{kt} \lim\limits_{x \rarr a} f(x)=5`, or in other words `{kt} \lim\limits_{x \rarr a} 5=5`.
+
+* `{bm} limit of the identity function/(limit of the identity function|identity function limit)/i` - The limit of the identity function is always the x being approached: If `{kt} f(x)=x`, then `{kt} \lim\limits_{x \rarr a} x=a`. For example, think of the graph `{kt} f(x)=x`. As x approaches any value, the limit will always be that value: `{kt} \lim\limits_{x \rarr a} f(x)=a`, or in other words `{kt} \lim\limits_{x \rarr a} x=a`.
+
+* `{bm} absolute function` - A piecewise function that determines the distance to some number from 0, typically represented by placing pipes around an expression. For example, ...
+
+  ```{kt}
+  |x| = \begin{cases}
+   x  &\text{if } x \ge 0 \\
+   -x &\text{if } x < 0
+  \end{cases}
+  ```
+
+  * `{kt} |-43| = 43`
+  * `{kt} |43| = 43`
+  * `{kt} |x|` is `{kt} \ge 0` for any x
+  * `{kt} |x^3|` is `{kt} \ge 0` for any x
+
+  ```{calculus}
+  Graph
+  funcs: [abs(x)]
+  x_lim: [-10, 10]
+  y_lim: [-10, 10]
+  fig_size: [4, 4]
+  ```
+
+* `{bm} greatest integer function/(greatest integer function|floor function)/i` - A piecewise function that maps x to the largest integer that is `{kt} \le x`, typically written as `{kt} ⟦x⟧`. For example, ...
+
+  * `{kt} ⟦48.2⟧ = 48`
+  * `{kt} ⟦48⟧ = 48`
+  * `{kt} ⟦-1⟧ = -1`
+  * `{kt} ⟦-1.2⟧ = -2`
+
+  ```{svgbob}
+   1 |            *------o
+     |                    
+   0 |      *-----o       
+     |                    
+  -1 |*-----o             
+     |                    
+     +---------------------
+     -1     0     1      2
+  ```
+
+  This function is sometimes also referred to as the floor function.
+
+  ```{note}
+  The notation I'm seeing in the learning material is what I used here, but I've more often seen this function referred to as the floor function and its written as `{kt} ⌊x⌋`.
+  ```
+
+  ```{note}
+  Is this a piecewise function? It seems so. It's a piecewise function with infinitely many cases where those cases follow a pattern.
+  ```
+
+  ```{seealso}
+  Step function
+  ```
+
+* `{bm} constant function` - A function whose output value is the same for every input value. For example, `{kt} f(x)=5`.
+
+* `{bm} identity function` - A function whose output value is the same as its input value. For example, `{kt} f(x)=x`.
+
+* `{bm} direct substitution property` - `{kt} \lim\limits_{x \rarr a} f(x)=f(a)` if `{kt} f(x)` is a polynomial function or rational function and a is in the domain of `{kt} f(x)`. For example, consider `{kt} \lim\limits_{x \rarr 5} f(x)` where `{kt} f(x)=2x^2-3x+4`. The domain contains the x being approached (5), meaning the direct substitution property can be used to find the `{kt} f(x)` being approached: `{kt} \lim\limits_{x \rarr 5} f(x)=f(5)=2(5)^2-3(5)+4=39`.
+
+  In contrast, consider `{kt} \lim\limits_{x \rarr 1} f(x)` where `{kt} f(x)=\frac{x^2-1}{x-1}`. The domain *doesn't* contain the x being approached (1), meaning the direct substitution property *can't* be used to find the `{kt} f(x)` being approached: `{kt} \lim\limits_{x \rarr 1} f(x)=f(1)=\frac{1^2-1}{1-1}=\frac{0}{0}=\text{undefined}`.
+
+  ```{note}
+  The learning material states: Functions with the direct substitution property are called continuous at a (a is the value that x is approaching).
+  ```
+
+* `{bm} radical/(radical|radicand)/i` - The nth !!root!! of some expression. For example, `{kt} \sqrt[2]{x^2+9}` is a radical.
+
+  The expression within a radical is referred to as a radicand (`{kt} x^2+9` in the example above) and the exponent of the radical is referred to as the index (2 in the example above).
+
+* `{bm} rationalize/(rationalize|rationalizing)/i` - Converting a fraction with a radical in it into an equivalent fraction without that radical (becomes rational). This process is typically applied to a fraction's denominator, such that the denominator becomes free of radicals. For example, multiplying `{kt} \frac{x^2}{\sqrt{x^2+9}+3}` by `{kt} \frac{\sqrt{x^2+9}-3}{\sqrt{x^2+9}-3}` removes the radical from the denominator:
+
+  * `{kt} \frac{x^2}{\sqrt{x^2+9}+3}`
+  * `{kt} \frac{x^2}{\sqrt{x^2+9}+3} \cdot \frac{\sqrt{x^2+9}-3}{\sqrt{x^2+9}-3}`
+  * `{kt} \frac{x^2(\sqrt{x^2+9}-3)}{x^2+9-3\sqrt{x^2+9}+3\sqrt{x^2+9}-9}`
+  * `{kt} \frac{x^2(\sqrt{x^2+9}-3)}{x^2+9-9}`
+  * `{kt} \frac{x^2(\sqrt{x^2+9}-3)}{x^2}`
+
+  ```{note}
+  I've seen at least one example now in the learning material that talks about rationalizing the numerator, so this process isn't exclusive to a fraction's denominator. The example had to do with re-working a limit's function so that the quotient rule could be applied.
+  ```
+
+* `{bm} infinity/(infinity|infinite)/i` - A symbol used to indicate that something grows without bound. When ...
+
+  * ∞ is used, it increases without bound.
+  * -∞ is used, it decreases without bound.
+ 
+  For example, `{kt} \frac{1}{x^2}` increases without bound as x approaches 0, represented in infinite limit notation as `{kt} \lim\limits_{x \rarr 0} \frac{1}{x^2} = \infty`.
+
+  ```{calculus}
+  Graph
+  funcs: [1/x^2]
+  x_lim: [-10, 10]
+  y_lim: [-10, 10]
+  ```
+
+* `{bm} squeeze theorem/(squeeze theorem|sandwich theorem|pinching theorem)/i` - A theorem that states if the following two conditions are met ...
+
+  1. `{kt} f(x)` and `{kt} h(x)` approach the same value as x approaches a (not considering x=a itself): `{kt} \lim\limits_{x \rarr a} f(x) = \lim\limits_{x \rarr a} h(x)`.
+  2. `{kt} g(x)` is sandwiched between `{kt} f(x)` and `{kt} h(x)` when x is near a (not considering x=a itself): `{kt} f(x) \le g(x) \le h(x)` when x is near a.
+
+  ..., then `{kt} g(x)` approaches the same value as `{kt} f(x)` and `{kt} h(x)` when it also approaches a: `{kt} \lim\limits_{x \rarr a} f(x) = \lim\limits_{x \rarr a} h(x) = \lim\limits_{x \rarr a} g(x)`.
+
+  ```{note}
+  The squeeze theorem is sometimes also referred to as the sandwich theorem or pinching theorem.
+  ```
+
+  For a trivial example, consider the following 3 functions ...
+
+  * `{kt} f(x) = x^2+1`
+  * `{kt} g(x) = \frac{x}{x}` (undefined at 0)
+  * `{kt} h(x) = -x^2+1`
+
+  ```{calculus}
+  Graph
+  funcs: [x^2+1, x/x, -(x^2)+1]
+  x_lim: [-5, 5]
+  y_lim: [-5, 5]
+  ```
+
+  When finding `{kt} \lim\limits_{x \rarr 0} g(x)`, you can see that ...
+  
+  1. `{kt} g(x)` is sandwiched between `{kt} f(x)` and `{kt} h(x)` when x is near 0 (not considering x=0 itself).
+  2. `{kt} f(x)` and `{kt} h(x)` approach the same value as x approaches 0: `{kt} \lim\limits_{x \rarr 0} f(x) = \lim\limits_{x \rarr 0} h(x) = 1`.
+
+  Therefore, `{kt} \lim\limits_{x \rarr a} h(x)` will also approach that same value as x approaches 0: `{kt} \lim\limits_{x \rarr a} f(x) = \lim\limits_{x \rarr a} h(x) = \lim\limits_{x \rarr a} g(x) = 1`.
+
+  ```{note}
+  This is a trivial example where the squeeze theorem isn't needed. You can just use limit laws: Apply some algebra to convert `{kt} \frac{x}{x}` into `{kt} 1` and then apply limit of a constant function.
+  ```
+
+  ```{note}
+  The example above is sandwiched across the entire domain, but the requirement is that it just needs to be sandwiched when x is near a, right?
+  ```
+
+  In most cases, you'll only have the function which you're attempting to find the limit for, not the sandwiching functions. For example, consider `{kt} \lim\limits_{x \rarr 0} x^2 \cdot sin(\frac{1}{x})`. It isn't possible to find the limit of this function using just algebra and limit laws:
+
+  * `{kt} \lim\limits_{x \rarr 0} x^2 \cdot sin(\frac{1}{x})`
+  * `{kt} \lim\limits_{x \rarr 0} x^2 \cdot \lim\limits_{x \rarr 0} sin(\frac{1}{x})` - Product law
+  * `{kt} (\lim\limits_{x \rarr 0} x)^2 \cdot \lim\limits_{x \rarr 0} sin(\frac{1}{x})` - Power law
+
+  At this point, the process is stuck on `{kt} \lim\limits_{x \rarr 0} sin(\frac{1}{x})`:
+  
+  * The direct substitution property doesn't work here because 0 isn't in the domain of `{kt} sin(\frac{1}{x})`.
+  * There is no limit law to further break down `{kt} \lim\limits_{x \rarr 0} sin(\frac{1}{x})`, even if some preliminary algebra was applied on the expression beforehand.
+
+  ```{calculus}
+  Graph
+  funcs: [x^2*sin(1/x)]
+  x_lim: [-0.5, 0.5]
+  y_lim: [-0.3, 0.3]
+  ```
+
+  In order to use the sandwich theorem to find this limit, two functions `{kt} f(x)` and `{kt} h(x)` need to be found such that ...
+
+  1. `{kt} f(x)` and `{kt} h(x)` approach the same value as x approaches a (not considering x=a itself): `{kt} \lim\limits_{x \rarr a} f(x) = \lim\limits_{x \rarr a} h(x)`.
+  2. the function for which the limit is being found (`{kt} x^2 \cdot sin(\frac{1}{x})`), referred to as `{kt} g(x)`, is sandwiched between `{kt} f(x)` and `{kt} h(x)` when x is near a (not considering x=a itself): `{kt} f(x) \le g(x) \le h(x)` when x is near a.
+
+  To do this, you need to rely on  properties of sine, power, and inequalities:
+  
+  1. For any x, `{kt} sin(x)` results in a number between [-1, 1]:
+     
+     * `{kt} sin(x) \ge -1`
+     * `{kt} sin(x) \le 1`.
+
+     ```{calculus}
+     Graph
+     funcs: [sin(x)]
+     x_lim: [-5, 5]
+     y_lim: [-2.5, 2.5]
+     fig_size: [3, 1.5]
+     ```
+
+  2. For any x, `{kt} \frac{1}{x}` ....
+  
+     * results in a number `{kt} >1` if `{kt} x<1`.
+     * results in a number `{kt} <1` if `{kt} x>1`.
+     * results in a number `{kt} =1` if `{kt} x=1`.
+
+     ```{calculus}
+     Graph
+     funcs: [1/x]
+     x_lim: [-5, 5]
+     y_lim: [-5, 5]
+     fig_size: [3, 3]
+     ```
+
+  3. From 1 and 2, you know that for any x, `{kt} sin(\frac{1}{x})` results in a number between [-1, 1]: `{kt} sin(\frac{1}{x}) \ge -1` and `{kt} sin(\frac{1}{x}) \le 1`.
+
+     ```{note}
+     Why? The set of possible inputs (domain) into sine is the same here as it is in 1 (except x=0 is not allowed because `{kt} \frac{1}{0}` is undefined). It's just that if ...
+     
+     * `{kt} x<1` then the number being fed into sine is `{kt} >1`.
+     * `{kt} x>1` then the number being fed into sine is `{kt} <1`.
+     
+     As such, the set of possible outputs (range) is the same.
+     ```
+
+     ```{calculus}
+     Graph
+     funcs: [sin(1/x)]
+     x_lim: [-5, 5]
+     y_lim: [-2.5, 2.5]
+     fig_size: [3, 1.5]
+     ```
+  
+  4. The square of any x is non-negative:
+  
+     * `{kt} x^2 > 0` if `{kt} x > 0`.
+     * `{kt} x^2 < 0` if `{kt} x > 0`.
+     * `{kt} x^2 = 0` if `{kt} x = 0`.
+
+     ```{calculus}
+     Graph
+     funcs: [x^2]
+     x_lim: [-5, 5]
+     y_lim: [-5, 5]
+     fig_size: [3, 3]
+     ```
+  
+  5. An equality remains true if multiplied by a non-negative number:
+  
+     * `{kt} c \cdot x \ge a \cdot c` if `{kt} x \ge a` and c is a non-negative number.
+     * `{kt} c \cdot x \le a \cdot c` if `{kt} x \le a` and c is a non-negative number.
+
+     ```{note}
+     Recall from inequality rules that you have to flip the direction of the inequality if the number you're multiplying by is negative.
+     ```
+
+  6. From 3, 4, and 5, you know that the inequalities in 3 remain true if both sides are multiplied by `{kt} x^2`:
+
+     * `{kt} x^2 \cdot sin(\frac{1}{x}) \ge x^2 \cdot -1`
+     * `{kt} x^2 \cdot sin(\frac{1}{x}) \le x^2 \cdot 1`.
+
+     ```{note}
+     Direction of inequalities don't change when multiplied by `{kt} x^2` because `{kt} x^2` will never result in a negative number.
+     ```
+
+  The two inequalities in the last point above give the two sandwich functions for `{kt} g(x) = x^2 \cdot sin(\frac{1}{x})`:
+
+  * `{kt} x^2 \cdot sin(\frac{1}{x}) \ge x^2 \cdot -1` says that `{kt} -x^2` is the lower part of the sandwich: `{kt} f(x) = -x^2`.
+  * `{kt} x^2 \cdot sin(\frac{1}{x}) \le x^2 \cdot 1` says that `{kt} x^2` is the upper part of the sandwich: `{kt} h(x) = x^2`.
+
+  ```{calculus}
+  Graph
+  funcs: [x^2, x^2*sin(1/x), -(x^2)]
+  x_lim: [-0.5, 0.5]
+  y_lim: [-0.3, 0.3]
+  fig_size: [6, 6]
+  ```
+
+  ```{note}
+  This example was the only one listed in the learning material. What's the moral of the story here? If you can't use algebra and limit laws, look to see if the range is bounded on both sides and try to work something out with the squeeze theorem inequalities?
+
+  All the squeeze theorem examples I find online have trigonometric functions involved (they're all a play on the example above). Is this applicable in some other context? I can't think up an example that isn't already solvable by using algebra + limit laws. UPDATE: ChatGPT thought up the following non-trigonometric functions: Logistic function, sigmoid function, and gaussian function (`{kt} e^{-x^2}`). I can't think up of a way to rejigger these the same way as the example above (so that they're only solvable through the sandwich theorem).
+  ```
+
+CONTINUE FROM PAGE 70 exercises
+
+CONTINUE FROM PAGE 70 exercises
+
+CONTINUE FROM PAGE 70 exercises
 
 `{bm-ignore} !!([\w\-]+?)!!/i`
 
 `{bm-error} Wrap in !! or apply suffix _POLY/(roots?)/i`
 `{bm-ignore} square root`
 `{bm-error} Remove _POLY/(square roots?_POLY)/i`
+`{bm-error} Remove _POLY/(root_POLY law)/i`
 
 `{bm-error} Wrap in !! or apply suffix _POLY/(degrees?)/i`
 
 `{bm-error} Did you mean discriminant?/(discriminator)/i`
+
+`{bm-error} Did you mean constant MULTIPLE law?/(constant product law)/i`
+
+`{bm-error} Did you mean limit of THE identity function?/(limit of a identity function)/i`
+
+`{bm-error} Did you mean direct substitution PROPERTY?/(direct substitution theorem)/i`
 
 `{bm-error} Missing topic reference/(_TOPIC)/i`
 
@@ -1181,7 +1627,322 @@ CONTINUE FROM PAGE 61 exercise 1.5
 
 `{bm-disable-all}`
 
-<!-- ANSWERS AT A60 -->
+<!-- ANSWERS AT A61 -->
+
+BEFORE MOVING ON, DEFINE CONJUGATE PAIR
+
+<!--
+-------- 1.6 EXERCISES
+
+1) it wants you to break down using the limit laws and use "limit of a constant function"?
+  a) lim_x->2[f(x)+5g(x)]
+     lim_x->2[f(x)]+lim_x->2[5g(x)] -- sum law
+     5+5*(-2) -- swap in limit values
+     5-10
+     -5
+  b) lim_x->2[g(x)]^3
+     -2^3 -- swap in limit values
+     -8
+  c) lim_x->2[sqrt(f(x))]
+     sqrt(lim_x->2[f(x))) -- root law
+     sqrt(4) -- swap in limit values
+     2
+  d) lim_x->2[3f(x)/g(x)]
+     lim_x->2[3f(x)]/lim_x->2[g(x)] -- quotient law
+     3lim_x->2[f(x)]/lim_x->2[g(x)] -- constant multiple law
+     3(4)/-2  -- swap in limit values
+     12/-2
+     -6
+  e) lim_x->2[g(x)/h(x)]
+     lim_x->2[g(x)]/lim_x->2[h(x)] -- quotient law
+     -2/0 -- swap in limit values
+     undefined? but does this mean the limit does not exist or does it mean that you need to use some other means to find the limit (e.g. squeeze theorem) -- the question doesn't give you what the functions, it just gives you the limits of the function as x approaches 2
+  f) lim_x->2[g(x)h(x)/f(x)]
+     lim_x->2[g(x)h(x)]/lim_x->2[f(x)] -- quotient law
+     (lim_x->2[g(x)]*lim_x->2[h(x)])/lim_x->2[f(x)] -- product law
+     (-2*0)/4  -- swap in limit values
+     0
+
+2)
+  a) lim_x->2[f(x)+g(x)] 
+     lim_x->2[f(x)]+lim_x->2[g(x)] -- sum law
+     -1+2 -- swap in limits from looking at graph
+     1
+  b) lim_x->0[f(x)-g(x)] 
+     lim_x->0[f(x)]-lim_x->0[g(x)] -- difference law
+     LIMIT DOES NOT EXIST: lim_x->0[g(x)] doesn't exist because its one-sided limits approach different numbers
+  c) lim_x->-1[f(x)g(x)]
+     lim_x->-1[f(x)]*lim_x->-1[g(x)] -- product law
+     1*2 -- swap in limits from looking at graph
+     2
+  d) lim_x->3[f(x)/g(x)]
+     lim_x->3[f(x)]/lim_x->3[g(x)] -- quotient law
+     1/0  undefined? but does this mean the limit does not exist or does it mean that you need to use some other means to find the limit (e.g. squeeze theorem)
+  e) lim_x->2[x^2*f(x)]
+     lim_x->2[x^2]*lim_x->2[f(x)] -- product law
+     lim_x->2[x]^2*lim_x->2[f(x)] -- power law
+     2^2*lim_x->2[f(x)] -- limit of an identity function
+     2^2*-1 -- swap in limits from looking at graph
+     -4
+  f) f(-1) + lim_x->-1[g(x)]
+     3+2 -- swap in limits/values from looking at graph
+     5
+
+3) lim_x->3[5x^3-3x^2+x-6]
+   lim_x->3[5x^3-3x^2]+lim_x->3[x-6] -- sum law
+   lim_x->3[5x^3]-lim_x->3[3x^2]+lim_x->3[x-6] -- difference law
+   lim_x->3[5x^3]-lim_x->3[3x^2]+lim_x->3[x]-lim_x->3[6] -- difference law
+   lim_x->3[5x^3]-3lim_x->3[x^2]+lim_x->3[x]-lim_x->3[6] -- constant multiple law
+   5lim_x->3[x^3]-3lim_x->3[x^2]+lim_x->3[x]-lim_x->3[6] -- constant multiple law
+   5lim_x->3[x^3]-3lim_x->3[x]^2+lim_x->3[x]-lim_x->3[6] -- power law
+   5lim_x->3[x]^3-3lim_x->3[x]^2+lim_x->3[x]-lim_x->3[6] -- power law
+   5(3)^3-3(3)^2+(3)-lim_x->3[6] -- limit of an identity function
+   5(3)^3-3(3)^2+(3)-6 -- limit of constant function
+   5(9)-3(9)-6
+   24
+
+4) lim_x->-1[(x^4-3x)(x^2+5x+3)]
+   (lim_x->-1[x^4-3x])*(lim_x->-1[x^2+5x+3]) -- product law
+   (lim_x->-1[x^4]-lim_x->-1[3x])*(lim_x->-1[x^2+5x+3]) -- difference law
+   (lim_x->-1[x^4]-lim_x->-1[3x])*(lim_x->-1[x^2+5x+3]) -- sum law 2 twice
+   (lim_x->-1[x^4]-lim_x->-1[3x])*(lim_x->-1[x^2]+lim_x->-1[5x]+lim_x->-1[3]) -- sum law 2 twice
+   (lim_x->-1[x^4]-3lim_x->-1[x])*(lim_x->-1[x^2]+5lim_x->-1[x]+lim_x->-1[3]) -- constant product law twice
+   (lim_x->-1[x]^4-3lim_x->-1[x])*(lim_x->-1[x]^2+5lim_x->-1[x]+lim_x->-1[3]) -- power law twice
+   ((-1)^4-3(-1))*((-1)^2+5(-1)+lim_x->-1[3]) -- limit of the identity function
+   ((-1)^4-3(-1))*((-1)^2+5(-1)+3) -- limit of a constant function
+   (1+3)*(1-5+3)
+   -4
+
+5) lim_t->-2[(t^4-2)/(2t^2-3t+2)]
+   lim_t->-2[t^4-2]/lim_t->-2[2t^2-3t+2] -- quotient rule
+   [lim_t->-2[t^4]-lim_t->-2[2]]/[lim_t->-2[2t^2]-lim_t->-2[3t]+lim_t->-2[2]] -- difference law and sum law
+   [lim_t->-2[t^4]-lim_t->-2[2]]/[2lim_t->-2[t^2]-3lim_t->-2[t]+lim_t->-2[2]] -- constant multiple law
+   [lim_t->-2[t]^4-lim_t->-2[2]]/[2lim_t->-2[t]^2-3lim_t->-2[t]+lim_t->-2[2]] -- power law
+   [-2^4-2]/[2(-2)^2-3(-2)+2] -- limit of a constant function / limit of the identity function
+   [14]/[8+6+2]
+   14/16=7/8
+
+6) lim_u->-2[sqrt(u^4+3u+6)]
+   sqrt(lim_u->-2[u^4+3u+6]) -- root law
+   sqrt(lim_u->-2[u^4]+lim_u->-2[3u]+lim_u->-2[6]) -- sum law
+   sqrt(lim_u->-2[u^4]+3lim_u->-2[u]+lim_u->-2[6]) -- constant multiple law
+   sqrt(lim_u->-2[u]^4+3lim_u->-2[u]+lim_u->-2[6]) -- power law
+   sqrt((-2)^4+3(-2)+6) -- limit of a constant function / limit of the identity function
+   sqrt(16-6+6)=4
+
+7) lim_x->8[(1+sqrt[3](x))(2-6x^2+x^3)]
+   lim_x->8[1+sqrt[3](x)]*lim_x->8[2-6x^2+x^3] -- product law
+   (lim_x->8[1]+lim_x->8[sqrt[3](x)])*(lim_x->8[2]-lim_x->8[6x^2]+lim_x->8[x^3]) -- difference law and sum law
+   (lim_x->8[1]+lim_x->8[sqrt[3](x)])*(lim_x->8[2]-6lim_x->8[x^2]+lim_x->8[x^3]) -- constant product law
+   (lim_x->8[1]+lim_x->8[sqrt[3](x)])*(lim_x->8[2]-6lim_x->8[x]^2+lim_x->8[x]^3) -- power law
+   (lim_x->8[1]+sqrt[3](lim_x->8[x]))*(lim_x->8[2]-6lim_x->8[x]^2+lim_x->8[x]^3) -- root law
+   (1+sqrt[3](8))*(2-6(8)^2+8^3) -- limit of a constant function / limit of the identity function
+   390
+
+8) lim_t->2[(t^2-2)/(t^3-3t+5)^2]
+   lim_t->2[(t^2-2)/(t^3-3t+5)]^2 power law
+   (lim_t->2[t^2-2]/lim_t->2[t^3-3t+5])^2 quotient law
+   ((lim_t->2[t^2]-lim_t->2[2])/(lim_t->2[t^3]-lim_t->2[3t]+lim_t->2[5]))^2 difference law sum law
+   ((lim_t->2[t^2]-lim_t->2[2])/(lim_t->2[t^3]-3lim_t->2[t]+lim_t->2[5]))^2 constant multiple law
+   ((lim_t->2[t]^2-lim_t->2[2])/(lim_t->2[t]^3-3lim_t->2[t]+lim_t->2[5]))^2 power law
+   ((2^2-2)/(2^3-3(2)+5))^2 limit of a constant function / limit of the identity function
+   2/7
+
+9) lim_x->2[sqrt((2x^2+1)/(3x-2))]
+   sqrt(lim_x->2[(2x^2+1)/(3x-2)]) root law
+   sqrt(lim_x->2[(2x^2+1)/(3x-2)]) quotient law
+   sqrt(lim_x->2[2x^2+1]/lim_x->2[3x-2]) quotient law
+   sqrt(lim_x->2[2x^2+1]/lim_x->2[3x-2]) sum law difference law
+   sqrt((lim_x->2[2x^2]+lim_x->2[1])/(lim_x->2[3x]-lim_x->2[2])) sum law difference law
+   sqrt((2lim_x->2[x^2]+lim_x->2[1])/(3lim_x->2[x]-lim_x->2[2])) constant multiple law
+   sqrt((2lim_x->2[x]^2+lim_x->2[1])/(3lim_x->2[x]-lim_x->2[2])) power law
+   sqrt((2(2)^2+1)/(3(2)-2)) limit of a constant function / limit of the identity function
+   sqrt(9/4) = sqrt(9)/sqrt(4)=3/2
+
+10a) the domain isn't the same at x=2? this comes off as a confusing question because of basic algebra
+
+  b) the left-hand side can have some preliminary algebra applied to turn it into the right hand-side
+      
+     (x+3)(x-2)/(x-2) = x+3
+
+     it's okay to make this transformation (assuming the limit actually exists) because limits explicitly exclude the x being approached, which in this case is x=2
+
+11) can't use direct substitution property because divide by 0
+    but you can factor numerator and cancel
+    lim_x->5[(x^2-6x+5)/(x-5)]
+    lim_x->5[(x-1)(x-5)/(x-5)]
+    lim_x->5[(x-1)] -- use direct substitution property 5-1=4
+
+12) lim_x->-3[(x^2+3x)/(x^2-x-12)] -- can't use direct substitution property because div by 0
+                                      factor denominator and numerator?
+    lim_x->-3[(x(x+3))/((x+3)(x-4))]
+    lim_x->-3[x/(x-4)]
+    lim_x->-3[x/(x-4)] -- use direct substitution 3/(3-4)=3/-1=-3
+
+13) can't use direct substitution property because divide by 0
+    lim_x->5[(x^2-5x+6)/(x-5)]
+    lim_x->5[(x-2)(x-3)/(x-5)] -- factor num
+    nothing to cancel? limit does not exist? graphing this, it looks like infinite limits from both sides (not a real limit)
+
+14) lim_x->4[(x^2+3x)/(x^2-x-12)] -- can't use direct substitution property because div by 0
+                                     factor denominator and numerator?
+    lim_x->-3[(x(x+3))/((x+3)(x-4))]
+    lim_x->-3[x/(x-4)]
+    nothing left to do? limit does not exist? graphing seems to confirm this (one-sided infinite limits)
+
+15) lim_t->-3[(t^2-9)/(2t^2+7t+3)] -- can't use direct substitution property because div by 0
+    lim_t->-3[((t+3)(t-3))/(2t^2+7t+3)] -- difference of squares on numerator
+
+
+    2(3)+(1)=7
+     (3)*(1)=3
+
+    2x^2+6x+1x+3
+    2x(x+3)+1(x+3)
+    (2x+1)(x+3)
+
+    lim_t->-3[((t+3)(t-3))/(2t+1)(t+3)] -- sum product rule on denominator
+    lim_t->-3[(t-3)/(2t+1)] -- cancel
+
+    lim_t->-3[(t-3)/(2t+1)]
+    ((-3)-3)/(2(-3)+1) -- apply direct substitution property
+    (-6)/(-6+1)
+    (-6)/5
+
+16) lim_x->-1[(2x^2+3x+1)/(x^2-2x-3)] -- can't use direct substitution property because of div by 0
+    probably need to factor num an denom and reduce out common factors?
+
+    lim_x->-1[(2x^2+3x+1)/(x-3)(x+1)] sum product rule on denom
+    lim_x->-1[(2x+1)(x+1)/(x-3)(x+1)] sum product rule on num
+    lim_x->-1[(2x+1)/(x-3)] cancel
+    
+    lim_x->-1[(2x+1)/(x-3)]
+    (2(-1)+1)/((-1)-3) -- apply direct substitution property
+    -1/-4
+    1/4
+
+17) lim_h->0[((-5+h)^2-25)/h] --can't use direct substitution property because of div by 0
+
+    lim_h->0[(h^2-5h-5h+25)/h]
+    lim_h->0[(h^2-10h)/h]
+    lim_h->0[(h(h-10)/h]
+    lim_h->0[h-10]
+
+    lim_h->0[h-10] -- apply direct substitution property
+    0-10
+    -10
+
+18) lim_h->0[((2+h)^3-8)/h] -- can't use direct substitution property because of div by 0
+    
+    lim_h->0[((2+h)(2+h)(2+h)-8)/h]
+    lim_h->0[((h^2+4h+4)(h+2)-8)/h]
+    lim_h->0[((h^3+4h^2+2h^2+4h+8h+8)-8)/h]
+    lim_h->0[(h^3+6h^2+12h)/h]
+    lim_h->0[h^2+6h+12]
+
+    lim_h->0[h^2+6h+12]
+    0^2+6(0)+12 -- direct substitution
+    12
+
+19) lim_x->-2[(x+2)/(x^3+8)] -- can't use direct substitution property
+    
+    lim_x->-2[(x+2)/(x^3+2^3)] -- sum of cubes
+    lim_x->-2[(x+2)/((x+2)(x^2-2x+4)] -- sum of cubes
+    lim_x->-2[1/(x^2-2x+4)] -- cancel
+
+    lim_x->-2[1/(x^2-2x+4)] -- direct substitution
+    1/((-2)^2-2(-2)+4)
+    1/(4+4+4)
+    1/12
+
+20) lim_t->1[(t^4-1)/(t^3-1)] -- can't use direct substitution property
+
+    lim_t->1[(t^4-1)/(t-1)(t^2+t+1)] -- difference of cubes on denom
+    lim_t->1[(t^2+1)(t^2-1)/(t-1)(t^2+t+1)] -- difference of 4th power on num
+    lim_t->1[(t^2+1)(t+1)(t-1)/(t-1)(t^2+t+1)] -- difference of squares on num
+    lim_t->1[(t^2+1)(t+1)/(t^2+t+1)] -- cancel
+    
+    lim_t->1[(t^2+1)(t+1)/(t^2+t+1)] -- direct substitution
+    (1^2+1)(1+1)/(1^2+1+1)
+    (1+1)(1+1)/(1+1+1)
+    4/3
+
+21) lim_h->0[(sqrt(9+h)-3)/h] -- can't use direct substitution property
+
+    lim_h->0[((9+h)^0.5-3)/h] -- rework to exponent
+    lim_h->0[((9+h)^0.5-3)((9+h)^0.5+3)/h((9+h)^0.5+3)] -- mul by ((9+h)^0.5+3)/((9+h)^0.5+3) -- conjugate of num
+    lim_h->0[(9+h-9)/h((9+h)^0.5+3)] -- simplify
+    lim_h->0[h/h((9+h)^0.5+3)] -- simplify
+    lim_h->0[1/((9+h)^0.5+3)] -- cancel
+
+    lim_h->0[1/((9+h)^0.5+3)] -- direct substitution
+    1/((9+0)^0.5+3)
+    1/(9^0.5+3)
+    1/6
+
+    THIS ONE WAS TOUGH BECAUSE I COMPLETELY FORGOT ABOUT THE CONCEPT OF CONJUGATES
+
+22) lim_u->2[(sqrt(4u+1)-3)/(u-2)] -- can't use direct substitution property
+   
+    lim_u->2[(sqrt(4u+1)-3)/(u-2) * (sqrt(4u+1)+3)/(sqrt(4u+1)+3)] -- conjugate
+
+    simplify numerator:
+    (sqrt(4u+1)-3)*(sqrt(4u+1)+3) = sqrt(4u+1)*sqrt(4u+1)+3sqrt(4u+1)-3sqrt(4u+1)-9
+                                  = sqrt(4u+1)*sqrt(4u+1)-9
+                                  = 4u+1-9
+                                  = 4u-8
+                                  = 4(u-2)
+
+    lim_u->2[4(u-2)/(u-2)(sqrt(4u+1)+3)] -- cancel u-2
+    lim_u->2[4/(sqrt(4u+1)+3)]
+
+    lim_u->2[4/(sqrt(4u+1)+3)] -- direct substitution
+    4/sqrt(4(2)+1)+3
+    4/sqrt(8+1)+3
+    4/sqrt(9)+3
+    4/6
+
+23) lim_x->3[(1/x-1/3)/(x-3)] -- can't use direct substitution property
+    
+    lim_x->3[(-3/x+1)/-3(x-3)] -- mult by -3/-3
+    lim_x->3[(-3+x)/-3x(x-3)] -- mult by x/x
+    lim_x->3[(x-3)/-3x(x-3)] -- commutative on numerator
+    lim_x->3[1/-3x] -- cancel numerator
+
+    lim_x->3[1/-3x] -- direct substitution
+    1/-3(3)
+    1/-9
+
+    I THOUGHT I WOULD HAVE TO USE CONJUGATE PAIRS HERE BUT THAT WASN'T THE CASE
+
+24) lim_h->0[((3+h)^-1-3^-1)/h] -- can't use direct substitution
+
+    lim_h->0[(1/(3+h)-1/3)/h] -- neg exp to frac
+    lim_h->0[(1/(3+h)h-1/3h]
+    ...
+    ... there are too many steps here, i did them in desmos graphing calc
+    ...
+    lim_h->0[-1/(9+3x)]
+
+    lim_h->0[-1/(9+3x)] -- simplify
+    -1/9
+
+25) lim_t->0[(sqrt(1+t)-sqrt(1-t))/t] -- can't use direct substitution property
+
+    lim_t->0[(sqrt(1+t)-sqrt(1-t))*(sqrt(1+t)+sqrt(1-t))/t(sqrt(1+t)+sqrt(1-t))] -- mul by conjugate
+    lim_t->0[((1+t)+sqrt(1+t)sqrt(1-t)-sqrt(1+t)sqrt(1-t)-(1-t))/t(sqrt(1+t)+sqrt(1-t))]
+    lim_t->0[((1+t)-(1-t))/t(sqrt(1+t)+sqrt(1-t))]
+    lim_t->0[(1+t-1+t)/t(sqrt(1+t)+sqrt(1-t))]
+    lim_t->0[2t/t(sqrt(1+t)+sqrt(1-t))]
+    lim_t->0[2/(sqrt(1+t)+sqrt(1-t))]
+
+    lim_t->0[2/(sqrt(1+t)+sqrt(1-t))] -- direct substitution
+    2/(sqrt(1)+sqrt(1))
+    2/2
+    1
+
+26)
+-->
 
 <!--
 -------- 1.5 EXERCISES
@@ -1368,7 +2129,157 @@ CONTINUE FROM PAGE 61 exercise 1.5
      before they were spaced out evenly at intervals of pi
      they've transformed such that each interval is shorter than the next, and it's going towards 0 instead of away from 0
 
-47) 
+47) from graphing, it looks like ...
+      x=2.238
+      x=0.903
+      x=-0.903
+      x=-2.238
+
+    finding exact: tan(2sin(x)) = sin(2sin(x))/cos(2sin(x))
+                                  2sin(sin(x))cos(sin(x))/1-2sin(sin(x))^2  "dbl angle identities"
+                                                                              ^
+                                                                              |
+                                                            didn't know what this was, had to look it up
+
+                                  1-2sin(sin(x))^2 != 0
+                                  -2sin(sin(x))^2 != -1
+                                  2sin(sin(x))^2 != 1
+                                  sin(sin(x))^2 != 0.5
+                                  sin(sin(x)) != +-sqrt(0.5)
+                                  sin(x) != arcsin(+-sqrt(0.5))
+                                  x != arcsin(arcsin(+-sqrt(0.5))))
+
+                                  because arcsin isn't periodic but sin is, we only get 1st asymptote closest to 0, 
+                                  
+                                  arcsin(arcsin(+-sqrt(0.5))))=+-0.9033911
+                                  
+                                  but our domain is supposed to be [-pi, pi], which means we need to go out 1 more step? NOPE THAT'S WRONG -- THE 
+
+                                  1*arcsin(arcsin(+-sqrt(0.5)))) is the graphed asymp at 0.903
+                                  2*arcsin(arcsin(+-sqrt(0.5)))) IS NOT the graphed asymp at 2.238
+    
+    THIS IS WRONG, NEW ANSWER AFTER ASKING ONLINE + CHATGPT (WHICH ARE ALSO WRONG)
+
+    i did tihs several different ways but i still didn't find the equations for the outer set of asymptotes. the book gives the answer:
+
+    +-arccsin(pi/4) and +-(pi-arcsin(pi/4))
+
+    why add pi for the 2nd set of asymptotes?
+
+48) as v approaches c (from the left?) -- v^2/c^2 gets closer and closer to 1
+
+    the denominator is sqrt(1-(v^2/c^2))
+
+    as v^2/c^2 gets closer and closer to 1 ...
+      ... meaning 1-(v^2/c^2) approaches 0
+      ... meaning sqrt(1-(v^2/c^2)) approaches 0, which is not defined
+
+49a) graph shows that as x approaches 1, the function approaches 6
+  
+     0.9, 5.280931738
+     0.99, 5.925312187
+     0.999, 5.992503125
+     0.9999, 5.999250031
+     1.0001, 6.000750031
+     1.001, 6.007503125
+     1.01, 6.075312812
+     1.1, 6.781557287
+
+  b) we assume the limit is at (1,6)
+
+     there are two equations to solve here:
+
+     5.5 = (x^3-1)/(sqrt(x)-1)
+     6.5 = (x^3-1)/(sqrt(x)-1)
+
+     once found, take the larger x and abs(x-1) to find the distance to 1 (how close it has to be to 1).
+
+     5.5 = (x^3-1)/(sqrt(x)-1)
+     5.5sqrt(x)-5.5 = x^3-1
+     5.5sqrt(x) = x^3-1+5.5
+     5.5sqrt(x) = x^3-4.5
+     (5.5sqrt(x))^2 = (x^3-4.5)^2
+     30.25x = (x^3-4.5)^2
+     30.25x = x^6-9x^3+20.25
+     0 = x^6-9x^3+20.25 - 30.25x
+     0 = x^6-9x^3-30.25x+20.25
+
+     I don't know what to do at this point. I can graph it and see the zeros but I can't really factor it? I can use polynomial division maybe but I need to know a root beforehand? I tried asking online, asking chatgpt4 and tried getting sympy to show me the steps when it solves. nothing seems to work
+     
+     5.5 = (x^3-1)/(sqrt(x)-1) * (sqrt(x)+1)/(sqrt(x)+1)
+     5.5 = (x^3-1)(sqrt(x)+1)/((sqrt(x)-1)(sqrt(x)+1))
+     5.5 = (x^3-1)(sqrt(x)+1)/(x-1)
+     5.5(x-1) = (x^3-1)(sqrt(x)+1)
+     5.5(x-1) = (x^3-1)(x^0.5+1)
+     (5.5(x-1))/(x^3-1) = x^0.5+1
+     (5.5(x-1))/(x^3-1)-1 = x^0.5
+     ((5.5(x-1))/(x^3-1)-1)^2 = (x^0.5)^2
+     (-2x^3+11x-9)^2/(4(x^3-1)^2) = x <-- simplified using sympy: (((Rational(55, 10)*(x-1))/(x**3-1))-1)**2
+     (-2x^3+11x-9)^2 = 4x(x^3-1)^2
+     (-2x^3+11x-9)^2 = 4x^7-8x^4+4x
+     4x^6-44x^4+36x^3+121x^2-198x+81 = 4x^7-8x^4+4x
+     4x^7-4x^6-44x^4+36x^3+121x^2-198x+81 = -8x^4+4x
+     4x^7-4x^6-52x^4+36x^3+121x^2-198x+81 = 4x
+     4x^7-4x^6-52x^4+36x^3+121x^2-194x+81 = 0
+
+     I can use polynomial division for this? but I need to know at least 1 root to begin with? Use rational root theorem. But, after graphing, none of the zeros I'm seeing in the graph aren't showing up as potential options provided by the rational root theorem? NONE OF THEM WORK.
+
+     Try again
+
+     5.5 = (x^3-1)/(sqrt(x)-1)
+     5.5sqrt(x)-5.5 = x^3-1
+     5.5sqrt(x) = x^3-1+5.5
+     5.5sqrt(x) = x^3+4.5
+     sqrt(x) = (x^3+4.5)/5.5
+     x^0.5 = (x^3+4.5)/5.5
+     x = ((x^3+4.5)/5.5)^2   <- chatgpt says this step is wrong? squaring can lead to "complex polynomial"?
+     x = (x^3+4.5)/5.5 * (x^3+4.5)/5.5
+     x = (x^3+4.5)(x^3+4.5)/5.5*5.5
+     x = (x^3+4.5)(x^3+4.5)/30.25
+     30.25x = (x^3+4.5)(x^3+4.5)
+     30.25x = x^6+9x^3+20.25
+     0 = x^6+9x^3-30.25x+20.25  <- when graphing, this looks like the correct (zero is what i expect)
+                                   but how do I get this through algebra?
+
+                                   * the polynomial is too high degree to use something like quadratic equation
+                                   * i can't use polynomial division because i don't already have a factor, and i can't use rational roots theorem because the constant is not an integer (factors of 20.25?)
+
+     0 = x^6+9x^3-30.25x+20.25
+     -20.25 = x^6+9x^3-30.25x
+     -20.25*100 = (x^6+9x^3-30.25x)*100
+     0 = 100x^6+900x^3-3025x+2025
+
+     rational root theorem shows that there's root of x=1, meaning (x-1) is a factor -- use polynomial division
+
+           100x^5+100x^4+100x^3+1000x^2+1000x-2025
+         .----------------------------------------
+     x-1 | 100x^6+0x^5  +0x^4  +900x^3 +0x^2   -3025x+2025
+           100x^6-100x^5
+           -------------
+                 +100x^5+0x^4
+                 +100x^5-100x^4
+                 --------------
+                        +100x^4+900x^3
+                        +100x^4-100x^3
+                        --------------
+                                1000x^3+0x^2
+                                1000x^2-1000x^2
+                                ---------------
+                                       +1000x^2-3025x
+                                       +1000x^2-1000x
+                                       --------------
+                                               -2025x+2025
+                                               -2025x+2025
+                                               -----------
+                                                      0
+
+       using the rational root theorem on the second part (100x^5+100x^4+100x^3+1000x^2+1000x-2025) yields no results? WHAT DO I DO HERE? I can factor out 25 but it makes no difference
+
+       0 = (x-1)(100x^5+100x^4+100x^3+1000x^2+1000x-2025)
+       0 = (x-1)25(4x^5+4x^4+4x^3+40x^2+40x-81)
+
+       they intentionally made this the last question to force you to eat shit?
+                                      
 -->
 
 <!--
