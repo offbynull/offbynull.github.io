@@ -1601,9 +1601,11 @@ print(f"{count_combinations_with_exclude_restrictions(5, 4, 2)=}")
 
 
 
- * `{bm} partition` - Given a set, a partition is a collection of its subsets where each element of that set is in exactly one of those subsets. For example, given the set S={a,b,c}, one possible partition is {a,c} and {b}.
+ * `{bm} partition` - Given a set, a partition is a collection of its subsets where each element of that set is in exactly one of those subsets (disjoint subsets). For example, given the set S={a,b,c}, one possible partition is {a,c} and {b}.
  
    These subsets that make up a partition are often referred to as the parts of that partition. `{ref} ic:p27-28`
+
+ * `{bm} disjoint sets/(disjoint sets|disjoint subsets)/i` - A collection of sets that don't share any objects between them. `{ref} site:https://en.wikipedia.org/w/index.php?title=Disjoint_sets&oldid=1149225885`
 
  * `{bm} addition principle` - A formula for determining the size of a set from its partition: |S| = |S1| + |S2| + ... + |Sm|.
  
@@ -1685,7 +1687,7 @@ print(f"{count_combinations_with_exclude_restrictions(5, 4, 2)=}")
    , ...: k = |S| / v. For example, given the partition {{a,f} {b,e}, {c,d}}, the division principle can be used to determine the number of subsets in the partition: 6/2=3.
    
 
-   The division principle derives the count of a smaller set through the count of a larger set, provided that each object in the smaller set fans out to v distinct objects in the larger set. For example, an apartment complex has a maximum capacity of 250 people, and each apartment has a maximum of 5 people, meaning there are 250/5=50 apartments in the complex. In this example, ...
+   The division principle derives the count of a smaller set through the count of a larger set, provided that each object in the smaller set fans out to v distinct objects in the larger set. For example, an apartment complex has a maximum capacity of 250 people, and each apartment has a maximum of 5 people, !!meaning!! there are 250/5=50 apartments in the complex. In this example, t...
    
    * the larger set has a size of 250.
    * the number of times each element in the smaller set is represented in the larger set is 5.
@@ -1703,7 +1705,16 @@ print(f"{count_combinations_with_exclude_restrictions(5, 4, 2)=}")
 
  * `{bm} combination` - An arrangement or selection from a set / multiset, where the order of the arrangement is irrelevant. `{ref} ic:p33`
 
+# Counting
 
+Start from page 32 "A great many counting problems can be classified as one of the follow types". Pay close attention to the example that follows -- it's related to multiplication rule.
+
+(1) Count the number of ordered arrangements or ordered selections of objects
+  (a) without repeating any object,
+  (b) with repetition of objects permitted (but perhaps limited).
+(2) Count the number of unordered arrangements or unordered selections of objects
+  (a) without repeating any object,
+  (b) with repetition of objects permitted (but perhaps limited).
 
 
 

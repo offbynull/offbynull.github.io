@@ -19,6 +19,7 @@
 </ul>
 <li><a href="#H_Notation">Notation</a></li>
 <li><a href="#H_Terminology">Terminology</a></li>
+<li><a href="#H_Counting">Counting</a></li>
 </ul>
 </div>
 <a name="H_Permutations"></a><h1>Permutations</h1>
@@ -320,7 +321,7 @@ multinomial_coefficients(3, 3)=[1, 3, 3, 1, 3, 6, 3, 3, 3, 1]
 </div>
 <p></p>
 <p>The first example above is a binomial (two terms). <a href="#BM_(binomial%20coefficient%7Cbinomial%20theorem)%2Fi">Binomial coefficient</a>s are a special case of <a href="#BM_(multinomial%20coefficient%7Cmultinomial%20theorem)%2Fi">multinomial coefficient</a>s. Where as <a href="#BM_(binomial%20coefficient%7Cbinomial%20theorem)%2Fi">binomial coefficient</a>s (two terms) map to a row of <a href="#BM_(Pascal's%20triangle)%2Fi">Pascal's triangle</a>, trinomial coefficients (three terms) map to a row in the 3D version of <a href="#BM_(Pascal's%20triangle)%2Fi">Pascal's triangle</a>, called Pascal's pyramid. When more than three terms are involved, the generalized form of <a href="#BM_(Pascal's%20triangle)%2Fi">Pascal's triangle</a> is referred to as Pascal's simplex.</p>
-<p><img src="svgbob_335839c6198d6b3eebd63890ee27c8d17c906bb8.svg" alt="Kroki diagram output"></p>
+<p><img src="svgbob_7d9b4a6cd15596612a7d7aa56107f7cf3cc57bb2.svg" alt="Kroki diagram output"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>If you stack the slices/layers shown above, you'd get the first 4 layers of the 3-simplex (3-simples as in 3 dimensions, Pascal's pyramid). A pyramid has 4 sides: 1 bottom and 3 others that combine to form the top. Each of the 3 top-forming sides isolated is <a href="#BM_(Pascal's%20triangle)%2Fi">Pascal's triangle</a>.</p>
@@ -355,10 +356,10 @@ multinomial_coefficients(3, 3)=[1, 3, 3, 1, 3, 6, 3, 3, 3, 1]
 </code></pre>
 </div>
 <p></p>
-<p>To process of counting the number of <a href="#BM_(combination)%2Fi">combination</a>s where each subset avoids certain elements uses the algorithm described above:</p>
+<p>The process of counting the number of <a href="#BM_(combination)%2Fi">combination</a>s where each subset avoids certain elements uses the algorithm described above:</p>
 <ol>
 <li>Compute the number of <a href="#BM_(combination)%2Fi">combination</a>s normally.</li>
-<li>Compute the number of <a href="#BM_(combination)%2Fi">combination</a>s with where the objects must be present.</li>
+<li>Compute the number of <a href="#BM_(combination)%2Fi">combination</a>s where the objects must be present.</li>
 <li>Subtract the result of 1 from the result of 2.</li>
 </ol>
 <p>Given the same example above, to compute the number of subsets where b and d are both <em>not present</em>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo fence="true">(</mo><mfrac linethickness="0px"><mrow><mo stretchy="false">(</mo><mn>5</mn></mrow><mn>4</mn></mfrac><mo fence="true">)</mo></mrow><mo>−</mo><mrow><mo fence="true">(</mo><mfrac linethickness="0px"><mrow><mo stretchy="false">(</mo><mn>5</mn><mo>−</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><mrow><mo stretchy="false">(</mo><mn>4</mn><mo>−</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mfrac><mo fence="true">)</mo></mrow><mo>=</mo><mn>5</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">{(5 \choose 4} - {(5-2) \choose (4-2)} = 5 - 3 = 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3190099999999998em;vertical-align:-0.35001em;"></span><span class="mord"><span class="mord"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size1">(</span></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9689999999999999em;"><span style="top:-2.3550000000000004em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span></span></span></span><span style="top:-3.144em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mtight">5</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size1">)</span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.5199999999999998em;vertical-align:-0.5354999999999999em;"></span><span class="mord"><span class="mord"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size1">(</span></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9844999999999999em;"><span style="top:-2.3395em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mtight">4</span><span class="mbin mtight">−</span><span class="mord mtight">2</span><span class="mclose mtight">)</span></span></span></span><span style="top:-3.1595em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mtight">5</span><span class="mbin mtight">−</span><span class="mord mtight">2</span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.5354999999999999em;"><span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size1">)</span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span></span></span></span>. <sub>[<a href="https://worldcat.org/title/803961222">FCP</a>:p6]</sub></p>
@@ -1616,11 +1617,187 @@ C(4,0)  C(4,1)  C(4,2)  C(4,3)  C(4,4)
 <p><img src="svgbob_86b9c5b0b9b42c8e0c0aaf284fe1266b2a84dcad.svg" alt="Kroki diagram output"></p>
 <p>Using the <a href="#BM_(multinomial%20coefficient%7Cmultinomial%20theorem)%2Fi">multinomial coefficient</a> formula shown above, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo fence="true">(</mo><mfrac linethickness="0px"><mn>10</mn><mrow><mn>2</mn><mo separator="true">,</mo><mn>3</mn><mo separator="true">,</mo><mn>5</mn></mrow></mfrac><mo fence="true">)</mo></mrow><mo>=</mo><mfrac><mrow><mn>10</mn><mo stretchy="false">!</mo></mrow><mrow><mn>2</mn><mo stretchy="false">!</mo><mn>3</mn><mo stretchy="false">!</mo><mn>5</mn><mo stretchy="false">!</mo></mrow></mfrac><mo>=</mo><mn>2520</mn></mrow><annotation encoding="application/x-tex">{10 \choose 2, 3, 5} = \frac{10!}{2!3!5!} = 2520</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.3762159999999999em;vertical-align:-0.481108em;"></span><span class="mord"><span class="mord"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size1">(</span></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.895108em;"><span style="top:-2.3550000000000004em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mpunct mtight">,</span><span class="mord mtight">3</span><span class="mpunct mtight">,</span><span class="mord mtight">5</span></span></span></span><span style="top:-3.144em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">0</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.481108em;"><span></span></span></span></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size1">)</span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.2251079999999999em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8801079999999999em;"><span style="top:-2.6550000000000002em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mclose mtight">!</span><span class="mord mtight">3</span><span class="mclose mtight">!</span><span class="mord mtight">5</span><span class="mclose mtight">!</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">0</span><span class="mclose mtight">!</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">2</span><span class="mord">5</span><span class="mord">2</span><span class="mord">0</span></span></span></span>. <sub>[<a href="https://worldcat.org/title/803961222">FCP</a>:p9-10]</sub> <sub>[<a href="https://en.wikipedia.org/w/index.php?title=Multinomial_theorem&amp;oldid=1126115463">WIKI:</a><a href="#BM_(multinomial%20coefficient%7Cmultinomial%20theorem)%2Fi">Multinomial Coefficient</a>]</sub></p>
 </li>
+<li>
+<p><a name="BM_(partition)%2Fi"></a><strong>partition</strong> - Given a set, a <a href="#BM_(partition)%2Fi">partition</a> is a collection of its subsets where each element of that set is in exactly one of those subsets (<a href="#BM_(disjoint%20sets%7Cdisjoint%20subsets)%2Fi">disjoint subsets</a>). For example, given the set S={a,b,c}, one possible <a href="#BM_(partition)%2Fi">partition</a> is {a,c} and {b}.</p>
+<p>These subsets that make up a <a href="#BM_(partition)%2Fi">partition</a> are often referred to as the parts of that <a href="#BM_(partition)%2Fi">partition</a>. <sub>[<a href="https://www.worldcat.org/title/1121436656">IC</a>:p27-28]</sub></p>
+</li>
+<li>
+<p><a name="BM_(disjoint%20sets%7Cdisjoint%20subsets)%2Fi"></a><strong>disjoint sets</strong> - A collection of sets that don't share any objects between them. <sub>[<a href="https://en.wikipedia.org/w/index.php?title=Disjoint_sets&amp;oldid=1149225885">https://en.wikipedia.org/w/index.php?title=Disjoint_sets&amp;oldid=1149225885</a>]</sub></p>
+</li>
+<li>
+<p><a name="BM_(addition%20principle)%2Fi"></a><strong>addition principle</strong> - A formula for determining the size of a set from its <a href="#BM_(partition)%2Fi">partition</a>: |S| = |S1| + |S2| + ... + |Sm|.</p>
+<p>Given the <a href="#BM_(partition)%2Fi">partition</a> {S1, S2, ..., Sm} representing set S, the size of S can be determined by adding together the size of the subsets that make up its <a href="#BM_(partition)%2Fi">partition</a>. For example, given the <a href="#BM_(partition)%2Fi">partition</a> {{a,c}, {b}, {d}}, the <a href="#BM_(addition%20principle)%2Fi">addition principle</a> can be used to determine the size of the set that <a href="#BM_(partition)%2Fi">partition</a> is for: 2+1+1=4.</p>
+<p>The <a href="#BM_(addition%20principle)%2Fi">addition principle</a> counts the number of ways one object can be selected from n different sets, where those sets are <a href="#BM_(disjoint%20sets%7Cdisjoint%20subsets)%2Fi">disjoint sets</a>. For a more practical example, consider a person shopping for a hat. Of all the hats at the store, they're only interested in baseball hats and fedora hats. If the number of ...</p>
+<ul>
+<li>baseball hats the store has in inventory is 15 (set represented as {B1, B2, ..., B15}),</li>
+<li>fedora hats the store has in inventory is 7 (set represented as {F1, F2, ..., F7}),</li>
 </ul>
-<p>TODO: start from ch4: openstax intro stats.</p>
-<p>TODO: start from ch4: openstax intro stats.</p>
-<p>TODO: start from ch4: openstax intro stats.</p>
-<p>TODO: start from ch4: openstax intro stats.</p>
+<p>... then the number of hats the person has to choose from is 15+7=22. <sub>[<a href="https://www.worldcat.org/title/1121436656">IC</a>:p28]</sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Given a <a href="#BM_(partition)%2Fi">partition</a> of set S, by definition those subsets shouldn't have any overlapping objects. But if they do, the inclusion-exclusion principle can be used to count the number of objects in S.</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(multiplication%20principle)%2Fi"></a><strong>multiplication principle</strong> - A formula for determining the number of n-tuples that can be formed from the explosion of n sets (cartesian product): |N1| * |N2| * |N3| = |N1 x N2 x N3|. For example, given the cartesian product of two sets {0, 1, 2} and {x, y, z}, the <a href="#BM_(multiplication%20principle)%2Fi">multiplication principle</a> can be used to determine the size of the cartesian product of those two sets: 3*3=9.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td>(x,0)</td>
+<td>(x,1)</td>
+<td>(x,2)</td>
+</tr>
+<tr>
+<td>y</td>
+<td>(y,0)</td>
+<td>(y,1)</td>
+<td>(y,2)</td>
+</tr>
+<tr>
+<td>z</td>
+<td>(z,0)</td>
+<td>(z,1)</td>
+<td>(z,2)</td>
+</tr>
+</tbody>
+</table>
+<p>The <a href="#BM_(multiplication%20principle)%2Fi">multiplication principle</a> counts the number of ways n selections can be made from n sets, provided that a selection from one set doesn't alter in anyway the selection from the next set. For a more practical example, consider a person shopping for a shirt and a hat. At the store, ...</p>
+<ul>
+<li>10 hats are available for purchase (H={H1, H2, ..., H10})</li>
+<li>3 shirts are available for purchase (S={S1, S2, S3})</li>
+</ul>
+<p>..., then the total possible pairings of 1 hat and 1 shirt that the person can purchase is 10*3=30. <sub>[<a href="https://www.worldcat.org/title/1121436656">IC</a>:p28-p29]</sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>For the <a href="#BM_(addition%20principle)%2Fi">addition principle</a>, the sets being input have to be <a href="#BM_(disjoint%20sets%7Cdisjoint%20subsets)%2Fi">disjoint sets</a>. For the <a href="#BM_(multiplication%20principle)%2Fi">multiplication principle</a>, the sets don't have to be <a href="#BM_(disjoint%20sets%7Cdisjoint%20subsets)%2Fi">disjoint sets</a>. For example, <a href="#BM_(multiplication%20principle)%2Fi">multiplication principle</a> applied to set {0,1,2} and {0,1,2} is 9.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>(0,0)</td>
+<td>(0,1)</td>
+<td>(0,2)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>(1,0)</td>
+<td>(1,1)</td>
+<td>(1,2)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>(2,0)</td>
+<td>(2,1)</td>
+<td>(2,2)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A cartesian product n sets results in a set of n-tuples where the object at position i of a tuple is guaranteed to be from set i. In the example sets above, the tuples resulting HxS={(H1, S1), (H1, S2), (H1, S3), (H2, S1), ..., (H10, S3)} have hats at position 1 and shirts at position 2 of each tuple. In contrast to computing the cartesian product, the <a href="#BM_(multiplication%20principle)%2Fi">multiplication principle</a> doesn't require that the objects within position i come from the same set. Instead, position i can come from different sets so long as those sets are all of the same size. For example, consider a person selecting two shirts to buy at a store that has 4 shirts available for purchase: {S1, S2, S3, S4}. The person can't choose to buy the same shirt twice. That is, if a shirt is purchased, 3 other shirts are available for the next purchase (e.g. if you choose to buy S2 first, you only have S1, S3, and S4 remaining to buy).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S1</td>
+<td>(S1,S2)</td>
+<td>(S1,S3)</td>
+<td>(S1,S4)</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>(S2,S1)</td>
+<td>(S2,S3)</td>
+<td>(S2,S4)</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>(S3,S1)</td>
+<td>(S3,S2)</td>
+<td>(S3,S4)</td>
+</tr>
+<tr>
+<td>S4</td>
+<td>(S4,S1)</td>
+<td>(S4,S2)</td>
+<td>(S4,S3)</td>
+</tr>
+</tbody>
+</table>
+<p>Even though the second position of the tuples aren't from the same set, each set that makes up the second position is the same size (3 shirts). As such, the <a href="#BM_(multiplication%20principle)%2Fi">multiplication principle</a> still applies. A person selecting two shirts to buy at a store that has 4 shirts available for purchase has 4*3=12 possible pairs of shirts. <sub>[<a href="https://www.worldcat.org/title/1121436656">IC</a>:p30]</sub></p>
+</li>
+<li>
+<p><a name="BM_(subtraction%20principle)%2Fi"></a><strong>subtraction principle</strong> - A formula for determining the size of subset A, given that you have both the ...</p>
+<ul>
+<li>size of the original set U that subset A came from</li>
+<li>size of the <a href="#BM_((%3F%3Acomplement)(%3F%3A%20probability%7Cprobabilities)%3F)%2Fi">complement</a> of subset A, called A' (A' contains all elements in U that are not in A)</li>
+</ul>
+<p>, ...: |A| = |U| - |A'|. For example, given that U={a,b,c,d,e} and A'={c,d,a}, the <a href="#BM_(subtraction%20principle)%2Fi">subtraction principle</a> can be used to determine the size of the A: A=5-3=2.</p>
+<p>The <a href="#BM_(subtraction%20principle)%2Fi">subtraction principle</a> is commonly used to count when it's easier to count excluded objects (A') rather than the objects you're interested in (A). For example, consider 90 people lined up by shoe size from smallest to largest, starting at 5.5 to 12. If you're only interested in people that have a shoe size of at least 7, it might be easier to count people that with shoe sizes smaller than 7 and subtract from 90.</p>
+<p>In relation to the <a href="#BM_(subtraction%20principle)%2Fi">subtraction principle</a> formula |A| = |U| - |A'|, ...</p>
+<ul>
+<li>U is all people in the line.</li>
+<li>A' is people with shoe sizes &lt; 7.</li>
+<li>A is people with shoe sizes &gt;= 7.</li>
+</ul>
+<p><sub>[<a href="https://www.worldcat.org/title/1121436656">IC</a>:p31-32]</sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The example above involves the physical act of counting, but the <a href="#BM_(subtraction%20principle)%2Fi">subtraction principle</a> applies even in the case of algorithmic counting. For example, if you know the size of the universal set (set U) and it's easy to determine the number of excluded objects (set A') via the <a href="#BM_(multiplication%20principle)%2Fi">multiplication principle</a>, then you can use the <a href="#BM_(multiplication%20principle)%2Fi">multiplication principle</a> to determine the number of objects that you're interested in (set A).</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(division%20principle%7Cdivision%20rule)%2Fi"></a><strong>division principle</strong> - A formula for determining the number of subsets in a <a href="#BM_(partition)%2Fi">partition</a>, given that ...</p>
+<ul>
+<li>the size of the original set (S) is known</li>
+<li>all subsets in the <a href="#BM_(partition)%2Fi">partition</a> have equal size and that size is known (v) and all subsets are off equal size</li>
+</ul>
+<p>, ...: k = |S| / v. For example, given the <a href="#BM_(partition)%2Fi">partition</a> {{a,f} {b,e}, {c,d}}, the <a href="#BM_(division%20principle%7Cdivision%20rule)%2Fi">division principle</a> can be used to determine the number of subsets in the <a href="#BM_(partition)%2Fi">partition</a>: 6/2=3.</p>
+<p>The <a href="#BM_(division%20principle%7Cdivision%20rule)%2Fi">division principle</a> derives the count of a smaller set through the count of a larger set, provided that each object in the smaller set fans out to v distinct objects in the larger set. For example, an apartment complex has a maximum capacity of 250 people, and each apartment has a maximum of 5 people, meaning there are 250/5=50 apartments in the complex. In this example, ...</p>
+<ul>
+<li>the larger set has a size of 250.</li>
+<li>the number of times each element in the smaller set is represented in the larger set is 5.</li>
+<li>the smaller set has a size of 250/5=50.</li>
+</ul>
+<p><sub>[<a href="https://www.worldcat.org/title/1121436656">IC</a>:p31]</sub></p>
+</li>
+<li>
+<p><a name="BM_(multiset%7Crepetition%20number)%2Fi"></a><strong>multiset</strong> - An unordered collection whose members are not distinct. In other words, unlike a set, a <a href="#BM_(multiset%7Crepetition%20number)%2Fi">multiset</a> can contain multiple the same object multiple times. <a href="#BM_(multiset%7Crepetition%20number)%2Fi">Multiset</a>s are denoted by condensing n repeating objects as a multiplication. For example, {2*a, 1*b, 1*c} represents the same <a href="#BM_(multiset%7Crepetition%20number)%2Fi">multiset</a> as the previous example.</p>
+<p>It's possible for a <a href="#BM_(multiset%7Crepetition%20number)%2Fi">multiset</a> to include an object an infinite number of times. For example, {∞*a, 3*b}.</p>
+<p>For each distinct object in a <a href="#BM_(multiset%7Crepetition%20number)%2Fi">multiset</a>, the number of times it repeats is called its <a href="#BM_(multiset%7Crepetition%20number)%2Fi">repetition number</a>. In the example above, a repeats an infinite number of times and b repeats times. <sub>[<a href="https://www.worldcat.org/title/1121436656">IC</a>:p33]</sub></p>
+</li>
+</ul>
+<a name="H_Counting"></a><h1>Counting</h1>
+<p>Start from page 32 "A great many counting problems can be classified as one of the follow types". Pay close attention to the example that follows -- it's related to <a href="#BM_(multiplication%20rule)%2Fi">multiplication rule</a>.</p>
+<p>(1) Count the number of ordered arrangements or ordered selections of objects
+(a) without repeating any object,
+(b) with repetition of objects permitted (but perhaps limited).
+(2) Count the number of unordered arrangements or unordered selections of objects
+(a) without repeating any object,
+(b) with repetition of objects permitted (but perhaps limited).</p>
 <p></p>
 <p></p>
 <p></p>

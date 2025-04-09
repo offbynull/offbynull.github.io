@@ -16,11 +16,17 @@ const refs = JSON.parse(fs.readFileSync('/input/refs.json', { encoding: 'utf8' }
 const inputSplit = /([^:]+)(?::(.+))?/g.exec(input);
 // throw inputSplit.length
 const refKey = inputSplit[1].trim();
-const srcText = inputSplit[2] !== undefined ? inputSplit[2].trim() : '';
-const srcName = refs[refKey]["name"].trim();
-const srcLink = refs[refKey]["link"].trim();
-if (srcName === undefined || srcLink === undefined) {
-    throw Error(`Unrecognized type: ${inputSplit}`)
+let output = "";
+if (refKey === 'site') {
+    const url = inputSplit[2] !== undefined ? inputSplit[2].trim() : '';
+    output = `<sub>\\[[${url}](${url})\\]</sub>`;
+} else {
+    const srcText = inputSplit[2] !== undefined ? inputSplit[2].trim() : '';
+    const srcName = refs[refKey]["name"].trim();
+    const srcLink = refs[refKey]["link"].trim();
+    if (srcName === undefined || srcLink === undefined) {
+        throw Error(`Unrecognized type: ${inputSplit}`)
+    }
+    output = `<sub>\\[[${srcName}](${srcLink})${srcText === '' ? '' : ':'+srcText}\\]</sub>`;
 }
-const output = `<sub>\\[[${srcName}](${srcLink})${srcText === '' ? '' : ':'+srcText}\\]</sub>`;
 fs.writeFileSync('/output/output.md', output, { encoding: 'utf8' });
