@@ -1,0 +1,288 @@
+<!DOCTYPE html><html><head>
+            <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+            <meta content="utf-8" http-equiv="encoding">
+          <title>3D Printing
+</title><meta name="viewport" content="width=device-width,initial-scale=1"><link href=".temp_highlightjs_css/default.css" rel="stylesheet"></head>
+          <body><div class="toc">
+<ul>
+<li><a href="#H_H2S%20Environment">H2S Environment</a></li>
+<li><a href="#H_H2S%20Auto-calibration">H2S Auto-calibration</a></li>
+<li><a href="#H_H2S%20Filament%20Loading">H2S Filament Loading</a></li>
+<li><a href="#H_H2S%20User%20Interface">H2S User Interface</a></li>
+<ul>
+<li><a href="#H_Print%20Calibration">Print Calibration</a></li>
+<li><a href="#H_Print">Print</a></li>
+<li><a href="#H_Print%20Speed">Print Speed</a></li>
+<li><a href="#H_Printhead%20and%20Heatbed%20Movement">Printhead and Heatbed Movement</a></li>
+<li><a href="#H_Extruder%20Movement">Extruder Movement</a></li>
+<li><a href="#H_Nozzle%20Type">Nozzle Type</a></li>
+<li><a href="#H_Nozzle%20Temperature">Nozzle Temperature</a></li>
+<li><a href="#H_Heatbed%20Temperature">Heatbed Temperature</a></li>
+<li><a href="#H_Chamber%20Temperature">Chamber Temperature</a></li>
+<li><a href="#H_Chamber%20Light">Chamber Light</a></li>
+<li><a href="#H_Heating%20and%20Cooling">Heating and Cooling</a></li>
+<li><a href="#H_Filament%20Type">Filament Type</a></li>
+<li><a href="#H_Filament%20Auto%20Refill">Filament Auto Refill</a></li>
+<li><a href="#H_Filament%20Drying">Filament Drying</a></li>
+</ul>
+<li><a href="#H_H2S%20Checklist">H2S Checklist</a></li>
+<li><a href="#H_Terminology">Terminology</a></li>
+</ul>
+</div>
+<a name="H_H2S%20Environment"></a><h1>H2S Environment</h1>
+<p>H2SPrinter must be ...</p>
+<ul>
+<li>
+<p>placed on a flat and stable surface.</p>
+</li>
+<li>
+<p>operated within temperatures between 15-30C (60-85F).</p>
+<p>If the temperature is ...</p>
+<ul>
+<li>&lt; 15C, there may be issues with adhesion to plate and / or weaken layer bonding</li>
+<li>&gt; 30C, there filament may soften before reaching hotend, increasing risk of <a href="#BM_(extruder)%2Fi">extruder</a> or nozzle clogs.</li>
+</ul>
+<p>The H2S comes with an "active exhaust fan" to blow out hot air (and fumes), but in warmer climates that may not be enough. The operating space recommended is 80cm width x 102cm depth x 105cm height, which covers the space required in the back for the exhaust and the <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pro</a> to sit on top. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/224">[src]</a></sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The active exhaust fan is different from the top vent. The exhaust is in the back, and apparently there are filters involved with it.</p>
+</div>
+</li>
+</ul>
+<a name="H_H2S%20Auto-calibration"></a><h1>H2S Auto-calibration</h1>
+<p>H2S's auto-calibration process attempts to adjust machine parameters. The main aspects that are calibrated are ...</p>
+<ul>
+<li>bed leveling.</li>
+<li>motor noise cancellation.</li>
+<li>vibration compensation.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>It sounds like if you have additional modules, auto-calibration performs more work (e.g., vision encoder).</p>
+</div>
+<p>Trigger auto-calibration manually by navigating to <strong>[Wrench Icon]</strong> → <strong>Settings</strong> → <strong>Calibration</strong>. Perform auto-calibrate whenever ...</p>
+<ul>
+<li>there's a decrease in print quality.</li>
+<li>after printer maintenance.</li>
+<li>after firmware updates (recommended but not required). <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/224">[src]</a></sub></li>
+</ul>
+<a name="H_H2S%20Filament%20Loading"></a><h1>H2S Filament Loading</h1>
+<p>Filament can be loaded through either the <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pro</a> or the external spool holder. The external spool holder is used when ...</p>
+<ul>
+<li>an <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pro</a> isn't attached to the printer.</li>
+<li>the filament spool is oversized for the <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pro</a>.</li>
+<li>the filament spool is for a material the <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pro</a> doesn't support (but the printer does).</li>
+<li>the filament spool is from an unsupported third-party. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/225">[src]</a></sub></li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The source doesn't cite this, but I know for a fact that <a href="#BM_%5Cb(TPU)%5Cb%2F">TPU</a> is not supported by the <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pro</a> and must fed via the external spool holder (unless it's specifically branded as <a href="#BM_%5Cb(TPU)%5Cb%2F">TPU</a> for <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS</a>, which Bambu Lab sells).</p>
+</div>
+<p>To load filament using the <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pro</a>, ...</p>
+<ol>
+<li>open the two tabs on the front edge and lift the cover.</li>
+<li>stick the filament spool into one of the four slots, ensuring that it sits on the slot's roller and rotates freely.</li>
+<li>push the slot's inlet release tab toward the spool and feed filament into that inlet - inlet will automatically grip and pull in filament.</li>
+<li>close the cover and lock it in by closing the two tabs on the front edge.</li>
+<li>select filament properties:
+<ul>
+<li>For filament from Bambu Lab filament, filament color and  material should be automatically detected (using RFID).</li>
+<li>For filament not from Bambu Lab, navigate to <strong>[Spool Icon]</strong> → <strong>[Pencil Icon]</strong> (for the slot spool was added to) and select filament brand, material, and color.</li>
+</ul>
+</li>
+</ol>
+<p></p>
+<p><img src="ams2.drawio.svg" alt="AMS 2 Pro top diagram"></p>
+<p></p>
+<p>To load filament using the external spool holder, ...</p>
+<ol>
+<li>place filament on external spool holder, where filament tip faces up.</li>
+<li>push filament through PTFE tube until you feel resistance (should reach into printer's <a href="#BM_(extruder)%2Fi">extruder</a>).</li>
+<li>load filament into <a href="#BM_(extruder)%2Fi">extruder</a>:
+<ol>
+<li>navigate to <strong>[Spool Icon]</strong> and ensure <a href="#BM_(extruder)%2Fi">extruder</a> icon is green (confirms filament reaches <a href="#BM_(extruder)%2Fi">extruder</a>).</li>
+<li>tap the external spool, then select filament brand, material, and color, then tap <strong>Confirm</strong>.</li>
+<li>tap <strong>Load</strong> (pulls filament into <a href="#BM_(extruder)%2Fi">extruder</a>).</li>
+</ol>
+</li>
+<li>inspect as loading process performs a sample extrusion:
+<ul>
+<li>Tap <strong>Filament Extruded, Continue</strong> if extrusion is thin, even, and steady line free from gaps and sputtering.</li>
+<li>Tap <strong>Not Extruded Yet, Retry</strong> and gently push filament further into PTFE tube (to help <a href="#BM_(extruder)%2Fi">extruder</a> grip it) if extrusion doesn't happen, happens in blobs, or extrusion curls instead of dropping freely.</li>
+</ul>
+</li>
+</ol>
+<p><img src="external%20spool.drawio.svg" alt="External spool diagram"></p>
+<p><sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/225">[src]</a></sub></p>
+<a name="H_H2S%20User%20Interface"></a><h1>H2S User Interface</h1>
+<p>Along left-side of the UI are 5 options, each represented by an icon:</p>
+<ol>
+<li><strong>[Home]</strong>: Primary functions and readings (e.g., triggering prints, sensor readings, WiFi status, and statistics).</li>
+<li><strong>[Controls]</strong>: Control panel for hardware settings (e.g., fan speed, nozzle and heatbed temperature, light, speed, and motion).</li>
+<li><strong>[Filaments]</strong>: Control panel for filament management (e.g., <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pro</a> functionality and manually selecting filament material and color).</li>
+<li><strong>[Settings]</strong>: Control panel for printer calibration as well as system and identity settings (e.g., account information, WiFi, firmware, and USB).</li>
+<li><strong>[Health Monitoring System]</strong>: Printer diagnostics. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></li>
+</ol>
+<a name="H_Print%20Calibration"></a><h2>Print Calibration</h2>
+<p>To calibrate the printer, navigate to <strong>[Settings]</strong> → <strong>Calibration</strong> → <strong>Print Calibration</strong>, select the desired calibrations and hit <strong>Start</strong>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
+<a name="H_Print"></a><h2>Print</h2>
+<p>To print, navigate to <strong>[Home]</strong> → <strong>Print Files</strong> and select the drive and file to load. Two drives should be present:</p>
+<ul>
+<li><strong>Internal</strong>: Files preloaded onto the printer's internal memory.</li>
+<li><strong>USB</strong>: Files on USB drive plugged into the printer.</li>
+</ul>
+<p>One a file is chosen, select the appropriate <strong>Plate</strong> and <strong>Nozzle</strong> (H2S comes with "Texture PEI" plate and "0.4mm Standard" nozzle - these should be selected as defaults). Then, hit <strong>Next</strong> select the filament to print with. Then, hit <strong>Print</strong> to begin printing. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
+<a name="H_Print%20Speed"></a><h2>Print Speed</h2>
+<p>To configure the printing speed, navigate to <strong>[Controls]</strong> → <strong>Speed</strong> and select either <strong>Silent</strong>, <strong>Standard</strong> (default), <strong>Sport</strong>, or <strong>Ludicrous</strong>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>An introductory YouTube video I watched mentioned that the faster the speed is, the lower quality the print will be. Some people are willing to accept lower quality prints in exchange for speed.</p>
+</div>
+<a name="H_Printhead%20and%20Heatbed%20Movement"></a><h2>Printhead and Heatbed Movement</h2>
+<p>To perform movements of the printhead (XZ axis) and heatbed (Y axis), navigate to <strong>[Controls]</strong> → <strong>Motion</strong> and tap the adjustment buttons as necessary. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This seems to only be for testing purposes and moving things to get at parts? I had to use this feature to get at a thin piece of plastic that popped off and fell on the bottom of the printer. I moved the heatbed up so I could fit my hand in and reach it.</p>
+</div>
+<a name="H_Extruder%20Movement"></a><h2>Extruder Movement</h2>
+<p>To perform adhoc extrusion and retraction of filament, navigate to <strong>[Controls]</strong> → <strong>Nozzle &amp; <a href="#BM_(extruder)%2Fi">Extruder</a></strong> and use the up/down buttons under <strong><a href="#BM_(extruder)%2Fi">Extruder</a></strong>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This seems to be for testing purposes. But also, does this have to be done when swapping between <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pro</a> and manual spool feeding?</p>
+</div>
+<a name="H_Nozzle%20Type"></a><h2>Nozzle Type</h2>
+<p>When nozzle has been swapped, navigate to <strong>[Controls]</strong> → <strong>Nozzle &amp; <a href="#BM_(extruder)%2Fi">Extruder</a></strong> and select the nozzle's type under <strong>Nozzle</strong>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
+<a name="H_Nozzle%20Temperature"></a><h2>Nozzle Temperature</h2>
+<p>To set the nozzle's temperature, navigate to <strong>[Controls]</strong> → <strong>Nozzle &amp; <a href="#BM_(extruder)%2Fi">Extruder</a></strong> and select the nozzle's temperature under <strong>Nozzle</strong>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This seems to only be for testing purposes and doesn't apply to any prints? AFAIK initiating a new print should unset this as the print needs specific temperatures based on the print and the filament used.</p>
+</div>
+<a name="H_Heatbed%20Temperature"></a><h2>Heatbed Temperature</h2>
+<p>To set the heatbed's temperature, navigate to <strong>[Controls]</strong> → <strong>Heatbed</strong> and select the temperature. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This seems to only be for testing purposes and doesn't apply to any prints? AFAIK initiating a new print should unset this as the print needs specific temperatures based on the print and the filament used.</p>
+</div>
+<a name="H_Chamber%20Temperature"></a><h2>Chamber Temperature</h2>
+<p>To set the chamber's temperature, navigate to <strong>[Controls]</strong> → <strong>Chamber</strong> and select the temperature. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This seems to only be for testing purposes and doesn't apply to any prints? AFAIK initiating a new print should unset this as the print needs specific temperatures based on the print and the filament used.</p>
+</div>
+<a name="H_Chamber%20Light"></a><h2>Chamber Light</h2>
+<p>To turn the chamber's light on/off, navigate to <strong>[Controls]</strong> and toggle the <strong>Light</strong> switch. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
+<a name="H_Heating%20and%20Cooling"></a><h2>Heating and Cooling</h2>
+<p>To configure the printer's internal climate, navigate to <strong>[Controls]</strong> → <strong>Air Condition</strong> and select either <strong>Cooling</strong> or <strong>Heating</strong>. Individual parts that control the climate (e.g., fans, heaters, and exhausts) are listed and can be individually controlled. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
+<p>When the mode is set to ...</p>
+<ul>
+<li>cooling, the <a href="#BM_(chamber%20heat%20circulation%20fan)%2Fi">chamber heat circulation fan</a> remains off and the <a href="#BM_(filter%20switch%20flap)%2Fi">filter switch flap</a> is positioned down. Cooling mode should be used for filaments that have low <a href="#BM_(heat%20resistance)%2Fi">heat resistance</a> (e.g. <a href="#BM_%5Cb(PLA)%5Cb%2F">PLA</a> and <a href="#BM_%5Cb(TPU)%5Cb%2F">TPU</a>).</li>
+<li>heating, the <a href="#BM_(chamber%20heat%20circulation%20fan)%2Fi">chamber heat circulation fan</a> automatically turns on, the <a href="#BM_(auxiliary%20part%20cooling%20fan)%2Fi">auxiliary part cooling fan</a> remains off, and the <a href="#BM_(filter%20switch%20flap)%2Fi">filter switch flap</a> is positioned up. Heating mode should be used for filaments with high <a href="#BM_(heat%20resistance)%2Fi">heat resistance</a> (e.g., <a href="#BM_%5Cb(ABS)%5Cb%2F">ABS</a>, <a href="#BM_%5Cb(ASA)%5Cb%2F">ASA</a>, <a href="#BM_%5Cb(PC)%5Cb%2F">PC</a>, and <a href="#BM_%5Cb(PA)%5Cb%2F">PA</a>). <sub><a href="https://wiki.bambulab.com/en/h2/manual/cooling-fan-system">[src]</a></sub></li>
+</ul>
+<a name="H_Filament%20Type"></a><h2>Filament Type</h2>
+<p>To select which filaments are in the <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pro</a> and / or external spool holder, navigate to <strong>[Filament]</strong> and select the desired spool to input the spool's type, color, and manufacturer. Bambu Lab filaments come with RFID that allows the <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pro</a> to automatically identify material and color. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
+<a name="H_Filament%20Auto%20Refill"></a><h2>Filament Auto Refill</h2>
+<p>When a filament runs out, the printer and attached <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pro</a> unit automatically swap to a second spool to continue printing, provided that second spool has the same brand, color, and material of the original spool being printed with. To enable auto refill, navigate to <strong>[Settings]</strong> → <strong><a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS</a> Options</strong> and select <strong><a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS</a> Auto-Refill</strong>. . Then, navigate to <strong>[Filament]</strong>, select the wrench icon, and select <strong>Auto Refill</strong> to view refill relationships. <sub><a href="https://wiki.bambulab.com/en/ams-2-pro/manual/setup-and-printting#ams-auto-refill">[src]</a></sub>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>On the H2D, there are 2 <a href="#BM_(extruder)%2Fi">extruder</a>s (left and right) and apparently each of the H2D's <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pro</a> units is assigned to one of these heads (there may be multiple <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pros</a> per printer). The second spool must be in an <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pro</a> unit assigned to the same <a href="#BM_(extruder)%2Fi">extruder</a> for auto refill to use it.</p>
+</div>
+<a name="H_Filament%20Drying"></a><h2>Filament Drying</h2>
+<p>To dry filament, ensure the spool is loaded into the <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pro</a> and navigate to <strong>[Filament]</strong> and find the water droplet icon. Below the icon should be a humidity sensor reading. Select the water droplet icon and either ...</p>
+<ul>
+<li>manually enter a heat and duration</li>
+<li>select the type of filament (loads in optimal heat and duration presets for the filament selected)</li>
+</ul>
+<p>..., then select <strong>Start</strong>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>What happens when the spools within the <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pro</a> are different filament materials? It seems there might be some guard rails preventing you from doing this with certain mixes of materials.</p>
+<blockquote>
+<p>When drying high-temperature filament, you need to take out the low-temperature filament. For example, when drying <a href="#BM_%5Cb(ABS)%5Cb%2F">ABS</a>, <a href="#BM_%5Cb(PLA)%5Cb%2F">PLA</a> filament cannot be placed in the <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS</a>.</p>
+</blockquote>
+<p><sub><a href="https://wiki.bambulab.com/en/ams-2-pro/ams-2-pro-for-drying-in-x1-p1-series">[src]</a></sub></p>
+</div>
+<a name="H_H2S%20Checklist"></a><h1>H2S Checklist</h1>
+<ul>
+<li>is on flat and stable surface?</li>
+<li>is room temperature of 15-30C (60-85F)?</li>
+<li>requires auto-calibration? <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/224">[src]</a></sub></li>
+<li>is filament dry? <sub>[[src]](ADD CITATION)</sub></li>
+<li>is filament tangled? <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/225">[src]</a></sub></li>
+</ul>
+<a name="H_Terminology"></a><h1>Terminology</h1>
+<ul>
+<li>
+<p><a name="BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F"></a><strong>AMS</strong> - Automatic Material System, an extension to Bambu Lab printers that manages multiple filament spools.</p>
+<p>The original <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS</a> targets Bambu Lab P2 series printers and supports ...</p>
+<ul>
+<li>feeding filament to the printer from the desired spool (4 spools per unit).</li>
+<li>chaining multiple <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS</a> units together (16 spools max).</li>
+<li>keeping filament dry.</li>
+<li>identifying the color and type of filament (only for official Bambu Lab filaments, using RFID). <sub><a href="https://us.store.bambulab.com/products/ams-multicolor-printing">[src]</a></sub></li>
+</ul>
+<p>The <a href="#BM_%5Cb(AMS%202%20Pros%7CAMS%202%20Pro%7CAMSes%7CAMS)%5Cb%2F">AMS 2 Pro</a> targets multiple Bambu Lab printer series (e.g., P2, H2, etc..) and additionally supports chaining even more units together (4 spools per unit, 24 spools max). <sub><a href="https://us.store.bambulab.com/products/ams-2-pro">[src]</a></sub></p>
+<p></p>
+</li>
+<li>
+<p><a name="BM_(heat%20resistance)%2Fi"></a><strong>heat resistance</strong> - FILL ME IN.</p>
+</li>
+<li>
+<p><a name="BM_(chamber%20heat%20circulation%20fan)%2Fi"></a><strong>chamber heat circulation fan</strong> - FILL ME IN.</p>
+</li>
+<li>
+<p><a name="BM_(filter%20switch%20flap)%2Fi"></a><strong>filter switch flap</strong> - FILL ME IN.</p>
+</li>
+<li>
+<p><a name="BM_(part%20cooling%20fan)%2Fi"></a><strong>part cooling fan</strong> - FILL ME IN.</p>
+</li>
+<li>
+<p><a name="BM_(auxiliary%20part%20cooling%20fan)%2Fi"></a><strong>auxiliary part cooling fan</strong> - FILL ME IN.</p>
+</li>
+<li>
+<p><a name="BM_%5Cb(PLA)%5Cb%2F"></a><strong>PLA</strong> - FILL ME IN (filament).</p>
+</li>
+<li>
+<p><a name="BM_%5Cb(TPU)%5Cb%2F"></a><strong>TPU</strong> - FILL ME IN (filament).</p>
+</li>
+<li>
+<p><a name="BM_%5Cb(ABS)%5Cb%2F"></a><strong>ABS</strong> - FILL ME IN (filament).</p>
+</li>
+<li>
+<p><a name="BM_%5Cb(ASA)%5Cb%2F"></a><strong>ASA</strong> - FILL ME IN (filament).</p>
+</li>
+<li>
+<p><a name="BM_%5Cb(PC)%5Cb%2F"></a><strong>PC</strong> - FILL ME IN (filament).</p>
+</li>
+<li>
+<p><a name="BM_%5Cb(PA)%5Cb%2F"></a><strong>PA</strong> - FILL ME IN (filament).</p>
+</li>
+<li>
+<p><a name="BM_(toolhead)%2Fi"></a><strong>toolhead</strong> - An assembly consisting of a PTFE connector, an <a href="#BM_(extruder)%2Fi">extruder</a>, and a hotend with nozzle housed in an enclosure. Filament enters the nozzle through the PTFE connector located at the top, where the <a href="#BM_(extruder)%2Fi">extruder</a> motor grabs it and pushes it into the nozzle located at the bottom. The bottom bottom right-side of the <a href="#BM_(toolhead)%2Fi">toolhead</a> has a camera attached, while the hotend poking out of the enclosure is sandwiched between cooling ducts that directs air to rapidly cool filament as its printed.</p>
+</li>
+</ul>
+<p><img src="toolhead.drawio.svg" alt="Toolhead front diagram"></p>
+<p>The <a href="#BM_(toolhead)%2Fi">toolhead</a> moves left-right on the X-Axis linear rail. The X-Axis linear rail itself moves forward and backward on the Y-Axis. These rails are how the <a href="#BM_(toolhead)%2Fi">toolhead</a> positions itself for printing. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>It sounds like the camera and the cooling ducts (and the railing) are not a part of the <a href="#BM_(toolhead)%2Fi">toolhead</a> itself? These are attachments.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The H2D's <a href="#BM_(toolhead)%2Fi">toolhead</a> is different from the H2S's <a href="#BM_(toolhead)%2Fi">toolhead</a>? It has two PTFE connectors and two nozzles?</p>
+</div>
+<ul>
+<li><a name="BM_(extruder)%2Fi"></a><strong>extruder</strong> -</li>
+</ul>
+<p>FILL ME IN
+FILL ME IN
+FILL ME IN
+FILL ME IN
+FILL ME IN
+FILL ME IN
+FILL ME IN</p>
+<p></p>
+<p></p>
+<p></p>
+
+        </body></html>
