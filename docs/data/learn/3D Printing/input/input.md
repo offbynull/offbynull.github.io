@@ -264,15 +264,52 @@ It sounds like the camera and the cooling ducts (and the railing) are not a part
 The H2D's toolhead is different from the H2S's toolhead? It has two PTFE connectors and two nozzles?
 ```
 
-* `{bm} extruder` -
+* `{bm} extruder` - A motor within the toolhead that grips and moves filament between the PTFE connector to the hotend.
 
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
-FILL ME IN
+  An extruder is part of a toolhead. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+* `{bm} hotend/(hotend|nozzle|silicone sock|heat sink|cold end|silicone sock|heating assembly)/i` - An assembly responsible for melting filament for deposit on to a print. A hotend includes a ...
+
+  * coldend - keeps filament at lower temperature.
+  * nozzle - heated to melt the filament and deposit it onto a print.
+  
+  A silicone sock fits over nozzle, insulating it from the cooling from the part cooling fan.
+
+  ```{note}
+  In the documentation, the coldend is also referred to as a heat sink.
+  ```
+
+  ![Hotend diagram](hotend.drawio.svg)
+
+  On the H2S, the hotend is part of the toolhead. A heating assembly within the toolhead clamps on to and heats the hotend, and is responsible for heating and temperature regulation of the nozzle.
+  
+  Unlike the H2S, some other printers have a different structure: The coldend is separated from the hotend as its own distinct piece and the hotend comes with heating, temperature regulation, and other hardware pieces builtin. On the H2S, the combination of coldend and nozzle are referred to as the hotend. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+  `{bm-error} Did you mean silicone sock (e at end)?/(silicon sock)/i`
+  `{bm-error} Did you mean heat sink (space between)?/(heatsink)/i`
+  `{bm-error} Did you mean hotend (no space)?/(hot\s+end)/i`
+  `{bm-error} Did you mean coldend (no space)?/(cold\s+end)/i`
+
+* `{bm} CoreXY/(CoreXY|A motor|B motor|A stepper motor|B stepper motor|X[\- ]axis linear rail|Y[\- ]axis linear rod|X[\- ]axis rail|Y[\- ]axis rod)/` - H2S's system for moving the toolhead front-back and left-right. The system is comprised of a pair of synchronized motors within the H2S responsible for moving the toolhead on the X and Y axes: A motor and B motor. The motors are located at the rear inside face of the printer, near the top. The B motor is on the left and the A motor is on the top.
+
+  The motors connect through the X-axis linear rail and the Y-axis linear rods via a pair of belts. The ...
+  
+  * X-axis linear rail is responsible for left-right toolhead movement.
+  * Y-axis linear rods is responsible for forward-backward toolhead movement (it moves the X-axis linear rail forward-backward).
+  
+  Both motors work in tandem to coordinate movement in both directions (e.g., one motor isn't solely responsible on an axis).
+  
+  ![Core XY diagram](corexy.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+  ```{note}
+  There's also Z-axis threaded and linear rods, responsible for moving the heatbed up-down. It's unclear if these rods are part of the CoreXY movement system. Their description is included under the CoreXY system but it feels separate as it's not controlling the toolhead's position but the heatbed's position. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+  ```
+
+  `{bm-error} Did you mean CoreXY (no space or dash, properly capitalized)?/(Core[ \-]XY|Corexy|coreXY)/`
+  `{bm-error} Did you mean X-axis linear rail?/(X[\- ]axis linear rod|X[\- ]axis rod)/`
+  `{bm-error} Did you mean Y-axis linear rod?/(Y[\- ]axis linear rail|Y[\- ]axis rail)/`
+
+* `{bm} Z-axis threaded and linear rods/(Z-axis threaded and linear rods|Z-axis linear rods|Z-axis threaded rods|Z-axis rods)/` - H2S's movement system
 
 `{bm-error} Did you mean Bambu Lab (not plural)?/(Bambu Labs)/`
 
