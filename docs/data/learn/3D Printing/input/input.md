@@ -249,10 +249,9 @@ What happens when the spools within the AMS 2 Pro are different filament materia
 
 * `{bm} PA/\b(PA)\b/` - FILL ME IN (filament).
 
-* `{bm} toolhead` - An assembly consisting of a PTFE connector, an extruder, and a hotend with nozzle housed in an enclosure. Filament enters the nozzle through the PTFE connector located at the top, where the extruder motor grabs it and pushes it into the nozzle located at the bottom. The bottom bottom right-side of the toolhead has a camera attached, while the hotend poking out of the enclosure is sandwiched between cooling ducts that directs air to rapidly cool filament as its printed.
+* `{bm} toolhead` - An assembly consisting of a PTFE connector, an extruder, and a hotend with nozzle housed in an enclosure. Filament enters the nozzle through the PTFE connector located at the top, where the extruder motor grabs it and pushes it into the nozzle located at the bottom. The bottom bottom right-side of the toolhead has a tool camera attached, while the hotend poking out of the enclosure is sandwiched between cooling ducts that directs air to rapidly cool filament as its printed.
 
 ![Toolhead front diagram](toolhead.drawio.svg)
-
 
 The toolhead moves left-right on the X-Axis linear rail. The X-Axis linear rail itself moves forward and backward on the Y-Axis. These rails are how the toolhead positions itself for printing. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 
@@ -263,6 +262,8 @@ It sounds like the camera and the cooling ducts (and the railing) are not a part
 ```{note}
 The H2D's toolhead is different from the H2S's toolhead? It has two PTFE connectors and two nozzles?
 ```
+
+* `{bm} toolhead camera` - A camera attached to the toolhead, used for calibrating motion accuracy and build plate recognition. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 
 * `{bm} extruder` - A motor within the toolhead that grips and moves filament between the PTFE connector to the hotend.
 
@@ -299,7 +300,7 @@ The H2D's toolhead is different from the H2S's toolhead? It has two PTFE connect
   
   Both motors work in tandem to coordinate movement in both directions (e.g., one motor isn't solely responsible on an axis).
   
-  ![Core XY diagram](corexy.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+  ![Core XY placement](h2s_movement.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 
   ```{note}
   There's also Z-axis threaded and linear rods, responsible for moving the heatbed up-down. It's unclear if these rods are part of the CoreXY movement system. Their description is included under the CoreXY system but it feels separate as it's not controlling the toolhead's position but the heatbed's position. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
@@ -309,7 +310,49 @@ The H2D's toolhead is different from the H2S's toolhead? It has two PTFE connect
   `{bm-error} Did you mean X-axis linear rail?/(X[\- ]axis linear rod|X[\- ]axis rod)/`
   `{bm-error} Did you mean Y-axis linear rod?/(Y[\- ]axis linear rail|Y[\- ]axis rail)/`
 
-* `{bm} Z-axis threaded and linear rods/(Z-axis threaded and linear rods|Z-axis linear rods|Z-axis threaded rods|Z-axis rods)/` - H2S's movement system
+* `{bm} Z-axis threaded and linear rods/(Z-axis threaded and linear rod|Z-axis linear rod|Z-axis threaded rod|Z-axis rod)/` - Two threaded rods located at the front inside face of the H2S, on the left and right. These rods move the heatbed up-down.
+
+  ![Z-axis rods placement](h2s_movement.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+* `{bm} heatbed` - A heat controlled surface within the H2S that magnetically secures the build plate. The heatbed moves up-down using the Z-axis linear rods, allowing the toolhead to print one layer after the other onto the attached build plate.
+
+  Depending on the material being printed, the heatbed's controlled heating may be required or otherwise beneficial for print quality (e.g., adhesion and / or reducing printing artifacts).
+
+  ![heatbed placement](h2s_movement.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+* `{bm} status light` - A light bar just below the heatbed, facing forward and running side-to-side. The light bar changes color to show the operating status of the H2S:
+
+  * White slow pulse (or off): Idle.
+  * Orange scroll: Print job preparing.
+  * White left-to-right fill: Print job progress.
+  * Red double flash: Print error.
+  * Green solid: Print successful. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+* `{bm} build plate` - A metal plate magnetically attached to the heat bed that serves as the print surface. There are different types of build plates, each with different properties targeting different filament materials. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+  ```{note}
+  Build plate should be kept clean: oils, dust, and / or residue negatively affect adhesion. Wash the build plate as you'd wash a normal dish plate: Warm water, dish washing detergent, and either paper towel to dry or let it air dry.
+  
+  To avoid contamination, do not touch the build plate other than the front edge. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+  ```
+
+* `{bm} chamber heat circulation fan/(chamber heat circulation fan|heat circulation fan)/i` - A heater located at the rear face of the printer, used to increase the chamber's temperature. The increased temperature is required for some filament materials which warp or have other issues if cooled too rapidly.
+
+  ![chamber heat circulation fan placement](h2s_ac.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+* `{bm} chamber exhaust fan/(chamber exhaust fan filter|chamber exhaust fan|chamber filter|exhaust fan filter|exhaust fan)/i` - An exhaust fan located at the rear face of the printer. The chamber exhaust fan may have a filter in front of it, referred to as the chamber filter, that partially filters air as it's exhausted out of the chamber.
+
+  ![chamber exhaust fan placement](h2s_ac.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+* `{bm} chamber intake vent/(chamber intake vent|intake vent)/i` - A flap opening located at the top face of the printer, bordering the front. The chamber intake vent opens to allow outside air in when the exhaust fan is running.  `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+  ![chamber intake vent placement](h2s_ac.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+* `{bm} filament buffer` - A filament tension-control / slack-management device at the rear face of the printer, passing filament from outside the chamber to the extruder. The filament buffer is an orange slider that slides forward and backward, storing a small buffer of filament as it slides forward.
+
+  When an AMS 2 Pro unit is connected, the unit's motor pushes filament into the filament buffer thereby storing a small buffer of filament. When the extruder consumes the filament in the filament buffer, the filament buffer slides backward. A sensor in the filament buffer feeds back to the AMS 2 Pro unit's motor to control filament feeding speed.
+
+  When the external spool holder is used, the buffer acts as an entanglement sensor. When the spool is tangled, the tension of the extruder pulling compresses the filament buffer thereby cause the print to pause and the user to be prompted. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 
 `{bm-error} Did you mean Bambu Lab (not plural)?/(Bambu Labs)/`
 
