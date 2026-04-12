@@ -229,8 +229,6 @@ What happens when the spools within the AMS 2 Pro are different filament materia
 
 * `{bm} heat resistance` - FILL ME IN.
 
-* `{bm} chamber heat circulation fan` - FILL ME IN.
-
 * `{bm} filter switch flap` - FILL ME IN.
 
 * `{bm} part cooling fan` - FILL ME IN.
@@ -348,11 +346,44 @@ The H2D's toolhead is different from the H2S's toolhead? It has two PTFE connect
 
   ![chamber intake vent placement](h2s_ac.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 
-* `{bm} filament buffer` - A filament tension-control / slack-management device at the rear face of the printer, passing filament from outside the chamber to the extruder. The filament buffer is an orange slider that slides forward and backward, storing a small buffer of filament as it slides forward.
+* `{bm} filament buffer` - A filament tension-control / slack-management device at the rear face of the printer, sitting between filament passing from outside the chamber to the extruder. The filament buffer is an orange slider that slides forward and backward, storing a small buffer of filament as it slides forward.
 
   When an AMS 2 Pro unit is connected, the unit's motor pushes filament into the filament buffer thereby storing a small buffer of filament. When the extruder consumes the filament in the filament buffer, the filament buffer slides backward. A sensor in the filament buffer feeds back to the AMS 2 Pro unit's motor to control filament feeding speed.
 
-  When the external spool holder is used, the buffer acts as an entanglement sensor. When the spool is tangled, the tension of the extruder pulling compresses the filament buffer thereby cause the print to pause and the user to be prompted. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+  When the external spool holder is used, the buffer acts as an entanglement sensor. When the spool is tangled, the tension of the extruder pulling is detected by the filament buffer thereby cause the print to pause and the user to be prompted.
+
+  ![filament buffer and TPU inlet placement](tpu_inlet.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+  ```{note}
+  If printing TPU, unless it's specifically branded as TPU For AMS, bypass the filament buffer via the TPU inlet. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/`
+  ```
+
+* `{bm} TPU inlet` - An inlet that bypasses the filament buffer, specifically intended for TPU filament (that isn't branded as TPU for AMS). The inlet in positioned just to the right of the filament buffer, feeding the PTFE directly from the exterior into the chamber. The PTFE tube used for the TPU inlet may either be the same PTFE tube attaching the filament buffer to the toolhead (disconnecting it and reconnecting it to the TPU inlet) or a separate PTFE tube.
+
+  ![filament buffer and TPU inlet placement](tpu_inlet.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+  ```{note}
+  The example image shown at the source shows the PTFE tube going straight through the inlet and reaching outside the chamber. Is the existing filament buffer to toolhead PTFE tube long enough to repurpose for the TPU inlet? It needs to go from the toolhead, through the inlet, to the external spool holder. It seems not long enough for that?
+  ```
+
+* `{bm} purge wiper` - A block at the back left of the printer responsible for cleaning the toolhead between prints / filament changes. The purge wiper consists of a set of silicone waffle and strips as well as a purge chute. The toolhead knocks into the waffle / strips to clean off old stuck filament, sending it down the purge chute.
+
+  ![purge wiper placement](purge_wiper.drawio.svg) ![purge wiper top view](purge_wiper_top_view.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227` `{ref} https://wiki.bambulab.com/en/h2s/maintenance/replace-purge-wiper`
+
+
+* `{bm} purge chute` - The chute on the purge wiper, passing knocked off purged filament strands outside the chamber.  `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227` `{ref} https://wiki.bambulab.com/en/h2s/maintenance/replace-purge-wiper`
+
+* `{bm} nozzle wiper` - The waffle and strips on the purge wiper, used to clean off filament and debris from the nozzle. The nozzle pushes into the waffle to knock off any stuck material down the purge chute.  `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227` `{ref} https://wiki.bambulab.com/en/h2s/maintenance/replace-purge-wiper`
+
+  ```{note}
+  This is different from the nozzle wiper sheet on the heatbed?
+  ```
+ 
+* `{bm} nozzle wiper sheet` - A sheet on the heatbed that the nozzle moves across to keep the tip smooth and free of debris. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+  ```{note}
+  This is different from the nozzle wiper, which is used for scrubbing / flicking off purged filament.
+  ```
 
 `{bm-error} Did you mean Bambu Lab (not plural)?/(Bambu Labs)/`
 
