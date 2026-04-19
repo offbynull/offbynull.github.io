@@ -1,0 +1,1 @@
+<sub>[\[src\]](https://us.store.bambulab.com/products/bambu-smooth-pei-plate)</sub>
