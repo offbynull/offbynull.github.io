@@ -2,8 +2,7 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Bambu Studio/Model Combining_TOPIC
- * Bambu Studio/3D Viewport Controls_TOPIC
+ * Bambu Studio/3D Viewport_TOPIC
 
 </div>
 

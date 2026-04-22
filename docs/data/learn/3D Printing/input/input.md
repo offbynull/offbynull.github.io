@@ -371,9 +371,9 @@ Bambu Studio saves and loads project state as a 3MF file.
 
 Alternatively, Bambu Studio's Home screen integrates MakerWorld. MakerWorld is an online repository of printable projects, openable as if opening a local project. `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/33`
 
-## 3D Viewport Controls
+## 3D Viewport
 
-`{bm} /(Bambu Studio\/3D Viewport Controls)_TOPIC/i`
+`{bm} /(Bambu Studio\/3D Viewport)_TOPIC/i`
 
 Bambu Studio has a 3D viewport on both the Prepare screen and the Preview screen.
 
@@ -415,9 +415,27 @@ Preview viewport controls:
 | Undo                       | Ctrl + Z                                                                                                        |
 | Redo                       | Ctrl + Y                                                                                                        |
 
+To the right of the 3D viewport is a sidebar on the left-hand side.
+
+![Bambu Studio Prepare screen sidebar](bambu_studio_prepare_sidebar.png)
+
+The sidebar contains a ...
+
+* **Printer** section that controls which printer to use and its configuration (e.g., build plate and nozzle).
+* **Project Filaments** section that controls the filaments are available to the project. For example, a model within the project can be painted such that different areas of the model use different filaments, but those filaments have to be made available to the project first via this section.
+* **Process** section that controls the hierarchy of entities within the project (e.g., models may be grouped together, referred to as an assembly). Each entity has properties to it that can be modified (e.g., parameters that control the quality of the print and how strong the printed model is).
+
+```{note}
+A full accounting of properties under **Process** is out of scope. They'll be covered on an adhoc basis in the subsequent sections.
+```
+
 ## Model Importing
 
 `{bm} /(Bambu Studio\/Model Importing)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/3D Viewport_TOPIC
+```
 
 Import 3D models into the project either via ...
 
@@ -443,7 +461,7 @@ Alternatively, Bambu Studio's Home screen integrates MakerWorld. MakerWorld is a
 `{bm} /(Bambu Studio\/Model Placement)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/3D Viewport Controls_TOPIC
+Bambu Studio/3D Viewport_TOPIC
 ```
 
 In the Prepare screen's 3D viewport, models can be moved by either ...
@@ -487,7 +505,7 @@ Models typically can't be lifted off the build plate without first merging. See 
 `{bm} /(Bambu Studio\/Model Rotation)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/3D Viewport Controls_TOPIC
+Bambu Studio/3D Viewport_TOPIC
 ```
 
 In the Prepare screen's 3D viewport, selected models can be manually rotated by using the rotation tool in Prepare screen's toolbar (button 7, keyboard shortcut R), which will present rotational axis circles that can be left-click dragged and a pop-up with angles.
@@ -509,7 +527,7 @@ Alternatively, a model may be rotated via ...
 `{bm} /(Bambu Studio\/Model Scale)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/3D Viewport Controls_TOPIC
+Bambu Studio/3D Viewport_TOPIC
 ```
 
 In the Prepare screen's 3D viewport, selected models can be manually scaled by using the scale tool in Prepare screen's toolbar (button 8, keyboard shortcut S), which will present scale axis points that can be left-click dragged and a pop-up with scaling parameters.
@@ -538,7 +556,7 @@ I couldn't figure out what the Coordinates dropdown actually does?
 
 ```{prereq}
 Bambu Studio/Model Placement_TOPIC
-Bambu Studio/3D Viewport Controls_TOPIC
+Bambu Studio/3D Viewport_TOPIC
 ```
 
 In certain cases, two models may need to combine into one for printing, such that they print as a single object vs two separate objects.
@@ -602,7 +620,7 @@ Bambu Studio/Model Set Operations_TOPIC
 `{bm} /(Bambu Studio\/Model Painting)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/3D Viewport Controls_TOPIC
+Bambu Studio/3D Viewport_TOPIC
 ```
 
 In the Prepare screen's 3D viewport, selected models can be painted by using the paint tool in Prepare screen's toolbar (button 13, keyboard shortcut N), which will present a pop-up with scaling parameters / controls.
@@ -666,7 +684,7 @@ The remaining fields change !!based!! on which painting tool is used. When the p
 `{bm} /(Bambu Studio\/Model Supports)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/3D Viewport Controls_TOPIC
+Bambu Studio/3D Viewport_TOPIC
 ```
 
 Areas of a model that are overhangs may require supports_BO. Supports_BO are temporary additions added under these parts to help keep them stable during printing (e.g., prevent sagging). Supports_BO easily snap off once the print completes.
@@ -830,7 +848,7 @@ Raft_BO contact Z distance description inside Bambu Studio mentions that the par
 ```{prereq}
 Bambu Studio/Model Combining_TOPIC
 Bambu Studio/Model Supports_TOPIC
-Bambu Studio/3D Viewport Controls_TOPIC
+Bambu Studio/3D Viewport_TOPIC
 ```
 
 In certain cases, a model may either need to be cut (e.g., oversized for printer) or may benefit from being cut (e.g., minimize need for supports_BO or make it easier to sand/paint/finish). Cut pieces are typically assembled and fused back together after printing (e.g., glue, pen welding, joinery).
@@ -895,7 +913,7 @@ The mesh boolean tool (button 11, keyboard shortcut B) can be used to merge the 
 
 ```{prereq}
 Bambu Studio/Model Combining_TOPIC
-Bambu Studio/3D Viewport Controls_TOPIC
+Bambu Studio/3D Viewport_TOPIC
 ```
 
 In the Prepare screen's 3D viewport, selected models can have set operations applied (e.g., union, intersection, and subtraction) by using the mesh boolean tool in Prepare screen's toolbar (button 11, keyboard shortcut B), which present a pop-up with which which operations to apply.
@@ -927,6 +945,10 @@ Bambu Studio/Model Combining_TOPIC
 ## Model Text
 
 `{bm} /(Bambu Studio\/Model Text)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/3D Viewport_TOPIC
+```
 
 Text can be placed on a model, extruded from a model, indented on to a model, or placed as a standalone extruded model on its own.
 

@@ -37,7 +37,7 @@
 <li><a href="#H_Bambu%20Studio">Bambu Studio</a></li>
 <ul>
 <li><a href="#H_Project%20Persistence">Project Persistence</a></li>
-<li><a href="#H_3D%20Viewport%20Controls">3D Viewport Controls</a></li>
+<li><a href="#H_3D%20Viewport">3D Viewport</a></li>
 <li><a href="#H_Model%20Importing">Model Importing</a></li>
 <li><a href="#H_Model%20Placement">Model Placement</a></li>
 <li><a href="#H_Model%20Rotation">Model Rotation</a></li>
@@ -762,8 +762,8 @@
 <li>Save project: In the main menu, navigate to <strong>File</strong> → <strong>Save Project</strong> (or <strong>Save Project as...</strong>).</li>
 </ul>
 <p>Alternatively, <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>'s Home screen integrates MakerWorld. MakerWorld is an online repository of printable projects, openable as if opening a local project. <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/33">[src]</a></sub></p>
-<a name="H_3D%20Viewport%20Controls"></a><h2>3D Viewport Controls</h2>
-<p><a name="BM_(Bambu%20Studio%5C%2F3D%20Viewport%20Controls)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_3D%20Viewport"></a><h2>3D Viewport</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2F3D%20Viewport)_TOPIC%2Fi"></a><strong></strong></p>
 <p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> has a 3D viewport on both the Prepare screen and the Preview screen.</p>
 <p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>'s Prepare screen is for transforming models for print (e.g., orientation, scale, position, and color) as well as configuring print settings (e.g., <a href="#BM_(layer%20height)%2Fi">layer height</a> and <a href="#BM_(infill)%2Fi">infill</a> density).</p>
 <p>Prepare viewport controls:</p>
@@ -885,8 +885,26 @@
 </tr>
 </tbody>
 </table>
+<p>To the right of the 3D viewport is a sidebar on the left-hand side.</p>
+<p><img src="bambu_studio_prepare_sidebar.png" alt="Bambu Studio Prepare screen sidebar"></p>
+<p>The sidebar contains a ...</p>
+<ul>
+<li><strong>Printer</strong> section that controls which printer to use and its configuration (e.g., <a href="#BM_(build%20plate)%2Fi">build plate</a> and <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>).</li>
+<li><strong>Project Filaments</strong> section that controls the filaments are available to the project. For example, a model within the project can be painted such that different areas of the model use different filaments, but those filaments have to be made available to the project first via this section.</li>
+<li><strong>Process</strong> section that controls the hierarchy of entities within the project (e.g., models may be grouped together, referred to as an assembly). Each entity has properties to it that can be modified (e.g., parameters that control the quality of the print and how strong the printed model is).</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>A full accounting of properties under <strong>Process</strong> is out of scope. They'll be covered on an adhoc basis in the subsequent sections.</p>
+</div>
 <a name="H_Model%20Importing"></a><h2>Model Importing</h2>
 <p><a name="BM_(Bambu%20Studio%5C%2FModel%20Importing)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport)_TOPIC%2Fi">Bambu Studio/3D Viewport</a></li>
+</ul>
+</div>
 <p>Import 3D models into the project either via ...</p>
 <ul>
 <li>the main menu: <strong>File</strong> → <strong>Import</strong> → <strong>Import <a href="#BM_%5Cb(3MF)%5Cb%2F">3MF</a>/<a href="#BM_%5Cb(STL)%5Cb%2F">STL</a>/<a href="#BM_(STEP)%2F">STEP</a>/<a href="#BM_(SVG)%2F">SVG</a>/<a href="#BM_%5Cb(OBJ)%5Cb%2F">OBJ</a>/AMF...</strong>.</li>
@@ -908,7 +926,7 @@
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport%20Controls)_TOPIC%2Fi">Bambu Studio/3D Viewport Controls</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport)_TOPIC%2Fi">Bambu Studio/3D Viewport</a></li>
 </ul>
 </div>
 <p>In the Prepare screen's 3D viewport, models can be moved by either ...</p>
@@ -961,7 +979,7 @@
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport%20Controls)_TOPIC%2Fi">Bambu Studio/3D Viewport Controls</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport)_TOPIC%2Fi">Bambu Studio/3D Viewport</a></li>
 </ul>
 </div>
 <p>In the Prepare screen's 3D viewport, selected models can be manually rotated by using the rotation tool in Prepare screen's toolbar (button 7, keyboard shortcut R), which will present rotational axis circles that can be left-click dragged and a pop-up with angles.</p>
@@ -981,7 +999,7 @@
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport%20Controls)_TOPIC%2Fi">Bambu Studio/3D Viewport Controls</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport)_TOPIC%2Fi">Bambu Studio/3D Viewport</a></li>
 </ul>
 </div>
 <p>In the Prepare screen's 3D viewport, selected models can be manually scaled by using the scale tool in Prepare screen's toolbar (button 8, keyboard shortcut S), which will present scale axis points that can be left-click dragged and a pop-up with scaling parameters.</p>
@@ -1010,7 +1028,7 @@
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Placement)_TOPIC%2Fi">Bambu Studio/Model Placement</a></li>
-<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport%20Controls)_TOPIC%2Fi">Bambu Studio/3D Viewport Controls</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport)_TOPIC%2Fi">Bambu Studio/3D Viewport</a></li>
 </ul>
 </div>
 <p>In certain cases, two models may need to combine into one for printing, such that they print as a single object vs two separate objects.</p>
@@ -1071,7 +1089,7 @@
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport%20Controls)_TOPIC%2Fi">Bambu Studio/3D Viewport Controls</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport)_TOPIC%2Fi">Bambu Studio/3D Viewport</a></li>
 </ul>
 </div>
 <p>In the Prepare screen's 3D viewport, selected models can be painted by using the paint tool in Prepare screen's toolbar (button 13, keyboard shortcut N), which will present a pop-up with scaling parameters / controls.</p>
@@ -1137,7 +1155,7 @@
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport%20Controls)_TOPIC%2Fi">Bambu Studio/3D Viewport Controls</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport)_TOPIC%2Fi">Bambu Studio/3D Viewport</a></li>
 </ul>
 </div>
 <p>Areas of a model that are <a href="#BM_(overhang)%2Fi">overhang</a>s may require <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>. <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">Supports</a> are temporary additions added under these parts to help keep them stable during printing (e.g., prevent sagging). <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">Supports</a> easily snap off once the print completes.</p>
@@ -1288,7 +1306,7 @@
 <ul>
 <li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Combining)_TOPIC%2Fi">Bambu Studio/Model Combining</a></li>
 <li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Supports)_TOPIC%2Fi">Bambu Studio/Model Supports</a></li>
-<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport%20Controls)_TOPIC%2Fi">Bambu Studio/3D Viewport Controls</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport)_TOPIC%2Fi">Bambu Studio/3D Viewport</a></li>
 </ul>
 </div>
 <p>In certain cases, a model may either need to be cut (e.g., oversized for printer) or may benefit from being cut (e.g., minimize need for <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> or make it easier to sand/paint/finish). Cut pieces are typically assembled and fused back together after printing (e.g., glue, pen welding, joinery).</p>
@@ -1360,7 +1378,7 @@
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Combining)_TOPIC%2Fi">Bambu Studio/Model Combining</a></li>
-<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport%20Controls)_TOPIC%2Fi">Bambu Studio/3D Viewport Controls</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport)_TOPIC%2Fi">Bambu Studio/3D Viewport</a></li>
 </ul>
 </div>
 <p>In the Prepare screen's 3D viewport, selected models can have set operations applied (e.g., union, intersection, and subtraction) by using the mesh boolean tool in Prepare screen's toolbar (button 11, keyboard shortcut B), which present a pop-up with which which operations to apply.</p>
@@ -1387,6 +1405,12 @@
 </div>
 <a name="H_Model%20Text"></a><h2>Model Text</h2>
 <p><a name="BM_(Bambu%20Studio%5C%2FModel%20Text)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport)_TOPIC%2Fi">Bambu Studio/3D Viewport</a></li>
+</ul>
+</div>
 <p>Text can be placed on a model, extruded from a model, indented on to a model, or placed as a standalone extruded model on its own.</p>
 <p>To generate standalone text, in the Prepare screen's 3D viewport, click the text shape tool in the Prepare screen's toolbar (button 14, keyboard shortcut T). Text wil show up in the middle of the <a href="#BM_(build%20plate)%2Fi">build plate</a> on the 3D viewport along with a pop-up where the text and its settings (e.g., font parameters) can be changed.</p>
 <p>All parameters in the pop-up should be self explanatory, with the exception of <strong>Angle</strong>. <strong>Angle</strong> is the rotation of the text, which reflects the rotation circle in the 3D viewport.</p>
