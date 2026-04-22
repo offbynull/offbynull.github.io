@@ -569,7 +569,7 @@ Alternatively, two models can be repositioned and reoriented such that they touc
 
 ![Bambu Studio Prepare screen assemble parameters](bambu_studio_prepare_assemble_parameters.png)
 
-The assembly tool has two modes, as shown in section 1 of the screenshot above:
+The assembly tool has two **Mode**: options
 
 * **Point and Point Assembly**: Touches models on specific points (e.g., vertex).
 
@@ -596,6 +596,70 @@ The mesh boolean tool (button 11, keyboard shortcut B) can be used to merge the 
 ```{seealso}
 Bambu Studio/Model Set Operations_TOPIC
 ```
+
+## Model Painting
+
+`{bm} /(Bambu Studio\/Model Painting)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/3D Viewport Controls_TOPIC
+```
+
+In the Prepare screen's 3D viewport, selected models can be painted by using the paint tool in Prepare screen's toolbar (button 13, keyboard shortcut N), which will present a pop-up with scaling parameters / controls.
+
+![Bambu Studio Prepare screen toolbar](bambu_studio_prepare_toolbar.png)
+
+![Bambu Studio Prepare screen painting parameters](bambu_studio_prepare_model_painting_parameters.png)
+
+```{note}
+Ensure more than 1 filament is included in the project via the **Project Filaments** section in the Prepare screen's left side-bar. Otherwise it'll be impossible to paint anything as there'll just be 1 color.
+```
+
+* **Filament** is the filament type to paint with.
+* **Tool** is the painting tool to use when painting. Regardless of the tool, paint is always applied using the left mouse button.
+
+The remaining fields change !!based!! on which painting tool is used. When the paint tool is ...
+
+* **circle** and **sphere** use a circle and sphere respectively to paint on faces. Circle applies paint to intersecting areas of faces inside the circle, while sphere applies paint to the intersecting areas of faces inside the sphere (flat vs volume). Other than that, the two painting tools are essentially the same.
+
+  The option ...
+
+  * **Pen size** controls how large the circle is.
+  * **Section view** temporarily cuts the model, exposing the interior and allowing painting of areas that may be obstructed. Note that the cut happens on the camera's viewing plane (e.g., if viewing from the front the front plane is used to cut, or if viewing from the top then the top view is used to cut).
+  * **Vertical** will only allow painting to happen in a straight line vertically. Note that vertical means vertical on the camera's viewing plane.
+  * **Horizontal** will only allow painting to happen in a straight line horizontally. Note that horizontal means horizontal on the camera's viewing plane.
+  * **View: Keep horizontal** reorients the camera so that build plate is horizontal. A secondary slider **Rotate horizontally** rotates the camera around the object horizontally.
+
+* **triangle**, paints the entirety of triangles that make up faces.
+
+  The option ...
+
+  * **Section view** is exactly the same circle/sphere's version of the option.
+
+* **!!height!! range**, paints the entirety of a layer range.
+
+  The option ...
+
+  * **!!Height!! range** controls how many layers to paint at once.
+  * **Section view** is exactly the same circle's version of the option.
+
+* **fill**, paints everything connected !!based!! on a connection criteria.
+
+  The option ...
+
+  * **Connected same color** specifies that painting must continue to propagate outwards from the starting point until it reaches a color that's different than that of the starting point's original color.
+  * **Edge detection** specifies that painting must continue until it hits an angle greater than the specified threshold in **Smart fill angle**.
+  * **Section view** is exactly the same circle's version of the option.
+
+* **gap fill**, fills in small gaps !!based!! on the color of neighboring faces. This is used to clean up edges that the **fill** tool couldn't reach into. Unlike the other tools above, this tool doesn't use the mouse. Instead, the **Apply** button is used to apply gap filling to the entire model.
+
+  ```{note}
+  There's a **Gap area** slider here but I don't know definitively what it does and the documentation doesn't state it either.
+  ```
+
+![Bambu Studio Prepare screen painting example](bambu_studio_prepare_painting_example.png)
+
+`{ref} https://wiki.bambulab.com/en/software/bambu-studio/color-painting-tool`
 
 ## Model Supports
 
@@ -678,6 +742,7 @@ Normal supports_BO work best with large planar overhangs, giving better surface 
 
 ```{prereq}
 Bambu Studio/Model Supports/Type_TOPIC
+Bambu Studio/Model Painting_TOPIC
 ```
 
 In certain cases, it's beneficial to manually specify which areas of the model to explicitly support_BO and unsupport_BO. Two mechanisms exist for this: painting and blockers/enforcers.
@@ -688,14 +753,14 @@ In certain cases, it's beneficial to manually specify which areas of the model t
   
   ![Bambu Studio Prepare screen support painting example](bambu_studio_prepare_supports_example.png)
   
-  To paint, select a **Tool type** (section 1). The tools configuration options will show up in section 3. Regardless of the tool type, ...
+  To paint, select a **Tool type**. The tools configuration options will show up directly underneath. Regardless of the tool type, ...
   
   * using the **left** mouse button on the model to paint where supports_BO should exist (e.g., section 5 of the example screenshot above, painted blue).
   * using the **right** mouse button on the model to paint where supports_BO shouldn't exist (e.g., section 6 of the example screenshot above, painted red).
   
   Chances are the viewport will need to move around during the painting process. To move the viewport rather than paint (e.g., move camera, rotate camera, and zoom camera), use the same viewport controls as normal *with the exception that any mouse button presses required are not on the model to be painted*.
   
-  **On overhangs only** (section 2) defines whether surfaces available for painting are limited to only those deemed as needing supports_BO (e.g., as defined by **Threshold angle** in section 7).
+  **On overhangs only** defines whether surfaces available for painting are limited to only those deemed as needing supports_BO (e.g., as defined by **Threshold angle**).
 
 * **Blockers/Enforcers**: By adding a secondary model and intersecting with the supported_BO model, supports_BO are explicitly added / removed from the intersecting portion. Right-click a model to get its context menu, and either navigate to **Support blocker** or **Support enforcer**. Regardless of which you choose, the same model options will display for both (e.g., load a custom model, preloaded cube, or preloaded cylinder,). If ...
 
@@ -774,7 +839,7 @@ In the Prepare screen's 3D viewport, a model can be cut by selecting it and clic
 
 ![Bambu Studio Prepare screen toolbar](bambu_studio_prepare_toolbar.png)
 
-The cutting tool has two modes, chosen using the **Mode** dropdown at the top of the pop-up (section 1):
+The cutting tool has two modes, chosen using the **Mode** dropdown at the top of the pop-up:
 
 * **Planar** cuts the model using a flat plane.
 
@@ -839,7 +904,7 @@ In the Prepare screen's 3D viewport, selected models can have set operations app
 
 ![Bambu Studio prepare screen mesh boolean parameters](bambu_studio_prepare_screen_mesh_boolean_parameters.png)
 
-The mesh boolean tool has 3 possible operations, as shown in section 1 of the screenshot above:
+The mesh boolean tool has 3 possible operations:
 
 * **Union**: Creates a new model comprised of all individual models together.
 * **Intersection**: Creates a new model comprised of only the overlapping parts between all models.
@@ -886,6 +951,10 @@ The parameters are the same as the parameter before, except for **Mode** and **O
   * **Surround projection by character** is similar to **Surround surface** but parts of the text that don't sit directly on the model are removed.
   * **Not surround** generates text tangent to to the face the text is positioned on (does not wrap / surround the model's surface).
 
+  ```{note}
+  At the very top of the example model below is the projection option. Note that the top of the text is cut off.
+  ```
+  
   ![Bambu Studio Prepare screen text on model model example.png](bambu_studio_prepare_text_on_model_mode_example.png)
 
 * **Operation** defines how the text is applied to the model:

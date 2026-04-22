@@ -1,0 +1,1 @@
+<sub>[\[src\]](https://wiki.bambulab.com/en/software/bambu-studio/color-painting-tool)</sub>

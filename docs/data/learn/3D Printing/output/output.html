@@ -43,6 +43,7 @@
 <li><a href="#H_Model%20Rotation">Model Rotation</a></li>
 <li><a href="#H_Model%20Scale">Model Scale</a></li>
 <li><a href="#H_Model%20Combining">Model Combining</a></li>
+<li><a href="#H_Model%20Painting">Model Painting</a></li>
 <li><a href="#H_Model%20Supports">Model Supports</a></li>
 <ul>
 <li><a href="#H_Type">Type</a></li>
@@ -1034,7 +1035,7 @@
 </div>
 <p>Alternatively, two models can be repositioned and reoriented such that they touch each other using the assembly tool (Prepare screen's toolbar button 12, keyboard shortcut Y). The assembly tool opens a open a pop-up used to target how and where the models touch.</p>
 <p><img src="bambu_studio_prepare_assemble_parameters.png" alt="Bambu Studio Prepare screen assemble parameters"></p>
-<p>The assembly tool has two modes, as shown in section 1 of the screenshot above:</p>
+<p>The assembly tool has two <strong>Mode</strong>: options</p>
 <ul>
 <li>
 <p><strong>Point and Point Assembly</strong>: Touches models on specific points (e.g., vertex).</p>
@@ -1065,6 +1066,72 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Set%20Operations)_TOPIC%2Fi">Bambu Studio/Model Set Operations</a></li>
 </ul>
 </div>
+<a name="H_Model%20Painting"></a><h2>Model Painting</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FModel%20Painting)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport%20Controls)_TOPIC%2Fi">Bambu Studio/3D Viewport Controls</a></li>
+</ul>
+</div>
+<p>In the Prepare screen's 3D viewport, selected models can be painted by using the paint tool in Prepare screen's toolbar (button 13, keyboard shortcut N), which will present a pop-up with scaling parameters / controls.</p>
+<p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
+<p><img src="bambu_studio_prepare_model_painting_parameters.png" alt="Bambu Studio Prepare screen painting parameters"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Ensure more than 1 filament is included in the project via the <strong>Project Filaments</strong> section in the Prepare screen's left side-bar. Otherwise it'll be impossible to paint anything as there'll just be 1 color.</p>
+</div>
+<ul>
+<li><strong>Filament</strong> is the filament type to paint with.</li>
+<li><strong>Tool</strong> is the painting tool to use when painting. Regardless of the tool, paint is always applied using the left mouse button.</li>
+</ul>
+<p>The remaining fields change based on which painting tool is used. When the paint tool is ...</p>
+<ul>
+<li>
+<p><strong>circle</strong> and <strong>sphere</strong> use a circle and sphere respectively to paint on faces. Circle applies paint to intersecting areas of faces inside the circle, while sphere applies paint to the intersecting areas of faces inside the sphere (flat vs volume). Other than that, the two painting tools are essentially the same.</p>
+<p>The option ...</p>
+<ul>
+<li><strong>Pen size</strong> controls how large the circle is.</li>
+<li><strong>Section view</strong> temporarily cuts the model, exposing the interior and allowing painting of areas that may be obstructed. Note that the cut happens on the camera's viewing plane (e.g., if viewing from the front the front plane is used to cut, or if viewing from the top then the top view is used to cut).</li>
+<li><strong>Vertical</strong> will only allow painting to happen in a straight line vertically. Note that vertical means vertical on the camera's viewing plane.</li>
+<li><strong>Horizontal</strong> will only allow painting to happen in a straight line horizontally. Note that horizontal means horizontal on the camera's viewing plane.</li>
+<li><strong>View: Keep horizontal</strong> reorients the camera so that <a href="#BM_(build%20plate)%2Fi">build plate</a> is horizontal. A secondary slider <strong>Rotate horizontally</strong> rotates the camera around the object horizontally.</li>
+</ul>
+</li>
+<li>
+<p><strong>triangle</strong>, paints the entirety of triangles that make up faces.</p>
+<p>The option ...</p>
+<ul>
+<li><strong>Section view</strong> is exactly the same circle/sphere's version of the option.</li>
+</ul>
+</li>
+<li>
+<p><strong>height range</strong>, paints the entirety of a <a href="#BM_(layer%7Cslice)%2Fi">layer</a> range.</p>
+<p>The option ...</p>
+<ul>
+<li><strong>Height range</strong> controls how many <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s to paint at once.</li>
+<li><strong>Section view</strong> is exactly the same circle's version of the option.</li>
+</ul>
+</li>
+<li>
+<p><strong>fill</strong>, paints everything connected based on a connection criteria.</p>
+<p>The option ...</p>
+<ul>
+<li><strong>Connected same color</strong> specifies that painting must continue to propagate outwards from the starting point until it reaches a color that's different than that of the starting point's original color.</li>
+<li><strong>Edge detection</strong> specifies that painting must continue until it hits an angle greater than the specified threshold in <strong>Smart fill angle</strong>.</li>
+<li><strong>Section view</strong> is exactly the same circle's version of the option.</li>
+</ul>
+</li>
+<li>
+<p><strong>gap fill</strong>, fills in small gaps based on the color of neighboring faces. This is used to clean up edges that the <strong>fill</strong> tool couldn't reach into. Unlike the other tools above, this tool doesn't use the mouse. Instead, the <strong>Apply</strong> button is used to apply gap filling to the entire model.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's a <strong>Gap area</strong> slider here but I don't know definitively what it does and the documentation doesn't state it either.</p>
+</div>
+</li>
+</ul>
+<p><img src="bambu_studio_prepare_painting_example.png" alt="Bambu Studio Prepare screen painting example"></p>
+<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/color-painting-tool">[src]</a></sub></p>
 <a name="H_Model%20Supports"></a><h2>Model Supports</h2>
 <p><a name="BM_(Bambu%20Studio%5C%2FModel%20Supports)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -1144,6 +1211,7 @@
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Supports%2FType)_TOPIC%2Fi">Bambu Studio/Model Supports/Type</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Painting)_TOPIC%2Fi">Bambu Studio/Model Painting</a></li>
 </ul>
 </div>
 <p>In certain cases, it's beneficial to manually specify which areas of the model to explicitly <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> and un<a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a>. Two mechanisms exist for this: painting and blockers/enforcers.</p>
@@ -1152,13 +1220,13 @@
 <p><strong>Painting</strong>: In the Prepare screen's 3D viewport, select a model and click support painting in the Prepare screen's toolbar (button 16, keyboard shortcut L). <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> will open a pop-up and present an isolated view of the model where areas can be painted as include vs exclude.</p>
 <p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
 <p><img src="bambu_studio_prepare_supports_example.png" alt="Bambu Studio Prepare screen support painting example"></p>
-<p>To paint, select a <strong>Tool type</strong> (section 1). The tools configuration options will show up in section 3. Regardless of the tool type, ...</p>
+<p>To paint, select a <strong>Tool type</strong>. The tools configuration options will show up directly underneath. Regardless of the tool type, ...</p>
 <ul>
 <li>using the <strong>left</strong> mouse button on the model to paint where <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> should exist (e.g., section 5 of the example screenshot above, painted blue).</li>
 <li>using the <strong>right</strong> mouse button on the model to paint where <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> shouldn't exist (e.g., section 6 of the example screenshot above, painted red).</li>
 </ul>
 <p>Chances are the viewport will need to move around during the painting process. To move the viewport rather than paint (e.g., move camera, rotate camera, and zoom camera), use the same viewport controls as normal <em>with the exception that any mouse button presses required are not on the model to be painted</em>.</p>
-<p><strong>On <a href="#BM_(overhang)%2Fi">overhang</a>s only</strong> (section 2) defines whether surfaces available for painting are limited to only those deemed as needing <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> (e.g., as defined by <strong>Threshold angle</strong> in section 7).</p>
+<p><strong>On <a href="#BM_(overhang)%2Fi">overhang</a>s only</strong> defines whether surfaces available for painting are limited to only those deemed as needing <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> (e.g., as defined by <strong>Threshold angle</strong>).</p>
 </li>
 <li>
 <p><strong>Blockers/Enforcers</strong>: By adding a secondary model and intersecting with the <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supported</a> model, <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> are explicitly added / removed from the intersecting portion. Right-click a model to get its context menu, and either navigate to <strong>Support blocker</strong> or <strong>Support enforcer</strong>. Regardless of which you choose, the same model options will display for both (e.g., load a custom model, preloaded cube, or preloaded cylinder,). If ...</p>
@@ -1226,7 +1294,7 @@
 <p>In certain cases, a model may either need to be cut (e.g., oversized for printer) or may benefit from being cut (e.g., minimize need for <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> or make it easier to sand/paint/finish). Cut pieces are typically assembled and fused back together after printing (e.g., glue, pen welding, joinery).</p>
 <p>In the Prepare screen's 3D viewport, a model can be cut by selecting it and clicking cut tool in the Prepare screen's toolbar (button 10, keyboard shortcut C), which will open a pop-up, present a cutting plane in the 3D viewport, and present cutting plane rotational axis and offset height controls in the 3D viewport.</p>
 <p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
-<p>The cutting tool has two modes, chosen using the <strong>Mode</strong> dropdown at the top of the pop-up (section 1):</p>
+<p>The cutting tool has two modes, chosen using the <strong>Mode</strong> dropdown at the top of the pop-up:</p>
 <ul>
 <li>
 <p><strong>Planar</strong> cuts the model using a flat plane.</p>
@@ -1298,7 +1366,7 @@
 <p>In the Prepare screen's 3D viewport, selected models can have set operations applied (e.g., union, intersection, and subtraction) by using the mesh boolean tool in Prepare screen's toolbar (button 11, keyboard shortcut B), which present a pop-up with which which operations to apply.</p>
 <p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
 <p><img src="bambu_studio_prepare_screen_mesh_boolean_parameters.png" alt="Bambu Studio prepare screen mesh boolean parameters"></p>
-<p>The mesh boolean tool has 3 possible operations, as shown in section 1 of the screenshot above:</p>
+<p>The mesh boolean tool has 3 possible operations:</p>
 <ul>
 <li><strong>Union</strong>: Creates a new model comprised of all individual models together.</li>
 <li><strong>Intersection</strong>: Creates a new model comprised of only the overlapping parts between all models.</li>
@@ -1336,6 +1404,10 @@
 <li><strong>Surround projection by character</strong> is similar to <strong>Surround surface</strong> but parts of the text that don't sit directly on the model are removed.</li>
 <li><strong>Not surround</strong> generates text tangent to to the face the text is positioned on (does not wrap / surround the model's surface).</li>
 </ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>At the very top of the example model below is the projection option. Note that the top of the text is cut off.</p>
+</div>
 <p><img src="bambu_studio_prepare_text_on_model_mode_example.png" alt="Bambu Studio Prepare screen text on model model example.png"></p>
 </li>
 <li>
