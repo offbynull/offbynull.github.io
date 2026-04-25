@@ -341,9 +341,9 @@ Bambu Studio is H2S's desktop software. It provides access to MakerWorld (a repo
 There's also a software product called Bambu Suite, but that's for cutting and engraving while Bambu Studio is for printing.
 ```
 
-```{note}
-This was written using Bambu Studio v2.6.0.51.
-```
+## User Interface
+
+`{bm} /(Bambu Studio\/User Interface)_TOPIC/i`
 
 Bambu Studio has 6 main screens (referred to as tabs), which can be navigated between using the top toolbar:
 
@@ -360,20 +360,9 @@ The standard workflow is to plan out what and where get things printed on the Pr
 
 ![Bambu Studio top toolbar](bambu_studio_top_toolbar.png) `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/32`
 
-## Project Persistence
+### 3D Viewport
 
-`{bm} /(Bambu Studio\/Project Persistence)_TOPIC/i`
-
-Bambu Studio saves and loads project state as a 3MF file.
-
-* Load project: In the main menu, navigate to **File** → **Open Project...**.
-* Save project: In the main menu, navigate to **File** → **Save Project** (or **Save Project as...**).
-
-Alternatively, Bambu Studio's Home screen integrates MakerWorld. MakerWorld is an online repository of printable projects, openable as if opening a local project. `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/33`
-
-## 3D Viewport
-
-`{bm} /(Bambu Studio\/3D Viewport)_TOPIC/i`
+`{bm} /(Bambu Studio\/User Interface\/3D Viewport)_TOPIC/i`
 
 Bambu Studio has a 3D viewport on both the Prepare screen and the Preview screen.
 
@@ -425,12 +414,12 @@ The sidebar contains a ...
 * **Project Filaments** section that controls the filaments are available to the project. For example, a model within the project can be painted such that different areas of the model use different filaments, but those filaments have to be made available to the project first via this section.
 * **Process** section that controls the hierarchy of entities within the project (e.g., models may be grouped together, referred to as an assembly). Each entity has properties to it that can be modified (e.g., parameters that control how the model prints).
 
-## Project Filaments
+### Project Filaments
 
-`{bm} /(Bambu Studio\/Project Filaments)_TOPIC/i`
+`{bm} /(Bambu Studio\/User Interface\/Project Filaments)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/3D Viewport
+Bambu Studio/User Interface/3D Viewport
 ```
 
 Bambu Studio has a section for defining which filaments are available to a project. The Project Filaments section is in the sidebar of the Prepare screen and the Preview screen.
@@ -458,11 +447,11 @@ Bambu Studio/Model Rotation_TOPIC
 
 ## Print Parameters
 
-`{bm} /(Bambu Studio\/Print Parameters)_TOPIC/i`
+`{bm} /(Bambu Studio\/User Interface\/Print Parameters)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/3D Viewport
-Bambu Studio/Project Filaments
+Bambu Studio/User Interface/3D Viewport
+Bambu Studio/User Interface/Project Filaments
 ```
 
 Bambu Studio has a section for defining how models and model groupings (assemblies) are printed. The Process section is in the sidebar of the Prepare screen and the Preview screen.
@@ -484,12 +473,27 @@ A full accounting of parameters is beyond the scope of this section. Individual 
 
 `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35`
 
+## Project Persistence
+
+```{prereq}
+Bambu Studio/User Interface_TOPIC
+```
+
+`{bm} /(Bambu Studio\/Project Persistence)_TOPIC/i`
+
+Bambu Studio saves and loads project state as a 3MF file.
+
+* Load project: In the main menu, navigate to **File** → **Open Project...**.
+* Save project: In the main menu, navigate to **File** → **Save Project** (or **Save Project as...**).
+
+Alternatively, Bambu Studio's Home screen integrates MakerWorld. MakerWorld is an online repository of printable projects, openable as if opening a local project. `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/33`
+
 ## Model Importing
 
 `{bm} /(Bambu Studio\/Model Importing)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/3D Viewport_TOPIC
+Bambu Studio/User Interface_TOPIC
 ```
 
 Import 3D models into the project either via ...
@@ -516,7 +520,7 @@ Alternatively, Bambu Studio's Home screen integrates MakerWorld. MakerWorld is a
 `{bm} /(Bambu Studio\/Model Placement)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/3D Viewport_TOPIC
+Bambu Studio/User Interface_TOPIC
 ```
 
 In the Prepare screen's 3D viewport, models can be moved by either ...
@@ -560,7 +564,7 @@ Models typically can't be lifted off the build plate without first merging. See 
 `{bm} /(Bambu Studio\/Model Rotation)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/3D Viewport_TOPIC
+Bambu Studio/User Interface_TOPIC
 ```
 
 In the Prepare screen's 3D viewport, selected models can be manually rotated by using the rotation tool in Prepare screen's toolbar (button 7, keyboard shortcut R), which will present rotational axis circles that can be left-click dragged and a pop-up with angles.
@@ -582,7 +586,7 @@ Alternatively, a model may be rotated via ...
 `{bm} /(Bambu Studio\/Model Scale)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/3D Viewport_TOPIC
+Bambu Studio/User Interface/3D Viewport_TOPIC
 ```
 
 In the Prepare screen's 3D viewport, selected models can be manually scaled by using the scale tool in Prepare screen's toolbar (button 8, keyboard shortcut S), which will present scale axis points that can be left-click dragged and a pop-up with scaling parameters.
@@ -611,7 +615,7 @@ I couldn't figure out what the Coordinates dropdown actually does?
 
 ```{prereq}
 Bambu Studio/Model Placement_TOPIC
-Bambu Studio/3D Viewport_TOPIC
+Bambu Studio/User Interface_TOPIC
 ```
 
 In certain cases, two models may need to combine into one for printing, such that they print as a single object vs two separate objects.
@@ -675,8 +679,7 @@ Bambu Studio/Model Set Operations_TOPIC
 `{bm} /(Bambu Studio\/Model Painting)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/3D Viewport_TOPIC
-Bambu Studio/Project Filaments_TOPIC
+Bambu Studio/User Interface_TOPIC
 ```
 
 In the Prepare screen's 3D viewport, selected models can be painted by using the paint tool in Prepare screen's toolbar (button 13, keyboard shortcut N), which will present a pop-up with scaling parameters / controls.
@@ -740,7 +743,7 @@ The remaining fields change !!based!! on which painting tool is used. When the p
 `{bm} /(Bambu Studio\/Model Supports)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/3D Viewport_TOPIC
+Bambu Studio/User Interface_TOPIC
 ```
 
 Areas of a model that are overhangs may require supports_BO. Supports_BO are temporary additions added under these parts to help keep them stable during printing (e.g., prevent sagging). Supports_BO easily snap off once the print completes.
@@ -766,7 +769,7 @@ The [documentation](https://wiki.bambulab.com/en/software/bambu-studio/support) 
 `{bm} /(Bambu Studio\/Model Supports\/Type)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/Print Parameters_TOPIC
+Bambu Studio/User Interface_TOPIC
 ```
 
 Supports_BO come in two types: **Normal** and **Tree**.
@@ -867,10 +870,6 @@ The example above isn't a valid print, but for some reason Bambu Studio isn't sh
 
 `{bm} /(Bambu Studio\/Model Supports\/Interface)_TOPIC/i`
 
-```{prereq}
-Bambu Studio/Print Parameters_TOPIC
-```
-
 Interface_BO layers are support_BO layers that touch the model, while the rest of the support_BO body is referred to as the base_BO. Bambu studio allows targeting specific materials for a support's_BO base_BO and interface_BO. In the Prepare screen's side-panel, navigate to the **!!Support!!** tab and to the **!!Filament for Supports!!** subsection. The ...
 
 * **!!Support!!/!!raft!! !!base!!** controls the filament to use for the support's_BO base_BO.
@@ -886,7 +885,6 @@ Interface_BO layers are support_BO layers that touch the model, while the rest o
 
 ```{prereq}
 Bambu Studio/Model Supports/Interface_TOPIC
-Bambu Studio/Print Parameters_TOPIC
 ```
 
 A raft_BO is a type of support_BO that elevates a model off the build plate. Rafts are commonly used for materials that are prone to warping (e.g., ABS).
@@ -913,7 +911,7 @@ Raft_BO contact Z distance description inside Bambu Studio mentions that the par
 ```{prereq}
 Bambu Studio/Model Combining_TOPIC
 Bambu Studio/Model Supports_TOPIC
-Bambu Studio/3D Viewport_TOPIC
+Bambu Studio/User Interface_TOPIC
 ```
 
 In certain cases, a model may either need to be cut (e.g., oversized for printer) or may benefit from being cut (e.g., minimize need for supports_BO or make it easier to sand/paint/finish). Cut pieces are typically assembled and fused back together after printing (e.g., glue, pen welding, joinery).
@@ -978,7 +976,7 @@ The mesh boolean tool (button 11, keyboard shortcut B) can be used to merge the 
 
 ```{prereq}
 Bambu Studio/Model Combining_TOPIC
-Bambu Studio/3D Viewport_TOPIC
+Bambu Studio/User Interface_TOPIC
 ```
 
 In the Prepare screen's 3D viewport, selected models can have set operations applied (e.g., union, intersection, and subtraction) by using the mesh boolean tool in Prepare screen's toolbar (button 11, keyboard shortcut B), which present a pop-up with which which operations to apply.
@@ -1012,7 +1010,7 @@ Bambu Studio/Model Combining_TOPIC
 `{bm} /(Bambu Studio\/Model Text)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/3D Viewport_TOPIC
+Bambu Studio/User Interface_TOPIC
 ```
 
 Text can be placed on a model, extruded from a model, indented on to a model, or placed as a standalone extruded model on its own.
@@ -1059,7 +1057,7 @@ The parameters are the same as the parameter before, except for **Mode** and **O
 `{bm} /(Bambu Studio\/Layer Height)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/Print Parameters_TOPIC
+Bambu Studio/User Interface_TOPIC
 ```
 
 Layer height is the !!height!! of each layer in the print. The thinner the layer, the less ridges are visible as the model is printed upwards (Z axis), meaning a smoother overall appearance.
@@ -1075,6 +1073,8 @@ In addition, there are presets available for choosing common layer heights. Thes
 
 ```{note}
 Settings different layer heights for each object? You might need to print the objects individually or slicing will fail. In the Prepare screen's side-panel navigate to the **!!Other!!** tab, then to the **!!Special mode!!** subsection, then set **!!Print sequence!!** to "By object".
+
+There might be issues where the toolhead can move depending on !!height!! of objects being printed. See [here](https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/36) for potential way to mitigate (change print order).
 ```
 
 ```{note}
@@ -1092,7 +1092,7 @@ The initial layer height is recommended to be 50% of the nozzle's diameter. Subs
 `{bm} /(Bambu Studio\/Seams)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/Print Parameters_TOPIC
+Bambu Studio/User Interface_TOPIC
 ```
 
 A seam is a mark that shows up when the toolhead prints an enclosed path, showing up where the start and end of the path meet. The screenshot below highlights where seams will show up on an example model once printed.
@@ -1100,6 +1100,14 @@ A seam is a mark that shows up when the toolhead prints an enclosed path, showin
 ![Bambu Studio Preview screen model seam aligned example](bambu_studio_preview_model_seam_aligned_example.png)
 
 There are several ways to control the appearance of seams: Algorithmic placement (e.g., hiding seams on edges), manual placement (e.g., seam painting), and specialized printing techniques (e.g., scarf seams). The subsections below detail the common methods to mitigate seams.
+
+```{note}
+Although not documented in any of the subsections below, the fuzzy skin feature can also help mitigate the appearance of seams by introducing a randomly jittered textured outside.
+```
+
+```{seealso}
+Bambu Studio/Fuzzy Skin_TOPIC
+```
 
 ### Algorithmic Seam Placement
 
@@ -1225,6 +1233,10 @@ In the object's parameters, ...
 
 `{bm} /(Bambu Studio\/Curved Tops)_TOPIC/i`
 
+```{prereq}
+Bambu Studio/User Interface_TOPIC
+```
+
 Models with a curved tops instead of flat tops (e.g., circle vs square) should set the property **Quality** → **Advanced** → **Only one wall on top surfaces** to **Not Applied**. Doing so reduces visible layer lines, resulting in a smoother finish.
 
 ![Bambu Studio Preview screen Only one wall on top surfaces example](bambu_studio_preview_only_one_wall_on_top_surfaces_example.png)
@@ -1237,9 +1249,178 @@ There seems to also be a hidden developer property **Quality** → **Advanced** 
 
 `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35`  `{ref} https://wiki.bambulab.com/en/software/bambu-studio/parameter/quality-advance-settings`
 
+## Fuzzy Skin
+
+`{bm} /(Bambu Studio\/Fuzzy Skin)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/User Interface_TOPIC
+Bambu Studio/Walls_TOPIC
+Bambu Studio/Infill_TOPIC
+```
+
+Fuzzy skin is a rough texture targeting the outside wall of a model and potentially holes within that model (just the walls, top and bottom surfaces won't be textured). It does this by adding random jitters to wall paths during slicing. The purpose of fuzzy skin is two-fold: It's either aesthetic, or it's intended to make the printed object easier to grip, or both.
+
+![Bambu Studio Prepare screen fuzzy skin example](bambu_studio_prepare_fuzzy_skin_example.png)
+
+Fuzzy skin parameters are under **Others** → **Special mode**.
+
+![Bambu Studio Prepare screen fuzzy skin parameters](bambu_studio_prepare_fuzzy_skin_parameters.png)
+
+To enable/disable fuzzy skin set the property **Fuzzy skin** to either ...
+
+* **Contour**, which targets just the outer walls on the outside perimeter.
+* **Counter and hole**, which targets the outer walls on both the outside perimeter and the perimeters of any holes.
+* **All walls**, which targets inner and outer walls on both the outside perimeter and the perimeters of any holes (jitters inner walls as well).
+* **None(allow paint)**, which targets specific walls on the model to make fuzzy via the fuzzy skin paint tool. See subsection on fuzzy skin painting.
+* **Disable**, which disables fuzzy skin entirely.
+
+If enabled, the parameter ...
+
+* **Fuzzy skin point distance** controls the interval at which the jitter is updated. For example, setting it to 1mm produces smoother grooves vs 0.2mm because the toolhead's position is getting a randomly offset every 1mm instead of 0.2mm.
+* **Fuzzy skin !!thickness!!** controls the depth of the nozzle jitter, making the fuzziness more pointy. A value too high may cause overhang issues.
+* **Fuzzy skin generator mode** controls how fuzzy skin is printed. A value of ...
+
+  * **Displacement** jitters the toolhead's position out, creating a fuzziness but there'll likely be a gap between the fuzzed outer wall and inner walls / infill.
+  * **Extrusion** jitters the toolhead's extrusion to be more/less (nozzle position stays un-jittered).
+  * **Combined** combines both **Displacement** and **Extrusion**, with the intention that **Displacement**'s gap are filled with the extra filament extruded from **Extrusion**.
+
+* **Fuzzy skin noise type** controls which algorithm is used to generate the noise that the toolhead's jittering is !!based!! off of.
+* **Apply fuzzy skin to first layer** controls whether the first layer's walls should have fuzzy skin applied.
+
+```{note}
+Why would you want to texture inner walls? Makes no sense? Doesn't also conflict with the infill?
+```
+
+`{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35` `{ref} https://wiki.bambulab.com/en/software/bambu-studio/parameter/fuzzy-skin`
+
+### Painting
+
+```{prereq}
+Bambu Studio/Model Painting_TOPIC
+```
+
+Rather than having walls be fuzzy skinned in their entirety, the model can have fuzzy skin painted on to particular areas such that only those painted areas print as fuzzy skin. In the Prepare screen's 3D viewport, select a model and click fuzzy skin painting in the Prepare screen's toolbar (button 19, keyboard shortcut H). Bambu Studio will open a pop-up and present an isolated view of the model where areas can be painted.
+
+![Bambu Studio Prepare screen toolbar](bambu_studio_prepare_toolbar.png)
+  
+![Bambu Studio Prepare screen fuzzy skin painting example](bambu_studio_prepare_fuzzy_skin_painting_example.png) ![Bambu Studio Preview screen fuzzy skin painting example](bambu_studio_preview_fuzzy_skin_painting_example.png)
+
+Tools options and controls are nearly exactly the same as those for normal model painting. Select a **Tool type** and the tools configuration options will show up directly underneath. Regardless of the tool type, ...
+  
+* using the **left** mouse button on the model to paint where fuzzy paint should exist.
+* using the **right** mouse button on the model to paint where fuzzy paint should not exist (removes paint if it exists).
+  
+To move the viewport rather than paint (e.g., move camera, rotate camera, and zoom camera), use the same viewport controls as normal *with the exception that any mouse button presses required are not on the model to be painted*.
+
+For painted fuzzy skin to be applied to the print, ensure **Other** → **Special Mode** → **Fuzzy Skin** is set to **None(allow paint)**.
+
+`{ref} https://wiki.bambulab.com/en/software/bambu-studio/parameter/fuzzy-skin`
+
+## Skirt
+
+`{bm} /(Bambu Studio\/Skirt)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/User Interface_TOPIC
+```
+
+A skirt is one or more loops printed around the objects on the build plate, where there's a gap between the loops and the objects (not touching). The purpose of a skirt is to prime the nozzle. It's typically not required on the H2S because the nozzle is already gets primed when a print starts by printing a small line, called a prime line.
+
+Nevertheless, skirt loops can be enabled through the property **Other** → **Bed Adhesion** → **Skirt loops** and **Skirt !!height!!**. The example below has 4 loops set at a layer height of 2.
+
+![Bambu Studio Prepare screen skirt loop example](bambu_studio_prepare_skirt_loop_example.png)
+
+```{note}
+Skirt loop parameters only show up when the scope is set to global, not on an object / set of objects.
+```
+
+`{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35` `{ref} https://www.reddit.com/r/BambuLab/comments/173zak1/is_there_better_documentation_on_bambu_studio/`
+
+## Brims
+
+`{bm} /(Bambu Studio\/Brims)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/Skirt_TOPIC
+Bambu Studio/User Interface_TOPIC
+```
+
+A brim is several outer walls added around the bottom layer of a printed object, such that the object has a bottom similar to the brim of a top hat. Its purpose is to enhance bed adhesion of models ...
+
+* with a small !!base!! (e.g., a tall cylinder with a small radius).
+* that are prone to warping at the bottom edges, lifting off the build plate as they warp (e.g., ABS is prone to this because it shrinks with it cools).
+
+Brim parameters are under **Other** → **Bed Adhesion**.
+
+![Bambu Studio Prepare screen brim parameters](bambu_studio_prepare_brim_parameters.png)
+
+The parameter ...
+
+* **Brim type** defines how and what type of brim is applied. A value of ...
+
+  * **Auto** lets Bambu Studio decide whether to add a brim and how wide it should be, taking into account the geometry and the properties of a filament being printed with.
+  * **No-brim** forces no brims.
+  * **Outer brim only** forces a brim on the outside perimeter.
+  * **Inner brim only** forces a brim on the inside of the perimeter, assuming the model has a hole  inside (being hollow inside doesn't count).
+  * **Outer and inner brim** combines both the **Outer brim only** and **Inner brim only** options above.
+  * **Painted** places points / stretches of brims, referred to as brim ears, at user-defined locations around the bottom of the model (locations that are likely to warp off the bed). See subsection on brim ears for how to place.
+
+  ```{seealso}
+  Bambu Studio/Brims/Brim Ears_TOPIC
+  ```
+
+* **Brim width** defines the distance between the outer-most bring and the printed object (how wide the brim is).
+
+* **Brim-object gap** defines the distance between the inner-most brim line and the printed object. A smaller gap typically improves the connection to the model while a larger gap makes pulling off easier.
+
+```{note}
+If gap is 0 but there's still a gap showing up between the brim and hte model, it may be that **Quality** → **Elephant foot compensation** is non-zero. Set it to 0.
+```
+
+![Bambu Studio Preview screen brim example](bambu_studio_preview_brim_example.png)
+
+`{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/36` `{ref} https://wiki.bambulab.com/en/software/bambu-studio/auto-brim`
+
+### Brim Ears
+
+`{bm} /(Bambu Studio\/Brims\/Brim Ears)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/Model Painting_TOPIC
+```
+A brim ear is a point / stretch of brim at user-defined locations around the bottom of an object. Similar to model painting, the placement of brim ears can be painted on to the model. In the Prepare screen's 3D viewport, select the model and paint brim ears by using the brim ear tool in Prepare screen's toolbar (button 18, keyboard shortcut E), which will present a pop-up with scaling parameters / controls.
+
+![Bambu Studio Prepare screen toolbar](bambu_studio_prepare_toolbar.png)
+
+![Bambu Studio Prepare screen brim ears](bambu_studio_prepare_brim_ears.png)
+
+For brim ears to be printed, ensure **Other** → **Bed Adhesion** → **Brim type** is set to **Painted**. Otherwise, a warning will display at the bottom of the pop-up as shown in the example above.
+
+To place brim ears manually, left-click around the !!base!! of the model. When a brim ear is placeable, a partially transparent brim ear will show under the mouse, notifying that a brim ear can be placed in that spot. The brim ear's size is controlled by the **Head diameter** parameter, which is the diameter of the brim ear in mm.
+
+To place brim ears automatically, use the **Aut-generate points** button. Where brim ears get placed depends on ..
+
+* **Max angle**, which controls how sharp the angle must be for a brim ear to be placed there (e.g., 90 degree will place brim ears at perpendicular points on the bottom).
+* **Detection radius**, which controls how to many brim ears are placed along contours (smaller value results in more brim ears).
+
+```{note}
+Brim ears will be invisible once exiting this tool, only being visible again when re-entering the tool on the same model or in the Preview screen post-slicing.
+```
+
+```{note}
+I found this as well: https://wiki.bambulab.com/en/software/bambu-studio/use-disc-to-avoid-warping. This seems to be doing the same thing as brim ears but its entirely manual? Maybe it was made for an older version of Bambu Studio where brim ears feature wasn't available.
+```
+
+`{ref} https://wiki.bambulab.com/en/software/bambu-studio/brim-ears`
+
 ## Walls
 
 `{bm} /(Bambu Studio\/Walls)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/User Interface_TOPIC
+```
 
 The number of walls printed for a model (Z axis) is set through the parameter **Strength** → **Walls** → **Wall loops**. The more walls, the stronger the print is (presumably). It's recommended that for ...
 
@@ -1272,6 +1453,7 @@ There are the alternative parameters **!!Top shell thickness!!** / **!!Bottom sh
 
 ```{prereq}
 Bambu Studio/Walls_TOPIC
+Bambu Studio/User Interface_TOPIC
 ```
 
 While the exterior of a printed model are walls / surfaces, the interior area of is printed as an infill pattern. An infill patterns is a pattern where the user controls how densely the pattern is printed, where higher densities are typically associated with greater strength / greater load bearing capacity.
@@ -1311,7 +1493,7 @@ Infill parameters are found under **Strength** → **Sparse infill**:
 
   ```{note}
   List above generated by ChatGPT as a quick lookup guide.
-  ```
+  ``` 
 
 In addition to the standard infill, it's possible to specify infill patterns for the top and bottom surfaces using the parameters **Strength** → **Top/bottom shells** → **Top surface pattern** and **Bottom surface pattern**. The patterns available are more limits than the full roster of infill patterns.
 
@@ -1667,6 +1849,8 @@ What's the point of having these? I guess it has to do with the finish of the su
 * `{bm} Carbon Fiber (CF)/\b(CF)\b/i` `{bm} /(carbon[\- ]fiber)/i` - A filament material designation that means it's been fortified with !!carbon fiber!! strands to enhance stiffness and strength. `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/215`
 
 * `{bm} Glass Fiber (GF)/\b(GF)\b/i` `{bm} /(glass[\- ]fiber)/i` - A filament material designation that means it's been fortified with !!glass fiber!! to enhance stiffness and strength. `{ref} https://bambulab.com/en-us/filament/pla-cf`
+
+* `{bm} bed adhesion` - The adherence of the bottom of a print to the the build plate. For example, in poor bed adhesion, the bottom edges of a print may warp and detach off the build plate. `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/36`
 
 * `{bm} heat resistance` - FILL ME IN.
 
