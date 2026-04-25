@@ -51,8 +51,8 @@
 <li><a href="#H_Model%20Painting">Model Painting</a></li>
 <li><a href="#H_Model%20Supports">Model Supports</a></li>
 <ul>
-<li><a href="#H_Type">Type</a></li>
-<li><a href="#H_Painting">Painting</a></li>
+<li><a href="#H_Support%20Type">Support Type</a></li>
+<li><a href="#H_Support%20Painting">Support Painting</a></li>
 <li><a href="#H_Interface">Interface</a></li>
 <li><a href="#H_Raft">Raft</a></li>
 </ul>
@@ -60,16 +60,16 @@
 <li><a href="#H_Model%20Set%20Operations">Model Set Operations</a></li>
 <li><a href="#H_Model%20Text">Model Text</a></li>
 <li><a href="#H_Layer%20Height">Layer Height</a></li>
-<li><a href="#H_Seams">Seams</a></li>
+<li><a href="#H_Seam">Seam</a></li>
 <ul>
 <li><a href="#H_Algorithmic%20Seam%20Placement">Algorithmic Seam Placement</a></li>
 <li><a href="#H_Seam%20Painting">Seam Painting</a></li>
-<li><a href="#H_Scarf%20Seams">Scarf Seams</a></li>
+<li><a href="#H_Scarf%20Seam">Scarf Seam</a></li>
 </ul>
 <li><a href="#H_Curved%20Tops">Curved Tops</a></li>
 <li><a href="#H_Fuzzy%20Skin">Fuzzy Skin</a></li>
 <ul>
-<li><a href="#H1_Painting">Painting</a></li>
+<li><a href="#H_Fuzzy%20Skin%20Painting">Fuzzy Skin Painting</a></li>
 </ul>
 <li><a href="#H_Skirt">Skirt</a></li>
 <li><a href="#H_Brims">Brims</a></li>
@@ -927,7 +927,7 @@
 <p>At the bottom is an <strong>Add Mixed Filament</strong> button. Mixed filaments is a mix of existing filaments printed in interleaves <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s to achieve a new color via half-toning (e.g., alternating between 1 <a href="#BM_(layer%7Cslice)%2Fi">layer</a> black and 1 <a href="#BM_(layer%7Cslice)%2Fi">layer</a> white gives the impression that the printed object is gray). Mixed filaments are not recommended on the H2S because it's a single <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> printer - excessive swapping between filaments causes a lot of waste. <sub><a href="https://www.youtube.com/watch?v=ZsgJz0qk4eE">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/release/release-note-2-5-3">[src]</a></sub></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Mixed filaments don't have the desired effected on top/bottom surfaces because those are single <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s and only one color is printed per <a href="#BM_(layer%7Cslice)%2Fi">layer</a>? They work best on near vertical walls. It may be possible to rotate the object such that top/bottom surfaces are reduced, but it'll likely require introducing <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>.</p>
+<p>Mixed filaments don't have the desired effected on top/<a href="#BM_(bottom%20surface)%2Fi">bottom surface</a>s because those are single <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s and only one color is printed per <a href="#BM_(layer%7Cslice)%2Fi">layer</a>? They work best on near vertical <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s. It may be possible to rotate the object such that top/<a href="#BM_(bottom%20surface)%2Fi">bottom surface</a>s are reduced, but it'll likely require introducing <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>.</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
@@ -950,8 +950,8 @@
 <p>The Process section can change scope using a toggle (section 1). The scope can either be global, or it can target a specific set of objects (e.g., a model, an assembly, or some combination of models/assemblies). If not scoped globally, an object hierarchy will be displayed directly below the toggle (section 3). The selections in the object hierarchy will reflect those in the 3D viewport and vice versa.</p>
 <p>Below the object hierarchy are a hierarchy of parameters that control printing:</p>
 <ul>
-<li><strong>Quality</strong> tab organizes fidelity parameters (e.g., <a href="#BM_(layer%20height)%2Fi">layer height</a> and how to treat seams).</li>
-<li><strong>Strength</strong> tab organizes solidity/firmness parameters (e.g., <a href="#BM_(infill)%2Fi">infill</a> style/percentage and wall thickness).</li>
+<li><strong>Quality</strong> tab organizes fidelity parameters (e.g., <a href="#BM_(layer%20height)%2Fi">layer height</a> and how to treat <a href="#BM_(seam)%2Fi">seam</a>s).</li>
+<li><strong>Strength</strong> tab organizes solidity/firmness parameters (e.g., <a href="#BM_(infill)%2Fi">infill</a> style/percentage and <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> thickness).</li>
 <li><strong>Speed</strong> tab organizes print speed (e.g., how fast <a href="#BM_(toolhead)%2Fi">toolhead</a> moves when printing <a href="#BM_(overhang)%2Fi">overhang</a>s).</li>
 <li><strong>Support</strong> tab organizes <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> parameters (e.g., minimum angle for which <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> are required).</li>
 <li><strong>Others</strong> tab organizes parameters that don't fit in one of the other tabs.</li>
@@ -1110,11 +1110,11 @@
 <p>In certain cases, two models may need to combine into one for printing, such that they print as a single object vs two separate objects.</p>
 <p>In the Prepare screen's 3D viewport, select two or more models, then right-click to open the context menu and select <strong>Merge</strong>. Merged models are placed them under a single assembly.</p>
 <p><img src="bambu_studio_prepare_assemble_example.png" alt="Bambu Studio Prepare screen assembly example"></p>
-<p>Once models are within a single assembly, they can be manually moved into each other and / or levitated off the <a href="#BM_(build%20plate)%2Fi">build plate</a> using the move tool (Prepare screen's toolbar button 6, keyboard shortcut M). If models aren't merged but occupy the same space, <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> will print them as if they're distinct. That is, if two models occupy the same space, the outer shell / wall of both objects will be drawn inside each other.</p>
+<p>Once models are within a single assembly, they can be manually moved into each other and / or levitated off the <a href="#BM_(build%20plate)%2Fi">build plate</a> using the move tool (Prepare screen's toolbar button 6, keyboard shortcut M). If models aren't merged but occupy the same space, <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> will print them as if they're distinct. That is, if two models occupy the same space, the outer shell / <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> of both objects will be drawn inside each other.</p>
 <p><img src="bambu_studio_conflicting_vs_non_conflicting_models.png" alt="Bambu Studio Preview screen conflicting models vs non-conflicting models"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Doing a mesh boolean union also fixed this outer wall drawing problem.</p>
+<p>Doing a mesh boolean union also fixed this <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a> drawing problem.</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
@@ -1247,8 +1247,8 @@
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>The <a href="https://wiki.bambulab.com/en/software/bambu-studio/support">documentation</a> goes over advanced controls near the second half of the page. It might be too much detail to cover here.</p>
 </div>
-<a name="H_Type"></a><h3>Type</h3>
-<p><a name="BM_(Bambu%20Studio%5C%2FModel%20Supports%2FType)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Support%20Type"></a><h3>Support Type</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FModel%20Supports%2FSupport%20Type)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -1275,7 +1275,7 @@
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
-<li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Supports%2FPainting)_TOPIC%2Fi">Bambu Studio/Model Supports/Painting</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Supports%2FSupport%20Painting)_TOPIC%2Fi">Bambu Studio/Model Supports/Support Painting</a></li>
 </ul>
 </div>
 <p>The <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support's</a> type defines the geometry generated:</p>
@@ -1305,12 +1305,12 @@
 <p>See source to figure out how default switches between and organic. Out of scope for this document.</p>
 </div>
 <p>Normal <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> work best with large planar <a href="#BM_(overhang)%2Fi">overhang</a>s, giving better surface quality vs tree <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>. Tree <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> often give better results with complex models where <a href="#BM_(overhang)%2Fi">overhang</a> are small and / ot not planar. When in doubt, use tree <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> in hybrid style, because it will explicitly check for planar <a href="#BM_(overhang)%2Fi">overhang</a>s and those areas to generate normal <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> while the remaining areas get tree <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>. <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/support">[src]</a></sub></p>
-<a name="H_Painting"></a><h3>Painting</h3>
-<p><a name="BM_(Bambu%20Studio%5C%2FModel%20Supports%2FPainting)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Support%20Painting"></a><h3>Support Painting</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FModel%20Supports%2FSupport%20Painting)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Supports%2FType)_TOPIC%2Fi">Bambu Studio/Model Supports/Type</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Supports%2FSupport%20Type)_TOPIC%2Fi">Bambu Studio/Model Supports/Support Type</a></li>
 <li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Painting)_TOPIC%2Fi">Bambu Studio/Model Painting</a></li>
 </ul>
 </div>
@@ -1473,11 +1473,11 @@
 <li><strong>Subtraction</strong>: Removes a chunk from a model, using other models as the cut-out stencil.</li>
 </ul>
 <p>Regardless of which you pick, you can specific which of the selected models to apply the operation to. The resulting operation creates a single model with the chosen set operation applied (<em>not an assembly of models</em>, but a single model).</p>
-<p>Given that the mesh boolean tool creates a single new model, the resulting single model typically doesn't encounter overlap issues during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>. For example, if models aren't union'd but occupy the same space, <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> will print them as if they're distinct. That is, if two models occupy the same space, the outer shell / wall of both objects will be drawn inside each other.</p>
+<p>Given that the mesh boolean tool creates a single new model, the resulting single model typically doesn't encounter overlap issues during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>. For example, if models aren't union'd but occupy the same space, <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> will print them as if they're distinct. That is, if two models occupy the same space, the outer shell / <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> of both objects will be drawn inside each other.</p>
 <p><img src="bambu_studio_conflicting_vs_non_conflicting_models.png" alt="Bambu Studio Preview screen conflicting models vs non-conflicting models"> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/mesh-boolean">[src]</a></sub></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Merging two models under the same assembly also fixed this outer wall drawing problem.</p>
+<p>Merging two models under the same assembly also fixed this <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a> drawing problem.</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
@@ -1555,20 +1555,20 @@
 <p>The initial <a href="#BM_(layer%20height)%2Fi">layer height</a> is recommended to be 50% of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s diameter. Subsequent <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s are recommended to be between 20% to 70% of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s diameter. For example, if using the 0.4mm <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> that comes with the H2S, the initial <a href="#BM_(layer%7Cslice)%2Fi">layer</a> would be set to a <a href="#BM_(layer%20height)%2Fi">layer height</a> of 0.2mm and the remaining <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s can be set to anywhere between 0.08mm to 0.28mm. This information is also available under the printer setting's <strong><a href="#BM_(extruder)%2Fi">Extruder</a></strong> section.</p>
 <p><img src="bambu_studio_printer_settings_extruder_layer_height_limits.png" alt="Bambu Studio printer settings extruder layer height limits"></p>
 <p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/layer-heigh">[src]</a></sub> <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub></p>
-<a name="H_Seams"></a><h2>Seams</h2>
-<p><a name="BM_(Bambu%20Studio%5C%2FSeams)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Seam"></a><h2>Seam</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FSeam)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
 </ul>
 </div>
-<p>A seam is a mark that shows up when the <a href="#BM_(toolhead)%2Fi">toolhead</a> prints an enclosed path, showing up where the start and end of the path meet. The screenshot below highlights where seams will show up on an example model once printed.</p>
+<p>A <a href="#BM_(seam)%2Fi">seam</a> is a mark that shows up when the <a href="#BM_(toolhead)%2Fi">toolhead</a> prints an enclosed path, showing up where the start and end of the path meet. The screenshot below highlights where <a href="#BM_(seam)%2Fi">seam</a>s will show up on an example model once printed.</p>
 <p><img src="bambu_studio_preview_model_seam_aligned_example.png" alt="Bambu Studio Preview screen model seam aligned example"></p>
-<p>There are several ways to control the appearance of seams: Algorithmic placement (e.g., hiding seams on edges), manual placement (e.g., seam painting), and specialized printing techniques (e.g., scarf seams). The subsections below detail the common methods to mitigate seams.</p>
+<p>There are several ways to control the appearance of <a href="#BM_(seam)%2Fi">seam</a>s: Algorithmic placement (e.g., hiding <a href="#BM_(seam)%2Fi">seam</a>s on edges), manual placement (e.g., <a href="#BM_(seam)%2Fi">seam</a> painting), and specialized printing techniques (e.g., <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s). The subsections below detail the common methods to mitigate <a href="#BM_(seam)%2Fi">seam</a>s.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Although not documented in any of the subsections below, the fuzzy skin feature can also help mitigate the appearance of seams by introducing a randomly jittered textured outside.</p>
+<p>Although not documented in any of the subsections below, the fuzzy skin feature can also help mitigate the appearance of <a href="#BM_(seam)%2Fi">seam</a>s by introducing a randomly jittered textured outside.</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
@@ -1577,41 +1577,41 @@
 </ul>
 </div>
 <a name="H_Algorithmic%20Seam%20Placement"></a><h3>Algorithmic Seam Placement</h3>
-<p><a name="BM_(Bambu%20Studio%5C%2FSeams%2FAlgorithmic%20Seam%20Placement)_TOPIC%2Fi"></a><strong></strong></p>
-<p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> can algorithmically control the placement of seams in several ways. The easiest is through the <strong>Quality</strong> → <strong>Seam</strong> → <strong>Seam position</strong> parameter. The value ...</p>
+<p><a name="BM_(Bambu%20Studio%5C%2FSeam%2FAlgorithmic%20Seam%20Placement)_TOPIC%2Fi"></a><strong></strong></p>
+<p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> can algorithmically control the placement of <a href="#BM_(seam)%2Fi">seam</a>s in several ways. The easiest is through the <strong>Quality</strong> → <strong><a href="#BM_(seam)%2Fi">Seam</a></strong> → <strong><a href="#BM_(seam)%2Fi">Seam</a> position</strong> parameter. The value ...</p>
 <ul>
-<li><strong>Nearest</strong> positions seam on a vertex in attempt to hide it (suitable for models with sharp angles), prioritizing concave non-overhand vertex, then convex non-overhand vertex, then any non-<a href="#BM_(overhang)%2Fi">overhang</a> vertex, then finally <a href="#BM_(overhang)%2Fi">overhang</a> vertex. If no suitable vertex is available, seam is placed near the previous <a href="#BM_(layer%7Cslice)%2Fi">layer</a>'s seam.</li>
-<li><strong>Aligned</strong> positions seam near the previous <a href="#BM_(layer%7Cslice)%2Fi">layer</a>'s seam.</li>
-<li><strong>Back</strong> positions seam in the back, where back is defined as the back of the <a href="#BM_(build%20plate)%2Fi">build plate</a>.</li>
-<li><strong>Random</strong> randomly distributes the seam, potentially giving the print irregular dots /scratch-like marks.</li>
+<li><strong>Nearest</strong> positions <a href="#BM_(seam)%2Fi">seam</a> on a vertex in attempt to hide it (suitable for models with sharp angles), prioritizing concave non-overhand vertex, then convex non-overhand vertex, then any non-<a href="#BM_(overhang)%2Fi">overhang</a> vertex, then finally <a href="#BM_(overhang)%2Fi">overhang</a> vertex. If no suitable vertex is available, <a href="#BM_(seam)%2Fi">seam</a> is placed near the previous <a href="#BM_(layer%7Cslice)%2Fi">layer</a>'s <a href="#BM_(seam)%2Fi">seam</a>.</li>
+<li><strong>Aligned</strong> positions <a href="#BM_(seam)%2Fi">seam</a> near the previous <a href="#BM_(layer%7Cslice)%2Fi">layer</a>'s <a href="#BM_(seam)%2Fi">seam</a>.</li>
+<li><strong>Back</strong> positions <a href="#BM_(seam)%2Fi">seam</a> in the back, where back is defined as the back of the <a href="#BM_(build%20plate)%2Fi">build plate</a>.</li>
+<li><strong>Random</strong> randomly distributes the <a href="#BM_(seam)%2Fi">seam</a>, potentially giving the print irregular dots /scratch-like marks.</li>
 </ul>
 <p><img src="bambu_studio_prepare_seam_parameters.png" alt="Bambu Studio Prepare screen seam parameters"></p>
 <p><img src="bambu_studio_preview_model_seam_back_example.png" alt="Bambu Studio Preview screen model seam back example"> <img src="bambu_studio_preview_model_seam_random_example.png" alt="Bambu Studio Preview screen model seam random example"> <img src="bambu_studio_preview_model_seam_nearest_example.png" alt="Bambu Studio Preview screen model seam nearest example"></p>
 <p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/Seam">[src]</a></sub></p>
 <a name="H_Seam%20Painting"></a><h3>Seam Painting</h3>
-<p><a name="BM_(Bambu%20Studio%5C%2FSeams%2FSeam%20Painting)_TOPIC%2Fi"></a><strong></strong></p>
+<p><a name="BM_(Bambu%20Studio%5C%2FSeam%2FSeam%20Painting)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Bambu%20Studio%5C%2FSeams%2FAlgorithmic%20Seam%20Placement)_TOPIC%2Fi">Bambu Studio/Seams/Algorithmic Seam Placement</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FSeam%2FAlgorithmic%20Seam%20Placement)_TOPIC%2Fi">Bambu Studio/Seam/Algorithmic Seam Placement</a></li>
 <li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Painting)_TOPIC%2Fi">Bambu Studio/Model Painting</a></li>
 </ul>
 </div>
-<p>Similar to model painting, the placement of a seam can be painted on to the model. In the Prepare screen's 3D viewport, select the model and paint a seam by using the seam paint tool in Prepare screen's toolbar (button 17, keyboard shortcut P), which will present a pop-up with scaling parameters / controls.</p>
+<p>Similar to model painting, the placement of a <a href="#BM_(seam)%2Fi">seam</a> can be painted on to the model. In the Prepare screen's 3D viewport, select the model and paint a <a href="#BM_(seam)%2Fi">seam</a> by using the <a href="#BM_(seam)%2Fi">seam</a> paint tool in Prepare screen's toolbar (button 17, keyboard shortcut P), which will present a pop-up with scaling parameters / controls.</p>
 <p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
 <p><img src="bambu_studio_prepare_seam_painting_parameters.png" alt="Bambu Studio Prepare screen seam painting parameters"></p>
-<p>Seam painting is operationally very similar to normal model painting. Paint the area to force the seam at. During <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>. the seam should show up in the areas painted.</p>
+<p><a href="#BM_(seam)%2Fi">Seam</a> painting is operationally very similar to normal model painting. Paint the area to force the <a href="#BM_(seam)%2Fi">seam</a> at. During <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>. the <a href="#BM_(seam)%2Fi">seam</a> should show up in the areas painted.</p>
 <p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/Seam">[src]</a></sub></p>
-<a name="H_Scarf%20Seams"></a><h3>Scarf Seams</h3>
-<p><a name="BM_(Bambu%20Studio%5C%2FSeams%2FScarf%20Seams)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Scarf%20Seam"></a><h3>Scarf Seam</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FSeam%2FScarf%20Seam)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Bambu%20Studio%5C%2FSeams%2FAlgorithmic%20Seam%20Placement)_TOPIC%2Fi">Bambu Studio/Seams/Algorithmic Seam Placement</a></li>
-<li><a href="#BM_(Bambu%20Studio%5C%2FSeams%2FSeam%20Painting)_TOPIC%2Fi">Bambu Studio/Seams/Seam Painting</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FSeam%2FAlgorithmic%20Seam%20Placement)_TOPIC%2Fi">Bambu Studio/Seam/Algorithmic Seam Placement</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FSeam%2FSeam%20Painting)_TOPIC%2Fi">Bambu Studio/Seam/Seam Painting</a></li>
 </ul>
 </div>
-<p>A scarf seam is a specialized form of seam, intended to hide its appearance for objects that are round to the point where the seam can't be hidden (e.g., sphere, cylinder, or some round model that contains no natural edge for the seam to hide). At the ...</p>
+<p>A <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a> is a specialized form of <a href="#BM_(seam)%2Fi">seam</a>, intended to hide its appearance for objects that are round to the point where the <a href="#BM_(seam)%2Fi">seam</a> can't be hidden (e.g., sphere, cylinder, or some round model that contains no natural edge for the <a href="#BM_(seam)%2Fi">seam</a> to hide). At the ...</p>
 <ul>
 <li>beginning portion of the path, the amount of filament gradually increases as it lifts off (tapered).</li>
 <li>ending portion of the path, <a href="#BM_(layer%20height)%2Fi">layer height</a> gradually decreases as it comes to a stop (tapered).</li>
@@ -1625,19 +1625,19 @@
    .' .'   start
 --'  '-------------
 </code></pre>
-<p>For scarf seams to be enabled, the filament being printed with must have scarf seams enabled in its filament settings: In the Prepare screen's sidebar, navigate to <strong>Project Filaments</strong>, then select the ellipsis for the desired filament and navigate to <strong>Filament</strong> → <strong>Filament scarf seam settings</strong></p>
+<p>For <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s to be enabled, the filament being printed with must have <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s enabled in its filament settings: In the Prepare screen's sidebar, navigate to <strong>Project Filaments</strong>, then select the ellipsis for the desired filament and navigate to <strong>Filament</strong> → <strong>Filament <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a> settings</strong></p>
 <p><img src="bambu_studio_filament_scarf_seam_settings.png" alt="Bambu Studio filament scarf seam settings"></p>
 <ul>
-<li><strong>Scarf seam type</strong>: Must be set to either <strong>Contour</strong> or <strong>Contour and Hole</strong> for scarf seams to be enabled.</li>
-<li><strong>Scarf start height</strong>: Height at which the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> starts printing the wall, specified in mm or percentage of <a href="#BM_(layer%20height)%2Fi">layer height</a>.</li>
-<li><strong>Scarf slope gap</strong>: Scarf seam cuts into the inner wall to accommodate excess material, represented as a percentage of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> diameter multiplied by some internal constant.</li>
-<li><strong>Scarf length</strong>: Length of the seam. Disabled if set to 0 or the option <strong>Scarf around the entire wall</strong> is enabled in print parameters.</li>
+<li><strong><a href="#BM_(scarf%20seam)%2Fi">Scarf seam</a> type</strong>: Must be set to either <strong>Contour</strong> or <strong>Contour and Hole</strong> for <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s to be enabled.</li>
+<li><strong>Scarf start height</strong>: Height at which the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> starts printing the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>, specified in mm or percentage of <a href="#BM_(layer%20height)%2Fi">layer height</a>.</li>
+<li><strong>Scarf slope gap</strong>: <a href="#BM_(scarf%20seam)%2Fi">Scarf seam</a> cuts into the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a> to accommodate excess material, represented as a percentage of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> diameter multiplied by some internal constant.</li>
+<li><strong>Scarf length</strong>: Length of the <a href="#BM_(seam)%2Fi">seam</a>. Disabled if set to 0 or the option <strong>Scarf around the entire <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a></strong> is enabled in print parameters.</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Unsure what "Contour" and "Contour and Hole" refer to? It has something to do with https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation.</p>
-<p>Unsure what the slope gap parameter actually does? It leaves a gap in the inner wall so the exterior wall can bleed extra material into it?</p>
-<p>Scarf start height is the starting height that the scarf seam starts printing at, as shown in the following ASCII diagram.</p>
+<p>Unsure what the slope gap parameter actually does? It leaves a gap in the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a> so the exterior <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> can bleed extra material into it?</p>
+<p>Scarf start height is the starting height that the <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a> starts printing at, as shown in the following ASCII diagram.</p>
 <pre><code>-------------.  ,-----------
      end   ,' ,'
          ,' ,'
@@ -1651,35 +1651,35 @@
 <p>In the object's parameters, ...</p>
 <ul>
 <li>
-<p>when <strong>Quality</strong> → <strong>Seam</strong> → <strong>Smart scarf seam application</strong> is ...</p>
+<p>when <strong>Quality</strong> → <strong><a href="#BM_(seam)%2Fi">Seam</a></strong> → <strong>Smart <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a> application</strong> is ...</p>
 <ul>
-<li>enabled, scarf seams are applied as needed. Specifically, when the <a href="#BM_(layer%7Cslice)%2Fi">layer</a> wall isn't part of an <a href="#BM_(overhang)%2Fi">overhang</a> and doesn't have any hard edges for the seam to hide in, that's when scarf seams are applied.</li>
-<li>disabled,  scarf seams are applied to all areas.</li>
+<li>enabled, <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s are applied as needed. Specifically, when the <a href="#BM_(layer%7Cslice)%2Fi">layer</a> <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> isn't part of an <a href="#BM_(overhang)%2Fi">overhang</a> and doesn't have any hard edges for the <a href="#BM_(seam)%2Fi">seam</a> to hide in, that's when <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s are applied.</li>
+<li>disabled,  <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s are applied to all areas.</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Why not on <a href="#BM_(overhang)%2Fi">overhang</a>s? Because scarf seams are too weak for <a href="#BM_(overhang)%2Fi">overhang</a>ing areas?</p>
+<p>Why not on <a href="#BM_(overhang)%2Fi">overhang</a>s? Because <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s are too weak for <a href="#BM_(overhang)%2Fi">overhang</a>ing areas?</p>
 </div>
 </li>
 <li>
-<p><strong>Quality</strong> → <strong>Seam</strong> → <strong>Scarf application angle threshold</strong> is the angle that is considered sharp enough for seams to hide in. Angles wider than this will enable scarf seams.</p>
+<p><strong>Quality</strong> → <strong><a href="#BM_(seam)%2Fi">Seam</a></strong> → <strong>Scarf application angle threshold</strong> is the angle that is considered sharp enough for <a href="#BM_(seam)%2Fi">seam</a>s to hide in. Angles wider than this will enable <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s.</p>
 </li>
 <li>
-<p><strong>Quality</strong> → <strong>Seam</strong> → <strong>Scarf around entire wall</strong> makes the entire wall a scarf seam.</p>
+<p><strong>Quality</strong> → <strong><a href="#BM_(seam)%2Fi">Seam</a></strong> → <strong>Scarf around entire <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a></strong> makes the entire <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> a <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>According to the source: Enabling this option requires caution as it may result in using a smaller extrusion amount for the entire perimeter, which may cause poor adhesion between lines and result in surface defects.</p>
 </div>
 </li>
 <li>
-<p><strong>Quality</strong> → <strong>Seam</strong> → <strong>Scarf steps</strong> is the number steps to print the scarf seam. That is, the <a href="#BM_(toolhead)%2Fi">toolhead</a> prints the scarf seam as a series of incrementing steps rather than a raised slope. This value controls the number of steps.</p>
+<p><strong>Quality</strong> → <strong><a href="#BM_(seam)%2Fi">Seam</a></strong> → <strong>Scarf steps</strong> is the number steps to print the <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>. That is, the <a href="#BM_(toolhead)%2Fi">toolhead</a> prints the <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a> as a series of incrementing steps rather than a raised slope. This value controls the number of steps.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>According to the source: ..., it should be noted that some seam positions cannot be accurately divided into the set number of steps, so the actual scarf steps ≥ the set scarf steps.</p>
+<p>According to the source: ..., it should be noted that some <a href="#BM_(seam)%2Fi">seam</a> positions cannot be accurately divided into the set number of steps, so the actual scarf steps ≥ the set scarf steps.</p>
 </div>
 </li>
 <li>
-<p>when <strong>Quality</strong> → <strong>Seam</strong> → <strong>Seam joint for inner walls</strong> is enabled, inner walls will also have a scarf seam.</p>
+<p>when <strong>Quality</strong> → <strong><a href="#BM_(seam)%2Fi">Seam</a></strong> → <strong><a href="#BM_(seam)%2Fi">Seam</a> joint for <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a>s</strong> is enabled, <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a>s will also have a <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>.</p>
 </li>
 </ul>
 <p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/Seam">[src]</a></sub></p>
@@ -1691,12 +1691,12 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
 </ul>
 </div>
-<p>Models with a curved tops instead of flat tops (e.g., circle vs square) should set the property <strong>Quality</strong> → <strong>Advanced</strong> → <strong>Only one wall on top surfaces</strong> to <strong>Not Applied</strong>. Doing so reduces visible <a href="#BM_(layer%7Cslice)%2Fi">layer</a> lines, resulting in a smoother finish.</p>
+<p>Models with a curved tops instead of flat tops (e.g., circle vs square) should set the property <strong>Quality</strong> → <strong>Advanced</strong> → <strong>Only one <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> on <a href="#BM_(top%20surface)%2Fi">top surface</a>s</strong> to <strong>Not Applied</strong>. Doing so reduces visible <a href="#BM_(layer%7Cslice)%2Fi">layer</a> lines, resulting in a smoother finish.</p>
 <p><img src="bambu_studio_preview_only_one_wall_on_top_surfaces_example.png" alt="Bambu Studio Preview screen Only one wall on top surfaces example"></p>
-<p>When this parameter is set to <strong>Not Applied</strong>, the number of walls on the top surface is the same as the number of wall loops set under <strong>Strength</strong> → <strong>Walls</strong> → <strong>Wall loops</strong>. Effectively, it's overwriting the parameter <strong>Wall loops</strong> for the top surface to be a single wall.</p>
+<p>When this parameter is set to <strong>Not Applied</strong>, the number of <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s on the <a href="#BM_(top%20surface)%2Fi">top surface</a> is the same as the number of <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> loops set under <strong>Strength</strong> → <strong><a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">Wall</a>s</strong> → <strong><a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">Wall</a> loops</strong>. Effectively, it's overwriting the parameter <strong><a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">Wall</a> loops</strong> for the <a href="#BM_(top%20surface)%2Fi">top surface</a> to be a single <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>There seems to also be a hidden developer property <strong>Quality</strong> → <strong>Advanced</strong> → <strong>Top area threshold</strong> that sets the threshold for what top surfaces use wall loops's count vs a single surface. I can't find this in my <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>. See https://wiki.bambulab.com/en/software/bambu-studio/parameter/quality-advance-settings.</p>
+<p>There seems to also be a hidden developer property <strong>Quality</strong> → <strong>Advanced</strong> → <strong>Top area threshold</strong> that sets the threshold for what <a href="#BM_(top%20surface)%2Fi">top surface</a>s use <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> loops's count vs a single surface. I can't find this in my <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>. See https://wiki.bambulab.com/en/software/bambu-studio/parameter/quality-advance-settings.</p>
 </div>
 <p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub>  <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/parameter/quality-advance-settings">[src]</a></sub></p>
 <a name="H_Fuzzy%20Skin"></a><h2>Fuzzy Skin</h2>
@@ -1709,16 +1709,16 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FInfill)_TOPIC%2Fi">Bambu Studio/Infill</a></li>
 </ul>
 </div>
-<p>Fuzzy skin is a rough texture targeting the outside wall of a model and potentially holes within that model (just the walls, top and bottom surfaces won't be textured). It does this by adding random jitters to wall paths during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>. The purpose of fuzzy skin is two-fold: It's either aesthetic, or it's intended to make the printed object easier to grip, or both.</p>
+<p>Fuzzy skin is a rough texture targeting the outside <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> of a model and potentially holes within that model (just the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s, top and <a href="#BM_(bottom%20surface)%2Fi">bottom surface</a>s won't be textured). It does this by adding random jitters to <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> paths during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>. The purpose of fuzzy skin is two-fold: It's either aesthetic, or it's intended to make the printed object easier to grip, or both.</p>
 <p><img src="bambu_studio_prepare_fuzzy_skin_example.png" alt="Bambu Studio Prepare screen fuzzy skin example"></p>
 <p>Fuzzy skin parameters are under <strong>Others</strong> → <strong>Special mode</strong>.</p>
 <p><img src="bambu_studio_prepare_fuzzy_skin_parameters.png" alt="Bambu Studio Prepare screen fuzzy skin parameters"></p>
 <p>To enable/disable fuzzy skin set the property <strong>Fuzzy skin</strong> to either ...</p>
 <ul>
-<li><strong>Contour</strong>, which targets just the outer walls on the outside perimeter.</li>
-<li><strong>Counter and hole</strong>, which targets the outer walls on both the outside perimeter and the perimeters of any holes.</li>
-<li><strong>All walls</strong>, which targets inner and outer walls on both the outside perimeter and the perimeters of any holes (jitters inner walls as well).</li>
-<li><strong>None(allow paint)</strong>, which targets specific walls on the model to make fuzzy via the fuzzy skin paint tool. See subsection on fuzzy skin painting.</li>
+<li><strong>Contour</strong>, which targets just the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on the outside perimeter.</li>
+<li><strong>Counter and hole</strong>, which targets the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on both the outside perimeter and the perimeters of any holes.</li>
+<li><strong>All <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s</strong>, which targets inner and <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on both the outside perimeter and the perimeters of any holes (jitters <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a>s as well).</li>
+<li><strong>None(allow paint)</strong>, which targets specific <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s on the model to make fuzzy via the fuzzy skin paint tool. See subsection on fuzzy skin painting.</li>
 <li><strong>Disable</strong>, which disables fuzzy skin entirely.</li>
 </ul>
 <p>If enabled, the parameter ...</p>
@@ -1732,7 +1732,7 @@
 <li>
 <p><strong>Fuzzy skin generator mode</strong> controls how fuzzy skin is printed. A value of ...</p>
 <ul>
-<li><strong>Displacement</strong> jitters the <a href="#BM_(toolhead)%2Fi">toolhead</a>'s position out, creating a fuzziness but there'll likely be a gap between the fuzzed outer wall and inner walls / <a href="#BM_(infill)%2Fi">infill</a>.</li>
+<li><strong>Displacement</strong> jitters the <a href="#BM_(toolhead)%2Fi">toolhead</a>'s position out, creating a fuzziness but there'll likely be a gap between the fuzzed <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a> and <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a>s / <a href="#BM_(infill)%2Fi">infill</a>.</li>
 <li><strong>Extrusion</strong> jitters the <a href="#BM_(toolhead)%2Fi">toolhead</a>'s extrusion to be more/less (<a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> position stays un-jittered).</li>
 <li><strong>Combined</strong> combines both <strong>Displacement</strong> and <strong>Extrusion</strong>, with the intention that <strong>Displacement</strong>'s gap are filled with the extra filament extruded from <strong>Extrusion</strong>.</li>
 </ul>
@@ -1741,22 +1741,23 @@
 <p><strong>Fuzzy skin noise type</strong> controls which algorithm is used to generate the noise that the <a href="#BM_(toolhead)%2Fi">toolhead</a>'s jittering is based off of.</p>
 </li>
 <li>
-<p><strong>Apply fuzzy skin to first <a href="#BM_(layer%7Cslice)%2Fi">layer</a></strong> controls whether the first <a href="#BM_(layer%7Cslice)%2Fi">layer</a>'s walls should have fuzzy skin applied.</p>
+<p><strong>Apply fuzzy skin to first <a href="#BM_(layer%7Cslice)%2Fi">layer</a></strong> controls whether the first <a href="#BM_(layer%7Cslice)%2Fi">layer</a>'s <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s should have fuzzy skin applied.</p>
 </li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Why would you want to texture inner walls? Makes no sense? Doesn't also conflict with the <a href="#BM_(infill)%2Fi">infill</a>?</p>
+<p>Why would you want to texture <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a>s? Makes no sense? Doesn't also conflict with the <a href="#BM_(infill)%2Fi">infill</a>?</p>
 </div>
 <p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/parameter/fuzzy-skin">[src]</a></sub></p>
-<a name="H1_Painting"></a><h3>Painting</h3>
+<a name="H_Fuzzy%20Skin%20Painting"></a><h3>Fuzzy Skin Painting</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FFuzzy%20Skin%2FFuzzy%20Skin%20Painting)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Painting)_TOPIC%2Fi">Bambu Studio/Model Painting</a></li>
 </ul>
 </div>
-<p>Rather than having walls be fuzzy skinned in their entirety, the model can have fuzzy skin painted on to particular areas such that only those painted areas print as fuzzy skin. In the Prepare screen's 3D viewport, select a model and click fuzzy skin painting in the Prepare screen's toolbar (button 19, keyboard shortcut H). <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> will open a pop-up and present an isolated view of the model where areas can be painted.</p>
+<p>Rather than having <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s be fuzzy skinned in their entirety, the model can have fuzzy skin painted on to particular areas such that only those painted areas print as fuzzy skin. In the Prepare screen's 3D viewport, select a model and click fuzzy skin painting in the Prepare screen's toolbar (button 19, keyboard shortcut H). <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> will open a pop-up and present an isolated view of the model where areas can be painted.</p>
 <p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
 <p><img src="bambu_studio_prepare_fuzzy_skin_painting_example.png" alt="Bambu Studio Prepare screen fuzzy skin painting example"> <img src="bambu_studio_preview_fuzzy_skin_painting_example.png" alt="Bambu Studio Preview screen fuzzy skin painting example"></p>
 <p>Tools options and controls are nearly exactly the same as those for normal model painting. Select a <strong>Tool type</strong> and the tools configuration options will show up directly underneath. Regardless of the tool type, ...</p>
@@ -1775,12 +1776,12 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
 </ul>
 </div>
-<p>A skirt is one or more loops printed around the objects on the <a href="#BM_(build%20plate)%2Fi">build plate</a>, where there's a gap between the loops and the objects (not touching). The purpose of a skirt is to prime the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>. It's typically not required on the H2S because the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> is already gets primed when a print starts by printing a small line, called a prime line.</p>
-<p>Nevertheless, skirt loops can be enabled through the property <strong>Other</strong> → <strong><a href="#BM_(bed%20adhesion)%2Fi">Bed Adhesion</a></strong> → <strong>Skirt loops</strong> and <strong>Skirt height</strong>. The example below has 4 loops set at a <a href="#BM_(layer%20height)%2Fi">layer height</a> of 2.</p>
+<p>A <a href="#BM_(skirt%20loop%7Cskirt)%2Fi">skirt</a> is one or more loops printed around the objects on the <a href="#BM_(build%20plate)%2Fi">build plate</a>, where there's a gap between the loops and the objects (not touching). The purpose of a <a href="#BM_(skirt%20loop%7Cskirt)%2Fi">skirt</a> is to prime the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>. It's typically not required on the H2S because the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> is already gets primed when a print starts by printing a small line, called a prime line.</p>
+<p>Nevertheless, <a href="#BM_(skirt%20loop%7Cskirt)%2Fi">skirt loop</a>s can be enabled through the property <strong>Other</strong> → <strong><a href="#BM_(bed%20adhesion)%2Fi">Bed Adhesion</a></strong> → <strong><a href="#BM_(skirt%20loop%7Cskirt)%2Fi">Skirt loop</a>s</strong> and <strong><a href="#BM_(skirt%20loop%7Cskirt)%2Fi">Skirt</a> height</strong>. The example below has 4 loops set at a <a href="#BM_(layer%20height)%2Fi">layer height</a> of 2.</p>
 <p><img src="bambu_studio_prepare_skirt_loop_example.png" alt="Bambu Studio Prepare screen skirt loop example"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Skirt loop parameters only show up when the scope is set to global, not on an object / set of objects.</p>
+<p><a href="#BM_(skirt%20loop%7Cskirt)%2Fi">Skirt loop</a> parameters only show up when the scope is set to global, not on an object / set of objects.</p>
 </div>
 <p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub> <sub><a href="https://www.reddit.com/r/BambuLab/comments/173zak1/is_there_better_documentation_on_bambu_studio/">[src]</a></sub></p>
 <a name="H_Brims"></a><h2>Brims</h2>
@@ -1792,24 +1793,24 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
 </ul>
 </div>
-<p>A brim is several outer walls added around the bottom <a href="#BM_(layer%7Cslice)%2Fi">layer</a> of a printed object, such that the object has a bottom similar to the brim of a top hat. Its purpose is to enhance <a href="#BM_(bed%20adhesion)%2Fi">bed adhesion</a> of models ...</p>
+<p>A <a href="#BM_(brim)%2Fi">brim</a> is several <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s added around the bottom <a href="#BM_(layer%7Cslice)%2Fi">layer</a> of a printed object, such that the object has a bottom similar to the <a href="#BM_(brim)%2Fi">brim</a> of a top hat. Its purpose is to enhance <a href="#BM_(bed%20adhesion)%2Fi">bed adhesion</a> of models ...</p>
 <ul>
 <li>with a small base (e.g., a tall cylinder with a small radius).</li>
 <li>that are prone to <a href="#BM_(warping%7Cwarp)%2Fi">warping</a> at the bottom edges, lifting off the <a href="#BM_(build%20plate)%2Fi">build plate</a> as they <a href="#BM_(warping%7Cwarp)%2Fi">warp</a> (e.g., <a href="#BM_%5Cb(ABS)%5Cb%2F">ABS</a> is prone to this because it shrinks with it cools).</li>
 </ul>
-<p>Brim parameters are under <strong>Other</strong> → <strong><a href="#BM_(bed%20adhesion)%2Fi">Bed Adhesion</a></strong>.</p>
+<p><a href="#BM_(brim)%2Fi">Brim</a> parameters are under <strong>Other</strong> → <strong><a href="#BM_(bed%20adhesion)%2Fi">Bed Adhesion</a></strong>.</p>
 <p><img src="bambu_studio_prepare_brim_parameters.png" alt="Bambu Studio Prepare screen brim parameters"></p>
 <p>The parameter ...</p>
 <ul>
 <li>
-<p><strong>Brim type</strong> defines how and what type of brim is applied. A value of ...</p>
+<p><strong><a href="#BM_(brim)%2Fi">Brim</a> type</strong> defines how and what type of <a href="#BM_(brim)%2Fi">brim</a> is applied. A value of ...</p>
 <ul>
-<li><strong>Auto</strong> lets <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> decide whether to add a brim and how wide it should be, taking into account the geometry and the properties of a filament being printed with.</li>
-<li><strong>No-brim</strong> forces no brims.</li>
-<li><strong>Outer brim only</strong> forces a brim on the outside perimeter.</li>
-<li><strong>Inner brim only</strong> forces a brim on the inside of the perimeter, assuming the model has a hole  inside (being hollow inside doesn't count).</li>
-<li><strong>Outer and inner brim</strong> combines both the <strong>Outer brim only</strong> and <strong>Inner brim only</strong> options above.</li>
-<li><strong>Painted</strong> places points / stretches of brims, referred to as brim ears, at user-defined locations around the bottom of the model (locations that are likely to <a href="#BM_(warping%7Cwarp)%2Fi">warp</a> off the bed). See subsection on brim ears for how to place.</li>
+<li><strong>Auto</strong> lets <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> decide whether to add a <a href="#BM_(brim)%2Fi">brim</a> and how wide it should be, taking into account the geometry and the properties of a filament being printed with.</li>
+<li><strong>No-<a href="#BM_(brim)%2Fi">brim</a></strong> forces no <a href="#BM_(brim)%2Fi">brim</a>s.</li>
+<li><strong>Outer <a href="#BM_(brim)%2Fi">brim</a> only</strong> forces a <a href="#BM_(brim)%2Fi">brim</a> on the outside perimeter.</li>
+<li><strong>Inner <a href="#BM_(brim)%2Fi">brim</a> only</strong> forces a <a href="#BM_(brim)%2Fi">brim</a> on the inside of the perimeter, assuming the model has a hole  inside (being hollow inside doesn't count).</li>
+<li><strong>Outer and inner <a href="#BM_(brim)%2Fi">brim</a></strong> combines both the <strong>Outer <a href="#BM_(brim)%2Fi">brim</a> only</strong> and <strong>Inner <a href="#BM_(brim)%2Fi">brim</a> only</strong> options above.</li>
+<li><strong>Painted</strong> places points / stretches of <a href="#BM_(brim)%2Fi">brim</a>s, referred to as <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s, at user-defined locations around the bottom of the model (locations that are likely to <a href="#BM_(warping%7Cwarp)%2Fi">warp</a> off the bed). See subsection on <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s for how to place.</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
@@ -1819,15 +1820,15 @@
 </div>
 </li>
 <li>
-<p><strong>Brim width</strong> defines the distance between the outer-most bring and the printed object (how wide the brim is).</p>
+<p><strong><a href="#BM_(brim)%2Fi">Brim</a> width</strong> defines the distance between the outer-most bring and the printed object (how wide the <a href="#BM_(brim)%2Fi">brim</a> is).</p>
 </li>
 <li>
-<p><strong>Brim-object gap</strong> defines the distance between the inner-most brim line and the printed object. A smaller gap typically improves the connection to the model while a larger gap makes pulling off easier.</p>
+<p><strong><a href="#BM_(brim)%2Fi">Brim</a>-object gap</strong> defines the distance between the inner-most <a href="#BM_(brim)%2Fi">brim</a> line and the printed object. A smaller gap typically improves the connection to the model while a larger gap makes pulling off easier.</p>
 </li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>If gap is 0 but there's still a gap showing up between the brim and hte model, it may be that <strong>Quality</strong> → <strong>Elephant foot compensation</strong> is non-zero. Set it to 0.</p>
+<p>If gap is 0 but there's still a gap showing up between the <a href="#BM_(brim)%2Fi">brim</a> and hte model, it may be that <strong>Quality</strong> → <strong>Elephant foot compensation</strong> is non-zero. Set it to 0.</p>
 </div>
 <p><img src="bambu_studio_preview_brim_example.png" alt="Bambu Studio Preview screen brim example"></p>
 <p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/36">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/auto-brim">[src]</a></sub></p>
@@ -1839,23 +1840,23 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Painting)_TOPIC%2Fi">Bambu Studio/Model Painting</a></li>
 </ul>
 </div>
-<p>A brim ear is a point / stretch of brim at user-defined locations around the bottom of an object. Similar to model painting, the placement of brim ears can be painted on to the model. In the Prepare screen's 3D viewport, select the model and paint brim ears by using the brim ear tool in Prepare screen's toolbar (button 18, keyboard shortcut E), which will present a pop-up with scaling parameters / controls.</p>
+<p>A <a href="#BM_(brim%20ear)%2Fi">brim ear</a> is a point / stretch of <a href="#BM_(brim)%2Fi">brim</a> at user-defined locations around the bottom of an object. Similar to model painting, the placement of <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s can be painted on to the model. In the Prepare screen's 3D viewport, select the model and paint <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s by using the <a href="#BM_(brim%20ear)%2Fi">brim ear</a> tool in Prepare screen's toolbar (button 18, keyboard shortcut E), which will present a pop-up with scaling parameters / controls.</p>
 <p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
 <p><img src="bambu_studio_prepare_brim_ears.png" alt="Bambu Studio Prepare screen brim ears"></p>
-<p>For brim ears to be printed, ensure <strong>Other</strong> → <strong><a href="#BM_(bed%20adhesion)%2Fi">Bed Adhesion</a></strong> → <strong>Brim type</strong> is set to <strong>Painted</strong>. Otherwise, a warning will display at the bottom of the pop-up as shown in the example above.</p>
-<p>To place brim ears manually, left-click around the base of the model. When a brim ear is placeable, a partially transparent brim ear will show under the mouse, notifying that a brim ear can be placed in that spot. The brim ear's size is controlled by the <strong>Head diameter</strong> parameter, which is the diameter of the brim ear in mm.</p>
-<p>To place brim ears automatically, use the <strong>Aut-generate points</strong> button. Where brim ears get placed depends on ..</p>
+<p>For <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s to be printed, ensure <strong>Other</strong> → <strong><a href="#BM_(bed%20adhesion)%2Fi">Bed Adhesion</a></strong> → <strong><a href="#BM_(brim)%2Fi">Brim</a> type</strong> is set to <strong>Painted</strong>. Otherwise, a warning will display at the bottom of the pop-up as shown in the example above.</p>
+<p>To place <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s manually, left-click around the base of the model. When a <a href="#BM_(brim%20ear)%2Fi">brim ear</a> is placeable, a partially transparent <a href="#BM_(brim%20ear)%2Fi">brim ear</a> will show under the mouse, notifying that a <a href="#BM_(brim%20ear)%2Fi">brim ear</a> can be placed in that spot. The <a href="#BM_(brim%20ear)%2Fi">brim ear</a>'s size is controlled by the <strong>Head diameter</strong> parameter, which is the diameter of the <a href="#BM_(brim%20ear)%2Fi">brim ear</a> in mm.</p>
+<p>To place <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s automatically, use the <strong>Aut-generate points</strong> button. Where <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s get placed depends on ..</p>
 <ul>
-<li><strong>Max angle</strong>, which controls how sharp the angle must be for a brim ear to be placed there (e.g., 90 degree will place brim ears at perpendicular points on the bottom).</li>
-<li><strong>Detection radius</strong>, which controls how to many brim ears are placed along contours (smaller value results in more brim ears).</li>
+<li><strong>Max angle</strong>, which controls how sharp the angle must be for a <a href="#BM_(brim%20ear)%2Fi">brim ear</a> to be placed there (e.g., 90 degree will place <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s at perpendicular points on the bottom).</li>
+<li><strong>Detection radius</strong>, which controls how to many <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s are placed along contours (smaller value results in more <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s).</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Brim ears will be invisible once exiting this tool, only being visible again when re-entering the tool on the same model or in the Preview screen post-<a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>.</p>
+<p><a href="#BM_(brim%20ear)%2Fi">Brim ear</a>s will be invisible once exiting this tool, only being visible again when re-entering the tool on the same model or in the Preview screen post-<a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>.</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>I found this as well: https://wiki.bambulab.com/en/software/bambu-studio/use-disc-to-avoid-<a href="#BM_(warping%7Cwarp)%2Fi">warping</a>. This seems to be doing the same thing as brim ears but its entirely manual? Maybe it was made for an older version of <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> where brim ears feature wasn't available.</p>
+<p>I found this as well: https://wiki.bambulab.com/en/software/bambu-studio/use-disc-to-avoid-<a href="#BM_(warping%7Cwarp)%2Fi">warping</a>. This seems to be doing the same thing as <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s but its entirely manual? Maybe it was made for an older version of <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> where <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s feature wasn't available.</p>
 </div>
 <p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/brim-ears">[src]</a></sub></p>
 <a name="H_Walls"></a><h2>Walls</h2>
@@ -1866,12 +1867,12 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
 </ul>
 </div>
-<p>The number of walls printed for a model (Z axis) is set through the parameter <strong>Strength</strong> → <strong>Walls</strong> → <strong>Wall loops</strong>. The more walls, the stronger the print is (presumably). It's recommended that for ...</p>
+<p>The number of <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s printed for a model (Z axis) is set through the parameter <strong>Strength</strong> → <strong><a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">Wall</a>s</strong> → <strong><a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">Wall</a> loops</strong>. The more <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s, the stronger the print is (presumably). It's recommended that for ...</p>
 <ul>
-<li>functional models, 3 to 4 walls will enhance structural strength and durability.</li>
-<li>decorative models, 2 walls are sufficient to save material and improve print efficiency.</li>
+<li>functional models, 3 to 4 <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s will enhance structural strength and durability.</li>
+<li>decorative models, 2 <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s are sufficient to save material and improve print efficiency.</li>
 </ul>
-<p>The number of solid <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s for the top of the model is set through the parameter <strong>Strength</strong> → <strong>Top/bottom shells</strong> → <strong>Top shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s</strong>. The <a href="#BM_(thickness%7Cthickness%7Cthicker)_LAYER%2Fi">thickness</a> of the top shell should approximately match the thickness of the walls. For example, if the thickness of 5 walls comes out to 5mm, then the number of top shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s should approximately come out to 5mm as well.</p>
+<p>The number of solid <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s for the top of the model is set through the parameter <strong>Strength</strong> → <strong>Top/bottom shells</strong> → <strong>Top shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s</strong>. The <a href="#BM_(thickness%7Cthickness%7Cthicker)_LAYER%2Fi">thickness</a> of the top shell should approximately match the thickness of the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s. For example, if the thickness of 5 <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s comes out to 5mm, then the number of top shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s should approximately come out to 5mm as well.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Prior to the top shell is the <a href="#BM_(infill)%2Fi">infill</a> material. The <a href="#BM_(infill)%2Fi">infill</a> material almost always has gaps, and so the that first shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a> is <a href="#BM_(bridging%7Cbridge)%2Fi">bridging</a> all those gaps.</p>
@@ -1879,7 +1880,7 @@
 <p>Similarly to the top shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s, the number of solid <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s for the bottom of the model is set through the parameter <strong>Strength</strong> → <strong>Top/bottom shells</strong> → <strong>Bottom shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s</strong>. It's recommended that the bottom shell have a minimum of 4 <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s to ensure a sturdy and flat foundation.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Why shouldn't the bottom shell have the same thickness as the walls and top shell? Wouldn't that make more sense in that it's unified?</p>
+<p>Why shouldn't the bottom shell have the same thickness as the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s and top shell? Wouldn't that make more sense in that it's unified?</p>
 </div>
 <p><img src="bambu_studio_preview__wall_and_shell_parameters.png" alt="Bambu Studio Preview screen wall and shell parameters"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -1896,7 +1897,7 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
 </ul>
 </div>
-<p>While the exterior of a printed model are walls / surfaces, the interior area of is printed as an <a href="#BM_(infill)%2Fi">infill</a> pattern. An <a href="#BM_(infill)%2Fi">infill</a> patterns is a pattern where the user controls how densely the pattern is printed, where higher densities are typically associated with greater strength / greater load bearing capacity.</p>
+<p>While the exterior of a printed model are <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s / surfaces, the interior area of is printed as an <a href="#BM_(infill)%2Fi">infill</a> pattern. An <a href="#BM_(infill)%2Fi">infill</a> patterns is a pattern where the user controls how densely the pattern is printed, where higher densities are typically associated with greater strength / greater load bearing capacity.</p>
 <p><a href="#BM_(infill)%2Fi">Infill</a> parameters are found under <strong>Strength</strong> → <strong>Sparse <a href="#BM_(infill)%2Fi">infill</a></strong>:</p>
 <ul>
 <li>
@@ -1970,7 +1971,7 @@
 <tr>
 <td>Aligned Rectilinear</td>
 <td>Speed</td>
-<td>Efficient; <strong>anisotropic strength</strong>, <strong>top surface may fall</strong></td>
+<td>Efficient; <strong>anisotropic strength</strong>, <strong><a href="#BM_(top%20surface)%2Fi">top surface</a> may fall</strong></td>
 </tr>
 <tr>
 <td>3D Honeycomb</td>
@@ -2030,10 +2031,10 @@
 </div>
 </li>
 </ul>
-<p>In addition to the standard <a href="#BM_(infill)%2Fi">infill</a>, it's possible to specify <a href="#BM_(infill)%2Fi">infill</a> patterns for the top and bottom surfaces using the parameters <strong>Strength</strong> → <strong>Top/bottom shells</strong> → <strong>Top surface pattern</strong> and <strong>Bottom surface pattern</strong>. The patterns available are more limits than the full roster of <a href="#BM_(infill)%2Fi">infill</a> patterns.</p>
+<p>In addition to the standard <a href="#BM_(infill)%2Fi">infill</a>, it's possible to specify <a href="#BM_(infill)%2Fi">infill</a> patterns for the top and <a href="#BM_(bottom%20surface)%2Fi">bottom surface</a>s using the parameters <strong>Strength</strong> → <strong>Top/bottom shells</strong> → <strong><a href="#BM_(top%20surface)%2Fi">Top surface</a> pattern</strong> and <strong><a href="#BM_(bottom%20surface)%2Fi">Bottom surface</a> pattern</strong>. The patterns available are more limits than the full roster of <a href="#BM_(infill)%2Fi">infill</a> patterns.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Top/bottom surface patterns seem to only be line based <a href="#BM_(infill)%2Fi">infill</a> patterns where lines don't intersect? And you can't set density? It seems to be maximum density?</p>
+<p>Top/<a href="#BM_(bottom%20surface)%2Fi">bottom surface</a> patterns seem to only be line based <a href="#BM_(infill)%2Fi">infill</a> patterns where lines don't intersect? And you can't set density? It seems to be maximum density?</p>
 <p>What's the point of having these? I guess it has to do with the finish of the surface? I recall there was some option where you could have the heated <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> go over the surface (without printing anything) to further smooth it out? I think it was under <strong>Quality</strong> → <strong>Ironing</strong>.</p>
 </div>
 <p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/fill-patterns">[src]</a></sub></p>
@@ -2324,9 +2325,6 @@
 </p>
 </li>
 <li>
-<p><a name="BM_(infill)%2Fi"></a><strong>infill</strong> - A pattern added to the interior of the 3D model being <a href="#BM_(slicing%7Csliced)%2Fi">sliced</a>, intended to strengthen/sturdiness of printed object. <a href="#BM_(infill)%2Fi">Infill</a>s are typically described using density and pattern type. The higher the density, the stronger the object. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214">[src]</a></sub></p>
-</li>
-<li>
 <p><a name="BM_(bridging%7Cbridge)%2Fi"></a><strong>bridging</strong> - Part of a 3D model where there is a mid-air horizontal gap between two or more sides, leaving that part with nothing underneath it to help hold it up. During printing, <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> are often added to <a href="#BM_(bridging%7Cbridge)%2Fi">bridging</a> areas.</p>
 <p><img src="bridge_example.drawio.svg" alt="bridge example"> <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214">[src]</a></sub></p>
 </li>
@@ -2419,10 +2417,47 @@
 <p><a name="BM_(bed%20adhesion)%2Fi"></a><strong>bed adhesion</strong> - The adherence of the bottom of a print to the the <a href="#BM_(build%20plate)%2Fi">build plate</a>. For example, in poor <a href="#BM_(bed%20adhesion)%2Fi">bed adhesion</a>, the bottom edges of a print may <a href="#BM_(warping%7Cwarp)%2Fi">warp</a> and detach off the <a href="#BM_(build%20plate)%2Fi">build plate</a>. <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/36">[src]</a></sub></p>
 </li>
 <li>
+<p><a name="BM_(infill)%2Fi"></a><strong>infill</strong> - The interior area of a printed model. The interior is typically printed using an <a href="#BM_(infill)%2Fi">infill</a> pattern, where that pattern doesn't consume the entire area but is designed to prioritize some attribute (e.g., save filament vs bear load).</p>
+<p><a href="#BM_(infill)%2Fi">Infill</a>s are typically described using density and pattern type. <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/38">Here</a> mentions "internal solid <a href="#BM_(infill)%2Fi">infill</a>" and sparse <a href="#BM_(infill)%2Fi">infill</a> (where sparse means a pattern is used). Haven't seen internal solid anywhere until reading that page.</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi"></a><strong>wall</strong> - The shell of an object, printed out on the XY plane for each <a href="#BM_(layer%7Cslice)%2Fi">layer</a>. The shell can be made thicker by having multiple such <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s back-to-back, referred to as <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a> and <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a>s.</p>
+<p>The inside of an enclosed <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> is typically filled with an <a href="#BM_(infill)%2Fi">infill</a>. <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(brim)%2Fi"></a><strong>brim</strong> - A thin <a href="#BM_(layer%7Cslice)%2Fi">layer</a> printed at the base of the model, hugging the printed model. <a href="#BM_(brim)%2Fi">Brim</a>s are intended to assist with <a href="#BM_(bed%20adhesion)%2Fi">bed adhesion</a>. <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/auto-brim">[src]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(brim%20ear)%2Fi"></a><strong>brim ear</strong> - A thin <a href="#BM_(layer%7Cslice)%2Fi">layer</a> printed at specific points around the model's base, hugging the printed model. <a href="#BM_(brim%20ear)%2Fi">Brim ear</a>s are intended to assist with <a href="#BM_(bed%20adhesion)%2Fi">bed adhesion</a>. <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/brim-ears">[src]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(skirt%20loop%7Cskirt)%2Fi"></a><strong>skirt loop</strong> - A loop printed at the beginning to prime the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> (e.g., remove residue and test flow). <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This feature isn't used all that much with a printer like the H2S because the H2S already prints a priming line for this.</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(seam)%2Fi"></a><strong>seam</strong> - Mark that shows up the Z-axis  when the <a href="#BM_(toolhead)%2Fi">toolhead</a> prints an enclosed path, showing up where the start and end of the path meet. <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/Seam">[src]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(scarf%20seam)%2Fi"></a><strong>scarf seam</strong> - A specialized type of <a href="#BM_(seam)%2Fi">seam</a> mimicking how a scarf is worn, intended to minimize the appearance of the <a href="#BM_(seam)%2Fi">seam</a> on models where the <a href="#BM_(seam)%2Fi">seam</a> can't be hidden or otherwise mitigated (e.g., hiding at an edge or obscuring using fuzzy skin). <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/Seam">[src]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(top%20surface)%2Fi"></a><strong>top surface</strong> - The highest surface of a model, just after the <a href="#BM_(infill)%2Fi">infill</a>. <a href="#BM_(top%20surface)%2Fi">Top surface</a>s may consist of multiple <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s. <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/fill-patterns">[src]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(bottom%20surface)%2Fi"></a><strong>bottom surface</strong> - The lowest surface of a model, just before the <a href="#BM_(infill)%2Fi">infill</a>. <a href="#BM_(bottom%20surface)%2Fi">Bottom surface</a>s may consist of multiple <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s. <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/fill-patterns">[src]</a></sub></p>
+</li>
+<li>
 <p><a name="BM_(heat%20resistance)%2Fi"></a><strong>heat resistance</strong> - FILL ME IN.</p>
 </li>
 <li>
-<p><a name="BM_(filter%20switch%20flap)%2Fi"></a><strong>filter switch flap</strong> - FILL ME IN.</p>
+<p><a name="BM_(filter%20switch%20flap)%2Fi"></a><strong>filter switch flap</strong> - FILL ME IN.'</p>
 </li>
 </ul>
 <p></p>

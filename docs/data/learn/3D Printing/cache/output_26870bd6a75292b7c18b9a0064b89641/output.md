@@ -2,7 +2,7 @@
 
 <strong>🔍SEE ALSO🔍</strong>
 
- * Bambu Studio/Model Supports/Painting_TOPIC
+ * Bambu Studio/Model Supports/Support Painting_TOPIC
 
 </div>
 

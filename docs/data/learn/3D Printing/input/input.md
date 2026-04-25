@@ -764,9 +764,9 @@ No sense going over that information here.
 The [documentation](https://wiki.bambulab.com/en/software/bambu-studio/support) goes over advanced controls near the second half of the page. It might be too much detail to cover here.
 ```
 
-### Type
+### Support Type
 
-`{bm} /(Bambu Studio\/Model Supports\/Type)_TOPIC/i`
+`{bm} /(Bambu Studio\/Model Supports\/Support Type)_TOPIC/i`
 
 ```{prereq}
 Bambu Studio/User Interface_TOPIC
@@ -789,7 +789,7 @@ Each type comes in either **auto** mode or **manual** mode. When the mode is ...
 * **manual**, the user is expected to specify areas of the model that need supports_BO (e.g., via support_BO painting).
 
 ```{seealso}
-Bambu Studio/Model Supports/Painting_TOPIC
+Bambu Studio/Model Supports/Support Painting_TOPIC
 ```
 
 The support's_BO type defines the geometry generated:
@@ -817,12 +817,12 @@ See source to figure out how default switches between and organic. Out of scope 
 
 Normal supports_BO work best with large planar overhangs, giving better surface quality vs tree supports_BO. Tree supports_BO often give better results with complex models where overhang are small and / ot not planar. When in doubt, use tree supports_BO in hybrid style, because it will explicitly check for planar overhangs and those areas to generate normal supports_BO while the remaining areas get tree supports_BO. `{ref} https://wiki.bambulab.com/en/software/bambu-studio/support`
 
-### Painting
+### Support Painting
 
-`{bm} /(Bambu Studio\/Model Supports\/Painting)_TOPIC/i`
+`{bm} /(Bambu Studio\/Model Supports\/Support Painting)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/Model Supports/Type_TOPIC
+Bambu Studio/Model Supports/Support Type_TOPIC
 Bambu Studio/Model Painting_TOPIC
 ```
 
@@ -1087,9 +1087,9 @@ The initial layer height is recommended to be 50% of the nozzle's diameter. Subs
 
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/layer-heigh` `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35`
 
-## Seams
+## Seam
 
-`{bm} /(Bambu Studio\/Seams)_TOPIC/i`
+`{bm} /(Bambu Studio\/Seam)_TOPIC/i`
 
 ```{prereq}
 Bambu Studio/User Interface_TOPIC
@@ -1111,7 +1111,7 @@ Bambu Studio/Fuzzy Skin_TOPIC
 
 ### Algorithmic Seam Placement
 
-`{bm} /(Bambu Studio\/Seams\/Algorithmic Seam Placement)_TOPIC/i`
+`{bm} /(Bambu Studio\/Seam\/Algorithmic Seam Placement)_TOPIC/i`
 
 Bambu Studio can algorithmically control the placement of seams in several ways. The easiest is through the **Quality** → **Seam** → **Seam position** parameter. The value ...
 
@@ -1128,10 +1128,10 @@ Bambu Studio can algorithmically control the placement of seams in several ways.
 
 ### Seam Painting
 
-`{bm} /(Bambu Studio\/Seams\/Seam Painting)_TOPIC/i`
+`{bm} /(Bambu Studio\/Seam\/Seam Painting)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/Seams/Algorithmic Seam Placement_TOPIC
+Bambu Studio/Seam/Algorithmic Seam Placement_TOPIC
 Bambu Studio/Model Painting_TOPIC
 ```
 
@@ -1145,13 +1145,13 @@ Seam painting is operationally very similar to normal model painting. Paint the 
 
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/Seam`
 
-### Scarf Seams
+### Scarf Seam
 
-`{bm} /(Bambu Studio\/Seams\/Scarf Seams)_TOPIC/i`
+`{bm} /(Bambu Studio\/Seam\/Scarf Seam)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/Seams/Algorithmic Seam Placement_TOPIC
-Bambu Studio/Seams/Seam Painting_TOPIC
+Bambu Studio/Seam/Algorithmic Seam Placement_TOPIC
+Bambu Studio/Seam/Seam Painting_TOPIC
 ```
 
 A scarf seam is a specialized form of seam, intended to hide its appearance for objects that are round to the point where the seam can't be hidden (e.g., sphere, cylinder, or some round model that contains no natural edge for the seam to hide). At the ...
@@ -1294,7 +1294,9 @@ Why would you want to texture inner walls? Makes no sense? Doesn't also conflict
 
 `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35` `{ref} https://wiki.bambulab.com/en/software/bambu-studio/parameter/fuzzy-skin`
 
-### Painting
+### Fuzzy Skin Painting
+
+`{bm} /(Bambu Studio\/Fuzzy Skin\/Fuzzy Skin Painting)_TOPIC/i`
 
 ```{prereq}
 Bambu Studio/Model Painting_TOPIC
@@ -1777,8 +1779,6 @@ What's the point of having these? I guess it has to do with the finish of the su
   `{bm-error} Referencing slice height or thickness? use height_LAYER or thickness_LAYER or thick_LAYER or wrap in !!/(height|thickness|thicker|thick)/`
   `{bm-error} Don't need _LAYER suffix to disambiguate layer height - it's only required for heigh on its own/(layer height_LAYER)/`
 
-* `{bm} infill` - A pattern added to the interior of the 3D model being sliced, intended to strengthen/sturdiness of printed object. Infills are typically described using density and pattern type. The higher the density, the stronger the object. `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214`
-
 * `{bm} bridging/(bridging|bridge)/i` - Part of a 3D model where there is a mid-air horizontal gap between two or more sides, leaving that part with nothing underneath it to help hold it up. During printing, supports_BO are often added to bridging areas.
 
   ![bridge example](bridge_example.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214`
@@ -1852,9 +1852,40 @@ What's the point of having these? I guess it has to do with the finish of the su
 
 * `{bm} bed adhesion` - The adherence of the bottom of a print to the the build plate. For example, in poor bed adhesion, the bottom edges of a print may warp and detach off the build plate. `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/36`
 
+* `{bm} infill` - The interior area of a printed model. The interior is typically printed using an infill pattern, where that pattern doesn't consume the entire area but is designed to prioritize some attribute (e.g., save filament vs bear load).
+
+  Infills are typically described using density and pattern type. `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35`
+
+  ```{note}
+  [Here](https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/38) mentions "internal solid infill" and sparse infill (where sparse means a pattern is used). Haven't seen internal solid anywhere until reading that page.
+  ```
+
+* `{bm} wall/(wall|inner wall|outer wall)/i` - The shell of an object, printed out on the XY plane for each layer. The shell can be made !!thicker!! by having multiple such walls back-to-back, referred to as outer wall and inner walls.
+
+  The inside of an enclosed wall is typically filled with an infill. `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35`
+
+* `{bm} brim` - A thin layer printed at the !!base!! of the model, hugging the printed model. Brims are intended to assist with bed adhesion. `{ref} https://wiki.bambulab.com/en/software/bambu-studio/auto-brim`
+
+* `{bm} brim ear` - A thin layer printed at specific points around the model's !!base!!, hugging the printed model. Brim ears are intended to assist with bed adhesion. `{ref} https://wiki.bambulab.com/en/software/bambu-studio/brim-ears`
+
+* `{bm} skirt loop/(skirt loop|skirt)/i` - A loop printed at the beginning to prime the nozzle (e.g., remove residue and test flow). `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35`
+
+  ```{note}
+  This feature isn't used all that much with a printer like the H2S because the H2S already prints a priming line for this.
+  ```
+
+* `{bm} seam` - Mark that shows up the Z-axis  when the toolhead prints an enclosed path, showing up where the start and end of the path meet. `{ref} https://wiki.bambulab.com/en/software/bambu-studio/Seam`
+
+
+* `{bm} scarf seam` - A specialized type of seam mimicking how a scarf is worn, intended to minimize the appearance of the seam on models where the seam can't be hidden or otherwise mitigated (e.g., hiding at an edge or obscuring using fuzzy skin). `{ref} https://wiki.bambulab.com/en/software/bambu-studio/Seam`
+
+* `{bm} top surface` - The highest surface of a model, just after the infill. Top surfaces may consist of multiple layers. `{ref} https://wiki.bambulab.com/en/software/bambu-studio/fill-patterns`
+
+* `{bm} bottom surface` - The lowest surface of a model, just before the infill. Bottom surfaces may consist of multiple layers. `{ref} https://wiki.bambulab.com/en/software/bambu-studio/fill-patterns`
+
 * `{bm} heat resistance` - FILL ME IN.
 
-* `{bm} filter switch flap` - FILL ME IN.
+* `{bm} filter switch flap` - FILL ME IN.'
 
 `{bm-error} Did you mean Bambu Lab (not plural)?/(Bambu Labs)/`
 

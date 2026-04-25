@@ -2,8 +2,8 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Bambu Studio/Seams/Algorithmic Seam Placement_TOPIC
- * Bambu Studio/Seams/Seam Painting_TOPIC
+ * Bambu Studio/Seam/Algorithmic Seam Placement_TOPIC
+ * Bambu Studio/Seam/Seam Painting_TOPIC
 
 </div>
 
