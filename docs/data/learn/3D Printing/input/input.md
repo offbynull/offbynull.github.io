@@ -423,11 +423,66 @@ The sidebar contains a ...
 
 * **Printer** section that controls which printer to use and its configuration (e.g., build plate and nozzle).
 * **Project Filaments** section that controls the filaments are available to the project. For example, a model within the project can be painted such that different areas of the model use different filaments, but those filaments have to be made available to the project first via this section.
-* **Process** section that controls the hierarchy of entities within the project (e.g., models may be grouped together, referred to as an assembly). Each entity has properties to it that can be modified (e.g., parameters that control the quality of the print and how strong the printed model is).
+* **Process** section that controls the hierarchy of entities within the project (e.g., models may be grouped together, referred to as an assembly). Each entity has properties to it that can be modified (e.g., parameters that control how the model prints).
+
+## Project Filaments
+
+`{bm} /(Bambu Studio\/Project Filaments)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/3D Viewport
+```
+
+Bambu Studio has a section for defining which filaments are available to a project. The Project Filaments section is in the sidebar of the Prepare screen and the Preview screen.
+
+![Bambu Studio Prepare screen project filaments](bambu_studio_prepare_project_filaments.png)
+
+Each filament is assigned an ID (e.g., 1, 2, ...). Objects and layers within the 3D viewport, rather than being assigned an exact filament, are instead assigned one of these IDs. The filament assigned to the ID number can be swapped to a different filament via the dropdown next to the ID, thereby automatically updating any areas of an object layer making use of that ID.
+
+* To add a filament to the list of available filaments, use the plus button.
+* To remove a filament from the list of available filament, either use the minus button or click on the ellipsis next to the filament dropdown and select **Delete**.
+* To remove a filament and reassign its usages to another ID, click the ellipsis next to one of the filaments, navigate to **Merge with**, and select the ID to merge with.
+* To synchronize the available filaments with those loaded into the attached AMS 2 Pro / AMS HT units, use the button immediately to the right to the minus button.
+* To configure the list of filaments available for adding, use the cog button.
+
+At the bottom is an **Add Mixed Filament** button. Mixed filaments is a mix of existing filaments printed in interleaves layers to achieve a new color via half-toning (e.g., alternating between 1 layer black and 1 layer white gives the impression that the printed object is gray). Mixed filaments are not recommended on the H2S because it's a single nozzle printer - excessive swapping between filaments causes a lot of waste. `{ref} https://www.youtube.com/watch?v=ZsgJz0qk4eE` `{ref} https://wiki.bambulab.com/en/software/bambu-studio/release/release-note-2-5-3`
 
 ```{note}
-A full accounting of properties under **Process** is out of scope. They'll be covered on an adhoc basis in the subsequent sections.
+Mixed filaments don't have the desired effected on top/bottom surfaces because those are single layers and only one color is printed per layer? They work best on near vertical walls. It may be possible to rotate the object such that top/bottom surfaces are reduced, but it'll likely require introducing supports_BO.
 ```
+
+```{seealso}
+Bambu Studio/Model Painting_TOPIC
+Bambu Studio/Model Rotation_TOPIC
+```
+
+## Print Parameters
+
+`{bm} /(Bambu Studio\/Print Parameters)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/3D Viewport
+Bambu Studio/Project Filaments
+```
+
+Bambu Studio has a section for defining how models and model groupings (assemblies) are printed. The Process section is in the sidebar of the Prepare screen and the Preview screen.
+
+![Bambu Studio Prepare screen process](bambu_studio_prepare_process.png)
+
+The Process section can change scope using a toggle (section 1). The scope can either be global, or it can target a specific set of objects (e.g., a model, an assembly, or some combination of models/assemblies). If not scoped globally, an object hierarchy will be displayed directly below the toggle (section 3). The selections in the object hierarchy will reflect those in the 3D viewport and vice versa.
+
+Below the object hierarchy are a hierarchy of parameters that control printing:
+
+* **Quality** tab organizes fidelity parameters (e.g., layer height and how to treat seams).
+* **Strength** tab organizes solidity/firmness parameters (e.g., infill style/percentage and wall !!thickness!!).
+* **Speed** tab organizes print speed (e.g., how fast toolhead moves when printing overhangs).
+* **!!Support!!** tab organizes support_BO parameters (e.g., minimum angle for which supports_BO are required).
+* **Others** tab organizes parameters that don't fit in one of the other tabs.
+* **Frequent** tab caches parameters that have recently been changed.
+
+A full accounting of parameters is beyond the scope of this section. Individual parameters will be referenced / explained in subsequent sections as needed.
+
+`{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35`
 
 ## Model Importing
 
@@ -621,6 +676,7 @@ Bambu Studio/Model Set Operations_TOPIC
 
 ```{prereq}
 Bambu Studio/3D Viewport_TOPIC
+Bambu Studio/Project Filaments_TOPIC
 ```
 
 In the Prepare screen's 3D viewport, selected models can be painted by using the paint tool in Prepare screen's toolbar (button 13, keyboard shortcut N), which will present a pop-up with scaling parameters / controls.
@@ -708,6 +764,10 @@ The [documentation](https://wiki.bambulab.com/en/software/bambu-studio/support) 
 ### Type
 
 `{bm} /(Bambu Studio\/Model Supports\/Type)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/Print Parameters_TOPIC
+```
 
 Supports_BO come in two types: **Normal** and **Tree**.
 
@@ -807,6 +867,10 @@ The example above isn't a valid print, but for some reason Bambu Studio isn't sh
 
 `{bm} /(Bambu Studio\/Model Supports\/Interface)_TOPIC/i`
 
+```{prereq}
+Bambu Studio/Print Parameters_TOPIC
+```
+
 Interface_BO layers are support_BO layers that touch the model, while the rest of the support_BO body is referred to as the base_BO. Bambu studio allows targeting specific materials for a support's_BO base_BO and interface_BO. In the Prepare screen's side-panel, navigate to the **!!Support!!** tab and to the **!!Filament for Supports!!** subsection. The ...
 
 * **!!Support!!/!!raft!! !!base!!** controls the filament to use for the support's_BO base_BO.
@@ -822,6 +886,7 @@ Interface_BO layers are support_BO layers that touch the model, while the rest o
 
 ```{prereq}
 Bambu Studio/Model Supports/Interface_TOPIC
+Bambu Studio/Print Parameters_TOPIC
 ```
 
 A raft_BO is a type of support_BO that elevates a model off the build plate. Rafts are commonly used for materials that are prone to warping (e.g., ABS).
@@ -989,11 +1054,274 @@ The parameters are the same as the parameter before, except for **Mode** and **O
 
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/3d-text`
 
-## Print Quality
+## Layer Height
 
-layer height?
+`{bm} /(Bambu Studio\/Layer Height)_TOPIC/i`
 
-print speed?
+```{prereq}
+Bambu Studio/Print Parameters_TOPIC
+```
+
+Layer height is the !!height!! of each layer in the print. The thinner the layer, the less ridges are visible as the model is printed upwards (Z axis), meaning a smoother overall appearance.
+
+To set the layer height globally, ensure no model is selected and in the Prepare screen's side-panel navigate to the **!!Quality!!** tab and to the **!!Layer height!!** subsection:
+
+* **Layer height** - Controls height_LAYER of each layer, except for the initial layer.
+* **Initial layer height** - Controls height_LAYER of the initial layer. A thicker_LAYER initial layer may help with the print better stick to the build plate.
+
+In addition, there are presets available for choosing common layer heights. These presets typically also set other other options, such as printing speeds.
+
+![Bambu Studio Prepare screen layer height parameters](bambu_studio_prepare_layer_height_parameters.png)
+
+```{note}
+Settings different layer heights for each object? You might need to print the objects individually or slicing will fail. In the Prepare screen's side-panel navigate to the **!!Other!!** tab, then to the **!!Special mode!!** subsection, then set **!!Print sequence!!** to "By object".
+```
+
+```{note}
+There's an option here called "Mixed color sublayer" that seems to have to do with "fake color" printing where alternating real colors are banded together to generate some other color (e.g., alternating between black and white to get 50% gray). When this setting is set, it seems that the layer height is automatically cut down for coloring purposes? So if you set the layer height to 0.2mm but this option were turned on, that 0.2mm would actually be subdivided into n thinner layers? At least that's the vibe I got from https://www.reddit.com/r/BambuLab/comments/1ssuuqx/color_mixing_and_mixed_color_sublayer_wrt_layer
+```
+
+The initial layer height is recommended to be 50% of the nozzle's diameter. Subsequent layers are recommended to be between 20% to 70% of the nozzle's diameter. For example, if using the 0.4mm nozzle that comes with the H2S, the initial layer would be set to a layer height of 0.2mm and the remaining layers can be set to anywhere between 0.08mm to 0.28mm. This information is also available under the !!printer!! setting's **Extruder** section.
+
+![Bambu Studio printer settings extruder layer height limits](bambu_studio_printer_settings_extruder_layer_height_limits.png)
+
+`{ref} https://wiki.bambulab.com/en/software/bambu-studio/layer-heigh` `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35`
+
+## Seams
+
+`{bm} /(Bambu Studio\/Seams)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/Print Parameters_TOPIC
+```
+
+A seam is a mark that shows up when the toolhead prints an enclosed path, showing up where the start and end of the path meet. The screenshot below highlights where seams will show up on an example model once printed.
+
+![Bambu Studio Preview screen model seam aligned example](bambu_studio_preview_model_seam_aligned_example.png)
+
+There are several ways to control the appearance of seams: Algorithmic placement (e.g., hiding seams on edges), manual placement (e.g., seam painting), and specialized printing techniques (e.g., scarf seams). The subsections below detail the common methods to mitigate seams.
+
+### Algorithmic Seam Placement
+
+`{bm} /(Bambu Studio\/Seams\/Algorithmic Seam Placement)_TOPIC/i`
+
+Bambu Studio can algorithmically control the placement of seams in several ways. The easiest is through the **Quality** → **Seam** → **Seam position** parameter. The value ...
+
+* **Nearest** positions seam on a vertex in attempt to hide it (suitable for models with sharp angles), prioritizing concave non-overhand vertex, then convex non-overhand vertex, then any non-overhang vertex, then finally overhang vertex. If no suitable vertex is available, seam is placed near the previous layer's seam.
+* **Aligned** positions seam near the previous layer's seam.
+* **Back** positions seam in the back, where back is defined as the back of the build plate.
+* **Random** randomly distributes the seam, potentially giving the print irregular dots /scratch-like marks.
+
+![Bambu Studio Prepare screen seam parameters](bambu_studio_prepare_seam_parameters.png)
+
+![Bambu Studio Preview screen model seam back example](bambu_studio_preview_model_seam_back_example.png) ![Bambu Studio Preview screen model seam random example](bambu_studio_preview_model_seam_random_example.png) ![Bambu Studio Preview screen model seam nearest example](bambu_studio_preview_model_seam_nearest_example.png)
+
+`{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35` `{ref} https://wiki.bambulab.com/en/software/bambu-studio/Seam`
+
+### Seam Painting
+
+`{bm} /(Bambu Studio\/Seams\/Seam Painting)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/Seams/Algorithmic Seam Placement_TOPIC
+Bambu Studio/Model Painting_TOPIC
+```
+
+Similar to model painting, the placement of a seam can be painted on to the model. In the Prepare screen's 3D viewport, select the model and paint a seam by using the seam paint tool in Prepare screen's toolbar (button 17, keyboard shortcut P), which will present a pop-up with scaling parameters / controls.
+
+![Bambu Studio Prepare screen toolbar](bambu_studio_prepare_toolbar.png)
+
+![Bambu Studio Prepare screen seam painting parameters](bambu_studio_prepare_seam_painting_parameters.png)
+
+Seam painting is operationally very similar to normal model painting. Paint the area to force the seam at. During slicing. the seam should show up in the areas painted.
+
+`{ref} https://wiki.bambulab.com/en/software/bambu-studio/Seam`
+
+### Scarf Seams
+
+`{bm} /(Bambu Studio\/Seams\/Scarf Seams)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/Seams/Algorithmic Seam Placement_TOPIC
+Bambu Studio/Seams/Seam Painting_TOPIC
+```
+
+A scarf seam is a specialized form of seam, intended to hide its appearance for objects that are round to the point where the seam can't be hidden (e.g., sphere, cylinder, or some round model that contains no natural edge for the seam to hide). At the ...
+
+* beginning portion of the path, the amount of filament gradually increases as it lifts off (tapered).
+* ending portion of the path, layer height gradually decreases as it comes to a stop (tapered).
+
+The end result is the the start-stop region partially overlap vs a hard start-stop, blending in better.
+
+```
+-------------.  ,-----------
+     end   ,' ,'
+         ,' ,'
+       ,' .'
+     .' .'  
+   .' .'   start
+--'  '-------------
+```
+
+For scarf seams to be enabled, the filament being printed with must have scarf seams enabled in its filament settings: In the Prepare screen's sidebar, navigate to **Project Filaments**, then select the ellipsis for the desired filament and navigate to **Filament** → **Filament scarf seam settings**
+
+![Bambu Studio filament scarf seam settings](bambu_studio_filament_scarf_seam_settings.png)
+
+* **Scarf seam type**: Must be set to either **Contour** or **Contour and Hole** for scarf seams to be enabled.
+* **Scarf start !!height!!**: Height at which the nozzle starts printing the wall, specified in mm or percentage of layer height.
+* **Scarf slope gap**: Scarf seam cuts into the inner wall to accommodate excess material, represented as a percentage of the nozzle diameter multiplied by some internal constant.
+* **Scarf length**: Length of the seam. Disabled if set to 0 or the option **Scarf around the entire wall** is enabled in print parameters.
+
+````{note}
+Unsure what "Contour" and "Contour and Hole" refer to? It has something to do with https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation.
+
+Unsure what the slope gap parameter actually does? It leaves a gap in the inner wall so the exterior wall can bleed extra material into it?
+
+Scarf start !!height!! is the starting !!height!! that the scarf seam starts printing at, as shown in the following ASCII diagram.
+
+```
+-------------.  ,-----------
+     end   ,' ,'
+         ,' ,'
+       ,'  '
+     .'    | 
+   .'      | start
+--'        '------------------
+```
+
+````
+
+![Bambu Studio Prepare screen seam parameters](bambu_studio_prepare_seam_parameters.png)
+
+In the object's parameters, ...
+
+* when **Quality** → **Seam** → **Smart scarf seam application** is ...
+  * enabled, scarf seams are applied as needed. Specifically, when the layer wall isn't part of an overhang and doesn't have any hard edges for the seam to hide in, that's when scarf seams are applied.
+  * disabled,  scarf seams are applied to all areas.
+
+  ```{note}
+  Why not on overhangs? Because scarf seams are too weak for overhanging areas?
+  ```
+
+* **Quality** → **Seam** → **Scarf application angle threshold** is the angle that is considered sharp enough for seams to hide in. Angles wider than this will enable scarf seams.
+
+* **Quality** → **Seam** → **Scarf around entire wall** makes the entire wall a scarf seam.
+
+  ```{note}
+  According to the source: Enabling this option requires caution as it may result in using a smaller extrusion amount for the entire perimeter, which may cause poor adhesion between lines and result in surface defects.
+  ```
+
+* **Quality** → **Seam** → **Scarf steps** is the number steps to print the scarf seam. That is, the toolhead prints the scarf seam as a series of incrementing steps rather than a raised slope. This value controls the number of steps.
+
+  ```{note}
+  According to the source: ..., it should be noted that some seam positions cannot be accurately divided into the set number of steps, so the actual scarf steps ≥ the set scarf steps.
+  ```
+
+* when **Quality** → **Seam** → **Seam joint for inner walls** is enabled, inner walls will also have a scarf seam.
+
+`{ref} https://wiki.bambulab.com/en/software/bambu-studio/Seam`
+
+## Curved Tops
+
+`{bm} /(Bambu Studio\/Curved Tops)_TOPIC/i`
+
+Models with a curved tops instead of flat tops (e.g., circle vs square) should set the property **Quality** → **Advanced** → **Only one wall on top surfaces** to **Not Applied**. Doing so reduces visible layer lines, resulting in a smoother finish.
+
+![Bambu Studio Preview screen Only one wall on top surfaces example](bambu_studio_preview_only_one_wall_on_top_surfaces_example.png)
+
+When this parameter is set to **Not Applied**, the number of walls on the top surface is the same as the number of wall loops set under **Strength** → **Walls** → **Wall loops**. Effectively, it's overwriting the parameter **Wall loops** for the top surface to be a single wall.
+
+```{note}
+There seems to also be a hidden developer property **Quality** → **Advanced** → **Top area threshold** that sets the threshold for what top surfaces use wall loops's count vs a single surface. I can't find this in my Bambu Studio. See https://wiki.bambulab.com/en/software/bambu-studio/parameter/quality-advance-settings.
+```
+
+`{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35`  `{ref} https://wiki.bambulab.com/en/software/bambu-studio/parameter/quality-advance-settings`
+
+## Walls
+
+`{bm} /(Bambu Studio\/Walls)_TOPIC/i`
+
+The number of walls printed for a model (Z axis) is set through the parameter **Strength** → **Walls** → **Wall loops**. The more walls, the stronger the print is (presumably). It's recommended that for ...
+
+* functional models, 3 to 4 walls will enhance structural strength and durability.
+* decorative models, 2 walls are sufficient to save material and improve print efficiency.
+
+The number of solid layers for the top of the model is set through the parameter **Strength** → **Top/bottom shells** → **Top shell layers**. The thickness_LAYER of the top shell should approximately match the !!thickness!! of the walls. For example, if the !!thickness!! of 5 walls comes out to 5mm, then the number of top shell layers should approximately come out to 5mm as well.
+
+```{note}
+Prior to the top shell is the infill material. The infill material almost always has gaps, and so the that first shell layer is bridging all those gaps.
+```
+
+Similarly to the top shell layers, the number of solid layers for the bottom of the model is set through the parameter **Strength** → **Top/bottom shells** → **Bottom shell layers**. It's recommended that the bottom shell have a minimum of 4 layers to ensure a sturdy and flat foundation.
+
+```{note}
+Why shouldn't the bottom shell have the same !!thickness!! as the walls and top shell? Wouldn't that make more sense in that it's unified?
+```
+
+![Bambu Studio Preview screen wall and shell parameters](bambu_studio_preview__wall_and_shell_parameters.png)
+
+```{note}
+There are the alternative parameters **!!Top shell thickness!!** / **!!Bottom shell thickness!!** that set using mm instead of number of layers. When set, the number of layers chosen is the maximum between **Top shell layers** / **Bottom shell layers** and the number of layers needed to match the !!thickness!! of **!!Top shell thickness!!** / **!!Bottom shell thickness!!**.
+```
+
+`{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35`
+
+## Infill
+
+`{bm} /(Bambu Studio\/Infill)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/Walls_TOPIC
+```
+
+While the exterior of a printed model are walls / surfaces, the interior area of is printed as an infill pattern. An infill patterns is a pattern where the user controls how densely the pattern is printed, where higher densities are typically associated with greater strength / greater load bearing capacity.
+
+Infill parameters are found under **Strength** → **Sparse infill**:
+
+* **Sparse infill density** controls the density of the infill. Infill densities of ...
+
+  * \>= 30% are considered well suited for functional prints (load bearing).
+  * ~15% are considered a good balance between print efficiency and strength.
+
+* **Sparse infill pattern** is the infill pattern to use.
+  
+  | Pattern             | Target               | Details                                                                                              |
+  |---------------------| ---------------------|------------------------------------------------------------------------------------------------------|
+  | Concentric          | Aesthetic            | Transparent visuals; weak **horizontal strength**                                                    |
+  | Rectilinear         | Speed                | Fast, low material; **low strength**                                                                 |
+  | Grid                | Speed                | Fast; **material buildup at intersections → nozzle scraping/collisions**                             |
+  | Line                | Strength             | Better **basic structure**                                                                           |
+  | Cube                | Strength             | **Uniform X/Y/Z strength**; lightweight/insulating                                                   |
+  | Triangles           | Strength             | Strong **shear resistance**; **bridging gaps → needs more top layers**, flow issues at intersections |
+  | Tri-hexagon         | Strength             | Excellent **shear + tensile strength**; reduces warping                                              |
+  | Gyroid              | Strength / Speed     | **All-direction !!support!!**; **long slicing time, large G-code, vibration at high speed**              |
+  | Honeycomb           | Strength             | High **rigidity + impact resistance**; **more material, slower print + slicing**                     |
+  | Adaptive Cubic      | Speed / Functional   | Saves material; prevents **top collapse**                                                            |
+  | Aligned Rectilinear | Speed                | Efficient; **anisotropic strength**, **top surface may fall**                                        |
+  | 3D Honeycomb        | Strength             | Better **interlayer bonding**; faster than honeycomb                                                 |
+  | Hilbert Curve       | Aesthetic / Strength | Smooth surface, uniform stress; **slow print + slicing**                                             |
+  | Archimedean Chords  | Speed / Quality      | Continuous path; avoids buildup                                                                      |
+  | Octagonal Spiral    | Aesthetic            | Decorative; **weak strength**, **poor cohesion → deformation**                                       |
+  | Supporting Cubic    | Strength             | Stable **multi-directional strength**                                                                |
+  | Lightning           | Speed                | Minimal material; **non-structural**                                                                 |
+  | Cross Hatch         | Speed                | Faster; **non-load-bearing**                                                                         |
+  | Zig Zag             | Speed                | Continuous extrusion; **low strength**                                                               |
+  | Cross Zag           | Structural Control   | Tunable intersections (rectilinear variant)                                                          |
+  | Locked Zag          | Hybrid               | Balanced **appearance + strength**                                                                   |
+
+  ```{note}
+  List above generated by ChatGPT as a quick lookup guide.
+  ```
+
+In addition to the standard infill, it's possible to specify infill patterns for the top and bottom surfaces using the parameters **Strength** → **Top/bottom shells** → **Top surface pattern** and **Bottom surface pattern**. The patterns available are more limits than the full roster of infill patterns.
+
+```{note}
+Top/bottom surface patterns seem to only be line !!based!! infill patterns where lines don't intersect? And you can't set density? It seems to be maximum density?
+
+What's the point of having these? I guess it has to do with the finish of the surface? I recall there was some option where you could have the heated nozzle go over the surface (without printing anything) to further smooth it out? I think it was under **Quality** → **Ironing**.
+```
+
+`{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35` `{ref} https://wiki.bambulab.com/en/software/bambu-studio/fill-patterns`
 
 # Terminology
 
@@ -1008,7 +1336,7 @@ print speed?
 
 * `{bm} Automatic Material System High Temperature (AMS HT)/(AMS HT)/` `{bm} /(Automatic Material System High Temperature)/i` - Automatic Material System High Temperature, an extension to the H2S that manages handling engineering-grade high-temperature filaments that are sensitive to moisture (e.g., PPS and PPA). It has better a better motor, filament drying (up to 85 celsius), and better humidity control than the AMS 2 Pro. However, it only seems to !!support!! 1 spool.
 
-  `{bm-error} Did you mean AMS 2 Pro or AMS HT?/(AMS\s?Pro\s?2|AMS\s?2|AMS\s?Pro|AMS)/i`
+  `{bm-error} Did you mean AMS 2 Pro or AMS HT?/(AMS\s?Pro\s?2|AMS\s?2|AMS\s?Pro|\bAMS\b)/i`
 
   `{bm-error} Did you mean AMS 2 Pro or AMS HT?/(Automatic Material System\s?Pro\s?2|Automatic Material System\s?2|Automatic Material System\s?Pro|Automatic Material System)/i`
 
@@ -1262,9 +1590,9 @@ print speed?
 
   `{bm-error} Did you mean a set of slices (slices_SET) or the act of slicing (slices_PROC)?/(slices)/`
 
-* `{bm} layer height` `{bm} /(height)_LAYER/i` `{bm} /(thickness|thickness)_LAYER/i` - The !!thickness!! of each individual layer within a sliced 3D model. `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214`
+* `{bm} layer height` `{bm} /(height)_LAYER/i` `{bm} /(thickness|thickness|thicker)_LAYER/i` - The !!thickness!! of each individual layer within a sliced 3D model. `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214`
 
-  `{bm-error} Referencing slice height or thickness? use height_LAYER or thickness_LAYER or thick_LAYER or wrap in !!/(height|thickness|thick)/`
+  `{bm-error} Referencing slice height or thickness? use height_LAYER or thickness_LAYER or thick_LAYER or wrap in !!/(height|thickness|thicker|thick)/`
   `{bm-error} Don't need _LAYER suffix to disambiguate layer height - it's only required for heigh on its own/(layer height_LAYER)/`
 
 * `{bm} infill` - A pattern added to the interior of the 3D model being sliced, intended to strengthen/sturdiness of printed object. Infills are typically described using density and pattern type. The higher the density, the stronger the object. `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214`

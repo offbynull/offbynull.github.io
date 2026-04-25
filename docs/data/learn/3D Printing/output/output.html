@@ -38,6 +38,8 @@
 <ul>
 <li><a href="#H_Project%20Persistence">Project Persistence</a></li>
 <li><a href="#H_3D%20Viewport">3D Viewport</a></li>
+<li><a href="#H_Project%20Filaments">Project Filaments</a></li>
+<li><a href="#H_Print%20Parameters">Print Parameters</a></li>
 <li><a href="#H_Model%20Importing">Model Importing</a></li>
 <li><a href="#H_Model%20Placement">Model Placement</a></li>
 <li><a href="#H_Model%20Rotation">Model Rotation</a></li>
@@ -54,7 +56,16 @@
 <li><a href="#H_Model%20Cutting">Model Cutting</a></li>
 <li><a href="#H_Model%20Set%20Operations">Model Set Operations</a></li>
 <li><a href="#H_Model%20Text">Model Text</a></li>
-<li><a href="#H_Print%20Quality">Print Quality</a></li>
+<li><a href="#H_Layer%20Height">Layer Height</a></li>
+<li><a href="#H_Seams">Seams</a></li>
+<ul>
+<li><a href="#H_Algorithmic%20Seam%20Placement">Algorithmic Seam Placement</a></li>
+<li><a href="#H_Seam%20Painting">Seam Painting</a></li>
+<li><a href="#H_Scarf%20Seams">Scarf Seams</a></li>
+</ul>
+<li><a href="#H_Curved%20Tops">Curved Tops</a></li>
+<li><a href="#H_Walls">Walls</a></li>
+<li><a href="#H_Infill">Infill</a></li>
 </ul>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
@@ -891,12 +902,61 @@
 <ul>
 <li><strong>Printer</strong> section that controls which printer to use and its configuration (e.g., <a href="#BM_(build%20plate)%2Fi">build plate</a> and <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>).</li>
 <li><strong>Project Filaments</strong> section that controls the filaments are available to the project. For example, a model within the project can be painted such that different areas of the model use different filaments, but those filaments have to be made available to the project first via this section.</li>
-<li><strong>Process</strong> section that controls the hierarchy of entities within the project (e.g., models may be grouped together, referred to as an assembly). Each entity has properties to it that can be modified (e.g., parameters that control the quality of the print and how strong the printed model is).</li>
+<li><strong>Process</strong> section that controls the hierarchy of entities within the project (e.g., models may be grouped together, referred to as an assembly). Each entity has properties to it that can be modified (e.g., parameters that control how the model prints).</li>
 </ul>
+<a name="H_Project%20Filaments"></a><h2>Project Filaments</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FProject%20Filaments)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>/3D Viewport</li>
+</ul>
+</div>
+<p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> has a section for defining which filaments are available to a project. The Project Filaments section is in the sidebar of the Prepare screen and the Preview screen.</p>
+<p><img src="bambu_studio_prepare_project_filaments.png" alt="Bambu Studio Prepare screen project filaments"></p>
+<p>Each filament is assigned an ID (e.g., 1, 2, ...). Objects and <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s within the 3D viewport, rather than being assigned an exact filament, are instead assigned one of these IDs. The filament assigned to the ID number can be swapped to a different filament via the dropdown next to the ID, thereby automatically updating any areas of an object <a href="#BM_(layer%7Cslice)%2Fi">layer</a> making use of that ID.</p>
+<ul>
+<li>To add a filament to the list of available filaments, use the plus button.</li>
+<li>To remove a filament from the list of available filament, either use the minus button or click on the ellipsis next to the filament dropdown and select <strong>Delete</strong>.</li>
+<li>To remove a filament and reassign its usages to another ID, click the ellipsis next to one of the filaments, navigate to <strong>Merge with</strong>, and select the ID to merge with.</li>
+<li>To synchronize the available filaments with those loaded into the attached <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> / <a href="#BM_(AMS%20HT)%2F">AMS HT</a> units, use the button immediately to the right to the minus button.</li>
+<li>To configure the list of filaments available for adding, use the cog button.</li>
+</ul>
+<p>At the bottom is an <strong>Add Mixed Filament</strong> button. Mixed filaments is a mix of existing filaments printed in interleaves <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s to achieve a new color via half-toning (e.g., alternating between 1 <a href="#BM_(layer%7Cslice)%2Fi">layer</a> black and 1 <a href="#BM_(layer%7Cslice)%2Fi">layer</a> white gives the impression that the printed object is gray). Mixed filaments are not recommended on the H2S because it's a single <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> printer - excessive swapping between filaments causes a lot of waste. <sub><a href="https://www.youtube.com/watch?v=ZsgJz0qk4eE">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/release/release-note-2-5-3">[src]</a></sub></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>A full accounting of properties under <strong>Process</strong> is out of scope. They'll be covered on an adhoc basis in the subsequent sections.</p>
+<p>Mixed filaments don't have the desired effected on top/bottom surfaces because those are single <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s and only one color is printed per <a href="#BM_(layer%7Cslice)%2Fi">layer</a>? They work best on near vertical walls. It may be possible to rotate the object such that top/bottom surfaces are reduced, but it'll likely require introducing <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>.</p>
 </div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Painting)_TOPIC%2Fi">Bambu Studio/Model Painting</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Rotation)_TOPIC%2Fi">Bambu Studio/Model Rotation</a></li>
+</ul>
+</div>
+<a name="H_Print%20Parameters"></a><h2>Print Parameters</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FPrint%20Parameters)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>/3D Viewport</li>
+<li><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>/Project Filaments</li>
+</ul>
+</div>
+<p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> has a section for defining how models and model groupings (assemblies) are printed. The Process section is in the sidebar of the Prepare screen and the Preview screen.</p>
+<p><img src="bambu_studio_prepare_process.png" alt="Bambu Studio Prepare screen process"></p>
+<p>The Process section can change scope using a toggle (section 1). The scope can either be global, or it can target a specific set of objects (e.g., a model, an assembly, or some combination of models/assemblies). If not scoped globally, an object hierarchy will be displayed directly below the toggle (section 3). The selections in the object hierarchy will reflect those in the 3D viewport and vice versa.</p>
+<p>Below the object hierarchy are a hierarchy of parameters that control printing:</p>
+<ul>
+<li><strong>Quality</strong> tab organizes fidelity parameters (e.g., <a href="#BM_(layer%20height)%2Fi">layer height</a> and how to treat seams).</li>
+<li><strong>Strength</strong> tab organizes solidity/firmness parameters (e.g., <a href="#BM_(infill)%2Fi">infill</a> style/percentage and wall thickness).</li>
+<li><strong>Speed</strong> tab organizes print speed (e.g., how fast <a href="#BM_(toolhead)%2Fi">toolhead</a> moves when printing <a href="#BM_(overhang)%2Fi">overhang</a>s).</li>
+<li><strong>Support</strong> tab organizes <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> parameters (e.g., minimum angle for which <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> are required).</li>
+<li><strong>Others</strong> tab organizes parameters that don't fit in one of the other tabs.</li>
+<li><strong>Frequent</strong> tab caches parameters that have recently been changed.</li>
+</ul>
+<p>A full accounting of parameters is beyond the scope of this section. Individual parameters will be referenced / explained in subsequent sections as needed.</p>
+<p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub></p>
 <a name="H_Model%20Importing"></a><h2>Model Importing</h2>
 <p><a name="BM_(Bambu%20Studio%5C%2FModel%20Importing)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -1090,6 +1150,7 @@
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Bambu%20Studio%5C%2F3D%20Viewport)_TOPIC%2Fi">Bambu Studio/3D Viewport</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FProject%20Filaments)_TOPIC%2Fi">Bambu Studio/Project Filaments</a></li>
 </ul>
 </div>
 <p>In the Prepare screen's 3D viewport, selected models can be painted by using the paint tool in Prepare screen's toolbar (button 13, keyboard shortcut N), which will present a pop-up with scaling parameters / controls.</p>
@@ -1173,6 +1234,12 @@
 </div>
 <a name="H_Type"></a><h3>Type</h3>
 <p><a name="BM_(Bambu%20Studio%5C%2FModel%20Supports%2FType)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FPrint%20Parameters)_TOPIC%2Fi">Bambu Studio/Print Parameters</a></li>
+</ul>
+</div>
 <p><a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">Supports</a> come in two types: <strong>Normal</strong> and <strong>Tree</strong>.</p>
 <p><img src="bambu_studio_prepare_supports.png" alt="Bambu Studio Prepare screen support type"></p>
 <p>Each type comes in either <strong>auto</strong> mode or <strong>manual</strong> mode. When the mode is ...</p>
@@ -1271,6 +1338,12 @@
 </div>
 <a name="H_Interface"></a><h3>Interface</h3>
 <p><a name="BM_(Bambu%20Studio%5C%2FModel%20Supports%2FInterface)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FPrint%20Parameters)_TOPIC%2Fi">Bambu Studio/Print Parameters</a></li>
+</ul>
+</div>
 <p><a href="#BM_(interfaces%7Cinterface's%7Cinterface)_BO%2Fi">Interface</a> <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s are <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s that touch the model, while the rest of the <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> body is referred to as the <a href="#BM_(bases%7Cbase's%7Cbase)_BO%2Fi">base</a>. <a href="#BM_(Bambu%20Studio)%2Fi">Bambu studio</a> allows targeting specific materials for a <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support's</a> <a href="#BM_(bases%7Cbase's%7Cbase)_BO%2Fi">base</a> and <a href="#BM_(interfaces%7Cinterface's%7Cinterface)_BO%2Fi">interface</a>. In the Prepare screen's side-panel, navigate to the <strong>Support</strong> tab and to the <strong>Filament for Supports</strong> subsection. The ...</p>
 <ul>
 <li><strong>Support/raft base</strong> controls the filament to use for the <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support's</a> <a href="#BM_(bases%7Cbase's%7Cbase)_BO%2Fi">base</a>.</li>
@@ -1284,6 +1357,7 @@
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Supports%2FInterface)_TOPIC%2Fi">Bambu Studio/Model Supports/Interface</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FPrint%20Parameters)_TOPIC%2Fi">Bambu Studio/Print Parameters</a></li>
 </ul>
 </div>
 <p>A <a href="#BM_%5Cb(rafts%7Craft's%7Craft)_BO%5Cb%2Fi">raft</a> is a type of <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> that elevates a model off the <a href="#BM_(build%20plate)%2Fi">build plate</a>. Rafts are commonly used for materials that are prone to <a href="#BM_(warping%7Cwarp)%2Fi">warping</a> (e.g., <a href="#BM_%5Cb(ABS)%5Cb%2F">ABS</a>).</p>
@@ -1445,9 +1519,333 @@
 </li>
 </ul>
 <p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/3d-text">[src]</a></sub></p>
-<a name="H_Print%20Quality"></a><h2>Print Quality</h2>
-<p><a href="#BM_(layer%20height)%2Fi">layer height</a>?</p>
-<p>print speed?</p>
+<a name="H_Layer%20Height"></a><h2>Layer Height</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FLayer%20Height)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FPrint%20Parameters)_TOPIC%2Fi">Bambu Studio/Print Parameters</a></li>
+</ul>
+</div>
+<p><a href="#BM_(layer%20height)%2Fi">Layer height</a> is the height of each <a href="#BM_(layer%7Cslice)%2Fi">layer</a> in the print. The thinner the <a href="#BM_(layer%7Cslice)%2Fi">layer</a>, the less ridges are visible as the model is printed upwards (Z axis), meaning a smoother overall appearance.</p>
+<p>To set the <a href="#BM_(layer%20height)%2Fi">layer height</a> globally, ensure no model is selected and in the Prepare screen's side-panel navigate to the <strong>Quality</strong> tab and to the <strong>Layer height</strong> subsection:</p>
+<ul>
+<li><strong><a href="#BM_(layer%20height)%2Fi">Layer height</a></strong> - Controls <a href="#BM_(height)_LAYER%2Fi">height</a> of each <a href="#BM_(layer%7Cslice)%2Fi">layer</a>, except for the initial <a href="#BM_(layer%7Cslice)%2Fi">layer</a>.</li>
+<li><strong>Initial <a href="#BM_(layer%20height)%2Fi">layer height</a></strong> - Controls <a href="#BM_(height)_LAYER%2Fi">height</a> of the initial <a href="#BM_(layer%7Cslice)%2Fi">layer</a>. A <a href="#BM_(thickness%7Cthickness%7Cthicker)_LAYER%2Fi">thicker</a> initial <a href="#BM_(layer%7Cslice)%2Fi">layer</a> may help with the print better stick to the <a href="#BM_(build%20plate)%2Fi">build plate</a>.</li>
+</ul>
+<p>In addition, there are presets available for choosing common <a href="#BM_(layer%20height)%2Fi">layer height</a>s. These presets typically also set other other options, such as printing speeds.</p>
+<p><img src="bambu_studio_prepare_layer_height_parameters.png" alt="Bambu Studio Prepare screen layer height parameters"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Settings different <a href="#BM_(layer%20height)%2Fi">layer height</a>s for each object? You might need to print the objects individually or <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> will fail. In the Prepare screen's side-panel navigate to the <strong>Other</strong> tab, then to the <strong>Special mode</strong> subsection, then set <strong>Print sequence</strong> to "By object".</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's an option here called "Mixed color sub<a href="#BM_(layer%7Cslice)%2Fi">layer</a>" that seems to have to do with "fake color" printing where alternating real colors are banded together to generate some other color (e.g., alternating between black and white to get 50% gray). When this setting is set, it seems that the <a href="#BM_(layer%20height)%2Fi">layer height</a> is automatically cut down for coloring purposes? So if you set the <a href="#BM_(layer%20height)%2Fi">layer height</a> to 0.2mm but this option were turned on, that 0.2mm would actually be subdivided into n thinner <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s? At least that's the vibe I got from https://www.reddit.com/r/BambuLab/comments/1ssuuqx/color_mixing_and_mixed_color_sub<a href="#BM_(layer%7Cslice)%2Fi">layer</a>_wrt_<a href="#BM_(layer%7Cslice)%2Fi">layer</a></p>
+</div>
+<p>The initial <a href="#BM_(layer%20height)%2Fi">layer height</a> is recommended to be 50% of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s diameter. Subsequent <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s are recommended to be between 20% to 70% of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s diameter. For example, if using the 0.4mm <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> that comes with the H2S, the initial <a href="#BM_(layer%7Cslice)%2Fi">layer</a> would be set to a <a href="#BM_(layer%20height)%2Fi">layer height</a> of 0.2mm and the remaining <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s can be set to anywhere between 0.08mm to 0.28mm. This information is also available under the printer setting's <strong><a href="#BM_(extruder)%2Fi">Extruder</a></strong> section.</p>
+<p><img src="bambu_studio_printer_settings_extruder_layer_height_limits.png" alt="Bambu Studio printer settings extruder layer height limits"></p>
+<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/layer-heigh">[src]</a></sub> <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub></p>
+<a name="H_Seams"></a><h2>Seams</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FSeams)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FPrint%20Parameters)_TOPIC%2Fi">Bambu Studio/Print Parameters</a></li>
+</ul>
+</div>
+<p>A seam is a mark that shows up when the <a href="#BM_(toolhead)%2Fi">toolhead</a> prints an enclosed path, showing up where the start and end of the path meet. The screenshot below highlights where seams will show up on an example model once printed.</p>
+<p><img src="bambu_studio_preview_model_seam_aligned_example.png" alt="Bambu Studio Preview screen model seam aligned example"></p>
+<p>There are several ways to control the appearance of seams: Algorithmic placement (e.g., hiding seams on edges), manual placement (e.g., seam painting), and specialized printing techniques (e.g., scarf seams). The subsections below detail the common methods to mitigate seams.</p>
+<a name="H_Algorithmic%20Seam%20Placement"></a><h3>Algorithmic Seam Placement</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FSeams%2FAlgorithmic%20Seam%20Placement)_TOPIC%2Fi"></a><strong></strong></p>
+<p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> can algorithmically control the placement of seams in several ways. The easiest is through the <strong>Quality</strong> → <strong>Seam</strong> → <strong>Seam position</strong> parameter. The value ...</p>
+<ul>
+<li><strong>Nearest</strong> positions seam on a vertex in attempt to hide it (suitable for models with sharp angles), prioritizing concave non-overhand vertex, then convex non-overhand vertex, then any non-<a href="#BM_(overhang)%2Fi">overhang</a> vertex, then finally <a href="#BM_(overhang)%2Fi">overhang</a> vertex. If no suitable vertex is available, seam is placed near the previous <a href="#BM_(layer%7Cslice)%2Fi">layer</a>'s seam.</li>
+<li><strong>Aligned</strong> positions seam near the previous <a href="#BM_(layer%7Cslice)%2Fi">layer</a>'s seam.</li>
+<li><strong>Back</strong> positions seam in the back, where back is defined as the back of the <a href="#BM_(build%20plate)%2Fi">build plate</a>.</li>
+<li><strong>Random</strong> randomly distributes the seam, potentially giving the print irregular dots /scratch-like marks.</li>
+</ul>
+<p><img src="bambu_studio_prepare_seam_parameters.png" alt="Bambu Studio Prepare screen seam parameters"></p>
+<p><img src="bambu_studio_preview_model_seam_back_example.png" alt="Bambu Studio Preview screen model seam back example"> <img src="bambu_studio_preview_model_seam_random_example.png" alt="Bambu Studio Preview screen model seam random example"> <img src="bambu_studio_preview_model_seam_nearest_example.png" alt="Bambu Studio Preview screen model seam nearest example"></p>
+<p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/Seam">[src]</a></sub></p>
+<a name="H_Seam%20Painting"></a><h3>Seam Painting</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FSeams%2FSeam%20Painting)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FSeams%2FAlgorithmic%20Seam%20Placement)_TOPIC%2Fi">Bambu Studio/Seams/Algorithmic Seam Placement</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Painting)_TOPIC%2Fi">Bambu Studio/Model Painting</a></li>
+</ul>
+</div>
+<p>Similar to model painting, the placement of a seam can be painted on to the model. In the Prepare screen's 3D viewport, select the model and paint a seam by using the seam paint tool in Prepare screen's toolbar (button 17, keyboard shortcut P), which will present a pop-up with scaling parameters / controls.</p>
+<p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
+<p><img src="bambu_studio_prepare_seam_painting_parameters.png" alt="Bambu Studio Prepare screen seam painting parameters"></p>
+<p>Seam painting is operationally very similar to normal model painting. Paint the area to force the seam at. During <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>. the seam should show up in the areas painted.</p>
+<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/Seam">[src]</a></sub></p>
+<a name="H_Scarf%20Seams"></a><h3>Scarf Seams</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FSeams%2FScarf%20Seams)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FSeams%2FAlgorithmic%20Seam%20Placement)_TOPIC%2Fi">Bambu Studio/Seams/Algorithmic Seam Placement</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FSeams%2FSeam%20Painting)_TOPIC%2Fi">Bambu Studio/Seams/Seam Painting</a></li>
+</ul>
+</div>
+<p>A scarf seam is a specialized form of seam, intended to hide its appearance for objects that are round to the point where the seam can't be hidden (e.g., sphere, cylinder, or some round model that contains no natural edge for the seam to hide). At the ...</p>
+<ul>
+<li>beginning portion of the path, the amount of filament gradually increases as it lifts off (tapered).</li>
+<li>ending portion of the path, <a href="#BM_(layer%20height)%2Fi">layer height</a> gradually decreases as it comes to a stop (tapered).</li>
+</ul>
+<p>The end result is the the start-stop region partially overlap vs a hard start-stop, blending in better.</p>
+<pre><code>-------------.  ,-----------
+     end   ,' ,'
+         ,' ,'
+       ,' .'
+     .' .'  
+   .' .'   start
+--'  '-------------
+</code></pre>
+<p>For scarf seams to be enabled, the filament being printed with must have scarf seams enabled in its filament settings: In the Prepare screen's sidebar, navigate to <strong>Project Filaments</strong>, then select the ellipsis for the desired filament and navigate to <strong>Filament</strong> → <strong>Filament scarf seam settings</strong></p>
+<p><img src="bambu_studio_filament_scarf_seam_settings.png" alt="Bambu Studio filament scarf seam settings"></p>
+<ul>
+<li><strong>Scarf seam type</strong>: Must be set to either <strong>Contour</strong> or <strong>Contour and Hole</strong> for scarf seams to be enabled.</li>
+<li><strong>Scarf start height</strong>: Height at which the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> starts printing the wall, specified in mm or percentage of <a href="#BM_(layer%20height)%2Fi">layer height</a>.</li>
+<li><strong>Scarf slope gap</strong>: Scarf seam cuts into the inner wall to accommodate excess material, represented as a percentage of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> diameter multiplied by some internal constant.</li>
+<li><strong>Scarf length</strong>: Length of the seam. Disabled if set to 0 or the option <strong>Scarf around the entire wall</strong> is enabled in print parameters.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Unsure what "Contour" and "Contour and Hole" refer to? It has something to do with https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation.</p>
+<p>Unsure what the slope gap parameter actually does? It leaves a gap in the inner wall so the exterior wall can bleed extra material into it?</p>
+<p>Scarf start height is the starting height that the scarf seam starts printing at, as shown in the following ASCII diagram.</p>
+<pre><code>-------------.  ,-----------
+     end   ,' ,'
+         ,' ,'
+       ,'  '
+     .'    | 
+   .'      | start
+--'        '------------------
+</code></pre>
+</div>
+<p><img src="bambu_studio_prepare_seam_parameters.png" alt="Bambu Studio Prepare screen seam parameters"></p>
+<p>In the object's parameters, ...</p>
+<ul>
+<li>
+<p>when <strong>Quality</strong> → <strong>Seam</strong> → <strong>Smart scarf seam application</strong> is ...</p>
+<ul>
+<li>enabled, scarf seams are applied as needed. Specifically, when the <a href="#BM_(layer%7Cslice)%2Fi">layer</a> wall isn't part of an <a href="#BM_(overhang)%2Fi">overhang</a> and doesn't have any hard edges for the seam to hide in, that's when scarf seams are applied.</li>
+<li>disabled,  scarf seams are applied to all areas.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Why not on <a href="#BM_(overhang)%2Fi">overhang</a>s? Because scarf seams are too weak for <a href="#BM_(overhang)%2Fi">overhang</a>ing areas?</p>
+</div>
+</li>
+<li>
+<p><strong>Quality</strong> → <strong>Seam</strong> → <strong>Scarf application angle threshold</strong> is the angle that is considered sharp enough for seams to hide in. Angles wider than this will enable scarf seams.</p>
+</li>
+<li>
+<p><strong>Quality</strong> → <strong>Seam</strong> → <strong>Scarf around entire wall</strong> makes the entire wall a scarf seam.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>According to the source: Enabling this option requires caution as it may result in using a smaller extrusion amount for the entire perimeter, which may cause poor adhesion between lines and result in surface defects.</p>
+</div>
+</li>
+<li>
+<p><strong>Quality</strong> → <strong>Seam</strong> → <strong>Scarf steps</strong> is the number steps to print the scarf seam. That is, the <a href="#BM_(toolhead)%2Fi">toolhead</a> prints the scarf seam as a series of incrementing steps rather than a raised slope. This value controls the number of steps.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>According to the source: ..., it should be noted that some seam positions cannot be accurately divided into the set number of steps, so the actual scarf steps ≥ the set scarf steps.</p>
+</div>
+</li>
+<li>
+<p>when <strong>Quality</strong> → <strong>Seam</strong> → <strong>Seam joint for inner walls</strong> is enabled, inner walls will also have a scarf seam.</p>
+</li>
+</ul>
+<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/Seam">[src]</a></sub></p>
+<a name="H_Curved%20Tops"></a><h2>Curved Tops</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FCurved%20Tops)_TOPIC%2Fi"></a><strong></strong></p>
+<p>Models with a curved tops instead of flat tops (e.g., circle vs square) should set the property <strong>Quality</strong> → <strong>Advanced</strong> → <strong>Only one wall on top surfaces</strong> to <strong>Not Applied</strong>. Doing so reduces visible <a href="#BM_(layer%7Cslice)%2Fi">layer</a> lines, resulting in a smoother finish.</p>
+<p><img src="bambu_studio_preview_only_one_wall_on_top_surfaces_example.png" alt="Bambu Studio Preview screen Only one wall on top surfaces example"></p>
+<p>When this parameter is set to <strong>Not Applied</strong>, the number of walls on the top surface is the same as the number of wall loops set under <strong>Strength</strong> → <strong>Walls</strong> → <strong>Wall loops</strong>. Effectively, it's overwriting the parameter <strong>Wall loops</strong> for the top surface to be a single wall.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There seems to also be a hidden developer property <strong>Quality</strong> → <strong>Advanced</strong> → <strong>Top area threshold</strong> that sets the threshold for what top surfaces use wall loops's count vs a single surface. I can't find this in my <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>. See https://wiki.bambulab.com/en/software/bambu-studio/parameter/quality-advance-settings.</p>
+</div>
+<p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub>  <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/parameter/quality-advance-settings">[src]</a></sub></p>
+<a name="H_Walls"></a><h2>Walls</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FWalls)_TOPIC%2Fi"></a><strong></strong></p>
+<p>The number of walls printed for a model (Z axis) is set through the parameter <strong>Strength</strong> → <strong>Walls</strong> → <strong>Wall loops</strong>. The more walls, the stronger the print is (presumably). It's recommended that for ...</p>
+<ul>
+<li>functional models, 3 to 4 walls will enhance structural strength and durability.</li>
+<li>decorative models, 2 walls are sufficient to save material and improve print efficiency.</li>
+</ul>
+<p>The number of solid <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s for the top of the model is set through the parameter <strong>Strength</strong> → <strong>Top/bottom shells</strong> → <strong>Top shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s</strong>. The <a href="#BM_(thickness%7Cthickness%7Cthicker)_LAYER%2Fi">thickness</a> of the top shell should approximately match the thickness of the walls. For example, if the thickness of 5 walls comes out to 5mm, then the number of top shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s should approximately come out to 5mm as well.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Prior to the top shell is the <a href="#BM_(infill)%2Fi">infill</a> material. The <a href="#BM_(infill)%2Fi">infill</a> material almost always has gaps, and so the that first shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a> is <a href="#BM_(bridging%7Cbridge)%2Fi">bridging</a> all those gaps.</p>
+</div>
+<p>Similarly to the top shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s, the number of solid <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s for the bottom of the model is set through the parameter <strong>Strength</strong> → <strong>Top/bottom shells</strong> → <strong>Bottom shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s</strong>. It's recommended that the bottom shell have a minimum of 4 <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s to ensure a sturdy and flat foundation.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Why shouldn't the bottom shell have the same thickness as the walls and top shell? Wouldn't that make more sense in that it's unified?</p>
+</div>
+<p><img src="bambu_studio_preview__wall_and_shell_parameters.png" alt="Bambu Studio Preview screen wall and shell parameters"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There are the alternative parameters <strong>Top shell thickness</strong> / <strong>Bottom shell thickness</strong> that set using mm instead of number of <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s. When set, the number of <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s chosen is the maximum between <strong>Top shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s</strong> / <strong>Bottom shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s</strong> and the number of <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s needed to match the thickness of <strong>Top shell thickness</strong> / <strong>Bottom shell thickness</strong>.</p>
+</div>
+<p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub></p>
+<a name="H_Infill"></a><h2>Infill</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FInfill)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FWalls)_TOPIC%2Fi">Bambu Studio/Walls</a></li>
+</ul>
+</div>
+<p>While the exterior of a printed model are walls / surfaces, the interior area of is printed as an <a href="#BM_(infill)%2Fi">infill</a> pattern. An <a href="#BM_(infill)%2Fi">infill</a> patterns is a pattern where the user controls how densely the pattern is printed, where higher densities are typically associated with greater strength / greater load bearing capacity.</p>
+<p><a href="#BM_(infill)%2Fi">Infill</a> parameters are found under <strong>Strength</strong> → <strong>Sparse <a href="#BM_(infill)%2Fi">infill</a></strong>:</p>
+<ul>
+<li>
+<p><strong>Sparse <a href="#BM_(infill)%2Fi">infill</a> density</strong> controls the density of the <a href="#BM_(infill)%2Fi">infill</a>. <a href="#BM_(infill)%2Fi">Infill</a> densities of ...</p>
+<ul>
+<li>&gt;= 30% are considered well suited for functional prints (load bearing).</li>
+<li>~15% are considered a good balance between print efficiency and strength.</li>
+</ul>
+</li>
+<li>
+<p><strong>Sparse <a href="#BM_(infill)%2Fi">infill</a> pattern</strong> is the <a href="#BM_(infill)%2Fi">infill</a> pattern to use.</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Target</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Concentric</td>
+<td>Aesthetic</td>
+<td>Transparent visuals; weak <strong>horizontal strength</strong></td>
+</tr>
+<tr>
+<td>Rectilinear</td>
+<td>Speed</td>
+<td>Fast, low material; <strong>low strength</strong></td>
+</tr>
+<tr>
+<td>Grid</td>
+<td>Speed</td>
+<td>Fast; <strong>material buildup at intersections → <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> scraping/collisions</strong></td>
+</tr>
+<tr>
+<td>Line</td>
+<td>Strength</td>
+<td>Better <strong>basic structure</strong></td>
+</tr>
+<tr>
+<td>Cube</td>
+<td>Strength</td>
+<td><strong>Uniform X/Y/Z strength</strong>; lightweight/insulating</td>
+</tr>
+<tr>
+<td>Triangles</td>
+<td>Strength</td>
+<td>Strong <strong>shear resistance</strong>; <strong><a href="#BM_(bridging%7Cbridge)%2Fi">bridging</a> gaps → needs more top <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s</strong>, flow issues at intersections</td>
+</tr>
+<tr>
+<td>Tri-hexagon</td>
+<td>Strength</td>
+<td>Excellent <strong>shear + tensile strength</strong>; reduces <a href="#BM_(warping%7Cwarp)%2Fi">warping</a></td>
+</tr>
+<tr>
+<td>Gyroid</td>
+<td>Strength / Speed</td>
+<td><strong>All-direction support</strong>; <strong>long <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> time, large <a href="#BM_(G-code)%2F">G-code</a>, vibration at high speed</strong></td>
+</tr>
+<tr>
+<td>Honeycomb</td>
+<td>Strength</td>
+<td>High <strong>rigidity + impact resistance</strong>; <strong>more material, slower print + <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a></strong></td>
+</tr>
+<tr>
+<td>Adaptive Cubic</td>
+<td>Speed / Functional</td>
+<td>Saves material; prevents <strong>top collapse</strong></td>
+</tr>
+<tr>
+<td>Aligned Rectilinear</td>
+<td>Speed</td>
+<td>Efficient; <strong>anisotropic strength</strong>, <strong>top surface may fall</strong></td>
+</tr>
+<tr>
+<td>3D Honeycomb</td>
+<td>Strength</td>
+<td>Better <strong>inter<a href="#BM_(layer%7Cslice)%2Fi">layer</a> bonding</strong>; faster than honeycomb</td>
+</tr>
+<tr>
+<td>Hilbert Curve</td>
+<td>Aesthetic / Strength</td>
+<td>Smooth surface, uniform stress; <strong>slow print + <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a></strong></td>
+</tr>
+<tr>
+<td>Archimedean Chords</td>
+<td>Speed / Quality</td>
+<td>Continuous path; avoids buildup</td>
+</tr>
+<tr>
+<td>Octagonal Spiral</td>
+<td>Aesthetic</td>
+<td>Decorative; <strong>weak strength</strong>, <strong>poor cohesion → deformation</strong></td>
+</tr>
+<tr>
+<td>Supporting Cubic</td>
+<td>Strength</td>
+<td>Stable <strong>multi-directional strength</strong></td>
+</tr>
+<tr>
+<td>Lightning</td>
+<td>Speed</td>
+<td>Minimal material; <strong>non-structural</strong></td>
+</tr>
+<tr>
+<td>Cross Hatch</td>
+<td>Speed</td>
+<td>Faster; <strong>non-load-bearing</strong></td>
+</tr>
+<tr>
+<td>Zig Zag</td>
+<td>Speed</td>
+<td>Continuous extrusion; <strong>low strength</strong></td>
+</tr>
+<tr>
+<td>Cross Zag</td>
+<td>Structural Control</td>
+<td>Tunable intersections (rectilinear variant)</td>
+</tr>
+<tr>
+<td>Locked Zag</td>
+<td>Hybrid</td>
+<td>Balanced <strong>appearance + strength</strong></td>
+</tr>
+</tbody>
+</table>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>List above generated by ChatGPT as a quick lookup guide.</p>
+</div>
+</li>
+</ul>
+<p>In addition to the standard <a href="#BM_(infill)%2Fi">infill</a>, it's possible to specify <a href="#BM_(infill)%2Fi">infill</a> patterns for the top and bottom surfaces using the parameters <strong>Strength</strong> → <strong>Top/bottom shells</strong> → <strong>Top surface pattern</strong> and <strong>Bottom surface pattern</strong>. The patterns available are more limits than the full roster of <a href="#BM_(infill)%2Fi">infill</a> patterns.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Top/bottom surface patterns seem to only be line based <a href="#BM_(infill)%2Fi">infill</a> patterns where lines don't intersect? And you can't set density? It seems to be maximum density?</p>
+<p>What's the point of having these? I guess it has to do with the finish of the surface? I recall there was some option where you could have the heated <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> go over the surface (without printing anything) to further smooth it out? I think it was under <strong>Quality</strong> → <strong>Ironing</strong>.</p>
+</div>
+<p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/fill-patterns">[src]</a></sub></p>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>
@@ -1730,7 +2128,7 @@
 <p></p>
 </li>
 <li>
-<p><a name="BM_(layer%20height)%2Fi"></a><strong>layer height</strong> <a name="BM_(height)_LAYER%2Fi"></a><strong></strong> <a name="BM_(thickness%7Cthickness)_LAYER%2Fi"></a><strong></strong> - The thickness of each individual <a href="#BM_(layer%7Cslice)%2Fi">layer</a> within a <a href="#BM_(slicing%7Csliced)%2Fi">sliced</a> 3D model. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214">[src]</a></sub></p>
+<p><a name="BM_(layer%20height)%2Fi"></a><strong>layer height</strong> <a name="BM_(height)_LAYER%2Fi"></a><strong></strong> <a name="BM_(thickness%7Cthickness%7Cthicker)_LAYER%2Fi"></a><strong></strong> - The thickness of each individual <a href="#BM_(layer%7Cslice)%2Fi">layer</a> within a <a href="#BM_(slicing%7Csliced)%2Fi">sliced</a> 3D model. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214">[src]</a></sub></p>
 <p>
 </p>
 </li>

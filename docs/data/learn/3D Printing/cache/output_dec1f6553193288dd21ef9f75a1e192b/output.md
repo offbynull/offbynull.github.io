@@ -2,7 +2,7 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Bambu Studio/Model Supports/Interface_TOPIC
+ * Bambu Studio/Print Parameters_TOPIC
 
 </div>
 
