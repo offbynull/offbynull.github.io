@@ -40,9 +40,10 @@
 <ul>
 <li><a href="#H_3D%20Viewport">3D Viewport</a></li>
 <li><a href="#H_Project%20Filaments">Project Filaments</a></li>
-</ul>
 <li><a href="#H_Print%20Parameters">Print Parameters</a></li>
+<li><a href="#H_Print%20Preview">Print Preview</a></li>
 <li><a href="#H_Project%20Persistence">Project Persistence</a></li>
+</ul>
 <li><a href="#H_Model%20Importing">Model Importing</a></li>
 <li><a href="#H_Model%20Placement">Model Placement</a></li>
 <li><a href="#H_Model%20Rotation">Model Rotation</a></li>
@@ -58,7 +59,10 @@
 </ul>
 <li><a href="#H_Model%20Cutting">Model Cutting</a></li>
 <li><a href="#H_Model%20Set%20Operations">Model Set Operations</a></li>
+<li><a href="#H_Negative%20Parts">Negative Parts</a></li>
+<li><a href="#H_Modifier%20Parts">Modifier Parts</a></li>
 <li><a href="#H_Model%20Text">Model Text</a></li>
+<li><a href="#H_Model%20Iconography">Model Iconography</a></li>
 <li><a href="#H_Layer%20Height">Layer Height</a></li>
 <li><a href="#H_Seam">Seam</a></li>
 <ul>
@@ -78,6 +82,13 @@
 </ul>
 <li><a href="#H_Walls">Walls</a></li>
 <li><a href="#H_Infill">Infill</a></li>
+<li><a href="#H_Diagnostics">Diagnostics</a></li>
+<ul>
+<li><a href="#H_XY%20Hole%20Contour%20Compensation">XY Hole Contour Compensation</a></li>
+<li><a href="#H_Elephant%20Foot%20Compensation">Elephant Foot Compensation</a></li>
+<li><a href="#H_Flow%20Dynamics%20Calibration">Flow Dynamics Calibration</a></li>
+<li><a href="#H_Slicer%20Results">Slicer Results</a></li>
+</ul>
 </ul>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
@@ -268,6 +279,7 @@
 <li>is filament tangled? <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/225">[src]</a></sub></li>
 </ul>
 <a name="H_Filament%20Guide"></a><h1>Filament Guide</h1>
+<p><a name="BM_(Bambu%20Studio%5C%2FFilament%20Guide)_TOPIC%2Fi"></a><strong></strong></p>
 <p>The following table summarizes key characteristics of filaments supported by the H2S (as of time of writing). The column(s) ...</p>
 <ul>
 <li><strong>Name</strong> is the material's name. Each material may come in one of many modified forms: <a href="#BM_%5Cb(HF)%5Cb%2Fi">HF</a> (<a href="#BM_(high%5B%5C-%20%5Dflow)%2Fi">High Flow</a>) means the material has been modified for high speed printing <sub><a href="https://www.youtube.com/watch?v=1t_VpPj-9NY">[src]</a></sub>, <a href="#BM_%5Cb(CF)%5Cb%2Fi">CF</a> (<a href="#BM_(carbon%5B%5C-%20%5Dfiber)%2Fi">Carbon Fiber</a>) means the material has been fortified with <a href="#BM_(carbon%5B%5C-%20%5Dfiber)%2Fi">carbon fiber</a>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/215">[src]</a></sub>, and <a href="#BM_%5Cb(GF)%5Cb%2Fi">GF</a> (<a href="#BM_(glass%5B%5C-%20%5Dfiber)%2Fi">Glass Fiber</a>) means the material has been fortified with <a href="#BM_(glass%5B%5C-%20%5Dfiber)%2Fi">glass fiber</a>. <sub><a href="https://bambulab.com/en-us/filament/pla-cf">[src]</a></sub></li>
@@ -541,6 +553,7 @@
 <p>Stiffness and impact strength columns come from the Bambu Lab product page for the specified filament. Remaining columns come from the Bambu Lab technical document sheet (TDS) for that product.</p>
 </div>
 <a name="H_Build%20Plate%20Guide"></a><h1>Build Plate Guide</h1>
+<p><a name="BM_(Bambu%20Studio%5C%2FBuild%20Plate%20Guide)_TOPIC%2Fi"></a><strong></strong></p>
 <p>A plate that sits on the <a href="#BM_(heatbed)%2Fi">heatbed</a> and serves as the print surface. There are different types of <a href="#BM_(build%20plate)%2Fi">build plate</a>s, each with different properties targeting different filament materials (4 as of time of writing):</p>
 <ul>
 <li><a href="#BM_(Cool%20Plate%20SuperTack%20Pro)%2Fi">Cool Plate SuperTack Pro</a> - Designed to reduce <a href="#BM_%5Cb(PLA)%5Cb%2F">PLA</a> and <a href="#BM_%5Cb(PETG)%5Cb%2F">PETG</a> print failures through better adhesion at lower <a href="#BM_(heatbed)%2Fi">heatbed</a> temperatures.</li>
@@ -767,13 +780,13 @@
 <ol>
 <li><strong>Home</strong>: Welcome screen, user manuals, opening model, print history.</li>
 <li><strong>Prepare</strong>: Model placement, orientation, and manipulation.</li>
-<li><strong>Preview</strong>: Print instructions, information, and estimations.</li>
+<li><strong>Preview</strong>: Print instructions, information, and diagnostics.</li>
 <li><strong>Device</strong>: H2S interface and management.</li>
 <li><strong>Project</strong>: Informative fields describing project.</li>
 <li><strong>Calibration</strong>: H2S calibration.</li>
 </ol>
 <p>Above the top toolbar is the main menu, packed to condensed space. Next to the packed main menu are a few quick access buttons: Save, undo, and redo. Regardless of which screen you're on, the top toolbar (and main menu and quick access buttons) should always be present.</p>
-<p>The standard workflow is to plan out what and where get things printed on the Prepare screen, then review how the print will get <a href="#BM_(slicing%7Csliced)%2Fi">sliced</a> along with estimations on the Preview screen, then initiate the print.</p>
+<p>The standard workflow is to plan out what and where get things printed on the Prepare screen, then review how the print will get <a href="#BM_(slicing%7Csliced)%2Fi">sliced</a> along with diagnostics on the Preview screen, then initiate the print.</p>
 <p><img src="bambu_studio_top_toolbar.png" alt="Bambu Studio top toolbar"> <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/32">[src]</a></sub></p>
 <a name="H_3D%20Viewport"></a><h3>3D Viewport</h3>
 <p><a name="BM_(Bambu%20Studio%5C%2FUser%20Interface%2F3D%20Viewport)_TOPIC%2Fi"></a><strong></strong></p>
@@ -904,7 +917,7 @@
 <ul>
 <li><strong>Printer</strong> section that controls which printer to use and its configuration (e.g., <a href="#BM_(build%20plate)%2Fi">build plate</a> and <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>).</li>
 <li><strong>Project Filaments</strong> section that controls the filaments are available to the project. For example, a model within the project can be painted such that different areas of the model use different filaments, but those filaments have to be made available to the project first via this section.</li>
-<li><strong>Process</strong> section that controls the hierarchy of entities within the project (e.g., models may be grouped together, referred to as an assembly). Each entity has properties to it that can be modified (e.g., parameters that control how the model prints).</li>
+<li><strong>Process</strong> section that controls the hierarchy of entities within the project (e.g., models may be grouped together, referred to as an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a>). Each entity has properties to it that can be modified (e.g., parameters that control how the model prints).</li>
 </ul>
 <a name="H_Project%20Filaments"></a><h3>Project Filaments</h3>
 <p><a name="BM_(Bambu%20Studio%5C%2FUser%20Interface%2FProject%20Filaments)_TOPIC%2Fi"></a><strong></strong></p>
@@ -930,13 +943,17 @@
 <p>Mixed filaments don't have the desired effected on top/<a href="#BM_(bottom%20surface)%2Fi">bottom surface</a>s because those are single <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s and only one color is printed per <a href="#BM_(layer%7Cslice)%2Fi">layer</a>? They work best on near vertical <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s. It may be possible to rotate the object such that top/<a href="#BM_(bottom%20surface)%2Fi">bottom surface</a>s are reduced, but it'll likely require introducing <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>.</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's a whole section on filament settings: https://bambulab.com/en/support/academy/3/course/982590125637046272/chapter/43. I don't think I ever need to mess with it if I'm using Bambu Lab filaments? The defaults should all work just fine?</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
 <li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Painting)_TOPIC%2Fi">Bambu Studio/Model Painting</a></li>
 <li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Rotation)_TOPIC%2Fi">Bambu Studio/Model Rotation</a></li>
 </ul>
 </div>
-<a name="H_Print%20Parameters"></a><h2>Print Parameters</h2>
+<a name="H_Print%20Parameters"></a><h3>Print Parameters</h3>
 <p><a name="BM_(Bambu%20Studio%5C%2FUser%20Interface%2FPrint%20Parameters)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
@@ -945,28 +962,47 @@
 <li><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>/User Interface/Project Filaments</li>
 </ul>
 </div>
-<p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> has a section for defining how models and model groupings (assemblies) are printed. The Process section is in the sidebar of the Prepare screen and the Preview screen.</p>
+<p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> has a section for defining how models and model groupings (<a href="#BM_(assembly%7Cassemblies)%2Fi">assemblies</a>) are printed. The Process section is in the sidebar of the Prepare screen and the Preview screen.</p>
 <p><img src="bambu_studio_prepare_process.png" alt="Bambu Studio Prepare screen process"></p>
-<p>The Process section can change scope using a toggle (section 1). The scope can either be global, or it can target a specific set of objects (e.g., a model, an assembly, or some combination of models/assemblies). If not scoped globally, an object hierarchy will be displayed directly below the toggle (section 3). The selections in the object hierarchy will reflect those in the 3D viewport and vice versa.</p>
+<p>The Process section can change scope using a toggle (section 1). The scope can either be global, or it can target a specific set of objects (e.g., a model, an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a>, or some combination of models/<a href="#BM_(assembly%7Cassemblies)%2Fi">assemblies</a>). If not scoped globally, an object hierarchy will be displayed directly below the toggle (section 3). The selections in the object hierarchy will reflect those in the 3D viewport and vice versa.</p>
 <p>Below the object hierarchy are a hierarchy of parameters that control printing:</p>
 <ul>
 <li><strong>Quality</strong> tab organizes fidelity parameters (e.g., <a href="#BM_(layer%20height)%2Fi">layer height</a> and how to treat <a href="#BM_(seam)%2Fi">seam</a>s).</li>
 <li><strong>Strength</strong> tab organizes solidity/firmness parameters (e.g., <a href="#BM_(infill)%2Fi">infill</a> style/percentage and <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> thickness).</li>
 <li><strong>Speed</strong> tab organizes print speed (e.g., how fast <a href="#BM_(toolhead)%2Fi">toolhead</a> moves when printing <a href="#BM_(overhang)%2Fi">overhang</a>s).</li>
-<li><strong>Support</strong> tab organizes <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> parameters (e.g., minimum angle for which <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> are required).</li>
+<li><strong>Support</strong> tab organizes  <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> parameters (e.g., minimum angle for which <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> are required).</li>
 <li><strong>Others</strong> tab organizes parameters that don't fit in one of the other tabs.</li>
 <li><strong>Frequent</strong> tab caches parameters that have recently been changed.</li>
 </ul>
 <p>A full accounting of parameters is beyond the scope of this section. Individual parameters will be referenced / explained in subsequent sections as needed.</p>
 <p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub></p>
-<a name="H_Project%20Persistence"></a><h2>Project Persistence</h2>
+<a name="H_Print%20Preview"></a><h3>Print Preview</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FUser%20Interface%2FPrint%20Preview)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
+<li><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>/User Interface/3D Viewport</li>
 </ul>
 </div>
-<p><a name="BM_(Bambu%20Studio%5C%2FProject%20Persistence)_TOPIC%2Fi"></a><strong></strong></p>
+<p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> will <a href="#BM_(layer%7Cslice)%2Fi">slice</a> the models on the <a href="#BM_(build%20plate)%2Fi">build plate</a> whenever ...</p>
+<ul>
+<li>switching from <strong>Prepare</strong> screen to the <strong>Preview</strong> screen.</li>
+<li>hitting The <strong>Preview</strong> at the top-right, which should enable whenever a change is made.</li>
+</ul>
+<p>The <strong>Preview</strong> screen is where the <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s, <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> paths (<a href="#BM_(G-code)%2F">G-code</a> printing instructions), and printing diagnostics are color coded an displayed to the user. The screen is broken up into the following controls / panels:</p>
+<p><img src="bambu_studio_preview_slicer_example.png" alt="Bambu Studio Preview screen slicer example"></p>
+<ol>
+<li><strong><a href="#BM_(layer%7Cslice)%2Fi">Layer</a> slider</strong>: Scrubber that navigates between <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s, highlighting those <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s in the 3D viewport.</li>
+<li><strong>Path slider</strong>: Scrubber that navigates the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> path of the <a href="#BM_(layer%7Cslice)%2Fi">layer</a>, highlighting in the 3D viewport what actually gets printed as the <a href="#BM_(toolhead)%2Fi">toolhead</a> / <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> moves from beginning to end.</li>
+<li><strong><a href="#BM_(layer%7Cslice)%2Fi">Layer</a> range toggle</strong>: If toggled, the <a href="#BM_(layer%7Cslice)%2Fi">layer</a> slider will have two handles identifying a range of <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s to highlight. If not toggled, the <a href="#BM_(layer%7Cslice)%2Fi">layer</a> slider will have only one handle, meaning it will target exactly 1 <a href="#BM_(layer%7Cslice)%2Fi">layer</a> for highlighting.</li>
+<li><strong>3D viewport</strong>: Visualized <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s and paths.</li>
+<li><strong><a href="#BM_(layer%7Cslice)%2Fi">Slice</a> result</strong>: Dialog mapping of path colors to meaning. In the above example, the colors map to print speeds.</li>
+<li><strong>Color scheme</strong>: Remaps colors to different metrics / diagnostics. In the above example, the colors map to print speeds. But, if this were instead changed to <strong>Temperature</strong>, it would map colors to <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> temperatures at each point in the path.</li>
+</ol>
+<p>There are several color schemes available. A full accounting is outside the scope of this section.</p>
+<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/view-slicing-information">[src]</a></sub></p>
+<a name="H_Project%20Persistence"></a><h3>Project Persistence</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FUser%20Interface%2FProject%20Persistence)_TOPIC%2Fi"></a><strong></strong></p>
 <p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> saves and loads project state as a <a href="#BM_%5Cb(3MF)%5Cb%2F">3MF</a> file.</p>
 <ul>
 <li>Load project: In the main menu, navigate to <strong>File</strong> → <strong>Open Project...</strong>.</li>
@@ -1108,14 +1144,15 @@
 </ul>
 </div>
 <p>In certain cases, two models may need to combine into one for printing, such that they print as a single object vs two separate objects.</p>
-<p>In the Prepare screen's 3D viewport, select two or more models, then right-click to open the context menu and select <strong>Merge</strong>. Merged models are placed them under a single assembly.</p>
+<p>In the Prepare screen's 3D viewport, select two or more models, then right-click to open the context menu and select <strong>Merge</strong>. Merged models are placed them under a single <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a>.</p>
 <p><img src="bambu_studio_prepare_assemble_example.png" alt="Bambu Studio Prepare screen assembly example"></p>
-<p>Once models are within a single assembly, they can be manually moved into each other and / or levitated off the <a href="#BM_(build%20plate)%2Fi">build plate</a> using the move tool (Prepare screen's toolbar button 6, keyboard shortcut M). If models aren't merged but occupy the same space, <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> will print them as if they're distinct. That is, if two models occupy the same space, the outer shell / <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> of both objects will be drawn inside each other.</p>
+<p>Once models are within a single <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a>, they can be manually moved into each other and / or levitated off the <a href="#BM_(build%20plate)%2Fi">build plate</a> using the move tool (Prepare screen's toolbar button 6, keyboard shortcut M). If models aren't merged but occupy the same space, <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> will print them as if they're distinct. That is, if two models occupy the same space, the outer shell / <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> of both objects will be drawn inside each other.</p>
 <p><img src="bambu_studio_conflicting_vs_non_conflicting_models.png" alt="Bambu Studio Preview screen conflicting models vs non-conflicting models"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Doing a mesh boolean union also fixed this <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a> drawing problem.</p>
 </div>
+<p>Alternatively, a model can be loaded and combined with an existing model at the same time. In the 3D viewport, right-click the existing model to open the context menu and navigate to <strong>Add Part</strong> → <strong>Load</strong> and select the new model to combine with in the file selection dialog. The models will be combined in the same way (as an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a>).</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
@@ -1125,18 +1162,18 @@
 <p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>You can push models into each other without putting them under the same assembly, but it'll complain during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>.</p>
+<p>You can push models into each other without putting them under the same <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a>, but it'll complain during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>.</p>
 </div>
-<p>Alternatively, two models can be repositioned and reoriented such that they touch each other using the assembly tool (Prepare screen's toolbar button 12, keyboard shortcut Y). The assembly tool opens a open a pop-up used to target how and where the models touch.</p>
+<p>Alternatively, two models can be repositioned and reoriented such that they touch each other using the <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> tool (Prepare screen's toolbar button 12, keyboard shortcut Y). The <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> tool opens a open a pop-up used to target how and where the models touch.</p>
 <p><img src="bambu_studio_prepare_assemble_parameters.png" alt="Bambu Studio Prepare screen assemble parameters"></p>
-<p>The assembly tool has two <strong>Mode</strong>: options</p>
+<p>The <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> tool has two <strong>Mode</strong>: options</p>
 <ul>
 <li>
-<p><strong>Point and Point Assembly</strong>: Touches models on specific points (e.g., vertex).</p>
+<p><strong>Point and Point <a href="#BM_(assembly%7Cassemblies)%2Fi">Assembly</a></strong>: Touches models on specific points (e.g., vertex).</p>
 <p>Click on a point on the first model and click on point on the second model. The first point should highlight as cyan while the second fact should highlight as purple, and sections 2 and 3 of the screenshot should update to indicate that a selection's been made. From there, XYZ coordinate fields should show up in the dialog. Set those fields to 0 to bring the points together.</p>
 </li>
 <li>
-<p><strong>Face and Face Assembly</strong>: Touches models on specific faces.</p>
+<p><strong>Face and Face <a href="#BM_(assembly%7Cassemblies)%2Fi">Assembly</a></strong>: Touches models on specific faces.</p>
 <p>Click on a face of the first model and click on a face of the second model. The first face should highlight as cyan while the second fact should highlight as purple, and sections 2 and 3 of the screenshot should update to indicate that a selection's been made. From there, the ...</p>
 <ul>
 <li><strong>Parallel</strong> button will make reorient the models so the selected faces are parallel.</li>
@@ -1148,11 +1185,11 @@
 <p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/assemble">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/stacking-objects">[src]</a></sub></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Technically, merging into an assembly isn't required to use the assembly tool in the toolbar. But, if the intent is to stack the models on top of each other such that one of them has a face off the <a href="#BM_(build%20plate)%2Fi">build plate</a>, it won't work (both models will be forced back down to touch the <a href="#BM_(build%20plate)%2Fi">build plate</a>).</p>
+<p>Technically, merging into an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> isn't required to use the <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> tool in the toolbar. But, if the intent is to stack the models on top of each other such that one of them has a face off the <a href="#BM_(build%20plate)%2Fi">build plate</a>, it won't work (both models will be forced back down to touch the <a href="#BM_(build%20plate)%2Fi">build plate</a>).</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The mesh boolean tool (button 11, keyboard shortcut B) can be used to merge the parts of an assembly back into a single model. The mesh boolean tool takes multiple models (e.g., parts of an assembly or multiple high-level models) and performs a boolean operation on them (e.g., union, intersect, subtraction). So, to combine an assembly to a single model, use the union option.</p>
+<p>The mesh boolean tool (button 11, keyboard shortcut B) can be used to merge the parts of an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> back into a single model. The mesh boolean tool takes multiple models (e.g., parts of an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> or multiple high-level models) and performs a boolean operation on them (e.g., union, intersect, subtraction). So, to combine an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> to a single model, use the union option.</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
@@ -1419,7 +1456,7 @@
 <p><strong>After cut</strong> defines how the cut pieces are treated:</p>
 <ul>
 <li><strong>Object A/B</strong>: Model is split into two, where the checkboxes define how each piece gets oriented on the <a href="#BM_(build%20plate)%2Fi">build plate</a>.</li>
-<li><strong>Cut to parts</strong>: Model is split into an assembly of 2 parts, where parts remain in place.</li>
+<li><strong>Cut to parts</strong>: Model is split into an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> of 2 parts, where parts remain in place.</li>
 </ul>
 </li>
 </ol>
@@ -1442,7 +1479,7 @@
 <p><strong>After cut</strong> defines how the cut pieces are treated:</p>
 <ul>
 <li><strong>Object A/B</strong>: Model is split into two, where the checkboxes define how each piece gets oriented on the <a href="#BM_(build%20plate)%2Fi">build plate</a>.</li>
-<li><strong>Cut to parts</strong>: Model is split into an assembly of 2 parts, where parts remain in place.</li>
+<li><strong>Cut to parts</strong>: Model is split into an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> of 2 parts, where parts remain in place.</li>
 </ul>
 </li>
 </ol>
@@ -1452,7 +1489,7 @@
 <p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/33">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/cut-tool">[src]</a></sub></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The mesh boolean tool (button 11, keyboard shortcut B) can be used to merge the parts of an assembly back into a single model. The mesh boolean tool takes multiple models (e.g., parts of an assembly or multiple high-level models) and performs a boolean operation on them (e.g., union, intersect, subtraction). So, to combine an assembly to a single model, use the union option.</p>
+<p>The mesh boolean tool (button 11, keyboard shortcut B) can be used to merge the parts of an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> back into a single model. The mesh boolean tool takes multiple models (e.g., parts of an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> or multiple high-level models) and performs a boolean operation on them (e.g., union, intersect, subtraction). So, to combine an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> to a single model, use the union option.</p>
 </div>
 <a name="H_Model%20Set%20Operations"></a><h2>Model Set Operations</h2>
 <p><a name="BM_(Bambu%20Studio%5C%2FModel%20Set%20Operations)_TOPIC%2Fi"></a><strong></strong></p>
@@ -1472,12 +1509,12 @@
 <li><strong>Intersection</strong>: Creates a new model comprised of only the overlapping parts between all models.</li>
 <li><strong>Subtraction</strong>: Removes a chunk from a model, using other models as the cut-out stencil.</li>
 </ul>
-<p>Regardless of which you pick, you can specific which of the selected models to apply the operation to. The resulting operation creates a single model with the chosen set operation applied (<em>not an assembly of models</em>, but a single model).</p>
+<p>Regardless of which you pick, you can specific which of the selected models to apply the operation to. The resulting operation creates a single model with the chosen set operation applied (<em>not an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> of models</em>, but a single model).</p>
 <p>Given that the mesh boolean tool creates a single new model, the resulting single model typically doesn't encounter overlap issues during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>. For example, if models aren't union'd but occupy the same space, <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> will print them as if they're distinct. That is, if two models occupy the same space, the outer shell / <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> of both objects will be drawn inside each other.</p>
 <p><img src="bambu_studio_conflicting_vs_non_conflicting_models.png" alt="Bambu Studio Preview screen conflicting models vs non-conflicting models"> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/mesh-boolean">[src]</a></sub></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Merging two models under the same assembly also fixed this <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a> drawing problem.</p>
+<p>Merging two models under the same <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> also fixed this <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a> drawing problem.</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
@@ -1485,6 +1522,42 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Combining)_TOPIC%2Fi">Bambu Studio/Model Combining</a></li>
 </ul>
 </div>
+<a name="H_Negative%20Parts"></a><h2>Negative Parts</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FNegative%20Parts)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Combining)_TOPIC%2Fi">Bambu Studio/Model Combining</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Set%20Operations)_TOPIC%2Fi">Bambu Studio/Model Set Operations</a></li>
+</ul>
+</div>
+<p>A <a href="#BM_(negative%20part)%2Fi">negative part</a> is a model that gets combined with an existing set of models (same <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a>), but it's purpose is to subtract areas of the existing models. Any region of the existing models that intersect with the <a href="#BM_(negative%20part)%2Fi">negative part</a> are cut out during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>.</p>
+<p><img src="bambu_studio_prepare_negative_part_example.png" alt="Bambu Studio Prepare screen negative part example"> <img src="bambu_studio_preview_negative_part_example.png" alt="Bambu Studio Preview screen negative part example"></p>
+<p>To add a <a href="#BM_(negative%20part)%2Fi">negative part</a>, right-click on an object to open the context-menu and navigate to <strong>Add <a href="#BM_(negative%20part)%2Fi">negative part</a></strong> and select either a primitive or <strong>Load...</strong> to import a model. The <a href="#BM_(negative%20part)%2Fi">negative part</a> will be placed under an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> along with the parts of the original object.</p>
+<p>As shown in the screenshots above, <a href="#BM_(negative%20part)%2Fi">negative part</a>s appear slightly transparent when viewed in the <strong>Prepare</strong> screen and can be manipulated just like any other model. However, in the <strong>Preview</strong> screen, any region of the existing models that intersect with the <a href="#BM_(negative%20part)%2Fi">negative part</a> are cut out during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This is similar to subtraction using the mesh boolean tool in the Prepare screen's toolbar. However, unlike the mesh boolean tool's subtraction, the original model being subtracted stays around and can be moved and scaled and rotated, which is useful if you want to quickly make changes after the fact.</p>
+</div>
+<p><sub><a href="https://bambulab.com/en/support/academy/3/course/982590125637046272/chapter/45">[src]</a></sub></p>
+<a name="H_Modifier%20Parts"></a><h2>Modifier Parts</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FModifier%20Parts)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Combining)_TOPIC%2Fi">Bambu Studio/Model Combining</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FNegative%20Parts)_TOPIC%2Fi">Bambu Studio/Negative Parts</a></li>
+</ul>
+</div>
+<p>A <a href="#BM_(modifier%20part)%2Fi">modifier part</a> is a model that gets combined with an existing set of models (same <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a>), but it's purpose is to modify properties of specific areas of existing models. Any region of the existing models that intersect with the <a href="#BM_(modifier%20part)%2Fi">modifier part</a> have the <a href="#BM_(modifier%20part)%2Fi">modifier part</a>'s properties applied.</p>
+<p><img src="bambu_studio_prepare_modifier_part_example.png" alt="Bambu Studio Prepare screen modifier part example"> <img src="bambu_studio_preview_modifier_part_example.png" alt="Bambu Studio Preview screen modifier part example"></p>
+<p>To add a <a href="#BM_(modifier%20part)%2Fi">modifier part</a>, right-click on an object to open the context-menu and navigate to <strong>Add modifier</strong> and select either a primitive or <strong>Load...</strong> to import a model. The <a href="#BM_(modifier%20part)%2Fi">modifier part</a> will be placed under an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> along with the parts of the original object.</p>
+<p>As shown in the screenshots above, <a href="#BM_(modifier%20part)%2Fi">modifier part</a>s appear gold when viewed in the <strong>Prepare</strong> screen and can be manipulated just like any other model. However, in the <strong>Preview</strong> screen, any region of the existing models that intersect with the <a href="#BM_(modifier%20part)%2Fi">modifier part</a> have their properties changed to that of the <a href="#BM_(modifier%20part)%2Fi">modifier part</a> (e.g., change filament color or apply fuzzy skin).</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's also a related feature called a height range modifier. It adjusts the print speed based on height, for very tall models that need to go slower at higher <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s for stability.</p>
+</div>
+<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/modifier">[src]</a></sub></p>
 <a name="H_Model%20Text"></a><h2>Model Text</h2>
 <p><a name="BM_(Bambu%20Studio%5C%2FModel%20Text)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -1494,11 +1567,11 @@
 </ul>
 </div>
 <p>Text can be placed on a model, extruded from a model, indented on to a model, or placed as a standalone extruded model on its own.</p>
-<p>To generate standalone text, in the Prepare screen's 3D viewport, click the text shape tool in the Prepare screen's toolbar (button 14, keyboard shortcut T). Text wil show up in the middle of the <a href="#BM_(build%20plate)%2Fi">build plate</a> on the 3D viewport along with a pop-up where the text and its settings (e.g., font parameters) can be changed.</p>
+<p>To generate text as a standalone model, in the Prepare screen's 3D viewport, click the text shape tool in the Prepare screen's toolbar (button 14, keyboard shortcut T). Text will show up in the middle of the <a href="#BM_(build%20plate)%2Fi">build plate</a> on the 3D viewport along with a pop-up where the text and its settings (e.g., font parameters) can be changed.</p>
 <p>All parameters in the pop-up should be self explanatory, with the exception of <strong>Angle</strong>. <strong>Angle</strong> is the rotation of the text, which reflects the rotation circle in the 3D viewport.</p>
 <p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
 <p><img src="bambu_studio_prepare_text_parameters.png" alt="Bambu Studio Prepare screen text parameters"></p>
-<p>To generate text on a model, in the Prepare screen's 3D viewport, select the model and then click the text shape tool in the Prepare screen's toolbar (button 14, keyboard shortcut T). Text wil show up on the middle of the <a href="#BM_(build%20plate)%2Fi">build plate</a> on the 3D viewport along with a pop-up where the text, its settings (e.g., font parameters), and how its placed on the model can be changed.</p>
+<p>To place text on a model, in the Prepare screen's 3D viewport, select the model and then click the text shape tool in the Prepare screen's toolbar (button 14, keyboard shortcut T). Text will show up on the model along with a pop-up where the text, its settings (e.g., font parameters), and how its placed on the model can be changed.</p>
 <p>The parameters are the same as the parameter before, except for <strong>Mode</strong> and <strong>Operation</strong>.</p>
 <p><img src="bambu_studio_prepare_text_on_model_parameters.png" alt="Bambu Studio Prepare screen text on model parameters"></p>
 <ul>
@@ -1519,14 +1592,83 @@
 <li>
 <p><strong>Operation</strong> defines how the text is applied to the model:</p>
 <ul>
-<li><strong>Part</strong> embosses the text on the model.</li>
-<li><strong>Cut</strong> indents the text into the model.</li>
-<li><strong>Modifier</strong> doesn't change model's geometry, but modifies the printing parameters for the area of the model where the text overlaps (e.g., change color where text sits). This is typically used for creating 2D text patterns that are perfectly flush with the model's surface.</li>
+<li>
+<p><strong>Part</strong> embosses the text on the model.</p>
+<p>Use <strong>Embedded depth</strong> to sink the text into the model (e.g., 1-2mm) because just printing on the surface on the model might not be enough securely adhere to the model. Embedding past the surface creates a tighter physical connection to hold the text in place.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Too far out? You might have issues with <a href="#BM_(overhang)%2Fi">overhang</a>s_BO and <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>.</p>
+</div>
+</li>
+<li>
+<p><strong>Cut</strong> indents the text into the model.</p>
+<p>Use <strong>Embedded depth</strong> to sink the indent into the model.</p>
+</li>
+<li>
+<p><strong>Modifier</strong> doesn't change model's geometry, but modifies the printing parameters for the area of the model where the text overlaps (e.g., change color where text sits).</p>
+<p>Typically used for creating 2D text patterns that are perfectly flush with the model's surface (e.g., fuzzy skin or different filament).</p>
+</li>
 </ul>
 <p><img src="bambu_studio_prepare_text_on_model_modifier_example.png" alt="Bambu Studio Prepare screen text on model modifier example"></p>
 </li>
 </ul>
-<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/3d-text">[src]</a></sub></p>
+<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/3d-text">[src]</a></sub> <sub><a href="https://bambulab.com/en/support/academy/3/course/982590125637046272/chapter/46">[src]</a></sub></p>
+<a name="H_Model%20Iconography"></a><h2>Model Iconography</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FModel%20Iconography)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Text)_TOPIC%2Fi">Bambu Studio/Model Text</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Scale)_TOPIC%2Fi">Bambu Studio/Model Scale</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Placement)_TOPIC%2Fi">Bambu Studio/Model Placement</a></li>
+</ul>
+</div>
+<p>An <a href="#BM_(SVG)%2F">SVG</a> outline can be placed on a model, extruded from a model, indented on to a model, or placed as a standalone extruded model on its own.</p>
+<p>To generate a standalone <a href="#BM_(SVG)%2F">SVG</a> outline, right-click on to empty space (not on a model) to open the context-menu and navigate to <strong>Add Primitive</strong> → <strong><a href="#BM_(SVG)%2F">SVG</a></strong>. In the pop-up dialog that show up, select an <a href="#BM_(SVG)%2F">SVG</a> file. The selected <a href="#BM_(SVG)%2F">SVG</a> will show up in the 3D viewport as as slightly extruded (Z-scale to adjust the extrusion).</p>
+<p>To place an <a href="#BM_(SVG)%2F">SVG</a> outline on a model, right-click on a model to open the context-menu and navigate to <strong>Add Primitive</strong> → <strong><a href="#BM_(SVG)%2F">SVG</a></strong>. In the pop-up dialog that show up, select an <a href="#BM_(SVG)%2F">SVG</a> file. The selected <a href="#BM_(SVG)%2F">SVG</a> will show up in the 3D viewport as as slightly extruded (Z-scale to adjust the extrusion). The <a href="#BM_(SVG)%2F">SVG</a> wil show up on the model along with a pop-up where and how the <a href="#BM_(SVG)%2F">SVG</a> placed on the model can be changed.</p>
+<p><img src="bambu_studio_prepare_icon_on_model_parameters.png" alt="Bambu Studio Prepare screen icon on model parameters"></p>
+<p>The majority of the parameters are self-explanatory.</p>
+<ul>
+<li>
+<p><strong>Operation</strong> defines how the text is applied to the model:</p>
+<ul>
+<li>
+<p><strong>Join</strong> embosses the text on the model.</p>
+<p>Use <strong>Depth</strong> to sink the text into the model (e.g., 1-2mm) because just printing on the surface on the model might not be enough securely adhere to the model. Embedding past the surface creates a tighter physical connection to hold the text in place.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Printing on the surface on the model might not be enough securely adhere to the model. Once the icon has been placed, it's added under an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> along with the model. Select the icon and move it slightly into the model. Embedding past the surface into the actual model creates a tighter physical connection to hold the icon in place.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Depth value too high? You might have issues with <a href="#BM_(overhang)%2Fi">overhang</a>s_BO and <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>.</p>
+</div>
+</li>
+<li>
+<p><strong>Cut</strong> indents the text into the model.</p>
+<p>Use <strong>Depth</strong> to sink the indent into the model.</p>
+</li>
+<li>
+<p><strong>Modifier</strong> doesn't change model's geometry, but modifies the printing parameters for the area of the model where the text overlaps (e.g., change color where text sits).</p>
+<p>Typically used for creating 2D text patterns that are perfectly flush with the model's surface (e.g., fuzzy skin or different filament).</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Use surface</strong> wraps the icon around the surface. If unchecked, the <strong>From surface</strong> and <strong>Rotation</strong> fields will be enabled.</p>
+</li>
+<li>
+<p><strong>Size</strong> is is the size of the icon.</p>
+</li>
+<li>
+<p><strong>Mirror</strong> buttons are helpers to flip the icon.</p>
+</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's some weirdness about how the icon is projected on to the surface of the model. If you have something with a curved surface (e.g., cone) and project a large icon that wraps around the cone, it only applies the part of the icon that's projected on to the viewport? If you apply it and then rotate the model, you'll see that the sides you weren't looking at didn't have the icon cut off</p>
+</div>
+<p><sub><a href="https://bambulab.com/en/support/academy/3/course/982590125637046272/chapter/46">[src]</a></sub></p>
 <a name="H_Layer%20Height"></a><h2>Layer Height</h2>
 <p><a name="BM_(Bambu%20Studio%5C%2FLayer%20Height)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -1600,8 +1742,13 @@
 <p>Similar to model painting, the placement of a <a href="#BM_(seam)%2Fi">seam</a> can be painted on to the model. In the Prepare screen's 3D viewport, select the model and paint a <a href="#BM_(seam)%2Fi">seam</a> by using the <a href="#BM_(seam)%2Fi">seam</a> paint tool in Prepare screen's toolbar (button 17, keyboard shortcut P), which will present a pop-up with scaling parameters / controls.</p>
 <p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
 <p><img src="bambu_studio_prepare_seam_painting_parameters.png" alt="Bambu Studio Prepare screen seam painting parameters"></p>
-<p><a href="#BM_(seam)%2Fi">Seam</a> painting is operationally very similar to normal model painting. Paint the area to force the <a href="#BM_(seam)%2Fi">seam</a> at. During <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>. the <a href="#BM_(seam)%2Fi">seam</a> should show up in the areas painted.</p>
-<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/Seam">[src]</a></sub></p>
+<p><a href="#BM_(seam)%2Fi">Seam</a> painting is operationally similar to normal model painting:</p>
+<ul>
+<li>Use the left mouse button to paint the areas where the <a href="#BM_(seam)%2Fi">seam</a> should be forced.</li>
+<li>Use the right mouse button to paint the areas where the <a href="#BM_(seam)%2Fi">seam</a> should be prohibited.</li>
+</ul>
+<p>During <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>, the <a href="#BM_(seam)%2Fi">seam</a> should show up in the areas painted forced / not show up in areas painted prohibited.</p>
+<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/Seam">[src]</a></sub> <sub><a href="https://bambulab.com/en/support/academy/3/course/982590125637046272/chapter/41">[src]</a></sub></p>
 <a name="H_Scarf%20Seam"></a><h3>Scarf Seam</h3>
 <p><a name="BM_(Bambu%20Studio%5C%2FSeam%2FScarf%20Seam)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -1628,14 +1775,14 @@
 <p>For <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s to be enabled, the filament being printed with must have <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s enabled in its filament settings: In the Prepare screen's sidebar, navigate to <strong>Project Filaments</strong>, then select the ellipsis for the desired filament and navigate to <strong>Filament</strong> → <strong>Filament <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a> settings</strong></p>
 <p><img src="bambu_studio_filament_scarf_seam_settings.png" alt="Bambu Studio filament scarf seam settings"></p>
 <ul>
-<li><strong><a href="#BM_(scarf%20seam)%2Fi">Scarf seam</a> type</strong>: Must be set to either <strong>Contour</strong> or <strong>Contour and Hole</strong> for <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s to be enabled.</li>
+<li><strong><a href="#BM_(scarf%20seam)%2Fi">Scarf seam</a> type</strong>: Must be set to either <strong><a href="#BM_(contour)%2Fi">Contour</a></strong> or <strong><a href="#BM_(contour)%2Fi">Contour</a> and <a href="#BM_(%5Cbhole)%2Fi">Hole</a></strong> for <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s to be enabled.</li>
 <li><strong>Scarf start height</strong>: Height at which the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> starts printing the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>, specified in mm or percentage of <a href="#BM_(layer%20height)%2Fi">layer height</a>.</li>
 <li><strong>Scarf slope gap</strong>: <a href="#BM_(scarf%20seam)%2Fi">Scarf seam</a> cuts into the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a> to accommodate excess material, represented as a percentage of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> diameter multiplied by some internal constant.</li>
 <li><strong>Scarf length</strong>: Length of the <a href="#BM_(seam)%2Fi">seam</a>. Disabled if set to 0 or the option <strong>Scarf around the entire <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a></strong> is enabled in print parameters.</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Unsure what "Contour" and "Contour and Hole" refer to? It has something to do with https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation.</p>
+<p>Unsure what "<a href="#BM_(contour)%2Fi">Contour</a>" and "<a href="#BM_(contour)%2Fi">Contour</a> and <a href="#BM_(%5Cbhole)%2Fi">Hole</a>" refer to? It has something to do with https://wiki.bambulab.com/en/software/bambu-studio/xy-<a href="#BM_(%5Cbhole)%2Fi">hole</a>-<a href="#BM_(contour)%2Fi">contour</a>-compensation.</p>
 <p>Unsure what the slope gap parameter actually does? It leaves a gap in the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a> so the exterior <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> can bleed extra material into it?</p>
 <p>Scarf start height is the starting height that the <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a> starts printing at, as shown in the following ASCII diagram.</p>
 <pre><code>-------------.  ,-----------
@@ -1709,15 +1856,15 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FInfill)_TOPIC%2Fi">Bambu Studio/Infill</a></li>
 </ul>
 </div>
-<p>Fuzzy skin is a rough texture targeting the outside <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> of a model and potentially holes within that model (just the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s, top and <a href="#BM_(bottom%20surface)%2Fi">bottom surface</a>s won't be textured). It does this by adding random jitters to <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> paths during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>. The purpose of fuzzy skin is two-fold: It's either aesthetic, or it's intended to make the printed object easier to grip, or both.</p>
+<p>Fuzzy skin is a rough texture targeting the outside <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> of a model and potentially <a href="#BM_(%5Cbhole)%2Fi">hole</a>s within that model (just the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s, top and <a href="#BM_(bottom%20surface)%2Fi">bottom surface</a>s won't be textured). It does this by adding random jitters to <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> paths during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>. The purpose of fuzzy skin is two-fold: It's either aesthetic, or it's intended to make the printed object easier to grip, or both.</p>
 <p><img src="bambu_studio_prepare_fuzzy_skin_example.png" alt="Bambu Studio Prepare screen fuzzy skin example"></p>
 <p>Fuzzy skin parameters are under <strong>Others</strong> → <strong>Special mode</strong>.</p>
 <p><img src="bambu_studio_prepare_fuzzy_skin_parameters.png" alt="Bambu Studio Prepare screen fuzzy skin parameters"></p>
 <p>To enable/disable fuzzy skin set the property <strong>Fuzzy skin</strong> to either ...</p>
 <ul>
-<li><strong>Contour</strong>, which targets just the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on the outside perimeter.</li>
-<li><strong>Counter and hole</strong>, which targets the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on both the outside perimeter and the perimeters of any holes.</li>
-<li><strong>All <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s</strong>, which targets inner and <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on both the outside perimeter and the perimeters of any holes (jitters <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a>s as well).</li>
+<li><strong><a href="#BM_(contour)%2Fi">Contour</a></strong>, which targets just the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on the outside perimeter.</li>
+<li><strong>Counter and <a href="#BM_(%5Cbhole)%2Fi">hole</a></strong>, which targets the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on both the outside perimeter and the perimeters of any <a href="#BM_(%5Cbhole)%2Fi">hole</a>s.</li>
+<li><strong>All <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s</strong>, which targets inner and <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on both the outside perimeter and the perimeters of any <a href="#BM_(%5Cbhole)%2Fi">hole</a>s (jitters <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a>s as well).</li>
 <li><strong>None(allow paint)</strong>, which targets specific <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s on the model to make fuzzy via the fuzzy skin paint tool. See subsection on fuzzy skin painting.</li>
 <li><strong>Disable</strong>, which disables fuzzy skin entirely.</li>
 </ul>
@@ -1808,7 +1955,7 @@
 <li><strong>Auto</strong> lets <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> decide whether to add a <a href="#BM_(brim)%2Fi">brim</a> and how wide it should be, taking into account the geometry and the properties of a filament being printed with.</li>
 <li><strong>No-<a href="#BM_(brim)%2Fi">brim</a></strong> forces no <a href="#BM_(brim)%2Fi">brim</a>s.</li>
 <li><strong>Outer <a href="#BM_(brim)%2Fi">brim</a> only</strong> forces a <a href="#BM_(brim)%2Fi">brim</a> on the outside perimeter.</li>
-<li><strong>Inner <a href="#BM_(brim)%2Fi">brim</a> only</strong> forces a <a href="#BM_(brim)%2Fi">brim</a> on the inside of the perimeter, assuming the model has a hole  inside (being hollow inside doesn't count).</li>
+<li><strong>Inner <a href="#BM_(brim)%2Fi">brim</a> only</strong> forces a <a href="#BM_(brim)%2Fi">brim</a> on the inside of the perimeter, assuming the model has a hole inside (being hollow inside doesn't count).</li>
 <li><strong>Outer and inner <a href="#BM_(brim)%2Fi">brim</a></strong> combines both the <strong>Outer <a href="#BM_(brim)%2Fi">brim</a> only</strong> and <strong>Inner <a href="#BM_(brim)%2Fi">brim</a> only</strong> options above.</li>
 <li><strong>Painted</strong> places points / stretches of <a href="#BM_(brim)%2Fi">brim</a>s, referred to as <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s, at user-defined locations around the bottom of the model (locations that are likely to <a href="#BM_(warping%7Cwarp)%2Fi">warp</a> off the bed). See subsection on <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s for how to place.</li>
 </ul>
@@ -1828,7 +1975,13 @@
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>If gap is 0 but there's still a gap showing up between the <a href="#BM_(brim)%2Fi">brim</a> and hte model, it may be that <strong>Quality</strong> → <strong>Elephant foot compensation</strong> is non-zero. Set it to 0.</p>
+<p>If gap is 0 but there's still a gap showing up between the <a href="#BM_(brim)%2Fi">brim</a> and the model, it may be that <strong>Quality</strong> → <strong><a href="#BM_(elephant%20foot)%2Fi">Elephant foot</a> compensation</strong> is non-zero. Set it to 0.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FDiagnostics%2FElephant%20Foot%20Compensation)_TOPIC%2Fi">Bambu Studio/Diagnostics/Elephant Foot Compensation</a></li>
+</ul>
 </div>
 <p><img src="bambu_studio_preview_brim_example.png" alt="Bambu Studio Preview screen brim example"></p>
 <p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/36">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/auto-brim">[src]</a></sub></p>
@@ -1848,7 +2001,7 @@
 <p>To place <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s automatically, use the <strong>Aut-generate points</strong> button. Where <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s get placed depends on ..</p>
 <ul>
 <li><strong>Max angle</strong>, which controls how sharp the angle must be for a <a href="#BM_(brim%20ear)%2Fi">brim ear</a> to be placed there (e.g., 90 degree will place <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s at perpendicular points on the bottom).</li>
-<li><strong>Detection radius</strong>, which controls how to many <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s are placed along contours (smaller value results in more <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s).</li>
+<li><strong>Detection radius</strong>, which controls how to many <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s are placed along <a href="#BM_(contour)%2Fi">contour</a>s (smaller value results in more <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s).</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -2038,6 +2191,185 @@
 <p>What's the point of having these? I guess it has to do with the finish of the surface? I recall there was some option where you could have the heated <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> go over the surface (without printing anything) to further smooth it out? I think it was under <strong>Quality</strong> → <strong>Ironing</strong>.</p>
 </div>
 <p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/fill-patterns">[src]</a></sub></p>
+<a name="H_Diagnostics"></a><h2>Diagnostics</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FDiagnostics)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_XY%20Hole%20Contour%20Compensation"></a><h3>XY Hole Contour Compensation</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FDiagnostics%2FXY%20Hole%20Contour%20Compensation)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Set%20Operations)_TOPIC%2Fi">Bambu Studio/Model Set Operations</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FNegative%20Parts)_TOPIC%2Fi">Bambu Studio/Negative Parts</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FSeam)_TOPIC%2Fi">Bambu Studio/Seam</a></li>
+</ul>
+</div>
+<p>Printed models that require accurate fitting with other components (e.g., screws or other printed parts) sometimes don't fit they way they should because of variances introduced during printing. For <a href="#BM_(%5Cbhole)%2Fi">hole</a>s and <a href="#BM_(contour)%2Fi">contour</a>s running <em>running down the Z-axis</em>, <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> provides calibration steps to compensate for these variances:</p>
+<p><img src="bambu_studio_prepare_contour_hole_example.png" alt="Bambu Studio Prepare screen contour hole example"></p>
+<ul>
+<li>
+<p><strong><a href="#BM_(contour)%2Fi">Contour</a></strong> - The outer perimeter of the model as printed up the Z-axis (collective outer perimeters of the <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s that make up the printed model). The example above is the model of a salad bowl. The shape of the unhollowed out bowl is the <a href="#BM_(contour)%2Fi">contour</a>.</p>
+</li>
+<li>
+<p><strong><a href="#BM_(%5Cbhole)%2Fi">Hole</a></strong> - The perimeter of a void/cavity within a model as printed up the Z-axis. The example above is the model of a salad bowl. The shape of the hollow/indent in bowl is considered a <a href="#BM_(%5Cbhole)%2Fi">hole</a>.</p>
+<p>A model may have multiple <a href="#BM_(%5Cbhole)%2Fi">hole</a>s. Types of common <a href="#BM_(%5Cbhole)%2Fi">hole</a>s include threaded <a href="#BM_(%5Cbhole)%2Fi">hole</a>s for screws / bolts, drainage <a href="#BM_(%5Cbhole)%2Fi">hole</a>s, and <a href="#BM_(%5Cbhole)%2Fi">hole</a>s for connectors (e.g., dowels).</p>
+</li>
+</ul>
+<p>The process involves printing a test model and either using calipers or a standard screw to determine how far off the <a href="#BM_(%5Cbhole)%2Fi">hole</a>/<a href="#BM_(contour)%2Fi">contour</a> is from its intended baseline. That value can then be inserted into an object's properties under <strong>Quality</strong> → <strong>Precision</strong> → <strong>X-Y <a href="#BM_(%5Cbhole)%2Fi">hole</a> compensation</strong> and <strong>X-Y <a href="#BM_(contour)%2Fi">contour</a> compensation</strong>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Remember that <a href="#BM_(%5Cbhole)%2Fi">hole</a>s and <a href="#BM_(contour)%2Fi">contour</a>s on the z-axis are <a href="#BM_(%5Cbhole)%2Fi">hole</a>s that are compensated for using XY <a href="#BM_(%5Cbhole)%2Fi">hole</a> <a href="#BM_(contour)%2Fi">contour</a> compensation. It does not compensate for sideway <a href="#BM_(%5Cbhole)%2Fi">hole</a>s.</p>
+</div>
+<p><a href="#BM_(%5Cbhole)%2Fi">Hole</a> / <a href="#BM_(contour)%2Fi">contour</a> compensation may be needed because ...</p>
+<ul>
+<li>the <a href="#BM_(seam)%2Fi">seam</a> throws off <a href="#BM_(%5Cbhole)%2Fi">hole</a> precisions.</li>
+<li>the filament material may shrink as it cools.</li>
+<li>the filament material may have absorbed moisture, causing inconsistent extrusion.</li>
+<li>first <a href="#BM_(layer%7Cslice)%2Fi">layer</a> may have been squished (<a href="#BM_(elephant%20foot)%2Fi">elephant foot</a>), distorting <a href="#BM_(%5Cbhole)%2Fi">hole</a>s in that <a href="#BM_(layer%7Cslice)%2Fi">layer</a>.</li>
+<li>the <a href="#BM_(%5Cbhole)%2Fi">hole</a> may be too small to accurately print - <a href="#BM_(%5Cbhole)%2Fi">hole</a>s with diameter close to the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s size / <a href="#BM_(%5Cbhole)%2Fi">hole</a>s below 1mm.</li>
+<li>the <a href="#BM_(%5Cbhole)%2Fi">hole</a> may be fine, but may need to be chamfered (tapered lead-in) to accommodate the fastener.</li>
+<li>flow dynamics may need to be tuned.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FDiagnostics%2FElephant%20Foot%20Compensation)_TOPIC%2Fi">Bambu Studio/Diagnostics/Elephant Foot Compensation</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FDiagnostics%2FFlow%20Dynamics%20Calibration)_TOPIC%2Fi">Bambu Studio/Diagnostics/Flow Dynamics Calibration</a></li>
+</ul>
+</div>
+<p>For full instructions along with what exactly to print / measure, see the source document.</p>
+<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation">[src]</a></sub></p>
+<a name="H_Elephant%20Foot%20Compensation"></a><h3>Elephant Foot Compensation</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FDiagnostics%2FElephant%20Foot%20Compensation)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
+</ul>
+</div>
+<p>An <a href="#BM_(elephant%20foot)%2Fi">elephant foot</a> is a phenomenon where the first <a href="#BM_(layer%7Cslice)%2Fi">layer</a> of a print slightly splays out. This happens because the first <a href="#BM_(layer%7Cslice)%2Fi">layer</a> sits on a heated <a href="#BM_(build%20plate)%2Fi">build plate</a> and doesn't appropriately cool, and so either through the non-cooling itself or through the non-cooling along with subsequent <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s weighing down on it, causes the first <a href="#BM_(layer%7Cslice)%2Fi">layer</a> to squish and splay.</p>
+<p><img src="bambu_website_elephant_foot_example.png" alt="Bambu website elephant foot example"></p>
+<p><a href="#BM_(elephant%20foot)%2Fi">Elephant foot</a> compensation is an object property, located under <strong>Process</strong> → <strong>Quality</strong> → <strong><a href="#BM_(elephant%20foot)%2Fi">Elephant foot</a> compensation</strong>, that shrinks the first <a href="#BM_(layer%7Cslice)%2Fi">layer</a>. Shrinking the first <a href="#BM_(layer%7Cslice)%2Fi">layer</a> is intended to compensate for the splaying that happens.</p>
+<p><img src="bambu_studio_preview_elephant_foot_compensation_example.png" alt="Bambu Studio Preview screen elephant foot compensation example"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The <a href="#BM_(elephant%20foot)%2Fi">elephant foot</a> phenomenon isn't typically a problem unless it's preventing parts from fitting together.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><a href="#BM_(elephant%20foot)%2Fi">Elephant foot</a> compensation causes <a href="#BM_(brim)%2Fi">brim</a>s to not work properly. They shrink? For it to work properly, compensation must be turned off.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FBrims)_TOPIC%2Fi">Bambu Studio/Brims</a></li>
+</ul>
+</div>
+<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/parameter/elephant-foot">[src]</a></sub></p>
+<a name="H_Flow%20Dynamics%20Calibration"></a><h3>Flow Dynamics Calibration</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FDiagnostics%2FFlow%20Dynamics%20Calibration)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FBuild%20Plate%20Guide)_TOPIC%2Fi">Bambu Studio/Build Plate Guide</a></li>
+</ul>
+</div>
+<p>Flow dynamics calibration compensates for lags in extrusion. These lags are a result of <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> pressurization: When filament is extruded, it takes time for pressure in the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> to build up to a level where plastic flows consistently. When the <a href="#BM_(toolhead)%2Fi">toolhead</a> ..</p>
+<ul>
+<li>accelerates, the lag can cause <a href="#BM_(under-extrusion)%2Fi">under-extrusion</a>s resulting in gaps and / or thin lines.</li>
+<li>decelerates, the lag can cause <a href="#BM_(over-extrusion)%2Fi">over-extrusion</a>s resulting in blobs and / or <a href="#BM_(stringing%7Cstring)%2Fi">stringing</a>.</li>
+</ul>
+<p>Flow dynamics attempts to compensate for the problems above by preemptively adjusting filament flow. This compensation improves print quality, especially when printing complex shapes at higher printing speeds (e.g., cleaner corners and sharper details).</p>
+<p><img src="bambu_website_good_vs_poor_flow_dynamics_example.png" alt="Bambu website good vs poor flow dynamics example"></p>
+<p>Flow dynamics calibration should be performed whenever ...</p>
+<ul>
+<li>a new filament from different brand in introduced.</li>
+<li>the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> is worn out (increased friction)</li>
+<li>the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> is replaced (manufacturing tolerances)</li>
+<li>a filament's maximum volumetric speed / print temperatures are changed in filament settings.</li>
+</ul>
+<p>While some other Bambu Lab printers have automatic flow dynamics calibration (e.g., H2D), the H2S require manual calibration. The steps for manual flow dynamics calibration are as follows:</p>
+<ol>
+<li>
+<p>Ensure the filament is dry / fresh and the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> has no blockages.</p>
+<p>Filaments should always be dry when printing. Damp filaments will render the calibration results unsuitable for use with fresh filament.</p>
+</li>
+<li>
+<p>Ensure <a href="#BM_(build%20plate)%2Fi">build plate</a> is of correct type and clean.</p>
+</li>
+<li>
+<p>Navigate to the <strong>Calibration</strong> page, select <strong>Flow Dynamics</strong> in the sidebar, and then click the <strong>Manual Calibration</strong> button at the bottom of the main page. It should switch the page to a <strong>Flow Dynamics Calibration</strong> page with input fields.</p>
+</li>
+<li>
+<p>On the <strong>Flow Dynamics Calibration</strong> page, select the appropriate options and parameters, then click <strong>Calibrate</strong>. Printing of a test pattern should start once <strong>Calibrate</strong> is clicked.</p>
+<ul>
+<li>
+<p>Choose the installed <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> diameter, <a href="#BM_(build%20plate)%2Fi">build plate</a>, and filament for calibration.</p>
+<ul>
+<li>Smooth PEI <a href="#BM_(build%20plate)%2Fi">build plate</a> is recommended (Textured PEI <a href="#BM_(build%20plate)%2Fi">build plate</a> is usable as well).</li>
+<li><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">Nozzle</a> must not be worn out.</li>
+<li><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">Nozzle</a> must not have blockages.</li>
+<li>Filament must not be of a soft / flexible material. Flexible filament materials, such as <a href="#BM_%5Cb(TPU)%5Cb%2F">TPU</a>, have a high chance of calibration failure.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>What happens if I want to calibrate for a soft material?</p>
+<p>What happens if I'm using a filament material that's not suited for Smooth PEI <a href="#BM_(build%20plate)%2Fi">build plate</a> or Textured PEI <a href="#BM_(build%20plate)%2Fi">build plate</a>? Why can't I use an <a href="#BM_(Engineering%20Plate)%2Fi">engineering plate</a> so that I can target any material?</p>
+</div>
+</li>
+<li>
+<p>Set <strong>Method</strong> to <strong>Pattern</strong>.</p>
+</li>
+<li>
+<p>Set <strong>From k Value</strong> / <strong>To k Value</strong> to <strong>0</strong> to <strong>0.05</strong></p>
+</li>
+<li>
+<p>Set <strong>Value step</strong> to <strong>0.002</strong>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Once the test pattern has finished printing, visually inspect and find the number corresponding to the cleanest printed corner.</p>
+<p>There should be numbers running down the right-hand side and 90 degree corners which those numbers correspond to on the left-hand side. Find the number with the cleanest / sharpest corner, where the corner has the least bulging or fraying.</p>
+</li>
+</ol>
+<p><img src="bambu_website_flow_dynamics_print_example.png" alt="Bambu website flow dynamics print example"></p>
+<ol start="6">
+<li>On the <strong>Flow Dynamics Calibration</strong> page, click <strong>Next</strong>. It should switch to page asking for <strong>Factor K</strong>. Input the found number from the previous step and click <strong>Finish</strong>.</li>
+</ol>
+<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/calibration_pa">[src]</a></sub></p>
+<a name="H_Slicer%20Results"></a><h3>Slicer Results</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FDiagnostics%2FSlicer%20Results)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface%2F3D%20Viewport)_TOPIC%2Fi">Bambu Studio/User Interface/3D Viewport</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface%2FProject%20Filaments)_TOPIC%2Fi">Bambu Studio/User Interface/Project Filaments</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FModel%20Supports)_TOPIC%2Fi">Bambu Studio/Model Supports</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FLayer%20Height)_TOPIC%2Fi">Bambu Studio/Layer Height</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FSeam)_TOPIC%2Fi">Bambu Studio/Seam</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FInfill)_TOPIC%2Fi">Bambu Studio/Infill</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FWalls)_TOPIC%2Fi">Bambu Studio/Walls</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FBrims)_TOPIC%2Fi">Bambu Studio/Brims</a></li>
+</ul>
+</div>
+<p>The <a href="#BM_(slicer)%2Fi">slicer</a> output shown in the <strong>Preview</strong> Screen helps identify problems prior to printing. Of the <strong>Color schemes</strong> available, the following ones help highlight problems:</p>
+<ul>
+<li><strong>Line Type</strong> - Designates the path color based on print feature (e.g., <a href="#BM_(infill)%2Fi">infill</a>, <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a>, <a href="#BM_(top%20surface)%2Fi">top surface</a>, <a href="#BM_(bridging%7Cbridge)%2Fi">bridge</a>_BO, or <a href="#BM_(overhang)%2Fi">overhang</a>_BO).</li>
+<li><strong>Filament</strong> - Designates the path color based on which filament is being printed. The <a href="#BM_(layer%7Cslice)%2Fi">slice</a> result will also show how much of which filament is consumed.</li>
+<li><strong>Print Speed</strong> - Designates the path color based on how fast it prints.</li>
+<li><strong>Fan Speed</strong> - Designates the path color based on how fast the <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a> is spinning.</li>
+<li><strong>Flow Rate</strong> - Designates the path color based on how much filament is being extruded.</li>
+</ul>
+<p>These color schemes can help diagnose issues before printing:</p>
+<ul>
+<li>Switch <strong>Color scheme</strong> to <strong>Line Type</strong> - Any <a href="#BM_(overhang)%2Fi">overhang</a>ing areas missing <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>?</li>
+<li>Switch <strong>Color scheme</strong> to <strong>Fan Speed</strong> - Any un<a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supported</a> <a href="#BM_(bridging%7Cbridge)%2Fi">bridge</a>s_BO / <a href="#BM_(overhang)%2Fi">overhang</a>s_BO have inadequate cooling? Such regions must be printed slowly and heavily cooled so that it quickly hardens and prevents sagging.</li>
+<li>Switch <strong>Color scheme</strong> to <strong>Print Speed</strong> - Any speed increases in <a href="#BM_(bridging%7Cbridge)%2Fi">bridge</a>s_BO / <a href="#BM_(overhang)%2Fi">overhang</a>s_BO print excessively fast? Such regions must be printed slowly and heavily cooled so that it quickly hardens and prevents sagging. Generally, there shouldn't be any jarring shifts between speeds (unless <a href="#BM_(overhang)%2Fi">overhang</a>s_BO or <a href="#BM_(bridging%7Cbridge)%2Fi">bridge</a>s_BO). It all should blend and transition nicely.</li>
+</ul>
+<p>For more information, see the source.</p>
+<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/view-slicing-information">[src]</a></sub></p>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>
@@ -2060,7 +2392,7 @@
 <p><img src="external_spool.drawio.svg" alt="external spool diagram"></p>
 </li>
 <li>
-<p><a name="BM_(toolhead)%2Fi"></a><strong>toolhead</strong> - An assembly consisting of ...</p>
+<p><a name="BM_(toolhead)%2Fi"></a><strong>toolhead</strong> - An <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> consisting of ...</p>
 <ul>
 <li>a PTFE connector</li>
 <li>a <a href="#BM_(filament%20sensor)%2Fi">filament sensor</a>.</li>
@@ -2092,7 +2424,7 @@
 <p>An <a href="#BM_(extruder)%2Fi">extruder</a> is part of a <a href="#BM_(toolhead)%2Fi">toolhead</a>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
 </li>
 <li>
-<p><a name="BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi"></a><strong>hotend</strong> - An assembly responsible for melting filament for deposit on to a print. A <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a> includes a ...</p>
+<p><a name="BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi"></a><strong>hotend</strong> - An <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> responsible for melting filament for deposit on to a print. A <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a> includes a ...</p>
 <ul>
 <li>coldend - keeps filament at lower temperature.</li>
 <li><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> - heated to melt the filament and deposit it onto a print.</li>
@@ -2112,6 +2444,7 @@
 </li>
 <li>
 <p><a name="BM_(part%20cooling%20fan)%2Fi"></a><strong>part cooling fan</strong> - A fan located at the base of the <a href="#BM_(toolhead)%2Fi">toolhead</a>. The <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a> directs are to the cooling ducts that sandwich the tip of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a>'s <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>, rapidly cooling printed filament. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
+<p></p>
 </li>
 <li>
 <p><a name="BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F"></a><strong>CoreXY</strong> - H2S's system for moving the <a href="#BM_(toolhead)%2Fi">toolhead</a> front-back and left-right. The system is comprised of a pair of synchronized motors within the H2S responsible for moving the <a href="#BM_(toolhead)%2Fi">toolhead</a> on the X and Y axes: <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">A motor</a> and <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">B motor</a>. The motors are located at the rear inside face of the H2S, near the top. The <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">B motor</a> is on the left and the <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">A motor</a> is on the top.</p>
@@ -2175,7 +2508,7 @@
 <p><a name="BM_(Engineering%20Plate)%2Fi"></a><strong>Engineering Plate</strong> - A <a href="#BM_(build%20plate)%2Fi">build plate</a> compatible with all filament materials but requires a <a href="#BM_(layer%7Cslice)%2Fi">layer</a> of glue before printing. Although compatible with all filament materials, the <a href="#BM_(Engineering%20Plate)%2Fi">Engineering Plate</a> targets high temperature filament materials. <sub><a href="https://us.store.bambulab.com/products/bambu-engineering-plate">[src]</a></sub></p>
 </li>
 <li>
-<p><a name="BM_(vision%20encoder)%2Fi"></a><strong>vision encoder</strong> - A calibration tool used to compensate for natural and wear related variances, allowing for high accuracy prints that can tightly assembly. The <a href="#BM_(vision%20encoder)%2Fi">vision encoder</a> is a slab that sits on the <a href="#BM_(heatbed)%2Fi">heatbed</a>, shaped similarly to a <a href="#BM_(build%20plate)%2Fi">build plate</a>. However, it's only used for calibration and not meant to be printed on (replace with <a href="#BM_(build%20plate)%2Fi">build plate</a> once calibrated). <sub><a href="https://us.store.bambulab.com/products/vision-encoder?id=601545719002021889">[src]</a></sub></p>
+<p><a name="BM_(vision%20encoder)%2Fi"></a><strong>vision encoder</strong> - A calibration tool used to compensate for natural and wear related variances, allowing for high accuracy prints that can tightly <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a>. The <a href="#BM_(vision%20encoder)%2Fi">vision encoder</a> is a slab that sits on the <a href="#BM_(heatbed)%2Fi">heatbed</a>, shaped similarly to a <a href="#BM_(build%20plate)%2Fi">build plate</a>. However, it's only used for calibration and not meant to be printed on (replace with <a href="#BM_(build%20plate)%2Fi">build plate</a> once calibrated). <sub><a href="https://us.store.bambulab.com/products/vision-encoder?id=601545719002021889">[src]</a></sub></p>
 </li>
 <li>
 <p><a name="BM_(chamber)%2Fi"></a><strong>chamber</strong> - The enclosure of the H2S, encapsulating everything within (e.g., <a href="#BM_(toolhead)%2Fi">toolhead</a>, motors, <a href="#BM_(heatbed)%2Fi">heatbed</a>, <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">CoreXY</a> system, and fans).</p>
@@ -2452,6 +2785,31 @@
 </li>
 <li>
 <p><a name="BM_(bottom%20surface)%2Fi"></a><strong>bottom surface</strong> - The lowest surface of a model, just before the <a href="#BM_(infill)%2Fi">infill</a>. <a href="#BM_(bottom%20surface)%2Fi">Bottom surface</a>s may consist of multiple <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s. <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/fill-patterns">[src]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(assembly%7Cassemblies)%2Fi"></a><strong>assembly</strong> - A set of models grouped together as a single object. <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/assemble">[src]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(negative%20part)%2Fi"></a><strong>negative part</strong> - A model within an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> whose purpose is to subtract areas of other models in that <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> (where those models themselves aren't specialized models like <a href="#BM_(negative%20part)%2Fi">negative part</a>s). <sub><a href="https://bambulab.com/en/support/academy/3/course/982590125637046272/chapter/45">[src]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(modifier%20part)%2Fi"></a><strong>modifier part</strong> - A model within an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> whose purpose is to modify the properties of other models in that <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> (where those models themselves aren't specialized models like <a href="#BM_(negative%20part)%2Fi">negative part</a>s). <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/modifier">[src]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(contour)%2Fi"></a><strong>contour</strong> - The outer perimeter of the model as printed up the Z-axis (collective outer perimeters of the <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s that make up the printed model). For example, for a model of a salad bowl, the shape of the unhollowed out bowl is the <a href="#BM_(contour)%2Fi">contour</a>. <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation">[src]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(%5Cbhole)%2Fi"></a><strong>hole</strong> - The perimeter of a void/cavity within a model <em>as printed up the Z-axis</em>. For example, for a model of a salad bowl, the shape of the hollowed out part that is considered a <a href="#BM_(%5Cbhole)%2Fi">hole</a>. Types of common <a href="#BM_(%5Cbhole)%2Fi">hole</a>s include threaded <a href="#BM_(%5Cbhole)%2Fi">hole</a>s for screws / bolts, drainage <a href="#BM_(%5Cbhole)%2Fi">hole</a>s, and <a href="#BM_(%5Cbhole)%2Fi">hole</a>s for connectors (e.g., dowels).</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><a href="#BM_(%5Cbhole)%2Fi">Hole</a>s on the z-axis are <a href="#BM_(%5Cbhole)%2Fi">hole</a>s that are compensated for using XY <a href="#BM_(%5Cbhole)%2Fi">hole</a> <a href="#BM_(contour)%2Fi">contour</a> compensation. It does not compensate for sideway <a href="#BM_(%5Cbhole)%2Fi">hole</a>s.</p>
+</div>
+<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation">[src]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(elephant%20foot)%2Fi"></a><strong>elephant foot</strong> - A phenomenon where the first <a href="#BM_(layer%7Cslice)%2Fi">layer</a> of a print slightly splays out because it doesn't cool properly (it sits directly on a heated <a href="#BM_(build%20plate)%2Fi">build plate</a>). Either through the non-cooling itself or through the non-cooling along with subsequent <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s weighing down on it, causes the first <a href="#BM_(layer%7Cslice)%2Fi">layer</a> to squish and splay.</p>
+<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/parameter/elephant-foot">[src]</a></sub></p>
+<p></p>
 </li>
 <li>
 <p><a name="BM_(heat%20resistance)%2Fi"></a><strong>heat resistance</strong> - FILL ME IN.</p>
