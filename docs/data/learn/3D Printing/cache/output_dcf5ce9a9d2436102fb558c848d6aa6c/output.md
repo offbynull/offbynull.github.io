@@ -1,1 +1,0 @@
-<sub>[\[src\]](ADD CITATION)</sub>
