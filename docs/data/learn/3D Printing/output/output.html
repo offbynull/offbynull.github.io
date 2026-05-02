@@ -6,13 +6,14 @@
           <body><!-- Github Markdown CSS added -->
 <div class="toc">
 <ul>
+<li><a href="#H_Introduction">Introduction</a></li>
 <li><a href="#H_Hardware">Hardware</a></li>
 <ul>
 <li><a href="#H_Toolhead">Toolhead</a></li>
 <li><a href="#H_Heatbed">Heatbed</a></li>
-<li><a href="#H_Movement%20System">Movement System</a></li>
-<li><a href="#H_Nozzle%20Cleaning%20%20System">Nozzle Cleaning  System</a></li>
-<li><a href="#H_Climate%20Control%20System">Climate Control System</a></li>
+<li><a href="#H_Movement">Movement</a></li>
+<li><a href="#H_Nozzle%20Cleaning">Nozzle Cleaning</a></li>
+<li><a href="#H_Climate%20Control">Climate Control</a></li>
 <li><a href="#H_Status%20Light">Status Light</a></li>
 <li><a href="#H_Automatic%20Material%20System%202%20Pro">Automatic Material System 2 Pro</a></li>
 <li><a href="#H_Filament%20Inlet">Filament Inlet</a></li>
@@ -111,9 +112,12 @@
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
 </div>
+<a name="H_Introduction"></a><h1>Introduction</h1>
+<p>This document covers 3D printing concepts and principles, specifically using the Bambu Lab H2S. 3D printers like the H2S print <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s on top of each other to form 3D objects. These <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s are printed using different types of plastics, where the plastic is first melted and then extruded out of a <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>.</p>
 <a name="H_Hardware"></a><h1>Hardware</h1>
 <p><a name="BM_(Hardware)_TOPIC%2Fi"></a><strong></strong></p>
-<p>The H2S is enclosed on all sides in the shape of a rectangular prism. The inside of the prism is referred to as the <a href="#BM_(chamber)%2Fi">chamber</a>, which is climate controlled contains all the machinery for 3D printing. <sub><a href="https://wiki.bambulab.com/en/h2s">[src]</a></sub></p>
+<p>The H2S is enclosed on all sides in the shape of a rectangular prism. The inside of the prism is referred to as the <a href="#BM_(chamber)%2Fi">chamber</a>, which is climate controlled and contains all the machinery for 3D printing. <sub><a href="https://wiki.bambulab.com/en/h2s">[src]</a></sub></p>
+<p><img src="h2s_front.drawio.svg" alt="H2S front diagram"></p>
 <p>The subsections below detail the machinery within the <a href="#BM_(chamber)%2Fi">chamber</a>.</p>
 <a name="H_Toolhead"></a><h2>Toolhead</h2>
 <p><a name="BM_(Hardware%5C%2FToolhead)_TOPIC%2Fi"></a><strong></strong></p>
@@ -134,11 +138,11 @@
 <li>coldend - keeps filament at lower temperature.</li>
 <li><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> - heated to melt the filament and deposit it onto a print.</li>
 </ul>
-<p>A <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">silicone sock</a> fits over <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>, insulating it from the cooling from the <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a>.</p>
+<p>A <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">silicone sock</a> fits over the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>, insulating it from the cooling from the <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a>.</p>
 <p><img src="hotend.drawio.svg" alt="hotend diagram"> <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
 </li>
 <li>
-<p>a <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a>: Fan located at the base of the <a href="#BM_(toolhead)%2Fi">toolhead</a>. The <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a> directs are to the cooling ducts that sandwich the tip of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a>'s <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>, rapidly cooling printed filament. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
+<p>a <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a>: Fan located at the base of the <a href="#BM_(toolhead)%2Fi">toolhead</a>. The <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a> directs air to the cooling ducts that sandwich the tip of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a>'s <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>, rapidly cooling printed filament. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
 </li>
 <li>
 <p>a <a href="#BM_(filament%20cutter%20stopper%7Cfilament%20cutter%7Ccutter%20stopper)%2Fi">filament cutter</a>: Upright arm on the <a href="#BM_(toolhead)%2Fi">toolhead</a>'s right face. The <a href="#BM_(filament%20cutter%20stopper%7Cfilament%20cutter%7Ccutter%20stopper)%2Fi">filament cutter</a> gets pushed into the <a href="#BM_(filament%20cutter%20stopper%7Cfilament%20cutter%7Ccutter%20stopper)%2Fi">filament cutter stopper</a>, which is an arm located on the right inside face near the rear (close to motor A just above the <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">Y-axis linear rod</a>), to push it into the filament thereby cutting it. The <a href="#BM_(filament%20cutter%20stopper%7Cfilament%20cutter%7Ccutter%20stopper)%2Fi">filament cutter stopper</a> rotates out in position when cutting and rotates back to be stowed away afterwards. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/h2s/maintenance/replace-cutter-lever">[src]</a></sub></p>
@@ -147,7 +151,7 @@
 <p>a camera: Camera attached to the <a href="#BM_(toolhead)%2Fi">toolhead</a>, used for calibrating motion accuracy and <a href="#BM_(build%20plate)%2Fi">build plate</a> recognition. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
 </li>
 </ul>
-<p>Filament enters the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> through the PTFE connector located at the top, where the <a href="#BM_(extruder)%2Fi">extruder</a> motor grabs it and pushes it into the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a> located at the bottom. The <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a>'s <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> poking out of the <a href="#BM_(toolhead)%2Fi">toolhead</a> enclosure is sandwiched between cooling ducts, where the <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a> directs air to rapidly cool filament as its printed.</p>
+<p>Filament enters the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> through the PTFE connector located at the top, where the <a href="#BM_(extruder)%2Fi">extruder</a> motor grabs it and pushes it into the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a> located at the bottom. The <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a>'s <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> poking out of the <a href="#BM_(toolhead)%2Fi">toolhead</a> enclosure is sandwiched between cooling ducts, where the <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a> directs air to rapidly cool filament as it's printed.</p>
 <p><img src="toolhead.drawio.svg" alt="toolhead front diagram"> <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
@@ -165,8 +169,8 @@
 </div>
 <p>As the name suggests, the <a href="#BM_(heatbed)%2Fi">heatbed</a> is a heat controlled surface within the H2S. It magnetically secures a <a href="#BM_(build%20plate)%2Fi">build plate</a>, which is a swappable part that serves as the print surface (<a href="#BM_(build%20plate)%2Fi">build plate</a> types have different properties / target different filament materials). Depending on the material being printed, the <a href="#BM_(heatbed)%2Fi">heatbed</a>'s controlled heating may be required or otherwise beneficial for print quality (e.g., adhesion and / or reducing printing artifacts).</p>
 <p><img src="h2s_movement.drawio.svg" alt="H2S heatbed placement"> <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
-<a name="H_Movement%20System"></a><h2>Movement System</h2>
-<p><a name="BM_(Hardware%5C%2FMovement%20System)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Movement"></a><h2>Movement</h2>
+<p><a name="BM_(Hardware%5C%2FMovement)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -174,7 +178,7 @@
 <li><a href="#BM_(Hardware%5C%2FHeatbed)_TOPIC%2Fi">Hardware/Heatbed</a></li>
 </ul>
 </div>
-<p>The <a href="#BM_(toolhead)%2Fi">toolhead</a> moves on the XY plane the <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">CoreXY</a> system, H2S's system for moving the <a href="#BM_(toolhead)%2Fi">toolhead</a> front-back and left-right. The system is comprised of a pair of synchronized motors at the rear face of the <a href="#BM_(chamber)%2Fi">chamber</a> responsible for moving the <a href="#BM_(toolhead)%2Fi">toolhead</a> on the X and Y axes: <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">A motor</a> and <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">B motor</a>. The motors are located at the rear inside face of the H2S, near the top. The <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">B motor</a> is on the left and the <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">A motor</a> is on the top.</p>
+<p>The <a href="#BM_(toolhead)%2Fi">toolhead</a> moves on the XY plane using the <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">CoreXY</a> system, H2S's system for moving the <a href="#BM_(toolhead)%2Fi">toolhead</a> front-back and left-right. The system is comprised of a pair of synchronized motors at the rear face of the <a href="#BM_(chamber)%2Fi">chamber</a> responsible for moving the <a href="#BM_(toolhead)%2Fi">toolhead</a> on the X and Y axes: <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">A motor</a> and <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">B motor</a>. The motors are located at the rear inside face of the H2S, near the top. The <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">B motor</a> is on the left and the <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">A motor</a> is on the right.</p>
 <p>The motors connect through the <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">X-axis linear rail</a> and the <a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">Y-axis linear rod</a>s via a pair of belts. The ...</p>
 <ul>
 <li><a href="#BM_(CoreXY%7CA%20motor%7CB%20motor%7CA%20stepper%20motor%7CB%20stepper%20motor%7CX%5B%5C-%20%5Daxis%20linear%20rail%7CY%5B%5C-%20%5Daxis%20linear%20rod%7CX%5B%5C-%20%5Daxis%20rail%7CY%5B%5C-%20%5Daxis%20rod)%2F">X-axis linear rail</a> is responsible for left-right <a href="#BM_(toolhead)%2Fi">toolhead</a> movement.</li>
@@ -183,33 +187,33 @@
 <p>Both motors work in tandem to coordinate movement in both directions (e.g., one motor isn't solely responsible on an axis).</p>
 <p>The <a href="#BM_(toolhead)%2Fi">toolhead</a> doesn't move on the Z-axis. Instead, depth is controlled by moving the <a href="#BM_(heatbed)%2Fi">heatbed</a> down as <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s are printed out from bottom-to-top. The <a href="#BM_(Z-axis%20threaded%20and%20linear%20rod%7CZ-axis%20linear%20rod%7CZ-axis%20threaded%20rod%7CZ-axis%20rod)%2F">Z-axis threaded and linear rod</a>s are responsible for moving the <a href="#BM_(heatbed)%2Fi">heatbed</a>.</p>
 <p><img src="h2s_movement.drawio.svg" alt="H2S movement"> <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
-<a name="H_Nozzle%20Cleaning%20%20System"></a><h2>Nozzle Cleaning  System</h2>
-<p><a name="BM_(Hardware%5C%2FNozzle%20Cleaning%20System)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Nozzle%20Cleaning"></a><h2>Nozzle Cleaning</h2>
+<p><a name="BM_(Hardware%5C%2FNozzle%20Cleaning)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Hardware%5C%2FToolhead)_TOPIC%2Fi">Hardware/Toolhead</a></li>
 <li><a href="#BM_(Hardware%5C%2FHeatbed)_TOPIC%2Fi">Hardware/Heatbed</a></li>
-<li><a href="#BM_(Hardware%5C%2FMovement%20System)_TOPIC%2Fi">Hardware/Movement System</a></li>
+<li><a href="#BM_(Hardware%5C%2FMovement)_TOPIC%2Fi">Hardware/Movement</a></li>
 </ul>
 </div>
-<p>The H2S has 2 mechanisms to clean the wiper. The first mechanism is the <a href="#BM_(purge%20wiper%7Cpurge%20chute%7Cnozzle%20wiper)%2Fi">purge wiper</a>, a block at the back left of the H2S responsible for cleaning the <a href="#BM_(toolhead)%2Fi">toolhead</a> between prints / filament changes. The <a href="#BM_(purge%20wiper%7Cpurge%20chute%7Cnozzle%20wiper)%2Fi">purge wiper</a> consists of ...</p>
+<p>The H2S has 2 mechanisms to clean the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>. The first mechanism is the <a href="#BM_(purge%20wiper%7Cpurge%20chute%7Cnozzle%20wiper)%2Fi">purge wiper</a>, a block at the back left of the H2S responsible for cleaning the <a href="#BM_(toolhead)%2Fi">toolhead</a> between prints / filament changes. The <a href="#BM_(purge%20wiper%7Cpurge%20chute%7Cnozzle%20wiper)%2Fi">purge wiper</a> consists of ...</p>
 <ul>
-<li>a <a href="#BM_(purge%20wiper%7Cpurge%20chute%7Cnozzle%20wiper)%2Fi">nozzle wiper</a>, which is silicone waffle and strips.</li>
+<li>a <a href="#BM_(purge%20wiper%7Cpurge%20chute%7Cnozzle%20wiper)%2Fi">nozzle wiper</a>, which consists of a silicone waffle and strips.</li>
 <li>a <a href="#BM_(purge%20wiper%7Cpurge%20chute%7Cnozzle%20wiper)%2Fi">purge chute</a>, which is a chute leading to outside the <a href="#BM_(chamber)%2Fi">chamber</a>.</li>
 </ul>
 <p>The <a href="#BM_(toolhead)%2Fi">toolhead</a> knocks into the waffle / strips to clean off old stuck filament, sending it down the <a href="#BM_(purge%20wiper%7Cpurge%20chute%7Cnozzle%20wiper)%2Fi">purge chute</a>.</p>
 <p><img src="purge_wiper.drawio.svg" alt="purge wiper placement"> <img src="purge_wiper_top_view.drawio.svg" alt="purge wiper top view"> <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/h2s/maintenance/replace-purge-wiper">[src]</a></sub></p>
 <p>The second mechanism is the <a href="#BM_(nozzle%20wiper%20sheet)%2Fi">nozzle wiper sheet</a>, a sheet on the edge of the <a href="#BM_(heatbed)%2Fi">heatbed</a> that the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> moves across to keep the tip smooth and free of debris. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
-<a name="H_Climate%20Control%20System"></a><h2>Climate Control System</h2>
-<p><a name="BM_(Hardware%5C%2FClimate%20Control%20System)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Climate%20Control"></a><h2>Climate Control</h2>
+<p><a name="BM_(Hardware%5C%2FClimate%20Control)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Hardware%5C%2FHeatbed)_TOPIC%2Fi">Hardware/Heatbed</a></li>
 </ul>
 </div>
-<p>In addition the <a href="#BM_(heatbed)%2Fi">heatbed</a> and the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a>, there are several additional climate control mechanisms within the H2S. These all work in tandem to appropriately heat and cool filament material:</p>
+<p>In addition to the <a href="#BM_(heatbed)%2Fi">heatbed</a> and the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a>, there are several additional climate control mechanisms within the H2S. These all work in tandem to appropriately heat and cool filament material:</p>
 <ul>
 <li><a href="#BM_(chamber%20heat%20circulation%20fan%7Cheat%20circulation%20fan)%2Fi">Chamber heat circulation fan</a>: Heater located at the rear face of the H2S, used to increase the <a href="#BM_(chamber)%2Fi">chamber</a>'s temperature. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/h2s/manual/screen-operation#h-1-air-management">[src]</a></sub></li>
 <li><a href="#BM_(chamber%20exhaust%20fan%20filter%7Cchamber%20exhaust%20fan%7Cchamber%20filter%7Cexhaust%20fan%20filter%7Cexhaust%20fan)%2Fi">Chamber exhaust fan</a>: Fan located at the rear face of the H2S, exhausting air out of the <a href="#BM_(chamber)%2Fi">chamber</a>. The <a href="#BM_(chamber%20exhaust%20fan%20filter%7Cchamber%20exhaust%20fan%7Cchamber%20filter%7Cexhaust%20fan%20filter%7Cexhaust%20fan)%2Fi">chamber exhaust fan</a> may have a filter in front of it, referred to as the <a href="#BM_(chamber%20exhaust%20fan%20filter%7Cchamber%20exhaust%20fan%7Cchamber%20filter%7Cexhaust%20fan%20filter%7Cexhaust%20fan)%2Fi">chamber filter</a>, that partially filters air as it's exhausted out of the <a href="#BM_(chamber)%2Fi">chamber</a>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></li>
@@ -225,7 +229,7 @@
 <li><a href="#BM_(Hardware%5C%2FHeatbed)_TOPIC%2Fi">Hardware/Heatbed</a></li>
 </ul>
 </div>
-<p>Just below the <a href="#BM_(heatbed)%2Fi">heatbed</a>, facing forward and running side-to-side, is a light bar just below the <a href="#BM_(heatbed)%2Fi">heatbed</a>. The light bar, referred to as the <a href="#BM_(status%20light)%2Fi">status light</a>, changes color to show the operating status of the H2S:</p>
+<p>Just below the <a href="#BM_(heatbed)%2Fi">heatbed</a>, facing forward and running side-to-side, is a light bar. The light bar, referred to as the <a href="#BM_(status%20light)%2Fi">status light</a>, changes color to show the operating status of the H2S:</p>
 <ul>
 <li>White slow pulse (or off): Idle.</li>
 <li>Orange scroll: Print job preparing.</li>
@@ -240,7 +244,7 @@
 <li>enables multi-color and multi-material prints by swapping between <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>s during printing.</li>
 <li>automatically switches between <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>s if a <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a> runs out during printing.</li>
 <li>automatically identifies the color and type of <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>s (only for official Bambu Lab filaments, using RFID).</li>
-<li>drying <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>s (up to 65 celsius).</li>
+<li>dries <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>s (up to 65 celsius).</li>
 </ul>
 <p>The <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> supports 4 <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>s per unit, and supports chaining up to 4 <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> units together to support up to 16 <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>s per print. Additionally, the 4 chained <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> units may be chained up even further by 8 <a href="#BM_(AMS%20HT)%2F">AMS HT</a> units, enabling up to 24 <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>s per print.</p>
 <p><img src="ams2.drawio.svg" alt="AMS 2 Pro top diagram"> <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/232">[src]</a></sub> <sub><a href="https://us.store.bambulab.com/products/ams-multicolor-printing">[src]</a></sub></p>
@@ -262,7 +266,7 @@
 <p><img src="tpu_inlet.drawio.svg" alt="filament buffer and TPU inlet placement"> <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>In some cases, you may be able to use <a href="#BM_%5Cb(TPU)%5Cb%2F">TPU</a> for with the non-<a href="#BM_(TPU%20inlet)%2Fi">TPU inlet</a>. If you're using an <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> and your <a href="#BM_%5Cb(TPU)%5Cb%2F">TPU</a> is specifically branded as TPU for AMS, you can use it. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/">[src]</a></sub></p>
+<p>In some cases, you may be able to use <a href="#BM_%5Cb(TPU)%5Cb%2F">TPU</a> with the non-<a href="#BM_(TPU%20inlet)%2Fi">TPU inlet</a>. If you're using an <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> and your <a href="#BM_%5Cb(TPU)%5Cb%2F">TPU</a> is specifically branded as TPU for AMS, you can use it. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/">[src]</a></sub></p>
 </div>
 <a name="H_Operation"></a><h1>Operation</h1>
 <p><a name="BM_(Operation)_TOPIC%2Fi"></a><strong></strong></p>
@@ -278,16 +282,16 @@
 <p>The H2S must be placed on a flat and stable surface. The operating space recommended is 80cm width x 102cm depth x 105cm height, which covers the space required in the back for the exhaust and an <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> to sit on top. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/224">[src]</a></sub></p>
 <a name="H_Operational%20Climate"></a><h2>Operational Climate</h2>
 <p><a name="BM_(Operation%5C%2FOperational%20Climate)_TOPIC%2Fi"></a><strong></strong></p>
-<p>The H2S is recommended to be operated in temperatures between between 15-30C (60-85F). If the temperature is ...</p>
+<p>The H2S is recommended to be operated in temperatures between 15-30C (60-85F). If the temperature is ...</p>
 <ul>
-<li>&lt; 15C, there may be issues with adhesion to plate and / or weaken <a href="#BM_(layer%7Cslice)%2Fi">layer</a> bonding</li>
-<li>&gt; 30C, there filament may soften before reaching <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a>, increasing risk of <a href="#BM_(extruder)%2Fi">extruder</a> or <a href="#BM_(nozzle%20clog)%2Fi">nozzle clog</a>s.</li>
+<li>&lt; 15C, there may be issues with adhesion to the <a href="#BM_(build%20plate)%2Fi">build plate</a> and / or weaken <a href="#BM_(layer%7Cslice)%2Fi">layer</a> bonding</li>
+<li>&gt; 30C, filament may soften before reaching <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a>, increasing risk of <a href="#BM_(extruder)%2Fi">extruder</a> or <a href="#BM_(nozzle%20clog)%2Fi">nozzle clog</a>s.</li>
 </ul>
-<p>The <a href="#BM_(chamber)%2Fi">chamber</a> has an assortment of fans and vents to circulate cool air / blow out hor air (e.g., <a href="#BM_(chamber%20exhaust%20fan%20filter%7Cchamber%20exhaust%20fan%7Cchamber%20filter%7Cexhaust%20fan%20filter%7Cexhaust%20fan)%2Fi">chamber exhaust fan</a>, <a href="#BM_(auxiliary%20part%20cooling%20fan)%2Fi">auxiliary part cooling fan</a>, and <a href="#BM_(chamber%20intake%20vent%7Cintake%20vent)%2Fi">chamber intake vent</a>), but in warmer climates that may not be enough. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/224">[src]</a></sub></p>
+<p>The <a href="#BM_(chamber)%2Fi">chamber</a> has an assortment of fans and vents to circulate cool air / blow out hot air (e.g., <a href="#BM_(chamber%20exhaust%20fan%20filter%7Cchamber%20exhaust%20fan%7Cchamber%20filter%7Cexhaust%20fan%20filter%7Cexhaust%20fan)%2Fi">chamber exhaust fan</a>, <a href="#BM_(auxiliary%20part%20cooling%20fan)%2Fi">auxiliary part cooling fan</a>, and <a href="#BM_(chamber%20intake%20vent%7Cintake%20vent)%2Fi">chamber intake vent</a>), but in warmer climates that may not be enough. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/224">[src]</a></sub></p>
 <a name="H_Auto-calibration"></a><h2>Auto-calibration</h2>
 <p><a name="BM_(Operation%5C%2FAuto-calibration)_TOPIC%2Fi"></a><strong></strong></p>
 <p>H2S's auto-calibration attempts to adjust itself to account for the expected variances between manufactured H2S printers and variances caused by wear. Examples of calibrations include <a href="#BM_(bed%20leveling%7Cheatbed%20leveling)%2Fi">bed leveling</a> (working around variances in the <a href="#BM_(heatbed)%2Fi">heatbed</a>), motor noise cancellation, and vibration compensation.</p>
-<p>Trigger auto-calibration manually by navigating to <strong>[Wrench Icon]</strong> → <strong>Settings</strong> → <strong>Calibration</strong>. Perform auto-calibrate whenever ...</p>
+<p>Trigger auto-calibration manually by navigating to <strong>[Wrench Icon]</strong> → <strong>Settings</strong> → <strong>Calibration</strong>. Perform auto-calibration whenever ...</p>
 <ul>
 <li>there's a decrease in print quality.</li>
 <li>after printer maintenance.</li>
@@ -308,7 +312,7 @@
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The source doesn't cite this, but I know for a fact that <a href="#BM_%5Cb(TPU)%5Cb%2F">TPU</a> is not supported by the <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> and must fed via the <a href="#BM_(external%20spool%20holder)%2Fi">external spool holder</a> (unless it's specifically branded as TPU for AMS, which Bambu Lab sells).</p>
+<p>The source doesn't cite this, but I know for a fact that <a href="#BM_%5Cb(TPU)%5Cb%2F">TPU</a> is not supported by the <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> and must be fed via the <a href="#BM_(external%20spool%20holder)%2Fi">external spool holder</a> (unless it's specifically branded as TPU for AMS, which Bambu Lab sells).</p>
 </div>
 <p>To load filament using the <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a>, ...</p>
 <ol>
@@ -318,7 +322,7 @@
 <li>close the cover and lock it in by closing the two tabs on the front edge.</li>
 <li>select filament properties:
 <ul>
-<li>For filament from Bambu Lab filament, filament color and  material should be automatically detected (using RFID).</li>
+<li>For Bambu Lab filament, filament color and  material should be automatically detected (using RFID).</li>
 <li>For filament not from Bambu Lab, navigate to <strong>[<a href="#BM_(filament%20spool%7Cspool)%2Fi">Spool</a> Icon]</strong> → <strong>[Pencil Icon]</strong> (for the slot <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a> was added to) and select filament brand, material, and color.</li>
 </ul>
 </li>
@@ -348,12 +352,12 @@
 <p><sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/225">[src]</a></sub></p>
 <a name="H_Filament%20Refill"></a><h2>Filament Refill</h2>
 <p><a name="BM_(Operation%5C%2FFilament%20Refill)_TOPIC%2Fi"></a><strong></strong></p>
-<p>Most Bambu Lab filaments come wound up on twist apart <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>s. Once the filament on the <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a> has been all used up, a refill may be purchased (refill means filament without a <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>) and reinserted into the empty <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>. Refills come pre-wound ready to be inserted directly on to the <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>.</p>
+<p>Most Bambu Lab filaments come wound up on twist-apart <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>s. Once the filament on the <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a> has been all used up, a refill may be purchased (refill means filament without a <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>) and reinserted into the empty <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>. Refills come pre-wound ready to be inserted directly on to the <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>.</p>
 <p>To refill a <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a> ...</p>
 <ol>
-<li>twist apart the <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>.</li>
+<li>twist-apart the <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>.</li>
 <li>place pre-wound refill over interior cylinder of <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>, aligning refill's notch against the tiny square extrusion.</li>
-<li>place two sides of <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a> back together and twist until click.</li>
+<li>place two sides of <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a> back together and twist until it clicks.</li>
 <li>remove plastic straps holding the refill's shape.</li>
 <li>place sticker on outside of the <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>.</li>
 </ol>
@@ -363,7 +367,7 @@
 <p><a name="BM_(Operation%5C%2FUser%20Interface)_TOPIC%2Fi"></a><strong></strong></p>
 <p>The H2S's UI is exposed via a touch screen on the exterior of the front face, located on the top left.</p>
 <p><img src="h2s_front.drawio.svg" alt="touchscreen placement"></p>
-<p>Along left-side of the UI are 5 options, each represented by an icon:</p>
+<p>Along the left side of the UI are 5 options, each represented by an icon:</p>
 <ol>
 <li><strong>[Home]</strong>: Primary functions and readings (e.g., triggering prints, sensor readings, WiFi status, and statistics).</li>
 <li><strong>[Controls]</strong>: Control panel for hardware settings (e.g., fan speed, <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> and <a href="#BM_(heatbed)%2Fi">heatbed</a> temperature, light, speed, and motion).</li>
@@ -382,7 +386,7 @@
 <li><strong>Internal</strong>: Files preloaded onto the H2S's internal memory.</li>
 <li><strong>USB</strong>: Files on USB drive plugged into the H2S.</li>
 </ul>
-<p>One a file is chosen, select the appropriate <strong>Plate</strong> and <strong><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">Nozzle</a></strong> (H2S comes with "Texture PEI" plate and "0.4mm Standard" <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> - these should be selected as defaults). Then, hit <strong>Next</strong> select the filament to print with. Then, hit <strong>Print</strong> to begin printing. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
+<p>Once a file is chosen, select the appropriate <strong>Plate</strong> and <strong><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">Nozzle</a></strong> (H2S comes with "Textured PEI" plate and "0.4mm Standard" <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> - these should be selected as defaults). Then, hit <strong>Next</strong> and select the filament to print with. Then, hit <strong>Print</strong> to begin printing. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
 <a name="H_Print%20Speed"></a><h3>Print Speed</h3>
 <p><a name="BM_(Operation%5C%2FUser%20Interface%2FPrint%20Speed)_TOPIC%2Fi"></a><strong></strong></p>
 <p>To configure the printing speed, navigate to <strong>[Controls]</strong> → <strong>Speed</strong> and select either <strong>Silent</strong>, <strong>Standard</strong> (default), <strong>Sport</strong>, or <strong>Ludicrous</strong>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
@@ -392,21 +396,21 @@
 </div>
 <a name="H_Toolhead%20and%20Heatbed%20Movement"></a><h3>Toolhead and Heatbed Movement</h3>
 <p><a name="BM_(Operation%5C%2FUser%20Interface%2FToolhead%20and%20Heatbed%20Movement)_TOPIC%2Fi"></a><strong></strong></p>
-<p>To perform movements of the <a href="#BM_(toolhead)%2Fi">toolhead</a> (XZ axis) and <a href="#BM_(heatbed)%2Fi">heatbed</a> (Y axis), navigate to <strong>[Controls]</strong> → <strong>Motion</strong> and tap the adjustment buttons as necessary. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
+<p>To perform movements of the <a href="#BM_(toolhead)%2Fi">toolhead</a> (XY axis) and <a href="#BM_(heatbed)%2Fi">heatbed</a> (Z axis), navigate to <strong>[Controls]</strong> → <strong>Motion</strong> and tap the adjustment buttons as necessary. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This seems to only be for testing purposes and moving things to get at parts? I had to use this feature to get at a thin piece of plastic that popped off and fell on the bottom of the H2S. I moved the <a href="#BM_(heatbed)%2Fi">heatbed</a> up so I could fit my hand in and reach it.</p>
 </div>
 <a name="H_Extruder%20Movement"></a><h3>Extruder Movement</h3>
 <p><a name="BM_(Operation%5C%2FUser%20Interface%2FExtruder%20Movement)_TOPIC%2Fi"></a><strong></strong></p>
-<p>To perform adhoc extrusion and retraction of filament, navigate to <strong>[Controls]</strong> → <strong><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">Nozzle</a> &amp; <a href="#BM_(extruder)%2Fi">Extruder</a></strong> and use the up/down buttons under <strong><a href="#BM_(extruder)%2Fi">Extruder</a></strong>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
+<p>To perform ad hoc extrusion and retraction of filament, navigate to <strong>[Controls]</strong> → <strong><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">Nozzle</a> &amp; <a href="#BM_(extruder)%2Fi">Extruder</a></strong> and use the up/down buttons under <strong><a href="#BM_(extruder)%2Fi">Extruder</a></strong>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This seems to be for testing purposes. But also, does this have to be done when swapping between <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> and <a href="#BM_(external%20spool%20holder)%2Fi">external spool holder</a>?</p>
 </div>
 <a name="H_Nozzle%20Type"></a><h3>Nozzle Type</h3>
 <p><a name="BM_(Operation%5C%2FUser%20Interface%2FNozzle%20Type)_TOPIC%2Fi"></a><strong></strong></p>
-<p>When <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> has been swapped, navigate to <strong>[Controls]</strong> → <strong><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">Nozzle</a> &amp; <a href="#BM_(extruder)%2Fi">Extruder</a></strong> and select the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s type under <strong><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">Nozzle</a></strong>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
+<p>When the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> has been swapped, navigate to <strong>[Controls]</strong> → <strong><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">Nozzle</a> &amp; <a href="#BM_(extruder)%2Fi">Extruder</a></strong> and select the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s type under <strong><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">Nozzle</a></strong>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
 <a name="H_Nozzle%20Temperature"></a><h3>Nozzle Temperature</h3>
 <p><a name="BM_(Operation%5C%2FUser%20Interface%2FNozzle%20Temperature)_TOPIC%2Fi"></a><strong></strong></p>
 <p>To set the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s temperature, navigate to <strong>[Controls]</strong> → <strong><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">Nozzle</a> &amp; <a href="#BM_(extruder)%2Fi">Extruder</a></strong> and select the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s temperature under <strong><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">Nozzle</a></strong>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
@@ -444,7 +448,7 @@
 <p>To select which filaments are in the <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> and / or <a href="#BM_(external%20spool%20holder)%2Fi">external spool holder</a>, navigate to <strong>[Filament]</strong> and select the desired <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a> to input the type, color, and manufacturer of filament. Bambu Lab filaments come with RFID that allows the <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> to automatically identify material and color. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
 <a name="H_Filament%20Auto%20Refill"></a><h3>Filament Auto Refill</h3>
 <p><a name="BM_(Operation%5C%2FUser%20Interface%2FFilament%20Auto%20Refill)_TOPIC%2Fi"></a><strong></strong></p>
-<p>When a filament runs out, the H2S and attached <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> unit automatically swap to a second <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a> to continue printing, provided that second <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a> has the same brand, color, and material of the original <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a> being printed with. To enable auto refill, navigate to <strong>[Settings]</strong> → <strong>AMS Options</strong> and select <strong>AMS Auto-Refill</strong>. . Then, navigate to <strong>[Filament]</strong>, select the wrench icon, and select <strong>Auto Refill</strong> to view refill relationships. <sub><a href="https://wiki.bambulab.com/en/ams-2-pro/manual/setup-and-printting#ams-auto-refill">[src]</a></sub>.</p>
+<p>When a filament runs out, the H2S and attached <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> unit automatically swap to a second <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a> to continue printing, provided that second <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a> has the same brand, color, and material of the original <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a> being printed with. To enable auto refill, navigate to <strong>[Settings]</strong> → <strong>AMS Options</strong> and select <strong>AMS Auto-Refill</strong>. Then, navigate to <strong>[Filament]</strong>, select the wrench icon, and select <strong>Auto Refill</strong> to view refill relationships. <sub><a href="https://wiki.bambulab.com/en/ams-2-pro/manual/setup-and-printting#ams-auto-refill">[src]</a></sub>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>On the H2D, there are 2 <a href="#BM_(extruder)%2Fi">extruder</a>s (left and right) and apparently each of the H2D's <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> units is assigned to one of these heads (there may be multiple <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a>s per printer). The second <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a> must be in an <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> unit assigned to the same <a href="#BM_(extruder)%2Fi">extruder</a> for auto refill to use it.</p>
@@ -459,7 +463,7 @@
 <p>..., then select <strong>Start</strong>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>What happens when the filaments within hte <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> aren't all the same material? It seems there might be some guard rails preventing you from doing this with certain mixes of materials.</p>
+<p>What happens when the filaments within the <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> aren't all the same material? It seems there might be some guard rails preventing you from doing this with certain mixes of materials.</p>
 <blockquote>
 <p>When drying high-temperature filament, you need to take out the low-temperature filament. For example, when drying <a href="#BM_%5Cb(ABS)%5Cb%2F">ABS</a>, <a href="#BM_%5Cb(PLA)%5Cb%2F">PLA</a> filament cannot be placed in the AMS.</p>
 </blockquote>
@@ -467,14 +471,14 @@
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Only some filament materials need an <a href="#BM_(AMS%20HT)%2F">AMS HT</a> for drying, not a <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a>.</p>
+<p>Only some filament materials need an <a href="#BM_(AMS%20HT)%2F">AMS HT</a> for drying, not an <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a>.</p>
 </div>
 <a name="H_Filament%20Guide"></a><h1>Filament Guide</h1>
 <p><a name="BM_(Bambu%20Studio%5C%2FFilament%20Guide)_TOPIC%2Fi"></a><strong></strong></p>
 <p>The following table summarizes key characteristics of filaments supported by the H2S (as of time of writing). The column(s) ...</p>
 <ul>
 <li><strong>Name</strong> is the material's name. Each material may come in one of many modified forms: <a href="#BM_%5Cb(HF)%5Cb%2Fi">HF</a> (<a href="#BM_(high%5B%5C-%20%5Dflow)%2Fi">High Flow</a>) means the material has been modified for high speed printing <sub><a href="https://www.youtube.com/watch?v=1t_VpPj-9NY">[src]</a></sub>, <a href="#BM_%5Cb(CF)%5Cb%2Fi">CF</a> (<a href="#BM_(carbon%5B%5C-%20%5Dfiber)%2Fi">Carbon Fiber</a>) means the material has been fortified with <a href="#BM_(carbon%5B%5C-%20%5Dfiber)%2Fi">carbon fiber</a>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/215">[src]</a></sub>, and <a href="#BM_%5Cb(GF)%5Cb%2Fi">GF</a> (<a href="#BM_(glass%5B%5C-%20%5Dfiber)%2Fi">Glass Fiber</a>) means the material has been fortified with <a href="#BM_(glass%5B%5C-%20%5Dfiber)%2Fi">glass fiber</a>. <sub><a href="https://bambulab.com/en-us/filament/pla-cf">[src]</a></sub></li>
-<li><strong>Stiffness</strong> and <strong>Impact Strength</strong> givens a user-friendly for those specific properties.</li>
+<li><strong>Stiffness</strong> and <strong>Impact Strength</strong> gives a user-friendly for those specific properties.</li>
 <li><strong><a href="#BM_(heat%20deflection%20temperature)%2Fi">Heat Deflection Temperature</a></strong> states the minimum temperature at which 0.45 MPa and 1.8 MPa of stress cause the material to bend by a small standardized amount (ISO 75 deflection threshold). It gives an idea of how much heat the material can withstand before deforming. <sub><a href="https://en.wikipedia.org/wiki/Heat_deflection_temperature">[src]</a></sub></li>
 <li><strong>Saturated Water Absorption Rate</strong> states the percent increase in weight from absorbed moisture under a standardized climate. It gives an idea of how moisture resistant the material is.</li>
 <li><strong><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">Nozzle</a> temperature</strong>, <strong><a href="#BM_(heatbed)%2Fi">Heatbed</a> temperature</strong>, and <strong><a href="#BM_(chamber)%2Fi">Chamber</a> temperature</strong> collectively define the H2S's heating requirements to effectively print the material.</li>
@@ -753,7 +757,7 @@
 <ul>
 <li><a href="#BM_(Cool%20Plate%20SuperTack%20Pro)%2Fi">Cool Plate SuperTack Pro</a> - Designed to reduce <a href="#BM_%5Cb(PLA)%5Cb%2F">PLA</a> and <a href="#BM_%5Cb(PETG)%5Cb%2F">PETG</a> print failures through better adhesion at lower <a href="#BM_(heatbed)%2Fi">heatbed</a> temperatures.</li>
 <li><a href="#BM_(Textured%20PEI%20Plate)%2Fi">Textured PEI Plate</a> - Designed with a slightly rough surface enabling better first <a href="#BM_(layer%7Cslice)%2Fi">layer</a> adhesion and allowing for the print to self-release (some filament materials only).</li>
-<li><a href="#BM_(Smooth%20PEI%20Plate)%2Fi">Smooth PEI Plate</a> - Designed with a smooth surface. Unlike the Texture PEI Plate, the smoothness of this plate contributes Z-axis precision (no roughness).</li>
+<li><a href="#BM_(Smooth%20PEI%20Plate)%2Fi">Smooth PEI Plate</a> - Designed with a smooth surface. Unlike the <a href="#BM_(Textured%20PEI%20Plate)%2Fi">Textured PEI Plate</a>, the smoothness of this plate contributes Z-axis precision (no roughness).</li>
 <li><a href="#BM_(Engineering%20Plate)%2Fi">Engineering Plate</a> - Designed as a universal <a href="#BM_(build%20plate)%2Fi">build plate</a>, compatible with all filament materials (but requires a <a href="#BM_(layer%7Cslice)%2Fi">layer</a> of glue before printing).</li>
 </ul>
 <p>The following table summarizes filament materials supported and material requirements for each <a href="#BM_(build%20plate)%2Fi">build plate</a>.</p>
@@ -971,7 +975,7 @@
 <li><a href="#BM_(Operation)_TOPIC%2Fi">Operation</a></li>
 </ul>
 </div>
-<p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> is H2S's desktop software. It provides access to MakerWorld (a repository of printable object), processes 3D models for printing by <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> them, and controls and gets feedback from the H2S. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/228">[src]</a></sub> <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> works with many brands of 3D printers, not just Bambu Lab printers. <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/31">[src]</a></sub>.</p>
+<p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> is H2S's desktop software. It provides access to MakerWorld (a repository of printable objects), processes 3D models for printing by <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> them, and controls and gets feedback from the H2S. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/228">[src]</a></sub> <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> works with many brands of 3D printers, not just Bambu Lab printers. <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/31">[src]</a></sub>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>There's also a software product called Bambu Suite, but that's for cutting and engraving while <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> is for printing.</p>
@@ -980,7 +984,7 @@
 <p><a name="BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi"></a><strong></strong></p>
 <p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> has 6 main screens (referred to as tabs), which can be navigated between using the top toolbar:</p>
 <ol>
-<li><strong>Home</strong>: Welcome screen, user manuals, opening project, print history.</li>
+<li><strong>Home</strong>: Welcome screen, user manuals, opening projects, print history.</li>
 <li><strong>Prepare</strong>: Object/model placement, orientation, and manipulation.</li>
 <li><strong>Preview</strong>: Print instructions, information, and diagnostics.</li>
 <li><strong>Device</strong>: H2S interface and management.</li>
@@ -988,7 +992,7 @@
 <li><strong>Calibration</strong>: H2S calibration.</li>
 </ol>
 <p>Above the top toolbar is the main menu, packed to condensed space. Next to the packed main menu are a few quick access buttons: Save, undo, and redo. Regardless of which screen you're on, the top toolbar (and main menu and quick access buttons) should always be present.</p>
-<p>The standard workflow is to plan out what and where get things printed on the Prepare screen, then review how the print will get <a href="#BM_(slicing%7Csliced)%2Fi">sliced</a> along with diagnostics on the Preview screen, then initiate the print.</p>
+<p>The standard workflow is to plan out what and where things get printed on the Prepare screen, then review how the print will get <a href="#BM_(slicing%7Csliced)%2Fi">sliced</a> along with diagnostics on the Preview screen, then initiate the print.</p>
 <p><img src="bambu_studio_top_toolbar.png" alt="Bambu Studio top toolbar"> <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/32">[src]</a></sub></p>
 <a name="H_3D%20Viewport"></a><h3>3D Viewport</h3>
 <p><a name="BM_(Bambu%20Studio%5C%2FUser%20Interface%2F3D%20Viewport)_TOPIC%2Fi"></a><strong></strong></p>
@@ -1053,7 +1057,7 @@
 </tr>
 </tbody>
 </table>
-<p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>'s Preview screen is for exploring <a href="#BM_(slices)_SET%2Fi">slices</a>. Each screen is partitioned into a 3D viewport and a left side-bar.</p>
+<p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>'s Preview screen is for exploring <a href="#BM_(slices)_SET%2Fi">slices</a>. Each screen is partitioned into a 3D viewport and a left sidebar.</p>
 <p>Preview viewport controls:</p>
 <table>
 <thead>
@@ -1113,7 +1117,7 @@
 </tr>
 </tbody>
 </table>
-<p>To the right of the 3D viewport is a sidebar on the left-hand side.</p>
+<p>To the left of the 3D viewport is a sidebar.</p>
 <p><img src="bambu_studio_prepare_sidebar.png" alt="Bambu Studio Prepare screen sidebar"></p>
 <p>The sidebar contains a ...</p>
 <ul>
@@ -1136,13 +1140,13 @@
 <li>To add a filament to the list of available filaments, use the plus button.</li>
 <li>To remove a filament from the list of available filament, either use the minus button or click on the ellipsis next to the filament dropdown and select <strong>Delete</strong>.</li>
 <li>To remove a filament and reassign its usages to another ID, click the ellipsis next to one of the filaments, navigate to <strong>Merge with</strong>, and select the ID to merge with.</li>
-<li>To synchronize the available filaments with those loaded into the attached <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> / <a href="#BM_(AMS%20HT)%2F">AMS HT</a> units, use the button immediately to the right to the minus button.</li>
+<li>To synchronize the available filaments with those loaded into the attached <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> / <a href="#BM_(AMS%20HT)%2F">AMS HT</a> units, use the button immediately to the right of the minus button.</li>
 <li>To configure the list of filaments available for adding, use the cog button.</li>
 </ul>
-<p>At the bottom is an <strong>Add Mixed Filament</strong> button. Mixed filaments is a mix of existing filaments printed in interleaves <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s to achieve a new color via half-toning (e.g., alternating between 1 <a href="#BM_(layer%7Cslice)%2Fi">layer</a> black and 1 <a href="#BM_(layer%7Cslice)%2Fi">layer</a> white gives the impression that the printed object is gray). Mixed filaments are not recommended on the H2S because it's a single <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> printer - excessive swapping between filaments causes a lot of waste. <sub><a href="https://www.youtube.com/watch?v=ZsgJz0qk4eE">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/release/release-note-2-5-3">[src]</a></sub></p>
+<p>At the bottom is an <strong>Add Mixed Filament</strong> button. Mixed filaments is a mix of existing filaments printed in interleaved <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s to achieve a new color via half-toning (e.g., alternating between 1 <a href="#BM_(layer%7Cslice)%2Fi">layer</a> black and 1 <a href="#BM_(layer%7Cslice)%2Fi">layer</a> white gives the impression that the printed object is gray). Mixed filaments are not recommended on the H2S because it's a single <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> printer - excessive swapping between filaments causes a lot of waste. <sub><a href="https://www.youtube.com/watch?v=ZsgJz0qk4eE">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/release/release-note-2-5-3">[src]</a></sub></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Mixed filaments don't have the desired effected on top/<a href="#BM_(bottom%20surface)%2Fi">bottom surface</a>s because those are single <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s and only one color is printed per <a href="#BM_(layer%7Cslice)%2Fi">layer</a>? They work best on near vertical <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s. It may be possible to rotate the object such that top/<a href="#BM_(bottom%20surface)%2Fi">bottom surface</a>s are reduced, but it'll likely require introducing <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>.</p>
+<p>Mixed filaments don't have the desired effect on top/<a href="#BM_(bottom%20surface)%2Fi">bottom surface</a>s because those are single <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s and only one color is printed per <a href="#BM_(layer%7Cslice)%2Fi">layer</a>? They work best on near vertical <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s. It may be possible to rotate the object such that top/<a href="#BM_(bottom%20surface)%2Fi">bottom surface</a>s are reduced, but it'll likely require introducing <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>.</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -1167,7 +1171,7 @@
 <p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> has a section for defining how models and model groupings (<a href="#BM_(assembly%7Cassemblies)%2Fi">assemblies</a>) are printed. The Process section is in the sidebar of the Prepare screen and the Preview screen.</p>
 <p><img src="bambu_studio_prepare_process.png" alt="Bambu Studio Prepare screen process"></p>
 <p>The Process section can change scope using a toggle (section 1). The scope can either be global, or it can target a specific set of objects (e.g., a model, an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a>, or some combination of models/<a href="#BM_(assembly%7Cassemblies)%2Fi">assemblies</a>). If not scoped globally, an object hierarchy will be displayed directly below the toggle (section 3). The selections in the object hierarchy will reflect those in the 3D viewport and vice versa.</p>
-<p>Below the object hierarchy are a hierarchy of parameters that control printing:</p>
+<p>Below the object hierarchy is a hierarchy of parameters that control printing:</p>
 <ul>
 <li><strong>Quality</strong> tab organizes fidelity parameters (e.g., <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> and how to treat <a href="#BM_(seam)%2Fi">seam</a>s).</li>
 <li><strong>Strength</strong> tab organizes solidity/firmness parameters (e.g., <a href="#BM_(infill)%2Fi">infill</a> style/percentage and <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> thickness).</li>
@@ -1191,7 +1195,7 @@
 <li>switching from <strong>Prepare</strong> screen to the <strong>Preview</strong> screen.</li>
 <li>hitting The <strong>Preview</strong> at the top-right, which should enable whenever a change is made.</li>
 </ul>
-<p>The <strong>Preview</strong> screen is where the <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s, <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> paths (<a href="#BM_(G-code)%2F">G-code</a> printing instructions), and printing diagnostics are color coded an displayed to the user. The screen is broken up into the following controls / panels:</p>
+<p>The <strong>Preview</strong> screen is where the <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s, <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> paths (<a href="#BM_(G-code)%2F">G-code</a> printing instructions), and printing diagnostics are color-coded and displayed to the user. The screen is broken up into the following controls / panels:</p>
 <p><img src="bambu_studio_preview_slicer_example.png" alt="Bambu Studio Preview screen slicer example"></p>
 <ol>
 <li><strong><a href="#BM_(layer%7Cslice)%2Fi">Layer</a> slider</strong>: Scrubber that navigates between <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s, highlighting those <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s in the 3D viewport.</li>
@@ -1232,7 +1236,7 @@
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>A complete accounting of file formats isn't appropriate here. Just note that, if you importing <a href="#BM_(SVG)%2F">SVG</a>s, <a href="#BM_(SVG)%2F">SVG</a>s have no <a href="#BM_(height'%3Fs%3F)_LH%2Fi">height</a>. Once an <a href="#BM_(SVG)%2F">SVG</a> is imported, <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> gives it a tiny <a href="#BM_(height'%3Fs%3F)_LH%2Fi">height</a> and then you can scale it to make it taller.</p>
+<p>A complete accounting of file formats isn't appropriate here. Just note that, if you're importing <a href="#BM_(SVG)%2F">SVG</a>s, <a href="#BM_(SVG)%2F">SVG</a>s have no <a href="#BM_(height'%3Fs%3F)_LH%2Fi">height</a>. Once an <a href="#BM_(SVG)%2F">SVG</a> is imported, <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> gives it a tiny <a href="#BM_(height'%3Fs%3F)_LH%2Fi">height</a> and then you can scale it to make it taller.</p>
 </div>
 <p>Alternatively, <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>'s Home screen integrates MakerWorld. MakerWorld is an online repository of printable projects. MakerWorld projects can't be imported directly into the current <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> project. However, it is possible to open a MakerWorld project, save it as a <a href="#BM_%5Cb(3MF)%5Cb%2F">3MF</a> file (or export as some other file format), and import that file into an existing project. <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/33">[src]</a></sub></p>
 <a name="H_Object%20Placement"></a><h2>Object Placement</h2>
@@ -1259,7 +1263,7 @@
 <p>selecting objects, then hitting Shift + arrow keys for 1mm movement. <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/3d-scene-operations">[src]</a></sub></p>
 </li>
 <li>
-<p>selecting objects, then using the move tool in the Prepare screen's toolbar (button 6, keyboard shortcut M), which will present both movement axis arms that can be left-click drag and a pop-up with coordinates and common alignment and distribution options.</p>
+<p>selecting objects, then using the move tool in the Prepare screen's toolbar (button 6, keyboard shortcut M), which will present both movement axis arms that can be left-click dragged and a pop-up with coordinates and common alignment and distribution options.</p>
 <p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
 <p><img src="bambu_studio_prepare_movement_parameters.png" alt="Bambu Studio Prepare screen movement parameters"></p>
 <p>The screenshot above has the following sections:</p>
@@ -1329,7 +1333,7 @@
 <p><strong>Size</strong> - Absolute size on an axis (X, Y, and Z).</p>
 </li>
 <li>
-<p><strong>uniform scale</strong>: If clicked, other axis will maintain proportions by automatically scaling to based on a single axis that was scaled. <sub><a href="https://www.youtube.com/watch?v=ES9Fic__Y64">[src]</a></sub></p>
+<p><strong>uniform scale</strong>: If clicked, the other axes will maintain proportions by automatically scaling to be based on a single axis that was scaled. <sub><a href="https://www.youtube.com/watch?v=ES9Fic__Y64">[src]</a></sub></p>
 </li>
 </ol>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -1346,7 +1350,7 @@
 </ul>
 </div>
 <p>In certain cases, two objects may need to combine into one for printing, such that they print as a single object vs two separate objects.</p>
-<p>In the Prepare screen's 3D viewport, select two or more objects, then right-click to open the context menu and select <strong>Merge</strong>. Merged objects are placed them under a single <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a>.</p>
+<p>In the Prepare screen's 3D viewport, select two or more objects, then right-click to open the context menu and select <strong>Merge</strong>. Merged objects are placed under a single <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a>.</p>
 <p><img src="bambu_studio_prepare_assemble_example.png" alt="Bambu Studio Prepare screen assembly example"></p>
 <p>Once objects are within a single <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a>, they can be manually moved into each other and / or levitated off the <a href="#BM_(build%20plate)%2Fi">build plate</a> using the move tool (Prepare screen's toolbar button 6, keyboard shortcut M). If objects aren't merged but occupy the same space, <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> will print them as if they're distinct. That is, if two objects occupy the same space, the outer shell / <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> of both objects will be drawn inside each other.</p>
 <p><img src="bambu_studio_conflicting_vs_non_conflicting_models.png" alt="Bambu Studio Preview screen conflicting objects vs non-conflicting objects"></p>
@@ -1366,17 +1370,17 @@
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>You can push objects into each other without putting them under the same <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a>, but it'll complain during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>.</p>
 </div>
-<p>Alternatively, two objects can be repositioned and reoriented such that they touch each other using the <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> tool (Prepare screen's toolbar button 12, keyboard shortcut Y). The <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> tool opens a open a pop-up used to target how and where the objects touch.</p>
+<p>Alternatively, two objects can be repositioned and reoriented such that they touch each other using the <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> tool (Prepare screen's toolbar button 12, keyboard shortcut Y). The <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> tool opens a pop-up used to target how and where the objects touch.</p>
 <p><img src="bambu_studio_prepare_assemble_parameters.png" alt="Bambu Studio Prepare screen assemble parameters"></p>
-<p>The <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> tool has two <strong>Mode</strong>: options</p>
+<p>The <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> tool has two <strong>Mode</strong> options:</p>
 <ul>
 <li>
 <p><strong>Point and Point <a href="#BM_(assembly%7Cassemblies)%2Fi">Assembly</a></strong>: Touches objects on specific points (e.g., vertex).</p>
-<p>Click on a point on the first object and click on point on the second object. The first point should highlight as cyan while the second fact should highlight as purple, and sections 2 and 3 of the screenshot should update to indicate that a selection's been made. From there, XYZ coordinate fields should show up in the dialog. Set those fields to 0 to bring the points together.</p>
+<p>Click on a point on the first object and click on point on the second object. The first point should highlight as cyan while the second face should highlight as purple, and sections 2 and 3 of the screenshot should update to indicate that a selection's been made. From there, XYZ coordinate fields should show up in the dialog. Set those fields to 0 to bring the points together.</p>
 </li>
 <li>
 <p><strong>Face and Face <a href="#BM_(assembly%7Cassemblies)%2Fi">Assembly</a></strong>: Touches objects on specific faces.</p>
-<p>Click on a face of the first object and click on a face of the second object. The first face should highlight as cyan while the second fact should highlight as purple, and sections 2 and 3 of the screenshot should update to indicate that a selection's been made. From there, the ...</p>
+<p>Click on a face of the first object and click on a face of the second object. The first face should highlight as cyan while the second face should highlight as purple, and sections 2 and 3 of the screenshot should update to indicate that a selection's been made. From there, the ...</p>
 <ul>
 <li><strong>Parallel</strong> button will reorient the objects so the selected faces are parallel.</li>
 <li><strong>Center coincidence</strong> button will bring the selected faces together.</li>
@@ -1407,12 +1411,12 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
 </ul>
 </div>
-<p>In the Prepare screen's 3D viewport, selected objects can be painted by using the paint tool in Prepare screen's toolbar (button 13, keyboard shortcut N), which will present a pop-up with scaling parameters / controls.</p>
+<p>In the Prepare screen's 3D viewport, selected objects can be painted by using the paint tool in Prepare screen's toolbar (button 13, keyboard shortcut N), which will present a pop-up with painting parameters / controls.</p>
 <p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
 <p><img src="bambu_studio_prepare_model_painting_parameters.png" alt="Bambu Studio Prepare screen painting parameters"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Ensure more than 1 filament is included in the project via the <strong>Project Filaments</strong> section in the Prepare screen's left side-bar. Otherwise it'll be impossible to paint anything as there'll just be 1 color.</p>
+<p>Ensure more than 1 filament is included in the project via the <strong>Project Filaments</strong> section in the Prepare screen's left sidebar. Otherwise it'll be impossible to paint anything as there'll just be 1 color.</p>
 </div>
 <ul>
 <li><strong>Filament</strong> is the filament type to paint with.</li>
@@ -1720,7 +1724,7 @@
 </li>
 <li>
 <p><strong>Add connectors</strong> manipulates the cut final pieces to add joinery mechanisms, making them easier to reassemble.</p>
-<p>If clicked, the cut plane is highlighted in the viewport and a pop-up of joinery options is presented (e.g., plug, snap, and thread) along with parameters for each options (e.g., depth and size). Set the joinery options as desired and click on the cut plane to place the joinery. Most joinery options are self-explanatory.</p>
+<p>If clicked, the cut plane is highlighted in the viewport and a pop-up of joinery options is presented (e.g., plug, snap, and thread) along with parameters for each option (e.g., depth and size). Set the joinery options as desired and click on the cut plane to place the joinery. Most joinery options are self-explanatory.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>For the Plug type, if you're confused about frustum vs prizm: Frustum tapers the sides as it goes up (similar to a pyramid) while the prizm option keeps the sides straight.</p>
@@ -1781,11 +1785,11 @@
 <p><img src="bambu_studio_prepare_screen_mesh_boolean_parameters.png" alt="Bambu Studio prepare screen mesh boolean parameters"></p>
 <p>The mesh boolean tool has 3 possible operations:</p>
 <ul>
-<li><strong>Union</strong>: Creates a new model comprised of all individual models together.</li>
-<li><strong>Intersection</strong>: Creates a new model comprised of only the overlapping parts between all models.</li>
+<li><strong>Union</strong>: Creates a new model composed of all individual models together.</li>
+<li><strong>Intersection</strong>: Creates a new model composed of only the overlapping parts between all models.</li>
 <li><strong>Subtraction</strong>: Removes a chunk from a model, using other models as the cut-out stencil.</li>
 </ul>
-<p>Regardless of which you pick, you can specific which of the selected models to apply the operation to. The resulting operation creates a single model with the chosen set operation applied (<em>not an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> of models</em>, but a single model).</p>
+<p>Regardless of which you pick, you can specify which of the selected models to apply the operation to. The resulting operation creates a single model with the chosen set operation applied (<em>not an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> of models</em>, but a single model).</p>
 <p>Given that the mesh boolean tool creates a single new model, the resulting single model typically doesn't encounter overlap issues during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>. For example, if models aren't union'd but occupy the same space, <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> will print them as if they're distinct. That is, if two models occupy the same space, the outer shell / <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> of both models will be drawn inside each other.</p>
 <p><img src="bambu_studio_conflicting_vs_non_conflicting_objects.png" alt="Bambu Studio Preview screen conflicting objects vs non-conflicting objects"> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/mesh-boolean">[src]</a></sub></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -1865,7 +1869,7 @@
 <li><strong>Surround surface</strong> generates text that wraps the object's surface.</li>
 <li><strong>Surround+Horizontal</strong> generates text that wraps the object's surface, maintaining horizontal alignment (e.g., bottom of text will be equidistant to the <a href="#BM_(build%20plate)%2Fi">build plate</a> plane at all points).</li>
 <li><strong>Surround projection by character</strong> is similar to <strong>Surround surface</strong> but parts of the text that don't sit directly on the object are removed.</li>
-<li><strong>Not surround</strong> generates text tangent to to the face the text is positioned on (does not wrap / surround the object's surface).</li>
+<li><strong>Not surround</strong> generates text tangent to the face the text is positioned on (does not wrap / surround the object's surface).</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -1878,7 +1882,7 @@
 <ul>
 <li>
 <p><strong>Part</strong> embosses the text on the object.</p>
-<p>Use <strong>Embedded depth</strong> to sink the text into the object (e.g., 1-2mm) because just printing on the surface on the object might not be enough securely adhere to the object. Embedding past the surface creates a tighter physical connection to hold the text in place.</p>
+<p>Use <strong>Embedded depth</strong> to sink the text into the object (e.g., 1-2mm) because just printing on the surface on the object might not be enough to securely adhere to the object. Embedding past the surface creates a tighter physical connection to hold the text in place.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Too far out? You might have issues with <a href="#BM_(overhang)%2Fi">overhang</a>s_BO and <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>.</p>
@@ -1908,8 +1912,8 @@
 </ul>
 </div>
 <p>An <a href="#BM_(SVG)%2F">SVG</a> outline can be placed on an object, extruded from an object, indented on to an object, or placed as a standalone extruded object on its own.</p>
-<p>To generate a standalone <a href="#BM_(SVG)%2F">SVG</a> outline, right-click on to empty space (not on an object) to open the context-menu and navigate to <strong>Add Primitive</strong> → <strong><a href="#BM_(SVG)%2F">SVG</a></strong>. In the pop-up dialog that show up, select an <a href="#BM_(SVG)%2F">SVG</a> file. The selected <a href="#BM_(SVG)%2F">SVG</a> will show up in the 3D viewport as as slightly extruded (Z-scale to adjust the extrusion).</p>
-<p>To place an <a href="#BM_(SVG)%2F">SVG</a> outline on an object, right-click on an object to open the context-menu and navigate to <strong>Add Primitive</strong> → <strong><a href="#BM_(SVG)%2F">SVG</a></strong>. In the pop-up dialog that show up, select an <a href="#BM_(SVG)%2F">SVG</a> file. The selected <a href="#BM_(SVG)%2F">SVG</a> will show up in the 3D viewport as as slightly extruded (Z-scale to adjust the extrusion). The <a href="#BM_(SVG)%2F">SVG</a> wil show up on the object along with a pop-up where and how the <a href="#BM_(SVG)%2F">SVG</a> placed on the object can be changed.</p>
+<p>To generate a standalone <a href="#BM_(SVG)%2F">SVG</a> outline, right-click on to empty space (not on an object) to open the context-menu and navigate to <strong>Add Primitive</strong> → <strong><a href="#BM_(SVG)%2F">SVG</a></strong>. In the pop-up dialog that shows up, select an <a href="#BM_(SVG)%2F">SVG</a> file. The selected <a href="#BM_(SVG)%2F">SVG</a> will show up in the 3D viewport as slightly extruded (Z-scale to adjust the extrusion).</p>
+<p>To place an <a href="#BM_(SVG)%2F">SVG</a> outline on an object, right-click on an object to open the context-menu and navigate to <strong>Add Primitive</strong> → <strong><a href="#BM_(SVG)%2F">SVG</a></strong>. In the pop-up dialog that shows up, select an <a href="#BM_(SVG)%2F">SVG</a> file. The selected <a href="#BM_(SVG)%2F">SVG</a> will show up in the 3D viewport as slightly extruded (Z-scale to adjust the extrusion). The <a href="#BM_(SVG)%2F">SVG</a> wil show up on the object along with a pop-up where and how the <a href="#BM_(SVG)%2F">SVG</a> placed on the object can be changed.</p>
 <p><img src="bambu_studio_prepare_icon_on_model_parameters.png" alt="Bambu Studio Prepare screen icon on object parameters"></p>
 <p>The majority of the parameters are self-explanatory.</p>
 <ul>
@@ -1971,7 +1975,7 @@
 <p><img src="bambu_studio_prepare_layer_height_parameters.png" alt="Bambu Studio Prepare screen layer height parameters"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Settings different <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a>s for each object? You might need to print the objects individually or <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> will fail. Set <strong>Other</strong> → <strong>Special mode</strong> → <strong>Print sequence</strong> to <strong>By object</strong>.</p>
+<p>Setting different <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a>s for each object? You might need to print the objects individually or <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> will fail. Set <strong>Other</strong> → <strong>Special mode</strong> → <strong>Print sequence</strong> to <strong>By object</strong>.</p>
 <p>There might be issues where the <a href="#BM_(toolhead)%2Fi">toolhead</a> can move depending on height of objects being printed. See <a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/36">here</a> for potential way to mitigate (change print order).</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -2070,7 +2074,7 @@
 <p>The <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a> is recommended to be 75% to 150% of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s diameter. Otherwise, the print quality will likely be poor. For example, if using the 0.4mm <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> that comes with the H2S, the <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a> should be between 0.3mm and 0.6mm.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>When referring to the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s diameter, it means the diameter of the channel that hte filament extrudes through, referred to as the inner diameter. The outer diameter is the diameter of the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> encasing the inner diameter.</p>
+<p>When referring to the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s diameter, it means the diameter of the channel that the filament extrudes through, referred to as the inner diameter. The outer diameter is the diameter of the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> encasing the inner diameter.</p>
 </div>
 <p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/parameter/line-width">[src]</a></sub></p>
 <a name="H_Object%20Seam"></a><h2>Object Seam</h2>
@@ -2120,7 +2124,7 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Painting)_TOPIC%2Fi">Bambu Studio/Object Painting</a></li>
 </ul>
 </div>
-<p>Similar to object painting, the placement of a <a href="#BM_(seam)%2Fi">seam</a> can be painted on to the object. In the Prepare screen's 3D viewport, select the object and paint a <a href="#BM_(seam)%2Fi">seam</a> by using the <a href="#BM_(seam)%2Fi">seam</a> paint tool in Prepare screen's toolbar (button 17, keyboard shortcut P), which will present a pop-up with scaling parameters / controls.</p>
+<p>Similar to object painting, the placement of a <a href="#BM_(seam)%2Fi">seam</a> can be painted on to the object. In the Prepare screen's 3D viewport, select the object and paint a <a href="#BM_(seam)%2Fi">seam</a> by using the <a href="#BM_(seam)%2Fi">seam</a> paint tool in Prepare screen's toolbar (button 17, keyboard shortcut P), which will present a pop-up with painting parameters / controls.</p>
 <p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
 <p><img src="bambu_studio_prepare_seam_painting_parameters.png" alt="Bambu Studio Prepare screen seam painting parameters"></p>
 <p><a href="#BM_(seam)%2Fi">Seam</a> painting is operationally similar to normal object painting:</p>
@@ -2228,7 +2232,7 @@
 <p>To enable/disable fuzzy skin set the property <strong>Fuzzy skin</strong> to either ...</p>
 <ul>
 <li><strong><a href="#BM_(contour)%2Fi">Contour</a></strong>, which targets just the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on the outside perimeter.</li>
-<li><strong>Counter and <a href="#BM_(%5Cbhole)%2Fi">hole</a></strong>, which targets the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on both the outside perimeter and the perimeters of any <a href="#BM_(%5Cbhole)%2Fi">hole</a>s.</li>
+<li><strong><a href="#BM_(contour)%2Fi">Contour</a> and <a href="#BM_(%5Cbhole)%2Fi">hole</a></strong>, which targets the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on both the outside perimeter and the perimeters of any <a href="#BM_(%5Cbhole)%2Fi">hole</a>s.</li>
 <li><strong>All <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s</strong>, which targets inner and <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on both the outside perimeter and the perimeters of any <a href="#BM_(%5Cbhole)%2Fi">hole</a>s (jitters <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a>s as well).</li>
 <li><strong>None(allow paint)</strong>, which targets specific <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s on the object to make fuzzy via the fuzzy skin paint tool. See subsection on fuzzy skin painting.</li>
 <li><strong>Disable</strong>, which disables fuzzy skin entirely.</li>
@@ -2236,7 +2240,7 @@
 <p>If enabled, the parameter ...</p>
 <ul>
 <li>
-<p><strong>Fuzzy skin point distance</strong> controls the interval at which the jitter is updated. For example, setting it to 1mm produces smoother grooves vs 0.2mm because the <a href="#BM_(toolhead)%2Fi">toolhead</a>'s position is getting a randomly offset every 1mm instead of 0.2mm.</p>
+<p><strong>Fuzzy skin point distance</strong> controls the interval at which the jitter is updated. For example, setting it to 1mm produces smoother grooves vs 0.2mm because the <a href="#BM_(toolhead)%2Fi">toolhead</a>'s position is getting randomly offset every 1mm instead of 0.2mm.</p>
 </li>
 <li>
 <p><strong>Fuzzy skin thickness</strong> controls the depth of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> jitter, making the fuzziness more pointy. A value too high may cause <a href="#BM_(overhang)%2Fi">overhang</a> issues.</p>
@@ -2246,7 +2250,7 @@
 <ul>
 <li><strong>Displacement</strong> jitters the <a href="#BM_(toolhead)%2Fi">toolhead</a>'s position out, creating a fuzziness but there'll likely be a gap between the fuzzed <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a> and <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a>s / <a href="#BM_(infill)%2Fi">infill</a>.</li>
 <li><strong>Extrusion</strong> jitters the <a href="#BM_(toolhead)%2Fi">toolhead</a>'s extrusion to be more/less (<a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> position stays un-jittered).</li>
-<li><strong>Combined</strong> combines both <strong>Displacement</strong> and <strong>Extrusion</strong>, with the intention that <strong>Displacement</strong>'s gap are filled with the extra filament extruded from <strong>Extrusion</strong>.</li>
+<li><strong>Combined</strong> combines both <strong>Displacement</strong> and <strong>Extrusion</strong>, with the intention that <strong>Displacement</strong>'s gaps are filled with the extra filament extruded from <strong>Extrusion</strong>.</li>
 </ul>
 </li>
 <li>
@@ -2272,10 +2276,10 @@
 <p>Rather than having <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s be fuzzy skinned in their entirety, the object can have fuzzy skin painted on to particular areas such that only those painted areas print as fuzzy skin. In the Prepare screen's 3D viewport, select an object and click fuzzy skin painting in the Prepare screen's toolbar (button 19, keyboard shortcut H). <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> will open a pop-up and present an isolated view of the object where areas can be painted.</p>
 <p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
 <p><img src="bambu_studio_prepare_fuzzy_skin_painting_example.png" alt="Bambu Studio Prepare screen fuzzy skin painting example"> <img src="bambu_studio_preview_fuzzy_skin_painting_example.png" alt="Bambu Studio Preview screen fuzzy skin painting example"></p>
-<p>Tools options and controls are nearly exactly the same as those for normal object painting. Select a <strong>Tool type</strong> and the tools configuration options will show up directly underneath. Regardless of the tool type, ...</p>
+<p>Tool options and controls are nearly exactly the same as those for normal object painting. Select a <strong>Tool type</strong> and the tools configuration options will show up directly underneath. Regardless of the tool type, ...</p>
 <ul>
-<li>using the <strong>left</strong> mouse button on the object to paint where fuzzy paint should exist.</li>
-<li>using the <strong>right</strong> mouse button on the object to paint where fuzzy paint should not exist (removes paint if it exists).</li>
+<li>use the <strong>left</strong> mouse button on the object to paint where fuzzy paint should exist.</li>
+<li>use the <strong>right</strong> mouse button on the object to paint where fuzzy paint should not exist (removes paint if it exists).</li>
 </ul>
 <p>To move the viewport rather than paint (e.g., move camera, rotate camera, and zoom camera), use the same viewport controls as normal <em>with the exception that any mouse button presses required are not on the object to be painted</em>.</p>
 <p>For painted fuzzy skin to be applied to the print, ensure <strong>Other</strong> → <strong>Special Mode</strong> → <strong>Fuzzy Skin</strong> is set to <strong>None(allow paint)</strong>.</p>
@@ -2288,7 +2292,7 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
 </ul>
 </div>
-<p>A <a href="#BM_(skirt%20loop%7Cskirt)%2Fi">skirt</a> is one or more loops printed around the objects on the <a href="#BM_(build%20plate)%2Fi">build plate</a>, where there's a gap between the loops and the objects (not touching). The purpose of a <a href="#BM_(skirt%20loop%7Cskirt)%2Fi">skirt</a> is to prime the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>. It's typically not required on the H2S because the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> is already gets primed when a print starts by printing a small line, called a prime line.</p>
+<p>A <a href="#BM_(skirt%20loop%7Cskirt)%2Fi">skirt</a> is one or more loops printed around the objects on the <a href="#BM_(build%20plate)%2Fi">build plate</a>, where there's a gap between the loops and the objects (not touching). The purpose of a <a href="#BM_(skirt%20loop%7Cskirt)%2Fi">skirt</a> is to prime the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>. It's typically not required on the H2S because the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> already gets primed when a print starts by printing a small line, called a prime line.</p>
 <p>Nevertheless, <a href="#BM_(skirt%20loop%7Cskirt)%2Fi">skirt loop</a>s can be enabled through the property <strong>Other</strong> → <strong><a href="#BM_(bed%20adhesion%7Cheatbed%20adhesion)%2Fi">Bed Adhesion</a></strong> → <strong><a href="#BM_(skirt%20loop%7Cskirt)%2Fi">Skirt loop</a>s</strong> and <strong><a href="#BM_(skirt%20loop%7Cskirt)%2Fi">Skirt</a> height</strong>. The example below has 4 loops set at a <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> of 2.</p>
 <p><img src="bambu_studio_prepare_skirt_loop_example.png" alt="Bambu Studio Prepare screen skirt loop example"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -2308,7 +2312,7 @@
 <p>A <a href="#BM_(brim)%2Fi">brim</a> is several <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s added around the bottom <a href="#BM_(layer%7Cslice)%2Fi">layer</a> of a printed object, such that the object has a bottom similar to the <a href="#BM_(brim)%2Fi">brim</a> of a top hat. Its purpose is to enhance <a href="#BM_(bed%20adhesion%7Cheatbed%20adhesion)%2Fi">bed adhesion</a> of objects ...</p>
 <ul>
 <li>with a small base (e.g., a tall cylinder with a small radius).</li>
-<li>that are prone to <a href="#BM_(warping%7Cwarp)%2Fi">warping</a> at the bottom edges, lifting off the <a href="#BM_(build%20plate)%2Fi">build plate</a> as they <a href="#BM_(warping%7Cwarp)%2Fi">warp</a> (e.g., <a href="#BM_%5Cb(ABS)%5Cb%2F">ABS</a> is prone to this because it shrinks with it cools).</li>
+<li>that are prone to <a href="#BM_(warping%7Cwarp)%2Fi">warping</a> at the bottom edges, lifting off the <a href="#BM_(build%20plate)%2Fi">build plate</a> as they <a href="#BM_(warping%7Cwarp)%2Fi">warp</a> (e.g., <a href="#BM_%5Cb(ABS)%5Cb%2F">ABS</a> is prone to this because it shrinks as it cools).</li>
 </ul>
 <p><a href="#BM_(brim)%2Fi">Brim</a> parameters are under <strong>Other</strong> → <strong><a href="#BM_(bed%20adhesion%7Cheatbed%20adhesion)%2Fi">Bed Adhesion</a></strong>.</p>
 <p><img src="bambu_studio_prepare_brim_parameters.png" alt="Bambu Studio Prepare screen brim parameters"></p>
@@ -2358,7 +2362,7 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Painting)_TOPIC%2Fi">Bambu Studio/Object Painting</a></li>
 </ul>
 </div>
-<p>A <a href="#BM_(brim%20ear)%2Fi">brim ear</a> is a point / stretch of <a href="#BM_(brim)%2Fi">brim</a> at user-defined locations around the bottom of an object. Similar to object painting, the placement of <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s can be painted on to the object. In the Prepare screen's 3D viewport, select the object and paint <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s by using the <a href="#BM_(brim%20ear)%2Fi">brim ear</a> tool in Prepare screen's toolbar (button 18, keyboard shortcut E), which will present a pop-up with scaling parameters / controls.</p>
+<p>A <a href="#BM_(brim%20ear)%2Fi">brim ear</a> is a point / stretch of <a href="#BM_(brim)%2Fi">brim</a> at user-defined locations around the bottom of an object. Similar to object painting, the placement of <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s can be painted on to the object. In the Prepare screen's 3D viewport, select the object and paint <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s by using the <a href="#BM_(brim%20ear)%2Fi">brim ear</a> tool in Prepare screen's toolbar (button 18, keyboard shortcut E), which will present a pop-up with painting parameters / controls.</p>
 <p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
 <p><img src="bambu_studio_prepare_brim_ears.png" alt="Bambu Studio Prepare screen brim ears"></p>
 <p>For <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s to be printed, ensure <strong>Other</strong> → <strong><a href="#BM_(bed%20adhesion%7Cheatbed%20adhesion)%2Fi">Bed Adhesion</a></strong> → <strong><a href="#BM_(brim)%2Fi">Brim</a> type</strong> is set to <strong>Painted</strong>. Otherwise, a warning will display at the bottom of the pop-up as shown in the example above.</p>
@@ -2924,12 +2928,12 @@
 <li>enables multi-color and multi-material prints by swapping between <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>s during printing.</li>
 <li>automatically switches between <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>s if a <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a> runs out during printing.</li>
 <li>automatically identifies the color and type of <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>s (only for official Bambu Lab filaments, using RFID).</li>
-<li>drying <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>s (up to 65 celsius).</li>
+<li>dries <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>s (up to 65 celsius).</li>
 </ul>
 <p>The <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> supports 4 <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>s per unit, and supports chaining up to 4 <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> units together to support up to 16 <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>s per print. Additionally, the 4 chained <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> units may be chained up even further by 8 <a href="#BM_(AMS%20HT)%2F">AMS HT</a> units, enabling up to 24 <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>s per print.  <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/232">[src]</a></sub> <sub><a href="https://us.store.bambulab.com/products/ams-multicolor-printing">[src]</a></sub></p>
 </li>
 <li>
-<p><a name="BM_(AMS%20HT)%2F"></a><strong>Automatic Material System High Temperature (AMS HT)</strong> <a name="BM_(Automatic%20Material%20System%20High%20Temperature)%2Fi"></a><strong></strong> - <a href="#BM_(Automatic%20Material%20System%20High%20Temperature)%2Fi">Automatic Material System High Temperature</a>, an extension to the H2S that manages handling engineering-grade high-temperature filaments that are sensitive to moisture (e.g., <a href="#BM_%5Cb(PPS)%5Cb%2F">PPS</a> and <a href="#BM_%5Cb(PPA)%5Cb%2F">PPA</a>). It has better a better motor, filament drying (up to 85 celsius), and better humidity control than the <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a>. However, it only seems to support 1 <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>.</p>
+<p><a name="BM_(AMS%20HT)%2F"></a><strong>Automatic Material System High Temperature (AMS HT)</strong> <a name="BM_(Automatic%20Material%20System%20High%20Temperature)%2Fi"></a><strong></strong> - <a href="#BM_(Automatic%20Material%20System%20High%20Temperature)%2Fi">Automatic Material System High Temperature</a>, an extension to the H2S that manages handling engineering-grade high-temperature filaments that are sensitive to moisture (e.g., <a href="#BM_%5Cb(PPS)%5Cb%2F">PPS</a> and <a href="#BM_%5Cb(PPA)%5Cb%2F">PPA</a>). It has a better motor, filament drying (up to 85 celsius), and better humidity control than the <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a>. However, it only seems to support 1 <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a>.</p>
 <p></p>
 <p></p>
 </li>
@@ -2947,9 +2951,9 @@
 <li>a <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a>.</li>
 <li>a <a href="#BM_(filament%20cutter%20stopper%7Cfilament%20cutter%7Ccutter%20stopper)%2Fi">filament cutter</a>.</li>
 </ul>
-<p>Filament enters the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> through the PTFE connector located at the top, where the <a href="#BM_(extruder)%2Fi">extruder</a> motor grabs it and pushes it into the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a> located at the bottom. The <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a>'s <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> poking out of the enclosure is sandwiched between cooling ducts, where the <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a> directs air to rapidly cool filament as its printed.</p>
+<p>Filament enters the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> through the PTFE connector located at the top, where the <a href="#BM_(extruder)%2Fi">extruder</a> motor grabs it and pushes it into the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a> located at the bottom. The <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a>'s <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> poking out of the enclosure is sandwiched between cooling ducts, where the <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a> directs air to rapidly cool filament as it's printed.</p>
 <p><img src="toolhead.drawio.svg" alt="toolhead front diagram"></p>
-<p>The bottom bottom right-side of the <a href="#BM_(toolhead)%2Fi">toolhead</a> has a <a href="#BM_(toolhead%20camera)%2Fi">toolhead camera</a> attached. The <a href="#BM_(toolhead)%2Fi">toolhead</a> moves left-right on the X-Axis linear rail. The X-Axis linear rail itself moves forward and backward on the Y-Axis. These rails are how the <a href="#BM_(toolhead)%2Fi">toolhead</a> positions itself for printing. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
+<p>The bottom right-side of the <a href="#BM_(toolhead)%2Fi">toolhead</a> has a <a href="#BM_(toolhead%20camera)%2Fi">toolhead camera</a> attached. The <a href="#BM_(toolhead)%2Fi">toolhead</a> moves left-right on the X-Axis linear rail. The X-Axis linear rail itself moves forward and backward on the Y-Axis. These rails are how the <a href="#BM_(toolhead)%2Fi">toolhead</a> positions itself for printing. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>It sounds like the camera and the <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a> (and the railing) are not a part of the <a href="#BM_(toolhead)%2Fi">toolhead</a> itself? These are attachments.</p>
@@ -2975,7 +2979,7 @@
 <li>coldend - keeps filament at lower temperature.</li>
 <li><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> - heated to melt the filament and deposit it onto a print.</li>
 </ul>
-<p>A <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">silicone sock</a> fits over <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>, insulating it from the cooling from the <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a>.</p>
+<p>A <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">silicone sock</a> fits over the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>, insulating it from the cooling from the <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a>.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>In the documentation, the coldend is also referred to as a <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">heat sink</a>.</p>
@@ -2989,7 +2993,7 @@
 </p>
 </li>
 <li>
-<p><a name="BM_(part%20cooling%20fan)%2Fi"></a><strong>part cooling fan</strong> - A fan located at the base of the <a href="#BM_(toolhead)%2Fi">toolhead</a>. The <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a> directs are to the cooling ducts that sandwich the tip of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a>'s <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>, rapidly cooling printed filament. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
+<p><a name="BM_(part%20cooling%20fan)%2Fi"></a><strong>part cooling fan</strong> - A fan located at the base of the <a href="#BM_(toolhead)%2Fi">toolhead</a>. The <a href="#BM_(part%20cooling%20fan)%2Fi">part cooling fan</a> directs air to the cooling ducts that sandwich the tip of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">hotend</a>'s <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>, rapidly cooling printed filament. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
 <p></p>
 </li>
 <li>
@@ -3048,7 +3052,7 @@
 <p><a name="BM_(Textured%20PEI%20Plate)%2Fi"></a><strong>Textured PEI Plate</strong> - A <a href="#BM_(build%20plate)%2Fi">build plate</a> with a slightly rough surface, primarily targeting <a href="#BM_%5Cb(PLA)%5Cb%2F">PLA</a>. The texturing makes enables better first <a href="#BM_(layer%7Cslice)%2Fi">layer</a> adhesion and allows for the print to self-release (some filament materials only). <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/220">[src]</a></sub> <sub><a href="https://us.store.bambulab.com/products/bambu-textured-pei-plate">[src]</a></sub></p>
 </li>
 <li>
-<p><a name="BM_(Smooth%20PEI%20Plate)%2Fi"></a><strong>Smooth PEI Plate</strong> - A <a href="#BM_(build%20plate)%2Fi">build plate</a> with a smooth surface, compatible with various filament types (especially <a href="#BM_%5Cb(PLA)%5Cb%2F">PLA</a>). Unlike the Texture PEI Plate, the smoothness of this plate contributes Z-axis precision. <sub><a href="https://us.store.bambulab.com/products/bambu-smooth-pei-plate">[src]</a></sub></p>
+<p><a name="BM_(Smooth%20PEI%20Plate)%2Fi"></a><strong>Smooth PEI Plate</strong> - A <a href="#BM_(build%20plate)%2Fi">build plate</a> with a smooth surface, compatible with various filament types (especially <a href="#BM_%5Cb(PLA)%5Cb%2F">PLA</a>). Unlike the <a href="#BM_(Textured%20PEI%20Plate)%2Fi">Textured PEI Plate</a>, the smoothness of this plate contributes Z-axis precision. <sub><a href="https://us.store.bambulab.com/products/bambu-smooth-pei-plate">[src]</a></sub></p>
 </li>
 <li>
 <p><a name="BM_(Engineering%20Plate)%2Fi"></a><strong>Engineering Plate</strong> - A <a href="#BM_(build%20plate)%2Fi">build plate</a> compatible with all filament materials but requires a <a href="#BM_(layer%7Cslice)%2Fi">layer</a> of glue before printing. Although compatible with all filament materials, the <a href="#BM_(Engineering%20Plate)%2Fi">Engineering Plate</a> targets high temperature filament materials. <sub><a href="https://us.store.bambulab.com/products/bambu-engineering-plate">[src]</a></sub></p>
@@ -3074,7 +3078,7 @@
 <li>
 <p><a name="BM_(filament%20buffer)%2Fi"></a><strong>filament buffer</strong> - A filament tension-control / slack-management device at the rear face of the H2S, sitting between filament passing from outside the <a href="#BM_(chamber)%2Fi">chamber</a> to the <a href="#BM_(extruder)%2Fi">extruder</a>. The <a href="#BM_(filament%20buffer)%2Fi">filament buffer</a> is an orange slider that slides forward and backward, storing a small buffer of filament as it slides forward.</p>
 <p>When an <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> unit is connected, the unit's motor pushes filament into the <a href="#BM_(filament%20buffer)%2Fi">filament buffer</a> thereby storing a small buffer of filament. When the <a href="#BM_(extruder)%2Fi">extruder</a> consumes the filament in the <a href="#BM_(filament%20buffer)%2Fi">filament buffer</a>, the <a href="#BM_(filament%20buffer)%2Fi">filament buffer</a> slides backward. A sensor in the <a href="#BM_(filament%20buffer)%2Fi">filament buffer</a> feeds back to the <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> unit's motor to control filament feeding speed.</p>
-<p>When the <a href="#BM_(external%20spool%20holder)%2Fi">external spool holder</a> is used, the buffer acts as an entanglement sensor. When the <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a> is tangled, the tension of the <a href="#BM_(extruder)%2Fi">extruder</a> pulling is detected by the <a href="#BM_(filament%20buffer)%2Fi">filament buffer</a> thereby cause the print to pause and the user to be prompted.</p>
+<p>When the <a href="#BM_(external%20spool%20holder)%2Fi">external spool holder</a> is used, the buffer acts as an entanglement sensor. When the <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a> is tangled, the tension of the <a href="#BM_(extruder)%2Fi">extruder</a> pulling is detected by the <a href="#BM_(filament%20buffer)%2Fi">filament buffer</a> thereby causing the print to pause and the user to be prompted.</p>
 <p><img src="tpu_inlet.drawio.svg" alt="filament buffer and TPU inlet placement"> <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -3082,7 +3086,7 @@
 </div>
 </li>
 <li>
-<p><a name="BM_(TPU%20inlet)%2Fi"></a><strong>TPU inlet</strong> - An inlet that bypasses the <a href="#BM_(filament%20buffer)%2Fi">filament buffer</a>, specifically intended for <a href="#BM_%5Cb(TPU)%5Cb%2F">TPU</a> filament (that isn't branded as TPU for AMS). The inlet in positioned just to the right of the <a href="#BM_(filament%20buffer)%2Fi">filament buffer</a>, feeding the PTFE directly from the exterior into the <a href="#BM_(chamber)%2Fi">chamber</a>. The PTFE tube used for the <a href="#BM_(TPU%20inlet)%2Fi">TPU inlet</a> may either be the same PTFE tube attaching the <a href="#BM_(filament%20buffer)%2Fi">filament buffer</a> to the <a href="#BM_(toolhead)%2Fi">toolhead</a> (disconnecting it and reconnecting it to the <a href="#BM_(TPU%20inlet)%2Fi">TPU inlet</a>) or a separate PTFE tube.</p>
+<p><a name="BM_(TPU%20inlet)%2Fi"></a><strong>TPU inlet</strong> - An inlet that bypasses the <a href="#BM_(filament%20buffer)%2Fi">filament buffer</a>, specifically intended for <a href="#BM_%5Cb(TPU)%5Cb%2F">TPU</a> filament (that isn't branded as TPU for AMS). The inlet is positioned just to the right of the <a href="#BM_(filament%20buffer)%2Fi">filament buffer</a>, feeding the PTFE directly from the exterior into the <a href="#BM_(chamber)%2Fi">chamber</a>. The PTFE tube used for the <a href="#BM_(TPU%20inlet)%2Fi">TPU inlet</a> may either be the same PTFE tube attaching the <a href="#BM_(filament%20buffer)%2Fi">filament buffer</a> to the <a href="#BM_(toolhead)%2Fi">toolhead</a> (disconnecting it and reconnecting it to the <a href="#BM_(TPU%20inlet)%2Fi">TPU inlet</a>) or a separate PTFE tube.</p>
 <p><img src="tpu_inlet.drawio.svg" alt="filament buffer and TPU inlet placement"> <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227">[src]</a></sub></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -3092,7 +3096,7 @@
 <li>
 <p><a name="BM_(purge%20wiper%7Cpurge%20chute%7Cnozzle%20wiper)%2Fi"></a><strong>purge wiper</strong> - A block at the back left of the H2S responsible for cleaning the <a href="#BM_(toolhead)%2Fi">toolhead</a> between prints / filament changes. The <a href="#BM_(purge%20wiper%7Cpurge%20chute%7Cnozzle%20wiper)%2Fi">purge wiper</a> consists of ...</p>
 <ul>
-<li>a <a href="#BM_(purge%20wiper%7Cpurge%20chute%7Cnozzle%20wiper)%2Fi">nozzle wiper</a>, which is silicone waffle and strips.</li>
+<li>a <a href="#BM_(purge%20wiper%7Cpurge%20chute%7Cnozzle%20wiper)%2Fi">nozzle wiper</a>, which consists of a silicone waffle and strips.</li>
 <li>a <a href="#BM_(purge%20wiper%7Cpurge%20chute%7Cnozzle%20wiper)%2Fi">purge chute</a>, which is a chute leading to outside the <a href="#BM_(chamber)%2Fi">chamber</a>.</li>
 </ul>
 <p>The <a href="#BM_(toolhead)%2Fi">toolhead</a> knocks into the waffle / strips to clean off old stuck filament, sending it down the <a href="#BM_(purge%20wiper%7Cpurge%20chute%7Cnozzle%20wiper)%2Fi">purge chute</a>.</p>
@@ -3135,12 +3139,12 @@
 <li>
 <p><a name="BM_(filament%20spool%7Cspool)%2Fi"></a><strong>filament spool</strong> - A spool holding rolled up filament, which can be installed either in the <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> or the <a href="#BM_(external%20spool%20holder)%2Fi">external spool holder</a>. A <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a> can either be made of ...</p>
 <ul>
-<li>plastic: Most filament materials are wound up on plastic <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>s. Bambu Lab branded plastic <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>s twist apart, allowing them to be refilled once all the existing filament is used up.</li>
+<li>plastic: Most filament materials are wound up on plastic <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>s. Bambu Lab branded plastic <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>s twist-apart, allowing them to be refilled once all the existing filament is used up.</li>
 <li>cardboard: High temperature filament materials are wound up on cardboard <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>s because those high temperatures may cause plastic <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>s to melt (e.g., <a href="#BM_%5Cb(PPS)%5Cb%2F">PPS</a>-<a href="#BM_%5Cb(CF)%5Cb%2Fi">CF</a>). Cardboard <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>s are incompatible with the <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/231">[src]</a></sub></li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Reusing a Bambu Lab plastic <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>? Make sure you buy filament marketed as refill. I don't believe it has the be the same color or even the same material.</p>
+<p>Reusing a Bambu Lab plastic <a href="#BM_(filament%20spool%7Cspool)%2Fi">filament spool</a>? Make sure you buy filament marketed as refill. I don't believe it has to be the same color or even the same material.</p>
 </div>
 </li>
 <li>

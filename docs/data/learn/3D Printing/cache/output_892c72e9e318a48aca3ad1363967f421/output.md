@@ -4,7 +4,7 @@
 
  * Hardware/Toolhead_TOPIC
  * Hardware/Heatbed_TOPIC
- * Hardware/Movement System_TOPIC
+ * Hardware/Movement_TOPIC
 
 </div>
 

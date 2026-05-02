@@ -2,6 +2,6 @@
 
 <strong>⚠️NOTE️️️⚠️</strong>
 
-Only some filament materials need an AMS HT for drying, not a AMS 2 Pro.
+Only some filament materials need an AMS HT for drying, not an AMS 2 Pro.
 </div>
 

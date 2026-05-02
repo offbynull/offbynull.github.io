@@ -8,11 +8,17 @@
 ```{toc}
 ```
 
-# Hardware
+# Introduction
 
+This document covers 3D printing concepts and principles, specifically using the Bambu Lab H2S. 3D printers like the H2S print layers on top of each other to form 3D objects. These layers are printed using different types of plastics, where the plastic is first melted and then extruded out of a nozzle.
+
+# Hardware
+ 
 `{bm} /(Hardware)_TOPIC/i`
 
-The H2S is enclosed on all sides in the shape of a rectangular prism. The inside of the prism is referred to as the chamber, which is climate controlled contains all the machinery for 3D printing. `{ref} https://wiki.bambulab.com/en/h2s`
+The H2S is enclosed on all sides in the shape of a rectangular prism. The inside of the prism is referred to as the chamber, which is climate controlled and contains all the machinery for 3D printing. `{ref} https://wiki.bambulab.com/en/h2s`
+
+![H2S front diagram](h2s_front.drawio.svg)
 
 The subsections below detail the machinery within the chamber.
 
@@ -30,14 +36,14 @@ The machinery responsible for laying down material is the toolhead. `{ref} https
   * coldend - keeps filament at lower temperature.
   * nozzle - heated to melt the filament and deposit it onto a print.
   
-  A silicone sock fits over nozzle, insulating it from the cooling from the part cooling fan.
+  A silicone sock fits over the nozzle, insulating it from the cooling from the part cooling fan.
 
   ![hotend diagram](hotend.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
-* a part cooling fan: Fan located at the !!base!! of the toolhead. The part cooling fan directs are to the cooling ducts that sandwich the tip of the hotend's nozzle, rapidly cooling printed filament. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+* a part cooling fan: Fan located at the !!base!! of the toolhead. The part cooling fan directs air to the cooling ducts that sandwich the tip of the hotend's nozzle, rapidly cooling printed filament. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 * a filament cutter: Upright arm on the toolhead's right face. The filament cutter gets pushed into the filament cutter stopper, which is an arm located on the right inside face near the rear (close to motor A just above the Y-axis linear rod), to push it into the filament thereby cutting it. The filament cutter stopper rotates out in position when cutting and rotates back to be stowed away afterwards. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227` `{ref} https://wiki.bambulab.com/en/h2s/maintenance/replace-cutter-lever`
 * a camera: Camera attached to the toolhead, used for calibrating motion accuracy and build plate recognition. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
   
-Filament enters the nozzle through the PTFE connector located at the top, where the extruder motor grabs it and pushes it into the hotend located at the bottom. The hotend's nozzle poking out of the toolhead enclosure is sandwiched between cooling ducts, where the part cooling fan directs air to rapidly cool filament as its printed.
+Filament enters the nozzle through the PTFE connector located at the top, where the extruder motor grabs it and pushes it into the hotend located at the bottom. The hotend's nozzle poking out of the toolhead enclosure is sandwiched between cooling ducts, where the part cooling fan directs air to rapidly cool filament as it's printed.
 
 ![toolhead front diagram](toolhead.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 
@@ -57,16 +63,16 @@ As the name suggests, the heatbed is a heat controlled surface within the H2S. I
 
 ![H2S heatbed placement](h2s_movement.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 
-## Movement System
+## Movement
 
-`{bm} /(Hardware\/Movement System)_TOPIC/i`
+`{bm} /(Hardware\/Movement)_TOPIC/i`
 
 ```{prereq}
 Hardware/Toolhead_TOPIC
 Hardware/Heatbed_TOPIC
 ```
 
-The toolhead moves on the XY plane the CoreXY system, H2S's system for moving the toolhead front-back and left-right. The system is comprised of a pair of synchronized motors at the rear face of the chamber responsible for moving the toolhead on the X and Y axes: A motor and B motor. The motors are located at the rear inside face of the H2S, near the top. The B motor is on the left and the A motor is on the top.
+The toolhead moves on the XY plane using the CoreXY system, H2S's system for moving the toolhead front-back and left-right. The system is comprised of a pair of synchronized motors at the rear face of the chamber responsible for moving the toolhead on the X and Y axes: A motor and B motor. The motors are located at the rear inside face of the H2S, near the top. The B motor is on the left and the A motor is on the right.
 
 The motors connect through the X-axis linear rail and the Y-axis linear rods via a pair of belts. The ...
   
@@ -79,19 +85,19 @@ The toolhead doesn't move on the Z-axis. Instead, depth is controlled by moving 
 
 ![H2S movement](h2s_movement.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 
-## Nozzle Cleaning  System
+## Nozzle Cleaning 
 
-`{bm} /(Hardware\/Nozzle Cleaning System)_TOPIC/i`
+`{bm} /(Hardware\/Nozzle Cleaning)_TOPIC/i`
 
 ```{prereq}
 Hardware/Toolhead_TOPIC
 Hardware/Heatbed_TOPIC
-Hardware/Movement System_TOPIC
+Hardware/Movement_TOPIC
 ```
 
-The H2S has 2 mechanisms to clean the wiper. The first mechanism is the purge wiper, a block at the back left of the H2S responsible for cleaning the toolhead between prints / filament changes. The purge wiper consists of ...
+The H2S has 2 mechanisms to clean the nozzle. The first mechanism is the purge wiper, a block at the back left of the H2S responsible for cleaning the toolhead between prints / filament changes. The purge wiper consists of ...
 
-* a nozzle wiper, which is silicone waffle and strips.
+* a nozzle wiper, which consists of a silicone waffle and strips.
 * a purge chute, which is a chute leading to outside the chamber.
   
 The toolhead knocks into the waffle / strips to clean off old stuck filament, sending it down the purge chute.
@@ -100,15 +106,15 @@ The toolhead knocks into the waffle / strips to clean off old stuck filament, se
 
 The second mechanism is the nozzle wiper sheet, a sheet on the edge of the heatbed that the nozzle moves across to keep the tip smooth and free of debris. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 
-## Climate Control System
+## Climate Control
 
-`{bm} /(Hardware\/Climate Control System)_TOPIC/i`
+`{bm} /(Hardware\/Climate Control)_TOPIC/i`
 
 ```{prereq}
 Hardware/Heatbed_TOPIC
 ```
 
-In addition the heatbed and the hotend, there are several additional climate control mechanisms within the H2S. These all work in tandem to appropriately heat and cool filament material:
+In addition to the heatbed and the hotend, there are several additional climate control mechanisms within the H2S. These all work in tandem to appropriately heat and cool filament material:
 
 * Chamber heat circulation fan: Heater located at the rear face of the H2S, used to increase the chamber's temperature. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227` `{ref} https://wiki.bambulab.com/en/h2s/manual/screen-operation#h-1-air-management`
 * Chamber exhaust fan: Fan located at the rear face of the H2S, exhausting air out of the chamber. The chamber exhaust fan may have a filter in front of it, referred to as the chamber filter, that partially filters air as it's exhausted out of the chamber. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
@@ -125,7 +131,7 @@ In addition the heatbed and the hotend, there are several additional climate con
 Hardware/Heatbed_TOPIC
 ```
 
-Just below the heatbed, facing forward and running side-to-side, is a light bar just below the heatbed. The light bar, referred to as the status light, changes color to show the operating status of the H2S:
+Just below the heatbed, facing forward and running side-to-side, is a light bar. The light bar, referred to as the status light, changes color to show the operating status of the H2S:
 
 * White slow pulse (or off): Idle.
 * Orange scroll: Print job preparing.
@@ -142,7 +148,7 @@ Automatic Material System 2 Pro is an extension to the H2S that manages multiple
 * enables multi-color and multi-material prints by swapping between filament spools during printing.
 * automatically switches between filament spools if a filament spool runs out during printing.
 * automatically identifies the color and type of filament spools (only for official Bambu Lab filaments, using RFID). 
-* drying filament spools (up to 65 celsius).
+* dries filament spools (up to 65 celsius).
 
 The AMS 2 Pro !!supports!! 4 spools per unit, and !!supports!! chaining up to 4 AMS 2 Pro units together to !!support!! up to 16 spools per print. Additionally, the 4 chained AMS 2 Pro units may be chained up even further by 8 AMS HT units, enabling up to 24 spools per print.
 
@@ -168,7 +174,7 @@ The TPU inlet bypasses the filament buffer. The inlet in positioned just to the 
 ![filament buffer and TPU inlet placement](tpu_inlet.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 
 ```{note}
-In some cases, you may be able to use TPU for with the non-TPU inlet. If you're using an AMS 2 Pro and your TPU is specifically branded as !!TPU for AMS!!, you can use it. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/`
+In some cases, you may be able to use TPU with the non-TPU inlet. If you're using an AMS 2 Pro and your TPU is specifically branded as !!TPU for AMS!!, you can use it. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/`
 ```
 
 # Operation
@@ -191,12 +197,12 @@ The H2S must be placed on a flat and stable surface. The operating space recomme
 
 `{bm} /(Operation\/Operational Climate)_TOPIC/i`
 
-The H2S is recommended to be operated in temperatures between between 15-30C (60-85F). If the temperature is ...
+The H2S is recommended to be operated in temperatures between 15-30C (60-85F). If the temperature is ...
 
- * < 15C, there may be issues with adhesion to plate and / or weaken layer bonding
- * \> 30C, there filament may soften before reaching hotend, increasing risk of extruder or nozzle clogs.
+ * < 15C, there may be issues with adhesion to the build plate and / or weaken layer bonding
+ * \> 30C, filament may soften before reaching hotend, increasing risk of extruder or nozzle clogs.
 
-The chamber has an assortment of fans and vents to circulate cool air / blow out hor air (e.g., chamber exhaust fan, auxiliary part cooling fan, and chamber intake vent), but in warmer climates that may not be enough. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/224`
+The chamber has an assortment of fans and vents to circulate cool air / blow out hot air (e.g., chamber exhaust fan, auxiliary part cooling fan, and chamber intake vent), but in warmer climates that may not be enough. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/224`
 
 ## Auto-calibration
 
@@ -204,7 +210,7 @@ The chamber has an assortment of fans and vents to circulate cool air / blow out
 
 H2S's auto-calibration attempts to adjust itself to account for the expected variances between manufactured H2S printers and variances caused by wear. Examples of calibrations include bed leveling (working around variances in the heatbed), motor noise cancellation, and vibration compensation.
 
-Trigger auto-calibration manually by navigating to **[Wrench Icon]** → **Settings** → **Calibration**. Perform auto-calibrate whenever ...
+Trigger auto-calibration manually by navigating to **[Wrench Icon]** → **Settings** → **Calibration**. Perform auto-calibration whenever ...
 
  * there's a decrease in print quality.
  * after printer maintenance.
@@ -226,7 +232,7 @@ Filament can be loaded through either an !!AMS!! unit (e.g., AMS 2 Pro or AMS HT
  * the spool is from an !!unsupported!! third-party. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/225`
 
 ```{note}
-The source doesn't cite this, but I know for a fact that TPU is not !!supported!! by the AMS 2 Pro and must fed via the external spool holder (unless it's specifically branded as !!TPU for AMS!!, which Bambu Lab sells). 
+The source doesn't cite this, but I know for a fact that TPU is not !!supported!! by the AMS 2 Pro and must be fed via the external spool holder (unless it's specifically branded as !!TPU for AMS!!, which Bambu Lab sells). 
 ```
 
 To load filament using the AMS 2 Pro, ...
@@ -236,7 +242,7 @@ To load filament using the AMS 2 Pro, ...
 1. push the slot's inlet release tab toward the spool and feed filament into that inlet - inlet will automatically grip and pull in filament.
 1. close the cover and lock it in by closing the two tabs on the front edge.
 1. select filament properties: 
-   * For filament from Bambu Lab filament, filament color and  material should be automatically detected (using RFID).
+   * For Bambu Lab filament, filament color and  material should be automatically detected (using RFID).
    * For filament not from Bambu Lab, navigate to **[Spool Icon]** → **[Pencil Icon]** (for the slot spool was added to) and select filament brand, material, and color.
 
 `{bm-disable-all}`
@@ -265,13 +271,13 @@ To load filament using the external spool holder, ...
 
 `{bm} /(Operation\/Filament Refill)_TOPIC/i`
 
-Most Bambu Lab filaments come wound up on twist apart spools. Once the filament on the spool has been all used up, a refill may be purchased (refill means filament without a spool) and reinserted into the empty spool. Refills come pre-wound ready to be inserted directly on to the spool.
+Most Bambu Lab filaments come wound up on twist-apart spools. Once the filament on the spool has been all used up, a refill may be purchased (refill means filament without a spool) and reinserted into the empty spool. Refills come pre-wound ready to be inserted directly on to the spool.
 
 To refill a spool ...
 
-1. twist apart the spool.
+1. twist-apart the spool.
 2. place pre-wound refill over interior cylinder of spool, aligning refill's notch against the tiny square extrusion.
-3. place two sides of spool back together and twist until click.
+3. place two sides of spool back together and twist until it clicks.
 4. remove plastic straps holding the refill's shape.
 5. place sticker on outside of the spool.
 
@@ -287,7 +293,7 @@ The H2S's UI is exposed via a touch screen on the exterior of the front face, lo
 
 ![touchscreen placement](h2s_front.drawio.svg)
 
-Along left-side of the UI are 5 options, each represented by an icon:
+Along the left side of the UI are 5 options, each represented by an icon:
 
 1. **[Home]**: Primary functions and readings (e.g., triggering prints, sensor readings, WiFi status, and statistics).
 2. **[Controls]**: Control panel for hardware settings (e.g., fan speed, nozzle and heatbed temperature, light, speed, and motion).
@@ -312,7 +318,7 @@ To print, navigate to **[Home]** → **Print Files** and select the drive and fi
  * **Internal**: Files preloaded onto the H2S's internal memory.
  * **USB**: Files on USB drive plugged into the H2S.
 
-One a file is chosen, select the appropriate **Plate** and **Nozzle** (H2S comes with "Texture PEI" plate and "0.4mm Standard" nozzle - these should be selected as defaults). Then, hit **Next** select the filament to print with. Then, hit **Print** to begin printing. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
+Once a file is chosen, select the appropriate **Plate** and **Nozzle** (H2S comes with "Textured PEI" plate and "0.4mm Standard" nozzle - these should be selected as defaults). Then, hit **Next** and select the filament to print with. Then, hit **Print** to begin printing. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
 
 ### Print Speed
 
@@ -328,7 +334,7 @@ An introductory YouTube video I watched mentioned that the faster the speed is, 
 
 `{bm} /(Operation\/User Interface\/Toolhead and Heatbed Movement)_TOPIC/i`
 
-To perform movements of the toolhead (XZ axis) and heatbed (Y axis), navigate to **[Controls]** → **Motion** and tap the adjustment buttons as necessary. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
+To perform movements of the toolhead (XY axis) and heatbed (Z axis), navigate to **[Controls]** → **Motion** and tap the adjustment buttons as necessary. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
 
 ```{note}
 This seems to only be for testing purposes and moving things to get at parts? I had to use this feature to get at a thin piece of plastic that popped off and fell on the bottom of the H2S. I moved the heatbed up so I could fit my hand in and reach it.
@@ -338,7 +344,7 @@ This seems to only be for testing purposes and moving things to get at parts? I 
 
 `{bm} /(Operation\/User Interface\/Extruder Movement)_TOPIC/i`
 
-To perform adhoc extrusion and retraction of filament, navigate to **[Controls]** → **Nozzle & Extruder** and use the up/down buttons under **Extruder**. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
+To perform ad hoc extrusion and retraction of filament, navigate to **[Controls]** → **Nozzle & Extruder** and use the up/down buttons under **Extruder**. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
 
 ```{note}
 This seems to be for testing purposes. But also, does this have to be done when swapping between AMS 2 Pro and external spool holder?
@@ -348,7 +354,7 @@ This seems to be for testing purposes. But also, does this have to be done when 
 
 `{bm} /(Operation\/User Interface\/Nozzle Type)_TOPIC/i`
 
-When nozzle has been swapped, navigate to **[Controls]** → **Nozzle & Extruder** and select the nozzle's type under **Nozzle**. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
+When the nozzle has been swapped, navigate to **[Controls]** → **Nozzle & Extruder** and select the nozzle's type under **Nozzle**. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
 
 ### Nozzle Temperature
 
@@ -407,7 +413,7 @@ To select which filaments are in the AMS 2 Pro and / or external spool holder, n
 
 `{bm} /(Operation\/User Interface\/Filament Auto Refill)_TOPIC/i`
 
-When a filament runs out, the H2S and attached AMS 2 Pro unit automatically swap to a second spool to continue printing, provided that second spool has the same brand, color, and material of the original spool being printed with. To enable auto refill, navigate to **[Settings]** → **!!AMS!! Options** and select **!!AMS!! Auto-Refill**. . Then, navigate to **[Filament]**, select the wrench icon, and select **Auto Refill** to view refill relationships. `{ref} https://wiki.bambulab.com/en/ams-2-pro/manual/setup-and-printting#ams-auto-refill`.
+When a filament runs out, the H2S and attached AMS 2 Pro unit automatically swap to a second spool to continue printing, provided that second spool has the same brand, color, and material of the original spool being printed with. To enable auto refill, navigate to **[Settings]** → **!!AMS!! Options** and select **!!AMS!! Auto-Refill**. Then, navigate to **[Filament]**, select the wrench icon, and select **Auto Refill** to view refill relationships. `{ref} https://wiki.bambulab.com/en/ams-2-pro/manual/setup-and-printting#ams-auto-refill`.
 
 ```{note}
 On the H2D, there are 2 extruders (left and right) and apparently each of the H2D's AMS 2 Pro units is assigned to one of these heads (there may be multiple AMS 2 Pros per printer). The second spool must be in an AMS 2 Pro unit assigned to the same extruder for auto refill to use it.
@@ -425,7 +431,7 @@ To dry filament, ensure the spool is loaded into the AMS 2 Pro and navigate to *
 ..., then select **Start**. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
 
 ```{note}
-What happens when the filaments within hte AMS 2 Pro aren't all the same material? It seems there might be some guard rails preventing you from doing this with certain mixes of materials.
+What happens when the filaments within the AMS 2 Pro aren't all the same material? It seems there might be some guard rails preventing you from doing this with certain mixes of materials.
 
 > When drying high-temperature filament, you need to take out the low-temperature filament. For example, when drying ABS, PLA filament cannot be placed in the !!AMS!!.
 
@@ -433,7 +439,7 @@ What happens when the filaments within hte AMS 2 Pro aren't all the same materia
 ```
 
 ```{note}
-Only some filament materials need an AMS HT for drying, not a AMS 2 Pro.
+Only some filament materials need an AMS HT for drying, not an AMS 2 Pro.
 ```
 
 # Filament Guide
@@ -443,7 +449,7 @@ Only some filament materials need an AMS HT for drying, not a AMS 2 Pro.
 The following table summarizes key characteristics of filaments !!supported!! by the H2S (as of time of writing). The column(s) ...
 
  * **Name** is the material's name. Each material may come in one of many modified forms: HF (High Flow) means the material has been modified for high speed printing `{ref} https://www.youtube.com/watch?v=1t_VpPj-9NY`, CF (Carbon Fiber) means the material has been fortified with carbon fiber. `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/215`, and GF (Glass Fiber) means the material has been fortified with glass fiber. `{ref} https://bambulab.com/en-us/filament/pla-cf`
- * **Stiffness** and **Impact Strength** givens a user-friendly for those specific properties.
+ * **Stiffness** and **Impact Strength** gives a user-friendly for those specific properties.
  * **Heat Deflection Temperature** states the minimum temperature at which 0.45 MPa and 1.8 MPa of stress cause the material to bend by a small standardized amount (ISO 75 deflection threshold). It gives an idea of how much heat the material can withstand before deforming. `{ref} https://en.wikipedia.org/wiki/Heat_deflection_temperature`
  * **Saturated Water Absorption Rate** states the percent increase in weight from absorbed moisture under a standardized climate. It gives an idea of how moisture resistant the material is.
  * **Nozzle temperature**, **Heatbed temperature**, and **Chamber temperature** collectively define the H2S's heating requirements to effectively print the material.
@@ -489,7 +495,7 @@ A plate that sits on the heatbed and serves as the print surface. There are diff
 
  * Cool Plate SuperTack Pro - Designed to reduce PLA and PETG print failures through better adhesion at lower heatbed temperatures.
  * Textured PEI Plate - Designed with a slightly rough surface enabling better first layer adhesion and allowing for the print to self-release (some filament materials only). 
- * Smooth PEI Plate - Designed with a smooth surface. Unlike the Texture PEI Plate, the smoothness of this plate contributes Z-axis precision (no roughness).
+ * Smooth PEI Plate - Designed with a smooth surface. Unlike the Textured PEI Plate, the smoothness of this plate contributes Z-axis precision (no roughness).
  * Engineering Plate - Designed as a universal build plate, compatible with all filament materials (but requires a layer of glue before printing).
 
 The following table summarizes filament materials !!supported!! and material requirements for each build plate.
@@ -551,7 +557,7 @@ Hardware_TOPIC
 Operation_TOPIC
 ```
 
-Bambu Studio is H2S's desktop software. It provides access to MakerWorld (a repository of printable object), processes 3D models for printing by slicing them, and controls and gets feedback from the H2S. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/228` Bambu Studio works with many brands of 3D printers, not just Bambu Lab printers. `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/31`.
+Bambu Studio is H2S's desktop software. It provides access to MakerWorld (a repository of printable objects), processes 3D models for printing by slicing them, and controls and gets feedback from the H2S. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/228` Bambu Studio works with many brands of 3D printers, not just Bambu Lab printers. `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/31`.
 
 ```{note}
 There's also a software product called Bambu Suite, but that's for cutting and engraving while Bambu Studio is for printing.
@@ -563,7 +569,7 @@ There's also a software product called Bambu Suite, but that's for cutting and e
 
 Bambu Studio has 6 main screens (referred to as tabs), which can be navigated between using the top toolbar:
 
-1. **Home**: Welcome screen, user manuals, opening project, print history.
+1. **Home**: Welcome screen, user manuals, opening projects, print history.
 2. **Prepare**: Object/model placement, orientation, and manipulation.
 3. **Preview**: Print instructions, information, and diagnostics.
 4. **Device**: H2S !!interface!! and management.
@@ -572,7 +578,7 @@ Bambu Studio has 6 main screens (referred to as tabs), which can be navigated be
 
 Above the top toolbar is the main menu, packed to condensed space. Next to the packed main menu are a few quick access buttons: Save, undo, and redo. Regardless of which screen you're on, the top toolbar (and main menu and quick access buttons) should always be present.
 
-The standard workflow is to plan out what and where get things printed on the Prepare screen, then review how the print will get sliced along with diagnostics on the Preview screen, then initiate the print.
+The standard workflow is to plan out what and where things get printed on the Prepare screen, then review how the print will get sliced along with diagnostics on the Preview screen, then initiate the print.
 
 ![Bambu Studio top toolbar](bambu_studio_top_toolbar.png) `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/32`
 
@@ -601,7 +607,7 @@ Prepare viewport controls:
 | Undo                       | Ctrl + Z                                                                                                        |
 | Redo                       | Ctrl + Y                                                                                                        |
 
-Bambu Studio's Preview screen is for exploring slices_SET. Each screen is partitioned into a 3D viewport and a left side-bar.
+Bambu Studio's Preview screen is for exploring slices_SET. Each screen is partitioned into a 3D viewport and a left sidebar.
 
 Preview viewport controls:
 
@@ -620,7 +626,7 @@ Preview viewport controls:
 | Undo                       | Ctrl + Z                                                                                                        |
 | Redo                       | Ctrl + Y                                                                                                        |
 
-To the right of the 3D viewport is a sidebar on the left-hand side.
+To the left of the 3D viewport is a sidebar.
 
 ![Bambu Studio Prepare screen sidebar](bambu_studio_prepare_sidebar.png)
 
@@ -647,13 +653,13 @@ Each filament is assigned an ID (e.g., 1, 2, ...). Objects and layers within the
 * To add a filament to the list of available filaments, use the plus button.
 * To remove a filament from the list of available filament, either use the minus button or click on the ellipsis next to the filament dropdown and select **Delete**.
 * To remove a filament and reassign its usages to another ID, click the ellipsis next to one of the filaments, navigate to **Merge with**, and select the ID to merge with.
-* To synchronize the available filaments with those loaded into the attached AMS 2 Pro / AMS HT units, use the button immediately to the right to the minus button.
+* To synchronize the available filaments with those loaded into the attached AMS 2 Pro / AMS HT units, use the button immediately to the right of the minus button.
 * To configure the list of filaments available for adding, use the cog button.
 
-At the bottom is an **Add Mixed Filament** button. Mixed filaments is a mix of existing filaments printed in interleaves layers to achieve a new color via half-toning (e.g., alternating between 1 layer black and 1 layer white gives the impression that the printed object is gray). Mixed filaments are not recommended on the H2S because it's a single nozzle printer - excessive swapping between filaments causes a lot of waste. `{ref} https://www.youtube.com/watch?v=ZsgJz0qk4eE` `{ref} https://wiki.bambulab.com/en/software/bambu-studio/release/release-note-2-5-3`
+At the bottom is an **Add Mixed Filament** button. Mixed filaments is a mix of existing filaments printed in interleaved layers to achieve a new color via half-toning (e.g., alternating between 1 layer black and 1 layer white gives the impression that the printed object is gray). Mixed filaments are not recommended on the H2S because it's a single nozzle printer - excessive swapping between filaments causes a lot of waste. `{ref} https://www.youtube.com/watch?v=ZsgJz0qk4eE` `{ref} https://wiki.bambulab.com/en/software/bambu-studio/release/release-note-2-5-3`
 
 ```{note}
-Mixed filaments don't have the desired effected on top/bottom surfaces because those are single layers and only one color is printed per layer? They work best on near vertical walls. It may be possible to rotate the object such that top/bottom surfaces are reduced, but it'll likely require introducing supports_BO.
+Mixed filaments don't have the desired effect on top/bottom surfaces because those are single layers and only one color is printed per layer? They work best on near vertical walls. It may be possible to rotate the object such that top/bottom surfaces are reduced, but it'll likely require introducing supports_BO.
 ```
 
 ```{note}
@@ -680,7 +686,7 @@ Bambu Studio has a section for defining how models and model groupings (assembli
 
 The Process section can change scope using a toggle (section 1). The scope can either be global, or it can target a specific set of objects (e.g., a model, an assembly, or some combination of models/assemblies). If not scoped globally, an object hierarchy will be displayed directly below the toggle (section 3). The selections in the object hierarchy will reflect those in the 3D viewport and vice versa.
 
-Below the object hierarchy are a hierarchy of parameters that control printing:
+Below the object hierarchy is a hierarchy of parameters that control printing:
 
 * **Quality** tab organizes fidelity parameters (e.g., layer height and how to treat seams).
 * **Strength** tab organizes solidity/firmness parameters (e.g., infill style/percentage and wall !!thickness!!).
@@ -706,7 +712,7 @@ Bambu Studio will slice the objects on the build plate whenever ...
 * switching from **Prepare** screen to the **Preview** screen.
 * hitting The **Preview** at the top-right, which should enable whenever a change is made.
 
-The **Preview** screen is where the layers, nozzle paths (G-code printing instructions), and printing diagnostics are color coded an displayed to the user. The screen is broken up into the following controls / panels:
+The **Preview** screen is where the layers, nozzle paths (G-code printing instructions), and printing diagnostics are color-coded and displayed to the user. The screen is broken up into the following controls / panels:
 
 ![Bambu Studio Preview screen slicer example](bambu_studio_preview_slicer_example.png)
 
@@ -754,7 +760,7 @@ Bambu Studio can export the project's 3D objects under **File** → **Export**.
 ```
 
 ```{note}
-A complete accounting of file formats isn't appropriate here. Just note that, if you importing SVGs, SVGs have no height_LH. Once an SVG is imported, Bambu Studio gives it a tiny height_LH and then you can scale it to make it taller.
+A complete accounting of file formats isn't appropriate here. Just note that, if you're importing SVGs, SVGs have no height_LH. Once an SVG is imported, Bambu Studio gives it a tiny height_LH and then you can scale it to make it taller.
 ```
 
 Alternatively, Bambu Studio's Home screen integrates MakerWorld. MakerWorld is an online repository of printable projects. MakerWorld projects can't be imported directly into the current Bambu Studio project. However, it is possible to open a MakerWorld project, save it as a 3MF file (or export as some other file format), and import that file into an existing project. `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/33`
@@ -779,7 +785,7 @@ In the Prepare screen's 3D viewport, objects can be moved by either ...
 
 * selecting objects, then hitting Shift + arrow keys for 1mm movement. `{ref} https://wiki.bambulab.com/en/software/bambu-studio/3d-scene-operations`
 
-* selecting objects, then using the move tool in the Prepare screen's toolbar (button 6, keyboard shortcut M), which will present both movement axis arms that can be left-click drag and a pop-up with coordinates and common alignment and distribution options.
+* selecting objects, then using the move tool in the Prepare screen's toolbar (button 6, keyboard shortcut M), which will present both movement axis arms that can be left-click dragged and a pop-up with coordinates and common alignment and distribution options.
 
   ![Bambu Studio Prepare screen toolbar](bambu_studio_prepare_toolbar.png)
 
@@ -847,7 +853,7 @@ The screenshot above has the following sections:
 
    **Size** - Absolute size on an axis (X, Y, and Z).
 
-3. **uniform scale**: If clicked, other axis will maintain proportions by automatically scaling to !!based!! on a single axis that was scaled. `{ref} https://www.youtube.com/watch?v=ES9Fic__Y64`
+3. **uniform scale**: If clicked, the other axes will maintain proportions by automatically scaling to be !!based!! on a single axis that was scaled. `{ref} https://www.youtube.com/watch?v=ES9Fic__Y64`
 
 ```{note}
 I couldn't figure out what the Coordinates dropdown actually does?
@@ -864,7 +870,7 @@ Bambu Studio/User Interface_TOPIC
 
 In certain cases, two objects may need to combine into one for printing, such that they print as a single object vs two separate objects.
 
-In the Prepare screen's 3D viewport, select two or more objects, then right-click to open the context menu and select **Merge**. Merged objects are placed them under a single assembly.
+In the Prepare screen's 3D viewport, select two or more objects, then right-click to open the context menu and select **Merge**. Merged objects are placed under a single assembly.
 
 ![Bambu Studio Prepare screen assembly example](bambu_studio_prepare_assemble_example.png)
 
@@ -888,19 +894,19 @@ Bambu Studio/Object Set Operations_TOPIC
 You can push objects into each other without putting them under the same assembly, but it'll complain during slicing.
 ```
 
-Alternatively, two objects can be repositioned and reoriented such that they touch each other using the assembly tool (Prepare screen's toolbar button 12, keyboard shortcut Y). The assembly tool opens a open a pop-up used to target how and where the objects touch.
+Alternatively, two objects can be repositioned and reoriented such that they touch each other using the assembly tool (Prepare screen's toolbar button 12, keyboard shortcut Y). The assembly tool opens a pop-up used to target how and where the objects touch.
 
 ![Bambu Studio Prepare screen assemble parameters](bambu_studio_prepare_assemble_parameters.png)
 
-The assembly tool has two **Mode**: options
+The assembly tool has two **Mode** options:
 
 * **Point and Point Assembly**: Touches objects on specific points (e.g., vertex).
 
-  Click on a point on the first object and click on point on the second object. The first point should highlight as cyan while the second fact should highlight as purple, and sections 2 and 3 of the screenshot should update to indicate that a selection's been made. From there, XYZ coordinate fields should show up in the dialog. Set those fields to 0 to bring the points together.
+  Click on a point on the first object and click on point on the second object. The first point should highlight as cyan while the second face should highlight as purple, and sections 2 and 3 of the screenshot should update to indicate that a selection's been made. From there, XYZ coordinate fields should show up in the dialog. Set those fields to 0 to bring the points together.
 
 * **Face and Face Assembly**: Touches objects on specific faces.
 
-  Click on a face of the first object and click on a face of the second object. The first face should highlight as cyan while the second fact should highlight as purple, and sections 2 and 3 of the screenshot should update to indicate that a selection's been made. From there, the ...
+  Click on a face of the first object and click on a face of the second object. The first face should highlight as cyan while the second face should highlight as purple, and sections 2 and 3 of the screenshot should update to indicate that a selection's been made. From there, the ...
 
   * **Parallel** button will reorient the objects so the selected faces are parallel.
   * **Center coincidence** button will bring the selected faces together.
@@ -928,14 +934,14 @@ Bambu Studio/Object Set Operations_TOPIC
 Bambu Studio/User Interface_TOPIC
 ```
 
-In the Prepare screen's 3D viewport, selected objects can be painted by using the paint tool in Prepare screen's toolbar (button 13, keyboard shortcut N), which will present a pop-up with scaling parameters / controls.
+In the Prepare screen's 3D viewport, selected objects can be painted by using the paint tool in Prepare screen's toolbar (button 13, keyboard shortcut N), which will present a pop-up with painting parameters / controls.
 
 ![Bambu Studio Prepare screen toolbar](bambu_studio_prepare_toolbar.png)
 
 ![Bambu Studio Prepare screen painting parameters](bambu_studio_prepare_model_painting_parameters.png)
 
 ```{note}
-Ensure more than 1 filament is included in the project via the **Project Filaments** section in the Prepare screen's left side-bar. Otherwise it'll be impossible to paint anything as there'll just be 1 color.
+Ensure more than 1 filament is included in the project via the **Project Filaments** section in the Prepare screen's left sidebar. Otherwise it'll be impossible to paint anything as there'll just be 1 color.
 ```
 
 * **Filament** is the filament type to paint with.
@@ -1248,7 +1254,7 @@ The cutting tool has two modes, chosen using the **Mode** dropdown at the top of
   
   4. **Add connectors** manipulates the cut final pieces to add joinery mechanisms, making them easier to reassemble.
 
-     If clicked, the cut plane is highlighted in the viewport and a pop-up of joinery options is presented (e.g., plug, snap, and thread) along with parameters for each options (e.g., depth and size). Set the joinery options as desired and click on the cut plane to place the joinery. Most joinery options are self-explanatory.
+     If clicked, the cut plane is highlighted in the viewport and a pop-up of joinery options is presented (e.g., plug, snap, and thread) along with parameters for each option (e.g., depth and size). Set the joinery options as desired and click on the cut plane to place the joinery. Most joinery options are self-explanatory.
 
      ```{note}
      For the Plug type, if you're confused about frustum vs prizm: Frustum tapers the sides as it goes up (similar to a pyramid) while the prizm option keeps the sides straight.
@@ -1305,11 +1311,11 @@ In the Prepare screen's 3D viewport, selected objects can have set operations ap
 
 The mesh boolean tool has 3 possible operations:
 
-* **Union**: Creates a new model comprised of all individual models together.
-* **Intersection**: Creates a new model comprised of only the overlapping parts between all models.
+* **Union**: Creates a new model composed of all individual models together.
+* **Intersection**: Creates a new model composed of only the overlapping parts between all models.
 * **Subtraction**: Removes a chunk from a model, using other models as the cut-out stencil.
 
-Regardless of which you pick, you can specific which of the selected models to apply the operation to. The resulting operation creates a single model with the chosen set operation applied (*not an assembly of models*, but a single model).
+Regardless of which you pick, you can specify which of the selected models to apply the operation to. The resulting operation creates a single model with the chosen set operation applied (*not an assembly of models*, but a single model).
 
 Given that the mesh boolean tool creates a single new model, the resulting single model typically doesn't encounter overlap issues during slicing. For example, if models aren't union'd but occupy the same space, slicing will print them as if they're distinct. That is, if two models occupy the same space, the outer shell / wall of both models will be drawn inside each other.
 
@@ -1406,7 +1412,7 @@ The parameters are the same as the parameter before, except for **Mode** and **O
   * **Surround surface** generates text that wraps the object's surface.
   * **Surround+Horizontal** generates text that wraps the object's surface, maintaining horizontal alignment (e.g., bottom of text will be equidistant to the build plate plane at all points).
   * **Surround projection by character** is similar to **Surround surface** but parts of the text that don't sit directly on the object are removed.
-  * **Not surround** generates text tangent to to the face the text is positioned on (does not wrap / surround the object's surface).
+  * **Not surround** generates text tangent to the face the text is positioned on (does not wrap / surround the object's surface).
 
   ```{note}
   At the very top of the example object below is the projection option. Note that the top of the text is cut off.
@@ -1418,7 +1424,7 @@ The parameters are the same as the parameter before, except for **Mode** and **O
 
   * **Part** embosses the text on the object.
 
-    Use **Embedded depth** to sink the text into the object (e.g., 1-2mm) because just printing on the surface on the object might not be enough securely adhere to the object. Embedding past the surface creates a tighter physical connection to hold the text in place.
+    Use **Embedded depth** to sink the text into the object (e.g., 1-2mm) because just printing on the surface on the object might not be enough to securely adhere to the object. Embedding past the surface creates a tighter physical connection to hold the text in place.
 
     ```{note}
     Too far out? You might have issues with overhangs_BO and supports_BO.
@@ -1448,9 +1454,9 @@ Bambu Studio/Object Placement_TOPIC
 
 An SVG outline can be placed on an object, extruded from an object, indented on to an object, or placed as a standalone extruded object on its own.
 
-To generate a standalone SVG outline, right-click on to empty space (not on an object) to open the context-menu and navigate to **Add Primitive** → **SVG**. In the pop-up dialog that show up, select an SVG file. The selected SVG will show up in the 3D viewport as as slightly extruded (Z-scale to adjust the extrusion).
+To generate a standalone SVG outline, right-click on to empty space (not on an object) to open the context-menu and navigate to **Add Primitive** → **SVG**. In the pop-up dialog that shows up, select an SVG file. The selected SVG will show up in the 3D viewport as slightly extruded (Z-scale to adjust the extrusion).
 
-To place an SVG outline on an object, right-click on an object to open the context-menu and navigate to **Add Primitive** → **SVG**. In the pop-up dialog that show up, select an SVG file. The selected SVG will show up in the 3D viewport as as slightly extruded (Z-scale to adjust the extrusion). The SVG wil show up on the object along with a pop-up where and how the SVG placed on the object can be changed.
+To place an SVG outline on an object, right-click on an object to open the context-menu and navigate to **Add Primitive** → **SVG**. In the pop-up dialog that shows up, select an SVG file. The selected SVG will show up in the 3D viewport as slightly extruded (Z-scale to adjust the extrusion). The SVG wil show up on the object along with a pop-up where and how the SVG placed on the object can be changed.
 
 ![Bambu Studio Prepare screen icon on object parameters](bambu_studio_prepare_icon_on_model_parameters.png)
 
@@ -1510,7 +1516,7 @@ In addition, there are presets available for choosing common layer heights. Thes
 ![Bambu Studio Prepare screen layer height parameters](bambu_studio_prepare_layer_height_parameters.png)
 
 ```{note}
-Settings different layer heights for each object? You might need to print the objects individually or slicing will fail. Set **!!Other!!** → **!!Special mode!!** → **!!Print sequence!!** to **By object**.
+Setting different layer heights for each object? You might need to print the objects individually or slicing will fail. Set **!!Other!!** → **!!Special mode!!** → **!!Print sequence!!** to **By object**.
 
 There might be issues where the toolhead can move depending on !!height!! of objects being printed. See [here](https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/36) for potential way to mitigate (change print order).
 ```
@@ -1619,7 +1625,7 @@ Although **First layer** may help with bed adhesion, it also may make elephant f
 The line width is recommended to be 75% to 150% of the nozzle's diameter. Otherwise, the print quality will likely be poor. For example, if using the 0.4mm nozzle that comes with the H2S, the line width should be between 0.3mm and 0.6mm.
 
 ```{note}
-When referring to the nozzle's diameter, it means the diameter of the channel that hte filament extrudes through, referred to as the inner diameter. The outer diameter is the diameter of the wall encasing the inner diameter.
+When referring to the nozzle's diameter, it means the diameter of the channel that the filament extrudes through, referred to as the inner diameter. The outer diameter is the diameter of the wall encasing the inner diameter.
 ```
 
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/parameter/line-width`
@@ -1677,7 +1683,7 @@ Bambu Studio/Seam/Algorithmic Seam Placement_TOPIC
 Bambu Studio/Object Painting_TOPIC
 ```
 
-Similar to object painting, the placement of a seam can be painted on to the object. In the Prepare screen's 3D viewport, select the object and paint a seam by using the seam paint tool in Prepare screen's toolbar (button 17, keyboard shortcut P), which will present a pop-up with scaling parameters / controls.
+Similar to object painting, the placement of a seam can be painted on to the object. In the Prepare screen's 3D viewport, select the object and paint a seam by using the seam paint tool in Prepare screen's toolbar (button 17, keyboard shortcut P), which will present a pop-up with painting parameters / controls.
 
 ![Bambu Studio Prepare screen toolbar](bambu_studio_prepare_toolbar.png)
 
@@ -1797,20 +1803,20 @@ Fuzzy skin parameters are under **Others** → **Special mode**.
 To enable/disable fuzzy skin set the property **Fuzzy skin** to either ...
 
 * **Contour**, which targets just the outer walls on the outside perimeter.
-* **Counter and hole**, which targets the outer walls on both the outside perimeter and the perimeters of any holes.
+* **Contour and hole**, which targets the outer walls on both the outside perimeter and the perimeters of any holes.
 * **All walls**, which targets inner and outer walls on both the outside perimeter and the perimeters of any holes (jitters inner walls as well).
 * **None(allow paint)**, which targets specific walls on the object to make fuzzy via the fuzzy skin paint tool. See subsection on fuzzy skin painting.
 * **Disable**, which disables fuzzy skin entirely.
 
 If enabled, the parameter ...
 
-* **Fuzzy skin point distance** controls the interval at which the jitter is updated. For example, setting it to 1mm produces smoother grooves vs 0.2mm because the toolhead's position is getting a randomly offset every 1mm instead of 0.2mm.
+* **Fuzzy skin point distance** controls the interval at which the jitter is updated. For example, setting it to 1mm produces smoother grooves vs 0.2mm because the toolhead's position is getting randomly offset every 1mm instead of 0.2mm.
 * **Fuzzy skin !!thickness!!** controls the depth of the nozzle jitter, making the fuzziness more pointy. A value too high may cause overhang issues.
 * **Fuzzy skin generator mode** controls how fuzzy skin is printed. A value of ...
 
   * **Displacement** jitters the toolhead's position out, creating a fuzziness but there'll likely be a gap between the fuzzed outer wall and inner walls / infill.
   * **Extrusion** jitters the toolhead's extrusion to be more/less (nozzle position stays un-jittered).
-  * **Combined** combines both **Displacement** and **Extrusion**, with the intention that **Displacement**'s gap are filled with the extra filament extruded from **Extrusion**.
+  * **Combined** combines both **Displacement** and **Extrusion**, with the intention that **Displacement**'s gaps are filled with the extra filament extruded from **Extrusion**.
 
 * **Fuzzy skin noise type** controls which algorithm is used to generate the noise that the toolhead's jittering is !!based!! off of.
 * **Apply fuzzy skin to first layer** controls whether the first layer's walls should have fuzzy skin applied.
@@ -1835,10 +1841,10 @@ Rather than having walls be fuzzy skinned in their entirety, the object can have
   
 ![Bambu Studio Prepare screen fuzzy skin painting example](bambu_studio_prepare_fuzzy_skin_painting_example.png) ![Bambu Studio Preview screen fuzzy skin painting example](bambu_studio_preview_fuzzy_skin_painting_example.png)
 
-Tools options and controls are nearly exactly the same as those for normal object painting. Select a **Tool type** and the tools configuration options will show up directly underneath. Regardless of the tool type, ...
+Tool options and controls are nearly exactly the same as those for normal object painting. Select a **Tool type** and the tools configuration options will show up directly underneath. Regardless of the tool type, ...
   
-* using the **left** mouse button on the object to paint where fuzzy paint should exist.
-* using the **right** mouse button on the object to paint where fuzzy paint should not exist (removes paint if it exists).
+* use the **left** mouse button on the object to paint where fuzzy paint should exist.
+* use the **right** mouse button on the object to paint where fuzzy paint should not exist (removes paint if it exists).
   
 To move the viewport rather than paint (e.g., move camera, rotate camera, and zoom camera), use the same viewport controls as normal *with the exception that any mouse button presses required are not on the object to be painted*.
 
@@ -1854,7 +1860,7 @@ For painted fuzzy skin to be applied to the print, ensure **Other** → **Specia
 Bambu Studio/User Interface_TOPIC
 ```
 
-A skirt is one or more loops printed around the objects on the build plate, where there's a gap between the loops and the objects (not touching). The purpose of a skirt is to prime the nozzle. It's typically not required on the H2S because the nozzle is already gets primed when a print starts by printing a small line, called a prime line.
+A skirt is one or more loops printed around the objects on the build plate, where there's a gap between the loops and the objects (not touching). The purpose of a skirt is to prime the nozzle. It's typically not required on the H2S because the nozzle already gets primed when a print starts by printing a small line, called a prime line.
 
 Nevertheless, skirt loops can be enabled through the property **Other** → **Bed Adhesion** → **Skirt loops** and **Skirt !!height!!**. The example below has 4 loops set at a layer height of 2.
 
@@ -1878,7 +1884,7 @@ Bambu Studio/User Interface_TOPIC
 A brim is several outer walls added around the bottom layer of a printed object, such that the object has a bottom similar to the brim of a top hat. Its purpose is to enhance bed adhesion of objects ...
 
 * with a small !!base!! (e.g., a tall cylinder with a small radius).
-* that are prone to warping at the bottom edges, lifting off the build plate as they warp (e.g., ABS is prone to this because it shrinks with it cools).
+* that are prone to warping at the bottom edges, lifting off the build plate as they warp (e.g., ABS is prone to this because it shrinks as it cools).
 
 Brim parameters are under **Other** → **Bed Adhesion**.
 
@@ -1922,7 +1928,8 @@ Bambu Studio/Failure Modes/Elephant Foot_TOPIC
 ```{prereq}
 Bambu Studio/Object Painting_TOPIC
 ```
-A brim ear is a point / stretch of brim at user-defined locations around the bottom of an object. Similar to object painting, the placement of brim ears can be painted on to the object. In the Prepare screen's 3D viewport, select the object and paint brim ears by using the brim ear tool in Prepare screen's toolbar (button 18, keyboard shortcut E), which will present a pop-up with scaling parameters / controls.
+
+A brim ear is a point / stretch of brim at user-defined locations around the bottom of an object. Similar to object painting, the placement of brim ears can be painted on to the object. In the Prepare screen's 3D viewport, select the object and paint brim ears by using the brim ear tool in Prepare screen's toolbar (button 18, keyboard shortcut E), which will present a pop-up with painting parameters / controls.
 
 ![Bambu Studio Prepare screen toolbar](bambu_studio_prepare_toolbar.png)
 
@@ -2415,11 +2422,11 @@ For more information, see the source.
   * enables multi-color and multi-material prints by swapping between filament spools during printing.
   * automatically switches between filament spools if a filament spool runs out during printing.
   * automatically identifies the color and type of filament spools (only for official Bambu Lab filaments, using RFID). 
-  * drying filament spools (up to 65 celsius).
+  * dries filament spools (up to 65 celsius).
 
   The AMS 2 Pro !!supports!! 4 spools per unit, and !!supports!! chaining up to 4 AMS 2 Pro units together to !!support!! up to 16 spools per print. Additionally, the 4 chained AMS 2 Pro units may be chained up even further by 8 AMS HT units, enabling up to 24 spools per print.  `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/232` `{ref} https://us.store.bambulab.com/products/ams-multicolor-printing`
 
-* `{bm} Automatic Material System High Temperature (AMS HT)/(AMS HT)/` `{bm} /(Automatic Material System High Temperature)/i` - Automatic Material System High Temperature, an extension to the H2S that manages handling engineering-grade high-temperature filaments that are sensitive to moisture (e.g., PPS and PPA). It has better a better motor, filament drying (up to 85 celsius), and better humidity control than the AMS 2 Pro. However, it only seems to !!support!! 1 spool.
+* `{bm} Automatic Material System High Temperature (AMS HT)/(AMS HT)/` `{bm} /(Automatic Material System High Temperature)/i` - Automatic Material System High Temperature, an extension to the H2S that manages handling engineering-grade high-temperature filaments that are sensitive to moisture (e.g., PPS and PPA). It has a better motor, filament drying (up to 85 celsius), and better humidity control than the AMS 2 Pro. However, it only seems to !!support!! 1 spool.
 
   `{bm-error} Did you mean AMS 2 Pro or AMS HT?/(AMS\s?Pro\s?2|AMS\s?2|AMS\s?Pro|\bAMS\b)/i`
 
@@ -2438,11 +2445,11 @@ For more information, see the source.
   * a part cooling fan.
   * a filament cutter.
   
-  Filament enters the nozzle through the PTFE connector located at the top, where the extruder motor grabs it and pushes it into the hotend located at the bottom. The hotend's nozzle poking out of the enclosure is sandwiched between cooling ducts, where the part cooling fan directs air to rapidly cool filament as its printed.
+  Filament enters the nozzle through the PTFE connector located at the top, where the extruder motor grabs it and pushes it into the hotend located at the bottom. The hotend's nozzle poking out of the enclosure is sandwiched between cooling ducts, where the part cooling fan directs air to rapidly cool filament as it's printed.
 
   ![toolhead front diagram](toolhead.drawio.svg)
 
-  The bottom bottom right-side of the toolhead has a toolhead camera attached. The toolhead moves left-right on the X-Axis linear rail. The X-Axis linear rail itself moves forward and backward on the Y-Axis. These rails are how the toolhead positions itself for printing. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+  The bottom right-side of the toolhead has a toolhead camera attached. The toolhead moves left-right on the X-Axis linear rail. The X-Axis linear rail itself moves forward and backward on the Y-Axis. These rails are how the toolhead positions itself for printing. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 
   ```{note}
   It sounds like the camera and the part cooling fan (and the railing) are not a part of the toolhead itself? These are attachments.
@@ -2465,7 +2472,7 @@ For more information, see the source.
   * coldend - keeps filament at lower temperature.
   * nozzle - heated to melt the filament and deposit it onto a print.
   
-  A silicone sock fits over nozzle, insulating it from the cooling from the part cooling fan.
+  A silicone sock fits over the nozzle, insulating it from the cooling from the part cooling fan.
 
   ```{note}
   In the documentation, the coldend is also referred to as a heat sink.
@@ -2482,7 +2489,7 @@ For more information, see the source.
   `{bm-error} Did you mean hotend (no space)?/(hot\s+end)/i`
   `{bm-error} Did you mean coldend (no space)?/(cold\s+end)/i`
 
-* `{bm} part cooling fan` - A fan located at the !!base!! of the toolhead. The part cooling fan directs are to the cooling ducts that sandwich the tip of the hotend's nozzle, rapidly cooling printed filament. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+* `{bm} part cooling fan` - A fan located at the !!base!! of the toolhead. The part cooling fan directs air to the cooling ducts that sandwich the tip of the hotend's nozzle, rapidly cooling printed filament. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 
   `{bm-error} Did you mean part cooling fan?/(cooling part fan)/i`
 
@@ -2542,7 +2549,7 @@ For more information, see the source.
 * `{bm} Textured PEI Plate` - A build plate with a slightly rough surface, primarily targeting PLA. The texturing makes enables better first layer adhesion and allows for the print to self-release (some filament materials only). `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/220` `{ref} https://us.store.bambulab.com/products/bambu-textured-pei-plate`
 
 
-* `{bm} Smooth PEI Plate` - A build plate with a smooth surface, compatible with various filament types (especially PLA). Unlike the Texture PEI Plate, the smoothness of this plate contributes Z-axis precision. `{ref} https://us.store.bambulab.com/products/bambu-smooth-pei-plate`
+* `{bm} Smooth PEI Plate` - A build plate with a smooth surface, compatible with various filament types (especially PLA). Unlike the Textured PEI Plate, the smoothness of this plate contributes Z-axis precision. `{ref} https://us.store.bambulab.com/products/bambu-smooth-pei-plate`
 
 * `{bm} Engineering Plate` - A build plate compatible with all filament materials but requires a layer of glue before printing. Although compatible with all filament materials, the Engineering Plate targets high temperature filament materials. `{ref} https://us.store.bambulab.com/products/bambu-engineering-plate`
 
@@ -2566,7 +2573,7 @@ For more information, see the source.
 
   When an AMS 2 Pro unit is connected, the unit's motor pushes filament into the filament buffer thereby storing a small buffer of filament. When the extruder consumes the filament in the filament buffer, the filament buffer slides backward. A sensor in the filament buffer feeds back to the AMS 2 Pro unit's motor to control filament feeding speed.
 
-  When the external spool holder is used, the buffer acts as an entanglement sensor. When the spool is tangled, the tension of the extruder pulling is detected by the filament buffer thereby cause the print to pause and the user to be prompted.
+  When the external spool holder is used, the buffer acts as an entanglement sensor. When the spool is tangled, the tension of the extruder pulling is detected by the filament buffer thereby causing the print to pause and the user to be prompted.
 
   ![filament buffer and TPU inlet placement](tpu_inlet.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 
@@ -2574,7 +2581,7 @@ For more information, see the source.
   If printing TPU, unless it's specifically branded as !!TPU for AMS!!, bypass the filament buffer via the TPU inlet. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/`
   ```
 
-* `{bm} TPU inlet` - An inlet that bypasses the filament buffer, specifically intended for TPU filament (that isn't branded as !!TPU for AMS!!). The inlet in positioned just to the right of the filament buffer, feeding the PTFE directly from the exterior into the chamber. The PTFE tube used for the TPU inlet may either be the same PTFE tube attaching the filament buffer to the toolhead (disconnecting it and reconnecting it to the TPU inlet) or a separate PTFE tube.
+* `{bm} TPU inlet` - An inlet that bypasses the filament buffer, specifically intended for TPU filament (that isn't branded as !!TPU for AMS!!). The inlet is positioned just to the right of the filament buffer, feeding the PTFE directly from the exterior into the chamber. The PTFE tube used for the TPU inlet may either be the same PTFE tube attaching the filament buffer to the toolhead (disconnecting it and reconnecting it to the TPU inlet) or a separate PTFE tube.
 
   ![filament buffer and TPU inlet placement](tpu_inlet.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 
@@ -2584,7 +2591,7 @@ For more information, see the source.
 
 * `{bm} purge wiper/(purge wiper|purge chute|nozzle wiper)/i` - A block at the back left of the H2S responsible for cleaning the toolhead between prints / filament changes. The purge wiper consists of ...
 
-  * a nozzle wiper, which is silicone waffle and strips.
+  * a nozzle wiper, which consists of a silicone waffle and strips.
   * a purge chute, which is a chute leading to outside the chamber.
   
   The toolhead knocks into the waffle / strips to clean off old stuck filament, sending it down the purge chute.
@@ -2623,11 +2630,11 @@ For more information, see the source.
 
 * `{bm} filament spool/(filament spool|spool)/i` - A !!spool!! holding rolled up filament, which can be installed either in the AMS 2 Pro or the external spool holder. A filament spool can either be made of ...
 
-  * plastic: Most filament materials are wound up on plastic filament spools. Bambu Lab branded plastic filament spools twist apart, allowing them to be refilled once all the existing filament is used up.
+  * plastic: Most filament materials are wound up on plastic filament spools. Bambu Lab branded plastic filament spools twist-apart, allowing them to be refilled once all the existing filament is used up.
   * cardboard: High temperature filament materials are wound up on cardboard filament spools because those high temperatures may cause plastic filament spools to melt (e.g., PPS-CF). Cardboard filament spools are incompatible with the AMS 2 Pro. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/231`
 
   ```{note}
-  Reusing a Bambu Lab plastic filament spool? Make sure you buy filament marketed as refill. I don't believe it has the be the same color or even the same material.
+  Reusing a Bambu Lab plastic filament spool? Make sure you buy filament marketed as refill. I don't believe it has to be the same color or even the same material.
   ```
 
 * `{bm} Stereolithography (STL)/\b(STL)\b/` `{bm} /(stereolithography)/i` - File format for single 3D object's geometry, stored as triangles. It does not contain any other information such as color or texture. `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214`
