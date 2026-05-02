@@ -8,15 +8,188 @@
 ```{toc}
 ```
 
+# Hardware
+
+`{bm} /(Hardware)_TOPIC/i`
+
+The H2S is enclosed on all sides in the shape of a rectangular prism. The inside of the prism is referred to as the chamber, which is climate controlled contains all the machinery for 3D printing. `{ref} https://wiki.bambulab.com/en/h2s`
+
+The subsections below detail the machinery within the chamber.
+
+## Toolhead
+
+`{bm} /(Hardware\/Toolhead)_TOPIC/i`
+
+The machinery responsible for laying down material is the toolhead. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227` The toolhead is an assembly consisting of ...
+
+* a PTFE connector.
+* a filament sensor: Sensor detecting the presence of filament in the toolhead, located where the filament is fed into the toolhead. The filament sensor prevents printing without filament, allowing prints to resume once new filament is available. `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214`
+* an extruder: Motor within the toolhead that grips and moves filament between the PTFE connector to the hotend
+* a hotend with nozzle: Assembly responsible for melting filament for deposit on to a print. A hotend includes a ...
+
+  * coldend - keeps filament at lower temperature.
+  * nozzle - heated to melt the filament and deposit it onto a print.
+  
+  A silicone sock fits over nozzle, insulating it from the cooling from the part cooling fan.
+
+  ![hotend diagram](hotend.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+* a part cooling fan: Fan located at the !!base!! of the toolhead. The part cooling fan directs are to the cooling ducts that sandwich the tip of the hotend's nozzle, rapidly cooling printed filament. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+* a filament cutter: Upright arm on the toolhead's right face. The filament cutter gets pushed into the filament cutter stopper, which is an arm located on the right inside face near the rear (close to motor A just above the Y-axis linear rod), to push it into the filament thereby cutting it. The filament cutter stopper rotates out in position when cutting and rotates back to be stowed away afterwards. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227` `{ref} https://wiki.bambulab.com/en/h2s/maintenance/replace-cutter-lever`
+* a camera: Camera attached to the toolhead, used for calibrating motion accuracy and build plate recognition. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+  
+Filament enters the nozzle through the PTFE connector located at the top, where the extruder motor grabs it and pushes it into the hotend located at the bottom. The hotend's nozzle poking out of the toolhead enclosure is sandwiched between cooling ducts, where the part cooling fan directs air to rapidly cool filament as its printed.
+
+![toolhead front diagram](toolhead.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+```{seealso}
+Hardware/Filament Inlet_TOPIC
+```
+
+## Heatbed
+
+`{bm} /(Hardware\/Heatbed)_TOPIC/i`
+
+```{prereq}
+Hardware/Toolhead_TOPIC
+```
+
+As the name suggests, the heatbed is a heat controlled surface within the H2S. It magnetically secures a build plate, which is a swappable part that serves as the print surface (build plate types have different properties / target different filament materials). Depending on the material being printed, the heatbed's controlled heating may be required or otherwise beneficial for print quality (e.g., adhesion and / or reducing printing artifacts).
+
+![H2S heatbed placement](h2s_movement.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+## Movement System
+
+`{bm} /(Hardware\/Movement System)_TOPIC/i`
+
+```{prereq}
+Hardware/Toolhead_TOPIC
+Hardware/Heatbed_TOPIC
+```
+
+The toolhead moves on the XY plane the CoreXY system, H2S's system for moving the toolhead front-back and left-right. The system is comprised of a pair of synchronized motors at the rear face of the chamber responsible for moving the toolhead on the X and Y axes: A motor and B motor. The motors are located at the rear inside face of the H2S, near the top. The B motor is on the left and the A motor is on the top.
+
+The motors connect through the X-axis linear rail and the Y-axis linear rods via a pair of belts. The ...
+  
+* X-axis linear rail is responsible for left-right toolhead movement.
+* Y-axis linear rods is responsible for forward-backward toolhead movement (it moves the X-axis linear rail forward-backward).
+  
+Both motors work in tandem to coordinate movement in both directions (e.g., one motor isn't solely responsible on an axis).
+
+The toolhead doesn't move on the Z-axis. Instead, depth is controlled by moving the heatbed down as layers are printed out from bottom-to-top. The Z-axis threaded and linear rods are responsible for moving the heatbed.
+
+![H2S movement](h2s_movement.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+## Nozzle Cleaning  System
+
+`{bm} /(Hardware\/Nozzle Cleaning System)_TOPIC/i`
+
+```{prereq}
+Hardware/Toolhead_TOPIC
+Hardware/Heatbed_TOPIC
+Hardware/Movement System_TOPIC
+```
+
+The H2S has 2 mechanisms to clean the wiper. The first mechanism is the purge wiper, a block at the back left of the H2S responsible for cleaning the toolhead between prints / filament changes. The purge wiper consists of ...
+
+* a nozzle wiper, which is silicone waffle and strips.
+* a purge chute, which is a chute leading to outside the chamber.
+  
+The toolhead knocks into the waffle / strips to clean off old stuck filament, sending it down the purge chute.
+
+![purge wiper placement](purge_wiper.drawio.svg) ![purge wiper top view](purge_wiper_top_view.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227` `{ref} https://wiki.bambulab.com/en/h2s/maintenance/replace-purge-wiper`
+
+The second mechanism is the nozzle wiper sheet, a sheet on the edge of the heatbed that the nozzle moves across to keep the tip smooth and free of debris. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+## Climate Control System
+
+`{bm} /(Hardware\/Climate Control System)_TOPIC/i`
+
+```{prereq}
+Hardware/Heatbed_TOPIC
+```
+
+In addition the heatbed and the hotend, there are several additional climate control mechanisms within the H2S. These all work in tandem to appropriately heat and cool filament material:
+
+* Chamber heat circulation fan: Heater located at the rear face of the H2S, used to increase the chamber's temperature. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227` `{ref} https://wiki.bambulab.com/en/h2s/manual/screen-operation#h-1-air-management`
+* Chamber exhaust fan: Fan located at the rear face of the H2S, exhausting air out of the chamber. The chamber exhaust fan may have a filter in front of it, referred to as the chamber filter, that partially filters air as it's exhausted out of the chamber. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+* Chamber intake vent: Flap located at the top face of the H2S bordering the front, which opens to allow outside air in when the exhaust fan is running.  `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+* Auxiliary part cooling fan: Fan on the left face of the H2S that provides additional cooling, supplementing the cooling from the part cooling fan. The auxiliary part cooling fan layers an airflow blanket over the freshly printed layer, !!supporting!! quick and even solidifying of the layer and thereby reducing the likelihood of deformations and / or poor layer adhesion. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+![H2S climate control](h2s_ac.drawio.svg) ![H2S auxiliary part cooling fan](auxiliary_part_cooling_fan.drawio.svg)
+
+## Status Light
+
+`{bm} /(Hardware\/Status Light)_TOPIC/i`
+
+```{prereq}
+Hardware/Heatbed_TOPIC
+```
+
+Just below the heatbed, facing forward and running side-to-side, is a light bar just below the heatbed. The light bar, referred to as the status light, changes color to show the operating status of the H2S:
+
+* White slow pulse (or off): Idle.
+* Orange scroll: Print job preparing.
+* White left-to-right fill: Print job progress.
+* Red double flash: Print error.
+* Green solid: Print successful. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+## Automatic Material System 2 Pro
+
+`{bm} /(Hardware\/Automatic Material System 2 Pro)_TOPIC/i`
+
+Automatic Material System 2 Pro is an extension to the H2S that manages multiple filaments. The AMS 2 Pro ...
+  
+* enables multi-color and multi-material prints by swapping between filament spools during printing.
+* automatically switches between filament spools if a filament spool runs out during printing.
+* automatically identifies the color and type of filament spools (only for official Bambu Lab filaments, using RFID). 
+* drying filament spools (up to 65 celsius).
+
+The AMS 2 Pro !!supports!! 4 spools per unit, and !!supports!! chaining up to 4 AMS 2 Pro units together to !!support!! up to 16 spools per print. Additionally, the 4 chained AMS 2 Pro units may be chained up even further by 8 AMS HT units, enabling up to 24 spools per print.
+
+![AMS 2 Pro top diagram](ams2.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/232` `{ref} https://us.store.bambulab.com/products/ams-multicolor-printing`
+
+## Filament Inlet
+
+`{bm} /(Hardware\/Filament Inlet)_TOPIC/i`
+
+```{prereq}
+Hardware/Heatbed_TOPIC
+```
+
+The H2S's chamber has 2 inlets to feed filament to the toolhead, one specifically for TPU and one specifically for non-TPU. The non-TPU inlet passes filament through a filament buffer, a tension-control / slack-management device at the rear face of the H2S. The filament buffer slides forward and backward, storing a small buffer of filament as it slides forward.
+
+When the non-TPU inlet is hooked up to ...
+
+* an AMS 2 Pro unit, the unit's motor pushes filament into the filament buffer thereby storing a small buffer of filament. When the extruder consumes the filament in the filament buffer, the filament buffer slides backward. A sensor in the filament buffer feeds back to the AMS 2 Pro unit's motor to control filament feeding speed.
+* the external spool holder is used, the buffer acts as an entanglement sensor. When the spool is tangled, the tension of the extruder pulling is detected by the filament buffer thereby cause the print to pause and the user to be prompted.
+
+The TPU inlet bypasses the filament buffer. The inlet in positioned just to the right of the filament buffer, feeding the PTFE directly from the exterior into the chamber. The PTFE tube used for the TPU inlet may either be the same PTFE tube attaching the filament buffer to the toolhead (disconnecting it and reconnecting it to the TPU inlet) or a separate PTFE tube.
+
+![filament buffer and TPU inlet placement](tpu_inlet.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+
+```{note}
+In some cases, you may be able to use TPU for with the non-TPU inlet. If you're using an AMS 2 Pro and your TPU is specifically branded as !!TPU for AMS!!, you can use it. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/`
+```
+
 # Operation
+
+`{bm} /(Operation)_TOPIC/i`
+
+```{prereq}
+Hardware_TOPIC
+```
 
 The subsections below detail high-level operational guidelines of the H2S.
 
 ## Operational Placement
 
+`{bm} /(Operation\/Operational Placement)_TOPIC/i`
+
 The H2S must be placed on a flat and stable surface. The operating space recommended is 80cm !!width!! x 102cm depth x 105cm !!height!!, which covers the space required in the back for the exhaust and an AMS 2 Pro to sit on top. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/224`
 
 ## Operational Climate
+
+`{bm} /(Operation\/Operational Climate)_TOPIC/i`
 
 The H2S is recommended to be operated in temperatures between between 15-30C (60-85F). If the temperature is ...
 
@@ -26,6 +199,8 @@ The H2S is recommended to be operated in temperatures between between 15-30C (60
 The chamber has an assortment of fans and vents to circulate cool air / blow out hor air (e.g., chamber exhaust fan, auxiliary part cooling fan, and chamber intake vent), but in warmer climates that may not be enough. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/224`
 
 ## Auto-calibration
+
+`{bm} /(Operation\/Auto-calibration)_TOPIC/i`
 
 H2S's auto-calibration attempts to adjust itself to account for the expected variances between manufactured H2S printers and variances caused by wear. Examples of calibrations include bed leveling (working around variances in the heatbed), motor noise cancellation, and vibration compensation.
 
@@ -40,6 +215,8 @@ There are optional modules to perform even tighter calibration. Specifically, th
 ```
 
 ## Filament Loading
+
+`{bm} /(Operation\/Filament Loading)_TOPIC/i`
 
 Filament can be loaded through either an !!AMS!! unit (e.g., AMS 2 Pro or AMS HT) or the external spool holder. The external spool holder is used when ...
 
@@ -86,6 +263,8 @@ To load filament using the external spool holder, ...
 
 ## Filament Refill
 
+`{bm} /(Operation\/Filament Refill)_TOPIC/i`
+
 Most Bambu Lab filaments come wound up on twist apart spools. Once the filament on the spool has been all used up, a refill may be purchased (refill means filament without a spool) and reinserted into the empty spool. Refills come pre-wound ready to be inserted directly on to the spool.
 
 To refill a spool ...
@@ -101,6 +280,8 @@ Depending on the type of material, some filaments come wound up on cardboard spo
 ![filament refill diagram](filament_refill.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/231`
 
 ## User Interface
+
+`{bm} /(Operation\/User Interface)_TOPIC/i`
 
 The H2S's UI is exposed via a touch screen on the exterior of the front face, located on the top left.
 
@@ -118,9 +299,13 @@ The subsections below provide instructions on how to navigate to important parts
 
 ### Calibration
 
+`{bm} /(Operation\/User Interface\/Calibration)_TOPIC/i`
+
 To calibrate the H2S, navigate to **[Settings]** → **Calibration** → **Print Calibration**, select the desired calibrations and hit **Start**. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
 
 ### Print
+
+`{bm} /(Operation\/User Interface\/Print)_TOPIC/i`
 
 To print, navigate to **[Home]** → **Print Files** and select the drive and file to load. Two drives should be present:
 
@@ -131,6 +316,8 @@ One a file is chosen, select the appropriate **Plate** and **Nozzle** (H2S comes
 
 ### Print Speed
 
+`{bm} /(Operation\/User Interface\/Print Speed)_TOPIC/i`
+
 To configure the printing speed, navigate to **[Controls]** → **Speed** and select either **Silent**, **Standard** (default), **Sport**, or **Ludicrous**. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
 
 ```{note}
@@ -138,6 +325,8 @@ An introductory YouTube video I watched mentioned that the faster the speed is, 
 ```
 
 ### Toolhead and Heatbed Movement
+
+`{bm} /(Operation\/User Interface\/Toolhead and Heatbed Movement)_TOPIC/i`
 
 To perform movements of the toolhead (XZ axis) and heatbed (Y axis), navigate to **[Controls]** → **Motion** and tap the adjustment buttons as necessary. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
 
@@ -147,6 +336,8 @@ This seems to only be for testing purposes and moving things to get at parts? I 
 
 ### Extruder Movement
 
+`{bm} /(Operation\/User Interface\/Extruder Movement)_TOPIC/i`
+
 To perform adhoc extrusion and retraction of filament, navigate to **[Controls]** → **Nozzle & Extruder** and use the up/down buttons under **Extruder**. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
 
 ```{note}
@@ -155,9 +346,13 @@ This seems to be for testing purposes. But also, does this have to be done when 
 
 ### Nozzle Type
 
+`{bm} /(Operation\/User Interface\/Nozzle Type)_TOPIC/i`
+
 When nozzle has been swapped, navigate to **[Controls]** → **Nozzle & Extruder** and select the nozzle's type under **Nozzle**. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
 
 ### Nozzle Temperature
+
+`{bm} /(Operation\/User Interface\/Nozzle Temperature)_TOPIC/i`
 
 To set the nozzle's temperature, navigate to **[Controls]** → **Nozzle & Extruder** and select the nozzle's temperature under **Nozzle**. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
 
@@ -167,6 +362,8 @@ This seems to only be for testing purposes and doesn't apply to any prints? AFAI
 
 ### Heatbed Temperature
 
+`{bm} /(Operation\/User Interface\/Heatbed Temperature)_TOPIC/i`
+
 To set the heatbed's temperature, navigate to **[Controls]** → **Heatbed** and select the temperature. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
 
 ```{note}
@@ -174,6 +371,8 @@ This seems to only be for testing purposes and doesn't apply to any prints? AFAI
 ```
 
 ### Chamber Temperature
+
+`{bm} /(Operation\/User Interface\/Chamber Temperature)_TOPIC/i`
 
 To set the chamber's temperature, navigate to **[Controls]** → **Chamber** and select the temperature. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
 
@@ -183,9 +382,13 @@ This seems to only be for testing purposes and doesn't apply to any prints? AFAI
 
 ### Chamber Light
 
+`{bm} /(Operation\/User Interface\/Chamber Light)_TOPIC/i`
+
 To turn the chamber's light on/off, navigate to **[Controls]** and toggle the **Light** switch. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
 
 ### Heating and Cooling
+
+`{bm} /(Operation\/User Interface\/Heating and Cooling)_TOPIC/i`
 
 To configure the H2S's internal climate, navigate to **[Controls]** → **Air Condition** and select either **Cooling** or **Heating**. Individual parts that control the climate (e.g., fans, heaters, and exhausts) are listed and can be individually controlled. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
 
@@ -196,9 +399,13 @@ When the mode is set to ...
 
 ### Filament Type
 
+`{bm} /(Operation\/User Interface\/Filament Type)_TOPIC/i`
+
 To select which filaments are in the AMS 2 Pro and / or external spool holder, navigate to **[Filament]** and select the desired spool to input the type, color, and manufacturer of filament. Bambu Lab filaments come with RFID that allows the AMS 2 Pro to automatically identify material and color. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
 
 ### Filament Auto Refill
+
+`{bm} /(Operation\/User Interface\/Filament Auto Refill)_TOPIC/i`
 
 When a filament runs out, the H2S and attached AMS 2 Pro unit automatically swap to a second spool to continue printing, provided that second spool has the same brand, color, and material of the original spool being printed with. To enable auto refill, navigate to **[Settings]** → **!!AMS!! Options** and select **!!AMS!! Auto-Refill**. . Then, navigate to **[Filament]**, select the wrench icon, and select **Auto Refill** to view refill relationships. `{ref} https://wiki.bambulab.com/en/ams-2-pro/manual/setup-and-printting#ams-auto-refill`.
 
@@ -207,6 +414,8 @@ On the H2D, there are 2 extruders (left and right) and apparently each of the H2
 ```
 
 ### Filament Drying
+
+`{bm} /(Operation\/User Interface\/Filament Drying)_TOPIC/i`
 
 To dry filament, ensure the spool is loaded into the AMS 2 Pro and navigate to **[Filament]** and find the water droplet icon. Below the icon should be a humidity sensor reading. Select the water droplet icon and either ...
 
@@ -337,6 +546,11 @@ Textured PEI Plate's buy page (where the Textured PEI portion of the table above
 
 `{bm} /(Bambu Studio)_TOPIC/i`
 
+```{prereq}
+Hardware_TOPIC
+Operation_TOPIC
+```
+
 Bambu Studio is H2S's desktop software. It provides access to MakerWorld (a repository of printable object), processes 3D models for printing by slicing them, and controls and gets feedback from the H2S. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/228` Bambu Studio works with many brands of 3D printers, not just Bambu Lab printers. `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/31`.
 
 ```{note}
@@ -421,7 +635,7 @@ The sidebar contains a ...
 `{bm} /(Bambu Studio\/User Interface\/Project Filaments)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/User Interface/3D Viewport
+Bambu Studio/User Interface/3D Viewport_TOPIC
 ```
 
 Bambu Studio has a section for defining which filaments are available to a project. The Project Filaments section is in the sidebar of the Prepare screen and the Preview screen.
@@ -456,8 +670,8 @@ Bambu Studio/Object Rotation_TOPIC
 `{bm} /(Bambu Studio\/User Interface\/Print Parameters)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/User Interface/3D Viewport
-Bambu Studio/User Interface/Project Filaments
+Bambu Studio/User Interface/3D Viewport_TOPIC
+Bambu Studio/User Interface/Project Filaments_TOPIC
 ```
 
 Bambu Studio has a section for defining how models and model groupings (assemblies) are printed. The Process section is in the sidebar of the Prepare screen and the Preview screen.
@@ -484,7 +698,7 @@ A full accounting of parameters is beyond the scope of this section. Individual 
 `{bm} /(Bambu Studio\/User Interface\/Print Preview)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/User Interface/3D Viewport
+Bambu Studio/User Interface/3D Viewport_TOPIC
 ```
 
 Bambu Studio will slice the objects on the build plate whenever ...
@@ -2281,7 +2495,7 @@ For more information, see the source.
   
   Both motors work in tandem to coordinate movement in both directions (e.g., one motor isn't solely responsible on an axis).
   
-  ![Core XY placement](h2s_movement.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
+  ![CoreXY placement](h2s_movement.drawio.svg) `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 
   ```{note}
   There's also Z-axis threaded and linear rods, responsible for moving the heatbed up-down. It's unclear if these rods are part of the CoreXY movement system. Their description is included under the CoreXY system but it feels separate as it's not controlling the toolhead's position but the heatbed's position. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
@@ -2334,7 +2548,7 @@ For more information, see the source.
 
 * `{bm} vision encoder` - A calibration tool used to compensate for natural and wear related variances, allowing for high accuracy prints that can tightly assembly. The vision encoder is a slab that sits on the heatbed, shaped similarly to a build plate. However, it's only used for calibration and not meant to be printed on (replace with build plate once calibrated). `{ref} https://us.store.bambulab.com/products/vision-encoder?id=601545719002021889`
 
-* `{bm} chamber` - The enclosure of the H2S, encapsulating everything within (e.g., toolhead, motors, heatbed, CoreXY system, and fans).
+* `{bm} chamber` - The enclosure of the H2S, climate controlled and encapsulating everything within (e.g., toolhead, motors, heatbed, CoreXY system, and fans). `{ref} https://wiki.bambulab.com/en/h2s`
 
 * `{bm} chamber heat circulation fan/(chamber heat circulation fan|heat circulation fan)/i` - A heater located at the rear face of the H2S, used to increase the chamber's temperature. The increased temperature is required for some filament materials which warp or have other issues if cooled too rapidly.
 

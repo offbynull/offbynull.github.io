@@ -2,7 +2,7 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Bambu Studio/User Interface/3D Viewport
+ * Hardware/Toolhead_TOPIC
 
 </div>
 

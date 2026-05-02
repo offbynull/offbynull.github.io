@@ -2,8 +2,8 @@
 
 <strong>↩PREREQUISITES↩</strong>
 
- * Bambu Studio/User Interface/3D Viewport
- * Bambu Studio/User Interface/Project Filaments
+ * Hardware_TOPIC
+ * Operation_TOPIC
 
 </div>
 
