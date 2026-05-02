@@ -67,34 +67,36 @@
 <ul>
 <li><a href="#H_Variable%20Layer%20Height">Variable Layer Height</a></li>
 </ul>
-<li><a href="#H_Seam">Seam</a></li>
+<li><a href="#H_Line%20Width">Line Width</a></li>
+<li><a href="#H_Object%20Seam">Object Seam</a></li>
 <ul>
 <li><a href="#H_Algorithmic%20Seam%20Placement">Algorithmic Seam Placement</a></li>
 <li><a href="#H_Seam%20Painting">Seam Painting</a></li>
 <li><a href="#H_Scarf%20Seam">Scarf Seam</a></li>
 </ul>
-<li><a href="#H_Curved%20Tops">Curved Tops</a></li>
 <li><a href="#H_Fuzzy%20Skin">Fuzzy Skin</a></li>
 <ul>
 <li><a href="#H_Fuzzy%20Skin%20Painting">Fuzzy Skin Painting</a></li>
 </ul>
 <li><a href="#H_Skirt">Skirt</a></li>
-<li><a href="#H_Brims">Brims</a></li>
+<li><a href="#H_Object%20Brims">Object Brims</a></li>
 <ul>
 <li><a href="#H_Brim%20Ears">Brim Ears</a></li>
 </ul>
-<li><a href="#H_Walls">Walls</a></li>
-<li><a href="#H_Infill">Infill</a></li>
-<li><a href="#H_Diagnostics">Diagnostics</a></li>
+<li><a href="#H_Object%20Walls">Object Walls</a></li>
+<li><a href="#H_Object%20Infill">Object Infill</a></li>
+<li><a href="#H_Failure%20Modes">Failure Modes</a></li>
 <ul>
-<li><a href="#H_XY%20Hole%20Contour%20Compensation">XY Hole Contour Compensation</a></li>
-<li><a href="#H_Elephant%20Foot%20Compensation">Elephant Foot Compensation</a></li>
-<li><a href="#H_Flow%20Dynamics%20Calibration">Flow Dynamics Calibration</a></li>
-<li><a href="#H_Flow%20Ratio%20Calibration">Flow Ratio Calibration</a></li>
-<li><a href="#H_Slicer%20Results">Slicer Results</a></li>
+<li><a href="#H_XY%20Hole%20and%20Contour%20Fit">XY Hole and Contour Fit</a></li>
+<li><a href="#H_XY%20Hole%20and%20Contour%20Gap">XY Hole and Contour Gap</a></li>
+<li><a href="#H_XY%20Hole%20and%20Contour%20Thinness">XY Hole and Contour Thinness</a></li>
+<li><a href="#H_Z%20Aliasing">Z Aliasing</a></li>
+<li><a href="#H_Elephant%20Foot">Elephant Foot</a></li>
+<li><a href="#H_Flow%20Dynamics">Flow Dynamics</a></li>
+<li><a href="#H_Flow%20Ratio">Flow Ratio</a></li>
 </ul>
+<li><a href="#H_Slicer%20Diagnostics">Slicer Diagnostics</a></li>
 </ul>
-<li><a href="#H_TODO">TODO</a></li>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
 </div>
@@ -246,8 +248,8 @@
 <p>To configure the H2S's internal climate, navigate to <strong>[Controls]</strong> → <strong>Air Condition</strong> and select either <strong>Cooling</strong> or <strong>Heating</strong>. Individual parts that control the climate (e.g., fans, heaters, and exhausts) are listed and can be individually controlled. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
 <p>When the mode is set to ...</p>
 <ul>
-<li>cooling, the <a href="#BM_(chamber%20heat%20circulation%20fan%7Cheat%20circulation%20fan)%2Fi">chamber heat circulation fan</a> remains off and the <a href="#BM_(filter%20switch%20flap)%2Fi">filter switch flap</a> is positioned down. Cooling mode should be used for filaments that have low <a href="#BM_(heat%20resistance)%2Fi">heat resistance</a> (e.g. <a href="#BM_%5Cb(PLA)%5Cb%2F">PLA</a> and <a href="#BM_%5Cb(TPU)%5Cb%2F">TPU</a>).</li>
-<li>heating, the <a href="#BM_(chamber%20heat%20circulation%20fan%7Cheat%20circulation%20fan)%2Fi">chamber heat circulation fan</a> automatically turns on, the <a href="#BM_(auxiliary%20part%20cooling%20fan)%2Fi">auxiliary part cooling fan</a> remains off, and the <a href="#BM_(filter%20switch%20flap)%2Fi">filter switch flap</a> is positioned up. Heating mode should be used for filaments with high <a href="#BM_(heat%20resistance)%2Fi">heat resistance</a> (e.g., <a href="#BM_%5Cb(ABS)%5Cb%2F">ABS</a>, <a href="#BM_%5Cb(ASA)%5Cb%2F">ASA</a>, <a href="#BM_%5Cb(PC)%5Cb%2F">PC</a>, and <a href="#BM_%5Cb(PA%5Cd*%7CPAHT)%5Cb%2F">PA</a>). <sub><a href="https://wiki.bambulab.com/en/h2/manual/cooling-fan-system">[src]</a></sub></li>
+<li>cooling, the <a href="#BM_(chamber%20heat%20circulation%20fan%7Cheat%20circulation%20fan)%2Fi">chamber heat circulation fan</a> remains off and the filter switch flap is positioned down. Cooling mode should be used for filaments that have low heat resistance (e.g. <a href="#BM_%5Cb(PLA)%5Cb%2F">PLA</a> and <a href="#BM_%5Cb(TPU)%5Cb%2F">TPU</a>).</li>
+<li>heating, the <a href="#BM_(chamber%20heat%20circulation%20fan%7Cheat%20circulation%20fan)%2Fi">chamber heat circulation fan</a> automatically turns on, the <a href="#BM_(auxiliary%20part%20cooling%20fan)%2Fi">auxiliary part cooling fan</a> remains off, and the filter switch flap is positioned up. Heating mode should be used for filaments with high heat resistance (e.g., <a href="#BM_%5Cb(ABS)%5Cb%2F">ABS</a>, <a href="#BM_%5Cb(ASA)%5Cb%2F">ASA</a>, <a href="#BM_%5Cb(PC)%5Cb%2F">PC</a>, and <a href="#BM_%5Cb(PA%5Cd*%7CPAHT)%5Cb%2F">PA</a>). <sub><a href="https://wiki.bambulab.com/en/h2/manual/cooling-fan-system">[src]</a></sub></li>
 </ul>
 <a name="H_Filament%20Type"></a><h3>Filament Type</h3>
 <p>To select which filaments are in the <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> and / or <a href="#BM_(external%20spool%20holder)%2Fi">external spool holder</a>, navigate to <strong>[Filament]</strong> and select the desired <a href="#BM_(filament%20spool%7Cspool)%2Fi">spool</a> to input the type, color, and manufacturer of filament. Bambu Lab filaments come with RFID that allows the <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> to automatically identify material and color. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226">[src]</a></sub></p>
@@ -282,19 +284,23 @@
 <ul>
 <li><strong>Name</strong> is the material's name. Each material may come in one of many modified forms: <a href="#BM_%5Cb(HF)%5Cb%2Fi">HF</a> (<a href="#BM_(high%5B%5C-%20%5Dflow)%2Fi">High Flow</a>) means the material has been modified for high speed printing <sub><a href="https://www.youtube.com/watch?v=1t_VpPj-9NY">[src]</a></sub>, <a href="#BM_%5Cb(CF)%5Cb%2Fi">CF</a> (<a href="#BM_(carbon%5B%5C-%20%5Dfiber)%2Fi">Carbon Fiber</a>) means the material has been fortified with <a href="#BM_(carbon%5B%5C-%20%5Dfiber)%2Fi">carbon fiber</a>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/215">[src]</a></sub>, and <a href="#BM_%5Cb(GF)%5Cb%2Fi">GF</a> (<a href="#BM_(glass%5B%5C-%20%5Dfiber)%2Fi">Glass Fiber</a>) means the material has been fortified with <a href="#BM_(glass%5B%5C-%20%5Dfiber)%2Fi">glass fiber</a>. <sub><a href="https://bambulab.com/en-us/filament/pla-cf">[src]</a></sub></li>
 <li><strong>Stiffness</strong> and <strong>Impact Strength</strong> givens a user-friendly for those specific properties.</li>
-<li><strong>Heat Deflection Temperature</strong> states the minimum temperature at which 0.45 MPa and 1.8 MPa of stress cause the material to bend by a small standardized amount (ISO 75 deflection threshold). It gives an idea of how much heat the material can withstand before deforming.</li>
+<li><strong><a href="#BM_(heat%20deflection%20temperature)%2Fi">Heat Deflection Temperature</a></strong> states the minimum temperature at which 0.45 MPa and 1.8 MPa of stress cause the material to bend by a small standardized amount (ISO 75 deflection threshold). It gives an idea of how much heat the material can withstand before deforming. <sub><a href="https://en.wikipedia.org/wiki/Heat_deflection_temperature">[src]</a></sub></li>
 <li><strong>Saturated Water Absorption Rate</strong> states the percent increase in weight from absorbed moisture under a standardized climate. It gives an idea of how moisture resistant the material is.</li>
 <li><strong><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">Nozzle</a> temperature</strong>, <strong><a href="#BM_(heatbed)%2Fi">Heatbed</a> temperature</strong>, and <strong><a href="#BM_(chamber)%2Fi">Chamber</a> temperature</strong> collectively define the H2S's heating requirements to effectively print the material.</li>
 <li><strong>Drying</strong> states the temperature and time needed to dry out a material. Filaments must be dry prior to printing, and some materials require drying temperatures that neither the <a href="#BM_(AMS%202%20Pro)%2F">AMS 2 Pro</a> nor the <a href="#BM_(AMS%20HT)%2F">AMS HT</a> can reach.</li>
 <li><strong>Resistance</strong> states the resistance properties of the material (e.g., flammability).</li>
 </ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The list below isn't exhaustive, and some filament types of sub-types (e.g., Neon <a href="#BM_%5Cb(PLA)%5Cb%2F">PLA</a>) require specific hardware to print with (e.g., hardened steel <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> or engineering <a href="#BM_(build%20plate)%2Fi">build plate</a>).</p>
+</div>
 <table>
 <thead>
 <tr>
 <th>Name</th>
 <th>Stiffness</th>
 <th>Impact Strength</th>
-<th>Heat Deflection Temperature<br>(ISO 75)</th>
+<th><a href="#BM_(heat%20deflection%20temperature)%2Fi">Heat Deflection Temperature</a><br>(ISO 75)</th>
 <th>Saturated Water Absorption Rate</th>
 <th><a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">Nozzle</a> temperature</th>
 <th><a href="#BM_(heatbed)%2Fi">Heatbed</a> temperature</th>
@@ -789,7 +795,7 @@
 <a name="H_3D%20Viewport"></a><h3>3D Viewport</h3>
 <p><a name="BM_(Bambu%20Studio%5C%2FUser%20Interface%2F3D%20Viewport)_TOPIC%2Fi"></a><strong></strong></p>
 <p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> has a 3D viewport on both the Prepare screen and the Preview screen.</p>
-<p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>'s Prepare screen is for transforming models for print (e.g., orientation, scale, position, and color) as well as configuring print settings (e.g., <a href="#BM_(layer%20height)%2Fi">layer height</a> and <a href="#BM_(infill)%2Fi">infill</a> density).</p>
+<p><a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>'s Prepare screen is for transforming models for print (e.g., orientation, scale, position, and color) as well as configuring print settings (e.g., <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> and <a href="#BM_(infill)%2Fi">infill</a> density).</p>
 <p>Prepare viewport controls:</p>
 <table>
 <thead>
@@ -965,7 +971,7 @@
 <p>The Process section can change scope using a toggle (section 1). The scope can either be global, or it can target a specific set of objects (e.g., a model, an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a>, or some combination of models/<a href="#BM_(assembly%7Cassemblies)%2Fi">assemblies</a>). If not scoped globally, an object hierarchy will be displayed directly below the toggle (section 3). The selections in the object hierarchy will reflect those in the 3D viewport and vice versa.</p>
 <p>Below the object hierarchy are a hierarchy of parameters that control printing:</p>
 <ul>
-<li><strong>Quality</strong> tab organizes fidelity parameters (e.g., <a href="#BM_(layer%20height)%2Fi">layer height</a> and how to treat <a href="#BM_(seam)%2Fi">seam</a>s).</li>
+<li><strong>Quality</strong> tab organizes fidelity parameters (e.g., <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> and how to treat <a href="#BM_(seam)%2Fi">seam</a>s).</li>
 <li><strong>Strength</strong> tab organizes solidity/firmness parameters (e.g., <a href="#BM_(infill)%2Fi">infill</a> style/percentage and <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> thickness).</li>
 <li><strong>Speed</strong> tab organizes print speed (e.g., how fast <a href="#BM_(toolhead)%2Fi">toolhead</a> moves when printing <a href="#BM_(overhang)%2Fi">overhang</a>s).</li>
 <li><strong>Support</strong> tab organizes  <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> parameters (e.g., minimum angle for which <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> are required).</li>
@@ -1028,7 +1034,7 @@
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>A complete accounting of file formats isn't appropriate here. Just note that, if you importing <a href="#BM_(SVG)%2F">SVG</a>s, <a href="#BM_(SVG)%2F">SVG</a>s have no <a href="#BM_(height)_LAYER%2Fi">height</a>. Once an <a href="#BM_(SVG)%2F">SVG</a> is imported, <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> gives it a tiny <a href="#BM_(height)_LAYER%2Fi">height</a> and then you can scale it to make it taller.</p>
+<p>A complete accounting of file formats isn't appropriate here. Just note that, if you importing <a href="#BM_(SVG)%2F">SVG</a>s, <a href="#BM_(SVG)%2F">SVG</a>s have no <a href="#BM_(height'%3Fs%3F)_LH%2Fi">height</a>. Once an <a href="#BM_(SVG)%2F">SVG</a> is imported, <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> gives it a tiny <a href="#BM_(height'%3Fs%3F)_LH%2Fi">height</a> and then you can scale it to make it taller.</p>
 </div>
 <p>Alternatively, <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>'s Home screen integrates MakerWorld. MakerWorld is an online repository of printable projects. MakerWorld projects can't be imported directly into the current <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> project. However, it is possible to open a MakerWorld project, save it as a <a href="#BM_%5Cb(3MF)%5Cb%2F">3MF</a> file (or export as some other file format), and import that file into an existing project. <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/33">[src]</a></sub></p>
 <a name="H_Object%20Placement"></a><h2>Object Placement</h2>
@@ -1371,7 +1377,7 @@
 <p><img src="bambu_studio_prepare_support_gap_properties.png" alt="Bambu Studio Prepare screen support gap properties"></p>
 <p>If these gaps are set too small, the <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> may be difficult to remove or even fuse to the object (unless using dedicated <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> material such as <a href="https://us.store.bambulab.com/products/support-for-pla-new?id=578872019709923335">Support for </a><a href="#BM_%5Cb(PLA)%5Cb%2F">PLA</a>). If set too large, the <a href="#BM_(overhang)%2Fi">overhang</a>ing surface may appear rough or sagging due to insufficient <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>. For example, ...</p>
 <ul>
-<li><strong>Top Z distance</strong> &lt; 0.16mm for a 0.2mm <a href="#BM_(layer%20height)%2Fi">layer height</a> may result in fusing of and / or difficulty removing <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>.</li>
+<li><strong>Top Z distance</strong> &lt; 0.16mm for a 0.2mm <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> may result in fusing of and / or difficulty removing <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>.</li>
 <li><strong>Support/object xy distance</strong> &lt; 0.35mm may result in difficulty removing <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> and / or damaging object up <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s during removal.</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -1404,12 +1410,12 @@
 <p>The less spaced out the lines are, the more contact points there are with the <a href="#BM_(interfaces%7Cinterface's%7Cinterface)_BO%2Fi">interface</a> and the <a href="#BM_(overhang)%2Fi">overhang</a> it's <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supporting</a>. Less contact points means the <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> should be easier to remove, but it may reduce the hold on / quality of the <a href="#BM_(overhang)%2Fi">overhang</a>.</p>
 </li>
 <li>
-<p><strong>Independent <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> <a href="#BM_(layer%20height)%2Fi">layer height</a></strong> controls whether the <a href="#BM_(layer%20height)%2Fi">layer height</a> of <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> are independent from the <a href="#BM_(layer%20height)%2Fi">layer height</a> of the printed object they're <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supporting</a>.</p>
+<p><strong>Independent <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a></strong> controls whether the <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> of <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> are independent from the <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> of the printed object they're <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supporting</a>.</p>
 </li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>No idea how "Independent <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> <a href="#BM_(layer%20height)%2Fi">layer height</a>" would work given that there's asymmetry in the <a href="#BM_(layer%20height)%2Fi">layer height</a>s? Would it <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s first and then the object <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s? What happens if there's a chance for collision?</p>
+<p>No idea how "Independent <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a>" would work given that there's asymmetry in the <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a>s? Would it <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s first and then the object <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s? What happens if there's a chance for collision?</p>
 </div>
 <p><img src="bambu_studio_prepare_support_interface_properties.png" alt="Bambu Studio Prepare screen support interface properties"></p>
 <p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/support">[src]</a></sub> <sub><a href="https://bambulab.com/en/support/academy/3/course/982590125637046272/chapter/40">[src]</a></sub></p>
@@ -1475,7 +1481,7 @@
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
-<li><a href="#BM_(Bambu%20Studio%5C%2FDiagnostics%2FElephant%20Foot%20Compensation)_TOPIC%2Fi">Bambu Studio/Diagnostics/Elephant Foot Compensation</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FFailure%20Modes%2FElephant%20Foot)_TOPIC%2Fi">Bambu Studio/Failure Modes/Elephant Foot</a></li>
 </ul>
 </div>
 <p>Navigate to the properties under <strong>Support</strong> → <strong>Raft</strong>. The property ...</p>
@@ -1620,7 +1626,7 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Combining)_TOPIC%2Fi">Bambu Studio/Object Combining</a></li>
 <li><a href="#BM_(Bambu%20Studio%5C%2FNegative%20Parts)_TOPIC%2Fi">Bambu Studio/Negative Parts</a></li>
 <li><a href="#BM_(Bambu%20Studio%5C%2FFuzzy%20Skin)_TOPIC%2Fi">Bambu Studio/Fuzzy Skin</a></li>
-<li><a href="#BM_(Bambu%20Studio%5C%2FInfill)_TOPIC%2Fi">Bambu Studio/Infill</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Infill)_TOPIC%2Fi">Bambu Studio/Object Infill</a></li>
 </ul>
 </div>
 <p>A <a href="#BM_(modifier%20part)%2Fi">modifier part</a> is an object that gets combined with an existing set of models (same <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a>), but it's purpose is to modify properties of specific areas of existing models. Any region of the existing models that intersect with the <a href="#BM_(modifier%20part)%2Fi">modifier part</a> have the <a href="#BM_(modifier%20part)%2Fi">modifier part</a>'s properties applied.</p>
@@ -1757,24 +1763,24 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
 </ul>
 </div>
-<p><a href="#BM_(layer%20height)%2Fi">Layer height</a> is the height of each <a href="#BM_(layer%7Cslice)%2Fi">layer</a> in the print. The thinner the <a href="#BM_(layer%7Cslice)%2Fi">layer</a>, the less ridges are visible as the object is printed upwards (Z axis), meaning a smoother overall appearance.</p>
-<p>To set the <a href="#BM_(layer%20height)%2Fi">layer height</a> globally, ensure no object is selected and navigate to the properties under <strong>Quality</strong> → <strong>Layer height</strong>:</p>
+<p><a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">Layer height</a> is the height of each <a href="#BM_(layer%7Cslice)%2Fi">layer</a> in the print. The thinner the <a href="#BM_(layer%7Cslice)%2Fi">layer</a>, the less ridges are visible as the object is printed upwards (Z axis), meaning a smoother overall appearance.</p>
+<p>To set the <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> globally, ensure no object is selected and navigate to the properties under <strong>Quality</strong> → <strong>Layer height</strong>:</p>
 <ul>
-<li><strong><a href="#BM_(layer%20height)%2Fi">Layer height</a></strong> - Controls <a href="#BM_(height)_LAYER%2Fi">height</a> of each <a href="#BM_(layer%7Cslice)%2Fi">layer</a>, except for the initial <a href="#BM_(layer%7Cslice)%2Fi">layer</a>.</li>
-<li><strong>Initial <a href="#BM_(layer%20height)%2Fi">layer height</a></strong> - Controls <a href="#BM_(height)_LAYER%2Fi">height</a> of the initial <a href="#BM_(layer%7Cslice)%2Fi">layer</a>. A <a href="#BM_(thickness%7Cthickness%7Cthicker)_LAYER%2Fi">thicker</a> initial <a href="#BM_(layer%7Cslice)%2Fi">layer</a> may help with the print better stick to the <a href="#BM_(build%20plate)%2Fi">build plate</a>.</li>
+<li><strong><a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">Layer height</a></strong> - Controls <a href="#BM_(height'%3Fs%3F)_LH%2Fi">height</a> of each <a href="#BM_(layer%7Cslice)%2Fi">layer</a>, except for the initial <a href="#BM_(layer%7Cslice)%2Fi">layer</a>.</li>
+<li><strong>Initial <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a></strong> - Controls <a href="#BM_(height'%3Fs%3F)_LH%2Fi">height</a> of the initial <a href="#BM_(layer%7Cslice)%2Fi">layer</a>. A <a href="#BM_(thickness%7Cthickness%7Cthicker)_LH%2Fi">thicker</a> initial <a href="#BM_(layer%7Cslice)%2Fi">layer</a> may help with the print better stick to the <a href="#BM_(build%20plate)%2Fi">build plate</a>.</li>
 </ul>
-<p>In addition, there are presets available for choosing common <a href="#BM_(layer%20height)%2Fi">layer height</a>s. These presets typically also set other other options, such as printing speeds.</p>
+<p>In addition, there are presets available for choosing common <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a>s. These presets typically also set other other options, such as printing speeds.</p>
 <p><img src="bambu_studio_prepare_layer_height_parameters.png" alt="Bambu Studio Prepare screen layer height parameters"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Settings different <a href="#BM_(layer%20height)%2Fi">layer height</a>s for each object? You might need to print the objects individually or <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> will fail. Set <strong>Other</strong> → <strong>Special mode</strong> → <strong>Print sequence</strong> to <strong>By object</strong>.</p>
+<p>Settings different <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a>s for each object? You might need to print the objects individually or <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> will fail. Set <strong>Other</strong> → <strong>Special mode</strong> → <strong>Print sequence</strong> to <strong>By object</strong>.</p>
 <p>There might be issues where the <a href="#BM_(toolhead)%2Fi">toolhead</a> can move depending on height of objects being printed. See <a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/36">here</a> for potential way to mitigate (change print order).</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>There's an option here called "Mixed color sub<a href="#BM_(layer%7Cslice)%2Fi">layer</a>" that seems to have to do with "fake color" printing where alternating real colors are banded together to generate some other color (e.g., alternating between black and white to get 50% gray). When this setting is set, it seems that the <a href="#BM_(layer%20height)%2Fi">layer height</a> is automatically cut down for coloring purposes? So if you set the <a href="#BM_(layer%20height)%2Fi">layer height</a> to 0.2mm but this option were turned on, that 0.2mm would actually be subdivided into n thinner <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s? At least that's the vibe I got from https://www.reddit.com/r/BambuLab/comments/1ssuuqx/color_mixing_and_mixed_color_sub<a href="#BM_(layer%7Cslice)%2Fi">layer</a>_wrt_<a href="#BM_(layer%7Cslice)%2Fi">layer</a></p>
+<p>There's an option here called "Mixed color sub<a href="#BM_(layer%7Cslice)%2Fi">layer</a>" that seems to have to do with "fake color" printing where alternating real colors are banded together to generate some other color (e.g., alternating between black and white to get 50% gray). When this setting is set, it seems that the <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> is automatically cut down for coloring purposes? So if you set the <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> to 0.2mm but this option were turned on, that 0.2mm would actually be subdivided into n thinner <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s? At least that's the vibe I got from https://www.reddit.com/r/BambuLab/comments/1ssuuqx/color_mixing_and_mixed_color_sub<a href="#BM_(layer%7Cslice)%2Fi">layer</a>_wrt_<a href="#BM_(layer%7Cslice)%2Fi">layer</a></p>
 </div>
-<p>The initial <a href="#BM_(layer%20height)%2Fi">layer height</a> is recommended to be 50% of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s diameter. Subsequent <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s are recommended to be between 20% to 70% of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s diameter. For example, if using the 0.4mm <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> that comes with the H2S, the initial <a href="#BM_(layer%7Cslice)%2Fi">layer</a> would be set to a <a href="#BM_(layer%20height)%2Fi">layer height</a> of 0.2mm and the remaining <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s can be set to anywhere between 0.08mm to 0.28mm. This information is also available under the printer setting's <strong><a href="#BM_(extruder)%2Fi">Extruder</a></strong> section.</p>
+<p>The initial <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> is recommended to be 50% of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s diameter. Subsequent <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s are recommended to be between 20% to 70% of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s diameter. For example, if using the 0.4mm <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> that comes with the H2S, the initial <a href="#BM_(layer%7Cslice)%2Fi">layer</a> would be set to a <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> of 0.2mm and the remaining <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s can be set to anywhere between 0.08mm to 0.28mm. This information is also available under the printer setting's <strong><a href="#BM_(extruder)%2Fi">Extruder</a></strong> section.</p>
 <p><img src="bambu_studio_printer_settings_extruder_layer_height_limits.png" alt="Bambu Studio printer settings extruder layer height limits"></p>
 <a name="H_Variable%20Layer%20Height"></a><h3>Variable Layer Height</h3>
 <p><a name="BM_(Bambu%20Studio%5C%2FLayer%20Height%2FVariable%20Layer%20Height)_TOPIC%2Fi"></a><strong></strong></p>
@@ -1784,9 +1790,9 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
 </ul>
 </div>
-<p>In certain cases, it's more efficient for an object's <a href="#BM_(layer%20height)%2Fi">layer height</a> to be variable. For example, consider printing a half sphere. As the <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s converge to the top of the half sphere, the slope gets more and more horizontal, leading to obvious stepping.</p>
+<p>In certain cases, it's more efficient for an object's <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> to be variable. For example, consider printing a half sphere. As the <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s converge to the top of the half sphere, the slope gets more and more horizontal, leading to obvious stepping.</p>
 <p><img src="bambu_studio_preview_sphere_tip_stepping_example.png" alt="Bambu Studio Preview screen sphere tip stepping example"></p>
-<p>One way to mitigate stepping is to set the <a href="#BM_(layer%20height)%2Fi">layer height</a> to something very small (e.g., 0.08), but doing so is inefficient as the majority of the sphere doesn't have such a problematic slope. A more appropriate way to mitigate is to use the variable <a href="#BM_(layer%20height)%2Fi">layer height</a> tool. In the Prepare screen's 3D viewport, select an object and click the variable <a href="#BM_(layer%7Cslice)%2Fi">layer</a> tool in the Prepare screen's toolbar (button 5), which will ...</p>
+<p>One way to mitigate stepping is to set the <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> to something very small (e.g., 0.08), but doing so is inefficient as the majority of the sphere doesn't have such a problematic slope. A more appropriate way to mitigate is to use the variable <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> tool. In the Prepare screen's 3D viewport, select an object and click the variable <a href="#BM_(layer%7Cslice)%2Fi">layer</a> tool in the Prepare screen's toolbar (button 5), which will ...</p>
 <ul>
 <li>open a pop-up dialog.</li>
 <li>open a pop-up right panel.</li>
@@ -1794,30 +1800,30 @@
 </ul>
 <p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
 <p><img src="bambu_studio_prepare_variable_height_tool_parameters.png" alt="Bambu Studio Prepare screen variable height tool parameters"></p>
-<p>The right panel pop-up represents the <a href="#BM_(layer%20height)%2Fi">layer height</a> of the object. As the mouse scans over it bottom to top, the corresponding object in the 3D viewport should highlight indicating what portion of the object the current mouse position controls. At any height in the right panel, ...</p>
+<p>The right panel pop-up represents the <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> of the object. As the mouse scans over it bottom to top, the corresponding object in the 3D viewport should highlight indicating what portion of the object the current mouse position controls. At any height in the right panel, ...</p>
 <ul>
-<li>left mouse press lowers the <a href="#BM_(layer%20height)%2Fi">layer height</a> at the highlighted <a href="#BM_(layer%7Cslice)%2Fi">layer</a> range.</li>
-<li>right mouse press raises the <a href="#BM_(layer%20height)%2Fi">layer height</a> at the highlighted <a href="#BM_(layer%7Cslice)%2Fi">layer</a> range.</li>
+<li>left mouse press lowers the <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> at the highlighted <a href="#BM_(layer%7Cslice)%2Fi">layer</a> range.</li>
+<li>right mouse press raises the <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> at the highlighted <a href="#BM_(layer%7Cslice)%2Fi">layer</a> range.</li>
 <li>mouse scroll widens / tightens the highlighted <a href="#BM_(layer%7Cslice)%2Fi">layer</a> range (highlights more / less).</li>
 </ul>
-<p>The dialog pop-up provides functionality to algorithmically set / manipulate the variable <a href="#BM_(layer%20height)%2Fi">layer height</a> (as opposed to the manual setting happening above):</p>
+<p>The dialog pop-up provides functionality to algorithmically set / manipulate the variable <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> (as opposed to the manual setting happening above):</p>
 <ul>
-<li><strong>Adaptive</strong> button sets <a href="#BM_(layer%20height)%2Fi">layer height</a>s based on the <strong>Quality / Speed</strong> slider (right side is for quality, left for speed).</li>
-<li><strong>Smooth</strong> button readjusts <a href="#BM_(layer%20height)%2Fi">layer height</a>s to even out sharp transitions between <a href="#BM_(layer%20height)%2Fi">layer height</a> based on the <strong>Radius</strong> slider (larger radius means smoother curve).</li>
-<li><strong>Keep min</strong> checkbox instructs smoothing to not smooth out (change) the minimum assigned <a href="#BM_(layer%20height)%2Fi">layer height</a>.</li>
+<li><strong>Adaptive</strong> button sets <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a>s based on the <strong>Quality / Speed</strong> slider (right side is for quality, left for speed).</li>
+<li><strong>Smooth</strong> button readjusts <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a>s to even out sharp transitions between <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> based on the <strong>Radius</strong> slider (larger radius means smoother curve).</li>
+<li><strong>Keep min</strong> checkbox instructs smoothing to not smooth out (change) the minimum assigned <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a>.</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>From <a href="https://bambulab.com/en/support/academy/3/course/982688414357196800/chapter/48">this page</a>:</p>
 <blockquote>
-<p>When using variable <a href="#BM_(layer%20height)%2Fi">layer height</a>, avoid overly sharp changes in the <a href="#BM_(layer%20height)%2Fi">layer height</a> curve—meaning changes that occur too abruptly. Sudden transitions in <a href="#BM_(layer%20height)%2Fi">layer height</a> can leave visible marks or banding on the model’s surface.</p>
-<p>As shown in the image, the left example features a steep and jagged <a href="#BM_(layer%20height)%2Fi">layer height</a> curve, which leads to noticeable surface artifacts. On the right, smoother transitions result in a cleaner and more uniform surface finish.</p>
+<p>When using variable <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a>, avoid overly sharp changes in the <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> curve—meaning changes that occur too abruptly. Sudden transitions in <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> can leave visible marks or banding on the model’s surface.</p>
+<p>As shown in the image, the left example features a steep and jagged <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> curve, which leads to noticeable surface artifacts. On the right, smoother transitions result in a cleaner and more uniform surface finish.</p>
 </blockquote>
 </div>
-<p>When applying variable <a href="#BM_(layer%20height)%2Fi">layer height</a>s, ...</p>
+<p>When applying variable <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a>s, ...</p>
 <ul>
-<li>if you have two objects with different <a href="#BM_(layer%20height)%2Fi">layer height</a>s, prime towers can't be enabled.</li>
-<li>objects with variable <a href="#BM_(layer%20height)%2Fi">layer height</a>s are incompatible with organic tree <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>.</li>
+<li>if you have two objects with different <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a>s, prime towers can't be enabled.</li>
+<li>objects with variable <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a>s are incompatible with organic tree <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>.</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -1827,12 +1833,50 @@
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
-<li><a href="#BM_(Bambu%20Studio%5C%2FCurved%20Tops)_TOPIC%2Fi">Bambu Studio/Curved Tops</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FFailure%20Modes%2FZ%20Aliasing)_TOPIC%2Fi">Bambu Studio/Failure Modes/Z Aliasing</a></li>
 </ul>
 </div>
 <p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/layer-heigh">[src]</a></sub> <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub></p>
-<a name="H_Seam"></a><h2>Seam</h2>
-<p><a name="BM_(Bambu%20Studio%5C%2FSeam)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Line%20Width"></a><h2>Line Width</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FLine%20Width)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FLayer%20Height)_TOPIC%2Fi">Bambu Studio/Layer Height</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Supports%2FSupport%20Gaps)_TOPIC%2Fi">Bambu Studio/Object Supports/Support Gaps</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Walls)_TOPIC%2Fi">Bambu Studio/Object Walls</a></li>
+</ul>
+</div>
+<p><a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">Line width</a> is the width of filament extruded by the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> during printing. To get the extruded filament to lay down either wider or thinner, the print speed changes and / or the rate at which filament is being pushed out changes (<a href="#BM_(flow%20ratio%7Cflow%20rate)%2Fi">flow rate</a>). For example, to print with a wider <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a>, the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s head may print at the same speed but push out more filament. That is, the <a href="#BM_(layer%7Cslice)%2Fi">layer</a> is being printed at a specific <a href="#BM_(height'%3Fs%3F)_LH%2Fi">height</a> and speed, but pushing out more filament at that <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> and speed causes that extra filament to get flattened by the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s tip as it's being laid down, spreading to the desired <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Because having a wider <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a> relies on something being under the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> to squish against, it won't work when printing <a href="#BM_(overhang)%2Fi">overhang</a>s and <a href="#BM_(bridging%7Cbridge)%2Fi">bridge</a>s. Does this apply to <a href="#BM_(overhang)%2Fi">overhang</a>s and <a href="#BM_(bridging%7Cbridge)%2Fi">bridge</a>s that have <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>? Probably, because unless you're using specific Bambu Lab filaments intended to be used as <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>, there typically is both a XY-axis gap and Z-axis gap between the <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">support</a> and what it's supporting (with support filaments you can set these gaps to 0 but with normal filaments that gap needs to be there to make it easy to break off <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>).</p>
+</div>
+<p>To set the <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a>, navigate to the properties under <strong>Quality</strong> → <strong>Line width</strong>:</p>
+<ul>
+<li><strong>Default</strong> - <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">Line width</a> override for any properties below that are set to 0 (e.g., if the <strong><a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">Outer wall</a></strong>'s value is 0, <strong>Default</strong>'s value is used instead).</li>
+<li><strong>First <a href="#BM_(layer%7Cslice)%2Fi">layer</a></strong> - <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">Line width</a> override for the initial <a href="#BM_(layer%7Cslice)%2Fi">layer</a>, overriding all other properties below exclusively for the initial <a href="#BM_(layer%7Cslice)%2Fi">layer</a> (e.g., <strong>First <a href="#BM_(layer%7Cslice)%2Fi">layer</a></strong>'s value is used for <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a> instead of <strong><a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">Outer wall</a></strong>'s value when printing the initial <a href="#BM_(layer%7Cslice)%2Fi">layer</a>). This value is typically larger than normal to provide better <a href="#BM_(bed%20adhesion%7Cheatbed%20adhesion)%2Fi">bed adhesion</a>.</li>
+<li><strong><a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">Outer wall</a></strong> - <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">Line width</a> of <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s.</li>
+<li><strong><a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">Inner wall</a></strong> - <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">Line width</a> of <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a>s.</li>
+<li><strong><a href="#BM_(top%20surface)%2Fi">Top surface</a></strong> - <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">Line width</a> of <a href="#BM_(top%20surface)%2Fi">top surface</a>s (regions of the model where nothing else is printed on top).</li>
+<li><strong>Sparse <a href="#BM_(infill)%2Fi">infill</a></strong> - <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">Line width</a> of sparse <a href="#BM_(infill)%2Fi">infill</a>s.</li>
+<li><strong>Internal solid <a href="#BM_(infill)%2Fi">infill</a></strong> - <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">Line width</a> of internal solid <a href="#BM_(infill)%2Fi">infill</a>s (top shells just before the final top shell / bottom shells just after the initial bottom shell).</li>
+<li><strong>Support</strong> - <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">Line width</a> of <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a>.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Although <strong>First <a href="#BM_(layer%7Cslice)%2Fi">layer</a></strong> may help with <a href="#BM_(bed%20adhesion%7Cheatbed%20adhesion)%2Fi">bed adhesion</a>, it also may make <a href="#BM_(elephant%20foot)%2Fi">elephant foot</a> phenomenon worse? I'm not sure.</p>
+</div>
+<p><img src="bambu_studio_prepare_line_width_parameters.png" alt="Bambu Studio Prepare screen line width parameters"></p>
+<p>The <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a> is recommended to be 75% to 150% of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s diameter. Otherwise, the print quality will likely be poor. For example, if using the 0.4mm <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> that comes with the H2S, the <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a> should be between 0.3mm and 0.6mm.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>When referring to the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s diameter, it means the diameter of the channel that hte filament extrudes through, referred to as the inner diameter. The outer diameter is the diameter of the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> encasing the inner diameter.</p>
+</div>
+<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/parameter/line-width">[src]</a></sub></p>
+<a name="H_Object%20Seam"></a><h2>Object Seam</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FObject%20Seam)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -1847,9 +1891,14 @@
 <p>Although not documented in any of the subsections below, the fuzzy skin feature can also help mitigate the appearance of <a href="#BM_(seam)%2Fi">seam</a>s by introducing a randomly jittered textured outside.</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Where as normally there's a single <a href="#BM_(seam)%2Fi">seam</a> on an object, the <strong>Arachne</strong> <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> generator causes multiple starts/stops per path, meaning multiple <a href="#BM_(seam)%2Fi">seam</a>s.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
 <li><a href="#BM_(Bambu%20Studio%5C%2FFuzzy%20Skin)_TOPIC%2Fi">Bambu Studio/Fuzzy Skin</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FFailure%20Mode%2FXY%20Hole%20and%20Contour%20Thinness)_TOPIC%2Fi">Bambu Studio/Failure Mode/XY Hole and Contour Thinness</a></li>
 </ul>
 </div>
 <a name="H_Algorithmic%20Seam%20Placement"></a><h3>Algorithmic Seam Placement</h3>
@@ -1895,7 +1944,7 @@
 <p>A <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a> is a specialized form of <a href="#BM_(seam)%2Fi">seam</a>, intended to hide its appearance for objects that are round to the point where the <a href="#BM_(seam)%2Fi">seam</a> can't be hidden (e.g., sphere, cylinder, or some round object that contains no natural edge for the <a href="#BM_(seam)%2Fi">seam</a> to hide). At the ...</p>
 <ul>
 <li>beginning portion of the path, the amount of filament gradually increases as it lifts off (tapered).</li>
-<li>ending portion of the path, <a href="#BM_(layer%20height)%2Fi">layer height</a> gradually decreases as it comes to a stop (tapered).</li>
+<li>ending portion of the path, <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> gradually decreases as it comes to a stop (tapered).</li>
 </ul>
 <p>The end result is the the start-stop region partially overlap vs a hard start-stop, blending in better.</p>
 <pre><code>-------------.  ,-----------
@@ -1910,7 +1959,7 @@
 <p><img src="bambu_studio_filament_scarf_seam_settings.png" alt="Bambu Studio filament scarf seam settings"></p>
 <ul>
 <li><strong><a href="#BM_(scarf%20seam)%2Fi">Scarf seam</a> type</strong>: Must be set to either <strong><a href="#BM_(contour)%2Fi">Contour</a></strong> or <strong><a href="#BM_(contour)%2Fi">Contour</a> and <a href="#BM_(%5Cbhole)%2Fi">Hole</a></strong> for <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s to be enabled.</li>
-<li><strong>Scarf start height</strong>: Height at which the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> starts printing the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>, specified in mm or percentage of <a href="#BM_(layer%20height)%2Fi">layer height</a>.</li>
+<li><strong>Scarf start height</strong>: Height at which the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> starts printing the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>, specified in mm or percentage of <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a>.</li>
 <li><strong>Scarf slope gap</strong>: <a href="#BM_(scarf%20seam)%2Fi">Scarf seam</a> cuts into the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a> to accommodate excess material, represented as a percentage of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> diameter multiplied by some internal constant.</li>
 <li><strong>Scarf length</strong>: Length of the <a href="#BM_(seam)%2Fi">seam</a>. Disabled if set to 0 or the option <strong>Scarf around the entire <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a></strong> is enabled in print parameters.</li>
 </ul>
@@ -1964,30 +2013,14 @@
 </li>
 </ul>
 <p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/Seam">[src]</a></sub></p>
-<a name="H_Curved%20Tops"></a><h2>Curved Tops</h2>
-<p><a name="BM_(Bambu%20Studio%5C%2FCurved%20Tops)_TOPIC%2Fi"></a><strong></strong></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
-</ul>
-</div>
-<p>Objects with a curved tops instead of flat tops (e.g., circle vs square) should set the property <strong>Quality</strong> → <strong>Advanced</strong> → <strong>Only one <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> on <a href="#BM_(top%20surface)%2Fi">top surface</a>s</strong> to <strong>Not Applied</strong>. Doing so reduces visible <a href="#BM_(layer%7Cslice)%2Fi">layer</a> lines, resulting in a smoother finish.</p>
-<p><img src="bambu_studio_preview_only_one_wall_on_top_surfaces_example.png" alt="Bambu Studio Preview screen Only one wall on top surfaces example"></p>
-<p>When this parameter is set to <strong>Not Applied</strong>, the number of <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s on the <a href="#BM_(top%20surface)%2Fi">top surface</a> is the same as the number of <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> loops set under <strong>Strength</strong> → <strong><a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">Wall</a>s</strong> → <strong><a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">Wall</a> loops</strong>. Effectively, it's overwriting the parameter <strong><a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">Wall</a> loops</strong> for the <a href="#BM_(top%20surface)%2Fi">top surface</a> to be a single <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>.</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>There seems to also be a hidden developer property <strong>Quality</strong> → <strong>Advanced</strong> → <strong>Top area threshold</strong> that sets the threshold for what <a href="#BM_(top%20surface)%2Fi">top surface</a>s use <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> loops's count vs a single surface. I can't find this in my <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>. See https://wiki.bambulab.com/en/software/bambu-studio/parameter/quality-advance-settings.</p>
-</div>
-<p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub>  <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/parameter/quality-advance-settings">[src]</a></sub></p>
 <a name="H_Fuzzy%20Skin"></a><h2>Fuzzy Skin</h2>
 <p><a name="BM_(Bambu%20Studio%5C%2FFuzzy%20Skin)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
-<li><a href="#BM_(Bambu%20Studio%5C%2FWalls)_TOPIC%2Fi">Bambu Studio/Walls</a></li>
-<li><a href="#BM_(Bambu%20Studio%5C%2FInfill)_TOPIC%2Fi">Bambu Studio/Infill</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Walls)_TOPIC%2Fi">Bambu Studio/Object Walls</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Infill)_TOPIC%2Fi">Bambu Studio/Object Infill</a></li>
 </ul>
 </div>
 <p>Fuzzy skin is a rough texture targeting the outside <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> of an object and potentially <a href="#BM_(%5Cbhole)%2Fi">hole</a>s within that object (just the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s, top and <a href="#BM_(bottom%20surface)%2Fi">bottom surface</a>s won't be textured). It does this by adding random jitters to <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> paths during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>. The purpose of fuzzy skin is two-fold: It's either aesthetic, or it's intended to make the printed object easier to grip, or both.</p>
@@ -2058,15 +2091,15 @@
 </ul>
 </div>
 <p>A <a href="#BM_(skirt%20loop%7Cskirt)%2Fi">skirt</a> is one or more loops printed around the objects on the <a href="#BM_(build%20plate)%2Fi">build plate</a>, where there's a gap between the loops and the objects (not touching). The purpose of a <a href="#BM_(skirt%20loop%7Cskirt)%2Fi">skirt</a> is to prime the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>. It's typically not required on the H2S because the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> is already gets primed when a print starts by printing a small line, called a prime line.</p>
-<p>Nevertheless, <a href="#BM_(skirt%20loop%7Cskirt)%2Fi">skirt loop</a>s can be enabled through the property <strong>Other</strong> → <strong><a href="#BM_(bed%20adhesion)%2Fi">Bed Adhesion</a></strong> → <strong><a href="#BM_(skirt%20loop%7Cskirt)%2Fi">Skirt loop</a>s</strong> and <strong><a href="#BM_(skirt%20loop%7Cskirt)%2Fi">Skirt</a> height</strong>. The example below has 4 loops set at a <a href="#BM_(layer%20height)%2Fi">layer height</a> of 2.</p>
+<p>Nevertheless, <a href="#BM_(skirt%20loop%7Cskirt)%2Fi">skirt loop</a>s can be enabled through the property <strong>Other</strong> → <strong><a href="#BM_(bed%20adhesion%7Cheatbed%20adhesion)%2Fi">Bed Adhesion</a></strong> → <strong><a href="#BM_(skirt%20loop%7Cskirt)%2Fi">Skirt loop</a>s</strong> and <strong><a href="#BM_(skirt%20loop%7Cskirt)%2Fi">Skirt</a> height</strong>. The example below has 4 loops set at a <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> of 2.</p>
 <p><img src="bambu_studio_prepare_skirt_loop_example.png" alt="Bambu Studio Prepare screen skirt loop example"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p><a href="#BM_(skirt%20loop%7Cskirt)%2Fi">Skirt loop</a> parameters only show up when the scope is set to global, not on an object / set of objects.</p>
 </div>
 <p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub> <sub><a href="https://www.reddit.com/r/BambuLab/comments/173zak1/is_there_better_documentation_on_bambu_studio/">[src]</a></sub></p>
-<a name="H_Brims"></a><h2>Brims</h2>
-<p><a name="BM_(Bambu%20Studio%5C%2FBrims)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Object%20Brims"></a><h2>Object Brims</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FObject%20Brims)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -2074,12 +2107,12 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
 </ul>
 </div>
-<p>A <a href="#BM_(brim)%2Fi">brim</a> is several <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s added around the bottom <a href="#BM_(layer%7Cslice)%2Fi">layer</a> of a printed object, such that the object has a bottom similar to the <a href="#BM_(brim)%2Fi">brim</a> of a top hat. Its purpose is to enhance <a href="#BM_(bed%20adhesion)%2Fi">bed adhesion</a> of objects ...</p>
+<p>A <a href="#BM_(brim)%2Fi">brim</a> is several <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s added around the bottom <a href="#BM_(layer%7Cslice)%2Fi">layer</a> of a printed object, such that the object has a bottom similar to the <a href="#BM_(brim)%2Fi">brim</a> of a top hat. Its purpose is to enhance <a href="#BM_(bed%20adhesion%7Cheatbed%20adhesion)%2Fi">bed adhesion</a> of objects ...</p>
 <ul>
 <li>with a small base (e.g., a tall cylinder with a small radius).</li>
 <li>that are prone to <a href="#BM_(warping%7Cwarp)%2Fi">warping</a> at the bottom edges, lifting off the <a href="#BM_(build%20plate)%2Fi">build plate</a> as they <a href="#BM_(warping%7Cwarp)%2Fi">warp</a> (e.g., <a href="#BM_%5Cb(ABS)%5Cb%2F">ABS</a> is prone to this because it shrinks with it cools).</li>
 </ul>
-<p><a href="#BM_(brim)%2Fi">Brim</a> parameters are under <strong>Other</strong> → <strong><a href="#BM_(bed%20adhesion)%2Fi">Bed Adhesion</a></strong>.</p>
+<p><a href="#BM_(brim)%2Fi">Brim</a> parameters are under <strong>Other</strong> → <strong><a href="#BM_(bed%20adhesion%7Cheatbed%20adhesion)%2Fi">Bed Adhesion</a></strong>.</p>
 <p><img src="bambu_studio_prepare_brim_parameters.png" alt="Bambu Studio Prepare screen brim parameters"></p>
 <p>The parameter ...</p>
 <ul>
@@ -2114,7 +2147,7 @@
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
-<li><a href="#BM_(Bambu%20Studio%5C%2FDiagnostics%2FElephant%20Foot%20Compensation)_TOPIC%2Fi">Bambu Studio/Diagnostics/Elephant Foot Compensation</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FFailure%20Modes%2FElephant%20Foot)_TOPIC%2Fi">Bambu Studio/Failure Modes/Elephant Foot</a></li>
 </ul>
 </div>
 <p><img src="bambu_studio_preview_brim_example.png" alt="Bambu Studio Preview screen brim example"></p>
@@ -2130,7 +2163,7 @@
 <p>A <a href="#BM_(brim%20ear)%2Fi">brim ear</a> is a point / stretch of <a href="#BM_(brim)%2Fi">brim</a> at user-defined locations around the bottom of an object. Similar to object painting, the placement of <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s can be painted on to the object. In the Prepare screen's 3D viewport, select the object and paint <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s by using the <a href="#BM_(brim%20ear)%2Fi">brim ear</a> tool in Prepare screen's toolbar (button 18, keyboard shortcut E), which will present a pop-up with scaling parameters / controls.</p>
 <p><img src="bambu_studio_prepare_toolbar.png" alt="Bambu Studio Prepare screen toolbar"></p>
 <p><img src="bambu_studio_prepare_brim_ears.png" alt="Bambu Studio Prepare screen brim ears"></p>
-<p>For <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s to be printed, ensure <strong>Other</strong> → <strong><a href="#BM_(bed%20adhesion)%2Fi">Bed Adhesion</a></strong> → <strong><a href="#BM_(brim)%2Fi">Brim</a> type</strong> is set to <strong>Painted</strong>. Otherwise, a warning will display at the bottom of the pop-up as shown in the example above.</p>
+<p>For <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s to be printed, ensure <strong>Other</strong> → <strong><a href="#BM_(bed%20adhesion%7Cheatbed%20adhesion)%2Fi">Bed Adhesion</a></strong> → <strong><a href="#BM_(brim)%2Fi">Brim</a> type</strong> is set to <strong>Painted</strong>. Otherwise, a warning will display at the bottom of the pop-up as shown in the example above.</p>
 <p>To place <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s manually, left-click around the base of the object. When a <a href="#BM_(brim%20ear)%2Fi">brim ear</a> is placeable, a partially transparent <a href="#BM_(brim%20ear)%2Fi">brim ear</a> will show under the mouse, notifying that a <a href="#BM_(brim%20ear)%2Fi">brim ear</a> can be placed in that spot. The <a href="#BM_(brim%20ear)%2Fi">brim ear</a>'s size is controlled by the <strong>Head diameter</strong> parameter, which is the diameter of the <a href="#BM_(brim%20ear)%2Fi">brim ear</a> in mm.</p>
 <p>To place <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s automatically, use the <strong>Aut-generate points</strong> button. Where <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s get placed depends on ..</p>
 <ul>
@@ -2146,8 +2179,8 @@
 <p>I found this as well: https://wiki.bambulab.com/en/software/bambu-studio/use-disc-to-avoid-<a href="#BM_(warping%7Cwarp)%2Fi">warping</a>. This seems to be doing the same thing as <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s but its entirely manual? Maybe it was made for an older version of <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> where <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s feature wasn't available.</p>
 </div>
 <p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/brim-ears">[src]</a></sub></p>
-<a name="H_Walls"></a><h2>Walls</h2>
-<p><a name="BM_(Bambu%20Studio%5C%2FWalls)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Object%20Walls"></a><h2>Object Walls</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FObject%20Walls)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -2159,7 +2192,7 @@
 <li>functional objects, 3 to 4 <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s will enhance structural strength and durability.</li>
 <li>decorative objects, 2 <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s are sufficient to save material and improve print efficiency.</li>
 </ul>
-<p>The number of solid <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s for the top of the object is set through the parameter <strong>Strength</strong> → <strong>Top/bottom shells</strong> → <strong>Top shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s</strong>. The <a href="#BM_(thickness%7Cthickness%7Cthicker)_LAYER%2Fi">thickness</a> of the top shell should approximately match the thickness of the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s. For example, if the thickness of 5 <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s comes out to 5mm, then the number of top shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s should approximately come out to 5mm as well.</p>
+<p>The number of solid <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s for the top of the object is set through the parameter <strong>Strength</strong> → <strong>Top/bottom shells</strong> → <strong>Top shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s</strong>. The <a href="#BM_(thickness%7Cthickness%7Cthicker)_LH%2Fi">thickness</a> of the top shell should approximately match the thickness of the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s. For example, if the thickness of 5 <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s comes out to 5mm, then the number of top shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s should approximately come out to 5mm as well.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Prior to the top shell is the <a href="#BM_(infill)%2Fi">infill</a> material. The <a href="#BM_(infill)%2Fi">infill</a> material almost always has gaps, and so the that first shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a> is <a href="#BM_(bridging%7Cbridge)%2Fi">bridging</a> all those gaps.</p>
@@ -2175,12 +2208,12 @@
 <p>There are the alternative parameters <strong>Top shell thickness</strong> / <strong>Bottom shell thickness</strong> that set using mm instead of number of <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s. When set, the number of <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s chosen is the maximum between <strong>Top shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s</strong> / <strong>Bottom shell <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s</strong> and the number of <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s needed to match the thickness of <strong>Top shell thickness</strong> / <strong>Bottom shell thickness</strong>.</p>
 </div>
 <p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub></p>
-<a name="H_Infill"></a><h2>Infill</h2>
-<p><a name="BM_(Bambu%20Studio%5C%2FInfill)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Object%20Infill"></a><h2>Object Infill</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FObject%20Infill)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><a href="#BM_(Bambu%20Studio%5C%2FWalls)_TOPIC%2Fi">Bambu Studio/Walls</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Walls)_TOPIC%2Fi">Bambu Studio/Object Walls</a></li>
 <li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
 </ul>
 </div>
@@ -2321,22 +2354,26 @@
 <p>In addition to the standard <a href="#BM_(infill)%2Fi">infill</a>, it's possible to specify <a href="#BM_(infill)%2Fi">infill</a> patterns for the top and <a href="#BM_(bottom%20surface)%2Fi">bottom surface</a>s using the parameters <strong>Strength</strong> → <strong>Top/bottom shells</strong> → <strong><a href="#BM_(top%20surface)%2Fi">Top surface</a> pattern</strong> and <strong><a href="#BM_(bottom%20surface)%2Fi">Bottom surface</a> pattern</strong>. The patterns available are more limits than the full roster of <a href="#BM_(infill)%2Fi">infill</a> patterns.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Top/bottom shells also get <a href="#BM_(infill)%2Fi">infill</a>s at no sparsity (100% fill), called internal solid <a href="#BM_(infill)%2Fi">infill</a>s? The top/bottom shells don't include the top-most and bottom-most <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s? So if you have 5 top shells, the 5th one (top-most) isn't internal solid <a href="#BM_(infill)%2Fi">infill</a>ed, but all the ones before are? That's what <a href="https://wiki.bambulab.com/en/software/bambu-studio/parameter/line-width#internal-solid-infill">this</a> is telling me.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Top/<a href="#BM_(bottom%20surface)%2Fi">bottom surface</a> patterns seem to only be line based <a href="#BM_(infill)%2Fi">infill</a> patterns where lines don't intersect? And you can't set density? It seems to be maximum density?</p>
 <p>What's the point of having these? I guess it has to do with the finish of the surface? I recall there was some option where you could have the heated <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> go over the surface (without printing anything) to further smooth it out? I think it was under <strong>Quality</strong> → <strong>Ironing</strong>.</p>
 </div>
 <p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/fill-patterns">[src]</a></sub></p>
-<a name="H_Diagnostics"></a><h2>Diagnostics</h2>
-<p><a name="BM_(Bambu%20Studio%5C%2FDiagnostics)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Failure%20Modes"></a><h2>Failure Modes</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FFailure%20Modes)_TOPIC%2Fi"></a><strong></strong></p>
 <p>The subsections below detail how to inspect and diagnose aspects of the print.</p>
-<a name="H_XY%20Hole%20Contour%20Compensation"></a><h3>XY Hole Contour Compensation</h3>
-<p><a name="BM_(Bambu%20Studio%5C%2FDiagnostics%2FXY%20Hole%20Contour%20Compensation)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_XY%20Hole%20and%20Contour%20Fit"></a><h3>XY Hole and Contour Fit</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FFailure%20Modes%2FXY%20Hole%20and%20Contour%20Fit)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
 <li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Set%20Operations)_TOPIC%2Fi">Bambu Studio/Object Set Operations</a></li>
 <li><a href="#BM_(Bambu%20Studio%5C%2FNegative%20Parts)_TOPIC%2Fi">Bambu Studio/Negative Parts</a></li>
-<li><a href="#BM_(Bambu%20Studio%5C%2FSeam)_TOPIC%2Fi">Bambu Studio/Seam</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Seam)_TOPIC%2Fi">Bambu Studio/Object Seam</a></li>
 </ul>
 </div>
 <p>Printed objects that require accurate fitting with other components (e.g., screws or other printed parts) sometimes don't fit they way they should because of variances introduced during printing. For <a href="#BM_(%5Cbhole)%2Fi">hole</a>s and <a href="#BM_(contour)%2Fi">contour</a>s running <em>running down the Z-axis</em>, <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> provides calibration steps to compensate for these variances:</p>
@@ -2351,6 +2388,11 @@
 </li>
 </ul>
 <p>The process involves printing a test object and either using calipers or a standard screw to determine how far off the <a href="#BM_(%5Cbhole)%2Fi">hole</a>/<a href="#BM_(contour)%2Fi">contour</a> is from its intended baseline. That value can then be inserted into an object's properties under <strong>Quality</strong> → <strong>Precision</strong> → <strong>X-Y <a href="#BM_(%5Cbhole)%2Fi">hole</a> compensation</strong> and <strong>X-Y <a href="#BM_(contour)%2Fi">contour</a> compensation</strong>.</p>
+<p><img src="bambu_studio_prepare_hole_and_contour_compensation_properties.png" alt="Bambu Studio Prepare screen hole and contour compensation properties"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The auto compensation option in the screenshot above disables the manual compensation fields? Description says it works with the basic set of filaments (e.g., <a href="#BM_%5Cb(PLA)%5Cb%2F">PLA</a> and <a href="#BM_%5Cb(PETG)%5Cb%2F">PETG</a>) - maybe it's good enough?</p>
+</div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>Remember that <a href="#BM_(%5Cbhole)%2Fi">hole</a>s and <a href="#BM_(contour)%2Fi">contour</a>s on the z-axis are <a href="#BM_(%5Cbhole)%2Fi">hole</a>s that are compensated for using XY <a href="#BM_(%5Cbhole)%2Fi">hole</a> <a href="#BM_(contour)%2Fi">contour</a> compensation. It does not compensate for sideway <a href="#BM_(%5Cbhole)%2Fi">hole</a>s.</p>
@@ -2368,14 +2410,95 @@
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
-<li><a href="#BM_(Bambu%20Studio%5C%2FDiagnostics%2FElephant%20Foot%20Compensation)_TOPIC%2Fi">Bambu Studio/Diagnostics/Elephant Foot Compensation</a></li>
-<li><a href="#BM_(Bambu%20Studio%5C%2FDiagnostics%2FFlow%20Dynamics%20Calibration)_TOPIC%2Fi">Bambu Studio/Diagnostics/Flow Dynamics Calibration</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FFailure%20Modes%2FElephant%20Foot)_TOPIC%2Fi">Bambu Studio/Failure Modes/Elephant Foot</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FFailure%20Modes%2FFlow%20Dynamics)_TOPIC%2Fi">Bambu Studio/Failure Modes/Flow Dynamics</a></li>
 </ul>
 </div>
 <p>For full instructions along with what exactly to print / measure, see the source document.</p>
-<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation">[src]</a></sub></p>
-<a name="H_Elephant%20Foot%20Compensation"></a><h3>Elephant Foot Compensation</h3>
-<p><a name="BM_(Bambu%20Studio%5C%2FDiagnostics%2FElephant%20Foot%20Compensation)_TOPIC%2Fi"></a><strong></strong></p>
+<p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation">[src]</a></sub> <sub><a href="https://bambulab.com/en/support/academy/3/course/982688414357196800/chapter/49">[src]</a></sub></p>
+<a name="H_XY%20Hole%20and%20Contour%20Gap"></a><h3>XY Hole and Contour Gap</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FFailure%20Modes%2FXY%20Hole%20and%20Contour%20Gap)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FFailure%20Modes%2FXY%20Hole%20and%20Contour%20Fit)_TOPIC%2Fi">Bambu Studio/Failure Modes/XY Hole and Contour Fit</a></li>
+</ul>
+</div>
+<p>On a <a href="#BM_(layer%7Cslice)%2Fi">layer</a>, gaps below a certain threshold are merged during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>. This threshold is controlled via the property under <strong>Quality</strong> → <strong>Precision</strong> → <strong><a href="#BM_(layer%7Cslice)%2Fi">Slice</a> gap closing radius</strong>. Any gap smaller than 2x this property's value is automatically closed during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> (e.g., if set to 0.05mm, gaps smaller than 0.1mm are closed).</p>
+<p><img src="bambu_studio_prepare_hole_and_contour_compensation_properties.png" alt="Bambu Studio Prepare screen hole and contour compensation properties"></p>
+<p><img src="bambu_studio_preview_yes_closed_gap_example.png" alt="Bambu Studio Preview screen closed gap example"> <img src="bambu_studio_preview_no_closed_gap_example.png" alt="Bambu Studio Preview screen no closed gap example"></p>
+<p>In the examples above, the first screenshot has <strong><a href="#BM_(layer%7Cslice)%2Fi">Slice</a> gap closing radius</strong> set to 0.13mm while the second screenshot has it set to 0.02mm.</p>
+<p><sub><a href="https://bambulab.com/en/support/academy/3/course/982688414357196800/chapter/49">[src]</a></sub></p>
+<a name="H_XY%20Hole%20and%20Contour%20Thinness"></a><h3>XY Hole and Contour Thinness</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FFailure%20Mode%2FXY%20Hole%20and%20Contour%20Thinness)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FLine%20Width)_TOPIC%2Fi">Bambu Studio/Line Width</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Walls)_TOPIC%2Fi">Bambu Studio/Object Walls</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Seam)_TOPIC%2Fi">Bambu Studio/Object Seam</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FFailure%20Modes%2FXY%20Hole%20and%20Contour%20Fit)_TOPIC%2Fi">Bambu Studio/Failure Modes/XY Hole and Contour Fit</a></li>
+</ul>
+</div>
+<p>By default, <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> removes or distorts areas of a <a href="#BM_(contour)%2Fi">contour</a> / <a href="#BM_(%5Cbhole)%2Fi">hole</a> where the shape is a thin stretch, pin extrusion, or sharply acute corner. That is, if there are two points on the shape's outline with a distance less than the <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a>, it wouldn't be able to reliably print and so the <a href="#BM_(slicer)%2Fi">slicer</a> attempts to work around the "thinness" by distorting or removing it. Real world examples where this might be encountered include models containing of fan blades, thin tubes, line art, and small text.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>These areas are colloquially referred to as thin walls (not to be confused for a printed object's <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s), because the problematic shape often (but not always) resembles a thin wall-like structure.</p>
+</div>
+<p><img src="bambu_studio_prepare_screen_fine_detail_ignored_example.png" alt="Bambu Studio Prepare screen fine detail ignored example"> <img src="bambu_studio_preview_fine_detail_ignored_example.png" alt="Bambu Studio Preview screen fine detail ignored example"></p>
+<p>One workaround is to narrow the <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a> of the entire object being printed. However, a more appropriate and efficient workaround is to set the property <strong>Quality</strong> → <strong>Wall generator</strong> to → <strong>Arachne</strong>. Of the two options for <strong>Quality</strong> → <strong>Wall generator</strong>, ...</p>
+<ul>
+<li><strong>Classic</strong> uses a fixed <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a>.</li>
+<li><strong>Arachne</strong> dynamically changes <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a> as needed.</li>
+</ul>
+<p><strong>Arachne</strong> helps mitigate the thinness problem described above at the expense of more <a href="#BM_(seam)%2Fi">seam</a>s. That is, where as there's typically a single <a href="#BM_(seam)%2Fi">seam</a> on an object, with <strong>Arachne</strong> there may be multiple <a href="#BM_(seam)%2Fi">seam</a>s. <strong>Arachne</strong> starts and stops rather than pushing out a continuous stream of filament, and so each start-stop results in a <a href="#BM_(seam)%2Fi">seam</a>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There's also an option for the classic <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> generator to help with this thinness problem: Detect thin <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>. It seems to be more problematic to use than Arachne <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> generator? See source for more information.</p>
+</div>
+<p><img src="bambu_studio_prepare_arachne_properties.png" alt="Bambu Studio Prepare screen Arachne properties"></p>
+<p>Once <strong>Arachne</strong> is enabled, the extra properties displayed in the screenshot above become present:</p>
+<ul>
+<li><strong>Minimum <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> width</strong>: Minimum <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a>, as a percentage of <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> diameter.</li>
+<li><strong>Minimum feature size</strong>: Minimum thinness to filter out during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>, as a percentage of <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> diameter.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The other properties seem like advanced properties that control knobs/levers of the algorithm? It might not make sense to document them here because, even though the source documents them, they seem like internal concepts and it doesn't say what sense there is in changing them?</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>What happens to all the normal <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a> properties once Arachne is enabled? Do they just get ignored?</p>
+</div>
+<p><sub><a href="https://bambulab.com/en/support/academy/3/course/982688414357196800/chapter/49">[src]</a></sub> <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/wall-generator">[src]</a></sub></p>
+<a name="H_Z%20Aliasing"></a><h3>Z Aliasing</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FFailure%20Modes%2FZ%20Aliasing)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FLayer%20Height)_TOPIC%2Fi">Bambu Studio/Layer Height</a></li>
+</ul>
+</div>
+<p>Objects with a <a href="#BM_(contour)%2Fi">contour</a>s / <a href="#BM_(%5Cbhole)%2Fi">hole</a>s that curve on the Z-axis (e.g., sphere and donut) experience a type of artifacting called stair-stepping, where as the curve's slope aggressively becomes more and more horizontal, overtly visible steps appear between neighboring <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>This is sometimes called Z-axis aliasing?</p>
+</div>
+<p>To mitigate stair-stepping, either ...</p>
+<ol>
+<li>reduce the <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> for the entire object.</li>
+<li>reduce the <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a>s where stair-stepping becomes prevalent, using the variable <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> tool.</li>
+<li>set <strong>Quality</strong> → <strong>Advanced</strong> → <strong>Only one <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> on <a href="#BM_(top%20surface)%2Fi">top surface</a>s</strong> to <strong>Not Applied</strong> to reduce visible <a href="#BM_(layer%7Cslice)%2Fi">layer</a> lines near the <a href="#BM_(top%20surface)%2Fi">top surface</a>. When set to <strong>Not Applied</strong>, the number of <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s on the <a href="#BM_(top%20surface)%2Fi">top surface</a> is the same as the number of <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> loops set under <strong>Strength</strong> → <strong><a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">Wall</a>s</strong> → <strong><a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">Wall</a> loops</strong>. Effectively, it's overwriting the parameter <strong><a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">Wall</a> loops</strong> for the <a href="#BM_(top%20surface)%2Fi">top surface</a> to be a single <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>.</li>
+</ol>
+<p><img src="bambu_studio_preview_only_one_wall_on_top_surfaces_example.png" alt="Bambu Studio Preview screen Only one wall on top surfaces example"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There seems to also be a hidden developer property <strong>Quality</strong> → <strong>Advanced</strong> → <strong>Top area threshold</strong> that sets the threshold for what <a href="#BM_(top%20surface)%2Fi">top surface</a>s use <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> loops's count vs a single surface. I can't find this in my <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>. See https://wiki.bambulab.com/en/software/bambu-studio/parameter/quality-advance-settings.</p>
+</div>
+<p><sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub>  <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/parameter/quality-advance-settings">[src]</a></sub></p>
+<a name="H_Elephant%20Foot"></a><h3>Elephant Foot</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FFailure%20Modes%2FElephant%20Foot)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -2395,14 +2518,19 @@
 <p><a href="#BM_(elephant%20foot)%2Fi">Elephant foot</a> compensation causes <a href="#BM_(brim)%2Fi">brim</a>s to not work properly. They shrink? For it to work properly, compensation must be turned off.</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>A <a href="#BM_%5Cb(rafts%7Craft's%7Craft)_BO%5Cb%2Fi">raft</a> can guard against the <a href="#BM_(elephant%20foot)%2Fi">elephant foot</a> problem?</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
-<li><a href="#BM_(Bambu%20Studio%5C%2FBrims)_TOPIC%2Fi">Bambu Studio/Brims</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Brims)_TOPIC%2Fi">Bambu Studio/Object Brims</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Supports%2FRaft)_TOPIC%2Fi">Bambu Studio/Object Supports/Raft</a></li>
 </ul>
 </div>
 <p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/parameter/elephant-foot">[src]</a></sub></p>
-<a name="H_Flow%20Dynamics%20Calibration"></a><h3>Flow Dynamics Calibration</h3>
-<p><a name="BM_(Bambu%20Studio%5C%2FDiagnostics%2FFlow%20Dynamics%20Calibration)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Flow%20Dynamics"></a><h3>Flow Dynamics</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FFailure%20Modes%2FFlow%20Dynamics)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -2475,8 +2603,8 @@
 <li>On the <strong>Flow Dynamics Calibration</strong> page, click <strong>Next</strong>. It should switch to page asking for <strong>Factor K</strong>. Input the found number from the previous step and click <strong>Finish</strong>.</li>
 </ol>
 <p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/calibration_pa">[src]</a></sub></p>
-<a name="H_Flow%20Ratio%20Calibration"></a><h3>Flow Ratio Calibration</h3>
-<p><a name="BM_(Bambu%20Studio%5C%2FDiagnostics%2FFlow%20Ratio)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Flow%20Ratio"></a><h3>Flow Ratio</h3>
+<p><a name="BM_(Bambu%20Studio%5C%2FFailure%20Modes%2FFlow%20Ratio)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -2558,18 +2686,18 @@
 </li>
 </ol>
 <p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/calibration_pa">[src]</a></sub></p>
-<a name="H_Slicer%20Results"></a><h3>Slicer Results</h3>
-<p><a name="BM_(Bambu%20Studio%5C%2FDiagnostics%2FSlicer%20Results)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Slicer%20Diagnostics"></a><h2>Slicer Diagnostics</h2>
+<p><a name="BM_(Bambu%20Studio%5C%2FSlicer%20Diagnostics)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
 <li><a href="#BM_(Bambu%20Studio%5C%2FUser%20Interface)_TOPIC%2Fi">Bambu Studio/User Interface</a></li>
 <li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Supports)_TOPIC%2Fi">Bambu Studio/Object Supports</a></li>
 <li><a href="#BM_(Bambu%20Studio%5C%2FLayer%20Height)_TOPIC%2Fi">Bambu Studio/Layer Height</a></li>
-<li><a href="#BM_(Bambu%20Studio%5C%2FSeam)_TOPIC%2Fi">Bambu Studio/Seam</a></li>
-<li><a href="#BM_(Bambu%20Studio%5C%2FInfill)_TOPIC%2Fi">Bambu Studio/Infill</a></li>
-<li><a href="#BM_(Bambu%20Studio%5C%2FWalls)_TOPIC%2Fi">Bambu Studio/Walls</a></li>
-<li><a href="#BM_(Bambu%20Studio%5C%2FBrims)_TOPIC%2Fi">Bambu Studio/Brims</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Seam)_TOPIC%2Fi">Bambu Studio/Object Seam</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Infill)_TOPIC%2Fi">Bambu Studio/Object Infill</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Walls)_TOPIC%2Fi">Bambu Studio/Object Walls</a></li>
+<li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Brims)_TOPIC%2Fi">Bambu Studio/Object Brims</a></li>
 </ul>
 </div>
 <p>The <a href="#BM_(slicer)%2Fi">slicer</a> output shown in the <strong>Preview</strong> Screen helps identify problems prior to printing.</p>
@@ -2590,12 +2718,6 @@
 </ul>
 <p>For more information, see the source.</p>
 <p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/view-slicing-information">[src]</a></sub></p>
-<a name="H_TODO"></a><h1>TODO</h1>
-<p>Under the <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> section, fill out anything missing...</p>
-<ul>
-<li><a href="https://bambulab.com/en/support/academy/3/course/982688414357196800/chapter/48">link</a></li>
-<li><a href="https://bambulab.com/en/support/academy/3/course/982688414357196800/chapter/49">link</a></li>
-</ul>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>
@@ -2872,16 +2994,22 @@
 </li>
 <li>
 <p><a name="BM_(slicing%7Csliced)%2Fi"></a><strong>slicing</strong> <a name="BM_(slices)_PROC%2Fi"></a><strong></strong> - Cutting a 3D object into thin horizontal <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s and generating <a href="#BM_(G-code)%2F">G-code</a> to print those <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s one by one. The <a href="#BM_(G-code)%2F">G-code</a> stacks the <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s on top of each other to recreate the original object.</p>
-<p>The process of <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> includes controlling for <a href="#BM_(layer%20height)%2Fi">layer height</a> and print speed, as well as introducing <a href="#BM_(infill)%2Fi">infill</a>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214">[src]</a></sub></p>
+<p>The process of <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> includes controlling for <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a> and print speed, as well as introducing <a href="#BM_(infill)%2Fi">infill</a>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214">[src]</a></sub></p>
 </li>
 <li>
 <p><a name="BM_(layer%7Cslice)%2Fi"></a><strong>layer</strong> <a name="BM_(slices)_SET%2Fi"></a><strong></strong> - A layer within a <a href="#BM_(slicing%7Csliced)%2Fi">sliced</a> 3D object. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214">[src]</a></sub></p>
 <p></p>
 </li>
 <li>
-<p><a name="BM_(layer%20height)%2Fi"></a><strong>layer height</strong> <a name="BM_(height)_LAYER%2Fi"></a><strong></strong> <a name="BM_(thickness%7Cthickness%7Cthicker)_LAYER%2Fi"></a><strong></strong> - The thickness of each individual <a href="#BM_(layer%7Cslice)%2Fi">layer</a> within a <a href="#BM_(slicing%7Csliced)%2Fi">sliced</a> 3D object. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214">[src]</a></sub></p>
+<p><a name="BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi"></a><strong>layer height</strong> <a name="BM_(height'%3Fs%3F)_LH%2Fi"></a><strong></strong> <a name="BM_(thickness%7Cthickness%7Cthicker)_LH%2Fi"></a><strong></strong> - Height of an individual <a href="#BM_(layer%7Cslice)%2Fi">layer</a> within a <a href="#BM_(slicing%7Csliced)%2Fi">sliced</a> 3D object. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214">[src]</a></sub></p>
 <p>
 </p>
+</li>
+<li>
+<p><a name="BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi"></a><strong>line width</strong> <a name="BM_(width'%3Fs%3F)_LW%2Fi"></a><strong></strong> <a name="BM_(thickness%7Cthickness%7Cthicker)_LW%2Fi"></a><strong></strong> - Width of printed filament, as extruded by the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>. <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/parameter/line-width">[src]</a></sub></p>
+<p>
+</p>
+<p></p>
 </li>
 <li>
 <p><a name="BM_(bridging%7Cbridge)%2Fi"></a><strong>bridging</strong> - Part of a 3D object where there is a mid-air horizontal gap between two or more sides, leaving that part with nothing underneath it to help hold it up. During printing, <a href="#BM_(supported%7Csupporting%7Csupports%7Csupport's%7Csupport)_BO%2Fi">supports</a> are often added to <a href="#BM_(bridging%7Cbridge)%2Fi">bridging</a> areas.</p>
@@ -2952,7 +3080,7 @@
 <p><a name="BM_%5Cb(ASA)%5Cb%2F"></a><strong>Acrylonitrile Styrene Acrylate (ASA)</strong> <a name="BM_(Acrylonitrile%20Styrene%20Acrylate)%2Fi"></a><strong></strong> - A filament material for resilient functional prints. <a href="#BM_%5Cb(ASA)%5Cb%2F">ASA</a> is similar to <a href="#BM_%5Cb(ABS)%5Cb%2F">ABS</a>, but weather resistant, UV resistant, and chemical resistant. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/215">[src]</a></sub></p>
 </li>
 <li>
-<p><a name="BM_%5Cb(PC)%5Cb%2F"></a><strong>Polycarbonate (PC)</strong> <a name="BM_(Polycarbonate)%2Fi"></a><strong></strong> - A filament material for resilient functional prints. <a href="#BM_%5Cb(PC)%5Cb%2F">PC</a> beats <a href="#BM_%5Cb(ABS)%5Cb%2F">ABS</a> ans <a href="#BM_%5Cb(ASA)%5Cb%2F">ASA</a> on mechanical strength and <a href="#BM_(heat%20resistance)%2Fi">heat resistance</a>. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/215">[src]</a></sub></p>
+<p><a name="BM_%5Cb(PC)%5Cb%2F"></a><strong>Polycarbonate (PC)</strong> <a name="BM_(Polycarbonate)%2Fi"></a><strong></strong> - A filament material for resilient functional prints. <a href="#BM_%5Cb(PC)%5Cb%2F">PC</a> beats <a href="#BM_%5Cb(ABS)%5Cb%2F">ABS</a> ans <a href="#BM_%5Cb(ASA)%5Cb%2F">ASA</a> on mechanical strength and heat resistance. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/215">[src]</a></sub></p>
 </li>
 <li>
 <p><a name="BM_%5Cb(PA%5Cd*%7CPAHT)%5Cb%2F"></a><strong>Polyamide / Nylon (PA)</strong> <a name="BM_(Polyamide%7CNylon)%2Fi"></a><strong></strong> - A filament material know for being strong, flexible, and wear-resistant. <sub><a href="https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/215">[src]</a></sub></p>
@@ -2973,7 +3101,7 @@
 <p><a name="BM_%5Cb(GF)%5Cb%2Fi"></a><strong>Glass Fiber (GF)</strong> <a name="BM_(glass%5B%5C-%20%5Dfiber)%2Fi"></a><strong></strong> - A filament material designation that means it's been fortified with glass fiber to enhance stiffness and strength. <sub><a href="https://bambulab.com/en-us/filament/pla-cf">[src]</a></sub></p>
 </li>
 <li>
-<p><a name="BM_(bed%20adhesion)%2Fi"></a><strong>bed adhesion</strong> - The adherence of the bottom of a print to the the <a href="#BM_(build%20plate)%2Fi">build plate</a>. For example, in poor <a href="#BM_(bed%20adhesion)%2Fi">bed adhesion</a>, the bottom edges of a print may <a href="#BM_(warping%7Cwarp)%2Fi">warp</a> and detach off the <a href="#BM_(build%20plate)%2Fi">build plate</a>. <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/36">[src]</a></sub></p>
+<p><a name="BM_(bed%20adhesion%7Cheatbed%20adhesion)%2Fi"></a><strong>bed adhesion</strong> - The adherence of the bottom of a print to the the <a href="#BM_(build%20plate)%2Fi">build plate</a>. For example, in poor <a href="#BM_(bed%20adhesion%7Cheatbed%20adhesion)%2Fi">bed adhesion</a>, the bottom edges of a print may <a href="#BM_(warping%7Cwarp)%2Fi">warp</a> and detach off the <a href="#BM_(build%20plate)%2Fi">build plate</a>. <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/36">[src]</a></sub></p>
 </li>
 <li>
 <p><a name="BM_(infill)%2Fi"></a><strong>infill</strong> - The interior area of a printed object. The interior is typically printed using an <a href="#BM_(infill)%2Fi">infill</a> pattern, where that pattern doesn't consume the entire area but is designed to prioritize some attribute (e.g., save filament vs bear load).</p>
@@ -2988,10 +3116,10 @@
 <p>The inside of an enclosed <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> is typically filled with an <a href="#BM_(infill)%2Fi">infill</a>. <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub></p>
 </li>
 <li>
-<p><a name="BM_(brim)%2Fi"></a><strong>brim</strong> - A thin <a href="#BM_(layer%7Cslice)%2Fi">layer</a> printed at the base of the object, hugging the printed object. <a href="#BM_(brim)%2Fi">Brim</a>s are intended to assist with <a href="#BM_(bed%20adhesion)%2Fi">bed adhesion</a>. <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/auto-brim">[src]</a></sub></p>
+<p><a name="BM_(brim)%2Fi"></a><strong>brim</strong> - A thin <a href="#BM_(layer%7Cslice)%2Fi">layer</a> printed at the base of the object, hugging the printed object. <a href="#BM_(brim)%2Fi">Brim</a>s are intended to assist with <a href="#BM_(bed%20adhesion%7Cheatbed%20adhesion)%2Fi">bed adhesion</a>. <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/auto-brim">[src]</a></sub></p>
 </li>
 <li>
-<p><a name="BM_(brim%20ear)%2Fi"></a><strong>brim ear</strong> - A thin <a href="#BM_(layer%7Cslice)%2Fi">layer</a> printed at specific points around the object's base, hugging the printed object. <a href="#BM_(brim%20ear)%2Fi">Brim ear</a>s are intended to assist with <a href="#BM_(bed%20adhesion)%2Fi">bed adhesion</a>. <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/brim-ears">[src]</a></sub></p>
+<p><a name="BM_(brim%20ear)%2Fi"></a><strong>brim ear</strong> - A thin <a href="#BM_(layer%7Cslice)%2Fi">layer</a> printed at specific points around the object's base, hugging the printed object. <a href="#BM_(brim%20ear)%2Fi">Brim ear</a>s are intended to assist with <a href="#BM_(bed%20adhesion%7Cheatbed%20adhesion)%2Fi">bed adhesion</a>. <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/brim-ears">[src]</a></sub></p>
 </li>
 <li>
 <p><a name="BM_(skirt%20loop%7Cskirt)%2Fi"></a><strong>skirt loop</strong> - A loop printed at the beginning to prime the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> (e.g., remove residue and test flow). <sub><a href="https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35">[src]</a></sub></p>
@@ -3041,10 +3169,7 @@
 <p><a name="BM_(flow%20ratio%7Cflow%20rate)%2Fi"></a><strong>flow ratio</strong> - A scaling factor that adjusts the actual amount of filament extruded vs the theoretical amount calculated by the <a href="#BM_(slicer)%2Fi">slicer</a>.</p>
 </li>
 <li>
-<p><a name="BM_(heat%20resistance)%2Fi"></a><strong>heat resistance</strong> - FILL ME IN.</p>
-</li>
-<li>
-<p><a name="BM_(filter%20switch%20flap)%2Fi"></a><strong>filter switch flap</strong> - FILL ME IN.'</p>
+<p><a name="BM_(heat%20deflection%20temperature)%2Fi"></a><strong>heat deflection temperature</strong> <a name="BM_(HDT)%2F"></a><strong></strong> - Minimum temperature at which 0.45 MPa and 1.8 MPa of stress cause some material to bend by a small standardized amount (ISO 75 deflection threshold). <sub><a href="https://en.wikipedia.org/wiki/Heat_deflection_temperature">[src]</a></sub></p>
 </li>
 </ul>
 <p></p>

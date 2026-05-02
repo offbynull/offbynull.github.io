@@ -14,7 +14,7 @@ The subsections below detail high-level operational guidelines of the H2S.
 
 ## Operational Placement
 
-The H2S must be placed on a flat and stable surface. The operating space recommended is 80cm width x 102cm depth x 105cm !!height!!, which covers the space required in the back for the exhaust and an AMS 2 Pro to sit on top. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/224`
+The H2S must be placed on a flat and stable surface. The operating space recommended is 80cm !!width!! x 102cm depth x 105cm !!height!!, which covers the space required in the back for the exhaust and an AMS 2 Pro to sit on top. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/224`
 
 ## Operational Climate
 
@@ -235,11 +235,15 @@ The following table summarizes key characteristics of filaments !!supported!! by
 
  * **Name** is the material's name. Each material may come in one of many modified forms: HF (High Flow) means the material has been modified for high speed printing `{ref} https://www.youtube.com/watch?v=1t_VpPj-9NY`, CF (Carbon Fiber) means the material has been fortified with carbon fiber. `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/215`, and GF (Glass Fiber) means the material has been fortified with glass fiber. `{ref} https://bambulab.com/en-us/filament/pla-cf`
  * **Stiffness** and **Impact Strength** givens a user-friendly for those specific properties.
- * **Heat Deflection Temperature** states the minimum temperature at which 0.45 MPa and 1.8 MPa of stress cause the material to bend by a small standardized amount (ISO 75 deflection threshold). It gives an idea of how much heat the material can withstand before deforming.
+ * **Heat Deflection Temperature** states the minimum temperature at which 0.45 MPa and 1.8 MPa of stress cause the material to bend by a small standardized amount (ISO 75 deflection threshold). It gives an idea of how much heat the material can withstand before deforming. `{ref} https://en.wikipedia.org/wiki/Heat_deflection_temperature`
  * **Saturated Water Absorption Rate** states the percent increase in weight from absorbed moisture under a standardized climate. It gives an idea of how moisture resistant the material is.
  * **Nozzle temperature**, **Heatbed temperature**, and **Chamber temperature** collectively define the H2S's heating requirements to effectively print the material.
  * **Drying** states the temperature and time needed to dry out a material. Filaments must be dry prior to printing, and some materials require drying temperatures that neither the AMS 2 Pro nor the AMS HT can reach.
  * **Resistance** states the resistance properties of the material (e.g., flammability).
+
+```{note}
+The list below isn't exhaustive, and some filament types of sub-types (e.g., Neon PLA) require specific hardware to print with (e.g., hardened steel nozzle or engineering build plate).
+```
 
 | Name | Stiffness | Impact Strength | Heat Deflection Temperature<br>(ISO 75) | Saturated Water Absorption Rate | Nozzle temperature | Heatbed temperature | Chamber temperature | Drying | Resistance |
 |---|---|---|---|---|---|---|---|---|---|
@@ -986,7 +990,7 @@ A raft_BO is a type of support_BO that elevates an object off the build plate. R
 * for materials that are prone to warping off the build plate (e.g., ABS tendency to warp corners lifting them off build plate).
 
 ```{seealso}
-Bambu Studio/Diagnostics/Elephant Foot Compensation_TOPIC
+Bambu Studio/Failure Modes/Elephant Foot_TOPIC
 ```
 
 Navigate to the properties under **!!Support!!** → **!!Raft!!**. The property ...
@@ -1378,10 +1382,10 @@ Bambu Studio/Object Walls_TOPIC
 Line width is the !!width!! of filament extruded by the nozzle during printing. To get the extruded filament to lay down either wider or thinner, the print speed changes and / or the rate at which filament is being pushed out changes (flow rate). For example, to print with a wider line width, the nozzle's head may print at the same speed but push out more filament. That is, the layer is being printed at a specific height_LH and speed, but pushing out more filament at that layer height and speed causes that extra filament to get flattened by the nozzle's tip as it's being laid down, spreading to the desired line width.
 
 ```{note}
-Because having a wider line width relies on something being under the nozzle to squish against, it won't work when printing overhangs and bridges. Does this apply to overhangs and bridges that have supports_BO? Probably, because unless you're using specific Bambu Lab filaments intended to be used as supports, there typically is both a XY-axis gap and Z-axis gap between the support_BO and what it's !!supporting!! (with !!support!! filaments you can set these gaps to 0 but with normal filaments that gap needs to be there to make it easy to break off supports_BO).
+Because having a wider line width relies on something being under the nozzle to squish against, it won't work when printing overhangs and bridges. Does this apply to overhangs and bridges that have supports_BO? Probably, because unless you're using specific Bambu Lab filaments intended to be used as supports_BO, there typically is both a XY-axis gap and Z-axis gap between the support_BO and what it's !!supporting!! (with !!support!! filaments you can set these gaps to 0 but with normal filaments that gap needs to be there to make it easy to break off supports_BO).
 ```
 
-To set the layer width, navigate to the properties under **!!Quality!!** → **!!Line width!!**:
+To set the line width, navigate to the properties under **!!Quality!!** → **!!Line width!!**:
 
 * **Default** - Line width override for any properties below that are set to 0 (e.g., if the **Outer wall**'s value is 0, **Default**'s value is used instead).
 * **First layer** - Line width override for the initial layer, overriding all other properties below exclusively for the initial layer (e.g., **First layer**'s value is used for outer wall instead of **Outer wall**'s value when printing the initial layer). This value is typically larger than normal to provide better bed adhesion.
@@ -1505,7 +1509,7 @@ For scarf seams to be enabled, the filament being printed with must have scarf s
 ![Bambu Studio filament scarf seam settings](bambu_studio_filament_scarf_seam_settings.png)
 
 * **Scarf seam type**: Must be set to either **Contour** or **Contour and Hole** for scarf seams to be enabled.
-* **Scarf start !!height!!**: Height at which the nozzle starts printing the wall, specified in mm or percentage of layer height.
+* **Scarf start !!height!!**: !!Height!! at which the nozzle starts printing the wall, specified in mm or percentage of layer height.
 * **Scarf slope gap**: Scarf seam cuts into the inner wall to accommodate excess material, represented as a percentage of the nozzle diameter multiplied by some internal constant.
 * **Scarf length**: Length of the seam. Disabled if set to 0 or the option **Scarf around the entire wall** is enabled in print parameters.
 
@@ -1681,7 +1685,7 @@ The parameter ...
   Bambu Studio/Brims/Brim Ears_TOPIC
   ```
 
-* **Brim width** defines the distance between the outer-most bring and the printed object (how wide the brim is).
+* **Brim !!width!!** defines the distance between the outer-most bring and the printed object (how wide the brim is).
 
 * **Brim-object gap** defines the distance between the inner-most brim line and the printed object. A smaller gap typically improves the connection to the object while a larger gap makes pulling off easier.
 
@@ -1690,7 +1694,7 @@ If gap is 0 but there's still a gap showing up between the brim and the object, 
 ```
 
 ```{seealso}
-Bambu Studio/Diagnostics/Elephant Foot Compensation_TOPIC
+Bambu Studio/Failure Modes/Elephant Foot_TOPIC
 ```
 
 ![Bambu Studio Preview screen brim example](bambu_studio_preview_brim_example.png)
@@ -1853,6 +1857,12 @@ Printed objects that require accurate fitting with other components (e.g., screw
 
 The process involves printing a test object and either using calipers or a standard screw to determine how far off the hole/contour is from its intended !!baseline!!. That value can then be inserted into an object's properties under **Quality** → **Precision** → **X-Y hole compensation** and **X-Y contour compensation**.
 
+![Bambu Studio Prepare screen hole and contour compensation properties](bambu_studio_prepare_hole_and_contour_compensation_properties.png)
+
+```{note}
+The auto compensation option in the screenshot above disables the manual compensation fields? Description says it works with the basic set of filaments (e.g., PLA and PETG) - maybe it's good enough?
+```
+
 ```{note}
 Remember that holes and contours on the z-axis are holes that are compensated for using XY hole contour compensation. It does not compensate for sideway holes.
 ```
@@ -1868,13 +1878,31 @@ Hole / contour compensation may be needed because ...
 * flow dynamics may need to be tuned.
 
 ```{seealso}
-Bambu Studio/Diagnostics/Elephant Foot Compensation_TOPIC
-Bambu Studio/Diagnostics/Flow Dynamics Calibration_TOPIC
+Bambu Studio/Failure Modes/Elephant Foot_TOPIC
+Bambu Studio/Failure Modes/Flow Dynamics_TOPIC
 ```
 
 For full instructions along with what exactly to print / measure, see the source document.
 
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation` `{ref} https://bambulab.com/en/support/academy/3/course/982688414357196800/chapter/49`
+
+### XY Hole and Contour Gap
+
+`{bm} /(Bambu Studio\/Failure Modes\/XY Hole and Contour Gap)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/Failure Modes/XY Hole and Contour Fit_TOPIC
+```
+
+On a layer, gaps below a certain threshold are merged during slicing. This threshold is controlled via the property under **Quality** → **Precision** → **Slice gap closing radius**. Any gap smaller than 2x this property's value is automatically closed during slicing (e.g., if set to 0.05mm, gaps smaller than 0.1mm are closed).
+
+![Bambu Studio Prepare screen hole and contour compensation properties](bambu_studio_prepare_hole_and_contour_compensation_properties.png)
+
+![Bambu Studio Preview screen closed gap example](bambu_studio_preview_yes_closed_gap_example.png) ![Bambu Studio Preview screen no closed gap example](bambu_studio_preview_no_closed_gap_example.png)
+
+In the examples above, the first screenshot has **Slice gap closing radius** set to 0.13mm while the second screenshot has it set to 0.02mm.
+
+`{ref} https://bambulab.com/en/support/academy/3/course/982688414357196800/chapter/49`
 
 ### XY Hole and Contour Thinness
 
@@ -1883,44 +1911,49 @@ For full instructions along with what exactly to print / measure, see the source
 ```{prereq}
 Bambu Studio/Line Width_TOPIC
 Bambu Studio/Object Walls_TOPIC
-Bambu Studio/Seam_TOPIC
-Bambu Studio/Failure Modes/XY Hole and Contour Fit
+Bambu Studio/Object Seam_TOPIC
+Bambu Studio/Failure Modes/XY Hole and Contour Fit_TOPIC
 ```
 
-By default, slicing removes or distorts areas of a contour / hole where the shape ends up as a thin stretches, !!pinholes!!, pin extrusions, or sharply acute corners. Real world examples where this issue might be encountered include models containing of fan blades, fine wire meshes, line art, and small text..
+By default, slicing removes or distorts areas of a contour / hole where the shape is a thin stretch, pin extrusion, or sharply acute corner. That is, if there are two points on the shape's outline with a distance less than the line width, it wouldn't be able to reliably print and so the slicer attempts to work around the "thinness" by distorting or removing it. Real world examples where this might be encountered include models containing of fan blades, thin tubes, line art, and small text.
+
+```{note}
+These areas are colloquially referred to as thin !!walls!! (not to be confused for a printed object's walls), because the problematic shape often (but not always) resembles a thin !!wall-like!! structure.
+```
 
 ![Bambu Studio Prepare screen fine detail ignored example](bambu_studio_prepare_screen_fine_detail_ignored_example.png) ![Bambu Studio Preview screen fine detail ignored example](bambu_studio_preview_fine_detail_ignored_example.png)
 
-One fix is to narrow the line width of the entire object being printed, assuming that the line width can be made thin enough to accommodate geometry. A more appropriate and efficient fix is to change **Quality** → **Wall generator** to → **Arachne**.
+One workaround is to narrow the line width of the entire object being printed. However, a more appropriate and efficient workaround is to set the property **Quality** → **!!Wall!! generator** to → **Arachne**. Of the two options for **Quality** → **!!Wall!! generator**, ...
+
+* **Classic** uses a fixed line width.
+* **Arachne** dynamically changes line width as needed.
+
+**Arachne** helps mitigate the thinness problem described above at the expense of more seams. That is, where as there's typically a single seam on an object, with **Arachne** there may be multiple seams. **Arachne** starts and stops rather than pushing out a continuous stream of filament, and so each start-stop results in a seam.
 
 ```{note}
-There's also an option for the classic wall generator: Detect thin wall. It seems to be more problematic to use than Arachne wall generator? See source for more information.
+There's also an option for the classic wall generator to help with this thinness problem: Detect thin wall. It seems to be more problematic to use than Arachne wall generator? See source for more information.
 ```
-
-**Quality** → **Wall generator** has to options:
-
-* **Classic** - uses a fixed line width.
-* **Arachne** - dynamically changes line width as needed.
-
-**Arachne** can change help mitigate problematic geometry mentioned above at the expense of more seams. That is, where as with **Classic** there's typically a single seam on an object, with **Arachne** there may be multiple.
 
 ![Bambu Studio Prepare screen Arachne properties](bambu_studio_prepare_arachne_properties.png)
 
 Once **Arachne** is enabled, the extra properties displayed in the screenshot above become present:
 
+* **Minimum wall !!width!!**: Minimum line width, as a percentage of nozzle diameter.
+* **Minimum feature size**: Minimum thinness to filter out during slicing, as a percentage of nozzle diameter.
+
 ```{note}
-What happens to all the normal line width properties once this is enabled? Do they just get ignored?
+The other properties seem like advanced properties that control knobs/levers of the algorithm? It might not make sense to document them here because, even though the source documents them, they seem like internal concepts and it doesn't say what sense there is in changing them?
 ```
 
 ```{note}
-Even this has it's limit? I'm assuming it 'll only narrow the line width to a point, and if the line width needs needs to be thinner then the same distortions will show up as before?
+What happens to all the normal line width properties once Arachne is enabled? Do they just get ignored?
 ```
 
 `{ref} https://bambulab.com/en/support/academy/3/course/982688414357196800/chapter/49` `{ref} https://wiki.bambulab.com/en/software/bambu-studio/wall-generator`
 
 ### Z Aliasing
 
-`{bm} /(Bambu Studio\/Failure Mode\/Z Aliasing)_TOPIC/i`
+`{bm} /(Bambu Studio\/Failure Modes\/Z Aliasing)_TOPIC/i`
 
 ```{prereq}
 Bambu Studio/User Interface_TOPIC
@@ -1973,7 +2006,7 @@ Elephant foot compensation causes brims to not work properly. They shrink? For i
 ```
 
 ```{note}
-A raft can guard against the elephant foot problem?
+A raft_BO can guard against the elephant foot problem?
 ```
 
 ```{seealso}
@@ -2160,15 +2193,6 @@ These color schemes can help diagnose issues before printing:
 For more information, see the source.
 
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/view-slicing-information`
-
-# TODO
-
-Under the Bambu Studio section, fill out anything missing...
-
-* [link](https://bambulab.com/en/support/academy/3/course/982688414357196800/chapter/48)
-* [link](https://bambulab.com/en/support/academy/3/course/982688414357196800/chapter/49)
-
-Add hardware section.
 
 # Terminology
 
@@ -2522,7 +2546,7 @@ Add hardware section.
 
 * `{bm} Glass Fiber (GF)/\b(GF)\b/i` `{bm} /(glass[\- ]fiber)/i` - A filament material designation that means it's been fortified with !!glass fiber!! to enhance stiffness and strength. `{ref} https://bambulab.com/en-us/filament/pla-cf`
 
-* `{bm} bed adhesion/(bed adhesion|heatbed adhesion)` - The adherence of the bottom of a print to the the build plate. For example, in poor bed adhesion, the bottom edges of a print may warp and detach off the build plate. `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/36`
+* `{bm} bed adhesion/(bed adhesion|heatbed adhesion)/i` - The adherence of the bottom of a print to the the build plate. For example, in poor bed adhesion, the bottom edges of a print may warp and detach off the build plate. `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/36`
 
 * `{bm} infill` - The interior area of a printed object. The interior is typically printed using an infill pattern, where that pattern doesn't consume the entire area but is designed to prioritize some attribute (e.g., save filament vs bear load).
 
@@ -2579,9 +2603,7 @@ Add hardware section.
 
 * `{bm} flow ratio/(flow ratio|flow rate)/i` - A scaling factor that adjusts the actual amount of filament extruded vs the theoretical amount calculated by the slicer.
 
-* `{bm} heat resistance` - FILL ME IN.
-
-* `{bm} filter switch flap` - FILL ME IN.'
+* `{bm} heat deflection temperature` `{bm} /(HDT)/` - Minimum temperature at which 0.45 MPa and 1.8 MPa of stress cause some material to bend by a small standardized amount (ISO 75 deflection threshold). `{ref} https://en.wikipedia.org/wiki/Heat_deflection_temperature`
 
 `{bm-error} Did you mean Bambu Lab (not plural)?/(Bambu Labs)/`
 
