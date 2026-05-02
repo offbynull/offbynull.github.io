@@ -536,7 +536,7 @@ Bambu Studio can export the project's 3D objects under **File** → **Export**.
 ```
 
 ```{note}
-A complete accounting of file formats isn't appropriate here. Just note that, if you importing SVGs, SVGs have no height_LAYER. Once an SVG is imported, Bambu Studio gives it a tiny height_LAYER and then you can scale it to make it taller.
+A complete accounting of file formats isn't appropriate here. Just note that, if you importing SVGs, SVGs have no height_LH. Once an SVG is imported, Bambu Studio gives it a tiny height_LH and then you can scale it to make it taller.
 ```
 
 Alternatively, Bambu Studio's Home screen integrates MakerWorld. MakerWorld is an online repository of printable projects. MakerWorld projects can't be imported directly into the current Bambu Studio project. However, it is possible to open a MakerWorld project, save it as a 3MF file (or export as some other file format), and import that file into an existing project. `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/33`
@@ -1136,7 +1136,7 @@ This is similar to subtraction using the mesh boolean tool in the Prepare screen
 Bambu Studio/Object Combining_TOPIC
 Bambu Studio/Negative Parts_TOPIC
 Bambu Studio/Fuzzy Skin_TOPIC
-Bambu Studio/Infill_TOPIC
+Bambu Studio/Object Infill_TOPIC
 ```
 
 A modifier part is an object that gets combined with an existing set of models (same assembly), but it's purpose is to modify properties of specific areas of existing models. Any region of the existing models that intersect with the modifier part have the modifier part's properties applied.
@@ -1284,8 +1284,8 @@ Layer height is the !!height!! of each layer in the print. The thinner the layer
 
 To set the layer height globally, ensure no object is selected and navigate to the properties under **!!Quality!!** → **!!Layer height!!**:
 
-* **Layer height** - Controls height_LAYER of each layer, except for the initial layer.
-* **Initial layer height** - Controls height_LAYER of the initial layer. A thicker_LAYER initial layer may help with the print better stick to the build plate.
+* **Layer height** - Controls height_LH of each layer, except for the initial layer.
+* **Initial layer height** - Controls height_LH of the initial layer. A thicker_LH initial layer may help with the print better stick to the build plate.
 
 In addition, there are presets available for choosing common layer heights. These presets typically also set other other options, such as printing speeds.
 
@@ -1359,14 +1359,56 @@ What about other styles of tree supports_BO (e.g., tree slim)? Other styles seem
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/adaptive-layer-height`
 
 ```{seealso}
-Bambu Studio/Curved Tops_TOPIC
+Bambu Studio/Failure Modes/Z Aliasing_TOPIC
 ```
 
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/layer-heigh` `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35`
 
-## Seam
+## Line Width
 
-`{bm} /(Bambu Studio\/Seam)_TOPIC/i`
+`{bm} /(Bambu Studio\/Line Width)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/User Interface_TOPIC
+Bambu Studio/Layer Height_TOPIC
+Bambu Studio/Object Supports/Support Gaps_TOPIC
+Bambu Studio/Object Walls_TOPIC
+```
+
+Line width is the !!width!! of filament extruded by the nozzle during printing. To get the extruded filament to lay down either wider or thinner, the print speed changes and / or the rate at which filament is being pushed out changes (flow rate). For example, to print with a wider line width, the nozzle's head may print at the same speed but push out more filament. That is, the layer is being printed at a specific height_LH and speed, but pushing out more filament at that layer height and speed causes that extra filament to get flattened by the nozzle's tip as it's being laid down, spreading to the desired line width.
+
+```{note}
+Because having a wider line width relies on something being under the nozzle to squish against, it won't work when printing overhangs and bridges. Does this apply to overhangs and bridges that have supports_BO? Probably, because unless you're using specific Bambu Lab filaments intended to be used as supports, there typically is both a XY-axis gap and Z-axis gap between the support_BO and what it's !!supporting!! (with !!support!! filaments you can set these gaps to 0 but with normal filaments that gap needs to be there to make it easy to break off supports_BO).
+```
+
+To set the layer width, navigate to the properties under **!!Quality!!** → **!!Line width!!**:
+
+* **Default** - Line width override for any properties below that are set to 0 (e.g., if the **Outer wall**'s value is 0, **Default**'s value is used instead).
+* **First layer** - Line width override for the initial layer, overriding all other properties below exclusively for the initial layer (e.g., **First layer**'s value is used for outer wall instead of **Outer wall**'s value when printing the initial layer). This value is typically larger than normal to provide better bed adhesion.
+* **Outer wall** - Line width of outer walls.
+* **Inner wall** - Line width of inner walls.
+* **Top surface** - Line width of top surfaces (regions of the model where nothing else is printed on top).
+* **Sparse infill** - Line width of sparse infills. 
+* **Internal solid infill** - Line width of internal solid infills (top shells just before the final top shell / bottom shells just after the initial bottom shell).
+* **!!Support!!** - Line width of supports_BO.
+
+```{note}
+Although **First layer** may help with bed adhesion, it also may make elephant foot phenomenon worse? I'm not sure.
+```
+
+![Bambu Studio Prepare screen line width parameters](bambu_studio_prepare_line_width_parameters.png)
+
+The line width is recommended to be 75% to 150% of the nozzle's diameter. Otherwise, the print quality will likely be poor. For example, if using the 0.4mm nozzle that comes with the H2S, the line width should be between 0.3mm and 0.6mm.
+
+```{note}
+When referring to the nozzle's diameter, it means the diameter of the channel that hte filament extrudes through, referred to as the inner diameter. The outer diameter is the diameter of the wall encasing the inner diameter.
+```
+
+`{ref} https://wiki.bambulab.com/en/software/bambu-studio/parameter/line-width`
+
+## Object Seam
+
+`{bm} /(Bambu Studio\/Object Seam)_TOPIC/i`
 
 ```{prereq}
 Bambu Studio/User Interface_TOPIC
@@ -1382,8 +1424,13 @@ There are several ways to control the appearance of seams: Algorithmic placement
 Although not documented in any of the subsections below, the fuzzy skin feature can also help mitigate the appearance of seams by introducing a randomly jittered textured outside.
 ```
 
+```{note}
+Where as normally there's a single seam on an object, the **Arachne** wall generator causes multiple starts/stops per path, meaning multiple seams.
+```
+
 ```{seealso}
 Bambu Studio/Fuzzy Skin_TOPIC
+Bambu Studio/Failure Mode/XY Hole and Contour Thinness_TOPIC
 ```
 
 ### Algorithmic Seam Placement
@@ -1511,34 +1558,14 @@ In the object's parameters, ...
 
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/Seam`
 
-## Curved Tops
-
-`{bm} /(Bambu Studio\/Curved Tops)_TOPIC/i`
-
-```{prereq}
-Bambu Studio/User Interface_TOPIC
-```
-
-Objects with a curved tops instead of flat tops (e.g., circle vs square) should set the property **Quality** → **Advanced** → **Only one wall on top surfaces** to **Not Applied**. Doing so reduces visible layer lines, resulting in a smoother finish.
-
-![Bambu Studio Preview screen Only one wall on top surfaces example](bambu_studio_preview_only_one_wall_on_top_surfaces_example.png)
-
-When this parameter is set to **Not Applied**, the number of walls on the top surface is the same as the number of wall loops set under **Strength** → **Walls** → **Wall loops**. Effectively, it's overwriting the parameter **Wall loops** for the top surface to be a single wall.
-
-```{note}
-There seems to also be a hidden developer property **Quality** → **Advanced** → **Top area threshold** that sets the threshold for what top surfaces use wall loops's count vs a single surface. I can't find this in my Bambu Studio. See https://wiki.bambulab.com/en/software/bambu-studio/parameter/quality-advance-settings.
-```
-
-`{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35`  `{ref} https://wiki.bambulab.com/en/software/bambu-studio/parameter/quality-advance-settings`
-
 ## Fuzzy Skin
 
 `{bm} /(Bambu Studio\/Fuzzy Skin)_TOPIC/i`
 
 ```{prereq}
 Bambu Studio/User Interface_TOPIC
-Bambu Studio/Walls_TOPIC
-Bambu Studio/Infill_TOPIC
+Bambu Studio/Object Walls_TOPIC
+Bambu Studio/Object Infill_TOPIC
 ```
 
 Fuzzy skin is a rough texture targeting the outside wall of an object and potentially holes within that object (just the walls, top and bottom surfaces won't be textured). It does this by adding random jitters to wall paths during slicing. The purpose of fuzzy skin is two-fold: It's either aesthetic, or it's intended to make the printed object easier to grip, or both.
@@ -1621,9 +1648,9 @@ Skirt loop parameters only show up when the scope is set to global, not on an ob
 
 `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35` `{ref} https://www.reddit.com/r/BambuLab/comments/173zak1/is_there_better_documentation_on_bambu_studio/`
 
-## Brims
+## Object Brims
 
-`{bm} /(Bambu Studio\/Brims)_TOPIC/i`
+`{bm} /(Bambu Studio\/Object Brims)_TOPIC/i`
 
 ```{prereq}
 Bambu Studio/Skirt_TOPIC
@@ -1702,9 +1729,9 @@ I found this as well: https://wiki.bambulab.com/en/software/bambu-studio/use-dis
 
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/brim-ears`
 
-## Walls
+## Object Walls
 
-`{bm} /(Bambu Studio\/Walls)_TOPIC/i`
+`{bm} /(Bambu Studio\/Object Walls)_TOPIC/i`
 
 ```{prereq}
 Bambu Studio/User Interface_TOPIC
@@ -1715,7 +1742,7 @@ The number of walls printed for an object (Z axis) is set through the parameter 
 * functional objects, 3 to 4 walls will enhance structural strength and durability.
 * decorative objects, 2 walls are sufficient to save material and improve print efficiency.
 
-The number of solid layers for the top of the object is set through the parameter **Strength** → **Top/bottom shells** → **Top shell layers**. The thickness_LAYER of the top shell should approximately match the !!thickness!! of the walls. For example, if the !!thickness!! of 5 walls comes out to 5mm, then the number of top shell layers should approximately come out to 5mm as well.
+The number of solid layers for the top of the object is set through the parameter **Strength** → **Top/bottom shells** → **Top shell layers**. The thickness_LH of the top shell should approximately match the !!thickness!! of the walls. For example, if the !!thickness!! of 5 walls comes out to 5mm, then the number of top shell layers should approximately come out to 5mm as well.
 
 ```{note}
 Prior to the top shell is the infill material. The infill material almost always has gaps, and so the that first shell layer is bridging all those gaps.
@@ -1735,12 +1762,12 @@ There are the alternative parameters **!!Top shell thickness!!** / **!!Bottom sh
 
 `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35`
 
-## Infill
+## Object Infill
 
-`{bm} /(Bambu Studio\/Infill)_TOPIC/i`
+`{bm} /(Bambu Studio\/Object Infill)_TOPIC/i`
 
 ```{prereq}
-Bambu Studio/Walls_TOPIC
+Bambu Studio/Object Walls_TOPIC
 Bambu Studio/User Interface_TOPIC
 ```
 
@@ -1786,6 +1813,10 @@ Infill parameters are found under **Strength** → **Sparse infill**:
 In addition to the standard infill, it's possible to specify infill patterns for the top and bottom surfaces using the parameters **Strength** → **Top/bottom shells** → **Top surface pattern** and **Bottom surface pattern**. The patterns available are more limits than the full roster of infill patterns.
 
 ```{note}
+Top/bottom shells also get infills at no sparsity (100% fill), called internal solid infills? The top/bottom shells don't include the top-most and bottom-most layers? So if you have 5 top shells, the 5th one (top-most) isn't internal solid infilled, but all the ones before are? That's what [this](https://wiki.bambulab.com/en/software/bambu-studio/parameter/line-width#internal-solid-infill) is telling me.
+```
+
+```{note}
 Top/bottom surface patterns seem to only be line !!based!! infill patterns where lines don't intersect? And you can't set density? It seems to be maximum density?
 
 What's the point of having these? I guess it has to do with the finish of the surface? I recall there was some option where you could have the heated nozzle go over the surface (without printing anything) to further smooth it out? I think it was under **Quality** → **Ironing**.
@@ -1793,21 +1824,21 @@ What's the point of having these? I guess it has to do with the finish of the su
 
 `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35` `{ref} https://wiki.bambulab.com/en/software/bambu-studio/fill-patterns`
 
-## Diagnostics
+## Failure Modes
 
-`{bm} /(Bambu Studio\/Diagnostics)_TOPIC/i`
+`{bm} /(Bambu Studio\/Failure Modes)_TOPIC/i`
 
 The subsections below detail how to inspect and diagnose aspects of the print.
 
-### XY Hole Contour Compensation
+### XY Hole and Contour Fit
 
-`{bm} /(Bambu Studio\/Diagnostics\/XY Hole Contour Compensation)_TOPIC/i`
+`{bm} /(Bambu Studio\/Failure Modes\/XY Hole and Contour Fit)_TOPIC/i`
 
 ```{prereq}
 Bambu Studio/User Interface_TOPIC
 Bambu Studio/Object Set Operations_TOPIC
 Bambu Studio/Negative Parts_TOPIC
-Bambu Studio/Seam_TOPIC
+Bambu Studio/Object Seam_TOPIC
 ```
 
 Printed objects that require accurate fitting with other components (e.g., screws or other printed parts) sometimes don't fit they way they should because of variances introduced during printing. For holes and contours running *running down the Z-axis*, Bambu Studio provides calibration steps to compensate for these variances:
@@ -1843,11 +1874,83 @@ Bambu Studio/Diagnostics/Flow Dynamics Calibration_TOPIC
 
 For full instructions along with what exactly to print / measure, see the source document.
 
-`{ref} https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation`
+`{ref} https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation` `{ref} https://bambulab.com/en/support/academy/3/course/982688414357196800/chapter/49`
 
-### Elephant Foot Compensation
+### XY Hole and Contour Thinness
 
-`{bm} /(Bambu Studio\/Diagnostics\/Elephant Foot Compensation)_TOPIC/i`
+`{bm} /(Bambu Studio\/Failure Mode\/XY Hole and Contour Thinness)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/Line Width_TOPIC
+Bambu Studio/Object Walls_TOPIC
+Bambu Studio/Seam_TOPIC
+Bambu Studio/Failure Modes/XY Hole and Contour Fit
+```
+
+By default, slicing removes or distorts areas of a contour / hole where the shape ends up as a thin stretches, !!pinholes!!, pin extrusions, or sharply acute corners. Real world examples where this issue might be encountered include models containing of fan blades, fine wire meshes, line art, and small text..
+
+![Bambu Studio Prepare screen fine detail ignored example](bambu_studio_prepare_screen_fine_detail_ignored_example.png) ![Bambu Studio Preview screen fine detail ignored example](bambu_studio_preview_fine_detail_ignored_example.png)
+
+One fix is to narrow the line width of the entire object being printed, assuming that the line width can be made thin enough to accommodate geometry. A more appropriate and efficient fix is to change **Quality** → **Wall generator** to → **Arachne**.
+
+```{note}
+There's also an option for the classic wall generator: Detect thin wall. It seems to be more problematic to use than Arachne wall generator? See source for more information.
+```
+
+**Quality** → **Wall generator** has to options:
+
+* **Classic** - uses a fixed line width.
+* **Arachne** - dynamically changes line width as needed.
+
+**Arachne** can change help mitigate problematic geometry mentioned above at the expense of more seams. That is, where as with **Classic** there's typically a single seam on an object, with **Arachne** there may be multiple.
+
+![Bambu Studio Prepare screen Arachne properties](bambu_studio_prepare_arachne_properties.png)
+
+Once **Arachne** is enabled, the extra properties displayed in the screenshot above become present:
+
+```{note}
+What happens to all the normal line width properties once this is enabled? Do they just get ignored?
+```
+
+```{note}
+Even this has it's limit? I'm assuming it 'll only narrow the line width to a point, and if the line width needs needs to be thinner then the same distortions will show up as before?
+```
+
+`{ref} https://bambulab.com/en/support/academy/3/course/982688414357196800/chapter/49` `{ref} https://wiki.bambulab.com/en/software/bambu-studio/wall-generator`
+
+### Z Aliasing
+
+`{bm} /(Bambu Studio\/Failure Mode\/Z Aliasing)_TOPIC/i`
+
+```{prereq}
+Bambu Studio/User Interface_TOPIC
+Bambu Studio/Layer Height_TOPIC
+```
+
+Objects with a contours / holes that curve on the Z-axis (e.g., sphere and donut) experience a type of artifacting called stair-stepping, where as the curve's slope aggressively becomes more and more horizontal, overtly visible steps appear between neighboring layers.
+
+```{note}
+This is sometimes called Z-axis aliasing?
+```
+
+To mitigate stair-stepping, either ...
+
+1. reduce the layer height for the entire object.
+2. reduce the layer heights where stair-stepping becomes prevalent, using the variable layer height tool.
+3. set **Quality** → **Advanced** → **Only one wall on top surfaces** to **Not Applied** to reduce visible layer lines near the top surface. When set to **Not Applied**, the number of walls on the top surface is the same as the number of wall loops set under **Strength** → **Walls** → **Wall loops**. Effectively, it's overwriting the parameter **Wall loops** for the top surface to be a single wall.
+
+![Bambu Studio Preview screen Only one wall on top surfaces example](bambu_studio_preview_only_one_wall_on_top_surfaces_example.png)
+
+```{note}
+There seems to also be a hidden developer property **Quality** → **Advanced** → **Top area threshold** that sets the threshold for what top surfaces use wall loops's count vs a single surface. I can't find this in my Bambu Studio. See https://wiki.bambulab.com/en/software/bambu-studio/parameter/quality-advance-settings.
+```
+
+`{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35`  `{ref} https://wiki.bambulab.com/en/software/bambu-studio/parameter/quality-advance-settings`
+
+
+### Elephant Foot
+
+`{bm} /(Bambu Studio\/Failure Modes\/Elephant Foot)_TOPIC/i`
 
 ```{prereq}
 Bambu Studio/User Interface_TOPIC
@@ -1869,15 +1972,20 @@ The elephant foot phenomenon isn't typically a problem unless it's preventing pa
 Elephant foot compensation causes brims to not work properly. They shrink? For it to work properly, compensation must be turned off.
 ```
 
+```{note}
+A raft can guard against the elephant foot problem?
+```
+
 ```{seealso}
-Bambu Studio/Brims_TOPIC
+Bambu Studio/Object Brims_TOPIC
+Bambu Studio/Object Supports/Raft_TOPIC
 ```
 
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/parameter/elephant-foot`
 
-### Flow Dynamics Calibration
+### Flow Dynamics
 
-`{bm} /(Bambu Studio\/Diagnostics\/Flow Dynamics Calibration)_TOPIC/i`
+`{bm} /(Bambu Studio\/Failure Modes\/Flow Dynamics)_TOPIC/i`
 
 ```{prereq}
 Bambu Studio/User Interface_TOPIC
@@ -1940,9 +2048,9 @@ While some other Bambu Lab printers have automatic flow dynamics calibration (e.
 
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/calibration_pa`
 
-### Flow Ratio Calibration
+### Flow Ratio
 
-`{bm} /(Bambu Studio\/Diagnostics\/Flow Ratio)_TOPIC/i`
+`{bm} /(Bambu Studio\/Failure Modes\/Flow Ratio)_TOPIC/i`
 
 ```{prereq}
 Bambu Studio/User Interface_TOPIC
@@ -2016,18 +2124,19 @@ The website recommends to perform flow ratio calibration after dynamic flow cali
 
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/calibration_pa`
 
-### Slicer Results
 
-`{bm} /(Bambu Studio\/Diagnostics\/Slicer Results)_TOPIC/i`
+## Slicer Diagnostics
+
+`{bm} /(Bambu Studio\/Slicer Diagnostics)_TOPIC/i`
 
 ```{prereq}
 Bambu Studio/User Interface_TOPIC
 Bambu Studio/Object Supports_TOPIC
 Bambu Studio/Layer Height_TOPIC
-Bambu Studio/Seam_TOPIC
-Bambu Studio/Infill_TOPIC
-Bambu Studio/Walls_TOPIC
-Bambu Studio/Brims_TOPIC
+Bambu Studio/Object Seam_TOPIC
+Bambu Studio/Object Infill_TOPIC
+Bambu Studio/Object Walls_TOPIC
+Bambu Studio/Object Brims_TOPIC
 ```
 
 The slicer output shown in the **Preview** Screen helps identify problems prior to printing.
@@ -2058,6 +2167,8 @@ Under the Bambu Studio section, fill out anything missing...
 
 * [link](https://bambulab.com/en/support/academy/3/course/982688414357196800/chapter/48)
 * [link](https://bambulab.com/en/support/academy/3/course/982688414357196800/chapter/49)
+
+Add hardware section.
 
 # Terminology
 
@@ -2328,10 +2439,17 @@ Under the Bambu Studio section, fill out anything missing...
 
   `{bm-error} Did you mean a set of slices (slices_SET) or the act of slicing (slices_PROC)?/(slices)/`
 
-* `{bm} layer height` `{bm} /(height)_LAYER/i` `{bm} /(thickness|thickness|thicker)_LAYER/i` - The !!thickness!! of each individual layer within a sliced 3D object. `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214`
+* `{bm} layer height/(layer height|slice height|layer's height|slice's height|height of layer|height of slice)/i` `{bm} /(height'?s?)_LH/i` `{bm} /(thickness|thickness|thicker)_LH/i` - !!Height!! of an individual layer within a sliced 3D object. `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214`
 
-  `{bm-error} Referencing slice height or thickness? use height_LAYER or thickness_LAYER or thick_LAYER or wrap in !!/(height|thickness|thicker|thick)/`
-  `{bm-error} Don't need _LAYER suffix to disambiguate layer height - it's only required for heigh on its own/(layer height_LAYER)/`
+  `{bm-error} Use _LH if referencing layer height, or wrap in !!/(height'?s?)/i`
+  `{bm-error} Don't need _LH suffix to disambiguate layer height/(layer height_LH|slice height_LH|layer's height_LH|slice's height_LH|height of layer_LH|height of slice_LH)/`
+
+* `{bm} line width/(line width|extrusion width|extruder width)/i` `{bm} /(width'?s?)_LW/i` `{bm} /(thickness|thickness|thicker)_LW/i` - !!Width!! of printed filament, as extruded by the nozzle. `{ref} https://wiki.bambulab.com/en/software/bambu-studio/parameter/line-width`
+
+  `{bm-error} Use _LW if referencing line width, or wrap in !!/(width'?s?)/i`
+  `{bm-error} Don't need _LW suffix to disambiguate line width/(line width_LW|extrusion width_LW|extruder width_LW)/`
+
+  `{bm-error} Use _LW if referencing line width, or use _LH if referencing layer height, or wrap in !!/(thickness|thickness|thicker)/i`
 
 * `{bm} bridging/(bridging|bridge)/i` - Part of a 3D object where there is a mid-air horizontal gap between two or more sides, leaving that part with nothing underneath it to help hold it up. During printing, supports_BO are often added to bridging areas.
 
@@ -2404,7 +2522,7 @@ Under the Bambu Studio section, fill out anything missing...
 
 * `{bm} Glass Fiber (GF)/\b(GF)\b/i` `{bm} /(glass[\- ]fiber)/i` - A filament material designation that means it's been fortified with !!glass fiber!! to enhance stiffness and strength. `{ref} https://bambulab.com/en-us/filament/pla-cf`
 
-* `{bm} bed adhesion` - The adherence of the bottom of a print to the the build plate. For example, in poor bed adhesion, the bottom edges of a print may warp and detach off the build plate. `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/36`
+* `{bm} bed adhesion/(bed adhesion|heatbed adhesion)` - The adherence of the bottom of a print to the the build plate. For example, in poor bed adhesion, the bottom edges of a print may warp and detach off the build plate. `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/36`
 
 * `{bm} infill` - The interior area of a printed object. The interior is typically printed using an infill pattern, where that pattern doesn't consume the entire area but is designed to prioritize some attribute (e.g., save filament vs bear load).
 
