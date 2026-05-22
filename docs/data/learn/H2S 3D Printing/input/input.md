@@ -2415,6 +2415,618 @@ For more information, see the source.
 
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/view-slicing-information`
 
+# FreeCAD
+
+`{bm} /(FreeCAD)_TOPIC/i`
+
+FreeCAD is a parametric modeling tool. It contains different segments of functionality, referred to as workbenches. Each workbench targets a different aspect of the overall design workflow (e.g., sketching, turning sketches into 3D objects, and assembling 3D objects together).
+
+The following subsections give a basic overview and usage reference for the subset of workbenches related to 3D printing.
+
+```{note}
+This section assumes you have past experience with some 3D editors.
+```
+
+## User Interface Layout
+
+`{bm} /(FreeCAD\/User Interface Layout)_TOPIC/i`
+
+![FreeCAD UI layout](freecad_ui_layout.png)
+
+Regardless of which workbench you're in, FreeCAD's UI will likely have the sections highlighted in the screenshot above. Almost everything in the toolbar can also be accessed via the main menu and triggered via a keyboard shortcut.
+
+```{note}
+When in doubt, click the button immediately to the right of 3 (pointer with a question mark) and select something to learn more about it.
+```
+
+```{note}
+If something is missing from your toolbar, navigate to **View** → **Toolbars** and enable as needed.
+```
+
+**Viewport**
+
+6. Viewport: The space in which work in performed. The viewport typically renders and allows control of geometry (e.g., 3D primitives, 2D sketches, and technical drawings). For some workbenches, the viewport displays something different than geometry (e.g., spreadsheet).
+
+11. Navigation cube: When working in 3D, there will be a navigation cube (located in the viewport's top right in the example) that reduces the burden rotating and reorienting viewing angles, as well as changing perspectives. Clicking the various faces of the cube as well as the surrounding icons reorient the camera and change perspective.
+
+12. Axis orientation: When working in 3D, the basis axes will be displayed from the current camera's orientation (located in the viewport's button right in the example).
+
+10. 3D viewport boundaries / spatial unit selection: When the viewport is viewing geometry, this dropdown can be used to change the units of measurement used (e.g., metric to imperial). It also displays the bounds of the viewport in those units of measurement.
+
+9. 3D viewport mouse controls: When working in 3D, the mouse controls can be changed to different presets using this dropdown (e.g., Blender style mouse controls vs mouse controls optimized for a trackpad).
+
+   Hovering over the dropdown displays how mouse controls for the currently selected configuration (e.g., what right-click does).
+
+3. 3D viewport helpers: When working in 3D, these toolbar buttons provide quick tools to adjust and reorient the view. From left-to-right, ...
+
+   * zoom viewport in to all geometry.
+   * zoom viewport in to selected geometry.
+   * drop-down to reorient viewing angle and change perspective (e.g., orthographic vs perspective), providing similar to the navigation cube in the viewport.
+   * reorient camera to point facing the selection (e.g., point towards face using face's normal vector).
+   * drop-down to change how viewport shades models.
+   * drop-down to filter mouse selections to only target specific types of 3D entity (e.g., point vs edge vs face)
+   * drop-down providing access to various selection helpers (e.g., change how panels synchronize when something's selected)
+   * launch measurement tool (e.g., measure area of selected faces or measure distance between two points).
+
+**Document hierarchy / operations**
+
+4. Model pane: List of open documents, as well as the hierarchy of each open document. In the example, the document Test3 has a part design body with a sketch in it. 
+
+5. Properties pane: For the selected items, this pane lists the properties for those items. If the item is selected within a 3D viewport, the *Data* tab below shows the physical properties (e.g., what it is) while the *View* tab below shows the visual properties (e.g., how its rendered).
+
+   Note that properties are not limited to what's selected in the viewport. When an item in the model pane is selected, it has its properties show up.
+
+7. Workspace tabs: Tabs to switch between workspaces.
+
+**Basic operations**
+
+1. Basic commands: These toolbar buttons give quick access to common operations. From left-to-right, ...
+
+   * new document.
+   * open document.
+   * save document.
+   * undo drop-down, which lists and allows going back to previous state.
+   * redo drop-down, which lists and allows going forward to subsequent state after an undo.
+   * recompute, which recomputes calculations for the current selection or the active document if nothing is selected within it.
+
+2. Workbench switcher: Drop-down that switches between workbenches.
+
+8. Diagnostic messages: Pop-out that displays log messages. The number displayed is the number of unread diagnostics messages.
+
+## Spreadsheet Workbench
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench)_TOPIC/i`
+
+FreeCAD has a built-in spreadsheet engine, accessible through the spreadsheet workbench. A spreadsheet is typically used to store parameters and run formulas, which then go on to be used as the parameters of geometry and other properties of an object. It can also go the other way, pulling data out of a model into a spreadsheet.
+
+```{note}
+The subsections below assume the reader has prior experience with other spreadsheet engines (e.g., Excel).
+```
+
+### User Interface Layout
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/User Interface Layout)_TOPIC/i`
+
+```{prereq}
+FreeCAD/User Interface Layout_TOPIC
+```
+
+![FreeCAD spreadsheet UI layout](freecad_spreadsheet_ui_layout.png)
+
+**Basic operations**
+
+1. Basic commands: These toolbar buttons give quick access to common operations. From left-to-right, ...
+
+   * new spreadsheet.
+   * import CSV as new spreadsheet.
+   * export spreadsheet to CSV.
+
+**Viewport**
+
+10. Spreadsheet: A matrix of cells, identified by column letter and row number (e.g., C3).
+
+    Type while a cell is selected to set that cell's contents. Right click on a row/column to add or remove rows/columns.
+
+9. Cell alias textfield: This field shows and sets the alias for the selected cell, similar to pressing the cell alias button in the toolbar. When referencing a cell, the alias can be used as a friendly name.
+
+8. Cell content: This field shows and sets the content of the cell, which may be a formula or a literal.
+
+7. Zoom slider: This slider and accompanying drop-down are used to zoom in / out of the spreadsheet.
+
+**Cell operations and properties**
+
+2. Cell merge/split: These toolbar buttons merge and split cells. From left-to-right, ...
+
+   * merge selected cells into a single cell.
+   * split a merged cell back out to its original individual cells.
+
+3. Text alignment: These toolbar buttons align text in a cell. From left-to-right, ...
+
+   * align left.
+   * align horizontal center.
+   * align right.
+   * align top.
+   * align vertical center.
+   * align bottom.
+
+4. Text style: These toolbar buttons stylize the text in a cell. From left-to-right, ...
+
+   * bold.
+   * italic.
+   * underline.
+
+6. Cell colors: These toolbar buttons set the colors within a cell. From left-to-right, ...
+
+   * text color.
+   * background color.
+
+5. Cell alias button: This toolbar option launches a dialog to set an alias for the selected cell. When referencing a cell, the alias can be used as a friendly name.
+
+`{ref} https://wiki.freecad.org/Spreadsheet_Workbench`
+
+### Cell Types
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/Cell Types)_TOPIC/i`
+
+A cell's contents may be ...
+
+* a numeric literal: Identified when the cell contains nothing but a fractional
+* a text literal: Identified by an apostrophe as the first character.
+* an expression (formula): Identified by an equal sign as the first character.
+
+![FreeCAD spreadsheet cell examples](freecad_spreadsheet_cell_examples.png)
+
+As shown in the example above, formulas are unit-aware (e.g., a formula can add two angles together or two distances together). The cell displays the results in the user's desired unit system (e.g., imperial vs metric).
+
+```{seealso}
+FreeCAD/Spreadsheet Workbench/Expressions/Units_TOPIC
+```
+
+`{ref} https://wiki.freecad.org/Spreadsheet_Workbench`
+
+### Expressions
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/Expressions)_TOPIC/i`
+
+In addition to being set to literals, spreadsheet cells and other properties may also be set to expressions. An expression executes some piece of logic using basic operators, functions, constants, conditionals, and references to other properties (e.g., other cells or data within a model). Operators and functions are unit-aware, requiring a valid combinations of units if supplied. For example, `2mm + 4mm` is valid while `2mm + 4` is not. This also applies to references to properties that have units (e.g., Pad001.Length + 1 isn't valid because it adds a pure number to a property containing a length - it requires Pad001.Length + 1mm). 
+
+#### Units
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/Expressions\/Units)_TOPIC/i`
+
+Numbers in an expression may optional have a unit. The following tables contain the unit designations recognized by FreeCAD when inserting a unit (e.g., 5 mm). The following tables were pulled directly from source.
+
+**Angle**
+
+| Unit | Description                                                                          |
+| ---- | ------------------------------------------------------------------------------------ |
+| °    | Degree; alternative to the unit `deg`                                                |
+| deg  | Degree; alternative to the unit `°`                                                  |
+| rad  | Radian                                                                               |
+| gon  | Gradian                                                                              |
+| M    | Minute of arc; alternative to the unit `′`                                           |
+| ′    | Minute of arc; this is the prime symbol (U+2032); alternative to the unit `M`        |
+| S    | Second of arc; DOES NOT WORK; alternative to the unit `″`                            |
+| ″    | Second of arc; this is the double prime symbol (U+2033); alternative to the unit `S` |
+
+**Length**
+
+| Unit | Description                                         |
+| ---- | --------------------------------------------------- |
+| nm   | Nanometer                                           |
+| um   | Micrometer; alternative to the unit µm              |
+| µm   | Micrometer; alternative to the unit um              |
+| mm   | Millimeter                                          |
+| cm   | Centimeter                                          |
+| dm   | Decimeter                                           |
+| m    | Meter                                               |
+| km   | Kilometer                                           |
+| mil  | Thousandth of an inch; alternative to the unit thou |
+| thou | Thousandth of an inch; alternative to the unit mil  |
+| in   | Inch; alternative to the unit `"`                   |
+| `"`  | Inch; alternative to the unit in                    |
+| ft   | Foot; alternative to the unit `'`                   |
+| `'`  | Foot; alternative to the unit ft                    |
+| yd   | Yard                                                |
+| mi   | Mile                                                |
+
+`{ref} https://wiki.freecad.org/Expressions`
+
+#### Property Access
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/Expressions\/Property Access)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Spreadsheet Workbench/Expressions/Units_TOPIC
+```
+
+An expression can reference properties of other objects by referencing the path hierarchy. For example, if there's a diameter named (diameter constraint) lower_initial_diam within a sketch ...
+
+* with the label my_sketch, it's accessible within the spreadsheet as `=<<my_sketch>>.Constraints.lower_initial_diam`.
+* with the ID Sketch, it's accessible within the spreadsheet as `=Sketch.Constraints.lower_initial_diam`.
+
+```{note}
+To see the ID of objects, right click in the Model pane and navigate to **Tree Settings** → **Show Internal Name**.
+```
+
+```{note}
+If using labels, the label must be unique.
+```
+
+```{note}
+To reference a object (such as Sketch / my_sketch in the example), you must use the _self property. For example, `Sketch._self`.
+```
+
+`{ref} https://wiki.freecad.org/Expressions`
+
+#### Index Access
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/Expressions\/Index Access)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Spreadsheet Workbench/Expressions/Property Access_TOPIC
+```
+
+To reference an item in a list or tuple, use the `[]` operator. For example, `Sketch.Constraints[0]` will pull the first constraint within the sketch object.
+
+To reference an enumeration option's text, use the `[]` operator in addition to referencing the enumeration option itself. For example, `Pad.Type.Enum[Pad.Type]` will pull out the text for `Pad.Type`, while `Pad.Type` itself will only return it's index within the enumeration.
+
+`{ref} https://wiki.freecad.org/Expressions`
+
+#### Conditionals
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/Expressions\/Conditionals)_TOPIC/i`
+
+Conditional expressions use C++ style ternary operator syntax: `condition ? resultTrue : resultFalse`. The condition is defined as an expression that evaluates to either 0 (false) or non-zero (true).
+
+```{note}
+Any value is evaluated as zero if abs(value) < 1e-7, else it is evaluated as non-zero. 
+```
+
+```{note}
+In FreeCAD 1.1, you can test a boolean directly (e.g., `VarSet.MyBool ? 10 : 15`) where as in older versions of FreeCAD need a relational operator (e.g., `VarSet.MyBool == 1 ? 10 : 15`).
+```
+
+`{ref} https://wiki.freecad.org/Expressions`
+
+#### Operators
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/Expressions\/Operators)_TOPIC/i`
+
+Table pulled directly from source.
+
+| Operator | Description              |
+| -------- | ------------------------ |
+| +        | Addition                 |
+| -        | Subtraction              |
+| *        | Multiplication           |
+| /        | Floating point Division  |
+| %        | Remainder                |
+| ^        | Exponentiation           |
+| ==       | Equal                    |
+| !=       | Not equal                |
+| >        | Greater than             |
+| >=       | Greater than or equal to |
+| <        | Less than                |
+| <=       | Less than or equal to    |
+
+```{note}
+From the source:
+
+> Some unit related errors can seem unintuitive, with expressions either being rejected or producing results that do not match the units of the property being set. Here are some examples:
+>
+> 1/2mm is not interpreted as half a millimeter but as 1/(2mm), resulting in: 0.5 mm^-1.
+>
+> sqrt(2)mm is not valid because the function call is not a number. This has to be entered as sqrt(2) * 1mm.
+```
+
+`{ref} https://wiki.freecad.org/Expressions`
+
+#### Constants
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/Expressions\/Constants)_TOPIC/i`
+
+| Constant | Description    |
+| -------- | -------------- |
+| e        | Euler's number |
+| pi       | Pi             |
+
+`{ref} https://wiki.freecad.org/Expressions`
+
+#### Functions
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/Expressions\/Functions)_TOPIC/i`
+
+FreeCAD expressions !!support!! several built-in functions. The following sections each contain a subset of useful functions pulled directly from the source documentation.
+
+```{note}
+From the source:
+
+> Some unit related errors can seem unintuitive, with expressions either being rejected or producing results that do not match the units of the property being set. Here are some examples:
+>
+> 1/2mm is not interpreted as half a millimeter but as 1/(2mm), resulting in: 0.5 mm^-1.
+>
+> sqrt(2)mm is not valid because the function call is not a number. This has to be entered as sqrt(2) * 1mm.
+```
+
+`{ref} https://wiki.freecad.org/Expressions`
+
+##### Trigonometry
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/Expressions\/Functions\/Trigonometry)_TOPIC/i`
+
+Table pulled directly from source.
+
+| Function      | Description                                                                                     | Input range                                    |
+| ------------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| `acos(x)`     | Arc cosine                                                                                      | `-1 <= x <= 1`                                 |
+| `asin(x)`     | Arc sine                                                                                        | `-1 <= x <= 1`                                 |
+| `atan(x)`     | Arc tangent, return value in the range `-90° < value < 90°`                                     | all                                            |
+| `atan2(y; x)` | Arc tangent of `y/x` accounting for quadrant, return value in the range `-180° < value <= 180°` | all, the invalid input `x = y = 0` returns `0` |
+| `cos(x)`      | Cosine                                                                                          | all                                            |
+| `cosh(x)`     | Hyperbolic cosine                                                                               | all                                            |
+| `sin(x)`      | Sine                                                                                            | all                                            |
+| `sinh(x)`     | Hyperbolic sine                                                                                 | all                                            |
+| `tan(x)`      | Tangent                                                                                         | all, except `x = n*90` with `n = odd integer`  |
+| `tanh(x)`     | Hyperbolic tangent                                                                              | all                                            |
+| `hypot(x; y)` | Pythagorean addition (hypotenuse), e.g. `hypot(4; 3) = 5`                                       | `x` and `y >= 0`                               |
+| `cath(x; y)`  | Given hypotenuse, and one side, returns other side of triangle, e.g. `cath(5; 3) = 4`           | `x >= y >= 0`                                  |
+
+`{ref} https://wiki.freecad.org/Expressions`
+
+##### Rounding
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/Expressions\/Functions\/Rounding)_TOPIC/i`
+
+Table pulled directly from source.
+
+| Function    | Description                                                             | Input range       |
+| ----------- | ----------------------------------------------------------------------- | ----------------- |
+| `abs(x)`    | Absolute value                                                          | all               |
+| `ceil(x)`   | Ceiling function, smallest integer value greater than or equal to x     | all               |
+| `floor(x)`  | Floor function, largest integer value less than or equal to x           | all               |
+| `mod(x; y)` | Remainder after dividing x by y, sign of result is that of the dividend | all, except y = 0 |
+| `round(x)`  | Rounding to the nearest integer                                         | all               |
+| `trunc(x)`  | Truncation to the nearest integer in the direction of zero              | all               |
+
+`{ref} https://wiki.freecad.org/Expressions`
+
+##### Boolean Logic
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/Functions\/Expressions\/Boolean Logic)_TOPIC/i`
+
+Table pulled directly from source.
+
+| Function            | Description                                                             | Input range |
+| ------------------- | ----------------------------------------------------------------------- | ----------- |
+| `and(a; b; c; ...)` | AND: 1 if abs of all arguments is greater than or equal to 1e-7, else 0 | all         |
+| `or(a; b; c; ...)`  | OR: 0 if abs of all arguments is less than 1e-7, else 1                 | all         |
+| `not(a)`            | Negation: 1 if abs(a) is less than 1e-7 else 0                          | all         |
+
+`{ref} https://wiki.freecad.org/Expressions`
+
+##### Statistics Operations
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/Expressions\/Functions\/Statistics Operations)_TOPIC/i`
+
+Table pulled directly from source.
+
+| Function              | Description                                                                     | Input range |
+| --------------------- | ------------------------------------------------------------------------------- | ----------- |
+| average(a; b; c; ...) | Average value of the arguments, same as sum(a; b; c; ...) / count(a; b; c; ...) | all         |
+| count(a; b; c; ...)   | Count of the arguments, typically used for cell ranges                          | all         |
+| max(a; b; c; ...)     | Maximum value of the arguments                                                  | all         |
+| min(a; b; c; ...)     | Minimum value of the arguments                                                  | all         |
+| stddev(a; b; c; ...)  | Standard deviation of the values of the arguments                               | all         |
+| sum(a; b; c; ...)     | Sum of the values of the arguments, typically used for cell ranges              | all         |
+
+`{ref} https://wiki.freecad.org/Expressions`
+
+##### Object Creation
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/Expressions\/Functions\/Object Creation)_TOPIC/i`
+
+Table pulled directly from source.
+
+<table>
+<tbody><tr><th>Type</th><th>Function</th><th>Description</th></tr>
+<tr>
+<td><code>Tuple</code>
+</td>
+<td><code>tuple(a; b; ...)</code>
+</td>
+<td>Example: <code>tuple(2; 1; 2)</code>
+</td></tr>
+<tr>
+<td><code>List</code>
+</td>
+<td><code>list(a; b; ...)</code>
+</td>
+<td>Example: <code>list(2; 1; 2)</code>
+</td></tr>
+<tr>
+<td rowspan="2"><a href="/Vector_API" title="Vector API"><code>Vector</code></a>
+</td>
+<td><code>vector(x; y; z)</code>
+</td>
+<td rowspan="2">Create a vector using three unit-less or <code>Length</code> unit values.
+<p>Example: <code>vector(2; 1; 3)</code>
+</p>
+</td></tr>
+<tr>
+<td><code>create(&lt;&lt;vector&gt;&gt;; x; y; z)</code>
+</td></tr>
+<tr>
+<td rowspan="2"><a href="/Matrix_API" title="Matrix API"><code>Matrix</code></a>
+</td>
+<td>
+<pre>matrix(
+  a<sub>11</sub>; a<sub>12</sub>; a<sub>13</sub>; a<sub>14</sub>;
+  a<sub>21</sub>; a<sub>22</sub>; a<sub>23</sub>; a<sub>24</sub>;
+  a<sub>31</sub>; a<sub>32</sub>; a<sub>33</sub>; a<sub>34</sub>;
+  a<sub>41</sub>; a<sub>42</sub>; a<sub>43</sub>; a<sub>44</sub>
+)
+</pre>
+</td>
+<td rowspan="2">Create a 4x4 matrix in <a rel="nofollow" class="external text" href="https://en.wikipedia.org/wiki/Row-_and_column-major_order">row-major order</a>:
+<p><math class="mwe-math-element" xmlns="http://www.w3.org/1998/Math/MathML"><mrow data-mjx-texclass="ORD"><mstyle displaystyle="true" scriptlevel="0"><mrow data-mjx-texclass="ORD"><mo data-mjx-texclass="OPEN">[</mo><mtable columnspacing="1em" rowspacing="4pt"><mtr><mtd><msub><mi>a</mi><mrow data-mjx-texclass="ORD"><mrow data-mjx-texclass="ORD"><mn>1</mn><mn>1</mn></mrow></mrow></msub></mtd><mtd><msub><mi>a</mi><mrow data-mjx-texclass="ORD"><mrow data-mjx-texclass="ORD"><mn>1</mn><mn>2</mn></mrow></mrow></msub></mtd><mtd><msub><mi>a</mi><mrow data-mjx-texclass="ORD"><mrow data-mjx-texclass="ORD"><mn>1</mn><mn>3</mn></mrow></mrow></msub></mtd><mtd><msub><mi>a</mi><mrow data-mjx-texclass="ORD"><mrow data-mjx-texclass="ORD"><mn>1</mn><mn>4</mn></mrow></mrow></msub></mtd></mtr><mtr><mtd><msub><mi>a</mi><mrow data-mjx-texclass="ORD"><mrow data-mjx-texclass="ORD"><mn>2</mn><mn>1</mn></mrow></mrow></msub></mtd><mtd><msub><mi>a</mi><mrow data-mjx-texclass="ORD"><mrow data-mjx-texclass="ORD"><mn>2</mn><mn>2</mn></mrow></mrow></msub></mtd><mtd><msub><mi>a</mi><mrow data-mjx-texclass="ORD"><mrow data-mjx-texclass="ORD"><mn>2</mn><mn>3</mn></mrow></mrow></msub></mtd><mtd><msub><mi>a</mi><mrow data-mjx-texclass="ORD"><mrow data-mjx-texclass="ORD"><mn>2</mn><mn>4</mn></mrow></mrow></msub></mtd></mtr><mtr><mtd><msub><mi>a</mi><mrow data-mjx-texclass="ORD"><mrow data-mjx-texclass="ORD"><mn>3</mn><mn>1</mn></mrow></mrow></msub></mtd><mtd><msub><mi>a</mi><mrow data-mjx-texclass="ORD"><mrow data-mjx-texclass="ORD"><mn>3</mn><mn>2</mn></mrow></mrow></msub></mtd><mtd><msub><mi>a</mi><mrow data-mjx-texclass="ORD"><mrow data-mjx-texclass="ORD"><mn>3</mn><mn>3</mn></mrow></mrow></msub></mtd><mtd><msub><mi>a</mi><mrow data-mjx-texclass="ORD"><mrow data-mjx-texclass="ORD"><mn>3</mn><mn>4</mn></mrow></mrow></msub></mtd></mtr><mtr><mtd><msub><mi>a</mi><mrow data-mjx-texclass="ORD"><mrow data-mjx-texclass="ORD"><mn>4</mn><mn>1</mn></mrow></mrow></msub></mtd><mtd><msub><mi>a</mi><mrow data-mjx-texclass="ORD"><mrow data-mjx-texclass="ORD"><mn>4</mn><mn>2</mn></mrow></mrow></msub></mtd><mtd><msub><mi>a</mi><mrow data-mjx-texclass="ORD"><mrow data-mjx-texclass="ORD"><mn>4</mn><mn>3</mn></mrow></mrow></msub></mtd><mtd><msub><mi>a</mi><mrow data-mjx-texclass="ORD"><mrow data-mjx-texclass="ORD"><mn>4</mn><mn>4</mn></mrow></mrow></msub></mtd></mtr><mtr><mtd></mtd></mtr></mtable><mo fence="true" stretchy="true" symmetric="true" data-mjx-texclass="CLOSE">]</mo></mrow></mstyle></mrow></math>
+</p><p>A minimum of 1 argument can be supplied such as <code>matrix(1)</code> which creates an identity matrix.
+</p><p>Example: <code>matrix(1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15; 16)</code>
+</p>
+</td></tr>
+<tr>
+<td><code>create(&lt;&lt;matrix&gt;&gt;; a<sub>11</sub>; a<sub>12</sub>; ...; a<sub>44</sub>)</code>
+</td></tr>
+<tr>
+<td rowspan="4"><code>Rotation</code>
+</td>
+<td><code>rotation(axis; angle)</code>
+</td>
+<td rowspan="4">Create a <code>Rotation</code> by specifying its <code>axis</code> (<code>Vector</code>) and <code>angle</code> (<code>Angle</code> unit or unit-less), or three Euler angles <code>α</code>, <code>β</code>, <code>γ</code>.
+<p>Examples:
+</p>
+<ul><li><code>rotation(vector(0; 1; 0); 45)</code></li>
+<li><code>create(&lt;&lt;rotation&gt;&gt;; 30; 30; 30)</code></li></ul>
+</td></tr>
+<tr>
+<td><code>rotation(α; β; γ)</code>
+</td></tr>
+<tr>
+<td><code>create(&lt;&lt;rotation&gt;&gt;; axis; angle)</code>
+</td></tr>
+<tr>
+<td><code>create(&lt;&lt;rotation&gt;&gt;; α; β; γ)</code>
+</td></tr>
+<tr>
+<td rowspan="5"><a href="/Placement_API" title="Placement API"><code>Placement</code></a>
+</td>
+<td><code>placement(base; rotation)</code>
+</td>
+<td rowspan="5">Create a <code>Placement</code> with various parameters, including:
+<ul><li><code>base</code>: base location (<code>Vector</code>)</li>
+<li><code>center</code>: center location (<code>Vector</code>)</li>
+<li><code>rotation</code>: <code>Rotation</code></li>
+<li><code>axis</code>: Rotation axis (<code>Vector</code>)</li>
+<li><code>angle</code>: Rotation angle (unit-less or <code>Angle</code> unit value)</li>
+<li><code>matrix</code>: <code>Matrix</code></li></ul>
+<p>Examples:
+</p>
+<ul><li><code>placement(vector(2; 1; 3); rotation(vector(0; 0; 1); 45))</code></li>
+<li><code>create(&lt;&lt;placement&gt;&gt;; create(&lt;&lt;vector&gt;&gt;; 2; 1; 2); create(&lt;&lt;rotation&gt;&gt;; create(&lt;&lt;vector&gt;&gt;; 0; 1; 0); 45))</code></li></ul>
+</td></tr>
+<tr>
+<td><code>placement(base; rotation; center)</code>
+</td></tr>
+<tr>
+<td><code>placement(base; axis; angle)</code>
+</td></tr>
+<tr>
+<td><code>placement(matrix)</code>
+</td></tr>
+<tr>
+<td><code>create(&lt;&lt;placement&gt;&gt;; ...)</code>
+</td></tr></tbody></table>
+
+`{ref} https://wiki.freecad.org/Expressions`
+
+##### String Operations
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/Expressions\/Functions\/String Operations)_TOPIC/i`
+
+| Function / Operator | Description                           |
+| ------------------- | ------------------------------------- |
+| a+b                 | Concatenate strings a and b together. |
+| str(a)              | Convert a into a string.              |
+| <<my text>>         | Generate a string literal.            |
+
+Strings can also be created via string interpolation using the old [Python % syntax for string formatting](https://docs.python.org/3/library/stdtypes.html#printf-style-string-formatting). For example, `<<Cube length is %s and width is %s>> % tuple(Box.Length; Box.Width)`.
+
+`{ref} https://wiki.freecad.org/Expressions`
+
+##### Vector Operations
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/Expressions\/Functions\/Vector Operations)_TOPIC/i`
+
+| Function / Operator        | Description                                                                                                    |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `vector(x; y; z)`          | Create vector vectors.                                                                                               |
+| `v1 + v2`                  | Add two vectors.                                                                                               |
+| `v1 - v2`                  | Subtract two vectors.                                                                                          |
+| `v * s`                    | Uniformly scale a vector by `s`.                                                                               |
+| `vangle(v1; v2)`           | Angle between two vectors in degrees.                                                                          |
+| `vcross(v1; v2)`           | Cross product of two vectors `v1×v2`.                                                                          |
+| `v1 * v2`                  | Dot product of two vectors `v1⋅v2`.                                                                            |
+| `vdot(v1; v2)`             | Dot product of two vectors `v1⋅v2`.                                                                            |
+| `vlinedist(v1; v2; v3)`    | Distance between vector `v1` and a line through `v2` in direction `v3`.                                        |
+| `vlinesegdist(v1; v2; v3)` | Distance between vector `v1` and the closest point on a line segment from `v2` to `v3`.                        |
+| `vlineproj(v1; v2; v3)`    | Project vector `v1` on a line through `v2` in direction `v3`.                                                  |
+| `vnormalize(v)`            | Normalize a vector to a unit vector.                                                                           |
+| `vplanedist(v1)`           | Distance between vector `v1` and a plane defined by a point `v2` and a normal `v3`.                            |
+| `vplaneproj(v1)`           | Project vector `v1` on a plane defined by a point `v2` and a normal `v3`.                                      |
+| `vscale(v; sx; sy; sz)`    | Non-uniformly scale a vector by `sx` in the X direction, `sy` in the Y direction, and `sz` in the Z direction. |
+| `vscalex(v; sx)`           | Scale a vector by `sx` in the X direction.                                                                     |
+| `vscaley(v; sy)`           | Scale a vector by `sy` in the Y direction.                                                                     |
+| `vscalez(v; sz)`           | Scale a vector by `sz` in the Z direction.                                                                     |
+
+##### Matrix Operations
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/Expressions\/Functions\/Matrix Operations)_TOPIC/i`
+
+Rotation and Placement can each be represented by a `Matrix`. The following functions all take in a `Matrix`, `Rotation`, or `Placement` as their first parameter denoted in the table below by `m`. The type of the returned object is the same as the object supplied in the first argument except when using `mtranslate` on a Rotation, in which case a Placement will be returned. 
+
+| Function                                                                            | Description                                                                                                          |
+| ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `matrix(` <br> `  a11; a12; a13; a14;` <br> `  a21; a22; a23; a24;` <br> `  a31; a32; a33; a34;` <br> `  a41; a42; a43; a44` <br> `)`                                                                        | Create matrix.                                                                                        |
+| `minvert(m)`                                                                        | Calculate the inverse matrix.                                                                                        |
+| `mrotate(m; rotation)`<br>`mrotate(m; axis; angle)`<br>`mrotate(m; α; β; γ)`        | Rotate by either a Rotation, an axis (Vector) and an angle (Angle unit or unit-less), or three Euler angles α, β, γ. |
+| `mrotatex(m; angle)`                                                                | Rotate around the X axis.                                                                                            |
+| `mrotatey(m; angle)`                                                                | Rotate around the Y axis.                                                                                            |
+| `mrotatez(m; angle)`                                                                | Rotate around the Z axis.                                                                                            |
+| `mtranslate(m; vector)`<br>`mtranslate(m; x; y; z)`                                 | Translate by a vector (Vector) or X, Y, Z values. If a Rotation is translated, the returned object is a Placement.   |
+| `mscale(m; vector)`<br>`mscale(m; x; y; z)`                                         | Scale by a vector (Vector) or X, Y, Z values.                                                                        |
+| `vlinedist(v1; v2; v3)`                                                             | Distance between vector v1 and a line through v2 in direction v3.                                                    |
+| `vlinesegdist(v1; v2; v3)`                                                          | Distance between vector v1 and the closest point on a line segment from v2 to v3.                                    |
+| `vlineproj(v1; v2; v3)`                                                             | Project vector v1 on a line through v2 in direction v3.                                                              |
+| `vnormalize(v)`                                                                     | Normalize a vector to a unit vector.                                                                                 |
+| `vplanedist(v1)`                                                                    | Distance between vector v1 and a plane defined by a point v2 and a normal v3.                                        |
+| `vplaneproj(v1)`                                                                    | Project vector v1 on a plane defined by a point v2 and a normal v3.                                                  |
+| `vscale(v; sx; sy; sz)`<br>`vscalex(v; sx)`<br>`vscaley(v; sy)`<br>`vscalez(v; sz)` | Non-uniformly scale a vector by sx in the X direction, sy in the Y direction, and sz in the Z direction.             |
+
+## Sketcher Workbench
+
+`{bm} /(FreeCAD\/Sketcher Workbench)_TOPIC/i`
+
+## Part Design Workbench
+
+`{bm} /(FreeCAD\/Part Design Workbench)_TOPIC/i`
+
+## Variable Sets
+
+`{bm} /(FreeCAD\/Variable Sets)_TOPIC/i`
+
+## Quality-of-life Settings
+
+`{bm} /(FreeCAD\/Quality-of-life Settings)_TOPIC/i`
+
+The following sections highlight several settings to improve quality-of-life.
+
+**Enable dark mode**:
+
+The following instructions enable dark mode.
+
+1. Go to **Edit** → **Preferences** → **General** → **General** and set **Theme** to **FreeCAD Dark**.
+
+`{ref} self`
+
+**Easier selections using trackpad**
+
+The following instructions make it easier to select items using a trackpad, where you don't have the same level of precision as a mouse.
+
+1. Go to **Edit** → **Preferences** → **Display** → **3D View** and set **Marker size** to **11px**.
+2. Go to **Edit** → **Preferences** → **General** → **Selection** and set **Radius** to **11px**.
+
+`{ref} self`
+
 # Terminology
 
 * `{bm} Automatic Material System 2 Pro (AMS 2 Pro)/(AMS 2 Pro)/` `{bm} /(Automatic Material System 2 Pro)/i` - Automatic Material System 2 Pro, an extension to the H2S that manages filament(s). The AMS 2 Pro ...
