@@ -2445,19 +2445,19 @@ If something is missing from your toolbar, navigate to **View** → **Toolbars**
 
 **Viewport**
 
-6. Viewport: The space in which work in performed. The viewport typically renders and allows control of geometry (e.g., 3D primitives, 2D sketches, and technical drawings). For some workbenches, the viewport displays something different than geometry (e.g., spreadsheet).
+ * (6) Viewport: The space in which work in performed. The viewport typically renders and allows control of geometry (e.g., 3D primitives, 2D sketches, and technical drawings). For some workbenches, the viewport displays something different than geometry (e.g., spreadsheet).
 
-11. Navigation cube: When working in 3D, there will be a navigation cube (located in the viewport's top right in the example) that reduces the burden rotating and reorienting viewing angles, as well as changing perspectives. Clicking the various faces of the cube as well as the surrounding icons reorient the camera and change perspective.
+ * (11) Navigation cube: When working in 3D, there will be a navigation cube (located in the viewport's top right in the example) that reduces the burden rotating and reorienting viewing angles, as well as changing perspectives. Clicking the various faces of the cube as well as the surrounding icons reorient the camera and change perspective.
 
-12. Axis orientation: When working in 3D, the basis axes will be displayed from the current camera's orientation (located in the viewport's button right in the example).
+ * (12) Axis orientation: When working in 3D, the basis axes will be displayed from the current camera's orientation (located in the viewport's button right in the example).
 
-10. 3D viewport boundaries / spatial unit selection: When the viewport is viewing geometry, this dropdown can be used to change the units of measurement used (e.g., metric to imperial). It also displays the bounds of the viewport in those units of measurement.
+ * (10) 3D viewport boundaries / spatial unit selection: When the viewport is viewing geometry, this dropdown can be used to change the units of measurement used (e.g., metric to imperial). It also displays the bounds of the viewport in those units of measurement.
 
-9. 3D viewport mouse controls: When working in 3D, the mouse controls can be changed to different presets using this dropdown (e.g., Blender style mouse controls vs mouse controls optimized for a trackpad).
+ * (9) 3D viewport mouse controls: When working in 3D, the mouse controls can be changed to different presets using this dropdown (e.g., Blender style mouse controls vs mouse controls optimized for a trackpad).
 
    Hovering over the dropdown displays how mouse controls for the currently selected configuration (e.g., what right-click does).
 
-3. 3D viewport helpers: When working in 3D, these toolbar buttons provide quick tools to adjust and reorient the view. From left-to-right, ...
+ * (3) 3D viewport helpers: When working in 3D, these toolbar buttons provide quick tools to adjust and reorient the view. From left-to-right, ...
 
    * zoom viewport in to all geometry.
    * zoom viewport in to selected geometry.
@@ -2470,17 +2470,17 @@ If something is missing from your toolbar, navigate to **View** → **Toolbars**
 
 **Document hierarchy / operations**
 
-4. Model pane: List of open documents, as well as the hierarchy of each open document. In the example, the document Test3 has a part design body with a sketch in it. 
+ * (4) Model pane: List of open documents, as well as the hierarchy of each open document. In the example, the document Test3 has a part design body with a sketch in it. 
 
-5. Properties pane: For the selected items, this pane lists the properties for those items. If the item is selected within a 3D viewport, the *Data* tab below shows the physical properties (e.g., what it is) while the *View* tab below shows the visual properties (e.g., how its rendered).
+ * (5) Properties pane: For the selected items, this pane lists the properties for those items. If the item is selected within a 3D viewport, the *Data* tab below shows the physical properties (e.g., what it is) while the *View* tab below shows the visual properties (e.g., how its rendered).
 
    Note that properties are not limited to what's selected in the viewport. When an item in the model pane is selected, it has its properties show up.
 
-7. Workspace tabs: Tabs to switch between workspaces.
+ * (7) Workspace tabs: Tabs to switch between workspaces.
 
 **Basic operations**
 
-1. Basic commands: These toolbar buttons give quick access to common operations. From left-to-right, ...
+ * (1) Basic commands: These toolbar buttons give quick access to common operations. From left-to-right, ...
 
    * new document.
    * open document.
@@ -2489,33 +2489,31 @@ If something is missing from your toolbar, navigate to **View** → **Toolbars**
    * redo drop-down, which lists and allows going forward to subsequent state after an undo.
    * recompute, which recomputes calculations for the current selection or the active document if nothing is selected within it.
 
-2. Workbench switcher: Drop-down that switches between workbenches.
+ * (2) Workbench switcher: Drop-down that switches between workbenches.
 
-8. Diagnostic messages: Pop-out that displays log messages. The number displayed is the number of unread diagnostics messages.
+ * (8) Diagnostic messages: Pop-out that displays log messages. The number displayed is the number of unread diagnostics messages.
+
+`{ref} self`
 
 ## Spreadsheet Workbench
 
 `{bm} /(FreeCAD\/Spreadsheet Workbench)_TOPIC/i`
 
-FreeCAD has a built-in spreadsheet engine, accessible through the spreadsheet workbench. A spreadsheet is typically used to store parameters and run formulas, which then go on to be used as the parameters of geometry and other properties of an object. It can also go the other way, pulling data out of a model into a spreadsheet.
-
-```{note}
-The subsections below assume the reader has prior experience with other spreadsheet engines (e.g., Excel).
-```
-
-### User Interface Layout
-
-`{bm} /(FreeCAD\/Spreadsheet Workbench\/User Interface Layout)_TOPIC/i`
-
 ```{prereq}
 FreeCAD/User Interface Layout_TOPIC
+```
+
+FreeCAD has a built-in spreadsheet and expression engine, accessible through the spreadsheet workbench. A spreadsheet is typically used to store parameters and run formulas, which then go on to be used as the parameters of geometry and other properties of an object. It can also go the other way, pulling data out of a model into a spreadsheet.
+
+```{note}
+The entire section assumes the reader has prior experience with other spreadsheet engines (e.g., Excel).
 ```
 
 ![FreeCAD spreadsheet UI layout](freecad_spreadsheet_ui_layout.png)
 
 **Basic operations**
 
-1. Basic commands: These toolbar buttons give quick access to common operations. From left-to-right, ...
+ * (1) Basic commands: These toolbar buttons give quick access to common operations. From left-to-right, ...
 
    * new spreadsheet.
    * import CSV as new spreadsheet.
@@ -2523,24 +2521,24 @@ FreeCAD/User Interface Layout_TOPIC
 
 **Viewport**
 
-10. Spreadsheet: A matrix of cells, identified by column letter and row number (e.g., C3).
+ * (10) Spreadsheet: A matrix of cells, identified by column letter and row number (e.g., C3).
 
     Type while a cell is selected to set that cell's contents. Right click on a row/column to add or remove rows/columns.
 
-9. Cell alias textfield: This field shows and sets the alias for the selected cell, similar to pressing the cell alias button in the toolbar. When referencing a cell, the alias can be used as a friendly name.
+ * (9) Cell alias textfield: This field shows and sets the alias for the selected cell, similar to pressing the cell alias button in the toolbar. When referencing a cell, the alias can be used as a friendly name.
 
-8. Cell content: This field shows and sets the content of the cell, which may be a formula or a literal.
+ * (8) Cell content: This field shows and sets the content of the cell, which may be a formula or a literal.
 
-7. Zoom slider: This slider and accompanying drop-down are used to zoom in / out of the spreadsheet.
+ * (7) Zoom slider: This slider and accompanying drop-down are used to zoom in / out of the spreadsheet.
 
 **Cell operations and properties**
 
-2. Cell merge/split: These toolbar buttons merge and split cells. From left-to-right, ...
+ * (2) Cell merge/split: These toolbar buttons merge and split cells. From left-to-right, ...
 
    * merge selected cells into a single cell.
    * split a merged cell back out to its original individual cells.
 
-3. Text alignment: These toolbar buttons align text in a cell. From left-to-right, ...
+ * (3) Text alignment: These toolbar buttons align text in a cell. From left-to-right, ...
 
    * align left.
    * align horizontal center.
@@ -2549,18 +2547,18 @@ FreeCAD/User Interface Layout_TOPIC
    * align vertical center.
    * align bottom.
 
-4. Text style: These toolbar buttons stylize the text in a cell. From left-to-right, ...
+ * (4) Text style: These toolbar buttons stylize the text in a cell. From left-to-right, ...
 
    * bold.
    * italic.
    * underline.
 
-6. Cell colors: These toolbar buttons set the colors within a cell. From left-to-right, ...
+ * (6) Cell colors: These toolbar buttons set the colors within a cell. From left-to-right, ...
 
    * text color.
    * background color.
 
-5. Cell alias button: This toolbar option launches a dialog to set an alias for the selected cell. When referencing a cell, the alias can be used as a friendly name.
+ * (5) Cell alias button: This toolbar option launches a dialog to set an alias for the selected cell. When referencing a cell, the alias can be used as a friendly name.
 
 `{ref} https://wiki.freecad.org/Spreadsheet_Workbench`
 
@@ -2995,6 +2993,154 @@ Rotation and Placement can each be represented by a `Matrix`. The following func
 ## Sketcher Workbench
 
 `{bm} /(FreeCAD\/Sketcher Workbench)_TOPIC/i`
+
+Sketcher workbench allows creating 2D sketches. These 2D sketches typically go on to by used by other workbenches (e.g., they define the outline of some 3D feature in the creation of models via the part design workbench).
+
+Sketcher workbench has the following core primitives:
+
+ * Element: 2D geometric primitive (e.g., point, line, arc, and spline)
+ * Constraint: Definition of an element's measurement, either directly (e.g., 5mm radius for an arc) or as a relationship (e.g., line 1 must be perpendicular to line 2).
+
+The Sketcher workbench has two modes: Editing a sketch or viewing a sketch. The toolbar buttons change depending on the mode. The UI layout shown in the screenshot below is when editing a sketch.
+
+![FreeCAD sketcher workbench UI layout](freecad_sketcher_ui_layout.png)
+
+```{note}
+The behavior of many of the UI elements highlighted above / documented below changes based on the state of the application. For example, ...
+
+* if there are elements selected when the construction geometry button (3) is clicked, it'll turn those element into construction geometry.
+* if there aren't element selected when the construction geometry button (3) is clicked, all newly created elements (any button in 2) will be construction geometry until the construction geometry button is clicked again.
+
+These nuances aren't captured here, but in sections later on. This is just a basic accounting of the UI elements.
+```
+
+**General Commands**
+
+ * (1) General commands: These toolbar buttons give quick access to common operations. When not editing a sketch, the general commands are as follows:
+
+   ![FreeCAD sketcher workbench general toolbar when outside of sketch](freecad_sketcher_ui_general_toolbar_outside_sketch.png)
+
+   From left-to-right, ...
+
+   * new sketch: Creates a new sketch object in the model pane.
+   * edit sketch: Enters the currently select sketch object in the model pane.
+   * attach sketch: Attach sketch to an piece of 3D geometry (e.g., face on a model).
+   * reorient sketch: Attach sketch to an origin plane (e.g., XY plane).
+   * validate sketch: Opens a pane to validate different aspects of the sketch (e.g., invalid constraints).
+   * merge sketches: Merge the sketches selected in the model pane.
+   * mirror sketch: Mirror the sketch selected in the model pane.
+
+   When editing a sketch, the general commands are as follows:
+
+   ![FreeCAD sketcher workbench general toolbar when inside of sketch](image.png)
+ 
+   From left-to-right, ...
+
+   * leave sketch: Stop editing sketch.
+   * align view to sketch: Reorients camera such that it faces towards the sketch.
+   * toggle section view: Temporarily cut through and hide geometry that occludes a sketch (e.g., when the camera is aligned to the sketch, it may be occluded by currently visible 3D objects).
+
+ * (13) Leave sketch.
+
+**Elements and Constraints**
+
+ * (3) Construction geometry toggle.
+
+ * (2) Create elements: These toolbar buttons give quick access to create elements. From left-to-right, ...
+
+   * create point.
+   * create polyline.
+   * create line.
+   * create arcs of varying types and parameterizations (e.g., circular arc defined via 3 points, and circular arc defined via radius and angle, and elliptical arc).
+   * create circle / ellipse using varying parameterizations (e.g., defined via 3 points, and defined via radius and angle)
+   * create rectangles of varying types and parameterizations (e.g., rectangle defined via center and dimensions, e.g., rectangle define via top-left and bottom-right, and rounded rectangle).
+   * create polygon with varying number of sides.
+   * create slot of varying types.
+   * create b-spline of varying types and parameterizations.
+
+ * (5) Constraints toggle: These toolbar buttons disable constraints or keep them enabled but render them unenforced (referred to as reference constraints).
+
+ * (4) Constraints: These toolbar buttons give quick access to create constraints. From left-to-right, ...
+
+   * create dimensional constraints of varying types (e.g., distance, radius, and angle)
+   * create coincident constraint.
+   * create parallel to basis axis constraint (e.g., force line to be horizontal or vertical).
+   * create parallel constraint (e.g., lines 1 and 2 must be parallel).
+   * create perpendicular constraint (e.g., lines 1 and 2 must be perpendicular).
+   * create tangent constraint (e.g., line and endpoint of arc must be tangent).
+   * create distance equality constraint (e.g., line 1 and 2 must be the same distance).
+   * create symmetry constraint (e.g., points 1 and 2 must be symmetrical across line 1).
+   * create block constraint.
+
+ * (7) Selection helpers: These toolbar buttons give quick access to select elements / constraints associated with the current selection. From left-to-right, ...
+
+   * select constraints associated with selection.
+   * select elements associated with selection.
+
+ * (8) Arc circular helper toggle: Toggles the visibility of the underlying circle / ellipse for circular arcs.
+
+ * (10) Internal geometry toggle: Toggles the visibility of the internal geometry for certain element types (e.g., ellipse arc). 
+
+ * (11) Switch virtual space.
+
+**B-Splines**
+
+ * (6) B-spline tools: These toolbar buttons give quick access to b-spline helpers and tools. From left-to-right, ...
+
+   * geometry to b-spline.
+   * increase b-spline degree.
+   * decrease b-spline degree.
+   * increase knot multiplicity.
+   * decrease knot multiplicity.
+   * insert knot.
+   * join b-spline curves.
+
+ * (9) B-spline informational toggles: These toolbar buttons give quick access to toggle on/off information displayed for b-splines. From left-to-right, ...
+
+   * b-spline degree visibility toggle.
+   * b-spline control polygon visibility toggle.
+   * b-spline curvature comb visibility toggle.
+   * b-spline knot multiplicity visibility toggle.
+   * b-splint control point weight visibility toggle.
+
+**Tools**
+
+ * (12) Tools: These toolbar buttons give quick access to various sketching tools. From left-to-right, ...
+
+   * fillet / chamfer.
+   * trim, split, or extend edges.
+   * project from external geometry (e.g., pull in an edge from an external model into the sketch) or project intersected external geometry (e.g., pull in an edge from a model face that intersects the sketch plane).
+
+**Panels**
+
+ * (13) Constraints pane: This pane lists, allows selection, and allows configuration of constraints, mirroring whatever is selected in the viewport.
+
+ * (14) Elements pane: This pane lists, allows selection, and allows configuration of elements, mirroring whatever is selected in the viewport.
+
+`{ref} https://wiki.freecad.org/Sketcher_Workbench`
+
+### Elements
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Elements)_TOPIC/i`
+
+#### Point
+
+#### Line
+
+#### Rectangle
+
+#### Polygon
+
+#### Circle
+
+#### Arc
+
+#### Polyline
+
+#### Slot
+
+#### B-Spline
+### Constraints
 
 ## Part Design Workbench
 
