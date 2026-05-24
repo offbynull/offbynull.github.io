@@ -1728,13 +1728,13 @@ For scarf seams to be enabled, the filament being printed with must have scarf s
 
 ![Bambu Studio filament scarf seam settings](bambu_studio_filament_scarf_seam_settings.png)
 
-* **Scarf seam type**: Must be set to either **Contour** or **Contour and Hole** for scarf seams to be enabled.
+* **Scarf seam type**: Must be set to either **Contour_BS** or **Contour_BS and Hole_BS** for scarf seams to be enabled.
 * **Scarf start !!height!!**: !!Height!! at which the nozzle starts printing the wall, specified in mm or percentage of layer height.
 * **Scarf slope gap**: Scarf seam cuts into the inner wall to accommodate excess material, represented as a percentage of the nozzle diameter multiplied by some internal constant.
 * **Scarf length**: Length of the seam. Disabled if set to 0 or the option **Scarf around the entire wall** is enabled in print parameters.
 
 ````{note}
-Unsure what "Contour" and "Contour and Hole" refer to? It has something to do with https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation.
+Unsure what "Contour_BS" and "Contour_BS and Hole_BS" refer to? It has something to do with https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation.
 
 Unsure what the slope gap parameter actually does? It leaves a gap in the inner wall so the exterior wall can bleed extra material into it?
 
@@ -1792,7 +1792,7 @@ Bambu Studio/Object Walls_TOPIC
 Bambu Studio/Object Infill_TOPIC
 ```
 
-Fuzzy skin is a rough texture targeting the outside wall of an object and potentially holes within that object (just the walls, top and bottom surfaces won't be textured). It does this by adding random jitters to wall paths during slicing. The purpose of fuzzy skin is two-fold: It's either aesthetic, or it's intended to make the printed object easier to grip, or both.
+Fuzzy skin is a rough texture targeting the outside wall of an object and potentially holes_BS within that object (just the walls, top and bottom surfaces won't be textured). It does this by adding random jitters to wall paths during slicing. The purpose of fuzzy skin is two-fold: It's either aesthetic, or it's intended to make the printed object easier to grip, or both.
 
 ![Bambu Studio Prepare screen fuzzy skin example](bambu_studio_prepare_fuzzy_skin_example.png)
 
@@ -1802,9 +1802,9 @@ Fuzzy skin parameters are under **Others** → **Special mode**.
 
 To enable/disable fuzzy skin set the property **Fuzzy skin** to either ...
 
-* **Contour**, which targets just the outer walls on the outside perimeter.
-* **Contour and hole**, which targets the outer walls on both the outside perimeter and the perimeters of any holes.
-* **All walls**, which targets inner and outer walls on both the outside perimeter and the perimeters of any holes (jitters inner walls as well).
+* **Contour_BS**, which targets just the outer walls on the outside perimeter.
+* **Contour_BS and hole_BS**, which targets the outer walls on both the outside perimeter and the perimeters of any holes_BS.
+* **All walls**, which targets inner and outer walls on both the outside perimeter and the perimeters of any holes_BS (jitters inner walls as well).
 * **None(allow paint)**, which targets specific walls on the object to make fuzzy via the fuzzy skin paint tool. See subsection on fuzzy skin painting.
 * **Disable**, which disables fuzzy skin entirely.
 
@@ -1942,7 +1942,7 @@ To place brim ears manually, left-click around the !!base!! of the object. When 
 To place brim ears automatically, use the **Aut-generate points** button. Where brim ears get placed depends on ..
 
 * **Max angle**, which controls how sharp the angle must be for a brim ear to be placed there (e.g., 90 degree will place brim ears at perpendicular points on the bottom).
-* **Detection radius**, which controls how to many brim ears are placed along contours (smaller value results in more brim ears).
+* **Detection radius**, which controls how to many brim ears are placed along contours_BS (smaller value results in more brim ears).
 
 ```{note}
 Brim ears will be invisible once exiting this tool, only being visible again when re-entering the tool on the same object or in the Preview screen post-slicing.
@@ -2066,17 +2066,17 @@ Bambu Studio/Negative Parts_TOPIC
 Bambu Studio/Object Seam_TOPIC
 ```
 
-Printed objects that require accurate fitting with other components (e.g., screws or other printed parts) sometimes don't fit they way they should because of variances introduced during printing. For holes and contours running *running down the Z-axis*, Bambu Studio provides calibration steps to compensate for these variances:
+Printed objects that require accurate fitting with other components (e.g., screws or other printed parts) sometimes don't fit they way they should because of variances introduced during printing. For holes_BS and contours_BS running *running down the Z-axis*, Bambu Studio provides calibration steps to compensate for these variances:
 
 ![Bambu Studio Prepare screen contour hole example](bambu_studio_prepare_contour_hole_example.png)
 
-* **Contour** - The outer perimeter of the object as printed up the Z-axis (collective outer perimeters of the layers that make up the printed object). The example above is the object of a salad bowl. The shape of the unhollowed out bowl is the contour.
+* **Contour_BS** - The outer perimeter of the object as printed up the Z-axis (collective outer perimeters of the layers that make up the printed object). The example above is the object of a salad bowl. The shape of the unhollowed out bowl is the contour_BS.
 
-* **Hole** - The perimeter of a void/cavity within an object as printed up the Z-axis. The example above is the object of a salad bowl. The shape of the hollow/indent in bowl is considered a hole.
+* **Hole_BS** - The perimeter of a void/cavity within an object as printed up the Z-axis. The example above is the object of a salad bowl. The shape of the hollow/indent in bowl is considered a hole_BS.
 
-  An object may have multiple holes. Types of common holes include threaded holes for screws / bolts, drainage holes, and holes for connectors (e.g., dowels).
+  An object may have multiple holes_BS. Types of common holes_BS include threaded holes_BS for screws / bolts, drainage holes_BS, and holes_BS for connectors (e.g., dowels).
 
-The process involves printing a test object and either using calipers or a standard screw to determine how far off the hole/contour is from its intended !!baseline!!. That value can then be inserted into an object's properties under **Quality** → **Precision** → **X-Y hole compensation** and **X-Y contour compensation**.
+The process involves printing a test object and either using calipers or a standard screw to determine how far off the hole_BS/contour_BS is from its intended !!baseline!!. That value can then be inserted into an object's properties under **Quality** → **Precision** → **X-Y !!hole!! compensation** and **X-Y !!contour!! compensation**.
 
 ![Bambu Studio Prepare screen hole and contour compensation properties](bambu_studio_prepare_hole_and_contour_compensation_properties.png)
 
@@ -2085,17 +2085,17 @@ The auto compensation option in the screenshot above disables the manual compens
 ```
 
 ```{note}
-Remember that holes and contours on the z-axis are holes that are compensated for using XY hole contour compensation. It does not compensate for sideway holes.
+Remember that holes_BS and contours_BS on the z-axis are holes_BS that are compensated for using XY hole_BS contour_BS compensation. It does not compensate for sideway !!holes!!.
 ```
 
-Hole / contour compensation may be needed because ...
+Hole_BS / contour_BS compensation may be needed because ...
 
-* the seam throws off hole precisions.
+* the seam throws off hole_BS precisions.
 * the filament material may shrink as it cools.
 * the filament material may have absorbed moisture, causing inconsistent extrusion.
-* first layer may have been squished (elephant foot), distorting holes in that layer.
-* the hole may be too small to accurately print - holes with diameter close to the nozzle's size / holes below 1mm.
-* the hole may be fine, but may need to be chamfered (tapered lead-in) to accommodate the fastener.
+* first layer may have been squished (elephant foot), distorting holes_BS in that layer.
+* the hole_BS may be too small to accurately print - holes_BS with diameter close to the nozzle's size / holes_BS below 1mm.
+* the hole_BS may be fine, but may need to be chamfered (tapered lead-in) to accommodate the fastener.
 * flow dynamics may need to be tuned.
 
 ```{seealso}
@@ -2136,7 +2136,7 @@ Bambu Studio/Object Seam_TOPIC
 Bambu Studio/Failure Modes/XY Hole and Contour Fit_TOPIC
 ```
 
-By default, slicing removes or distorts areas of a contour / hole where the shape is a thin stretch, pin extrusion, or sharply acute corner. That is, if there are two points on the shape's outline with a distance less than the line width, it wouldn't be able to reliably print and so the slicer attempts to work around the "thinness" by distorting or removing it. Real world examples where this might be encountered include models containing of fan blades, thin tubes, line art, and small text.
+By default, slicing removes or distorts areas of a contour_BS / hole_BS where the shape is a thin stretch, pin extrusion, or sharply acute corner. That is, if there are two points on the shape's outline with a distance less than the line width, it wouldn't be able to reliably print and so the slicer attempts to work around the "thinness" by distorting or removing it. Real world examples where this might be encountered include models containing of fan blades, thin tubes, line art, and small text.
 
 ```{note}
 These areas are colloquially referred to as thin !!walls!! (not to be confused for a printed object's walls), because the problematic shape often (but not always) resembles a thin !!wall-like!! structure.
@@ -2181,7 +2181,7 @@ Bambu Studio/User Interface_TOPIC
 Bambu Studio/Layer Height_TOPIC
 ```
 
-Objects with a contours / holes that curve on the Z-axis (e.g., sphere and donut) experience a type of artifacting called stair-stepping, where as the curve's slope aggressively becomes more and more horizontal, overtly visible steps appear between neighboring layers.
+Objects with a contours_BS / holes_BS that curve on the Z-axis (e.g., sphere and donut) experience a type of artifacting called stair-stepping, where as the curve's slope aggressively becomes more and more horizontal, overtly visible steps appear between neighboring layers.
 
 ```{note}
 This is sometimes called Z-axis aliasing?
@@ -2499,14 +2499,18 @@ If something is missing from your toolbar, navigate to **View** → **Toolbars**
 
 `{bm} /(FreeCAD\/Spreadsheet Workbench)_TOPIC/i`
 
-```{prereq}
-FreeCAD/User Interface Layout_TOPIC
-```
-
 FreeCAD has a built-in spreadsheet and expression engine, accessible through the spreadsheet workbench. A spreadsheet is typically used to store parameters and run formulas, which then go on to be used as the parameters of geometry and other properties of an object. It can also go the other way, pulling data out of a model into a spreadsheet.
 
 ```{note}
 The entire section assumes the reader has prior experience with other spreadsheet engines (e.g., Excel).
+```
+
+### User Interface
+
+`{bm} /(FreeCAD\/Spreadsheet Workbench\/User Interface)_TOPIC/i`
+
+```{prereq}
+FreeCAD/User Interface Layout_TOPIC
 ```
 
 ![FreeCAD spreadsheet UI layout](freecad_spreadsheet_ui_layout.png)
@@ -2565,6 +2569,10 @@ The entire section assumes the reader has prior experience with other spreadshee
 ### Cell Types
 
 `{bm} /(FreeCAD\/Spreadsheet Workbench\/Cell Types)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Workbench/User Interface_TOPIC
+```
 
 A cell's contents may be ...
 
@@ -3001,9 +3009,23 @@ Sketcher workbench has the following core primitives:
  * Element: 2D geometric primitive (e.g., point, line, arc, and spline)
  * Constraint: Definition of an element's measurement, either directly (e.g., 5mm radius for an arc) or as a relationship (e.g., line 1 must be perpendicular to line 2).
 
-The Sketcher workbench has two modes: Editing a sketch or viewing a sketch. The toolbar buttons change depending on the mode. The UI layout shown in the screenshot below is when editing a sketch.
+In the screenshot below, the red geometry is are visualizations of constraints (e.g., angle and radius), while the white lines are the geometric primitives those red lines apply to (e.g., arc).
+
+![FreeCAD sketcher workbench simple arc sketch](freecad_sketcher_simple_arc_sketch.png)
+
+There are different element types (e.g., construction geometry projected geometry) and different constraint types (e.g., reference constraints, driving constraints). These are documented in the subsections below.
+
+### User Interface
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/User Interface)_TOPIC/i`
+
+```{prereq}
+FreeCAD/User Interface Layout_TOPIC
+```
 
 ![FreeCAD sketcher workbench UI layout](freecad_sketcher_ui_layout.png)
+
+The Sketcher workbench has two modes: Editing a sketch or viewing a sketch. The toolbar buttons change depending on the mode. The UI layout shown in the screenshot above is when editing a sketch, which is the mode that users will spend most of their time in.
 
 ```{note}
 The behavior of many of the UI elements highlighted above / documented below changes based on the state of the application. For example, ...
@@ -3032,7 +3054,7 @@ These nuances aren't captured here, but in sections later on. This is just a bas
 
    When editing a sketch, the general commands are as follows:
 
-   ![FreeCAD sketcher workbench general toolbar when inside of sketch](image.png)
+   ![FreeCAD sketcher workbench general toolbar when inside of sketch](freecad_sketcher_ui_general_toolbar_inside_sketch.png)
  
    From left-to-right, ...
 
@@ -3119,27 +3141,378 @@ These nuances aren't captured here, but in sections later on. This is just a bas
 
 `{ref} https://wiki.freecad.org/Sketcher_Workbench`
 
+### Sketching
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Sketching)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/User Interface_TOPIC
+```
+
+Sketching involves creating elements, constraining them, and deleting them. The sketch below is a non-trivial set of elements chained together using constraints.
+
+![FreeCAD sketcher workbench example](freecad_sketcher_example.png)
+
+The subsections below document these basic concepts.
+
+`{ref} https://wiki.freecad.org/Sketcher_Workbench`
+
+#### Creation
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/Creation)_TOPIC/i`
+
+![FreeCAD sketcher workbench elements and constraints toolbar](freecad_sketcher_elements_and_constraints_toolbar.png)
+
+To create an element, select the element from the toolbar (or the main menu, or use the element's shortcut key) and click on the viewport multiple times. On the first click, the viewport should show that the item is being created, and the movement of the mouse button and subsequent clicks further constructs the element. For example, to add a line, select the line in the toolbar, click in the viewport, and slightly move the mouse. The line's preview will display.
+
+![FreeCAD sketcher workbench line preview](freecad_sketcher_line_preview.png)
+
+A subsequent click will be complete adding the line.
+
+![FreeCAD sketcher workbench line complete](freecad_sketcher_line_complete.png)
+
+In the preview, there are two textboxes, one that specifies a distance and one that specifies an angle. These are referred to as On-View-Parameters, and they're available for certain elements, When in preview, pressing Tab will cycle into these textboxes, where a value may be entered followed by pressing Enter. Using them adds constraints to line. For example, if used for the line above, a constraint is added for the line's length and another constraint is added for the line's angle from the horizontal axis.
+
+![FreeCAD sketcher workbench line complete constrained](freecad_sketcher_line_complete_constrained.png)
+
+Alternatively, an element can have constraints added to it by selecting the relevant portions of an element and clicking an applicable constraint. For example, the line can have the exact same constraints applied by ...
+
+ * selecting the line, then selecting distance dimension constraint in the toolbar.
+ * selecting the line and the horizontal access, then selecting the angle dimension constraint in the toolbar.
+
+![FreeCAD sketcher workbench line complete constrained toolbar constraints](freecad_sketcher_line_complete_constrained_toolbar_constraints.png)
+
+```{seealso}
+FreeCAD/Sketcher Workbench/Sketching/Selection_TOPIC
+```
+
+```{note}
+There are multiple ways to apply constraints, discussed in each constraint's source. For example, instead of first selecting the line and then choosing the distance dimension constraint, you can first make sure nothing is selected, then click the distance dimension constraint, then click the line.
+```
+
+`{ref} https://wiki.freecad.org/Sketcher_Workbench`
+
+##### Continue Mode
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/Creation\/Continue Mode)_TOPIC/i`
+
+Continue mode allows element / constraint creation to continue after an element / constraint is created, allowing multiple such elements / constraints to be created many times over. The creation tool remains active until the user hits Esc or selects some other tool from the toolbar. For example, after selecting the line element from the toolbar and creating a line on the sketch, more lines can be created on the sketch without having to click the line element again in the toolbar.
+
+```{note}
+Pressing Esc if no tool is active will exit sketch edit mode. This can be turned off in preferences if inadvertently pressing Esc too many times.
+```
+
+Continue mode can be turned off in preferences (on by default).
+
+`{ref} https://wiki.freecad.org/Sketcher_Workbench`
+
+##### On-View-Parameters
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/Creation\/On-View-Parameters)_TOPIC/i`
+
+For certain element creation tools, On-View-Parameters allows explicitly adding constraints during the creation process by presenting textboxes alongside the element's preview. For example, dropping a line will show a textbox for length constraint and a textbox for angle constraint. Pressing tab cycles through these textboxes, while pressing enter adds the constraints.
+
+Continue mode can be turned off and configured in preferences (on by default).
+
+`{ref} https://wiki.freecad.org/Sketcher_Workbench`
+
+##### Auto Constraints
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/Creation\/Auto Constraints)_TOPIC/i`
+
+When creating an element, if the placement of some part of that element ends on an existing element, an auto constraint may be applied. An auto constraint is a constraint that's automatically added by virtue of how the elements end up together. For example, if the end of a line ends up on the start of a line, auto constraint will add a constraint known as coincident constraint which bounds those two points together.
+
+When an auto constraint is to be applied, the icon of the constraint is shown on the lower right of the icon of the element being created.
+
+```{note}
+I can't do a screenshot of this because flameshot won't capture the mouse cursor, but just imagine that you're creating a line. The mouse cursor will have the icon of the line creation icon (same as the toolbar) next to it. As you're putting down the line, when you get close to the existing line's point, a second smaller icon showing the constraint to be added show up to the right of the line creation icon. That second smaller icon is the coincident constraint icon.
+```
+
+Auto constraints is enabled/disabled per sketch, not globally. To change, update in the constraints pane or the sketch's view Autoconstraints property.
+
+![FreeCAD sketcher workbench auto constraints toggle](freecad_sketcher_auto_constraints_toggle.png)
+
+`{ref} https://wiki.freecad.org/Sketcher_Workbench`
+
+#### Selection
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/Selection)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
+```
+
+Elements and constraints can be selected in any of the following ways:
+
+* **Single selection**: Left-clicking an element or constraint toggles whether its selected.
+
+  Previously selected elements are not discarded on single select. While it isn't necessary to hold Ctrl while selecting multiple elements, it is beneficial in that a mis-click into empty space won't deselect everything.
+
+* **Box selection**: Left-clicking an empty area and dragging draws a selection rectangle, selecting elements within the rectangle (not constraints, only selections). Depending on the direction of the drag, the selection behavior changes. If the box dragging is from ...
+
+  * left to right, elements that lie completely inside the rectangle are selected.
+  * right to left, elements that touch or cross the rectangle are selected.
+
+  Previously selected elements are not discarded on box select.
+
+* **Connection selection**: Double-clicking an edge selects all edges directly and indirectly connected to it via endpoints. Endpoints only need to have the same coordinates (no need endpoints to be connected via constraints - e.g.,coincident constraints).
+
+  Previously selected elements are not discarded on connection select.
+
+* **Element / Constraints pane**: Constraints and the individual components of each element (e.g., a line elements's endpoint and actual line) are selectable via the constraints pane and elements pane, respectively. The elements pane lists the elements component next to the element, which can be individually clicked (e.g., select 2-Line's first endpoint).
+  
+  ![FreeCAD sketcher workbench elements and constrains pane](freecad_sketcher_elements_and_constraints.png)
+
+  Previously selected elements *are* discarded on connection select.
+
+* **Select all**: To select everything within a sketch, use Ctrl+A or navigate to **Edit** → **Select All**. 
+
+`{ref} https://wiki.freecad.org/Sketcher_Workbench`
+
+#### Deletion
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/Deletion)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Selection_TOPIC
+```
+
+To delete an element or constraint, select it and hit the Delete key. If an element is deleted, its related constraints are automatically deleted as well, even if they were left unselected when the Delete key was hit.
+
+`{ref} self`
+
+#### Projection Geometry
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/Projection Geometry)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Selection_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Deletion_TOPIC
+```
+
+An element is deemed projection geometry if that element was pulled in from a 3D object visible from the sketch. Projection geometry is linked to the 3D object it came from.
+
+```{note}
+Although not discussed yet, 3D objects can come from a variety of different places. For example, a sketch may be turned into 3D objects / 3D features on an existing 3D object via the part design workbench, and subsequent sketches may project geometry from that object.
+```
+
+![FreeCAD sketcher workbench external geometry toolbar buttons](freecad_sketcher_external_geometry_toolbar_buttons.png)
+
+To project, select the External Projection toolbar button (keyboard shortcut G, X) and select until the all desired elements have been projected (Esc or select another tool to exit). In some cases, it may be difficult to select the desired external geometry (e.g., it may be on the opposite side of the object, hidden from view). Recall that the camera can be rotated while sketching. If rotated, the camera's rotation can be brought back inline with the sketch by clicking the Align View to Sketch toolbar button (keyboard shortcut Q, P): ![FreeCAD sketcher workbench align view to sketch toolbar button](freecad_sketcher_align_view_to_sketch_toolbar_button.png).
+
+![FreeCAD sketcher workbench projection geometry example](freecad_sketcher_projection_geometry_example.png)
+
+To project intersections with the sketching plane, select the External Intersection toolbar button (keyboard shortcut G, I) and select until all desired elements have been projected (Esc or select another tool to exist). In most cases, it's difficult to select the desired intersections because they're likely blocked from view. Recall that the Toggle Section View toolbar button (keyboard shortcut Q, S) will temporarily cut from view anything that extends past the sketch plane towards the camera: ![FreeCAD sketcher workbench toggle section view toolbar button](freecad_sketcher_toggle_section_view_toolbar_button.png).
+
+![FreeCAD sketcher workbench projection geometry intersection example](freecad_sketcher_projection_geometry_intersection_example.png)
+
+```{note}
+When experimenting, I found pulling in intersections to be finicky. Certain curvatures won't get pulled in, or will get pulled in as only a single point off the curvature. It might be that not all conics are supported? Or maybe the feature is just buggy.
+```
+
+```{note}
+Projected geometry may also be construction geometry, discussed in sections further one.
+```
+
+```{seealso}
+FreeCAD/Sketcher Workbench/Sketching/Construction Geometry_TOPIC
+```
+
+The color and line style changes based on the type of projected element and the state of the overall sketch. The screenshot below shows the default colors used by FreeCAD for the various types and states.
+
+![FreeCAD Sketcher workbench element colors](freecad_sketcher_element_colors.png)
+
+`{ref} https://wiki.freecad.org/Sketcher_Tutorial` `{ref} https://wiki.freecad.org/Sketcher_Workbench` `{ref} self`
+
+#### Construction Geometry
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/Construction Geometry)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Selection_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Deletion_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Projection Geometry_TOPIC
+```
+
+An element is deemed as construction geometry if it isn't exposed to consumers of the sketch (it's internal to the sketch, hidden once the sketch is closed). Construction geometry is used within the sketch to assist in constraining other geometry.
+
+Construction geometry comes in different forms:
+
+* Construction geometry: A normal element in the sketch is construction geometry.
+
+  ![FreeCAD sketcher workbench construction geometry example](freecad_sketcher_construction_geometry_example.png)
+
+* Projected (external) construction geometry: A projected element in the sketch is construction geometry.
+
+  ![FreeCAD sketcher workbench projected construction geometry example](freecad_sketcher_projected_construction_geometry_example.png)
+
+* Internal alignment geometry: Construction geometry added by and tied to a complex element, used to control that element (e.g., ellipse control arms).
+
+  ![FreeCAD sketcher workbench internal alignment geometry example](freecad_sketcher_internal_alignment_geometry_example.png)
+
+To toggle one or more elements to / from construction geometry, select the elements and click the toggle construction geometry button (keyboard shortcut G,N): ![FreeCAD sketcher workbench toggle construction geometry toolbar button](freecad_sketcher_toggle_construction_geometry_toolbar_button.png)
+
+To toggle element creation from / to construction geometry, ensure nothing is selected and click te toggle construction geometry button. Toolbar buttons to create elements will change color to indicate that elements being created are construction geometry.
+
+![FreeCAD sketcher workbench construction geometry toggled off toolbar buttons](freecad_sketcher_construction_geometry_toggled_off_toolbar_buttons.png)
+
+![FreeCAD sketcher workbench construction geometry toggled on toolbar buttons](freecad_sketcher_construction_geometry_toggled_on_toolbar_buttons.png)
+
+The color and line style changes based on the type of construction element and the state of the overall sketch. The screenshot below shows the default colors used by FreeCAD for the various types and states.
+
+![FreeCAD Sketcher workbench element colors](freecad_sketcher_element_colors.png)
+
+`{ref} https://wiki.freecad.org/Sketcher_Tutorial` `{ref} https://wiki.freecad.org/Sketcher_ToggleConstruction` `{ref} https://forum.freecad.org/viewtopic.php?t=55061` `{ref} self`
+
+
+#### Fully Constrained
+
+#### Sketch Flipping
+
+#### 3D Feature Validity
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/3D Feature Validity)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Selection_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Deletion_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Construction Geometry_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Projection Geometry_TOPIC
+```
+
+```{note}
+The word !!contour!! here just means the outline of a shape that you draw in the sketcher. It doesn't have the same special meaning as the contours_BS vs holes_BS meaning in Bambu Studio.
+```
+
+For a sketch to be valid for use as a 3D feature (e.g., as a profile that extrudes into a 3D addition or punches into a 3D face), it must conform to several expectations:
+
+* **No open !!contours!!**: A !!contours!! must be closed, meaning gaps between endpoints of that !!contour!! aren't allowed (no matter how small).
+
+  ![FreeCAD sketcher workbench open contour example](freecad_sketcher_open_contour_example.png)
+
+* **No intersection**: A !!contour!! must not intersect with other !!contours!! or self-intersect.
+
+  ![FreeCAD sketcher workbench intersecting contours example](freecad_intersecting_contours_example.png)
+
+  ```{note}
+  While it !!contours!! can't intersect, one !!contour!! is allowed to be wholly contained in the. See further down for more information.
+  ```
+
+* **No shared edges between !!contours!!**: Two !!contours!! must not share an edge. 
+
+  ![FreeCAD sketcher workbench 2 contours with shared edge example](freecad_sketcher_2_contours_with_shared_edge_eample.png) ![FreeCAD sketcher workbench 2 contours with touching overlapping edges example](freecad_sketcher_2_contours_with_touching_overlapping_edges_eample.png)
+
+* **No T-connections**: A !!contour!! must not have two edges sharing a common point / point touching an edge.
+
+  ![FreeCAD sketcher workbench T connection example](freecad_sketcher_t_connection_example.png)
+
+!!Contours!! are allowed to be nested (but not intersecting). Nesting alternates between creating voids in the 3D feature.
+
+![FreeCAD sketcher workbench nested contours example](freecad_sketcher_nested_contours_example.png) ![FreeCAD part design workbench nested contours padded example](freecad_part_design_nested_contours_padded_example.png)
+
+```{note}
+These rules don't apply to construction geometry because construction geometry doesn't appear outside of editing a sketch.
+```
+
+`{ref} https://wiki.freecad.org/Sketcher_Workbench#Profile_sketches`
+
 ### Elements
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Elements)_TOPIC/i`
 
+An element is a 2D geometric primitive (e.g., point, line, arc, and spline). The element itself defines a primitive, while the parameterization of the primitive are defined by constraints applied to the element (constraints are discussed in later sections).
+
+```{seealso}
+FreeCAD/Sketcher Workbench/Constraints_TOPIC
+```
+
+To add an element on to the sketch, click the shape from the toolbar and start by clicking in the viewport. For example, to draw a line, click line in the toolbar, then click the 
+
+The color and line style of an element changes based on the type of element it is and the state of the overall sketch. The screenshot below shows the default colors used by FreeCAD for the various types and states.
+
+![FreeCAD Sketcher workbench element colors](freecad_sketcher_element_colors.png)
+
+Element type:
+
+* **Geometry**: An element that's exposed to consumers of the sketch.
+* **Construction geometry**: An element that isn't exposed to consumers of the sketch (it's internal to the sketch, hidden once the sketch is closed), used within the sketch to assist in constraining other geometry.
+* **External defining geometry**: Same as **geometry**, but it mirrors another piece of geometry outside of the sketch (e.g., an edge on a model outside of the sketch projected onto the sketch as a line).
+* **External construction geometry**: Same as **construction geometry**, but it mirrors another piece of geometry outside of the sketch (e.g., an edge on a model outside of the sketch projected onto the sketch as a line).
+* **Internal alignment geometry**: Same as **construction geometry**, but it's used to control other more complex elements (e.g., controls the shape of an ellipse or b-spline).
+
+Sketch state:
+
+* **Fully constrained**: All elements in the sketch are fully constrained, meaning there's no freedom to move anything.
+* **Invalid sketch**: Sketch has been deemed invalid for whatever reason.
+
+```{note}
+Remember that even fully constrained sketches can "flip". A fully constrained sketch doesn't mean that there's only 1 solution to the constraints. Unless an element is constrained to the point where there's only 1 solution for all the constraints, the sketcher workbench's engine may decide to adjust the parameters of the element as it sees fit.
+```
+
+`{ref} https://forum.freecad.org/viewtopic.php?t=55061` `{ref} https://wiki.freecad.org/Basic_Sketcher_Tutorial`
+
 #### Point
+
+`{ref} https://wiki.freecad.org/Sketcher_CreatePoint`
 
 #### Line
 
+`{ref} https://wiki.freecad.org/Sketcher_CreateLine`
+
 #### Rectangle
 
+`{ref} https://wiki.freecad.org/Sketcher_CreateRectangle` 
+`{ref} https://wiki.freecad.org/Sketcher_CreateRectangle_Center`
+`{ref} https://wiki.freecad.org/Sketcher_CreateOblong`
+
 #### Polygon
+
+`{ref} https://wiki.freecad.org/Sketcher_CreateTriangle`
+`{ref} https://wiki.freecad.org/Sketcher_CreateSquare`
+`{ref} https://wiki.freecad.org/Sketcher_CreatePentagon`
+`{ref} https://wiki.freecad.org/Sketcher_CreateHexagon`
+`{ref} https://wiki.freecad.org/Sketcher_CreateHeptagon`
+`{ref} https://wiki.freecad.org/Sketcher_CreateOctagon`
+`{ref} https://wiki.freecad.org/Sketcher_CreateRegularPolygon`
 
 #### Circle
 
 #### Arc
 
+`{ref} https://wiki.freecad.org/Sketcher_CreateArc`
+`{ref} https://wiki.freecad.org/Sketcher_Create3PointArc`
+`{ref} https://wiki.freecad.org/Sketcher_CreateArcOfEllipse`
+`{ref} https://wiki.freecad.org/Sketcher_CreateArcOfHyperbola`
+`{ref} https://wiki.freecad.org/Sketcher_CreateArcOfParabola`
+
 #### Polyline
+
+`{ref} https://wiki.freecad.org/Sketcher_CreatePolyline`
 
 #### Slot
 
+`{ref} https://wiki.freecad.org/Sketcher_CreateSlot`
+`{ref} https://wiki.freecad.org/Sketcher_CreateArcSlot`
+
 #### B-Spline
+
+`{ref} https://wiki.freecad.org/Sketcher_CreateBSpline`
+`{ref} https://wiki.freecad.org/Sketcher_CreatePeriodicBSpline`
+`{ref} https://wiki.freecad.org/Sketcher_CreateBSplineByInterpolation`
+`{ref} https://wiki.freecad.org/Sketcher_CreatePeriodicBSplineByInterpolation`
+
+#### Construction Geometry
+
+`{ref} https://wiki.freecad.org/Sketcher_ToggleConstruction`
+
+#### External Geometry
+
+`{ref} https://wiki.freecad.org/Sketcher_Projection`
+`{ref} https://wiki.freecad.org/Sketcher_Intersection`
+
 ### Constraints
 
 ## Part Design Workbench
@@ -3168,8 +3541,11 @@ The following instructions enable dark mode.
 
 The following instructions make it easier to select items using a trackpad, where you don't have the same level of precision as a mouse.
 
-1. Go to **Edit** → **Preferences** → **Display** → **3D View** and set **Marker size** to **11px**.
-2. Go to **Edit** → **Preferences** → **General** → **Selection** and set **Radius** to **11px**.
+1. Go to **Edit** → **Preferences** → **Display** → **3D View** and set **Marker size** to **11 px**.
+2. Go to **Edit** → **Preferences** → **General** → **Selection** and set **Radius** to **11 px**.
+3. Go to **Edit** → **Preferences** → **Sketcher** → **Appearance** and set all line widths to **4 px** (these seem to just be for elements, not constraints?).
+4. Go to **Edit** → **Preferences** → **Part Design** → **Shape Appearance** and set **Vertex Size** to **9 px** (can't seem to go till 11).
+5. Go to **Edit** → **Preferences** → **Part Design** → **Shape Appearance** and set **Line Width** to **4 px**.
 
 `{ref} self`
 
@@ -3564,15 +3940,19 @@ The following instructions make it easier to select items using a trackpad, wher
 
 * `{bm} modifier part` - an object within an assembly whose purpose is to modify the properties of other objects in that assembly (where those objects themselves aren't specialized objects like negative parts). `{ref} https://wiki.bambulab.com/en/software/bambu-studio/modifier`
 
-* `{bm} contour` - The outer perimeter of the object as printed up the Z-axis (collective outer perimeters of the layers that make up the printed object). For example, for an object of a salad bowl, the shape of the unhollowed out bowl is the contour. `{ref} https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation`
+* `{bm} contour/(contours?)_BS/i` - The outer perimeter of the object as printed up the Z-axis (collective outer perimeters of the layers that make up the printed object). For example, for an object of a salad bowl, the shape of the unhollowed out bowl is the contour_BS. `{ref} https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation`
 
-* `{bm} hole/(\bhole)/i` - The perimeter of a void/cavity within an object *as printed up the Z-axis*. For example, for an object of a salad bowl, the shape of the hollowed out part that is considered a hole. Types of common holes include threaded holes for screws / bolts, drainage holes, and holes for connectors (e.g., dowels).
+  `{bm-error} Did you mean to add _BS at the end? If not, wrap in !!?/(contours?)/`
+
+* `{bm} hole/(\bholes?)_BS/i` - The perimeter of a void/cavity within an object *as printed up the Z-axis*. For example, for an object of a salad bowl, the shape of the hollowed out part that is considered a hole_BS. Types of common holes_BS include threaded holes_BS for screws / bolts, drainage holes_BS, and holes_BS for connectors (e.g., dowels).
 
   ```{note}
-  Holes on the z-axis are holes that are compensated for using XY hole contour compensation. It does not compensate for sideway holes.
+  Holes_BS on the z-axis are holes_BS that are compensated for using XY hole_BS contour_BS compensation. It does not compensate for sideway holes_BS.
   ```
 
   `{ref} https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation`
+
+  `{bm-error} Did you mean to add _BS at the end? If not, wrap in !!?/(holes?)/`
 
 * `{bm} elephant foot` - A phenomenon where the first layer of a print slightly splays out because it doesn't cool properly (it sits directly on a heated build plate). Either through the non-cooling itself or through the non-cooling along with subsequent layers weighing down on it, causes the first layer to squish and splay.
 
