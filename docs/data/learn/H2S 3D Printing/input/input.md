@@ -3364,12 +3364,104 @@ The color and line style changes based on the type of construction element and t
 
 ![FreeCAD Sketcher workbench element colors](freecad_sketcher_element_colors.png)
 
-`{ref} https://wiki.freecad.org/Sketcher_Tutorial` `{ref} https://wiki.freecad.org/Sketcher_ToggleConstruction` `{ref} https://forum.freecad.org/viewtopic.php?t=55061` `{ref} self`
+`{ref} https://wiki.freecad.org/Sketcher_Workbench` `{ref} https://wiki.freecad.org/Sketcher_Tutorial` `{ref} https://wiki.freecad.org/Sketcher_ToggleConstruction` `{ref} https://forum.freecad.org/viewtopic.php?t=55061` `{ref} self`
+
+#### Degrees of Freedom
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/Fully Constrained)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Selection_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Deletion_TOPIC
+```
+
+If an element ...
+
+* isn't constrained to the point where it's locked into a specific parameterization (e.g., location, rotation, angle, and whatever other parameters it may have), it's said to have n degrees of freedom, where n >= 1.
+* is constrained to the point where it's locked into a specific parameterization, it's said to be fully constrained (0 degrees of freedom).
+
+A degree of freedom is a parameterization that hasn't been set. For example, ...
+
+* a point has 2 degrees of freedom:
+
+  1. X position.
+  2. Y position.
+  
+  The example below fully constrains a point by setting its position in relation to the origin of the sketch.
+
+  ![FreeCAD sketcher workbench fully constrained point example](freecad_sketcher_fully_constrained_point.png)
+
+* a line has 4 degrees of freedom:
+
+  1. Start point's X position.
+  2. Start point's Y position.
+  3. End point's X position.
+  4. End point's Y position.
+
+  The example below fully constrains a line by setting the position of its first point to the origin, and then giving it and angle and a length. The position of the second point is derived from the combination of angle and length.
+
+  ![FreeCAD sketcher workbench fully constrained line example](freecad_sketcher_fully_constrained_line.png)
+
+* an arc has 5 degrees of freedom:
+
+  1. Center point's X position.
+  2. Center point's Y position.
+  3. Radius/diameter of arc's underlying circle.
+  4. Angle between the two points comprising the arc.
+  5. What segment of the underlying circle the arc sits on.
+
+  The example below fully constrains an arc by setting its center point to the origin of the sketch, setting the radius to 14mm, setting the angle of the arc to 45 degrees, and positioning the arc on the underlying circle by stating that the lower point sits 7mm above the X axis. 
+
+  ![FreeCAD sketcher workbench fully constrained arc example](freecad_sketcher_fully_constrained_arc.png)
+
+The overall constraint state for all elements in the sketch is shown in the Sketch Edit pane.
+
+* **Under-constrained** / **Fully constrained**: When there's 1 or more degrees of freedom, the Sketch Edit pane will report that the sketch is under-constrained. When there's exactly 0 degrees of freedom, the Sketch Edit pane will report that the sketch is fully constrained.
+
+  ![FreeCAD sketcher workbench degrees of freedom display](freecad_sketcher_degrees_of_freedom_display.png)
+
+  Clicking on the degrees of freedom text in the Sketch Edit pane will select the elements (or their primitives) which aren't fully constrained. In the example below, clicking the degrees of freedom text in the Sketch Edit pane will will select the two endpoints not constrained (4 degrees of freedom).
+
+  ![FreeCAD sketcher workbench unconstrained degrees of freedom example](freecad_sketcher_unconstrained_degrees_of_freedom_example.png)
+
+* **Redundant constraints** / **Partially redundant**: If a sketch has constraints that deduce to the same thing, the Sketch Edit pane will report that the sketch has redundant constraints. For example, image creating a line where the start point has a coincident constraint to the origin and ...
+
+  * the end point has a horizontal distance constraint and vertical distance constraint, both set to 1mm.
+  * the line itself has a an angle constraint set to 45 degrees from the X axis.
+
+  This would report a redundant constraint given that the end point of (1mm, 1mm) implies that the angle from the X axis. In the example below, clicking the redundant constraints text in the Sketch Edit pane will will select the redundant constraints.
+
+  ![FreeCAD sketcher workbench redundant constraints example](freecad_sketcher_redundant_constraints_example.png)
 
 
-#### Fully Constrained
+* **Over-constrained**:
+
+```{note}
+There are other messages, but they usually mean something critical has gone wrong (e.g., Malformed constraints, Solver failed to converge).
+```
+
+
+
+It is important that a sketch should always be fully constrained, otherwise sketcher solver (software responsible for applying constraints) may shift and reorient the elements on that sketch based on the what is and isn't constrained. Even if a sketch is fully constrained, it may still be subject to sketch flipping, a phenomenon where the sketch flips because even when fully constrained there is more than 1 solution. In the example below, both arcs have the exact same constraints (both fully constrained), but there are two possible solutions.
+
+![FreeCAD sketcher workbench two solutions for the same constrained arc example](freecad_sketcher_two_solutions_for_the_same_constrained_arc_example.png)
+
+```{seealso}
+FreeCAD/Sketcher Workbench/Sketching/Sketch Flipping_TOPIC
+```
+
+`{ref} https://wiki.freecad.org/Sketcher_Workbench` `{ref} https://wiki.freecad.org/Sketcher_Tutorial` `{ref} https://wiki.freecad.org/Sketcher_Dialog` `{ref} self`
 
 #### Sketch Flipping
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/Sketch Flipping)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Degrees of Freedom_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Vertical Dimension_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Horizontal Dimension_TOPIC
+```
 
 #### 3D Feature Validity
 
@@ -3381,6 +3473,8 @@ FreeCAD/Sketcher Workbench/Sketching/Selection_TOPIC
 FreeCAD/Sketcher Workbench/Sketching/Deletion_TOPIC
 FreeCAD/Sketcher Workbench/Sketching/Construction Geometry_TOPIC
 FreeCAD/Sketcher Workbench/Sketching/Projection Geometry_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Fully Constrained_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Sketch Flipping_TOPIC
 ```
 
 ```{note}
