@@ -3163,7 +3163,7 @@ The subsections below document these basic concepts.
 
 ![FreeCAD sketcher workbench elements and constraints toolbar](freecad_sketcher_elements_and_constraints_toolbar.png)
 
-To create an element, select the element from the toolbar (or the main menu, or use the element's shortcut key) and click on the viewport multiple times. On the first click, the viewport should show that the item is being created, and the movement of the mouse button and subsequent clicks further constructs the element. For example, to add a line, select the line in the toolbar, click in the viewport, and slightly move the mouse. The line's preview will display.
+To create an element, select the element from the toolbar (or the main menu, or use the element's shortcut key) and click on the viewport multiple times. For most elements, on the first click the viewport should show that the item is being created, and the movement of the mouse button and subsequent clicks further constructs the element. For example, to add a line, select the line in the toolbar, click in the viewport, and slightly move the mouse. The line's preview will display.
 
 ![FreeCAD sketcher workbench line preview](freecad_sketcher_line_preview.png)
 
@@ -3458,7 +3458,60 @@ FreeCAD/Sketcher Workbench/Sketching/Sketch Flipping_TOPIC
 FreeCAD/Sketcher Workbench/Sketching/Degrees of Freedom_TOPIC
 FreeCAD/Sketcher Workbench/Constraints/Vertical Dimension_TOPIC
 FreeCAD/Sketcher Workbench/Constraints/Horizontal Dimension_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Angle Dimension_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Distance Dimension_TOPIC
 ```
+
+Even if a sketch is fully constrained, it may still be subject to sketch flipping, a phenomenon where the sketch flips because even when fully constrained there is more than 1 possible outcome for the constraints.
+
+* **Example 1**
+
+  In the example below, both arcs have the exact same constraints (both fully constrained), but there are two possible solutions.
+
+  ![FreeCAD sketcher workbench two solutions for the same constrained arc example](freecad_sketcher_two_solutions_for_the_same_constrained_arc_example.png)
+
+  Sketch flipping happens because, in certain cases, directionality may not exist. There's no constraint that ties the arc as to which side of the X axis it's on.
+  
+  This can be fixed by adding a constraint to force directionality. For example, adding a horizontal constraint between the end of the arc and the origin adds directionality. A horizontal constraint / vertical constraint is signed, meaning that a value of 12mm goes in one direction while -12mm goes in the opposite direction.
+
+  ![FreeCAD sketcher workbench two solutions for the same constrained arc example fixed](freecad_sketcher_two_solutions_for_the_same_constrained_arc_example_fixed.png)
+
+* **Example 2**
+
+  In the example below, both shapes have the exact same constraints (both fully constrained) except that the second version is 50mm away from the Y axis instead of 16mm. Note that the sketch changed shape even though all other constraints are equivalent.
+
+  ![FreeCAD sketcher workbench two solutions for the same constrained L example a](freecad_sketcher_two_solutions_for_the_same_constrained_L_example_a.png) ![FreeCAD sketcher workbench two solutions for the same constrained L example b](freecad_sketcher_two_solutions_for_the_same_constrained_L_example_b.png)
+
+  As with the previous example, there is a lack of directionality that causes sketch flipping. The top horizontal line has a distance constraint of 10mm, but there's nothing constraining the order of the points (which of its two points is closer to the Y axis). The solver is free to swap the points as it sees fit, so long as the distance is still 10mm.
+
+  Again, this can be fixed by adding a constraint to force directionality. For example, instead of using a distance constraint of 10mm, using a horizontal constraint of 10mm will. A horizontal constraint with a value of 10mm will fix the sketch into one orientation, while -10mm will fix it into the other orientation.
+
+  ![FreeCAD sketcher workbench two solutions for the same constrained L example fixed](freecad_sketcher_two_solutions_for_the_same_constrained_L_example_fixed.png)
+
+* **Example 3**
+
+  The example below is similar to the previous example, except more complex. There's double flipping occurring:
+  
+  1. The box and triangle are flipping across the symmetry line
+  2. The box has flipped such that the vertical line closer to the symmetry line has become the one farther from the symmetry line.
+
+  ![FreeCAD sketcher workbench two solutions for the same symmetry example a](freecad_sketcher_two_solutions_for_the_same_symmetry_example_a.png) ![FreeCAD sketcher workbench two solutions for the same symmetry example b](freecad_sketcher_two_solutions_for_the_same_symmetry_example_b.png)
+
+  Again, this can be fixed by adding constraint(s) to force directionality:
+  
+  * Add a horizontal constraint to the box to ensure its points don't flip.
+  * Add a horizontal constraint between the symmetry line's point and either a point on the box or a point on the triangle, to ensure they stay on the correct side of the symmetry line.
+
+  ![FreeCAD sketcher workbench two solutions for the same symmetry example fixed](freecad_sketcher_two_solutions_for_the_same_symmetry_example_fixed.png)
+
+To prevent flipping, it's important to anchor the sketch using constraints that support directionality. In general ...
+
+* horizontal constraints are signed, so they can specify directionality.
+* vertical constraints are signed, so they can specify directionality.
+* angle constraints are signed, so they can specify directionality, but that only works if the angle is anchored to something fixed (e.g., angle from x-axis and not the angle for an arc).
+* block constraints force an exact position, similar to adding a horizontal constraint and vertical constraint against the origin.
+
+`{ref} https://wiki.freecad.org/Sketcher_Workbench#Flipping` `{ref} https://forum.freecad.org/viewtopic.php?t=10872` `{ref} self`
 
 #### 3D Feature Validity
 
@@ -3514,52 +3567,119 @@ These rules don't apply to construction geometry because construction geometry d
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Elements)_TOPIC/i`
 
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Selection_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Deletion_TOPIC
+```
+
 An element is a 2D geometric primitive (e.g., point, line, arc, and spline). The element itself defines a primitive, while the parameterization of the primitive are defined by constraints applied to the element (constraints are discussed in later sections).
 
 ```{seealso}
 FreeCAD/Sketcher Workbench/Constraints_TOPIC
 ```
 
-To add an element on to the sketch, click the shape from the toolbar and start by clicking in the viewport. For example, to draw a line, click line in the toolbar, then click the 
+The subsections below detail the various elements available.
 
-The color and line style of an element changes based on the type of element it is and the state of the overall sketch. The screenshot below shows the default colors used by FreeCAD for the various types and states.
-
-![FreeCAD Sketcher workbench element colors](freecad_sketcher_element_colors.png)
-
-Element type:
-
-* **Geometry**: An element that's exposed to consumers of the sketch.
-* **Construction geometry**: An element that isn't exposed to consumers of the sketch (it's internal to the sketch, hidden once the sketch is closed), used within the sketch to assist in constraining other geometry.
-* **External defining geometry**: Same as **geometry**, but it mirrors another piece of geometry outside of the sketch (e.g., an edge on a model outside of the sketch projected onto the sketch as a line).
-* **External construction geometry**: Same as **construction geometry**, but it mirrors another piece of geometry outside of the sketch (e.g., an edge on a model outside of the sketch projected onto the sketch as a line).
-* **Internal alignment geometry**: Same as **construction geometry**, but it's used to control other more complex elements (e.g., controls the shape of an ellipse or b-spline).
-
-Sketch state:
-
-* **Fully constrained**: All elements in the sketch are fully constrained, meaning there's no freedom to move anything.
-* **Invalid sketch**: Sketch has been deemed invalid for whatever reason.
-
-```{note}
-Remember that even fully constrained sketches can "flip". A fully constrained sketch doesn't mean that there's only 1 solution to the constraints. Unless an element is constrained to the point where there's only 1 solution for all the constraints, the sketcher workbench's engine may decide to adjust the parameters of the element as it sees fit.
-```
-
-`{ref} https://forum.freecad.org/viewtopic.php?t=55061` `{ref} https://wiki.freecad.org/Basic_Sketcher_Tutorial`
+`{ref} https://wiki.freecad.org/Basic_Sketcher_Tutorial`
 
 #### Point
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Elements\/Point)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
+```
+
+![FreeCAD sketcher workbench numbered element toolbar buttons](freecad_sketcher_numbered_element_toolbar_buttons.png)
+
+To create a point, use toolbar button 1 (keyboard shortcut G,Y) and click within the 3D viewport to place the point.
 
 `{ref} https://wiki.freecad.org/Sketcher_CreatePoint`
 
 #### Line
 
+`{bm} /(FreeCAD\/Sketcher Workbench\/Elements\/Line)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
+```
+
+![FreeCAD sketcher workbench numbered element toolbar buttons](freecad_sketcher_numbered_element_toolbar_buttons.png)
+
+To create a line, use toolbar button 3 (keyboard shortcut G,L). Once the tool is active, select the mode in which the line should be created (cycle keyboard shortcut M). The mode defines the constraints presented by On-View-Parameters when the line is being created:
+
+* **Point, length, angle**
+* **Point, width, height**
+* **2 points** (no constraints presented)
+
+![FreeCAD sketcher workbench line parameters](freecad_sketcher_line_parameters.png)
+
+Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click again to place the second point.
+
 `{ref} https://wiki.freecad.org/Sketcher_CreateLine`
 
 #### Rectangle
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Elements\/Rectangle)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
+```
+
+![FreeCAD sketcher workbench numbered element toolbar buttons](freecad_sketcher_numbered_element_toolbar_buttons.png)
+
+To create a rectangle, use toolbar button 6 to present a drop-down and either select ...
+
+* Rectangle (keyboard shortcut G,R)
+* Centered Rectangle (keyboard shortcut G,V)
+* Rounded Rectangle (keyboard shortcut G,O)
+
+The selection activates the tool with specific Rectangle Parameters preset. Those parameters can continue to be set once the tool is active:
+
+* **Mode**: The mode in which the rectangle should be created (cycle keyboard shortcut M). Mode defines the constraints presented by On-View-Parameters when the rectangle is being created.
+* **Rounded corners**: Whether the rectangle should have rounded corners (keyboard shortcut U). Rounded corners defines extra elements and constraints to be presented by On-View-Parameters when the rectangle is being created.
+* **Frame**: Whether the rectangle should be a frame (keyboard shortcut J), as in have an inner and outer border. Frame defines extra elements and constraints to be presented by On-View-Parameters when the rectangle is being created.
+
+![FreeCAD sketcher workbench rectangle parameters](freecad_sketcher_rectangle_parameters.png)
+
+Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.
 
 `{ref} https://wiki.freecad.org/Sketcher_CreateRectangle` 
 `{ref} https://wiki.freecad.org/Sketcher_CreateRectangle_Center`
 `{ref} https://wiki.freecad.org/Sketcher_CreateOblong`
 
 #### Polygon
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Elements\/Polygon)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
+```
+
+![FreeCAD sketcher workbench numbered element toolbar buttons](freecad_sketcher_numbered_element_toolbar_buttons.png)
+
+To create a polygon, use toolbar button 7 to present a drop-down and either select ...
+
+* Triangle (keyboard shortcut G,P,3).
+* Square (keyboard shortcut G,P,4).
+* Pentagon (keyboard shortcut G,P,5).
+* Hexagon (keyboard shortcut G,P,6).
+* Heptagon (keyboard shortcut G,P,7).
+* Octagon (keyboard shortcut G,P,8).
+* Polygon (keyboard shortcut G,P,R).
+
+```{note}
+Triangle is an equilateral triangle.
+```
+
+Except for Polygon, the selection activates the tool with specific Polygon Parameters preset. Those parameters can continue to be set once the tool is active:
+
+* **Mode**: Select the number of sides for the polygon (keyboard shortcut U to increase, keyboard shortcut J to decrease).
+
+![FreeCAD sketcher workbench polygon parameters](freecad_sketcher_polygon_parameters.png)
+
+Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.
 
 `{ref} https://wiki.freecad.org/Sketcher_CreateTriangle`
 `{ref} https://wiki.freecad.org/Sketcher_CreateSquare`
@@ -3569,9 +3689,70 @@ Remember that even fully constrained sketches can "flip". A fully constrained sk
 `{ref} https://wiki.freecad.org/Sketcher_CreateOctagon`
 `{ref} https://wiki.freecad.org/Sketcher_CreateRegularPolygon`
 
-#### Circle
+#### Circle Ellipse
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Elements\/Circle Ellipse)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
+```
+
+![FreeCAD sketcher workbench numbered element toolbar buttons](freecad_sketcher_numbered_element_toolbar_buttons.png)
+
+To create an ellipse or circle, use toolbar button 5 to present a drop-down and either select ...
+
+* Circle from Center (keyboard shortcut G,C).
+* Circle from 3 Points (keyboard shortcut G,3,C).
+* Ellipse from Center (keyboard shortcut G,E,E).
+* Ellipse from 3 Points (keyboard shortcut G,3,E).
+
+Once the tool is active, select the mode in which the line should be created (cycle keyboard shortcut M). The mode defines the constraints presented by On-View-Parameters when the line is being created:
+
+* **Center**: Create circle/ellipse from a center point.
+* **3 rim points** / **Axis endpoints**: Create circle/ellipse from 3 points on the rim.
+
+![FreeCAD sketcher workbench circle parameters](freecad_sketcher_circle_parameters.png)
+![FreeCAD sketcher workbench ellipse parameters](freecad_sketcher_ellipse_parameters.png)
+
+Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.
+
+`{ref} https://wiki.freecad.org/Sketcher_CreateCircle`
+`{ref} https://wiki.freecad.org/Sketcher_Create3PointCircle`
+`{ref} https://wiki.freecad.org/Sketcher_CreateEllipseByCenter`
+`{ref} https://wiki.freecad.org/Sketcher_CreateEllipseBy3Points`
 
 #### Arc
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Elements\/Arc)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
+```
+
+![FreeCAD sketcher workbench numbered element toolbar buttons](freecad_sketcher_numbered_element_toolbar_buttons.png)
+
+To create an arc, use toolbar button 4 to present a drop-down and either select ...
+
+* Arc from Center (keyboard shortcut G,A).
+* Arc from 3 Points (keyboard shortcut G,3,A).
+* Elliptical Arc (keyboard shortcut G,E,A).
+* Hyperbolic Arc (keyboard shortcut G,H).
+* Parabolic Arc (keyboard shortcut G,J).
+
+Of the options, ...
+
+* for the first two (circular arcs), once the tool is active select the mode in which the line should be created (cycle keyboard shortcut M):
+
+  * **Center**: Create circle/ellipse from a center point.
+  * **3 rim points** / **Axis endpoints**: Create circle/ellipse from 3 points on the rim.
+
+  The only mode that defines constraints presented by On-View-Parameters when being created is **Center**.
+
+  ![FreeCAD sketcher workbench arc parameters](freecad_sketcher_arc_parameters.png)
+
+* for the remainder, there are no options and On-View-Params aren't enabled.
+
+Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.
 
 `{ref} https://wiki.freecad.org/Sketcher_CreateArc`
 `{ref} https://wiki.freecad.org/Sketcher_Create3PointArc`
@@ -3581,28 +3762,91 @@ Remember that even fully constrained sketches can "flip". A fully constrained sk
 
 #### Polyline
 
+`{bm} /(FreeCAD\/Sketcher Workbench\/Elements\/Polyline)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
+```
+
+![FreeCAD sketcher workbench numbered element toolbar buttons](freecad_sketcher_numbered_element_toolbar_buttons.png)
+
+A polyline is a helper that chains together lines and arcs into a path. To create a polyline use toolbar button 2 (keyboard shortcut G,M). Then, either select where to drop the first point or click an existing endpoint. Continue clicking to place new segments in a chain, hitting M to cycle through the line and arc options:
+
+* Line connected to the previous segment.
+* Line perpendicular to the previous segment.
+* Line tangential to the previous segment.
+* Arc tangential to the previous segment (hold Ctrl to snap arc to increments of 45 degree relative to the previous segment).
+* Arc perpendicular (left) to the previous segment (hold Ctrl to snap arc to increments of 45 degree relative to the previous segment).
+* Arc perpendicular (right) to the previous segment (hold Ctrl to snap arc to increments of 45 degree relative to the previous segment).
+
+Click within the 3D viewport to place the element and continue clicking to draw. Hit Esc to end.
+
+There must be a previous segment for M to cycle through line and arc options (there will be if you dropped on an existing endpoint). For the initial segment, the mode is always hardcoded to a line (M won't cycle).
+
 `{ref} https://wiki.freecad.org/Sketcher_CreatePolyline`
 
 #### Slot
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Elements\/Slot)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
+```
+
+![FreeCAD sketcher workbench numbered element toolbar buttons](freecad_sketcher_numbered_element_toolbar_buttons.png)
+
+
+To create a slot, use toolbar button 8 to present a drop-down and either select ...
+
+* Slot (keyboard shortcut G,S)
+* Arc Slot (keyboard shortcut G,S,S)
+
+Slot and Arc Slot are different tools. When ...
+
+* Slot is activated, there are no parameters.
+
+* Arc Slot is activate, there are parameters:
+
+  * **Mode**: The mode in which the rectangle should be created (cycle keyboard shortcut M). Mode defines the ends of the arc slot (flat vs round).
+   
+  ![FreeCAD sketcher workbench rectangle parameters](freecad_sketcher_arc_slot_parameters.png)
+
+Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.
+
 
 `{ref} https://wiki.freecad.org/Sketcher_CreateSlot`
 `{ref} https://wiki.freecad.org/Sketcher_CreateArcSlot`
 
 #### B-Spline
 
+`{bm} /(FreeCAD\/Sketcher Workbench\/Elements\/B-Spline)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
+```
+
+![FreeCAD sketcher workbench numbered element toolbar buttons](freecad_sketcher_numbered_element_toolbar_buttons.png)
+
+To create a b-spline, use toolbar button 9 to present a drop-down and either select ...
+
+* B-Spline (keyboard shortcut G,B,B).
+* Periodic B-Spline (keyboard shortcut G,B,P).
+* B-Spline from Knots (keyboard shortcut G,B,I).
+* Periodic B-Spline from Knots (keyboard shortcut G,B,O).
+
+The selection activates the tool with specific Rectangle Parameters preset. Those parameters can continue to be set once the tool is active:
+
+* **Mode**: The mode in which the b-spline should be created (cycle keyboard shortcut M). Mode defines whether the clicks in the 3D viewport are for the b-spline's control points or knots.
+* **Periodic**: Whether the b-spline curve loops seamlessly into itself (keyboard shortcut R).
+
+![FreeCAD sketcher workbench b-spline parameters](freecad_sketcher_b_spline_parameters.png)
+
+Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete. Hit Esc to end.
+
 `{ref} https://wiki.freecad.org/Sketcher_CreateBSpline`
 `{ref} https://wiki.freecad.org/Sketcher_CreatePeriodicBSpline`
 `{ref} https://wiki.freecad.org/Sketcher_CreateBSplineByInterpolation`
 `{ref} https://wiki.freecad.org/Sketcher_CreatePeriodicBSplineByInterpolation`
-
-#### Construction Geometry
-
-`{ref} https://wiki.freecad.org/Sketcher_ToggleConstruction`
-
-#### External Geometry
-
-`{ref} https://wiki.freecad.org/Sketcher_Projection`
-`{ref} https://wiki.freecad.org/Sketcher_Intersection`
 
 ### Constraints
 
