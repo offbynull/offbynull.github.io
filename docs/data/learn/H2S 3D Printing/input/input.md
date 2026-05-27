@@ -3617,6 +3617,10 @@ To create a line, use toolbar button 3 (keyboard shortcut G,L). Once the tool is
 
 Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click again to place the second point.
 
+```{note}
+A line is made up of 2 points.
+```
+
 `{ref} https://wiki.freecad.org/Sketcher_CreateLine`
 
 #### Rectangle
@@ -3644,6 +3648,10 @@ The selection activates the tool with specific Rectangle Parameters preset. Thos
 ![FreeCAD sketcher workbench rectangle parameters](freecad_sketcher_rectangle_parameters.png)
 
 Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.
+
+```{note}
+A rectangle is made up of at least 4 lines. 4 more added if it's framed. 4 arcs added if it's rounded.
+```
 
 `{ref} https://wiki.freecad.org/Sketcher_CreateRectangle` 
 `{ref} https://wiki.freecad.org/Sketcher_CreateRectangle_Center`
@@ -3680,6 +3688,10 @@ Except for Polygon, the selection activates the tool with specific Polygon Param
 ![FreeCAD sketcher workbench polygon parameters](freecad_sketcher_polygon_parameters.png)
 
 Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.
+
+```{note}
+A polygon is made up of n lines and a circle (construction geometry).
+```
 
 `{ref} https://wiki.freecad.org/Sketcher_CreateTriangle`
 `{ref} https://wiki.freecad.org/Sketcher_CreateSquare`
@@ -3808,7 +3820,7 @@ Slot and Arc Slot are different tools. When ...
 * Arc Slot is activate, there are parameters:
 
   * **Mode**: The mode in which the rectangle should be created (cycle keyboard shortcut M). Mode defines the ends of the arc slot (flat vs round).
-   
+
   ![FreeCAD sketcher workbench rectangle parameters](freecad_sketcher_arc_slot_parameters.png)
 
 Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.
@@ -3843,12 +3855,204 @@ The selection activates the tool with specific Rectangle Parameters preset. Thos
 
 Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete. Hit Esc to end.
 
+There are various b-spline modifiers / helpers:
+
+![FreeCAD sketcher workbench b-spline modifiers](freecad_sketcher_b_spline_modifiers.png)
+
+* Geometry to B-Spline
+* Increase B-Spline Degree
+* Decrease B-Spline Degree
+* Increase Knot Multiplicity
+* Decrease Knot Multiplicity
+* Insert Knot
+* Join Curves
+
+There are various visual helpers for b-splines that can be enabled / disabled:
+
+![FreeCAD sketcher workbench b-spline visual helpers](freecad_sketcher_b_spline_visual_helpers.png)
+
 `{ref} https://wiki.freecad.org/Sketcher_CreateBSpline`
 `{ref} https://wiki.freecad.org/Sketcher_CreatePeriodicBSpline`
 `{ref} https://wiki.freecad.org/Sketcher_CreateBSplineByInterpolation`
 `{ref} https://wiki.freecad.org/Sketcher_CreatePeriodicBSplineByInterpolation`
 
 ### Constraints
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Selection_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Deletion_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Element_TOPIC
+```
+
+A constraint limits the possible values for an element's parameters. For example, a line may have an endpoint constrained onto the X-axis, in which case the position of that endpoint must always have a Y position of 0.
+
+```{seealso}
+FreeCAD/Sketcher Workbench/Constraints_TOPIC
+```
+
+The subsections below detail the various constraints available.
+
+`{ref} https://wiki.freecad.org/Basic_Sketcher_Tutorial`
+
+#### Distance Dimension
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Distance Dimension)_TOPIC/i`
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To create a distance constraint, select the element (e.g., line), elements (e.g., line and arc), or element components (points on a line). Then, use toolbar button 1 to present a drop-down and select Distance Dimension (keyboard shortcut K,D). A pop-up will ask for the distance value. Then, press Esc.
+
+```{note}
+You can select Distance Dimension first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, ...
+
+* you can set the distance on a line by selecting Distance Dimension and then clicking on the line.
+* you can set the distance on a arc by selecting Distance Dimension and then clicking on the arc.
+* you CANNOT set the distance between a line and an arc by selecting Distance Dimension, then clicking the line, then clicking the arc.
+
+For the last point, as soon as you click the line, the constraint will get triggered on the line.
+
+To work around this, click the line and arc first, then select Distance Dimension.
+```
+
+By definition, a distance must be a non-negative value. Imagine two points on a horizontal line A and B. The distance between (A,B) is the same as the distance between (B,A). For example, if A were 5 and B were 4, ...
+
+* the distance from A to B is abs(5-4)=1
+* the distance from B to A is abs(4-5)=1.
+
+Given this, it's important to remember that distance does not encode a direction (e.g., if it did, the abs would go away, meaning the distance from B to A would have been -1 instead of 1). This lack of direction means that the sketcher's solver can decide to flip sketches even if the sketch is fully constrained (unless it's somehow further constrained to define a direction). For example below, the rectangle below has two distance constraints, ...
+
+* one on the vertical side (15mm).
+* one on the horizontal side (20mm).
+
+![FreeCAD sketcher workbench rectangle with distance dimensions](freecad_sketcher_rectangle_with_distance_dimensions.png)
+
+Because distance doesn't encode direction, the sketcher can decide to flip the horizontal edges or the vertical edges at any time. Imagine taking the lower-right corner of this rectangle and using a coincident constraint to tie it to the origin. Because the edges can flip, at any time the lower-right corner can become the upper-right corner, upper-left corner, or lower-left corner.
+
+![FreeCAD sketcher workbench rectangle with distance dimensions flip 1](freecad_sketcher_rectangle_with_distance_dimensions_flip_1.png)
+![FreeCAD sketcher workbench rectangle with distance dimensions flip 2](freecad_sketcher_rectangle_with_distance_dimensions_flip_2.png)
+
+```{note}
+To avoid sketch flipping, you need to add additional constraints that support directionality.
+```
+
+```{seealso}
+FreeCAD/Sketcher Workbench/Sketch Flipping_TOPIC
+```
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainDistance` `{ref} self`
+
+#### Horizontal Dimension
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Horizontal Dimension)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainDistanceX`
+
+#### Vertical Dimension
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Vertical Dimension)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainDistanceY`
+
+#### Lock Position
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Lock Position)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainLock`
+
+#### Radius Dimension
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Radius Dimension)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainRadius`
+
+#### Diameter Dimension
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Diameter Dimension)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainDiameter`
+
+#### Angle Dimension
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Angle Dimension)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainAngle`
+
+#### Radius-Diameter Dimension
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Radius-Diameter Dimension)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainRadiam`
+
+#### Dimension
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Dimension)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/Sketcher_Dimension`
+
+#### Coincident
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Coincident)_TOPIC/i`
+
+NOTE: This is two separate constraints unified into one: the old coincident constraint and the old point-on-object constraint.
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainCoincidentUnified`
+
+#### Horizontal
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Horizontal)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainHorizontal`
+
+#### Vertical
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Vertical)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainVertical`
+
+#### Horizontal-Vertical
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Horizontal-Vertical)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainHorVer`
+
+#### Parallel
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Parallel)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainParallel`
+
+#### Perpendicular
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Perpendicular)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainPerpendicular`
+
+#### Tangent-Colinear
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Tangent-Colinear)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainTangent`
+
+#### Equal Constraint
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Equal)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainEqual`
+
+#### Symmetric
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Symmetric)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainSymmetric`
+
+#### Block
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Block)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainBlock`
 
 ## Part Design Workbench
 
