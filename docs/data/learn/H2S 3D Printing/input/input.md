@@ -1734,7 +1734,7 @@ For scarf seams to be enabled, the filament being printed with must have scarf s
 * **Scarf length**: Length of the seam. Disabled if set to 0 or the option **Scarf around the entire wall** is enabled in print parameters.
 
 ````{note}
-Unsure what "Contour_BS" and "Contour_BS and Hole_BS" refer to? It has something to do with https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation.
+Unsure what "Contour_BS" and "Contour_BS and Hole_BS" refer to? See [here](https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation).
 
 Unsure what the slope gap parameter actually does? It leaves a gap in the inner wall so the exterior wall can bleed extra material into it?
 
@@ -2571,7 +2571,7 @@ FreeCAD/User Interface Layout_TOPIC
 `{bm} /(FreeCAD\/Spreadsheet Workbench\/Cell Types)_TOPIC/i`
 
 ```{prereq}
-FreeCAD/Workbench/User Interface_TOPIC
+FreeCAD/Spreadsheet Workbench/User Interface_TOPIC
 ```
 
 A cell's contents may be ...
@@ -3028,7 +3028,7 @@ FreeCAD/User Interface Layout_TOPIC
 The Sketcher workbench has two modes: Editing a sketch or viewing a sketch. The toolbar buttons change depending on the mode. The UI layout shown in the screenshot above is when editing a sketch, which is the mode that users will spend most of their time in.
 
 ```{note}
-The behavior of many of the UI elements highlighted above / documented below changes based on the state of the application. For example, ...
+The behavior of many of the UI elements highlighted above / documented below changes !!based!! on the state of the application. For example, ...
 
 * if there are elements selected when the construction geometry button (3) is clicked, it'll turn those element into construction geometry.
 * if there aren't element selected when the construction geometry button (3) is clicked, all newly created elements (any button in 2) will be construction geometry until the construction geometry button is clicked again.
@@ -3281,6 +3281,32 @@ To delete an element or constraint, select it and hit the Delete key. If an elem
 
 `{ref} self`
 
+#### Constraint Expressions
+
+`{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/Constraint Expressions)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Selection_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Deletion_TOPIC
+FreeCAD/Spreadsheet Workbench/Expressions_TOPIC
+```
+
+Constraints can be named by either ...
+
+* right-clicking on them in the Constraints pane and selecting Rename (shortcut key F2).
+* double-clicking the constraint in the viewport and assigning a name, but this only works if the constraint accepts a value.
+
+![FreeCAD sketcher workbench constraint name and value dialog](freecad_sketcher_constraint_name_and_value_dialog.png)
+
+Constraints can also reference and calculate their values via expressions. The formula button (inside the value textbox, to its right) opens an Expression Editor window that allows entering an expression instead of a constant, similar to inserting a formula in a cell for a spreadsheet.
+
+![FreeCAD sketcher workbench expression editor dialog](freecad_sketcher_expression_editor_dialog.png)
+
+The expression can access data in the sketch (e.g., other constraints) as well as outside the sketch (e.g., alias in a spreadsheet or field in a VarSet). In the example, the constraint is copying the value of another constraint and multiplying it by 2.
+
+`{ref} self`
+
 #### Projection Geometry
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/Projection Geometry)_TOPIC/i`
@@ -3308,7 +3334,7 @@ To project intersections with the sketching plane, select the External Intersect
 ![FreeCAD sketcher workbench projection geometry intersection example](freecad_sketcher_projection_geometry_intersection_example.png)
 
 ```{note}
-When experimenting, I found pulling in intersections to be finicky. Certain curvatures won't get pulled in, or will get pulled in as only a single point off the curvature. It might be that not all conics are supported? Or maybe the feature is just buggy.
+When experimenting, I found pulling in intersections to be finicky. Certain curvatures won't get pulled in, or will get pulled in as only a single point off the curvature. It might be that not all conics are !!supported!!? Or maybe the feature is just buggy.
 ```
 
 ```{note}
@@ -3319,7 +3345,7 @@ Projected geometry may also be construction geometry, discussed in sections furt
 FreeCAD/Sketcher Workbench/Sketching/Construction Geometry_TOPIC
 ```
 
-The color and line style changes based on the type of projected element and the state of the overall sketch. The screenshot below shows the default colors used by FreeCAD for the various types and states.
+The color and line style changes !!based!! on the type of projected element and the state of the overall sketch. The screenshot below shows the default colors used by FreeCAD for the various types and states.
 
 ![FreeCAD Sketcher workbench element colors](freecad_sketcher_element_colors.png)
 
@@ -3360,7 +3386,7 @@ To toggle element creation from / to construction geometry, ensure nothing is se
 
 ![FreeCAD sketcher workbench construction geometry toggled on toolbar buttons](freecad_sketcher_construction_geometry_toggled_on_toolbar_buttons.png)
 
-The color and line style changes based on the type of construction element and the state of the overall sketch. The screenshot below shows the default colors used by FreeCAD for the various types and states.
+The color and line style changes !!based!! on the type of construction element and the state of the overall sketch. The screenshot below shows the default colors used by FreeCAD for the various types and states.
 
 ![FreeCAD Sketcher workbench element colors](freecad_sketcher_element_colors.png)
 
@@ -3368,7 +3394,7 @@ The color and line style changes based on the type of construction element and t
 
 #### Degrees of Freedom
 
-`{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/Fully Constrained)_TOPIC/i`
+`{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/Degrees of Freedom)_TOPIC/i`
 
 ```{prereq}
 FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
@@ -3440,7 +3466,7 @@ The overall constraint state for all elements in the sketch is shown in the Sket
 There are other messages, but they usually mean something critical has gone wrong (e.g., Malformed constraints, Solver failed to converge).
 ```
 
-It is important that a completed sketch always be fully constrained, otherwise the solver (software responsible for applying constraints) may shift and reorient the elements on that sketch based on the what is and isn't constrained. Even if a sketch is fully constrained, it may still be subject to sketch flipping, a phenomenon where the sketch flips because even when fully constrained there is more than 1 possible outcome for the constraints. In the example below, both arcs have the exact same constraints (both fully constrained), but there are two possible solutions.
+It is important that a completed sketch always be fully constrained, otherwise the solver (software responsible for applying constraints) may shift and reorient the elements on that sketch !!based!! on the what is and isn't constrained. Even if a sketch is fully constrained, it may still be subject to sketch flipping, a phenomenon where the sketch flips because even when fully constrained there is more than 1 possible outcome for the constraints. In the example below, both arcs have the exact same constraints (both fully constrained), but there are two possible solutions.
 
 ![FreeCAD sketcher workbench two solutions for the same constrained arc example](freecad_sketcher_two_solutions_for_the_same_constrained_arc_example.png)
 
@@ -3504,7 +3530,7 @@ Even if a sketch is fully constrained, it may still be subject to sketch flippin
 
   ![FreeCAD sketcher workbench two solutions for the same symmetry example fixed](freecad_sketcher_two_solutions_for_the_same_symmetry_example_fixed.png)
 
-To prevent flipping, it's important to anchor the sketch using constraints that support directionality. In general ...
+To prevent flipping, it's important to anchor the sketch using constraints that !!support!! directionality. In general ...
 
 * horizontal constraints are signed, so they can specify directionality.
 * vertical constraints are signed, so they can specify directionality.
@@ -3523,7 +3549,7 @@ FreeCAD/Sketcher Workbench/Sketching/Selection_TOPIC
 FreeCAD/Sketcher Workbench/Sketching/Deletion_TOPIC
 FreeCAD/Sketcher Workbench/Sketching/Construction Geometry_TOPIC
 FreeCAD/Sketcher Workbench/Sketching/Projection Geometry_TOPIC
-FreeCAD/Sketcher Workbench/Sketching/Fully Constrained_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Degrees of Freedom_TOPIC
 FreeCAD/Sketcher Workbench/Sketching/Sketch Flipping_TOPIC
 ```
 
@@ -3610,7 +3636,7 @@ FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
 To create a line, use toolbar button 3 (keyboard shortcut G,L). Once the tool is active, select the mode in which the line should be created (cycle keyboard shortcut M). The mode defines the constraints presented by On-View-Parameters when the line is being created:
 
 * **Point, length, angle**
-* **Point, width, height**
+* **Point, !!width!!, !!height!!**
 * **2 points** (no constraints presented)
 
 ![FreeCAD sketcher workbench line parameters](freecad_sketcher_line_parameters.png)
@@ -3884,7 +3910,7 @@ There are various visual helpers for b-splines that can be enabled / disabled:
 FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
 FreeCAD/Sketcher Workbench/Sketching/Selection_TOPIC
 FreeCAD/Sketcher Workbench/Sketching/Deletion_TOPIC
-FreeCAD/Sketcher Workbench/Sketching/Element_TOPIC
+FreeCAD/Sketcher Workbench/Elements_TOPIC
 ```
 
 A constraint limits the possible values for an element's parameters. For example, a line may have an endpoint constrained onto the X-axis, in which case the position of that endpoint must always have a Y position of 0.
@@ -3901,12 +3927,16 @@ The subsections below detail the various constraints available.
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Distance Dimension)_TOPIC/i`
 
+A Distance Dimension constraint sets the distance.
+
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a distance constraint, select the element (e.g., line), elements (e.g., line and arc), or element components (points on a line). Then, use toolbar button 1 to present a drop-down and select Distance Dimension (keyboard shortcut K,D). A pop-up will ask for the distance value. Then, press Esc.
+To create a Distance Dimension constraint, select the element (e.g., line), elements (e.g., line and arc), or element components (points on a line). Then, use toolbar button 1 to present a drop-down and select Distance Dimension (keyboard shortcut K,D). A pop-up will ask for the length value. Once the constraint has been created, press Esc to exit.
+
+Distance Dimension works on the elements most users expect (e.g., distance between two points, distance of a line). It also works on other elements. For example, Distance Dimension can be applied to point and a line, an arc, two circles / arcs, a line and a circle / arc,
 
 ```{note}
-You can select Distance Dimension first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, ...
+You can select the connstraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, ...
 
 * you can set the distance on a line by selecting Distance Dimension and then clicking on the line.
 * you can set the distance on a arc by selecting Distance Dimension and then clicking on the arc.
@@ -3917,7 +3947,7 @@ For the last point, as soon as you click the line, the constraint will get trigg
 To work around this, click the line and arc first, then select Distance Dimension.
 ```
 
-By definition, a distance must be a non-negative value. Imagine two points on a horizontal line A and B. The distance between (A,B) is the same as the distance between (B,A). For example, if A were 5 and B were 4, ...
+By definition, a distance must be a non-negative value. Imagine two points on a horizontal line A and B. The distance between (A,B) is the same as the distance between (B,A). For example, if A=5 and B=4, ...
 
 * the distance from A to B is abs(5-4)=1
 * the distance from B to A is abs(4-5)=1.
@@ -3935,11 +3965,13 @@ Because distance doesn't encode direction, the sketcher can decide to flip the h
 ![FreeCAD sketcher workbench rectangle with distance dimensions flip 2](freecad_sketcher_rectangle_with_distance_dimensions_flip_2.png)
 
 ```{note}
-To avoid sketch flipping, you need to add additional constraints that support directionality.
+To avoid sketch flipping, you need to add additional constraints that !!support!! directionality.
 ```
 
 ```{seealso}
-FreeCAD/Sketcher Workbench/Sketch Flipping_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Sketch Flipping_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Horizontal Dimension_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Vertical Dimension_TOPIC
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainDistance` `{ref} self`
@@ -3948,17 +3980,94 @@ FreeCAD/Sketcher Workbench/Sketch Flipping_TOPIC
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Horizontal Dimension)_TOPIC/i`
 
-`{ref} https://wiki.freecad.org/Sketcher_ConstrainDistanceX`
+```{prereq}
+FreeCAD/Sketcher Workbench/Constraints/Distance Dimension_TOPIC
+```
+
+A Horizontal Dimension constraint sets the how far apart two elements are, horizontally. Unlike the Distance Dimension constraint, it allows direction via positive and negative values.
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To create a Horizontal Dimension constraint, select the element or element components (e.g., points on a line). Then, use toolbar button 1 to present a drop-down and select Horizontal Dimension (keyboard shortcut L). A pop-up will ask for the length value. Once the constraint has been created, press Esc to exit.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.
+```
+
+If the selection is ...
+
+* one point, the constraint will be relative from the origin:
+
+  * Positive value places point to the right of Y axis.
+  * Negative value places point to the left of Y axis.
+
+* two points, the constraint will be relative from the first selected point:
+
+  * Positive value places second point to the right of the first point.
+  * Negative value places second point to the left of the first point.
+
+* one line, the constraints will be applied as if the line's two points were selected. The line's first dropped point during creating is treated as the first point, and the second dropped point is treated as the second point.
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainDistanceX` `{ref} self`
 
 #### Vertical Dimension
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Vertical Dimension)_TOPIC/i`
 
-`{ref} https://wiki.freecad.org/Sketcher_ConstrainDistanceY`
+```{prereq}
+FreeCAD/Sketcher Workbench/Constraints/Distance Dimension_TOPIC
+```
+
+A Vertical Dimension constraint sets the how far apart two elements are, vertically. Unlike the Distance Dimension constraint, it allows direction via positive and negative values.
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To create a Vertical Dimension constraint, select the element or element components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Vertical Dimension (keyboard shortcut I). A pop-up will ask for the length value. Once the constraint has been created, press Esc to exit.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.
+```
+
+If the selection is ...
+
+* one point, the constraint will be relative from the origin:
+
+  * Positive value places point to the above of X axis.
+  * Negative value places point to the below of X axis.
+
+* two points, the constraint will be relative from the first selected point:
+
+  * Positive value places second point above the first point.
+  * Negative value places second point below the first point.
+
+* one line, the constraints will be applied as if the line's two points were selected. The line's first dropped point during creating is treated as the first point, and the second dropped point is treated as the second point.
+
+`{ref} https://wiki.freecad.org/Sketcher_ConstrainDistanceY` `{ref} self`
 
 #### Lock Position
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Lock Position)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Constraints/Horizontal Dimension_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Vertical Dimension_TOPIC
+```
+
+Lock Position is not a constraint, but a helper that applies both a Vertical Dimension constraint and a Horizontal Dimension constraint to the selection, effectively locking the selection in place.
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To apply Lock Position, select the element or element components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Lock Position (keyboard shortcut K,L). Once the constraint has been created, press Esc to exit.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.
+```
+
+If the selection is ...
+
+* one point, the constraints will be relative from the origin.
+* two points, the constraints will be relative from the the opposing points.
+* one line, the constraints will be applied as if the line's two points were selected.
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainLock`
 
@@ -3966,11 +4075,43 @@ FreeCAD/Sketcher Workbench/Sketch Flipping_TOPIC
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Radius Dimension)_TOPIC/i`
 
+A Radius Dimension constraint sets the radius of circles, arcs, and B-spline weight circles.
+
+```{note}
+From the source:
+
+> After a B-spline is created, it is possible to define the weight of the control points by changing the radii of the weight circles. The equality constraints on the circles need to be deleted first. The radius constraint is arbitrary, the weight of the control points will be defined by the relative radii of the circles. It works similar to gravity: the bigger a circle is in relation to the others, the more the curve will be attracted to that control point.
+```
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To create a Radius Dimension constraint, select the element or element component (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Radius Dimension (keyboard shortcut K,R). A pop-up will ask for the radius value. Once the constraint has been created, press Esc to exit.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+```
+
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainRadius`
 
 #### Diameter Dimension
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Diameter Dimension)_TOPIC/i`
+
+A Diameter Dimension constraint sets the diameter of circles, and arcs.
+
+```{note}
+Unlike Radius Dimension, Diameter Dimension cannot be used for B-splines. From the source:
+
+> It cannot be used for B-spline weight circles.
+```
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To create a Diameter Dimension constraint, select the element or element component (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Diameter Dimension (keyboard shortcut K,O). A pop-up will ask for the diameter value. Once the constraint has been created, press Esc to exit.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainDiameter`
 
@@ -3978,11 +4119,48 @@ FreeCAD/Sketcher Workbench/Sketch Flipping_TOPIC
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Angle Dimension)_TOPIC/i`
 
+An Angle Dimension sets the angle between two edges, a line an an axis of the sketch, or the aperture angle of a circular arc.
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To create a Angle Dimension constraint, select the element or element component (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Angle Dimension (keyboard shortcut K,A). A pop-up will ask for the angle value. Once the constraint has been created, press Esc to exit.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+```
+
+If the selection is ...
+
+* one line, the constraint will be the angle relative to the horizontal axis.
+* one arc, the constraints will be the angle defining how far the arc's endpoints are from each other.
+* two lines, the constraints will be an angle between the two lines, where the center is the intersection point of the lines.
+* two lines and a point, the constraints will be an angle between the two lines, where the center is the point.
+
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainAngle`
 
 #### Radius-Diameter Dimension
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Radius-Diameter Dimension)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Sketcher Workbench/Constraints/Radius Dimension_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Diameter Dimension_TOPIC
+```
+
+Radius-Diameter Dimension is not a constraint, but a helper that applies either a Radius Dimension constraint or a Diameter Dimension constraint to the selection, depending on the type of element it is.
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To apply Radius-Diameter Dimension, select the element or element components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Radius-Diameter Dimension (keyboard shortcut K,S). A pop-up will ask for the diameter/radius value. Once the constraint has been created, press Esc to exit.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.
+```
+
+If the selection is ...
+
+* an arc or b-spline weight circle, the constraints will be a Radius Dimension.
+* a circle, the constraint will be a Diameter Dimension.
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainRadiam`
 
@@ -3990,13 +4168,60 @@ FreeCAD/Sketcher Workbench/Sketch Flipping_TOPIC
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Dimension)_TOPIC/i`
 
+```{prereq}
+FreeCAD/Sketcher Workbench/Constraints/Distance Dimension_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Horizontal Dimension_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Vertical Dimension_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Radius Dimension_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Diameter Dimension_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Angle Dimension_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Coincident_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Horizontal_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Vertical_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Parallel_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Perpendicular_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Tangent-Colinear_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Equal_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Symmetric_TOPIC
+```
+
+Dimension is not a constraint, but a helper that allows cycling through most possible constraints for the element selection.
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To apply Dimension, select the element or element components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Dimension (keyboard shortcut D). Continue to hit M until the desired constraint appears and click to apply. A pop-up may appear asking for a value (e.g., angle if the constraint is Angle Dimension constraint). Once the constraint has been created, press Esc to exit.
+
+For example, if the selection is two lines, the possible constraints that can be cycled through may include Angle Dimension and Parallel.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.
+```
+
 `{ref} https://wiki.freecad.org/Sketcher_Dimension`
 
 #### Coincident
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Coincident)_TOPIC/i`
 
-NOTE: This is two separate constraints unified into one: the old coincident constraint and the old point-on-object constraint.
+A Coincident constraint sets a point to lie on another point, edge (e.g., line, rim of an arc, rim of a circle, b-spline), or basis axis.
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To create a Coincident constraint, select the element or element component (e.g., two points). Then, use toolbar button 2 (keyboard shortcut C). A pop-up will ask for the angle value. Once the constraint has been created, press Esc to exit.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+```
+
+If the selection is ...
+
+* two points, the constraint will place the points on top of each other.
+* a point and an edge, the constraints will place the point along the edge.
+* a point and a basis axis, the constraints will place the point along the basis axis.
+
+```{note}
+Apparently there use to be 2 separate constraints for Coincident? This is two separate constraints unified into one: The old Coincident constraint and the old Point-on-Object constraint.
+```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainCoincidentUnified`
 
@@ -4004,11 +4229,31 @@ NOTE: This is two separate constraints unified into one: the old coincident cons
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Horizontal)_TOPIC/i`
 
+A Horizontal constraint sets a pair of points or a line to be horizontal.
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To create a Horizontal constraint, select the element or element component (e.g., two points). Then, use toolbar button 3 to present a drop-down and select Horizontal (keyboard shortcut H). Once the constraint has been created, press Esc to exit.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+```
+
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainHorizontal`
 
 #### Vertical
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Vertical)_TOPIC/i`
+
+A Vertical constraint sets a pair of points or a line to be vertical.
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To create a Vertical constraint, select the element or element component (e.g., two points). Then, use toolbar button 3 to present a drop-down and select Vertical (keyboard shortcut V). Once the constraint has been created, press Esc to exit.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainVertical`
 
@@ -4016,11 +4261,41 @@ NOTE: This is two separate constraints unified into one: the old coincident cons
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Horizontal-Vertical)_TOPIC/i`
 
+```{prereq}
+FreeCAD/Sketcher Workbench/Constraints/Radius Dimension_TOPIC
+FreeCAD/Sketcher Workbench/Constraints/Diameter Dimension_TOPIC
+```
+
+Horizontal-Vertical is not a constraint, but a helper that applies either a Horizontal constraint or a Vertical constraint to the selection.
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To apply Horizontal-Vertical, select the element or element components (e.g., two points). Then, use toolbar button 3 to present a drop-down and select Horizontal-Vertical (keyboard shortcut A). Once the constraint has been created, press Esc to exit.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.
+```
+
+If the selection is ...
+
+* closer to being horizontal, a Horizontal constraint will be applied.
+* closer to being horizontal, a Vertical constraint will be applied.
+
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainHorVer`
 
 #### Parallel
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Parallel)_TOPIC/i`
+
+A Parallel constraint sets a pair of lines to be parallel.
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To create a Parallel constraint, select the element or element component (e.g., two lines). Then, use toolbar button 4 (keyboard shortcut P). Once the constraint has been created, press Esc to exit.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainParallel`
 
@@ -4028,11 +4303,31 @@ NOTE: This is two separate constraints unified into one: the old coincident cons
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Perpendicular)_TOPIC/i`
 
+A Perpendicular constraint sets a pair of lines to be perpendicular.
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To create a Perpendicular constraint, select the element or element component (e.g., two lines). Then, use toolbar button 5 (keyboard shortcut N). Once the constraint has been created, press Esc to exit.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+```
+
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainPerpendicular`
 
 #### Tangent-Colinear
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Tangent-Colinear)_TOPIC/i`
+
+A Tangent-Colinear constraint sets two edges (e.g., line, rim of an arc, rim of a circle, b-spline), or an edge and an basis axis, to be tangent. The constraint treats edges as if they're unbounded (e.g., lines are virtually extend out to infinity and open curves are virtually extended, for the purpose of tangency).
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To create a Tangent-Colinear constraint, select the element or element component (e.g., two lines). Then, use toolbar button 6 (keyboard shortcut T). Once the constraint has been created, press Esc to exit.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainTangent`
 
@@ -4040,11 +4335,31 @@ NOTE: This is two separate constraints unified into one: the old coincident cons
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Equal)_TOPIC/i`
 
+An Equal constraint sets two edges (e.g., line, rim of an arc, rim of a circle, b-spline) to have the same length.
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To create an Equal constraint, select the element or element component (e.g., two lines). Then, use toolbar button 7 (keyboard shortcut E). Once the constraint has been created, press Esc to exit.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+```
+
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainEqual`
 
 #### Symmetric
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Symmetric)_TOPIC/i`
+
+A Symmetric constraint sets two points to mirror each other symmetrically over a line, a basis axis, or around a point.
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To create a Symmetric constraint, select the element or element component (e.g., two lines). Then, use toolbar button 8 (keyboard shortcut S). Once the constraint has been created, press Esc to exit.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainSymmetric`
 
@@ -4052,11 +4367,272 @@ NOTE: This is two separate constraints unified into one: the old coincident cons
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Block)_TOPIC/i`
 
+A Block constraint fixes an edge (e.g., line, rim of an arc, rim of a circle, b-spline) in place. It's mainly intended for b-splines, which can be difficult to fully constrain otherwise. 
+
+![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
+
+To create a Block constraint, select the element or element component (e.g., two lines). Then, use toolbar button 9 (keyboard shortcut K, B). Once the constraint has been created, press Esc to exit.
+
+```{note}
+You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+```
+
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainBlock`
 
 ## Part Design Workbench
 
 `{bm} /(FreeCAD\/Part Design Workbench)_TOPIC/i`
+
+```{prereq}
+FreeCAD/User Interface Layout_TOPIC
+FreeCAD/Spreadsheet Workbench_TOPIC
+FreeCAD/Sketcher Workbench_TOPIC
+```
+
+Part Design workbench allows building 3D models, mostly by compounding 2D sketches that build out 3D features. For example, a sketch of a square that's 5mm by 5mm can be padded by 5mm to create a cube. Then, a sketch of a circle with a 3.5mm diameter can be placed on a face of that cube and pocketed to create a cylindrical !!hole!! through that cube.
+
+![FreeCAD Part Design workbench example](freecad_part_design_example.png)
+
+The example above is a single body. A Part Design document holds one or more bodies, and each body compounds several sketches into features.
+
+```{plantuml}
+@startuml
+
+left to right direction
+hide circle
+
+Part ||--|{ Body : "contains"
+Body ||--|{ NonSketchFeature : "built using"
+Body ||--|{ SketchFeature : "built using"
+
+@enduml
+```
+
+A body's features are built out using a non-destructive workflow. That means, as features build on top of other features, it's possible to modify earlier features and have the change cascade down to later features. For example, with cylinder-through-box example above, it's possible to go up and change box's dimensions and fillet its corners. The cylinder feature will still apply.
+
+![FreeCAD Part Design workbench example 2](freecad_part_design_example_2.png)
+
+![FreeCAD Part Design workbench example 2 workflow](freecad_part_design_example_2_workflow.png)
+
+Each body has its own local coordinate system. Externally, the body may be offset and rotated within the part.
+
+![FreeCAD part design workbench body translation properties](freecad_part_design_body_translation_properties.png)
+
+* Position defines offset.
+* Axis and angle define rotation - axis defines a vector and angle rotates around that vector.
+
+```{note}
+Local coordinate system means internally the body has its own origin and basis axes, and all operations building out features within the body are relative to that origin and those basis axes.
+```
+
+```{note}
+An easier way to set the orientation is, in the Model pane, right-click on the body and choose **Transform**. It sets the same properties highlighted in the above screenshot, but it also provides gizmos in the viewport and a popup pane with more friendly ways to set.
+```
+
+`{ref} https://wiki.freecad.org/PartDesign_Workbench` `{ref} https://wiki.freecad.org/Basic_Part_Design_Tutorial`
+
+### User Interface
+
+`{bm} /(FreeCAD\/Part Design Workbench\/User Interface)_TOPIC/i`
+
+```{prereq}
+FreeCAD/User Interface Layout_TOPIC
+```
+
+![FreeCAD part design workbench user interface](freecad_part_design_user_interface.png)
+
+**Body**
+
+ * (1) Create new body.
+
+**Sketch**
+
+ * (2) Sketch operations: These toolbar buttons give quick access to sketch functionality. A part design document can contain multiple sketches, where those sketches are attached on to a plane or an existing face of the model. These sketches are selectable in the Model pane's tree, and each acts (in whole or in part) as the !!base!! for a 3D feature (e.g., extrude sketch into 3D).
+ 
+   From left-to-right, ...
+
+   * drop-down to either ...
+     * create a sketch (either on plane or the selected face).
+     * attach an existing sketch to a face.
+     * edit an existing sketch.
+   * validate a sketch.
+
+**Helpers**
+
+ * (3) Helpers: These toolbar buttons provide access to helpful part design tools. From left-to-right, ...
+
+   * analyze selected geometry for errors.
+   * create a sub-shape binder, which pulls in geometry from another body / object by referencing it.
+   * clone selected object into a new body (linked, not copied).
+
+**Modeling Features**
+
+ * (4) Additive features: These toolbar buttons provide access to sketch-to-3D features that add to an object. From left-to-right, ...
+
+   * create a solid by padding a sketch.
+   * create a solid by revolving a sketch around an axis.
+   * create a solid by creating transitions between two or more sketches (sketches are cross-sections of the solid).
+   * create a solid by sweeping a sketch around a helix
+   * create a primitive solid (e.g., box, cylinder, sphere)
+
+ * (5) Subtractive features: These toolbar buttons provide access to sketch-to-3D features that remove from an object. From left-to-right, ...
+
+   * cut-out from a solid by sinking a sketch.
+   * cut-out from a solid by cutting fastener !!holes!! (sketch must contain one or more circles).
+   * cut-out from a solid by revolving a sketch around an axis.
+   * cut-out from a solid by creating transitions between two or more sketches (sketches are cross-sections of the solid).
+   * cut-out from a solid by sweeping a sketch around a helix
+   * cut-out from a solid by cutting out a primitive solid (e.g., box, cylinder, sphere)
+
+ * (6) Import bodies and apply a boolean operation (e.g., intersection).
+
+ * (7) Dress-up: These toolbar buttons provide access to some basic non-sketch !!based!! features. From left-to-right, ...
+
+   * round selected edges / vertexes.
+   * chamfer selected edges / vertexes.
+   * angle selected face.
+   * convert body to a shell, leaving selected faces open.
+
+**Transformation Features**
+
+ * (8) Transformations: These toolbar buttons pattern on or more features. From left-to-right, ...
+
+   * mirror one or more features.
+   * create a linear pattern of one or more features.
+   * create a polar pattern of one or more features.
+   * create a pattern by combining the transformations mentioned above, as well as scale.
+
+`{ref} https://wiki.freecad.org/PartDesign_Workbench`
+
+### Body
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Body)_TOPIC/i`
+
+Create a body, clone a body, transform a body.
+
+`{ref} https://wiki.freecad.org/PartDesign_Body`
+
+`{ref} https://wiki.freecad.org/Body`
+
+`{ref} https://wiki.freecad.org/PartDesign_Clone`
+
+### Sketch
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Sketch)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/PartDesign_NewSketch`
+
+`{ref} https://wiki.freecad.org/Sketcher_MapSketch`
+
+`{ref} https://wiki.freecad.org/Sketcher_EditSketch`
+
+`{ref} https://wiki.freecad.org/Sketcher_MapSketch`
+
+`{ref} https://wiki.freecad.org/Sketcher_ValidateSketch`
+
+### Pad / Pocket
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Pad \/ Pocket)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/PartDesign_Pad` `{ref} https://wiki.freecad.org/PartDesign_Pocket`
+
+### Hole
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Hole)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/PartDesign_Hole`
+
+### Revolution / Groove
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Revolution \/ Groove)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/PartDesign_Revolution` `{ref} https://wiki.freecad.org/PartDesign_Groove`
+
+### Loft
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Loft)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/PartDesign_AdditiveLoft` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveLoft`
+
+### Pipe
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Pipe)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/PartDesign_AdditivePipe` `{ref} https://wiki.freecad.org/PartDesign_SubtractivePipe`
+
+### Helix
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Helix)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/PartDesign_AdditiveHelix` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveHelix`
+
+### Primitives
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Primitives)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/PartDesign_AdditiveBox` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveBox`
+
+`{ref} https://wiki.freecad.org/PartDesign_AdditiveCylinder` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveCylinder`
+
+`{ref} https://wiki.freecad.org/PartDesign_AdditiveSphere` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveSphere`
+
+`{ref} https://wiki.freecad.org/PartDesign_AdditiveCone` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveCone`
+
+`{ref} https://wiki.freecad.org/PartDesign_AdditiveEllipsoid` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveEllipsoid`
+
+`{ref} https://wiki.freecad.org/PartDesign_AdditiveTorus` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveTorus`
+
+`{ref} https://wiki.freecad.org/PartDesign_AdditivePrism` `{ref} https://wiki.freecad.org/PartDesign_SubtractivePrism`
+
+`{ref} https://wiki.freecad.org/PartDesign_AdditiveWedge` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveWedge`
+
+### Fillet / Chamfer
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Fillet \/ Chamfer)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/PartDesign_Fillet`
+
+`{ref} https://wiki.freecad.org/PartDesign_Chamfer`
+
+### Draft
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Draft)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/PartDesign_Draft`
+
+### Thickness
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Thickness)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/PartDesign_Thickness`
+
+### Boolean Operation
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Boolean Operation)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/PartDesign_Boolean`
+
+### Mirror
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Mirror)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/PartDesign_Mirrored`
+
+### Linear Pattern / Polar Pattern
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Linear Pattern \/ Polar Pattern)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/PartDesign_LinearPattern`
+
+`{ref} https://wiki.freecad.org/PartDesign_PolarPattern`
+
+### Multi-Transform
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Multi-Transform)_TOPIC/i`
+
+`{ref} https://wiki.freecad.org/PartDesign_MultiTransform`
+
+`{ref} https://wiki.freecad.org/PartDesign_Scaled`
 
 ## Variable Sets
 
@@ -4491,7 +5067,7 @@ The following instructions make it easier to select items using a trackpad, wher
 
   `{ref} https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation`
 
-  `{bm-error} Did you mean to add _BS at the end? If not, wrap in !!?/(holes?)/`
+  `{bm-error} Did you mean to add _BS at the end? If not, wrap in !!?/(\bholes?)/`
 
 * `{bm} elephant foot` - A phenomenon where the first layer of a print slightly splays out because it doesn't cool properly (it sits directly on a heated build plate). Either through the non-cooling itself or through the non-cooling along with subsequent layers weighing down on it, causes the first layer to squish and splay.
 

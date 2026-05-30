@@ -114,7 +114,7 @@
 <li><a href="#H_User%20Interface%20Layout">User Interface Layout</a></li>
 <li><a href="#H_Spreadsheet%20Workbench">Spreadsheet Workbench</a></li>
 <ul>
-<li><a href="#H1_User%20Interface%20Layout">User Interface Layout</a></li>
+<li><a href="#H2_User%20Interface">User Interface</a></li>
 <li><a href="#H_Cell%20Types">Cell Types</a></li>
 <li><a href="#H_Expressions">Expressions</a></li>
 <ul>
@@ -138,7 +138,80 @@
 </ul>
 </ul>
 <li><a href="#H_Sketcher%20Workbench">Sketcher Workbench</a></li>
+<ul>
+<li><a href="#H3_User%20Interface">User Interface</a></li>
+<li><a href="#H_Sketching">Sketching</a></li>
+<ul>
+<li><a href="#H_Creation">Creation</a></li>
+<ul>
+<li><a href="#H_Continue%20Mode">Continue Mode</a></li>
+<li><a href="#H_On-View-Parameters">On-View-Parameters</a></li>
+<li><a href="#H_Auto%20Constraints">Auto Constraints</a></li>
+</ul>
+<li><a href="#H_Selection">Selection</a></li>
+<li><a href="#H_Deletion">Deletion</a></li>
+<li><a href="#H_Constraint%20Expressions">Constraint Expressions</a></li>
+<li><a href="#H_Projection%20Geometry">Projection Geometry</a></li>
+<li><a href="#H_Construction%20Geometry">Construction Geometry</a></li>
+<li><a href="#H_Degrees%20of%20Freedom">Degrees of Freedom</a></li>
+<li><a href="#H_Sketch%20Flipping">Sketch Flipping</a></li>
+<li><a href="#H_3D%20Feature%20Validity">3D Feature Validity</a></li>
+</ul>
+<li><a href="#H_Elements">Elements</a></li>
+<ul>
+<li><a href="#H_Point">Point</a></li>
+<li><a href="#H_Line">Line</a></li>
+<li><a href="#H_Rectangle">Rectangle</a></li>
+<li><a href="#H_Polygon">Polygon</a></li>
+<li><a href="#H_Circle%20Ellipse">Circle Ellipse</a></li>
+<li><a href="#H_Arc">Arc</a></li>
+<li><a href="#H_Polyline">Polyline</a></li>
+<li><a href="#H_Slot">Slot</a></li>
+<li><a href="#H_B-Spline">B-Spline</a></li>
+</ul>
+<li><a href="#H_Constraints">Constraints</a></li>
+<ul>
+<li><a href="#H_Distance%20Dimension">Distance Dimension</a></li>
+<li><a href="#H_Horizontal%20Dimension">Horizontal Dimension</a></li>
+<li><a href="#H_Vertical%20Dimension">Vertical Dimension</a></li>
+<li><a href="#H_Lock%20Position">Lock Position</a></li>
+<li><a href="#H_Radius%20Dimension">Radius Dimension</a></li>
+<li><a href="#H_Diameter%20Dimension">Diameter Dimension</a></li>
+<li><a href="#H_Angle%20Dimension">Angle Dimension</a></li>
+<li><a href="#H_Radius-Diameter%20Dimension">Radius-Diameter Dimension</a></li>
+<li><a href="#H_Dimension">Dimension</a></li>
+<li><a href="#H_Coincident">Coincident</a></li>
+<li><a href="#H_Horizontal">Horizontal</a></li>
+<li><a href="#H_Vertical">Vertical</a></li>
+<li><a href="#H_Horizontal-Vertical">Horizontal-Vertical</a></li>
+<li><a href="#H_Parallel">Parallel</a></li>
+<li><a href="#H_Perpendicular">Perpendicular</a></li>
+<li><a href="#H_Tangent-Colinear">Tangent-Colinear</a></li>
+<li><a href="#H_Equal%20Constraint">Equal Constraint</a></li>
+<li><a href="#H_Symmetric">Symmetric</a></li>
+<li><a href="#H_Block">Block</a></li>
+</ul>
+</ul>
 <li><a href="#H_Part%20Design%20Workbench">Part Design Workbench</a></li>
+<ul>
+<li><a href="#H4_User%20Interface">User Interface</a></li>
+<li><a href="#H_Body">Body</a></li>
+<li><a href="#H_Sketch">Sketch</a></li>
+<li><a href="#H_Pad%20%2F%20Pocket">Pad / Pocket</a></li>
+<li><a href="#H_Hole">Hole</a></li>
+<li><a href="#H_Revolution%20%2F%20Groove">Revolution / Groove</a></li>
+<li><a href="#H_Loft">Loft</a></li>
+<li><a href="#H_Pipe">Pipe</a></li>
+<li><a href="#H_Helix">Helix</a></li>
+<li><a href="#H_Primitives">Primitives</a></li>
+<li><a href="#H_Fillet%20%2F%20Chamfer">Fillet / Chamfer</a></li>
+<li><a href="#H_Draft">Draft</a></li>
+<li><a href="#H_Thickness">Thickness</a></li>
+<li><a href="#H_Boolean%20Operation">Boolean Operation</a></li>
+<li><a href="#H_Mirror">Mirror</a></li>
+<li><a href="#H_Linear%20Pattern%20%2F%20Polar%20Pattern">Linear Pattern / Polar Pattern</a></li>
+<li><a href="#H_Multi-Transform">Multi-Transform</a></li>
+</ul>
 <li><a href="#H_Variable%20Sets">Variable Sets</a></li>
 <li><a href="#H_Quality-of-life%20Settings">Quality-of-life Settings</a></li>
 </ul>
@@ -2193,14 +2266,14 @@
 <p>For <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s to be enabled, the filament being printed with must have <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s enabled in its filament settings: In the Prepare screen's sidebar, navigate to <strong>Project Filaments</strong>, then select the ellipsis for the desired filament and navigate to <strong>Filament</strong> → <strong>Filament <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a> settings</strong></p>
 <p><img src="bambu_studio_filament_scarf_seam_settings.png" alt="Bambu Studio filament scarf seam settings"></p>
 <ul>
-<li><strong><a href="#BM_(scarf%20seam)%2Fi">Scarf seam</a> type</strong>: Must be set to either <strong><a href="#BM_(contour)%2Fi">Contour</a></strong> or <strong><a href="#BM_(contour)%2Fi">Contour</a> and <a href="#BM_(%5Cbhole)%2Fi">Hole</a></strong> for <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s to be enabled.</li>
+<li><strong><a href="#BM_(scarf%20seam)%2Fi">Scarf seam</a> type</strong>: Must be set to either <strong><a href="#BM_(contours%3F)_BS%2Fi">Contour</a></strong> or <strong><a href="#BM_(contours%3F)_BS%2Fi">Contour</a> and <a href="#BM_(%5Cbholes%3F)_BS%2Fi">Hole</a></strong> for <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a>s to be enabled.</li>
 <li><strong>Scarf start height</strong>: Height at which the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> starts printing the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>, specified in mm or percentage of <a href="#BM_(layer%20height%7Cslice%20height%7Clayer's%20height%7Cslice's%20height%7Cheight%20of%20layer%7Cheight%20of%20slice)%2Fi">layer height</a>.</li>
 <li><strong>Scarf slope gap</strong>: <a href="#BM_(scarf%20seam)%2Fi">Scarf seam</a> cuts into the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a> to accommodate excess material, represented as a percentage of the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a> diameter multiplied by some internal constant.</li>
 <li><strong>Scarf length</strong>: Length of the <a href="#BM_(seam)%2Fi">seam</a>. Disabled if set to 0 or the option <strong>Scarf around the entire <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a></strong> is enabled in print parameters.</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Unsure what "<a href="#BM_(contour)%2Fi">Contour</a>" and "<a href="#BM_(contour)%2Fi">Contour</a> and <a href="#BM_(%5Cbhole)%2Fi">Hole</a>" refer to? It has something to do with https://wiki.bambulab.com/en/software/bambu-studio/xy-<a href="#BM_(%5Cbhole)%2Fi">hole</a>-<a href="#BM_(contour)%2Fi">contour</a>-compensation.</p>
+<p>Unsure what "<a href="#BM_(contours%3F)_BS%2Fi">Contour</a>" and "<a href="#BM_(contours%3F)_BS%2Fi">Contour</a> and <a href="#BM_(%5Cbholes%3F)_BS%2Fi">Hole</a>" refer to? See <a href="https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation">here</a>.</p>
 <p>Unsure what the slope gap parameter actually does? It leaves a gap in the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a> so the exterior <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> can bleed extra material into it?</p>
 <p>Scarf start height is the starting height that the <a href="#BM_(scarf%20seam)%2Fi">scarf seam</a> starts printing at, as shown in the following ASCII diagram.</p>
 <pre><code>-------------.  ,-----------
@@ -2258,15 +2331,15 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Infill)_TOPIC%2Fi">Bambu Studio/Object Infill</a></li>
 </ul>
 </div>
-<p>Fuzzy skin is a rough texture targeting the outside <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> of an object and potentially <a href="#BM_(%5Cbhole)%2Fi">hole</a>s within that object (just the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s, top and <a href="#BM_(bottom%20surface)%2Fi">bottom surface</a>s won't be textured). It does this by adding random jitters to <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> paths during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>. The purpose of fuzzy skin is two-fold: It's either aesthetic, or it's intended to make the printed object easier to grip, or both.</p>
+<p>Fuzzy skin is a rough texture targeting the outside <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> of an object and potentially <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a> within that object (just the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s, top and <a href="#BM_(bottom%20surface)%2Fi">bottom surface</a>s won't be textured). It does this by adding random jitters to <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a> paths during <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a>. The purpose of fuzzy skin is two-fold: It's either aesthetic, or it's intended to make the printed object easier to grip, or both.</p>
 <p><img src="bambu_studio_prepare_fuzzy_skin_example.png" alt="Bambu Studio Prepare screen fuzzy skin example"></p>
 <p>Fuzzy skin parameters are under <strong>Others</strong> → <strong>Special mode</strong>.</p>
 <p><img src="bambu_studio_prepare_fuzzy_skin_parameters.png" alt="Bambu Studio Prepare screen fuzzy skin parameters"></p>
 <p>To enable/disable fuzzy skin set the property <strong>Fuzzy skin</strong> to either ...</p>
 <ul>
-<li><strong><a href="#BM_(contour)%2Fi">Contour</a></strong>, which targets just the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on the outside perimeter.</li>
-<li><strong><a href="#BM_(contour)%2Fi">Contour</a> and <a href="#BM_(%5Cbhole)%2Fi">hole</a></strong>, which targets the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on both the outside perimeter and the perimeters of any <a href="#BM_(%5Cbhole)%2Fi">hole</a>s.</li>
-<li><strong>All <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s</strong>, which targets inner and <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on both the outside perimeter and the perimeters of any <a href="#BM_(%5Cbhole)%2Fi">hole</a>s (jitters <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a>s as well).</li>
+<li><strong><a href="#BM_(contours%3F)_BS%2Fi">Contour</a></strong>, which targets just the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on the outside perimeter.</li>
+<li><strong><a href="#BM_(contours%3F)_BS%2Fi">Contour</a> and <a href="#BM_(%5Cbholes%3F)_BS%2Fi">hole</a></strong>, which targets the <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on both the outside perimeter and the perimeters of any <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a>.</li>
+<li><strong>All <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s</strong>, which targets inner and <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">outer wall</a>s on both the outside perimeter and the perimeters of any <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a> (jitters <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">inner wall</a>s as well).</li>
 <li><strong>None(allow paint)</strong>, which targets specific <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s on the object to make fuzzy via the fuzzy skin paint tool. See subsection on fuzzy skin painting.</li>
 <li><strong>Disable</strong>, which disables fuzzy skin entirely.</li>
 </ul>
@@ -2403,7 +2476,7 @@
 <p>To place <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s automatically, use the <strong>Aut-generate points</strong> button. Where <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s get placed depends on ..</p>
 <ul>
 <li><strong>Max angle</strong>, which controls how sharp the angle must be for a <a href="#BM_(brim%20ear)%2Fi">brim ear</a> to be placed there (e.g., 90 degree will place <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s at perpendicular points on the bottom).</li>
-<li><strong>Detection radius</strong>, which controls how to many <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s are placed along <a href="#BM_(contour)%2Fi">contour</a>s (smaller value results in more <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s).</li>
+<li><strong>Detection radius</strong>, which controls how to many <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s are placed along <a href="#BM_(contours%3F)_BS%2Fi">contours</a> (smaller value results in more <a href="#BM_(brim%20ear)%2Fi">brim ear</a>s).</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -2611,18 +2684,18 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FObject%20Seam)_TOPIC%2Fi">Bambu Studio/Object Seam</a></li>
 </ul>
 </div>
-<p>Printed objects that require accurate fitting with other components (e.g., screws or other printed parts) sometimes don't fit they way they should because of variances introduced during printing. For <a href="#BM_(%5Cbhole)%2Fi">hole</a>s and <a href="#BM_(contour)%2Fi">contour</a>s running <em>running down the Z-axis</em>, <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> provides calibration steps to compensate for these variances:</p>
+<p>Printed objects that require accurate fitting with other components (e.g., screws or other printed parts) sometimes don't fit they way they should because of variances introduced during printing. For <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a> and <a href="#BM_(contours%3F)_BS%2Fi">contours</a> running <em>running down the Z-axis</em>, <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a> provides calibration steps to compensate for these variances:</p>
 <p><img src="bambu_studio_prepare_contour_hole_example.png" alt="Bambu Studio Prepare screen contour hole example"></p>
 <ul>
 <li>
-<p><strong><a href="#BM_(contour)%2Fi">Contour</a></strong> - The outer perimeter of the object as printed up the Z-axis (collective outer perimeters of the <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s that make up the printed object). The example above is the object of a salad bowl. The shape of the unhollowed out bowl is the <a href="#BM_(contour)%2Fi">contour</a>.</p>
+<p><strong><a href="#BM_(contours%3F)_BS%2Fi">Contour</a></strong> - The outer perimeter of the object as printed up the Z-axis (collective outer perimeters of the <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s that make up the printed object). The example above is the object of a salad bowl. The shape of the unhollowed out bowl is the <a href="#BM_(contours%3F)_BS%2Fi">contour</a>.</p>
 </li>
 <li>
-<p><strong><a href="#BM_(%5Cbhole)%2Fi">Hole</a></strong> - The perimeter of a void/cavity within an object as printed up the Z-axis. The example above is the object of a salad bowl. The shape of the hollow/indent in bowl is considered a <a href="#BM_(%5Cbhole)%2Fi">hole</a>.</p>
-<p>An object may have multiple <a href="#BM_(%5Cbhole)%2Fi">hole</a>s. Types of common <a href="#BM_(%5Cbhole)%2Fi">hole</a>s include threaded <a href="#BM_(%5Cbhole)%2Fi">hole</a>s for screws / bolts, drainage <a href="#BM_(%5Cbhole)%2Fi">hole</a>s, and <a href="#BM_(%5Cbhole)%2Fi">hole</a>s for connectors (e.g., dowels).</p>
+<p><strong><a href="#BM_(%5Cbholes%3F)_BS%2Fi">Hole</a></strong> - The perimeter of a void/cavity within an object as printed up the Z-axis. The example above is the object of a salad bowl. The shape of the hollow/indent in bowl is considered a <a href="#BM_(%5Cbholes%3F)_BS%2Fi">hole</a>.</p>
+<p>An object may have multiple <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a>. Types of common <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a> include threaded <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a> for screws / bolts, drainage <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a>, and <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a> for connectors (e.g., dowels).</p>
 </li>
 </ul>
-<p>The process involves printing a test object and either using calipers or a standard screw to determine how far off the <a href="#BM_(%5Cbhole)%2Fi">hole</a>/<a href="#BM_(contour)%2Fi">contour</a> is from its intended baseline. That value can then be inserted into an object's properties under <strong>Quality</strong> → <strong>Precision</strong> → <strong>X-Y <a href="#BM_(%5Cbhole)%2Fi">hole</a> compensation</strong> and <strong>X-Y <a href="#BM_(contour)%2Fi">contour</a> compensation</strong>.</p>
+<p>The process involves printing a test object and either using calipers or a standard screw to determine how far off the <a href="#BM_(%5Cbholes%3F)_BS%2Fi">hole</a>/<a href="#BM_(contours%3F)_BS%2Fi">contour</a> is from its intended baseline. That value can then be inserted into an object's properties under <strong>Quality</strong> → <strong>Precision</strong> → <strong>X-Y hole compensation</strong> and <strong>X-Y contour compensation</strong>.</p>
 <p><img src="bambu_studio_prepare_hole_and_contour_compensation_properties.png" alt="Bambu Studio Prepare screen hole and contour compensation properties"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
@@ -2630,16 +2703,16 @@
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Remember that <a href="#BM_(%5Cbhole)%2Fi">hole</a>s and <a href="#BM_(contour)%2Fi">contour</a>s on the z-axis are <a href="#BM_(%5Cbhole)%2Fi">hole</a>s that are compensated for using XY <a href="#BM_(%5Cbhole)%2Fi">hole</a> <a href="#BM_(contour)%2Fi">contour</a> compensation. It does not compensate for sideway <a href="#BM_(%5Cbhole)%2Fi">hole</a>s.</p>
+<p>Remember that <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a> and <a href="#BM_(contours%3F)_BS%2Fi">contours</a> on the z-axis are <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a> that are compensated for using XY <a href="#BM_(%5Cbholes%3F)_BS%2Fi">hole</a> <a href="#BM_(contours%3F)_BS%2Fi">contour</a> compensation. It does not compensate for sideway holes.</p>
 </div>
-<p><a href="#BM_(%5Cbhole)%2Fi">Hole</a> / <a href="#BM_(contour)%2Fi">contour</a> compensation may be needed because ...</p>
+<p><a href="#BM_(%5Cbholes%3F)_BS%2Fi">Hole</a> / <a href="#BM_(contours%3F)_BS%2Fi">contour</a> compensation may be needed because ...</p>
 <ul>
-<li>the <a href="#BM_(seam)%2Fi">seam</a> throws off <a href="#BM_(%5Cbhole)%2Fi">hole</a> precisions.</li>
+<li>the <a href="#BM_(seam)%2Fi">seam</a> throws off <a href="#BM_(%5Cbholes%3F)_BS%2Fi">hole</a> precisions.</li>
 <li>the filament material may shrink as it cools.</li>
 <li>the filament material may have absorbed moisture, causing inconsistent extrusion.</li>
-<li>first <a href="#BM_(layer%7Cslice)%2Fi">layer</a> may have been squished (<a href="#BM_(elephant%20foot)%2Fi">elephant foot</a>), distorting <a href="#BM_(%5Cbhole)%2Fi">hole</a>s in that <a href="#BM_(layer%7Cslice)%2Fi">layer</a>.</li>
-<li>the <a href="#BM_(%5Cbhole)%2Fi">hole</a> may be too small to accurately print - <a href="#BM_(%5Cbhole)%2Fi">hole</a>s with diameter close to the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s size / <a href="#BM_(%5Cbhole)%2Fi">hole</a>s below 1mm.</li>
-<li>the <a href="#BM_(%5Cbhole)%2Fi">hole</a> may be fine, but may need to be chamfered (tapered lead-in) to accommodate the fastener.</li>
+<li>first <a href="#BM_(layer%7Cslice)%2Fi">layer</a> may have been squished (<a href="#BM_(elephant%20foot)%2Fi">elephant foot</a>), distorting <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a> in that <a href="#BM_(layer%7Cslice)%2Fi">layer</a>.</li>
+<li>the <a href="#BM_(%5Cbholes%3F)_BS%2Fi">hole</a> may be too small to accurately print - <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a> with diameter close to the <a href="#BM_(hotend%7Cnozzle%7Csilicone%20sock%7Cheat%20sink%7Ccold%20end%7Csilicone%20sock%7Cheating%20assembly)%2Fi">nozzle</a>'s size / <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a> below 1mm.</li>
+<li>the <a href="#BM_(%5Cbholes%3F)_BS%2Fi">hole</a> may be fine, but may need to be chamfered (tapered lead-in) to accommodate the fastener.</li>
 <li>flow dynamics may need to be tuned.</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -2675,7 +2748,7 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FFailure%20Modes%2FXY%20Hole%20and%20Contour%20Fit)_TOPIC%2Fi">Bambu Studio/Failure Modes/XY Hole and Contour Fit</a></li>
 </ul>
 </div>
-<p>By default, <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> removes or distorts areas of a <a href="#BM_(contour)%2Fi">contour</a> / <a href="#BM_(%5Cbhole)%2Fi">hole</a> where the shape is a thin stretch, pin extrusion, or sharply acute corner. That is, if there are two points on the shape's outline with a distance less than the <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a>, it wouldn't be able to reliably print and so the <a href="#BM_(slicer)%2Fi">slicer</a> attempts to work around the "thinness" by distorting or removing it. Real world examples where this might be encountered include models containing of fan blades, thin tubes, line art, and small text.</p>
+<p>By default, <a href="#BM_(slicing%7Csliced)%2Fi">slicing</a> removes or distorts areas of a <a href="#BM_(contours%3F)_BS%2Fi">contour</a> / <a href="#BM_(%5Cbholes%3F)_BS%2Fi">hole</a> where the shape is a thin stretch, pin extrusion, or sharply acute corner. That is, if there are two points on the shape's outline with a distance less than the <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a>, it wouldn't be able to reliably print and so the <a href="#BM_(slicer)%2Fi">slicer</a> attempts to work around the "thinness" by distorting or removing it. Real world examples where this might be encountered include models containing of fan blades, thin tubes, line art, and small text.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>These areas are colloquially referred to as thin walls (not to be confused for a printed object's <a href="#BM_(wall%7Cinner%20wall%7Couter%20wall)%2Fi">wall</a>s), because the problematic shape often (but not always) resembles a thin wall-like structure.</p>
@@ -2715,7 +2788,7 @@
 <li><a href="#BM_(Bambu%20Studio%5C%2FLayer%20Height)_TOPIC%2Fi">Bambu Studio/Layer Height</a></li>
 </ul>
 </div>
-<p>Objects with a <a href="#BM_(contour)%2Fi">contour</a>s / <a href="#BM_(%5Cbhole)%2Fi">hole</a>s that curve on the Z-axis (e.g., sphere and donut) experience a type of artifacting called stair-stepping, where as the curve's slope aggressively becomes more and more horizontal, overtly visible steps appear between neighboring <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s.</p>
+<p>Objects with a <a href="#BM_(contours%3F)_BS%2Fi">contours</a> / <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a> that curve on the Z-axis (e.g., sphere and donut) experience a type of artifacting called stair-stepping, where as the curve's slope aggressively becomes more and more horizontal, overtly visible steps appear between neighboring <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p>This is sometimes called Z-axis aliasing?</p>
@@ -2974,25 +3047,25 @@
 <p>If something is missing from your toolbar, navigate to <strong>View</strong> → <strong>Toolbars</strong> and enable as needed.</p>
 </div>
 <p><strong>Viewport</strong></p>
-<ol start="6">
+<ul>
 <li>
-<p>Viewport: The space in which work in performed. The viewport typically renders and allows control of geometry (e.g., 3D primitives, 2D sketches, and technical drawings). For some workbenches, the viewport displays something different than geometry (e.g., spreadsheet).</p>
+<p>(6) Viewport: The space in which work in performed. The viewport typically renders and allows control of geometry (e.g., 3D primitives, 2D sketches, and technical drawings). For some workbenches, the viewport displays something different than geometry (e.g., spreadsheet).</p>
 </li>
 <li>
-<p>Navigation cube: When working in 3D, there will be a navigation cube (located in the viewport's top right in the example) that reduces the burden rotating and reorienting viewing angles, as well as changing perspectives. Clicking the various faces of the cube as well as the surrounding icons reorient the camera and change perspective.</p>
+<p>(11) Navigation cube: When working in 3D, there will be a navigation cube (located in the viewport's top right in the example) that reduces the burden rotating and reorienting viewing angles, as well as changing perspectives. Clicking the various faces of the cube as well as the surrounding icons reorient the camera and change perspective.</p>
 </li>
 <li>
-<p>Axis orientation: When working in 3D, the basis axes will be displayed from the current camera's orientation (located in the viewport's button right in the example).</p>
+<p>(12) Axis orientation: When working in 3D, the basis axes will be displayed from the current camera's orientation (located in the viewport's button right in the example).</p>
 </li>
 <li>
-<p>3D viewport boundaries / spatial unit selection: When the viewport is viewing geometry, this dropdown can be used to change the units of measurement used (e.g., metric to imperial). It also displays the bounds of the viewport in those units of measurement.</p>
+<p>(10) 3D viewport boundaries / spatial unit selection: When the viewport is viewing geometry, this dropdown can be used to change the units of measurement used (e.g., metric to imperial). It also displays the bounds of the viewport in those units of measurement.</p>
 </li>
 <li>
-<p>3D viewport mouse controls: When working in 3D, the mouse controls can be changed to different presets using this dropdown (e.g., Blender style mouse controls vs mouse controls optimized for a trackpad).</p>
+<p>(9) 3D viewport mouse controls: When working in 3D, the mouse controls can be changed to different presets using this dropdown (e.g., Blender style mouse controls vs mouse controls optimized for a trackpad).</p>
 <p>Hovering over the dropdown displays how mouse controls for the currently selected configuration (e.g., what right-click does).</p>
 </li>
 <li>
-<p>3D viewport helpers: When working in 3D, these toolbar buttons provide quick tools to adjust and reorient the view. From left-to-right, ...</p>
+<p>(3) 3D viewport helpers: When working in 3D, these toolbar buttons provide quick tools to adjust and reorient the view. From left-to-right, ...</p>
 <ul>
 <li>zoom viewport in to all geometry.</li>
 <li>zoom viewport in to selected geometry.</li>
@@ -3004,24 +3077,24 @@
 <li>launch measurement tool (e.g., measure area of selected faces or measure distance between two points).</li>
 </ul>
 </li>
-</ol>
+</ul>
 <p><strong>Document hierarchy / operations</strong></p>
-<ol start="4">
+<ul>
 <li>
-<p>Model pane: List of open documents, as well as the hierarchy of each open document. In the example, the document Test3 has a part design body with a sketch in it.</p>
+<p>(4) Model pane: List of open documents, as well as the hierarchy of each open document. In the example, the document Test3 has a part design body with a sketch in it.</p>
 </li>
 <li>
-<p>Properties pane: For the selected items, this pane lists the properties for those items. If the item is selected within a 3D viewport, the <em>Data</em> tab below shows the physical properties (e.g., what it is) while the <em>View</em> tab below shows the visual properties (e.g., how its rendered).</p>
+<p>(5) Properties pane: For the selected items, this pane lists the properties for those items. If the item is selected within a 3D viewport, the <em>Data</em> tab below shows the physical properties (e.g., what it is) while the <em>View</em> tab below shows the visual properties (e.g., how its rendered).</p>
 <p>Note that properties are not limited to what's selected in the viewport. When an item in the model pane is selected, it has its properties show up.</p>
 </li>
 <li>
-<p>Workspace tabs: Tabs to switch between workspaces.</p>
+<p>(7) Workspace tabs: Tabs to switch between workspaces.</p>
 </li>
-</ol>
+</ul>
 <p><strong>Basic operations</strong></p>
-<ol>
+<ul>
 <li>
-<p>Basic commands: These toolbar buttons give quick access to common operations. From left-to-right, ...</p>
+<p>(1) Basic commands: These toolbar buttons give quick access to common operations. From left-to-right, ...</p>
 <ul>
 <li>new document.</li>
 <li>open document.</li>
@@ -3032,21 +3105,22 @@
 </ul>
 </li>
 <li>
-<p>Workbench switcher: Drop-down that switches between workbenches.</p>
+<p>(2) Workbench switcher: Drop-down that switches between workbenches.</p>
 </li>
 <li>
-<p>Diagnostic messages: Pop-out that displays log messages. The number displayed is the number of unread diagnostics messages.</p>
+<p>(8) Diagnostic messages: Pop-out that displays log messages. The number displayed is the number of unread diagnostics messages.</p>
 </li>
-</ol>
+</ul>
+<p><sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
 <a name="H_Spreadsheet%20Workbench"></a><h2>Spreadsheet Workbench</h2>
 <p><a name="BM_(FreeCAD%5C%2FSpreadsheet%20Workbench)_TOPIC%2Fi"></a><strong></strong></p>
-<p>FreeCAD has a built-in spreadsheet engine, accessible through the spreadsheet workbench. A spreadsheet is typically used to store parameters and run formulas, which then go on to be used as the parameters of geometry and other properties of an object. It can also go the other way, pulling data out of a model into a spreadsheet.</p>
+<p>FreeCAD has a built-in spreadsheet and expression engine, accessible through the spreadsheet workbench. A spreadsheet is typically used to store parameters and run formulas, which then go on to be used as the parameters of geometry and other properties of an object. It can also go the other way, pulling data out of a model into a spreadsheet.</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The subsections below assume the reader has prior experience with other spreadsheet engines (e.g., Excel).</p>
+<p>The entire section assumes the reader has prior experience with other spreadsheet engines (e.g., Excel).</p>
 </div>
-<a name="H1_User%20Interface%20Layout"></a><h3>User Interface Layout</h3>
-<p><a name="BM_(FreeCAD%5C%2FSpreadsheet%20Workbench%2FUser%20Interface%20Layout)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H2_User%20Interface"></a><h3>User Interface</h3>
+<p><a name="BM_(FreeCAD%5C%2FSpreadsheet%20Workbench%2FUser%20Interface)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
@@ -3055,43 +3129,43 @@
 </div>
 <p><img src="freecad_spreadsheet_ui_layout.png" alt="FreeCAD spreadsheet UI layout"></p>
 <p><strong>Basic operations</strong></p>
-<ol>
+<ul>
 <li>
-<p>Basic commands: These toolbar buttons give quick access to common operations. From left-to-right, ...</p>
+<p>(1) Basic commands: These toolbar buttons give quick access to common operations. From left-to-right, ...</p>
 <ul>
 <li>new spreadsheet.</li>
 <li>import CSV as new spreadsheet.</li>
 <li>export spreadsheet to CSV.</li>
 </ul>
 </li>
-</ol>
+</ul>
 <p><strong>Viewport</strong></p>
-<ol start="10">
+<ul>
 <li>
-<p>Spreadsheet: A matrix of cells, identified by column letter and row number (e.g., C3).</p>
+<p>(10) Spreadsheet: A matrix of cells, identified by column letter and row number (e.g., C3).</p>
 <p>Type while a cell is selected to set that cell's contents. Right click on a row/column to add or remove rows/columns.</p>
 </li>
 <li>
-<p>Cell alias textfield: This field shows and sets the alias for the selected cell, similar to pressing the cell alias button in the toolbar. When referencing a cell, the alias can be used as a friendly name.</p>
+<p>(9) Cell alias textfield: This field shows and sets the alias for the selected cell, similar to pressing the cell alias button in the toolbar. When referencing a cell, the alias can be used as a friendly name.</p>
 </li>
 <li>
-<p>Cell content: This field shows and sets the content of the cell, which may be a formula or a literal.</p>
+<p>(8) Cell content: This field shows and sets the content of the cell, which may be a formula or a literal.</p>
 </li>
 <li>
-<p>Zoom slider: This slider and accompanying drop-down are used to zoom in / out of the spreadsheet.</p>
+<p>(7) Zoom slider: This slider and accompanying drop-down are used to zoom in / out of the spreadsheet.</p>
 </li>
-</ol>
+</ul>
 <p><strong>Cell operations and properties</strong></p>
-<ol start="2">
+<ul>
 <li>
-<p>Cell merge/split: These toolbar buttons merge and split cells. From left-to-right, ...</p>
+<p>(2) Cell merge/split: These toolbar buttons merge and split cells. From left-to-right, ...</p>
 <ul>
 <li>merge selected cells into a single cell.</li>
 <li>split a merged cell back out to its original individual cells.</li>
 </ul>
 </li>
 <li>
-<p>Text alignment: These toolbar buttons align text in a cell. From left-to-right, ...</p>
+<p>(3) Text alignment: These toolbar buttons align text in a cell. From left-to-right, ...</p>
 <ul>
 <li>align left.</li>
 <li>align horizontal center.</li>
@@ -3102,7 +3176,7 @@
 </ul>
 </li>
 <li>
-<p>Text style: These toolbar buttons stylize the text in a cell. From left-to-right, ...</p>
+<p>(4) Text style: These toolbar buttons stylize the text in a cell. From left-to-right, ...</p>
 <ul>
 <li>bold.</li>
 <li>italic.</li>
@@ -3110,19 +3184,25 @@
 </ul>
 </li>
 <li>
-<p>Cell colors: These toolbar buttons set the colors within a cell. From left-to-right, ...</p>
+<p>(6) Cell colors: These toolbar buttons set the colors within a cell. From left-to-right, ...</p>
 <ul>
 <li>text color.</li>
 <li>background color.</li>
 </ul>
 </li>
 <li>
-<p>Cell alias button: This toolbar option launches a dialog to set an alias for the selected cell. When referencing a cell, the alias can be used as a friendly name.</p>
+<p>(5) Cell alias button: This toolbar option launches a dialog to set an alias for the selected cell. When referencing a cell, the alias can be used as a friendly name.</p>
 </li>
-</ol>
+</ul>
 <p><sub><a href="https://wiki.freecad.org/Spreadsheet_Workbench">[src]</a></sub></p>
 <a name="H_Cell%20Types"></a><h3>Cell Types</h3>
 <p><a name="BM_(FreeCAD%5C%2FSpreadsheet%20Workbench%2FCell%20Types)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSpreadsheet%20Workbench%2FUser%20Interface)_TOPIC%2Fi">FreeCAD/Spreadsheet Workbench/User Interface</a></li>
+</ul>
+</div>
 <p>A cell's contents may be ...</p>
 <ul>
 <li>a numeric literal: Identified when the cell contains nothing but a fractional</li>
@@ -3899,8 +3979,1398 @@
 </table>
 <a name="H_Sketcher%20Workbench"></a><h2>Sketcher Workbench</h2>
 <p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench)_TOPIC%2Fi"></a><strong></strong></p>
+<p>Sketcher workbench allows creating 2D sketches. These 2D sketches typically go on to by used by other workbenches (e.g., they define the outline of some 3D feature in the creation of models via the part design workbench).</p>
+<p>Sketcher workbench has the following core primitives:</p>
+<ul>
+<li>Element: 2D geometric primitive (e.g., point, line, arc, and spline)</li>
+<li>Constraint: Definition of an element's measurement, either directly (e.g., 5mm radius for an arc) or as a relationship (e.g., line 1 must be perpendicular to line 2).</li>
+</ul>
+<p>In the screenshot below, the red geometry is are visualizations of constraints (e.g., angle and radius), while the white lines are the geometric primitives those red lines apply to (e.g., arc).</p>
+<p><img src="freecad_sketcher_simple_arc_sketch.png" alt="FreeCAD sketcher workbench simple arc sketch"></p>
+<p>There are different element types (e.g., construction geometry projected geometry) and different constraint types (e.g., reference constraints, driving constraints). These are documented in the subsections below.</p>
+<a name="H3_User%20Interface"></a><h3>User Interface</h3>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FUser%20Interface)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FUser%20Interface%20Layout)_TOPIC%2Fi">FreeCAD/User Interface Layout</a></li>
+</ul>
+</div>
+<p><img src="freecad_sketcher_ui_layout.png" alt="FreeCAD sketcher workbench UI layout"></p>
+<p>The Sketcher workbench has two modes: Editing a sketch or viewing a sketch. The toolbar buttons change depending on the mode. The UI layout shown in the screenshot above is when editing a sketch, which is the mode that users will spend most of their time in.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The behavior of many of the UI elements highlighted above / documented below changes based on the state of the application. For example, ...</p>
+<ul>
+<li>if there are elements selected when the construction geometry button (3) is clicked, it'll turn those element into construction geometry.</li>
+<li>if there aren't element selected when the construction geometry button (3) is clicked, all newly created elements (any button in 2) will be construction geometry until the construction geometry button is clicked again.</li>
+</ul>
+<p>These nuances aren't captured here, but in sections later on. This is just a basic accounting of the UI elements.</p>
+</div>
+<p><strong>General Commands</strong></p>
+<ul>
+<li>
+<p>(1) General commands: These toolbar buttons give quick access to common operations. When not editing a sketch, the general commands are as follows:</p>
+<p><img src="freecad_sketcher_ui_general_toolbar_outside_sketch.png" alt="FreeCAD sketcher workbench general toolbar when outside of sketch"></p>
+<p>From left-to-right, ...</p>
+<ul>
+<li>new sketch: Creates a new sketch object in the model pane.</li>
+<li>edit sketch: Enters the currently select sketch object in the model pane.</li>
+<li>attach sketch: Attach sketch to an piece of 3D geometry (e.g., face on a model).</li>
+<li>reorient sketch: Attach sketch to an origin plane (e.g., XY plane).</li>
+<li>validate sketch: Opens a pane to validate different aspects of the sketch (e.g., invalid constraints).</li>
+<li>merge sketches: Merge the sketches selected in the model pane.</li>
+<li>mirror sketch: Mirror the sketch selected in the model pane.</li>
+</ul>
+<p>When editing a sketch, the general commands are as follows:</p>
+<p><img src="freecad_sketcher_ui_general_toolbar_inside_sketch.png" alt="FreeCAD sketcher workbench general toolbar when inside of sketch"></p>
+<p>From left-to-right, ...</p>
+<ul>
+<li>leave sketch: Stop editing sketch.</li>
+<li>align view to sketch: Reorients camera such that it faces towards the sketch.</li>
+<li>toggle section view: Temporarily cut through and hide geometry that occludes a sketch (e.g., when the camera is aligned to the sketch, it may be occluded by currently visible 3D objects).</li>
+</ul>
+</li>
+<li>
+<p>(13) Leave sketch.</p>
+</li>
+</ul>
+<p><strong>Elements and Constraints</strong></p>
+<ul>
+<li>
+<p>(3) Construction geometry toggle.</p>
+</li>
+<li>
+<p>(2) Create elements: These toolbar buttons give quick access to create elements. From left-to-right, ...</p>
+<ul>
+<li>create point.</li>
+<li>create polyline.</li>
+<li>create line.</li>
+<li>create arcs of varying types and parameterizations (e.g., circular arc defined via 3 points, and circular arc defined via radius and angle, and elliptical arc).</li>
+<li>create circle / ellipse using varying parameterizations (e.g., defined via 3 points, and defined via radius and angle)</li>
+<li>create rectangles of varying types and parameterizations (e.g., rectangle defined via center and dimensions, e.g., rectangle define via top-left and bottom-right, and rounded rectangle).</li>
+<li>create polygon with varying number of sides.</li>
+<li>create slot of varying types.</li>
+<li>create b-spline of varying types and parameterizations.</li>
+</ul>
+</li>
+<li>
+<p>(5) Constraints toggle: These toolbar buttons disable constraints or keep them enabled but render them unenforced (referred to as reference constraints).</p>
+</li>
+<li>
+<p>(4) Constraints: These toolbar buttons give quick access to create constraints. From left-to-right, ...</p>
+<ul>
+<li>create dimensional constraints of varying types (e.g., distance, radius, and angle)</li>
+<li>create coincident constraint.</li>
+<li>create parallel to basis axis constraint (e.g., force line to be horizontal or vertical).</li>
+<li>create parallel constraint (e.g., lines 1 and 2 must be parallel).</li>
+<li>create perpendicular constraint (e.g., lines 1 and 2 must be perpendicular).</li>
+<li>create tangent constraint (e.g., line and endpoint of arc must be tangent).</li>
+<li>create distance equality constraint (e.g., line 1 and 2 must be the same distance).</li>
+<li>create symmetry constraint (e.g., points 1 and 2 must be symmetrical across line 1).</li>
+<li>create block constraint.</li>
+</ul>
+</li>
+<li>
+<p>(7) Selection helpers: These toolbar buttons give quick access to select elements / constraints associated with the current selection. From left-to-right, ...</p>
+<ul>
+<li>select constraints associated with selection.</li>
+<li>select elements associated with selection.</li>
+</ul>
+</li>
+<li>
+<p>(8) Arc circular helper toggle: Toggles the visibility of the underlying circle / ellipse for circular arcs.</p>
+</li>
+<li>
+<p>(10) Internal geometry toggle: Toggles the visibility of the internal geometry for certain element types (e.g., ellipse arc).</p>
+</li>
+<li>
+<p>(11) Switch virtual space.</p>
+</li>
+</ul>
+<p><strong>B-Splines</strong></p>
+<ul>
+<li>
+<p>(6) B-spline tools: These toolbar buttons give quick access to b-spline helpers and tools. From left-to-right, ...</p>
+<ul>
+<li>geometry to b-spline.</li>
+<li>increase b-spline degree.</li>
+<li>decrease b-spline degree.</li>
+<li>increase knot multiplicity.</li>
+<li>decrease knot multiplicity.</li>
+<li>insert knot.</li>
+<li>join b-spline curves.</li>
+</ul>
+</li>
+<li>
+<p>(9) B-spline informational toggles: These toolbar buttons give quick access to toggle on/off information displayed for b-splines. From left-to-right, ...</p>
+<ul>
+<li>b-spline degree visibility toggle.</li>
+<li>b-spline control polygon visibility toggle.</li>
+<li>b-spline curvature comb visibility toggle.</li>
+<li>b-spline knot multiplicity visibility toggle.</li>
+<li>b-splint control point weight visibility toggle.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Tools</strong></p>
+<ul>
+<li>
+<p>(12) Tools: These toolbar buttons give quick access to various sketching tools. From left-to-right, ...</p>
+<ul>
+<li>fillet / chamfer.</li>
+<li>trim, split, or extend edges.</li>
+<li>project from external geometry (e.g., pull in an edge from an external model into the sketch) or project intersected external geometry (e.g., pull in an edge from a model face that intersects the sketch plane).</li>
+</ul>
+</li>
+</ul>
+<p><strong>Panels</strong></p>
+<ul>
+<li>
+<p>(13) Constraints pane: This pane lists, allows selection, and allows configuration of constraints, mirroring whatever is selected in the viewport.</p>
+</li>
+<li>
+<p>(14) Elements pane: This pane lists, allows selection, and allows configuration of elements, mirroring whatever is selected in the viewport.</p>
+</li>
+</ul>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_Workbench">[src]</a></sub></p>
+<a name="H_Sketching"></a><h3>Sketching</h3>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FUser%20Interface)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/User Interface</a></li>
+</ul>
+</div>
+<p>Sketching involves creating elements, constraining them, and deleting them. The sketch below is a non-trivial set of elements chained together using constraints.</p>
+<p><img src="freecad_sketcher_example.png" alt="FreeCAD sketcher workbench example"></p>
+<p>The subsections below document these basic concepts.</p>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_Workbench">[src]</a></sub></p>
+<a name="H_Creation"></a><h4>Creation</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi"></a><strong></strong></p>
+<p><img src="freecad_sketcher_elements_and_constraints_toolbar.png" alt="FreeCAD sketcher workbench elements and constraints toolbar"></p>
+<p>To create an element, select the element from the toolbar (or the main menu, or use the element's shortcut key) and click on the viewport multiple times. For most elements, on the first click the viewport should show that the item is being created, and the movement of the mouse button and subsequent clicks further constructs the element. For example, to add a line, select the line in the toolbar, click in the viewport, and slightly move the mouse. The line's preview will display.</p>
+<p><img src="freecad_sketcher_line_preview.png" alt="FreeCAD sketcher workbench line preview"></p>
+<p>A subsequent click will be complete adding the line.</p>
+<p><img src="freecad_sketcher_line_complete.png" alt="FreeCAD sketcher workbench line complete"></p>
+<p>In the preview, there are two textboxes, one that specifies a distance and one that specifies an angle. These are referred to as On-View-Parameters, and they're available for certain elements, When in preview, pressing Tab will cycle into these textboxes, where a value may be entered followed by pressing Enter. Using them adds constraints to line. For example, if used for the line above, a constraint is added for the line's length and another constraint is added for the line's angle from the horizontal axis.</p>
+<p><img src="freecad_sketcher_line_complete_constrained.png" alt="FreeCAD sketcher workbench line complete constrained"></p>
+<p>Alternatively, an element can have constraints added to it by selecting the relevant portions of an element and clicking an applicable constraint. For example, the line can have the exact same constraints applied by ...</p>
+<ul>
+<li>selecting the line, then selecting distance dimension constraint in the toolbar.</li>
+<li>selecting the line and the horizontal access, then selecting the angle dimension constraint in the toolbar.</li>
+</ul>
+<p><img src="freecad_sketcher_line_complete_constrained_toolbar_constraints.png" alt="FreeCAD sketcher workbench line complete constrained toolbar constraints"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FSelection)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Selection</a></li>
+</ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There are multiple ways to apply constraints, discussed in each constraint's source. For example, instead of first selecting the line and then choosing the distance dimension constraint, you can first make sure nothing is selected, then click the distance dimension constraint, then click the line.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_Workbench">[src]</a></sub></p>
+<a name="H_Continue%20Mode"></a><h5>Continue Mode</h5>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation%2FContinue%20Mode)_TOPIC%2Fi"></a><strong></strong></p>
+<p>Continue mode allows element / constraint creation to continue after an element / constraint is created, allowing multiple such elements / constraints to be created many times over. The creation tool remains active until the user hits Esc or selects some other tool from the toolbar. For example, after selecting the line element from the toolbar and creating a line on the sketch, more lines can be created on the sketch without having to click the line element again in the toolbar.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Pressing Esc if no tool is active will exit sketch edit mode. This can be turned off in preferences if inadvertently pressing Esc too many times.</p>
+</div>
+<p>Continue mode can be turned off in preferences (on by default).</p>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_Workbench">[src]</a></sub></p>
+<a name="H_On-View-Parameters"></a><h5>On-View-Parameters</h5>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation%2FOn-View-Parameters)_TOPIC%2Fi"></a><strong></strong></p>
+<p>For certain element creation tools, On-View-Parameters allows explicitly adding constraints during the creation process by presenting textboxes alongside the element's preview. For example, dropping a line will show a textbox for length constraint and a textbox for angle constraint. Pressing tab cycles through these textboxes, while pressing enter adds the constraints.</p>
+<p>Continue mode can be turned off and configured in preferences (on by default).</p>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_Workbench">[src]</a></sub></p>
+<a name="H_Auto%20Constraints"></a><h5>Auto Constraints</h5>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation%2FAuto%20Constraints)_TOPIC%2Fi"></a><strong></strong></p>
+<p>When creating an element, if the placement of some part of that element ends on an existing element, an auto constraint may be applied. An auto constraint is a constraint that's automatically added by virtue of how the elements end up together. For example, if the end of a line ends up on the start of a line, auto constraint will add a constraint known as coincident constraint which bounds those two points together.</p>
+<p>When an auto constraint is to be applied, the icon of the constraint is shown on the lower right of the icon of the element being created.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>I can't do a screenshot of this because flameshot won't capture the mouse cursor, but just imagine that you're creating a line. The mouse cursor will have the icon of the line creation icon (same as the toolbar) next to it. As you're putting down the line, when you get close to the existing line's point, a second smaller icon showing the constraint to be added show up to the right of the line creation icon. That second smaller icon is the coincident constraint icon.</p>
+</div>
+<p>Auto constraints is enabled/disabled per sketch, not globally. To change, update in the constraints pane or the sketch's view Autoconstraints property.</p>
+<p><img src="freecad_sketcher_auto_constraints_toggle.png" alt="FreeCAD sketcher workbench auto constraints toggle"></p>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_Workbench">[src]</a></sub></p>
+<a name="H_Selection"></a><h4>Selection</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FSelection)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Creation</a></li>
+</ul>
+</div>
+<p>Elements and constraints can be selected in any of the following ways:</p>
+<ul>
+<li>
+<p><strong>Single selection</strong>: Left-clicking an element or constraint toggles whether its selected.</p>
+<p>Previously selected elements are not discarded on single select. While it isn't necessary to hold Ctrl while selecting multiple elements, it is beneficial in that a mis-click into empty space won't deselect everything.</p>
+</li>
+<li>
+<p><strong>Box selection</strong>: Left-clicking an empty area and dragging draws a selection rectangle, selecting elements within the rectangle (not constraints, only selections). Depending on the direction of the drag, the selection behavior changes. If the box dragging is from ...</p>
+<ul>
+<li>left to right, elements that lie completely inside the rectangle are selected.</li>
+<li>right to left, elements that touch or cross the rectangle are selected.</li>
+</ul>
+<p>Previously selected elements are not discarded on box select.</p>
+</li>
+<li>
+<p><strong>Connection selection</strong>: Double-clicking an edge selects all edges directly and indirectly connected to it via endpoints. Endpoints only need to have the same coordinates (no need endpoints to be connected via constraints - e.g.,coincident constraints).</p>
+<p>Previously selected elements are not discarded on connection select.</p>
+</li>
+<li>
+<p><strong>Element / Constraints pane</strong>: Constraints and the individual components of each element (e.g., a line elements's endpoint and actual line) are selectable via the constraints pane and elements pane, respectively. The elements pane lists the elements component next to the element, which can be individually clicked (e.g., select 2-Line's first endpoint).</p>
+<p><img src="freecad_sketcher_elements_and_constraints.png" alt="FreeCAD sketcher workbench elements and constrains pane"></p>
+<p>Previously selected elements <em>are</em> discarded on connection select.</p>
+</li>
+<li>
+<p><strong>Select all</strong>: To select everything within a sketch, use Ctrl+A or navigate to <strong>Edit</strong> → <strong>Select All</strong>.</p>
+</li>
+</ul>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_Workbench">[src]</a></sub></p>
+<a name="H_Deletion"></a><h4>Deletion</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FDeletion)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FSelection)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Selection</a></li>
+</ul>
+</div>
+<p>To delete an element or constraint, select it and hit the Delete key. If an element is deleted, its related constraints are automatically deleted as well, even if they were left unselected when the Delete key was hit.</p>
+<p><sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
+<a name="H_Constraint%20Expressions"></a><h4>Constraint Expressions</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FConstraint%20Expressions)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Creation</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FSelection)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Selection</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FDeletion)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Deletion</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSpreadsheet%20Workbench%2FExpressions)_TOPIC%2Fi">FreeCAD/Spreadsheet Workbench/Expressions</a></li>
+</ul>
+</div>
+<p>Constraints can be named by either ...</p>
+<ul>
+<li>right-clicking on them in the Constraints pane and selecting Rename (shortcut key F2).</li>
+<li>double-clicking the constraint in the viewport and assigning a name, but this only works if the constraint accepts a value.</li>
+</ul>
+<p><img src="freecad_sketcher_constraint_name_and_value_dialog.png" alt="FreeCAD sketcher workbench constraint name and value dialog"></p>
+<p>Constraints can also reference and calculate their values via expressions. The formula button (inside the value textbox, to its right) opens an Expression Editor window that allows entering an expression instead of a constant, similar to inserting a formula in a cell for a spreadsheet.</p>
+<p><img src="freecad_sketcher_expression_editor_dialog.png" alt="FreeCAD sketcher workbench expression editor dialog"></p>
+<p>The expression can access data in the sketch (e.g., other constraints) as well as outside the sketch (e.g., alias in a spreadsheet or field in a VarSet). In the example, the constraint is copying the value of another constraint and multiplying it by 2.</p>
+<p><sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
+<a name="H_Projection%20Geometry"></a><h4>Projection Geometry</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FProjection%20Geometry)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Creation</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FSelection)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Selection</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FDeletion)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Deletion</a></li>
+</ul>
+</div>
+<p>An element is deemed projection geometry if that element was pulled in from a 3D object visible from the sketch. Projection geometry is linked to the 3D object it came from.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Although not discussed yet, 3D objects can come from a variety of different places. For example, a sketch may be turned into 3D objects / 3D features on an existing 3D object via the part design workbench, and subsequent sketches may project geometry from that object.</p>
+</div>
+<p><img src="freecad_sketcher_external_geometry_toolbar_buttons.png" alt="FreeCAD sketcher workbench external geometry toolbar buttons"></p>
+<p>To project, select the External Projection toolbar button (keyboard shortcut G, X) and select until the all desired elements have been projected (Esc or select another tool to exit). In some cases, it may be difficult to select the desired external geometry (e.g., it may be on the opposite side of the object, hidden from view). Recall that the camera can be rotated while sketching. If rotated, the camera's rotation can be brought back inline with the sketch by clicking the Align View to Sketch toolbar button (keyboard shortcut Q, P): <img src="freecad_sketcher_align_view_to_sketch_toolbar_button.png" alt="FreeCAD sketcher workbench align view to sketch toolbar button">.</p>
+<p><img src="freecad_sketcher_projection_geometry_example.png" alt="FreeCAD sketcher workbench projection geometry example"></p>
+<p>To project intersections with the sketching plane, select the External Intersection toolbar button (keyboard shortcut G, I) and select until all desired elements have been projected (Esc or select another tool to exist). In most cases, it's difficult to select the desired intersections because they're likely blocked from view. Recall that the Toggle Section View toolbar button (keyboard shortcut Q, S) will temporarily cut from view anything that extends past the sketch plane towards the camera: <img src="freecad_sketcher_toggle_section_view_toolbar_button.png" alt="FreeCAD sketcher workbench toggle section view toolbar button">.</p>
+<p><img src="freecad_sketcher_projection_geometry_intersection_example.png" alt="FreeCAD sketcher workbench projection geometry intersection example"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>When experimenting, I found pulling in intersections to be finicky. Certain curvatures won't get pulled in, or will get pulled in as only a single point off the curvature. It might be that not all conics are supported? Or maybe the feature is just buggy.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Projected geometry may also be construction geometry, discussed in sections further one.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FConstruction%20Geometry)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Construction Geometry</a></li>
+</ul>
+</div>
+<p>The color and line style changes based on the type of projected element and the state of the overall sketch. The screenshot below shows the default colors used by FreeCAD for the various types and states.</p>
+<p><img src="freecad_sketcher_element_colors.png" alt="FreeCAD Sketcher workbench element colors"></p>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_Tutorial">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Sketcher_Workbench">[src]</a></sub> <sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
+<a name="H_Construction%20Geometry"></a><h4>Construction Geometry</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FConstruction%20Geometry)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Creation</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FSelection)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Selection</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FDeletion)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Deletion</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FProjection%20Geometry)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Projection Geometry</a></li>
+</ul>
+</div>
+<p>An element is deemed as construction geometry if it isn't exposed to consumers of the sketch (it's internal to the sketch, hidden once the sketch is closed). Construction geometry is used within the sketch to assist in constraining other geometry.</p>
+<p>Construction geometry comes in different forms:</p>
+<ul>
+<li>
+<p>Construction geometry: A normal element in the sketch is construction geometry.</p>
+<p><img src="freecad_sketcher_construction_geometry_example.png" alt="FreeCAD sketcher workbench construction geometry example"></p>
+</li>
+<li>
+<p>Projected (external) construction geometry: A projected element in the sketch is construction geometry.</p>
+<p><img src="freecad_sketcher_projected_construction_geometry_example.png" alt="FreeCAD sketcher workbench projected construction geometry example"></p>
+</li>
+<li>
+<p>Internal alignment geometry: Construction geometry added by and tied to a complex element, used to control that element (e.g., ellipse control arms).</p>
+<p><img src="freecad_sketcher_internal_alignment_geometry_example.png" alt="FreeCAD sketcher workbench internal alignment geometry example"></p>
+</li>
+</ul>
+<p>To toggle one or more elements to / from construction geometry, select the elements and click the toggle construction geometry button (keyboard shortcut G,N): <img src="freecad_sketcher_toggle_construction_geometry_toolbar_button.png" alt="FreeCAD sketcher workbench toggle construction geometry toolbar button"></p>
+<p>To toggle element creation from / to construction geometry, ensure nothing is selected and click te toggle construction geometry button. Toolbar buttons to create elements will change color to indicate that elements being created are construction geometry.</p>
+<p><img src="freecad_sketcher_construction_geometry_toggled_off_toolbar_buttons.png" alt="FreeCAD sketcher workbench construction geometry toggled off toolbar buttons"></p>
+<p><img src="freecad_sketcher_construction_geometry_toggled_on_toolbar_buttons.png" alt="FreeCAD sketcher workbench construction geometry toggled on toolbar buttons"></p>
+<p>The color and line style changes based on the type of construction element and the state of the overall sketch. The screenshot below shows the default colors used by FreeCAD for the various types and states.</p>
+<p><img src="freecad_sketcher_element_colors.png" alt="FreeCAD Sketcher workbench element colors"></p>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_Workbench">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Sketcher_Tutorial">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Sketcher_ToggleConstruction">[src]</a></sub> <sub><a href="https://forum.freecad.org/viewtopic.php?t=55061">[src]</a></sub> <sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
+<a name="H_Degrees%20of%20Freedom"></a><h4>Degrees of Freedom</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FDegrees%20of%20Freedom)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Creation</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FSelection)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Selection</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FDeletion)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Deletion</a></li>
+</ul>
+</div>
+<p>If an element ...</p>
+<ul>
+<li>isn't constrained to the point where it's locked into a specific parameterization (e.g., location, rotation, angle, and whatever other parameters it may have), it's said to have n degrees of freedom, where n &gt;= 1.</li>
+<li>is constrained to the point where it's locked into a specific parameterization, it's said to be fully constrained (0 degrees of freedom).</li>
+</ul>
+<p>A degree of freedom is a parameterization that hasn't been set. For example, ...</p>
+<ul>
+<li>
+<p>a point has 2 degrees of freedom:</p>
+<ol>
+<li>X position.</li>
+<li>Y position.</li>
+</ol>
+<p>The example below fully constrains a point by setting its position in relation to the origin of the sketch.</p>
+<p><img src="freecad_sketcher_fully_constrained_point.png" alt="FreeCAD sketcher workbench fully constrained point example"></p>
+</li>
+<li>
+<p>a line has 4 degrees of freedom:</p>
+<ol>
+<li>Start point's X position.</li>
+<li>Start point's Y position.</li>
+<li>End point's X position.</li>
+<li>End point's Y position.</li>
+</ol>
+<p>The example below fully constrains a line by setting the position of its first point to the origin, and then giving it and angle and a length. The position of the second point is derived from the combination of angle and length.</p>
+<p><img src="freecad_sketcher_fully_constrained_line.png" alt="FreeCAD sketcher workbench fully constrained line example"></p>
+</li>
+<li>
+<p>an arc has 5 degrees of freedom:</p>
+<ol>
+<li>Center point's X position.</li>
+<li>Center point's Y position.</li>
+<li>Radius/diameter of arc's underlying circle.</li>
+<li>Angle between the two points comprising the arc.</li>
+<li>What segment of the underlying circle the arc sits on.</li>
+</ol>
+<p>The example below fully constrains an arc by setting its center point to the origin of the sketch, setting the radius to 14mm, setting the angle of the arc to 45 degrees, and positioning the arc on the underlying circle by stating that the lower point sits 7mm above the X axis.</p>
+<p><img src="freecad_sketcher_fully_constrained_arc.png" alt="FreeCAD sketcher workbench fully constrained arc example"></p>
+</li>
+</ul>
+<p>The overall constraint state for all elements in the sketch is shown in the Sketch Edit pane.</p>
+<ul>
+<li>
+<p><strong>Under-constrained</strong> / <strong>Fully constrained</strong>: When there's 1 or more degrees of freedom, the Sketch Edit pane will report that the sketch is under-constrained. When there's exactly 0 degrees of freedom, the Sketch Edit pane will report that the sketch is fully constrained. In the example below, the two lines each have a point with a coincident constraint to the origin while the other endpoint is unconstrained (4 degrees of freedom). Clicking the degrees of freedom text in the Sketch Edit pane will will select the two unconstrained endpoints.</p>
+<p><img src="freecad_sketcher_underconstrained_example.png" alt="FreeCAD sketcher workbench under-constrained example"></p>
+</li>
+<li>
+<p><strong>Redundant constraints</strong> / <strong>Partially redundant</strong>: If a sketch has constraints that deduce to the same thing, the Sketch Edit pane will report that the sketch has redundant constraints. In the example below, the line's start point has a coincident constraint to the origin and ...</p>
+<ul>
+<li>the end point has a horizontal distance constraint and vertical distance constraint, both set to 1mm.</li>
+<li>the line itself has a an angle constraint set to 45 degrees from the X axis.</li>
+</ul>
+<p>This reports a redundant constraint because the end point of (1mm, 1mm) implies a 45 degree angle from the X axis. Clicking the redundant constraints text in the Sketch Edit pane selects the redundant constraints.</p>
+<p><img src="freecad_sketcher_redundant_constraints_example.png" alt="FreeCAD sketcher workbench redundant constraints example"></p>
+</li>
+<li>
+<p><strong>Over-constrained</strong>: If a sketch has conflicting constraints (they both can't be satisfied because they're opposed to each other), the Sketch Edit pane will report that the sketch has over-constrained. In the example below, the triangle in this sketch is constrained to be an equilateral triangle, but it also has a coincident constraint that says two of the triangle's vertices should be at the same point, making it an impossible to satisfy all constraints. Clicking the over-constrained text in the Sketch Edit pane selects the conflicting constraints.</p>
+<p><img src="freecad_sketcher_workbench_over_constrained_example.png" alt="FreeCAD sketcher workbench over constrained example"></p>
+<p>Typically, once a conflicting constraint is added, the number of conflicting constraints reported becomes much more than 2. That's usually because the 1 added constraint goes is invalid against many existing constraints. The Sketch Edit pane doesn't group conflicting constraints together (e.g., 1,3,5 are valid together vs 2,4 are valid together, but all together they conflict) or give any reasoning as to why the constraints conflict (e.g., deduced angle is 30 degrees but angle constraint is attempting to set to 45 degrees).</p>
+</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There are other messages, but they usually mean something critical has gone wrong (e.g., Malformed constraints, Solver failed to converge).</p>
+</div>
+<p>It is important that a completed sketch always be fully constrained, otherwise the solver (software responsible for applying constraints) may shift and reorient the elements on that sketch based on the what is and isn't constrained. Even if a sketch is fully constrained, it may still be subject to sketch flipping, a phenomenon where the sketch flips because even when fully constrained there is more than 1 possible outcome for the constraints. In the example below, both arcs have the exact same constraints (both fully constrained), but there are two possible solutions.</p>
+<p><img src="freecad_sketcher_two_solutions_for_the_same_constrained_arc_example.png" alt="FreeCAD sketcher workbench two solutions for the same constrained arc example"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FSketch%20Flipping)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Sketch Flipping</a></li>
+</ul>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_Workbench">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Sketcher_Tutorial">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Sketcher_Dialog">[src]</a></sub> <sub><a href="https://www.reddit.com/r/FreeCAD/comments/1m24jo0/what_is_over_constraining/">[src]</a></sub> <sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
+<a name="H_Sketch%20Flipping"></a><h4>Sketch Flipping</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FSketch%20Flipping)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FDegrees%20of%20Freedom)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Degrees of Freedom</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FVertical%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Vertical Dimension</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FHorizontal%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Horizontal Dimension</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FAngle%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Angle Dimension</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FDistance%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Distance Dimension</a></li>
+</ul>
+</div>
+<p>Even if a sketch is fully constrained, it may still be subject to sketch flipping, a phenomenon where the sketch flips because even when fully constrained there is more than 1 possible outcome for the constraints.</p>
+<ul>
+<li>
+<p><strong>Example 1</strong></p>
+<p>In the example below, both arcs have the exact same constraints (both fully constrained), but there are two possible solutions.</p>
+<p><img src="freecad_sketcher_two_solutions_for_the_same_constrained_arc_example.png" alt="FreeCAD sketcher workbench two solutions for the same constrained arc example"></p>
+<p>Sketch flipping happens because, in certain cases, directionality may not exist. There's no constraint that ties the arc as to which side of the X axis it's on.</p>
+<p>This can be fixed by adding a constraint to force directionality. For example, adding a horizontal constraint between the end of the arc and the origin adds directionality. A horizontal constraint / vertical constraint is signed, meaning that a value of 12mm goes in one direction while -12mm goes in the opposite direction.</p>
+<p><img src="freecad_sketcher_two_solutions_for_the_same_constrained_arc_example_fixed.png" alt="FreeCAD sketcher workbench two solutions for the same constrained arc example fixed"></p>
+</li>
+<li>
+<p><strong>Example 2</strong></p>
+<p>In the example below, both shapes have the exact same constraints (both fully constrained) except that the second version is 50mm away from the Y axis instead of 16mm. Note that the sketch changed shape even though all other constraints are equivalent.</p>
+<p><img src="freecad_sketcher_two_solutions_for_the_same_constrained_L_example_a.png" alt="FreeCAD sketcher workbench two solutions for the same constrained L example a"> <img src="freecad_sketcher_two_solutions_for_the_same_constrained_L_example_b.png" alt="FreeCAD sketcher workbench two solutions for the same constrained L example b"></p>
+<p>As with the previous example, there is a lack of directionality that causes sketch flipping. The top horizontal line has a distance constraint of 10mm, but there's nothing constraining the order of the points (which of its two points is closer to the Y axis). The solver is free to swap the points as it sees fit, so long as the distance is still 10mm.</p>
+<p>Again, this can be fixed by adding a constraint to force directionality. For example, instead of using a distance constraint of 10mm, using a horizontal constraint of 10mm will. A horizontal constraint with a value of 10mm will fix the sketch into one orientation, while -10mm will fix it into the other orientation.</p>
+<p><img src="freecad_sketcher_two_solutions_for_the_same_constrained_L_example_fixed.png" alt="FreeCAD sketcher workbench two solutions for the same constrained L example fixed"></p>
+</li>
+<li>
+<p><strong>Example 3</strong></p>
+<p>The example below is similar to the previous example, except more complex. There's double flipping occurring:</p>
+<ol>
+<li>The box and triangle are flipping across the symmetry line</li>
+<li>The box has flipped such that the vertical line closer to the symmetry line has become the one farther from the symmetry line.</li>
+</ol>
+<p><img src="freecad_sketcher_two_solutions_for_the_same_symmetry_example_a.png" alt="FreeCAD sketcher workbench two solutions for the same symmetry example a"> <img src="freecad_sketcher_two_solutions_for_the_same_symmetry_example_b.png" alt="FreeCAD sketcher workbench two solutions for the same symmetry example b"></p>
+<p>Again, this can be fixed by adding constraint(s) to force directionality:</p>
+<ul>
+<li>Add a horizontal constraint to the box to ensure its points don't flip.</li>
+<li>Add a horizontal constraint between the symmetry line's point and either a point on the box or a point on the triangle, to ensure they stay on the correct side of the symmetry line.</li>
+</ul>
+<p><img src="freecad_sketcher_two_solutions_for_the_same_symmetry_example_fixed.png" alt="FreeCAD sketcher workbench two solutions for the same symmetry example fixed"></p>
+</li>
+</ul>
+<p>To prevent flipping, it's important to anchor the sketch using constraints that support directionality. In general ...</p>
+<ul>
+<li>horizontal constraints are signed, so they can specify directionality.</li>
+<li>vertical constraints are signed, so they can specify directionality.</li>
+<li>angle constraints are signed, so they can specify directionality, but that only works if the angle is anchored to something fixed (e.g., angle from x-axis and not the angle for an arc).</li>
+<li>block constraints force an exact position, similar to adding a horizontal constraint and vertical constraint against the origin.</li>
+</ul>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_Workbench#Flipping">[src]</a></sub> <sub><a href="https://forum.freecad.org/viewtopic.php?t=10872">[src]</a></sub> <sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
+<a name="H_3D%20Feature%20Validity"></a><h4>3D Feature Validity</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2F3D%20Feature%20Validity)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Creation</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FSelection)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Selection</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FDeletion)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Deletion</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FConstruction%20Geometry)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Construction Geometry</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FProjection%20Geometry)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Projection Geometry</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FDegrees%20of%20Freedom)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Degrees of Freedom</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FSketch%20Flipping)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Sketch Flipping</a></li>
+</ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The word contour here just means the outline of a shape that you draw in the sketcher. It doesn't have the same special meaning as the <a href="#BM_(contours%3F)_BS%2Fi">contours</a> vs <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a> meaning in <a href="#BM_(Bambu%20Studio)%2Fi">Bambu Studio</a>.</p>
+</div>
+<p>For a sketch to be valid for use as a 3D feature (e.g., as a profile that extrudes into a 3D addition or punches into a 3D face), it must conform to several expectations:</p>
+<ul>
+<li>
+<p><strong>No open contours</strong>: A contours must be closed, meaning gaps between endpoints of that contour aren't allowed (no matter how small).</p>
+<p><img src="freecad_sketcher_open_contour_example.png" alt="FreeCAD sketcher workbench open contour example"></p>
+</li>
+<li>
+<p><strong>No intersection</strong>: A contour must not intersect with other contours or self-intersect.</p>
+<p><img src="freecad_intersecting_contours_example.png" alt="FreeCAD sketcher workbench intersecting contours example"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>While it contours can't intersect, one contour is allowed to be wholly contained in the. See further down for more information.</p>
+</div>
+</li>
+<li>
+<p><strong>No shared edges between contours</strong>: Two contours must not share an edge.</p>
+<p><img src="freecad_sketcher_2_contours_with_shared_edge_eample.png" alt="FreeCAD sketcher workbench 2 contours with shared edge example"> <img src="freecad_sketcher_2_contours_with_touching_overlapping_edges_eample.png" alt="FreeCAD sketcher workbench 2 contours with touching overlapping edges example"></p>
+</li>
+<li>
+<p><strong>No T-connections</strong>: A contour must not have two edges sharing a common point / point touching an edge.</p>
+<p><img src="freecad_sketcher_t_connection_example.png" alt="FreeCAD sketcher workbench T connection example"></p>
+</li>
+</ul>
+<p>Contours are allowed to be nested (but not intersecting). Nesting alternates between creating voids in the 3D feature.</p>
+<p><img src="freecad_sketcher_nested_contours_example.png" alt="FreeCAD sketcher workbench nested contours example"> <img src="freecad_part_design_nested_contours_padded_example.png" alt="FreeCAD part design workbench nested contours padded example"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>These rules don't apply to construction geometry because construction geometry doesn't appear outside of editing a sketch.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_Workbench#Profile_sketches">[src]</a></sub></p>
+<a name="H_Elements"></a><h3>Elements</h3>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FElements)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Creation</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FSelection)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Selection</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FDeletion)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Deletion</a></li>
+</ul>
+</div>
+<p>An element is a 2D geometric primitive (e.g., point, line, arc, and spline). The element itself defines a primitive, while the parameterization of the primitive are defined by constraints applied to the element (constraints are discussed in later sections).</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints</a></li>
+</ul>
+</div>
+<p>The subsections below detail the various elements available.</p>
+<p><sub><a href="https://wiki.freecad.org/Basic_Sketcher_Tutorial">[src]</a></sub></p>
+<a name="H_Point"></a><h4>Point</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FElements%2FPoint)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Creation</a></li>
+</ul>
+</div>
+<p><img src="freecad_sketcher_numbered_element_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered element toolbar buttons"></p>
+<p>To create a point, use toolbar button 1 (keyboard shortcut G,Y) and click within the 3D viewport to place the point.</p>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_CreatePoint">[src]</a></sub></p>
+<a name="H_Line"></a><h4>Line</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FElements%2FLine)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Creation</a></li>
+</ul>
+</div>
+<p><img src="freecad_sketcher_numbered_element_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered element toolbar buttons"></p>
+<p>To create a line, use toolbar button 3 (keyboard shortcut G,L). Once the tool is active, select the mode in which the line should be created (cycle keyboard shortcut M). The mode defines the constraints presented by On-View-Parameters when the line is being created:</p>
+<ul>
+<li><strong>Point, length, angle</strong></li>
+<li><strong>Point, width, height</strong></li>
+<li><strong>2 points</strong> (no constraints presented)</li>
+</ul>
+<p><img src="freecad_sketcher_line_parameters.png" alt="FreeCAD sketcher workbench line parameters"></p>
+<p>Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click again to place the second point.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>A line is made up of 2 points.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_CreateLine">[src]</a></sub></p>
+<a name="H_Rectangle"></a><h4>Rectangle</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FElements%2FRectangle)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Creation</a></li>
+</ul>
+</div>
+<p><img src="freecad_sketcher_numbered_element_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered element toolbar buttons"></p>
+<p>To create a rectangle, use toolbar button 6 to present a drop-down and either select ...</p>
+<ul>
+<li>Rectangle (keyboard shortcut G,R)</li>
+<li>Centered Rectangle (keyboard shortcut G,V)</li>
+<li>Rounded Rectangle (keyboard shortcut G,O)</li>
+</ul>
+<p>The selection activates the tool with specific Rectangle Parameters preset. Those parameters can continue to be set once the tool is active:</p>
+<ul>
+<li><strong>Mode</strong>: The mode in which the rectangle should be created (cycle keyboard shortcut M). Mode defines the constraints presented by On-View-Parameters when the rectangle is being created.</li>
+<li><strong>Rounded corners</strong>: Whether the rectangle should have rounded corners (keyboard shortcut U). Rounded corners defines extra elements and constraints to be presented by On-View-Parameters when the rectangle is being created.</li>
+<li><strong>Frame</strong>: Whether the rectangle should be a frame (keyboard shortcut J), as in have an inner and outer border. Frame defines extra elements and constraints to be presented by On-View-Parameters when the rectangle is being created.</li>
+</ul>
+<p><img src="freecad_sketcher_rectangle_parameters.png" alt="FreeCAD sketcher workbench rectangle parameters"></p>
+<p>Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>A rectangle is made up of at least 4 lines. 4 more added if it's framed. 4 arcs added if it's rounded.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_CreateRectangle">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_CreateRectangle_Center">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_CreateOblong">[src]</a></sub></p>
+<a name="H_Polygon"></a><h4>Polygon</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FElements%2FPolygon)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Creation</a></li>
+</ul>
+</div>
+<p><img src="freecad_sketcher_numbered_element_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered element toolbar buttons"></p>
+<p>To create a polygon, use toolbar button 7 to present a drop-down and either select ...</p>
+<ul>
+<li>Triangle (keyboard shortcut G,P,3).</li>
+<li>Square (keyboard shortcut G,P,4).</li>
+<li>Pentagon (keyboard shortcut G,P,5).</li>
+<li>Hexagon (keyboard shortcut G,P,6).</li>
+<li>Heptagon (keyboard shortcut G,P,7).</li>
+<li>Octagon (keyboard shortcut G,P,8).</li>
+<li>Polygon (keyboard shortcut G,P,R).</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Triangle is an equilateral triangle.</p>
+</div>
+<p>Except for Polygon, the selection activates the tool with specific Polygon Parameters preset. Those parameters can continue to be set once the tool is active:</p>
+<ul>
+<li><strong>Mode</strong>: Select the number of sides for the polygon (keyboard shortcut U to increase, keyboard shortcut J to decrease).</li>
+</ul>
+<p><img src="freecad_sketcher_polygon_parameters.png" alt="FreeCAD sketcher workbench polygon parameters"></p>
+<p>Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>A polygon is made up of n lines and a circle (construction geometry).</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_CreateTriangle">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_CreateSquare">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_CreatePentagon">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_CreateHexagon">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_CreateHeptagon">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_CreateOctagon">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_CreateRegularPolygon">[src]</a></sub></p>
+<a name="H_Circle%20Ellipse"></a><h4>Circle Ellipse</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FElements%2FCircle%20Ellipse)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Creation</a></li>
+</ul>
+</div>
+<p><img src="freecad_sketcher_numbered_element_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered element toolbar buttons"></p>
+<p>To create an ellipse or circle, use toolbar button 5 to present a drop-down and either select ...</p>
+<ul>
+<li>Circle from Center (keyboard shortcut G,C).</li>
+<li>Circle from 3 Points (keyboard shortcut G,3,C).</li>
+<li>Ellipse from Center (keyboard shortcut G,E,E).</li>
+<li>Ellipse from 3 Points (keyboard shortcut G,3,E).</li>
+</ul>
+<p>Once the tool is active, select the mode in which the line should be created (cycle keyboard shortcut M). The mode defines the constraints presented by On-View-Parameters when the line is being created:</p>
+<ul>
+<li><strong>Center</strong>: Create circle/ellipse from a center point.</li>
+<li><strong>3 rim points</strong> / <strong>Axis endpoints</strong>: Create circle/ellipse from 3 points on the rim.</li>
+</ul>
+<p><img src="freecad_sketcher_circle_parameters.png" alt="FreeCAD sketcher workbench circle parameters">
+<img src="freecad_sketcher_ellipse_parameters.png" alt="FreeCAD sketcher workbench ellipse parameters"></p>
+<p>Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.</p>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_CreateCircle">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_Create3PointCircle">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_CreateEllipseByCenter">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_CreateEllipseBy3Points">[src]</a></sub></p>
+<a name="H_Arc"></a><h4>Arc</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FElements%2FArc)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Creation</a></li>
+</ul>
+</div>
+<p><img src="freecad_sketcher_numbered_element_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered element toolbar buttons"></p>
+<p>To create an arc, use toolbar button 4 to present a drop-down and either select ...</p>
+<ul>
+<li>Arc from Center (keyboard shortcut G,A).</li>
+<li>Arc from 3 Points (keyboard shortcut G,3,A).</li>
+<li>Elliptical Arc (keyboard shortcut G,E,A).</li>
+<li>Hyperbolic Arc (keyboard shortcut G,H).</li>
+<li>Parabolic Arc (keyboard shortcut G,J).</li>
+</ul>
+<p>Of the options, ...</p>
+<ul>
+<li>
+<p>for the first two (circular arcs), once the tool is active select the mode in which the line should be created (cycle keyboard shortcut M):</p>
+<ul>
+<li><strong>Center</strong>: Create circle/ellipse from a center point.</li>
+<li><strong>3 rim points</strong> / <strong>Axis endpoints</strong>: Create circle/ellipse from 3 points on the rim.</li>
+</ul>
+<p>The only mode that defines constraints presented by On-View-Parameters when being created is <strong>Center</strong>.</p>
+<p><img src="freecad_sketcher_arc_parameters.png" alt="FreeCAD sketcher workbench arc parameters"></p>
+</li>
+<li>
+<p>for the remainder, there are no options and On-View-Params aren't enabled.</p>
+</li>
+</ul>
+<p>Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.</p>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_CreateArc">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_Create3PointArc">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_CreateArcOfEllipse">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_CreateArcOfHyperbola">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_CreateArcOfParabola">[src]</a></sub></p>
+<a name="H_Polyline"></a><h4>Polyline</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FElements%2FPolyline)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Creation</a></li>
+</ul>
+</div>
+<p><img src="freecad_sketcher_numbered_element_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered element toolbar buttons"></p>
+<p>A polyline is a helper that chains together lines and arcs into a path. To create a polyline use toolbar button 2 (keyboard shortcut G,M). Then, either select where to drop the first point or click an existing endpoint. Continue clicking to place new segments in a chain, hitting M to cycle through the line and arc options:</p>
+<ul>
+<li>Line connected to the previous segment.</li>
+<li>Line perpendicular to the previous segment.</li>
+<li>Line tangential to the previous segment.</li>
+<li>Arc tangential to the previous segment (hold Ctrl to snap arc to increments of 45 degree relative to the previous segment).</li>
+<li>Arc perpendicular (left) to the previous segment (hold Ctrl to snap arc to increments of 45 degree relative to the previous segment).</li>
+<li>Arc perpendicular (right) to the previous segment (hold Ctrl to snap arc to increments of 45 degree relative to the previous segment).</li>
+</ul>
+<p>Click within the 3D viewport to place the element and continue clicking to draw. Hit Esc to end.</p>
+<p>There must be a previous segment for M to cycle through line and arc options (there will be if you dropped on an existing endpoint). For the initial segment, the mode is always hardcoded to a line (M won't cycle).</p>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_CreatePolyline">[src]</a></sub></p>
+<a name="H_Slot"></a><h4>Slot</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FElements%2FSlot)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Creation</a></li>
+</ul>
+</div>
+<p><img src="freecad_sketcher_numbered_element_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered element toolbar buttons"></p>
+<p>To create a slot, use toolbar button 8 to present a drop-down and either select ...</p>
+<ul>
+<li>Slot (keyboard shortcut G,S)</li>
+<li>Arc Slot (keyboard shortcut G,S,S)</li>
+</ul>
+<p>Slot and Arc Slot are different tools. When ...</p>
+<ul>
+<li>
+<p>Slot is activated, there are no parameters.</p>
+</li>
+<li>
+<p>Arc Slot is activate, there are parameters:</p>
+<ul>
+<li><strong>Mode</strong>: The mode in which the rectangle should be created (cycle keyboard shortcut M). Mode defines the ends of the arc slot (flat vs round).</li>
+</ul>
+<p><img src="freecad_sketcher_arc_slot_parameters.png" alt="FreeCAD sketcher workbench rectangle parameters"></p>
+</li>
+</ul>
+<p>Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.</p>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_CreateSlot">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_CreateArcSlot">[src]</a></sub></p>
+<a name="H_B-Spline"></a><h4>B-Spline</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FElements%2FB-Spline)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Creation</a></li>
+</ul>
+</div>
+<p><img src="freecad_sketcher_numbered_element_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered element toolbar buttons"></p>
+<p>To create a b-spline, use toolbar button 9 to present a drop-down and either select ...</p>
+<ul>
+<li>B-Spline (keyboard shortcut G,B,B).</li>
+<li>Periodic B-Spline (keyboard shortcut G,B,P).</li>
+<li>B-Spline from Knots (keyboard shortcut G,B,I).</li>
+<li>Periodic B-Spline from Knots (keyboard shortcut G,B,O).</li>
+</ul>
+<p>The selection activates the tool with specific Rectangle Parameters preset. Those parameters can continue to be set once the tool is active:</p>
+<ul>
+<li><strong>Mode</strong>: The mode in which the b-spline should be created (cycle keyboard shortcut M). Mode defines whether the clicks in the 3D viewport are for the b-spline's control points or knots.</li>
+<li><strong>Periodic</strong>: Whether the b-spline curve loops <a href="#BM_(seam)%2Fi">seam</a>lessly into itself (keyboard shortcut R).</li>
+</ul>
+<p><img src="freecad_sketcher_b_spline_parameters.png" alt="FreeCAD sketcher workbench b-spline parameters"></p>
+<p>Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete. Hit Esc to end.</p>
+<p>There are various b-spline modifiers / helpers:</p>
+<p><img src="freecad_sketcher_b_spline_modifiers.png" alt="FreeCAD sketcher workbench b-spline modifiers"></p>
+<ul>
+<li>Geometry to B-Spline</li>
+<li>Increase B-Spline Degree</li>
+<li>Decrease B-Spline Degree</li>
+<li>Increase Knot Multiplicity</li>
+<li>Decrease Knot Multiplicity</li>
+<li>Insert Knot</li>
+<li>Join Curves</li>
+</ul>
+<p>There are various visual helpers for b-splines that can be enabled / disabled:</p>
+<p><img src="freecad_sketcher_b_spline_visual_helpers.png" alt="FreeCAD sketcher workbench b-spline visual helpers"></p>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_CreateBSpline">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_CreatePeriodicBSpline">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_CreateBSplineByInterpolation">[src]</a></sub>
+<sub><a href="https://wiki.freecad.org/Sketcher_CreatePeriodicBSplineByInterpolation">[src]</a></sub></p>
+<a name="H_Constraints"></a><h3>Constraints</h3>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FCreation)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Creation</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FSelection)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Selection</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FDeletion)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Deletion</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FElements)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Elements</a></li>
+</ul>
+</div>
+<p>A constraint limits the possible values for an element's parameters. For example, a line may have an endpoint constrained onto the X-axis, in which case the position of that endpoint must always have a Y position of 0.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints</a></li>
+</ul>
+</div>
+<p>The subsections below detail the various constraints available.</p>
+<p><sub><a href="https://wiki.freecad.org/Basic_Sketcher_Tutorial">[src]</a></sub></p>
+<a name="H_Distance%20Dimension"></a><h4>Distance Dimension</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FDistance%20Dimension)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A Distance Dimension constraint sets the distance.</p>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To create a Distance Dimension constraint, select the element (e.g., line), elements (e.g., line and arc), or element components (points on a line). Then, use toolbar button 1 to present a drop-down and select Distance Dimension (keyboard shortcut K,D). A pop-up will ask for the length value. Once the constraint has been created, press Esc to exit.</p>
+<p>Distance Dimension works on the elements most users expect (e.g., distance between two points, distance of a line). It also works on other elements. For example, Distance Dimension can be applied to point and a line, an arc, two circles / arcs, a line and a circle / arc,</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the connstraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, ...</p>
+<ul>
+<li>you can set the distance on a line by selecting Distance Dimension and then clicking on the line.</li>
+<li>you can set the distance on a arc by selecting Distance Dimension and then clicking on the arc.</li>
+<li>you CANNOT set the distance between a line and an arc by selecting Distance Dimension, then clicking the line, then clicking the arc.</li>
+</ul>
+<p>For the last point, as soon as you click the line, the constraint will get triggered on the line.</p>
+<p>To work around this, click the line and arc first, then select Distance Dimension.</p>
+</div>
+<p>By definition, a distance must be a non-negative value. Imagine two points on a horizontal line A and B. The distance between (A,B) is the same as the distance between (B,A). For example, if A=5 and B=4, ...</p>
+<ul>
+<li>the distance from A to B is abs(5-4)=1</li>
+<li>the distance from B to A is abs(4-5)=1.</li>
+</ul>
+<p>Given this, it's important to remember that distance does not encode a direction (e.g., if it did, the abs would go away, meaning the distance from B to A would have been -1 instead of 1). This lack of direction means that the sketcher's solver can decide to flip sketches even if the sketch is fully constrained (unless it's somehow further constrained to define a direction). For example below, the rectangle below has two distance constraints, ...</p>
+<ul>
+<li>one on the vertical side (15mm).</li>
+<li>one on the horizontal side (20mm).</li>
+</ul>
+<p><img src="freecad_sketcher_rectangle_with_distance_dimensions.png" alt="FreeCAD sketcher workbench rectangle with distance dimensions"></p>
+<p>Because distance doesn't encode direction, the sketcher can decide to flip the horizontal edges or the vertical edges at any time. Imagine taking the lower-right corner of this rectangle and using a coincident constraint to tie it to the origin. Because the edges can flip, at any time the lower-right corner can become the upper-right corner, upper-left corner, or lower-left corner.</p>
+<p><img src="freecad_sketcher_rectangle_with_distance_dimensions_flip_1.png" alt="FreeCAD sketcher workbench rectangle with distance dimensions flip 1">
+<img src="freecad_sketcher_rectangle_with_distance_dimensions_flip_2.png" alt="FreeCAD sketcher workbench rectangle with distance dimensions flip 2"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>To avoid sketch flipping, you need to add additional constraints that support directionality.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FSketch%20Flipping)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Sketch Flipping</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FHorizontal%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Horizontal Dimension</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FVertical%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Vertical Dimension</a></li>
+</ul>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainDistance">[src]</a></sub> <sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
+<a name="H_Horizontal%20Dimension"></a><h4>Horizontal Dimension</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FHorizontal%20Dimension)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FDistance%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Distance Dimension</a></li>
+</ul>
+</div>
+<p>A Horizontal Dimension constraint sets the how far apart two elements are, horizontally. Unlike the Distance Dimension constraint, it allows direction via positive and negative values.</p>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To create a Horizontal Dimension constraint, select the element or element components (e.g., points on a line). Then, use toolbar button 1 to present a drop-down and select Horizontal Dimension (keyboard shortcut L). A pop-up will ask for the length value. Once the constraint has been created, press Esc to exit.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.</p>
+</div>
+<p>If the selection is ...</p>
+<ul>
+<li>
+<p>one point, the constraint will be relative from the origin:</p>
+<ul>
+<li>Positive value places point to the right of Y axis.</li>
+<li>Negative value places point to the left of Y axis.</li>
+</ul>
+</li>
+<li>
+<p>two points, the constraint will be relative from the first selected point:</p>
+<ul>
+<li>Positive value places second point to the right of the first point.</li>
+<li>Negative value places second point to the left of the first point.</li>
+</ul>
+</li>
+<li>
+<p>one line, the constraints will be applied as if the line's two points were selected. The line's first dropped point during creating is treated as the first point, and the second dropped point is treated as the second point.</p>
+</li>
+</ul>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainDistanceX">[src]</a></sub> <sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
+<a name="H_Vertical%20Dimension"></a><h4>Vertical Dimension</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FVertical%20Dimension)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FDistance%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Distance Dimension</a></li>
+</ul>
+</div>
+<p>A Vertical Dimension constraint sets the how far apart two elements are, vertically. Unlike the Distance Dimension constraint, it allows direction via positive and negative values.</p>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To create a Vertical Dimension constraint, select the element or element components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Vertical Dimension (keyboard shortcut I). A pop-up will ask for the length value. Once the constraint has been created, press Esc to exit.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.</p>
+</div>
+<p>If the selection is ...</p>
+<ul>
+<li>
+<p>one point, the constraint will be relative from the origin:</p>
+<ul>
+<li>Positive value places point to the above of X axis.</li>
+<li>Negative value places point to the below of X axis.</li>
+</ul>
+</li>
+<li>
+<p>two points, the constraint will be relative from the first selected point:</p>
+<ul>
+<li>Positive value places second point above the first point.</li>
+<li>Negative value places second point below the first point.</li>
+</ul>
+</li>
+<li>
+<p>one line, the constraints will be applied as if the line's two points were selected. The line's first dropped point during creating is treated as the first point, and the second dropped point is treated as the second point.</p>
+</li>
+</ul>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainDistanceY">[src]</a></sub> <sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
+<a name="H_Lock%20Position"></a><h4>Lock Position</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FLock%20Position)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FHorizontal%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Horizontal Dimension</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FVertical%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Vertical Dimension</a></li>
+</ul>
+</div>
+<p>Lock Position is not a constraint, but a helper that applies both a Vertical Dimension constraint and a Horizontal Dimension constraint to the selection, effectively locking the selection in place.</p>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To apply Lock Position, select the element or element components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Lock Position (keyboard shortcut K,L). Once the constraint has been created, press Esc to exit.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.</p>
+</div>
+<p>If the selection is ...</p>
+<ul>
+<li>one point, the constraints will be relative from the origin.</li>
+<li>two points, the constraints will be relative from the the opposing points.</li>
+<li>one line, the constraints will be applied as if the line's two points were selected.</li>
+</ul>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainLock">[src]</a></sub></p>
+<a name="H_Radius%20Dimension"></a><h4>Radius Dimension</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FRadius%20Dimension)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A Radius Dimension constraint sets the radius of circles, arcs, and B-spline weight circles.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>From the source:</p>
+<blockquote>
+<p>After a B-spline is created, it is possible to define the weight of the control points by changing the radii of the weight circles. The equality constraints on the circles need to be deleted first. The radius constraint is arbitrary, the weight of the control points will be defined by the relative radii of the circles. It works similar to gravity: the bigger a circle is in relation to the others, the more the curve will be attracted to that control point.</p>
+</blockquote>
+</div>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To create a Radius Dimension constraint, select the element or element component (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Radius Dimension (keyboard shortcut K,R). A pop-up will ask for the radius value. Once the constraint has been created, press Esc to exit.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainRadius">[src]</a></sub></p>
+<a name="H_Diameter%20Dimension"></a><h4>Diameter Dimension</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FDiameter%20Dimension)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A Diameter Dimension constraint sets the diameter of circles, and arcs.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Unlike Radius Dimension, Diameter Dimension cannot be used for B-splines. From the source:</p>
+<blockquote>
+<p>It cannot be used for B-spline weight circles.</p>
+</blockquote>
+</div>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To create a Diameter Dimension constraint, select the element or element component (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Diameter Dimension (keyboard shortcut K,O). A pop-up will ask for the diameter value. Once the constraint has been created, press Esc to exit.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainDiameter">[src]</a></sub></p>
+<a name="H_Angle%20Dimension"></a><h4>Angle Dimension</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FAngle%20Dimension)_TOPIC%2Fi"></a><strong></strong></p>
+<p>An Angle Dimension sets the angle between two edges, a line an an axis of the sketch, or the aperture angle of a circular arc.</p>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To create a Angle Dimension constraint, select the element or element component (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Angle Dimension (keyboard shortcut K,A). A pop-up will ask for the angle value. Once the constraint has been created, press Esc to exit.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.</p>
+</div>
+<p>If the selection is ...</p>
+<ul>
+<li>one line, the constraint will be the angle relative to the horizontal axis.</li>
+<li>one arc, the constraints will be the angle defining how far the arc's endpoints are from each other.</li>
+<li>two lines, the constraints will be an angle between the two lines, where the center is the intersection point of the lines.</li>
+<li>two lines and a point, the constraints will be an angle between the two lines, where the center is the point.</li>
+</ul>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainAngle">[src]</a></sub></p>
+<a name="H_Radius-Diameter%20Dimension"></a><h4>Radius-Diameter Dimension</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FRadius-Diameter%20Dimension)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FRadius%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Radius Dimension</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FDiameter%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Diameter Dimension</a></li>
+</ul>
+</div>
+<p>Radius-Diameter Dimension is not a constraint, but a helper that applies either a Radius Dimension constraint or a Diameter Dimension constraint to the selection, depending on the type of element it is.</p>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To apply Radius-Diameter Dimension, select the element or element components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Radius-Diameter Dimension (keyboard shortcut K,S). A pop-up will ask for the diameter/radius value. Once the constraint has been created, press Esc to exit.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.</p>
+</div>
+<p>If the selection is ...</p>
+<ul>
+<li>an arc or b-spline weight circle, the constraints will be a Radius Dimension.</li>
+<li>a circle, the constraint will be a Diameter Dimension.</li>
+</ul>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainRadiam">[src]</a></sub></p>
+<a name="H_Dimension"></a><h4>Dimension</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FDimension)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FDistance%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Distance Dimension</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FHorizontal%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Horizontal Dimension</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FVertical%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Vertical Dimension</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FRadius%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Radius Dimension</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FDiameter%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Diameter Dimension</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FAngle%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Angle Dimension</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FCoincident)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Coincident</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FHorizontal)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Horizontal</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FVertical)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Vertical</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FParallel)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Parallel</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FPerpendicular)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Perpendicular</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FTangent-Colinear)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Tangent-Colinear</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FEqual)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Equal</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FSymmetric)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Symmetric</a></li>
+</ul>
+</div>
+<p>Dimension is not a constraint, but a helper that allows cycling through most possible constraints for the element selection.</p>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To apply Dimension, select the element or element components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Dimension (keyboard shortcut D). Continue to hit M until the desired constraint appears and click to apply. A pop-up may appear asking for a value (e.g., angle if the constraint is Angle Dimension constraint). Once the constraint has been created, press Esc to exit.</p>
+<p>For example, if the selection is two lines, the possible constraints that can be cycled through may include Angle Dimension and Parallel.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_Dimension">[src]</a></sub></p>
+<a name="H_Coincident"></a><h4>Coincident</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FCoincident)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A Coincident constraint sets a point to lie on another point, edge (e.g., line, rim of an arc, rim of a circle, b-spline), or basis axis.</p>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To create a Coincident constraint, select the element or element component (e.g., two points). Then, use toolbar button 2 (keyboard shortcut C). A pop-up will ask for the angle value. Once the constraint has been created, press Esc to exit.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.</p>
+</div>
+<p>If the selection is ...</p>
+<ul>
+<li>two points, the constraint will place the points on top of each other.</li>
+<li>a point and an edge, the constraints will place the point along the edge.</li>
+<li>a point and a basis axis, the constraints will place the point along the basis axis.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Apparently there use to be 2 separate constraints for Coincident? This is two separate constraints unified into one: The old Coincident constraint and the old Point-on-Object constraint.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainCoincidentUnified">[src]</a></sub></p>
+<a name="H_Horizontal"></a><h4>Horizontal</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FHorizontal)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A Horizontal constraint sets a pair of points or a line to be horizontal.</p>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To create a Horizontal constraint, select the element or element component (e.g., two points). Then, use toolbar button 3 to present a drop-down and select Horizontal (keyboard shortcut H). Once the constraint has been created, press Esc to exit.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainHorizontal">[src]</a></sub></p>
+<a name="H_Vertical"></a><h4>Vertical</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FVertical)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A Vertical constraint sets a pair of points or a line to be vertical.</p>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To create a Vertical constraint, select the element or element component (e.g., two points). Then, use toolbar button 3 to present a drop-down and select Vertical (keyboard shortcut V). Once the constraint has been created, press Esc to exit.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainVertical">[src]</a></sub></p>
+<a name="H_Horizontal-Vertical"></a><h4>Horizontal-Vertical</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FHorizontal-Vertical)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FRadius%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Radius Dimension</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FDiameter%20Dimension)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Constraints/Diameter Dimension</a></li>
+</ul>
+</div>
+<p>Horizontal-Vertical is not a constraint, but a helper that applies either a Horizontal constraint or a Vertical constraint to the selection.</p>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To apply Horizontal-Vertical, select the element or element components (e.g., two points). Then, use toolbar button 3 to present a drop-down and select Horizontal-Vertical (keyboard shortcut A). Once the constraint has been created, press Esc to exit.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.</p>
+</div>
+<p>If the selection is ...</p>
+<ul>
+<li>closer to being horizontal, a Horizontal constraint will be applied.</li>
+<li>closer to being horizontal, a Vertical constraint will be applied.</li>
+</ul>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainHorVer">[src]</a></sub></p>
+<a name="H_Parallel"></a><h4>Parallel</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FParallel)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A Parallel constraint sets a pair of lines to be parallel.</p>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To create a Parallel constraint, select the element or element component (e.g., two lines). Then, use toolbar button 4 (keyboard shortcut P). Once the constraint has been created, press Esc to exit.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainParallel">[src]</a></sub></p>
+<a name="H_Perpendicular"></a><h4>Perpendicular</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FPerpendicular)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A Perpendicular constraint sets a pair of lines to be perpendicular.</p>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To create a Perpendicular constraint, select the element or element component (e.g., two lines). Then, use toolbar button 5 (keyboard shortcut N). Once the constraint has been created, press Esc to exit.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainPerpendicular">[src]</a></sub></p>
+<a name="H_Tangent-Colinear"></a><h4>Tangent-Colinear</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FTangent-Colinear)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A Tangent-Colinear constraint sets two edges (e.g., line, rim of an arc, rim of a circle, b-spline), or an edge and an basis axis, to be tangent. The constraint treats edges as if they're unbounded (e.g., lines are virtually extend out to infinity and open curves are virtually extended, for the purpose of tangency).</p>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To create a Tangent-Colinear constraint, select the element or element component (e.g., two lines). Then, use toolbar button 6 (keyboard shortcut T). Once the constraint has been created, press Esc to exit.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainTangent">[src]</a></sub></p>
+<a name="H_Equal%20Constraint"></a><h4>Equal Constraint</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FEqual)_TOPIC%2Fi"></a><strong></strong></p>
+<p>An Equal constraint sets two edges (e.g., line, rim of an arc, rim of a circle, b-spline) to have the same length.</p>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To create an Equal constraint, select the element or element component (e.g., two lines). Then, use toolbar button 7 (keyboard shortcut E). Once the constraint has been created, press Esc to exit.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainEqual">[src]</a></sub></p>
+<a name="H_Symmetric"></a><h4>Symmetric</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FSymmetric)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A Symmetric constraint sets two points to mirror each other symmetrically over a line, a basis axis, or around a point.</p>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To create a Symmetric constraint, select the element or element component (e.g., two lines). Then, use toolbar button 8 (keyboard shortcut S). Once the constraint has been created, press Esc to exit.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainSymmetric">[src]</a></sub></p>
+<a name="H_Block"></a><h4>Block</h4>
+<p><a name="BM_(FreeCAD%5C%2FSketcher%20Workbench%2FConstraints%2FBlock)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A Block constraint fixes an edge (e.g., line, rim of an arc, rim of a circle, b-spline) in place. It's mainly intended for b-splines, which can be difficult to fully constrain otherwise.</p>
+<p><img src="freecad_sketcher_numbered_constraint_toolbar_buttons.png" alt="FreeCAD sketcher workbench numbered constraint toolbar buttons"></p>
+<p>To create a Block constraint, select the element or element component (e.g., two lines). Then, use toolbar button 9 (keyboard shortcut K, B). Once the constraint has been created, press Esc to exit.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ConstrainBlock">[src]</a></sub></p>
 <a name="H_Part%20Design%20Workbench"></a><h2>Part Design Workbench</h2>
 <p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FUser%20Interface%20Layout)_TOPIC%2Fi">FreeCAD/User Interface Layout</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSpreadsheet%20Workbench)_TOPIC%2Fi">FreeCAD/Spreadsheet Workbench</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench)_TOPIC%2Fi">FreeCAD/Sketcher Workbench</a></li>
+</ul>
+</div>
+<p>Part Design workbench allows building 3D models, mostly by compounding 2D sketches that build out 3D features. For example, a sketch of a square that's 5mm by 5mm can be padded by 5mm to create a cube. Then, a sketch of a circle with a 3.5mm diameter can be placed on a face of that cube and pocketed to create a cylindrical hole through that cube.</p>
+<p><img src="freecad_part_design_example.png" alt="FreeCAD Part Design workbench example"></p>
+<p>The example above is a single body. A Part Design document holds one or more bodies, and each body compounds several sketches into features.</p>
+<p><img src="puml_c37c9e13bb1c420c11fb5d3f5a4c8eec.svg" alt="PlantUML diagram"></p>
+<p>A body's features are built out using a non-destructive workflow. That means, as features build on top of other features, it's possible to modify earlier features and have the change cascade down to later features. For example, with cylinder-through-box example above, it's possible to go up and change box's dimensions and fillet its corners. The cylinder feature will still apply.</p>
+<p><img src="freecad_part_design_example_2.png" alt="FreeCAD Part Design workbench example 2"></p>
+<p><img src="freecad_part_design_example_2_workflow.png" alt="FreeCAD Part Design workbench example 2 workflow"></p>
+<p>Each body has its own local coordinate system. Externally, the body may be offset and rotated within the part.</p>
+<p><img src="freecad_part_design_body_translation_properties.png" alt="FreeCAD part design workbench body translation properties"></p>
+<ul>
+<li>Position defines offset.</li>
+<li>Axis and angle define rotation - axis defines a vector and angle rotates around that vector.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Local coordinate system means internally the body has its own origin and basis axes, and all operations building out features within the body are relative to that origin and those basis axes.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>An easier way to set the orientation is, in the Model pane, right-click on the body and choose <strong>Transform</strong>. It sets the same properties highlighted in the above screenshot, but it also provides gizmos in the viewport and a popup pane with more friendly ways to set.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Workbench">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Basic_Part_Design_Tutorial">[src]</a></sub></p>
+<a name="H4_User%20Interface"></a><h3>User Interface</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FUser%20Interface)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FUser%20Interface%20Layout)_TOPIC%2Fi">FreeCAD/User Interface Layout</a></li>
+</ul>
+</div>
+<p><img src="freecad_part_design_user_interface.png" alt="FreeCAD part design workbench user interface"></p>
+<p><strong>Body</strong></p>
+<ul>
+<li>(1) Create new body.</li>
+</ul>
+<p><strong>Sketch</strong></p>
+<ul>
+<li>
+<p>(2) Sketch operations: These toolbar buttons give quick access to sketch functionality. A part design document can contain multiple sketches, where those sketches are attached on to a plane or an existing face of the model. These sketches are selectable in the Model pane's tree, and each acts (in whole or in part) as the base for a 3D feature (e.g., extrude sketch into 3D).</p>
+<p>From left-to-right, ...</p>
+<ul>
+<li>drop-down to either ...
+<ul>
+<li>create a sketch (either on plane or the selected face).</li>
+<li>attach an existing sketch to a face.</li>
+<li>edit an existing sketch.</li>
+</ul>
+</li>
+<li>validate a sketch.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Helpers</strong></p>
+<ul>
+<li>
+<p>(3) Helpers: These toolbar buttons provide access to helpful part design tools. From left-to-right, ...</p>
+<ul>
+<li>analyze selected geometry for errors.</li>
+<li>create a sub-shape binder, which pulls in geometry from another body / object by referencing it.</li>
+<li>clone selected object into a new body (linked, not copied).</li>
+</ul>
+</li>
+</ul>
+<p><strong>Modeling Features</strong></p>
+<ul>
+<li>
+<p>(4) Additive features: These toolbar buttons provide access to sketch-to-3D features that add to an object. From left-to-right, ...</p>
+<ul>
+<li>create a solid by padding a sketch.</li>
+<li>create a solid by revolving a sketch around an axis.</li>
+<li>create a solid by creating transitions between two or more sketches (sketches are cross-sections of the solid).</li>
+<li>create a solid by sweeping a sketch around a helix</li>
+<li>create a primitive solid (e.g., box, cylinder, sphere)</li>
+</ul>
+</li>
+<li>
+<p>(5) Subtractive features: These toolbar buttons provide access to sketch-to-3D features that remove from an object. From left-to-right, ...</p>
+<ul>
+<li>cut-out from a solid by sinking a sketch.</li>
+<li>cut-out from a solid by cutting fastener holes (sketch must contain one or more circles).</li>
+<li>cut-out from a solid by revolving a sketch around an axis.</li>
+<li>cut-out from a solid by creating transitions between two or more sketches (sketches are cross-sections of the solid).</li>
+<li>cut-out from a solid by sweeping a sketch around a helix</li>
+<li>cut-out from a solid by cutting out a primitive solid (e.g., box, cylinder, sphere)</li>
+</ul>
+</li>
+<li>
+<p>(6) Import bodies and apply a boolean operation (e.g., intersection).</p>
+</li>
+<li>
+<p>(7) Dress-up: These toolbar buttons provide access to some basic non-sketch based features. From left-to-right, ...</p>
+<ul>
+<li>round selected edges / vertexes.</li>
+<li>chamfer selected edges / vertexes.</li>
+<li>angle selected face.</li>
+<li>convert body to a shell, leaving selected faces open.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Transformation Features</strong></p>
+<ul>
+<li>
+<p>(8) Transformations: These toolbar buttons pattern on or more features. From left-to-right, ...</p>
+<ul>
+<li>mirror one or more features.</li>
+<li>create a linear pattern of one or more features.</li>
+<li>create a polar pattern of one or more features.</li>
+<li>create a pattern by combining the transformations mentioned above, as well as scale.</li>
+</ul>
+</li>
+</ul>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Workbench">[src]</a></sub></p>
+<a name="H_Body"></a><h3>Body</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FBody)_TOPIC%2Fi"></a><strong></strong></p>
+<p>Create a body, clone a body, transform a body.</p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Body">[src]</a></sub></p>
+<p><sub><a href="https://wiki.freecad.org/Body">[src]</a></sub></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Clone">[src]</a></sub></p>
+<a name="H_Sketch"></a><h3>Sketch</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FSketch)_TOPIC%2Fi"></a><strong></strong></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_NewSketch">[src]</a></sub></p>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_MapSketch">[src]</a></sub></p>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_EditSketch">[src]</a></sub></p>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_MapSketch">[src]</a></sub></p>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_ValidateSketch">[src]</a></sub></p>
+<a name="H_Pad%20%2F%20Pocket"></a><h3>Pad / Pocket</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FPad%20%2F%20Pocket)_TOPIC%2Fi"></a><strong></strong></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Pad">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_Pocket">[src]</a></sub></p>
+<a name="H_Hole"></a><h3>Hole</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FHole)_TOPIC%2Fi"></a><strong></strong></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Hole">[src]</a></sub></p>
+<a name="H_Revolution%20%2F%20Groove"></a><h3>Revolution / Groove</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FRevolution%20%2F%20Groove)_TOPIC%2Fi"></a><strong></strong></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Revolution">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_Groove">[src]</a></sub></p>
+<a name="H_Loft"></a><h3>Loft</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FLoft)_TOPIC%2Fi"></a><strong></strong></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_AdditiveLoft">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_SubtractiveLoft">[src]</a></sub></p>
+<a name="H_Pipe"></a><h3>Pipe</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FPipe)_TOPIC%2Fi"></a><strong></strong></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_AdditivePipe">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_SubtractivePipe">[src]</a></sub></p>
+<a name="H_Helix"></a><h3>Helix</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FHelix)_TOPIC%2Fi"></a><strong></strong></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_AdditiveHelix">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_SubtractiveHelix">[src]</a></sub></p>
+<a name="H_Primitives"></a><h3>Primitives</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FPrimitives)_TOPIC%2Fi"></a><strong></strong></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_AdditiveBox">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_SubtractiveBox">[src]</a></sub></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_AdditiveCylinder">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_SubtractiveCylinder">[src]</a></sub></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_AdditiveSphere">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_SubtractiveSphere">[src]</a></sub></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_AdditiveCone">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_SubtractiveCone">[src]</a></sub></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_AdditiveEllipsoid">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_SubtractiveEllipsoid">[src]</a></sub></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_AdditiveTorus">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_SubtractiveTorus">[src]</a></sub></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_AdditivePrism">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_SubtractivePrism">[src]</a></sub></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_AdditiveWedge">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_SubtractiveWedge">[src]</a></sub></p>
+<a name="H_Fillet%20%2F%20Chamfer"></a><h3>Fillet / Chamfer</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FFillet%20%2F%20Chamfer)_TOPIC%2Fi"></a><strong></strong></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Fillet">[src]</a></sub></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Chamfer">[src]</a></sub></p>
+<a name="H_Draft"></a><h3>Draft</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FDraft)_TOPIC%2Fi"></a><strong></strong></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Draft">[src]</a></sub></p>
+<a name="H_Thickness"></a><h3>Thickness</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FThickness)_TOPIC%2Fi"></a><strong></strong></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Thickness">[src]</a></sub></p>
+<a name="H_Boolean%20Operation"></a><h3>Boolean Operation</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FBoolean%20Operation)_TOPIC%2Fi"></a><strong></strong></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Boolean">[src]</a></sub></p>
+<a name="H_Mirror"></a><h3>Mirror</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FMirror)_TOPIC%2Fi"></a><strong></strong></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Mirrored">[src]</a></sub></p>
+<a name="H_Linear%20Pattern%20%2F%20Polar%20Pattern"></a><h3>Linear Pattern / Polar Pattern</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FLinear%20Pattern%20%2F%20Polar%20Pattern)_TOPIC%2Fi"></a><strong></strong></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_LinearPattern">[src]</a></sub></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_PolarPattern">[src]</a></sub></p>
+<a name="H_Multi-Transform"></a><h3>Multi-Transform</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FMulti-Transform)_TOPIC%2Fi"></a><strong></strong></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_MultiTransform">[src]</a></sub></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Scaled">[src]</a></sub></p>
 <a name="H_Variable%20Sets"></a><h2>Variable Sets</h2>
 <p><a name="BM_(FreeCAD%5C%2FVariable%20Sets)_TOPIC%2Fi"></a><strong></strong></p>
 <a name="H_Quality-of-life%20Settings"></a><h2>Quality-of-life Settings</h2>
@@ -3915,8 +5385,11 @@
 <p><strong>Easier selections using trackpad</strong></p>
 <p>The following instructions make it easier to select items using a trackpad, where you don't have the same level of precision as a mouse.</p>
 <ol>
-<li>Go to <strong>Edit</strong> → <strong>Preferences</strong> → <strong>Display</strong> → <strong>3D View</strong> and set <strong>Marker size</strong> to <strong>11px</strong>.</li>
-<li>Go to <strong>Edit</strong> → <strong>Preferences</strong> → <strong>General</strong> → <strong>Selection</strong> and set <strong>Radius</strong> to <strong>11px</strong>.</li>
+<li>Go to <strong>Edit</strong> → <strong>Preferences</strong> → <strong>Display</strong> → <strong>3D View</strong> and set <strong>Marker size</strong> to <strong>11 px</strong>.</li>
+<li>Go to <strong>Edit</strong> → <strong>Preferences</strong> → <strong>General</strong> → <strong>Selection</strong> and set <strong>Radius</strong> to <strong>11 px</strong>.</li>
+<li>Go to <strong>Edit</strong> → <strong>Preferences</strong> → <strong>Sketcher</strong> → <strong>Appearance</strong> and set all <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a>s to <strong>4 px</strong> (these seem to just be for elements, not constraints?).</li>
+<li>Go to <strong>Edit</strong> → <strong>Preferences</strong> → <strong>Part Design</strong> → <strong>Shape Appearance</strong> and set <strong>Vertex Size</strong> to <strong>9 px</strong> (can't seem to go till 11).</li>
+<li>Go to <strong>Edit</strong> → <strong>Preferences</strong> → <strong>Part Design</strong> → <strong>Shape Appearance</strong> and set <strong><a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">Line Width</a></strong> to <strong>4 px</strong>.</li>
 </ol>
 <p><sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
 <a name="H_Terminology"></a><h1>Terminology</h1>
@@ -4351,15 +5824,17 @@
 <p><a name="BM_(modifier%20part)%2Fi"></a><strong>modifier part</strong> - an object within an <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> whose purpose is to modify the properties of other objects in that <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> (where those objects themselves aren't specialized objects like <a href="#BM_(negative%20part)%2Fi">negative part</a>s). <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/modifier">[src]</a></sub></p>
 </li>
 <li>
-<p><a name="BM_(contour)%2Fi"></a><strong>contour</strong> - The outer perimeter of the object as printed up the Z-axis (collective outer perimeters of the <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s that make up the printed object). For example, for an object of a salad bowl, the shape of the unhollowed out bowl is the <a href="#BM_(contour)%2Fi">contour</a>. <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation">[src]</a></sub></p>
+<p><a name="BM_(contours%3F)_BS%2Fi"></a><strong>contour</strong> - The outer perimeter of the object as printed up the Z-axis (collective outer perimeters of the <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s that make up the printed object). For example, for an object of a salad bowl, the shape of the unhollowed out bowl is the <a href="#BM_(contours%3F)_BS%2Fi">contour</a>. <sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation">[src]</a></sub></p>
+<p></p>
 </li>
 <li>
-<p><a name="BM_(%5Cbhole)%2Fi"></a><strong>hole</strong> - The perimeter of a void/cavity within an object <em>as printed up the Z-axis</em>. For example, for an object of a salad bowl, the shape of the hollowed out part that is considered a <a href="#BM_(%5Cbhole)%2Fi">hole</a>. Types of common <a href="#BM_(%5Cbhole)%2Fi">hole</a>s include threaded <a href="#BM_(%5Cbhole)%2Fi">hole</a>s for screws / bolts, drainage <a href="#BM_(%5Cbhole)%2Fi">hole</a>s, and <a href="#BM_(%5Cbhole)%2Fi">hole</a>s for connectors (e.g., dowels).</p>
+<p><a name="BM_(%5Cbholes%3F)_BS%2Fi"></a><strong>hole</strong> - The perimeter of a void/cavity within an object <em>as printed up the Z-axis</em>. For example, for an object of a salad bowl, the shape of the hollowed out part that is considered a <a href="#BM_(%5Cbholes%3F)_BS%2Fi">hole</a>. Types of common <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a> include threaded <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a> for screws / bolts, drainage <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a>, and <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a> for connectors (e.g., dowels).</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p><a href="#BM_(%5Cbhole)%2Fi">Hole</a>s on the z-axis are <a href="#BM_(%5Cbhole)%2Fi">hole</a>s that are compensated for using XY <a href="#BM_(%5Cbhole)%2Fi">hole</a> <a href="#BM_(contour)%2Fi">contour</a> compensation. It does not compensate for sideway <a href="#BM_(%5Cbhole)%2Fi">hole</a>s.</p>
+<p><a href="#BM_(%5Cbholes%3F)_BS%2Fi">Holes</a> on the z-axis are <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a> that are compensated for using XY <a href="#BM_(%5Cbholes%3F)_BS%2Fi">hole</a> <a href="#BM_(contours%3F)_BS%2Fi">contour</a> compensation. It does not compensate for sideway <a href="#BM_(%5Cbholes%3F)_BS%2Fi">holes</a>.</p>
 </div>
 <p><sub><a href="https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation">[src]</a></sub></p>
+<p></p>
 </li>
 <li>
 <p><a name="BM_(elephant%20foot)%2Fi"></a><strong>elephant foot</strong> - A phenomenon where the first <a href="#BM_(layer%7Cslice)%2Fi">layer</a> of a print slightly splays out because it doesn't cool properly (it sits directly on a heated <a href="#BM_(build%20plate)%2Fi">build plate</a>). Either through the non-cooling itself or through the non-cooling along with subsequent <a href="#BM_(layer%7Cslice)%2Fi">layer</a>s weighing down on it, causes the first <a href="#BM_(layer%7Cslice)%2Fi">layer</a> to squish and splay.</p>
