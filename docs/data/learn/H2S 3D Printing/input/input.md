@@ -4389,16 +4389,21 @@ FreeCAD/Spreadsheet Workbench_TOPIC
 FreeCAD/Sketcher Workbench_TOPIC
 ```
 
-Part Design workbench allows building 3D models, mostly by compounding 2D sketches that build out 3D features. For example, a sketch of a square that's 5mm by 5mm can be padded by 5mm to create a cube. Then, a sketch of a circle with a 3.5mm diameter can be placed on a face of that cube and pocketed to create a cylindrical !!hole!! through that cube.
+Part Design workbench allows building 3D models, mostly by transforming 2D sketches into 3D features. For example, a sketch of a square that's 5mm by 5mm can be padded by 5mm to create a cube. Then, a sketch of a circle with a 3.5mm diameter can be placed on a face of that cube and pocketed to create a cylindrical !!hole!! through that cube.
 
 ![FreeCAD Part Design workbench example](freecad_part_design_example.png)
 
-The example above is a single body. A Part Design document holds one or more bodies, and each body compounds several sketches into features.
+Features are built out using a non-destructive workflow. That means, as features build on top of other features, it's possible to modify earlier features and have the change cascade down to later features. For example, with cylinder-through-box example above, it's possible to go up and change box's dimensions and fillet its corners. The cylinder cut-out feature will still apply.
+
+![FreeCAD Part Design workbench example 2](freecad_part_design_example_2.png)
+
+![FreeCAD Part Design workbench example 2 workflow](freecad_part_design_example_2_workflow.png)
+
+The core components of the Part Design workbench are parts, bodies, and sketches. A body is a model built mostly by transforming 2D sketches into 3D features. If the object has multiple bodies to it, those bodies are placed under a part.
 
 ```{plantuml}
 @startuml
 
-left to right direction
 hide circle
 
 Part ||--|{ Body : "contains"
@@ -4406,27 +4411,6 @@ Body ||--|{ NonSketchFeature : "built using"
 Body ||--|{ SketchFeature : "built using"
 
 @enduml
-```
-
-A body's features are built out using a non-destructive workflow. That means, as features build on top of other features, it's possible to modify earlier features and have the change cascade down to later features. For example, with cylinder-through-box example above, it's possible to go up and change box's dimensions and fillet its corners. The cylinder feature will still apply.
-
-![FreeCAD Part Design workbench example 2](freecad_part_design_example_2.png)
-
-![FreeCAD Part Design workbench example 2 workflow](freecad_part_design_example_2_workflow.png)
-
-Each body has its own local coordinate system. Externally, the body may be offset and rotated within the part.
-
-![FreeCAD part design workbench body translation properties](freecad_part_design_body_translation_properties.png)
-
-* Position defines offset.
-* Axis and angle define rotation - axis defines a vector and angle rotates around that vector.
-
-```{note}
-Local coordinate system means internally the body has its own origin and basis axes, and all operations building out features within the body are relative to that origin and those basis axes.
-```
-
-```{note}
-An easier way to set the orientation is, in the Model pane, right-click on the body and choose **Transform**. It sets the same properties highlighted in the above screenshot, but it also provides gizmos in the viewport and a popup pane with more friendly ways to set.
 ```
 
 `{ref} https://wiki.freecad.org/PartDesign_Workbench` `{ref} https://wiki.freecad.org/Basic_Part_Design_Tutorial`
@@ -4447,7 +4431,7 @@ FreeCAD/User Interface Layout_TOPIC
 
 **Sketch**
 
- * (2) Sketch operations: These toolbar buttons give quick access to sketch functionality. A part design document can contain multiple sketches, where those sketches are attached on to a plane or an existing face of the model. These sketches are selectable in the Model pane's tree, and each acts (in whole or in part) as the !!base!! for a 3D feature (e.g., extrude sketch into 3D).
+ * (2) Sketch operations: These toolbar buttons give quick access to sketch functionality. A body can contain multiple sketches, where those sketches are attached on to a plane or an existing face of the model. Those sketches are selectable in the Model pane's tree, and each acts (in whole or partially) as the !!base!! for a 3D feature (e.g., pad sketch into 3D).
  
    From left-to-right, ...
 
@@ -4459,11 +4443,11 @@ FreeCAD/User Interface Layout_TOPIC
 
 **Helpers**
 
- * (3) Helpers: These toolbar buttons provide access to helpful part design tools. From left-to-right, ...
+ * (3) Helpers: These toolbar buttons provide access to helpful tools. From left-to-right, ...
 
    * analyze selected geometry for errors.
    * create a sub-shape binder, which pulls in geometry from another body / object by referencing it.
-   * clone selected object into a new body (linked, not copied).
+   * clone selected into a new body (linked, not copied).
 
 **Modeling Features**
 
@@ -4472,8 +4456,8 @@ FreeCAD/User Interface Layout_TOPIC
    * create a solid by padding a sketch.
    * create a solid by revolving a sketch around an axis.
    * create a solid by creating transitions between two or more sketches (sketches are cross-sections of the solid).
-   * create a solid by sweeping a sketch around a helix
-   * create a primitive solid (e.g., box, cylinder, sphere)
+   * create a solid by sweeping a sketch around a helix.
+   * create a primitive solid (e.g., box, cylinder, sphere).
 
  * (5) Subtractive features: These toolbar buttons provide access to sketch-to-3D features that remove from an object. From left-to-right, ...
 
@@ -4504,29 +4488,192 @@ FreeCAD/User Interface Layout_TOPIC
 
 `{ref} https://wiki.freecad.org/PartDesign_Workbench`
 
-### Body
+### Organization
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Body)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Organization)_TOPIC/i`
 
-Create a body, clone a body, transform a body.
+```{prereq}
+FreeCAD/Part Design Workbench\/User Interface_TOPIC
+```
 
-`{ref} https://wiki.freecad.org/PartDesign_Body`
+The core components of the Part Design workbench are parts, bodies, and sketches. A part holds one or more bodies, and each body typically compounds several sketches into 3D geometry. While bodies can be created outside of parts, parts are beneficial in that a part encapsulates all bodies together as a unit (among other reasons).
 
-`{ref} https://wiki.freecad.org/Body`
+```{plantuml}
+@startuml
 
-`{ref} https://wiki.freecad.org/PartDesign_Clone`
+hide circle
 
-### Sketch
+Part ||--|{ Body : "contains"
+Body ||--|{ NonSketchFeature : "built using"
+Body ||--|{ SketchFeature : "built using"
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Sketch)_TOPIC/i`
+@enduml
+```
+
+#### Part
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Part)_TOPIC/i`
+
+A part is a container that can hold one or more bodies, as well as other types of objects. Parts aren't unique to the Part Design workbench, but they're valuable as an encapsulation for bodies because if what's being modeled consists of multiple bodies, having those bodies grouped under the same part makes it easier to reuse in other workbenches (e.g., assembly workbench).
+
+`{ref} https://wiki.freecad.org/Std_Part` `{ref} self`
+
+##### Create
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Part\/Create)_TOPIC/i`
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To create a part, use toolbar button 1. Bodies can be moved in to / out of the part by dragging them within the Model pane.
+
+`{ref} https://wiki.freecad.org/Std_Part` `{ref} self`
+
+##### Coordinate System
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Part\/Coordinate System)_TOPIC/i`
+
+A part has its own local coordinate system: Internally, bodies are moved and rotated using the local coordinate system. Externally, the part (and all the bodies within it) is moveable and rotatable as a single unit.
+
+![FreeCAD part design workbench part model pane example](freecad_part_design_part_model_pane_example.png)
+
+```{note}
+Axis and angle define rotation - axis defines a vector and angle rotates around that vector.
+```
+
+```{note}
+An easier way to set the orientation is, in the Model pane, right-click and choose **Transform**. It sets the same properties highlighted in the above screenshot, but it also provides gizmos in the viewport and a popup pane with more friendly ways to set.
+```
+
+`{ref} self`
+
+#### Body
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Body)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Part Design Workbench/Organization/Part_TOPIC
+```
+
+A body is a 3D model, mostly built by compounding several sketches into 3D geometry in a chain.
+
+The list of features nested under a body comprise a non-destructive workflow. For example, a sketch of a square that's 5mm by 5mm can be padded by 10mm to create a rectangular prism. Then, a sketch of a circle with a 3.5mm diameter can be placed on a face of that prism and pocketed to create a cylindrical !!hole!! through that cube.
+
+![FreeCAD Part Design workbench example 2](freecad_part_design_example_2.png)
+
+![FreeCAD Part Design workbench example 2 workflow](freecad_part_design_example_2_workflow.png)
+
+##### Create
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Body\/Create)_TOPIC/i`
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To create a body, use toolbar button 3 to create a new body. For certain operations, if there is no body, one is implicitly created when the operation runs (e.g., creating a new sketch from the Part Design workbench).
+
+`{ref} https://wiki.freecad.org/PartDesign_Body` `{ref} https://wiki.freecad.org/Body`
+
+##### Clone
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Body\/Clone)_TOPIC/i`
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To create a body, use toolbar button 8 to clone the current Model pane selection into a new body. A clone is linked, not copied. That means changing the original changes the clone.
+
+`{ref} https://wiki.freecad.org/PartDesign_Clone` `{ref} self`
+
+##### Coordinate System
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Coordinate System)_TOPIC/i`
+
+Each body has its own local coordinate system that features nested within it are relative to. The properties of a body define its position and rotation within its parent container. In most cases, that parent container is a part, but a body can also live outside of a part.
+
+![FreeCAD part design workbench body translation properties](freecad_part_design_body_translation_properties.png)
+
+```{note}
+Axis and angle define rotation - axis defines a vector and angle rotates around that vector.
+```
+
+```{note}
+An easier way to set the orientation is, in the Model pane, right-click and choose **Transform**. It sets the same properties highlighted in the above screenshot, but it also provides gizmos in the viewport and a popup pane with more friendly ways to set.
+```
+
+ `{ref} self`
+
+#### Sketch
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Sketch)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Part Design Workbench/Organization/Body_TOPIC
+FreeCAD/Sketcher Workbench_TOPIC
+```
+
+Sketches are core to building out a body. As such, the Part Design workbench provides quick access to sketching functionality.
+
+##### Create
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Sketch\/Create)_TOPIC/i`
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To create a sketch, use toolbar button 4 and select New Sketch. If the 3D viewport has ...
+
+* a face selected, the sketch will be placed on the face's plane.
+* nothing is selected, the 3D viewport will present the standard basis axis planes (e.g., XY plane, XZ plane). Selecting one of those planes will place the sketch will be placed on that plane.
+
+```{note}
+Sketches cannot be attached to curved faces. The only workaround is to attach a datum plane on that face and center it somehow. That'll allow sketching onto the datum plane and cutting into the face / padding from the face (but you'll need to pad both ways because there'll be gaps between the datum plane and the curved face).
+
+The other option is to use the curves workbench, which allows projecting a sketch onto a curved face.
+```
+
+Once created, the sketch will be entered in Edit mode (Sketcher Workbench will activate). Clicking the Leave Sketch button in the toolbar / clicking the Leave button above the Sketch Edit pane will pop out of the sketch and back into Part Design.
+
+![FreeCAD sketcher workbench popouts highlighted](freecad_sketcher_popouts_highlighted.png)
 
 `{ref} https://wiki.freecad.org/PartDesign_NewSketch`
 
-`{ref} https://wiki.freecad.org/Sketcher_MapSketch`
+##### Edit
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Sketch\/Edit)_TOPIC/i`
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To edit an existing sketch, select the sketch in the Model pane or 3D viewport, then use toolbar button 4 and select Edit Sketch.
 
 `{ref} https://wiki.freecad.org/Sketcher_EditSketch`
 
+##### Attach
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Sketch\/Attach)_TOPIC/i`
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To attach an existing sketch to something else (e.g., another face), select the thing to attach, then use toolbar button 4 and select Attach Sketch. A dialog will pop-up asking for which sketch to attach, then a subsequent dialog will pop-up asking for the method of attachment (should be Plane face most of the time.)
+
+![FreeCAD part design workbench attach sketch sketch selection](freecad_part_design_attach_sketch_sketch_selection.png) ![FreeCAD part design workbench attach sketch method selection](freecad_part_design_attach_sketch_method_selection.png)
+
 `{ref} https://wiki.freecad.org/Sketcher_MapSketch`
+
+##### Validate
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Sketch\/Validate)_TOPIC/i`
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To edit an existing sketch, select the sketch in the Model pane or 3D viewport, then use toolbar button 5. A Sketch Validation pane should appear wit buttons to test for specific issues.
+
+![FreeCAD Part Design workbench sketch validation](freecad_part_design_sketch_validation.png)
+
+```{note}
+It's too much work to go through what all these are. At a high-level, it should mostly be self explanatory / you should be able to get it with a quick Google search.
+```
+
+```{seealso}
+FreeCAD/Sketcher Workbench/Sketching/3D Feature Validity_TOPIC
+FreeCAD/Sketcher Workbench/Sketching/Sketch Flipping_TOPIC
+```
 
 `{ref} https://wiki.freecad.org/Sketcher_ValidateSketch`
 
@@ -4534,11 +4681,71 @@ Create a body, clone a body, transform a body.
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Pad \/ Pocket)_TOPIC/i`
 
+```{prereq}
+FreeCAD/Part Design Workbench/User Interface_TOPIC
+FreeCAD/Part Design Workbench/Organization_TOPIC
+```
+
+A pad operation and a pocket operation are effectively the same thing, except that ...
+
+* pad is additive (creates a solid and merges it with existing geometry it collides with).
+* pocket is subtractive (creates a solid and cuts out it from existing geometry it collides with).
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To pad / pocket, select a sketch and use either toolbar button 9 (Pad) or toolbar button 15 (Pocket). Once selected, gizmos appear in the 3D viewport and a parameter pane opens.
+
+![FreeCAD Part Design workbench pad example](freecad_part_design_pad_example.png)
+
+The **Mode** parameter defines which directions the sketch is extruded in:
+
+* **One sided**: Extrude in one direction.
+* **Two sided**: Extrude in one direction as well as the opposite direction, where each direction has its own set of parameters (e.g., each direction has its own length).
+* **Symmetric**: Extrude symmetrically in one direction as well as the opposite direction (e.g., one length applied to both directions).
+
+**One sided** and **Two sided** both enable the **Reversed** parameter, which reverses direction / directions of extrusion.
+
+The **Type** parameter defines the stopping point of the extrusion:
+
+* **Dimension**: Manually define extrusion length and taper angle. When selected, multiple gizmos appear in the 3D viewport. The arrow gizmo controls the **Length** parameter, while the arc gizmo controls the **Taper** parameter.
+* **To last**: Extrude until the last intersecting face.
+* **To first**: Extrude until the first intersecting face.
+* **To face**: Extrude until a specific face.
+* **To shape**: Extrude until a specific shape, or a face on a specific shape.
+
+```{note}
+It isn't clearly explained what qualifies as a shape.
+```
+
+The **Direction** parameter defines the direction of the sketch's extrusion:
+
+* **Sketch normal**: Normal vector of the sketch.
+* **Select reference...**: Direction of an edge / datum line.
+* **Custom direction**: Manually define a vector.
+
 `{ref} https://wiki.freecad.org/PartDesign_Pad` `{ref} https://wiki.freecad.org/PartDesign_Pocket`
 
 ### Hole
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Hole)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Part Design Workbench/User Interface_TOPIC
+FreeCAD/Part Design Workbench/Organization_TOPIC
+```
+
+A !!hole!! operation cuts out a standardized fastener !!hole!! from existing geometry it collides with (e.g., !!hole!! for a screw or nail).
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To create a !!hole!!, create a sketch with one or more circles. Then, select the sketch and use toolbar button 16. Once selected, gizmos may appear in the 3D viewport and a parameter pane opens.
+
+![FreeCAD Part Design workbench hole example](freecad_part_design_hole.png)
+
+```{note}
+As of time of writing, I don't know enough about fasteners to fully understand a lot of what's going on here.
+```
+
 
 `{ref} https://wiki.freecad.org/PartDesign_Hole`
 
