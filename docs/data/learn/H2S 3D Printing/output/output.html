@@ -195,8 +195,27 @@
 <li><a href="#H_Part%20Design%20Workbench">Part Design Workbench</a></li>
 <ul>
 <li><a href="#H4_User%20Interface">User Interface</a></li>
+<li><a href="#H_Organization">Organization</a></li>
+<ul>
+<li><a href="#H_Part">Part</a></li>
+<ul>
+<li><a href="#H_Create">Create</a></li>
+<li><a href="#H_Coordinate%20System">Coordinate System</a></li>
+</ul>
 <li><a href="#H_Body">Body</a></li>
+<ul>
+<li><a href="#H1_Create">Create</a></li>
+<li><a href="#H_Clone">Clone</a></li>
+<li><a href="#H1_Coordinate%20System">Coordinate System</a></li>
+</ul>
 <li><a href="#H_Sketch">Sketch</a></li>
+<ul>
+<li><a href="#H2_Create">Create</a></li>
+<li><a href="#H_Edit">Edit</a></li>
+<li><a href="#H_Attach">Attach</a></li>
+<li><a href="#H_Validate">Validate</a></li>
+</ul>
+</ul>
 <li><a href="#H_Pad%20%2F%20Pocket">Pad / Pocket</a></li>
 <li><a href="#H_Hole">Hole</a></li>
 <li><a href="#H_Revolution%20%2F%20Groove">Revolution / Groove</a></li>
@@ -5194,27 +5213,13 @@
 <li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench)_TOPIC%2Fi">FreeCAD/Sketcher Workbench</a></li>
 </ul>
 </div>
-<p>Part Design workbench allows building 3D models, mostly by compounding 2D sketches that build out 3D features. For example, a sketch of a square that's 5mm by 5mm can be padded by 5mm to create a cube. Then, a sketch of a circle with a 3.5mm diameter can be placed on a face of that cube and pocketed to create a cylindrical hole through that cube.</p>
+<p>Part Design workbench allows building 3D models, mostly by transforming 2D sketches into 3D features. For example, a sketch of a square that's 5mm by 5mm can be padded by 5mm to create a cube. Then, a sketch of a circle with a 3.5mm diameter can be placed on a face of that cube and pocketed to create a cylindrical hole through that cube.</p>
 <p><img src="freecad_part_design_example.png" alt="FreeCAD Part Design workbench example"></p>
-<p>The example above is a single body. A Part Design document holds one or more bodies, and each body compounds several sketches into features.</p>
-<p><img src="puml_c37c9e13bb1c420c11fb5d3f5a4c8eec.svg" alt="PlantUML diagram"></p>
-<p>A body's features are built out using a non-destructive workflow. That means, as features build on top of other features, it's possible to modify earlier features and have the change cascade down to later features. For example, with cylinder-through-box example above, it's possible to go up and change box's dimensions and fillet its corners. The cylinder feature will still apply.</p>
+<p>Features are built out using a non-destructive workflow. That means, as features build on top of other features, it's possible to modify earlier features and have the change cascade down to later features. For example, with cylinder-through-box example above, it's possible to go up and change box's dimensions and fillet its corners. The cylinder cut-out feature will still apply.</p>
 <p><img src="freecad_part_design_example_2.png" alt="FreeCAD Part Design workbench example 2"></p>
 <p><img src="freecad_part_design_example_2_workflow.png" alt="FreeCAD Part Design workbench example 2 workflow"></p>
-<p>Each body has its own local coordinate system. Externally, the body may be offset and rotated within the part.</p>
-<p><img src="freecad_part_design_body_translation_properties.png" alt="FreeCAD part design workbench body translation properties"></p>
-<ul>
-<li>Position defines offset.</li>
-<li>Axis and angle define rotation - axis defines a vector and angle rotates around that vector.</li>
-</ul>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Local coordinate system means internally the body has its own origin and basis axes, and all operations building out features within the body are relative to that origin and those basis axes.</p>
-</div>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>An easier way to set the orientation is, in the Model pane, right-click on the body and choose <strong>Transform</strong>. It sets the same properties highlighted in the above screenshot, but it also provides gizmos in the viewport and a popup pane with more friendly ways to set.</p>
-</div>
+<p>The core components of the Part Design workbench are parts, bodies, and sketches. A body is a model built mostly by transforming 2D sketches into 3D features. If the object has multiple bodies to it, those bodies are placed under a part.</p>
+<p><img src="puml_5ccdbafe476eafc10c849a11c2ec8c66.svg" alt="PlantUML diagram"></p>
 <p><sub><a href="https://wiki.freecad.org/PartDesign_Workbench">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Basic_Part_Design_Tutorial">[src]</a></sub></p>
 <a name="H4_User%20Interface"></a><h3>User Interface</h3>
 <p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FUser%20Interface)_TOPIC%2Fi"></a><strong></strong></p>
@@ -5232,7 +5237,7 @@
 <p><strong>Sketch</strong></p>
 <ul>
 <li>
-<p>(2) Sketch operations: These toolbar buttons give quick access to sketch functionality. A part design document can contain multiple sketches, where those sketches are attached on to a plane or an existing face of the model. These sketches are selectable in the Model pane's tree, and each acts (in whole or in part) as the base for a 3D feature (e.g., extrude sketch into 3D).</p>
+<p>(2) Sketch operations: These toolbar buttons give quick access to sketch functionality. A body can contain multiple sketches, where those sketches are attached on to a plane or an existing face of the model. Those sketches are selectable in the Model pane's tree, and each acts (in whole or partially) as the base for a 3D feature (e.g., pad sketch into 3D).</p>
 <p>From left-to-right, ...</p>
 <ul>
 <li>drop-down to either ...
@@ -5249,11 +5254,11 @@
 <p><strong>Helpers</strong></p>
 <ul>
 <li>
-<p>(3) Helpers: These toolbar buttons provide access to helpful part design tools. From left-to-right, ...</p>
+<p>(3) Helpers: These toolbar buttons provide access to helpful tools. From left-to-right, ...</p>
 <ul>
 <li>analyze selected geometry for errors.</li>
 <li>create a sub-shape binder, which pulls in geometry from another body / object by referencing it.</li>
-<li>clone selected object into a new body (linked, not copied).</li>
+<li>clone selected into a new body (linked, not copied).</li>
 </ul>
 </li>
 </ul>
@@ -5265,8 +5270,8 @@
 <li>create a solid by padding a sketch.</li>
 <li>create a solid by revolving a sketch around an axis.</li>
 <li>create a solid by creating transitions between two or more sketches (sketches are cross-sections of the solid).</li>
-<li>create a solid by sweeping a sketch around a helix</li>
-<li>create a primitive solid (e.g., box, cylinder, sphere)</li>
+<li>create a solid by sweeping a sketch around a helix.</li>
+<li>create a primitive solid (e.g., box, cylinder, sphere).</li>
 </ul>
 </li>
 <li>
@@ -5306,27 +5311,301 @@
 </li>
 </ul>
 <p><sub><a href="https://wiki.freecad.org/PartDesign_Workbench">[src]</a></sub></p>
-<a name="H_Body"></a><h3>Body</h3>
-<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FBody)_TOPIC%2Fi"></a><strong></strong></p>
-<p>Create a body, clone a body, transform a body.</p>
-<p><sub><a href="https://wiki.freecad.org/PartDesign_Body">[src]</a></sub></p>
-<p><sub><a href="https://wiki.freecad.org/Body">[src]</a></sub></p>
-<p><sub><a href="https://wiki.freecad.org/PartDesign_Clone">[src]</a></sub></p>
-<a name="H_Sketch"></a><h3>Sketch</h3>
-<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FSketch)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Organization"></a><h3>Organization</h3>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FUser%20Interface)_TOPIC%2Fi">FreeCAD/Part Design Workbench/User Interface</a></li>
+</ul>
+</div>
+<p>The core components of the Part Design workbench are parts, bodies, and sketches. A part holds one or more bodies, and each body typically compounds several sketches into 3D geometry. While bodies can be created outside of parts, parts are beneficial in that a part encapsulates all bodies together as a unit (among other reasons).</p>
+<p><img src="puml_5ccdbafe476eafc10c849a11c2ec8c66.svg" alt="PlantUML diagram"></p>
+<a name="H_Part"></a><h4>Part</h4>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization%2FPart)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A part is a container that can hold one or more bodies, as well as other types of objects. Parts aren't unique to the Part Design workbench, but they're valuable as an encapsulation for bodies because if what's being modeled consists of multiple bodies, having those bodies grouped under the same part makes it easier to reuse in other workbenches (e.g., <a href="#BM_(assembly%7Cassemblies)%2Fi">assembly</a> workbench).</p>
+<p><sub><a href="https://wiki.freecad.org/Std_Part">[src]</a></sub> <sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
+<a name="H_Create"></a><h5>Create</h5>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization%2FPart%2FCreate)_TOPIC%2Fi"></a><strong></strong></p>
+<p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
+<p>To create a part, use toolbar button 1. Bodies can be moved in to / out of the part by dragging them within the Model pane.</p>
+<p><sub><a href="https://wiki.freecad.org/Std_Part">[src]</a></sub> <sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
+<a name="H_Coordinate%20System"></a><h5>Coordinate System</h5>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization%2FPart%2FCoordinate%20System)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A part has its own local coordinate system: Internally, bodies are moved and rotated using the local coordinate system. Externally, the part (and all the bodies within it) is moveable and rotatable as a single unit.</p>
+<p><img src="freecad_part_design_part_model_pane_example.png" alt="FreeCAD part design workbench part model pane example"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Axis and angle define rotation - axis defines a vector and angle rotates around that vector.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>An easier way to set the orientation is, in the Model pane, right-click and choose <strong>Transform</strong>. It sets the same properties highlighted in the above screenshot, but it also provides gizmos in the viewport and a popup pane with more friendly ways to set.</p>
+</div>
+<p><sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
+<a name="H_Body"></a><h4>Body</h4>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization%2FBody)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization%2FPart)_TOPIC%2Fi">FreeCAD/Part Design Workbench/Organization/Part</a></li>
+</ul>
+</div>
+<p>A body is a 3D model, mostly built by compounding several sketches into 3D geometry in a chain.</p>
+<p>The list of features nested under a body comprise a non-destructive workflow. For example, a sketch of a square that's 5mm by 5mm can be padded by 10mm to create a rectangular prism. Then, a sketch of a circle with a 3.5mm diameter can be placed on a face of that prism and pocketed to create a cylindrical hole through that cube.</p>
+<p><img src="freecad_part_design_example_2.png" alt="FreeCAD Part Design workbench example 2"></p>
+<p><img src="freecad_part_design_example_2_workflow.png" alt="FreeCAD Part Design workbench example 2 workflow"></p>
+<a name="H1_Create"></a><h5>Create</h5>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization%2FBody%2FCreate)_TOPIC%2Fi"></a><strong></strong></p>
+<p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
+<p>To create a body, use toolbar button 3 to create a new body. For certain operations, if there is no body, one is implicitly created when the operation runs (e.g., creating a new sketch from the Part Design workbench).</p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Body">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Body">[src]</a></sub></p>
+<a name="H_Clone"></a><h5>Clone</h5>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization%2FBody%2FClone)_TOPIC%2Fi"></a><strong></strong></p>
+<p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
+<p>To create a body, use toolbar button 8 to clone the current Model pane selection into a new body. A clone is linked, not copied. That means changing the original changes the clone.</p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Clone">[src]</a></sub> <sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
+<a name="H1_Coordinate%20System"></a><h5>Coordinate System</h5>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization%2FCoordinate%20System)_TOPIC%2Fi"></a><strong></strong></p>
+<p>Each body has its own local coordinate system that features nested within it are relative to. The properties of a body define its position and rotation within its parent container. In most cases, that parent container is a part, but a body can also live outside of a part.</p>
+<p><img src="freecad_part_design_body_translation_properties.png" alt="FreeCAD part design workbench body translation properties"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Axis and angle define rotation - axis defines a vector and angle rotates around that vector.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>An easier way to set the orientation is, in the Model pane, right-click and choose <strong>Transform</strong>. It sets the same properties highlighted in the above screenshot, but it also provides gizmos in the viewport and a popup pane with more friendly ways to set.</p>
+</div>
+<p><sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
+<a name="H_Sketch"></a><h4>Sketch</h4>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization%2FSketch)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization%2FBody)_TOPIC%2Fi">FreeCAD/Part Design Workbench/Organization/Body</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench)_TOPIC%2Fi">FreeCAD/Sketcher Workbench</a></li>
+</ul>
+</div>
+<p>Sketches are core to building out a body. As such, the Part Design workbench provides quick access to sketching functionality.</p>
+<a name="H2_Create"></a><h5>Create</h5>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization%2FSketch%2FCreate)_TOPIC%2Fi"></a><strong></strong></p>
+<p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
+<p>To create a sketch, use toolbar button 4 and select New Sketch. If the 3D viewport has ...</p>
+<ul>
+<li>a face selected, the sketch will be placed on the face's plane.</li>
+<li>nothing is selected, the 3D viewport will present the standard basis axis planes (e.g., XY plane, XZ plane). Selecting one of those planes will place the sketch will be placed on that plane.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Sketches cannot be attached to curved faces. The only workaround is to attach a datum plane on that face and center it somehow. That'll allow sketching onto the datum plane and cutting into the face / padding from the face (but you'll need to pad both ways because there'll be gaps between the datum plane and the curved face).</p>
+<p>The other option is to use the curves workbench, which allows projecting a sketch onto a curved face.</p>
+</div>
+<p>Once created, the sketch will be entered in Edit mode (Sketcher Workbench will activate). Clicking the Leave Sketch button in the toolbar / clicking the Leave button above the Sketch Edit pane will pop out of the sketch and back into Part Design.</p>
+<p><img src="freecad_sketcher_popouts_highlighted.png" alt="FreeCAD sketcher workbench popouts highlighted"></p>
 <p><sub><a href="https://wiki.freecad.org/PartDesign_NewSketch">[src]</a></sub></p>
-<p><sub><a href="https://wiki.freecad.org/Sketcher_MapSketch">[src]</a></sub></p>
+<a name="H_Edit"></a><h5>Edit</h5>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization%2FSketch%2FEdit)_TOPIC%2Fi"></a><strong></strong></p>
+<p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
+<p>To edit an existing sketch, select the sketch in the Model pane or 3D viewport, then use toolbar button 4 and select Edit Sketch.</p>
 <p><sub><a href="https://wiki.freecad.org/Sketcher_EditSketch">[src]</a></sub></p>
+<a name="H_Attach"></a><h5>Attach</h5>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization%2FSketch%2FAttach)_TOPIC%2Fi"></a><strong></strong></p>
+<p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
+<p>To attach an existing sketch to something else (e.g., another face), select the thing to attach, then use toolbar button 4 and select Attach Sketch. A dialog will pop-up asking for which sketch to attach, then a subsequent dialog will pop-up asking for the method of attachment (should be Plane face most of the time.)</p>
+<p><img src="freecad_part_design_attach_sketch_sketch_selection.png" alt="FreeCAD part design workbench attach sketch sketch selection"> <img src="freecad_part_design_attach_sketch_method_selection.png" alt="FreeCAD part design workbench attach sketch method selection"></p>
 <p><sub><a href="https://wiki.freecad.org/Sketcher_MapSketch">[src]</a></sub></p>
+<a name="H_Validate"></a><h5>Validate</h5>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization%2FSketch%2FValidate)_TOPIC%2Fi"></a><strong></strong></p>
+<p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
+<p>To edit an existing sketch, select the sketch in the Model pane or 3D viewport, then use toolbar button 5. A Sketch Validation pane should appear wit buttons to test for specific issues.</p>
+<p><img src="freecad_part_design_sketch_validation.png" alt="FreeCAD Part Design workbench sketch validation"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>It's too much work to go through what all these are. At a high-level, it should mostly be self explanatory / you should be able to get it with a quick Google search.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2F3D%20Feature%20Validity)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/3D Feature Validity</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FSketcher%20Workbench%2FSketching%2FSketch%20Flipping)_TOPIC%2Fi">FreeCAD/Sketcher Workbench/Sketching/Sketch Flipping</a></li>
+</ul>
+</div>
 <p><sub><a href="https://wiki.freecad.org/Sketcher_ValidateSketch">[src]</a></sub></p>
 <a name="H_Pad%20%2F%20Pocket"></a><h3>Pad / Pocket</h3>
 <p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FPad%20%2F%20Pocket)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FUser%20Interface)_TOPIC%2Fi">FreeCAD/Part Design Workbench/User Interface</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization)_TOPIC%2Fi">FreeCAD/Part Design Workbench/Organization</a></li>
+</ul>
+</div>
+<p>A pad operation and a pocket operation are effectively the same thing, except that ...</p>
+<ul>
+<li>pad is additive (creates a solid and merges it with existing geometry it collides with).</li>
+<li>pocket is subtractive (creates a solid and cuts out it from existing geometry it collides with).</li>
+</ul>
+<p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
+<p>To pad / pocket, select a sketch and use either toolbar button 9 (Pad) or toolbar button 15 (Pocket). Once selected, gizmos appear in the 3D viewport and a parameter pane opens.</p>
+<p><img src="freecad_part_design_pad_example.png" alt="FreeCAD Part Design workbench pad example"></p>
+<p>The <strong>Mode</strong> parameter defines which directions the sketch is extruded in:</p>
+<ul>
+<li><strong>One sided</strong>: Extrude in one direction.</li>
+<li><strong>Two sided</strong>: Extrude in one direction as well as the opposite direction, where each direction has its own set of parameters (e.g., each direction has its own length).</li>
+<li><strong>Symmetric</strong>: Extrude symmetrically in one direction as well as the opposite direction (e.g., one length applied to both directions).</li>
+</ul>
+<p><strong>One sided</strong> and <strong>Two sided</strong> both enable the <strong>Reversed</strong> parameter, which reverses direction / directions of extrusion.</p>
+<p>The <strong>Type</strong> parameter defines the stopping point of the extrusion:</p>
+<ul>
+<li><strong>Dimension</strong>: Manually define extrusion length and taper angle. When selected, multiple gizmos appear in the 3D viewport. The arrow gizmo controls the <strong>Length</strong> parameter, while the arc gizmo controls the <strong>Taper</strong> parameter.</li>
+<li><strong>To last</strong>: Extrude until the last intersecting face.</li>
+<li><strong>To first</strong>: Extrude until the first intersecting face.</li>
+<li><strong>To face</strong>: Extrude until a specific face.</li>
+<li><strong>To shape</strong>: Extrude until a specific shape, or a face on a specific shape.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>It isn't clearly explained what qualifies as a shape.</p>
+</div>
+<p>The <strong>Direction</strong> parameter defines the direction of the sketch's extrusion:</p>
+<ul>
+<li><strong>Sketch normal</strong>: Normal vector of the sketch.</li>
+<li><strong>Select reference...</strong>: Direction of an edge / datum line.</li>
+<li><strong>Custom direction</strong>: Manually define a vector.</li>
+</ul>
 <p><sub><a href="https://wiki.freecad.org/PartDesign_Pad">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_Pocket">[src]</a></sub></p>
 <a name="H_Hole"></a><h3>Hole</h3>
 <p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FHole)_TOPIC%2Fi"></a><strong></strong></p>
-<p><sub><a href="https://wiki.freecad.org/PartDesign_Hole">[src]</a></sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FUser%20Interface)_TOPIC%2Fi">FreeCAD/Part Design Workbench/User Interface</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization)_TOPIC%2Fi">FreeCAD/Part Design Workbench/Organization</a></li>
+</ul>
+</div>
+<p>A hole operation cuts out a standardized fastener hole from existing geometry it collides with (e.g., hole for a screw or nail).</p>
+<p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
+<p>To create a hole, create a sketch with one or more circles, arcs, and/or points (other entities are ignored). Then, select the sketch and use toolbar button 16. Once selected, gizmos may appear in the 3D viewport and a parameter pane opens.</p>
+<p><img src="freecad_part_design_hole.png" alt="FreeCAD Part Design workbench hole example"></p>
+<p>The <strong>Base profile types</strong> parameter defines which sketch element types to make into holes:</p>
+<ul>
+<li><strong>Points, circles and arcs</strong>: Position holes at points as well as the centers of circles and arcs.</li>
+<li><strong>Circles and arcs</strong>: Position holes the centers of circles and arcs.</li>
+<li><strong>Points</strong>: Position holes at points.</li>
+</ul>
+<p>The <strong>Standard</strong> and <strong>Size</strong> parameters define the <a href="https://en.wikipedia.org/wiki/List_of_thread_standards">thread standard</a> to target. For example setting <strong>Standard</strong> to <strong>ISO metric regular</strong> and <strong>Size</strong> to <strong>M2x0.4</strong> sets all holes to have a diameter of 2mm and a thread pitch of 0.4mm between peaks.</p>
+<p>The <strong>Head type</strong> parameters defines what type / standard of screw head to model the hole for:</p>
+<ul>
+<li><strong>Countersink</strong> introduces properties <strong>Head diameter</strong>, <strong>Head depth</strong>, and <strong>Countersink angle</strong>.</li>
+<li><strong>Counterbore</strong> introduces properties <strong>Head diameter</strong> and <strong>Head depth</strong>.</li>
+<li><strong>Counterdrill</strong> introduces properties <strong>Head diameter</strong>, <strong>Head depth</strong>, and <strong>Countersink angle</strong>.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There are other head types based on standards. As of time of writing, I don't know enough about threading or head standards to fully understand a lot of what's going on here. The documentation also explains almost nothing / it's for an old version of the hole tool.</p>
+</div>
+<p>The <strong>Depth type</strong> parameter defines where the hole stops:</p>
+<ul>
+<li><strong>Through all</strong>: The hole goes through everything (<strong>Depth</strong> parameter disabled).</li>
+<li><strong>Dimension</strong>: The hole stops at a certain depth.</li>
+</ul>
+<p>Below <strong>Depth type</strong> is a picture that shows the general type of fastener to expect based on the properties chosen (e.g., the type of head, if its got a pointy head). The picture highlights several attributes of the fastener, where those attributes are linked to fields that configure those attributes. For example, in the example screenshot linked to several fields, the ...</p>
+<ul>
+<li>depth of the fastener is defined by <strong>Depth</strong> (<strong>Depth</strong> is disabled if <strong>Depth type</strong> is set to <strong>Through all</strong>).</li>
+<li>width of the fastener is is defined by <strong>Diameter</strong> (<strong>Diameter</strong> is hardcoded if a <strong>Standard</strong> and <strong>Size</strong> were set other than <strong>None</strong>).</li>
+<li>sharpness of the fastener's tip is defined by <strong>Drill angle</strong>, and <strong>Include in depth</strong> defines if the tip is additional to the <strong>Depth</strong> field's value or added on top of it.</li>
+</ul>
+<p>The <strong>Switch direction</strong> parameter reverses the direction of the hole cut-outs.</p>
+<p>The <strong>Tapered</strong> parameter tapers the hole.</p>
+<p>The <strong>Hole type</strong> parameter defines how holes should treat threads:</p>
+<ul>
+<li>
+<p><strong>Clearance / Passthrough</strong> makes the hole big enough for the fastener with threads, such that the fastener goes through the hole and threads into something else (e.g., a nut on the other end). Selecting this enables the field <strong>Clearance</strong>, which controls how loose / tight the hole should be for the fastener.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Clearance isn't documented anywhere, but when you change it you can see the hole slightly expand / contract.</p>
+</div>
+</li>
+<li>
+<p><strong>Tap drill</strong> makes the hole a big enough for the fastener without the threads, such that the threads can cut into the hole (e.g., imagine making a pilot hole in a block of wood and then putting a screw in that hole). Selecting this enables the <strong>Thread</strong> subsection:</p>
+<ul>
+<li><strong>Class</strong>: Thread tolerance / fit class for a threaded hole. Available values depend on <strong>Standard</strong>.</li>
+<li><strong>Right hand</strong> vs <strong>Left hand</strong>: Whether the threads tighten clockwise (the standard - righty-tighty vs lefty-loosey) or counterclockwise.</li>
+<li><strong>Thread Depth Type</strong>: When the thread stops (e.g., hole may be 10mm but threads may stop at 5mm). A value of <strong>Hole depth</strong> threads the entire hole, <strong>Dimension</strong> allows a custom depth, and <strong>Tapped (DIN76)</strong> eaves a standard unthreaded relief/runout at the bottom.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>It doesn't look like these parameters do anything for this option? They only seem to do something for the <strong>Modeled thread</strong> option.</p>
+</div>
+</li>
+<li>
+<p><strong>Modeled thread</strong> makes the hole include threads, such that the fastener goes in cleanly. Selecting this enables the <strong>Thread</strong> subsection:</p>
+<ul>
+<li><strong>Update thread view</strong>: Show the threads in the hole as opposed to just storing metadata about the threads.</li>
+<li><strong>Class</strong>: Thread tolerance / fit class for a threaded hole. Available values depend on <strong>Standard</strong>.</li>
+<li><strong>Right hand</strong> vs <strong>Left hand</strong>: Whether the threads tighten clockwise (the standard - righty-tighty vs lefty-loosey) or counterclockwise.</li>
+<li><strong>Thread Depth Type</strong>: When the thread stops (e.g., hole may be 10mm but threads may stop at 5mm). A value of <strong>Hole depth</strong> threads the entire hole, <strong>Dimension</strong> allows a custom depth, and <strong>Tapped (DIN76)</strong> eaves a standard unthreaded relief/runout at the bottom.</li>
+<li><strong>Custom Clearance</strong>: Widens the hole by some amount (e.g., compensate for 3D printing inaccuracies and <a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">line width</a>).</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><strong>Update thread view</strong> physically inserts the threads into the model, but this lags / slows FreeCAD incredibly. It may be a good idea to leave this disabled until the very end. I suspect you need this enabled when exporting to <a href="#BM_%5Cb(STL)%5Cb%2F">STL</a> or else the threads won't show up. Documentation doesn't talk about this at all.</p>
+<p><strong>Class</strong> seems to add some small amount of clearance for ISO types when the class is G. For UTS, I didn't see any value add any clearance. Documentation doesn't talk about this at all.</p>
+</div>
+</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>There are other head types based on standards. As of time of writing, I don't know enough about threading or head standards to fully understand a lot of what's going on here. The documentation also explains almost nothing / it's for an old version of the hole tool.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Hole">[src]</a></sub> <sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
 <a name="H_Revolution%20%2F%20Groove"></a><h3>Revolution / Groove</h3>
 <p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FRevolution%20%2F%20Groove)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FUser%20Interface)_TOPIC%2Fi">FreeCAD/Part Design Workbench/User Interface</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization)_TOPIC%2Fi">FreeCAD/Part Design Workbench/Organization</a></li>
+</ul>
+</div>
+<p>A revolution operation and a groove operation are effectively the same thing, except that ...</p>
+<ul>
+<li>revolution is additive (creates a solid and merges it with existing geometry it collides with).</li>
+<li>groove is subtractive (creates a solid and cuts out it from existing geometry it collides with).</li>
+</ul>
+<p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
+<p>To revolve / groove, select a sketch and use either toolbar button 10 (Pad) or toolbar button 17 (Pocket). Once selected, gizmos appear in the 3D viewport and a parameter pane opens.</p>
+<p><img src="freecad_part_design_groove_example.png" alt="FreeCAD Part Design workbench groove example"></p>
+<p>The <strong>Type</strong> parameter defines which directions the sketch is extruded in:</p>
+<ul>
+<li><strong>Angle</strong>: Extrude in one direction.</li>
+<li><strong>Two angle</strong>: Extrude in one direction as well as the opposite direction, where each direction has its own set of parameters (e.g., each direction has its own length).</li>
+<li><strong>Through all</strong>: Extrude through everything (e.g., 360 angle).</li>
+<li><strong>To first</strong>: Extrude until the first intersecting face.</li>
+<li><strong>To face</strong>: Extrude until a specific face.</li>
+</ul>
+<p><strong>Angle</strong> and <strong>Two angle</strong> both enable the <strong>Reversed</strong> parameter, which reverses direction / directions of extrusion.</p>
+<p><strong>Angle</strong> and <strong>Through all</strong> both enable the <strong>Symmetric to plane</strong> parameter, which defines if the plane should be in the middle of the extrusion (extrude half-way outward from the sketch and extrude half-way inward from the sketch). This parameter is only available for <strong>Type</strong> of <strong>Angle</strong>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p><strong>Symmetric to plane</strong> doesn't make any sense for <strong>Through all</strong>. Isn't this just the same as a full rotation (360 degrees)?</p>
+</div>
+<p><strong>Axis</strong> defines the axis from which the rotation happens:</p>
+<ul>
+<li><strong>Vertical sketch axis</strong> / <strong>Horizontal sketch axis</strong>: The rotation happens using sketch's vertical / horizontal axis as the rotation axis.</li>
+<li><strong>Construction line n</strong>: The rotation happens using construction geometry line in the sketch. Each line that is also construction geometry is listed.</li>
+<li><strong>Base X-axis</strong> / <strong>Base Y-axis</strong> / <strong>Base Z-axis</strong>: The rotation happens using a basis axis as the rotation axis.</li>
+<li><strong>Select reference</strong>: The rotation happens around a edge or datum line, which must be selected.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>In most cases, you should pick planes/faces and sketch such that the horizontal / vertical axis of the sketch is the intended axis to rotate around.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>In a sketch, the elements can't be named. As such, when you select a construction line, it's impossible to know which construction line you're setting. I complained about this <a href="https://github.com/FreeCAD/FreeCAD/issues/30298">here</a>.</p>
+</div>
 <p><sub><a href="https://wiki.freecad.org/PartDesign_Revolution">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_Groove">[src]</a></sub></p>
 <a name="H_Loft"></a><h3>Loft</h3>
 <p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FLoft)_TOPIC%2Fi"></a><strong></strong></p>

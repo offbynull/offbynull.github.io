@@ -4738,20 +4738,131 @@ A !!hole!! operation cuts out a standardized fastener !!hole!! from existing geo
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-To create a !!hole!!, create a sketch with one or more circles. Then, select the sketch and use toolbar button 16. Once selected, gizmos may appear in the 3D viewport and a parameter pane opens.
+To create a !!hole!!, create a sketch with one or more circles, arcs, and/or points (other entities are ignored). Then, select the sketch and use toolbar button 16. Once selected, gizmos may appear in the 3D viewport and a parameter pane opens.
 
 ![FreeCAD Part Design workbench hole example](freecad_part_design_hole.png)
 
+The **Base profile types** parameter defines which sketch element types to make into !!holes!!:
+
+* **Points, circles and arcs**: Position !!holes!! at points as well as the centers of circles and arcs.
+* **Circles and arcs**: Position !!holes!! the centers of circles and arcs.
+* **Points**: Position !!holes!! at points.
+
+The **Standard** and **Size** parameters define the [thread standard](https://en.wikipedia.org/wiki/List_of_thread_standards) to target. For example setting **Standard** to **ISO metric regular** and **Size** to **M2x0.4** sets all !!holes!! to have a diameter of 2mm and a thread pitch of 0.4mm between peaks.
+
+The **Head type** parameters defines what type / standard of screw head to model the !!hole!! for:
+
+* **Countersink** introduces properties **Head diameter**, **Head depth**, and **Countersink angle**.
+* **Counterbore** introduces properties **Head diameter** and **Head depth**.
+* **Counterdrill** introduces properties **Head diameter**, **Head depth**, and **Countersink angle**.
+
 ```{note}
-As of time of writing, I don't know enough about fasteners to fully understand a lot of what's going on here.
+There are other head types !!based!! on standards. As of time of writing, I don't know enough about threading or head standards to fully understand a lot of what's going on here. The documentation also explains almost nothing / it's for an old version of the !!hole!! tool.
 ```
 
+The **Depth type** parameter defines where the !!hole!! stops:
 
-`{ref} https://wiki.freecad.org/PartDesign_Hole`
+* **Through all**: The !!hole!! goes through everything (**Depth** parameter disabled).
+* **Dimension**: The !!hole!! stops at a certain depth.
+
+Below **Depth type** is a picture that shows the general type of fastener to expect !!based!! on the properties chosen (e.g., the type of head, if its got a pointy head). The picture highlights several attributes of the fastener, where those attributes are linked to fields that configure those attributes. For example, in the example screenshot linked to several fields, the ...
+
+* depth of the fastener is defined by **Depth** (**Depth** is disabled if **Depth type** is set to **Through all**).
+* !!width!! of the fastener is is defined by **Diameter** (**Diameter** is hardcoded if a **Standard** and **Size** were set other than **None**).
+* sharpness of the fastener's tip is defined by **Drill angle**, and **Include in depth** defines if the tip is additional to the **Depth** field's value or added on top of it.
+
+The **Switch direction** parameter reverses the direction of the !!hole!! cut-outs.
+
+The **Tapered** parameter tapers the !!hole!!.
+
+The **Hole type** parameter defines how !!holes!! should treat threads:
+
+* **Clearance / Passthrough** makes the !!hole!! big enough for the fastener with threads, such that the fastener goes through the !!hole!! and threads into something else (e.g., a nut on the other end). Selecting this enables the field **Clearance**, which controls how loose / tight the !!hole!! should be for the fastener.
+
+  ```{note}
+  Clearance isn't documented anywhere, but when you change it you can see the !!hole!! slightly expand / contract.
+  ```
+
+* **Tap drill** makes the !!hole!! a big enough for the fastener without the threads, such that the threads can cut into the !!hole!! (e.g., imagine making a pilot !!hole!! in a block of wood and then putting a screw in that !!hole!!). Selecting this enables the **Thread** subsection:
+
+  * **Class**: Thread tolerance / fit class for a threaded !!hole!!. Available values depend on **Standard**.
+  * **Right hand** vs **Left hand**: Whether the threads tighten clockwise (the standard - righty-tighty vs lefty-loosey) or counterclockwise.
+  * **Thread Depth Type**: When the thread stops (e.g., !!hole!! may be 10mm but threads may stop at 5mm). A value of **Hole depth** threads the entire !!hole!!, **Dimension** allows a custom depth, and **Tapped (DIN76)** eaves a standard unthreaded relief/runout at the bottom.
+
+  ```{note}
+  It doesn't look like these parameters do anything for this option? They only seem to do something for the **Modeled thread** option.
+  ```
+
+* **Modeled thread** makes the !!hole!! include threads, such that the fastener goes in cleanly. Selecting this enables the **Thread** subsection:
+
+  * **Update thread view**: Show the threads in the !!hole!! as opposed to just storing metadata about the threads.
+  * **Class**: Thread tolerance / fit class for a threaded !!hole!!. Available values depend on **Standard**.
+  * **Right hand** vs **Left hand**: Whether the threads tighten clockwise (the standard - righty-tighty vs lefty-loosey) or counterclockwise.
+  * **Thread Depth Type**: When the thread stops (e.g., !!hole!! may be 10mm but threads may stop at 5mm). A value of **Hole depth** threads the entire !!hole!!, **Dimension** allows a custom depth, and **Tapped (DIN76)** eaves a standard unthreaded relief/runout at the bottom.
+  * **Custom Clearance**: Widens the !!hole!! by some amount (e.g., compensate for 3D printing inaccuracies and line width).
+
+  ```{note}
+  **Update thread view** physically inserts the threads into the model, but this lags / slows FreeCAD incredibly. It may be a good idea to leave this disabled until the very end. I suspect you need this enabled when exporting to STL or else the threads won't show up. Documentation doesn't talk about this at all.
+
+  **Class** seems to add some small amount of clearance for ISO types when the class is G. For UTS, I didn't see any value add any clearance. Documentation doesn't talk about this at all.
+  ```
+
+```{note}
+There are other head types !!based!! on standards. As of time of writing, I don't know enough about threading or head standards to fully understand a lot of what's going on here. The documentation also explains almost nothing / it's for an old version of the !!hole!! tool.
+```
+
+`{ref} https://wiki.freecad.org/PartDesign_Hole` `{ref} self`
 
 ### Revolution / Groove
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Revolution \/ Groove)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Part Design Workbench/User Interface_TOPIC
+FreeCAD/Part Design Workbench/Organization_TOPIC
+```
+
+A revolution operation and a groove operation are effectively the same thing, except that ...
+
+* revolution is additive (creates a solid and merges it with existing geometry it collides with).
+* groove is subtractive (creates a solid and cuts out it from existing geometry it collides with).
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To revolve / groove, select a sketch and use either toolbar button 10 (Pad) or toolbar button 17 (Pocket). Once selected, gizmos appear in the 3D viewport and a parameter pane opens.
+
+![FreeCAD Part Design workbench groove example](freecad_part_design_groove_example.png)
+
+The **Type** parameter defines which directions the sketch is extruded in:
+
+* **Angle**: Extrude in one direction.
+* **Two angle**: Extrude in one direction as well as the opposite direction, where each direction has its own set of parameters (e.g., each direction has its own length).
+* **Through all**: Extrude through everything (e.g., 360 angle).
+* **To first**: Extrude until the first intersecting face.
+* **To face**: Extrude until a specific face.
+
+**Angle** and **Two angle** both enable the **Reversed** parameter, which reverses direction / directions of extrusion.
+
+**Angle** and **Through all** both enable the **Symmetric to plane** parameter, which defines if the plane should be in the middle of the extrusion (extrude half-way outward from the sketch and extrude half-way inward from the sketch). This parameter is only available for **Type** of **Angle**.
+
+```{note}
+**Symmetric to plane** doesn't make any sense for **Through all**. Isn't this just the same as a full rotation (360 degrees)?
+```
+
+**Axis** defines the axis from which the rotation happens:
+
+* **Vertical sketch axis** / **Horizontal sketch axis**: The rotation happens using sketch's vertical / horizontal axis as the rotation axis.
+* **Construction line n**: The rotation happens using construction geometry line in the sketch. Each line that is also construction geometry is listed.
+* **Base X-axis** / **Base Y-axis** / **Base Z-axis**: The rotation happens using a basis axis as the rotation axis.
+* **Select reference**: The rotation happens around a edge or datum line, which must be selected.
+
+```{note}
+In most cases, you should pick planes/faces and sketch such that the horizontal / vertical axis of the sketch is the intended axis to rotate around.
+```
+
+```{note}
+In a sketch, the elements can't be named. As such, when you select a construction line, it's impossible to know which construction line you're setting. I complained about this [here](https://github.com/FreeCAD/FreeCAD/issues/30298).
+```
 
 `{ref} https://wiki.freecad.org/PartDesign_Revolution` `{ref} https://wiki.freecad.org/PartDesign_Groove`
 
