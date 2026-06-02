@@ -5151,6 +5151,24 @@ The **Mode** parameter defines how the ascension and rotation are configured. Th
 In the screenshot example, the sketch defines the helix's thread as well as the rotational cylinder's radius. Note how the sketch is 9.9mm out from the center and **Axis** is set to **Vertical sketch axis**, meaning the radius of the helix is 9.9mm.
 
 If your helix follows a similar setup, unless you already have a face to attach to or want the helix at the origin, it may be a good idea to place a datum plane in the desired location and use it to sketch out a helix.
+
+To place a datum plane matching the face's orientation but with a specific origin:
+
+1. Place a sketch on the face with ...
+
+   * a point for the center of the helix rotation axis.
+   * a horizontal line from the point.
+   * a vertical line from the point.
+
+2. Create a new datum plane and use the center point as reference 1, the horizontal line as reference 2, and the vertical line as reference 3
+3. Set **Attachment mode** to **Align O-X-Y**.
+4. Place a sketch to new datum plane. The origin will be the center point.
+```
+
+```{seealso}
+FreeCAD/Part Design Workbench/Datum Geometry/Datum Plane_TOPIC
+
+To place a datum plane normal to the face's orientation, same steps as above but **Attachment mode** should be either **Align O-N-Y** or **Align O-Y-N**.
 ```
 
 `{ref} https://wiki.freecad.org/PartDesign_AdditiveHelix` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveHelix`
@@ -5159,33 +5177,104 @@ If your helix follows a similar setup, unless you already have a face to attach 
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Features\/Primitives)_TOPIC/i`
 
+```{prereq}
+FreeCAD/Part Design Workbench/User Interface_TOPIC
+FreeCAD/Part Design Workbench/Organization_TOPIC
+```
+
+An additive primitive and a subtractive primitive operation are the same thing, except that ...
+
+* additive creates a solid and merges it with existing geometry it collides with.
+* subtractive creates a solid and cuts out it from existing geometry it collides with.
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+A primitive is a primitive piece of 3D geometry (e.g., cube, sphere, torus). To create a primitive, use either toolbar button 14 (additive primitive) or toolbar button 21 (subtractive primitive) to show a drop-down of primitive types and select. Once selected, a **Primitive Parameters** pane will appear that defines the shape as well as a **Select Attachment** pane that defines how and what it attaches to. For full details, see sources.
+
+![FreeCAD Part Design workbench primitive example](freecad_part_design_primitive_example.png)
+
 `{ref} https://wiki.freecad.org/PartDesign_AdditiveBox` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveBox`
-
 `{ref} https://wiki.freecad.org/PartDesign_AdditiveCylinder` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveCylinder`
-
 `{ref} https://wiki.freecad.org/PartDesign_AdditiveSphere` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveSphere`
-
 `{ref} https://wiki.freecad.org/PartDesign_AdditiveCone` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveCone`
-
 `{ref} https://wiki.freecad.org/PartDesign_AdditiveEllipsoid` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveEllipsoid`
-
 `{ref} https://wiki.freecad.org/PartDesign_AdditiveTorus` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveTorus`
-
 `{ref} https://wiki.freecad.org/PartDesign_AdditivePrism` `{ref} https://wiki.freecad.org/PartDesign_SubtractivePrism`
-
 `{ref} https://wiki.freecad.org/PartDesign_AdditiveWedge` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveWedge`
 
 #### Fillet / Chamfer
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Features\/Fillet \/ Chamfer)_TOPIC/i`
 
-`{ref} https://wiki.freecad.org/PartDesign_Fillet`
+```{prereq}
+FreeCAD/Part Design Workbench/User Interface_TOPIC
+FreeCAD/Part Design Workbench/Organization_TOPIC
+```
 
-`{ref} https://wiki.freecad.org/PartDesign_Chamfer`
+Fillet / chamfer cuts into a edge. A fillet's cut is rounded while a chamfer's cut is straight.
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To apply fillet/chamfer, select relevant faces and edges and use either toolbar button 23 (fillet) or toolbar button 24 (chamfer).
+
+```{note}
+Fillets and chamfers are notoriously brittle for non-destructive workflows. For example, if you add a fillet/chamfer but then make a modification in a previous step of the non-destructive workflow, the fillet/chamfer will fail. The edges will have changed and fillet/chamfer typically isn't able to automatically guess what the new edges are. 
+
+For this reason, I've seen only that they recommend leaving fillet/chamfer operations until the very end.
+
+Tested on FreeCAD 1.1.1.
+```
+
+A **Fillet Parameters** / **Chamfer Parameters** pane will pop open. To add edges/faces, click **Select**, select the edges/face, and then click **Confirm Selection**. To remove edges/faces, click on the edge/face in the list and press Del.
+
+For fillet, use the **Radius** field or the gizmos to set the radius of the curve.
+
+![FreeCAD Part Design workbench fillet example](freecad_part_design_fillet_example.png)
+
+For chamfer, use the **Type** or the gizmos to define how steep the the cut is:
+
+* **Equal distance** sets the cut point equally away from both ends of the edge, defined by **Size**.
+* **Two distance** sets the cut point for each edge, defined by **Size** and **Size 2**.
+* **Distance and angle** sets the cut point for one side of the edge and uses an angle to determine the cut point of the other side of the edge, defined by **Size** and **Angle**.
+
+```{note}
+When sides aren't equal, unsure how it picks which side is which.
+```
+
+![FreeCAD Part Design workbench chamfer example](freecad_part_design_chamfer_example.png)
+
+`{ref} https://wiki.freecad.org/PartDesign_Fillet` `{ref} https://wiki.freecad.org/PartDesign_Chamfer`
 
 #### Draft
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Features\/Draft)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Part Design Workbench/User Interface_TOPIC
+FreeCAD/Part Design Workbench/Organization_TOPIC
+```
+
+Draft adds an angle to one or more faces.
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To apply draft, select relevant faces and use either toolbar button 25.
+
+A **Draft Parameters** pane will pop open. To add faces, click **Select**, select the face, and then click **Confirm Selection**. To remove faces, click on the face in the list and press Del.
+
+![FreeCAD Part Design workbench draft example](freecad_part_design_draft_example.png)
+
+The **Draft angle** field sets the angle to offset the faces (can be negative).
+
+The **Neutral Plane** field sets the plane in which the edge must be anchored (won't lift or sink). To set, click the button and select a face. In the example above, the neural plane is the top face. The 4 sides which have draft applied fan out toward the bottom because the top edges are locked in place.
+
+The **Pull Direction** field sets the direction in which the angle is applied. To set, click the button and select an edge (or something edge-like, like a datum line?).
+
+```{note}
+I think **Pull Direction** is the normal of the face by default. Here's what the source says:
+
+> Set the the pull direction by pressing the Pull direction button, then select an edge. Pull Direction is only effective if the Neutral Plane has been set. Results can be unpredictable.
+```
 
 `{ref} https://wiki.freecad.org/PartDesign_Draft`
 
@@ -5193,9 +5282,43 @@ If your helix follows a similar setup, unless you already have a face to attach 
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Features\/Thickness)_TOPIC/i`
 
+```{prereq}
+FreeCAD/Part Design Workbench/User Interface_TOPIC
+FreeCAD/Part Design Workbench/Organization_TOPIC
+```
+
+!!Thickness!! removes one or more faces and cuts out the inside of the object, giving it a bowl-like / shell-like effect.
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To apply !!thickness!!, select relevant faces and use either toolbar button 26.
+
+A **!!Thickness!! Parameters** pane will pop open. To add faces, click **Select**, select the face, and then click **Confirm Selection**. To remove faces, click on the face in the list and press Del.
+
+![FreeCAD Part Design workbench thickness example](freecad_part_design_thickness_example.png)
+
+The **!!Thickness!!** field sets the !!thick!! the shell is. If **Make !!thickness!! inwards** is clicked, the original outline is kept but hollowed out vs padding the original outline to generate the shell.
+
+The **Mode** field must be set to **Skin**.
+
+```{note}
+According to the source, the only option implemented for **Mode** is **Skin** and you shouldn't be selecting anything else. See source for more information.
+```
+
+The **Join type** field defines how non-tangential faces of the shell are joined together:
+
+* **Arc**: Faces that do not intersect are joined by a fillet with a radius equal to **!!Thickness!!** value.
+* **Intersection**: Faces that do not intersect are extended to meet at their virtual intersection.
+
+The **Intersection** checkbox avoids self-intersection in some models. 
+
+```{note}
+According to the source, it's recommended to leave the **Intersection** checkbox unchecked because it relies on some unimplemented methods in a dependent library. See source for more information.
+```
+
 `{ref} https://wiki.freecad.org/PartDesign_Thickness`
 
-#### #Boolean Operation
+#### Boolean Operation
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Features\/Boolean Operation)_TOPIC/i`
 
@@ -5227,17 +5350,112 @@ If your helix follows a similar setup, unless you already have a face to attach 
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Datum Geometry)_TOPIC/i`
 
+```{prereq}
+FreeCAD/Sketcher Workbench/Sketching/Construction Geometry_TOPIC
+FreeCAD/Part Design Workbench/Organization_TOPIC
+FreeCAD/Part Design Workbench/Features_TOPIC
+```
+
+Datum geometry are helper primitives typically used to position other objects (e.g., sketches, features), similar to construction geometry in sketches. Datum geometry aren't unique to the Part Design workbench.
+
+Datum geometry can inserted into the current body using the toolbar button next to the button that creates a new part.
+
+![FreeCAD Part Design workbench datum geometry toolbar](freecad_part_design_datum_geometry_toolbar.png)
+
+`{ref} https://wiki.freecad.org/Datum`
+
 #### Datum Point
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Datum Geometry\/Datum Point)_TOPIC/i`
+
+A datum point needs one or more entities to define its attachment / positioning (e.g., faces, lines, vertices). To insert a datum point, either ...
+
+* select the entities to attach the datum point to, then select the Datum Point toolbar button.
+* deselect everything, select the Datum Point toolbar button, then individually reference entities in the Attachment pane pop-up by clicking a Reference button and selecting the entity.
+
+![FreeCAD Part Design workbench datum geometry toolbar](freecad_part_design_datum_geometry_toolbar.png)
+
+The **Attachment mode** parameter defines what types of entities are needed for positioning / attachment (hovering over an option describes what it does as well as !!supported!! reference types). Once attached, the **Attachment offset** parameters tweak the position by offsetting and a rotation.
+
+![FreeCAD Part Design workbench datum point example](freecad_part_design_workbench_datum_point.png)
+
+The example above attaches the datum point to a vertex and then positionally offsets itself.
+
+```{note}
+One thing I found that might be useful for the future:
+
+1. Attach to the datum point to an edge (and nothing else) and set **Attachment mode** to **On edge**.
+2. Click OK to finish placing the datum point.
+3. Select the datum point, right-click in the Properties pane, and enable **Show hidden**.
+4. Set the **Map Path Parameter** to move the point along the line (between 0 to 1).
+
+Why does this matter? I wanted to use this to appropriately position a helix, but it didn't work out. You can use two datum points to make a datum line, but a datum line is infinite (it doesn't have a start/stop). Furthermore, FreeCAD currently doesn't let you further put a datum point on that datum line. The idea I had was to use datum points to create a datum line, then place a datum point on that datum line to act as the center point for a datum plane. The datum plane's normal would be defined with another datum line that's 90 degrees to the first datum line.
+
+ChatGPT instead suggested I place a sketch on the face with ...
+
+* a point for the center of the helix rotation axis.
+* a horizontal line from the point.
+* a vertical line from the point.
+
+Then, create a new datum plane and use the center point as reference 1, the horizontal line as reference 2, and the vertical line as reference 3, and **Align O-X-Y** as the **Attachment mode**. You can then attach a sketch to that datum plane and the origin will be the center point.
+```
+
+`{ref} https://wiki.freecad.org/Part_DatumPoint`
 
 #### Datum Line
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Datum Geometry\/Datum Line)_TOPIC/i`
 
+```{prereq}
+FreeCAD/Part Design Workbench/Datum Geometry/Datum Point_TOPIC
+```
+
+A datum line needs one or more entities to define its attachment / positioning (e.g., faces, lines, vertices). To insert a datum line, either ...
+
+* select the entities to attach the datum line to, then select the Datum Line toolbar button.
+* deselect everything, select the Datum Line toolbar button, then individually reference entities in the Attachment pane pop-up by clicking a Reference button and selecting the entity.
+
+![FreeCAD Part Design workbench datum geometry toolbar](freecad_part_design_datum_geometry_toolbar.png)
+
+The **Attachment mode** parameter defines what types of entities are needed for positioning / attachment (hovering over an option describes what it does as well as !!supported!! reference types). Once attached, the **Attachment offset** parameters tweak the position by offsetting and a rotation.
+
+![FreeCAD Part Design workbench datum line example](freecad_part_design_workbench_datum_line.png)
+
+The example above attaches the datum line to 2 datum points, defining that line.
+
+```{note}
+In the 3D viewport, the line doesn't extend all the way to the second point. That's likely because a datum line is unbounded and should be treated more like an axis than a line that starts/stops at specific points?
+```
+
+`{ref} https://wiki.freecad.org/Part_DatumLine`
+
 #### Datum Plane
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Datum Geometry\/Datum Plane)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Part Design Workbench/Datum Geometry/Datum Point_TOPIC
+FreeCAD/Part Design Workbench/Datum Geometry/Datum Line_TOPIC
+```
+
+A datum plane needs one or more entities to define its attachment / positioning (e.g., faces, lines, vertices). To insert a datum line, either ...
+
+* select the entities to attach the datum plane to, then select the Datum Plane toolbar button.
+* deselect everything, select the Datum Plane toolbar button, then individually reference entities in the Attachment pane pop-up by clicking a Reference button and selecting the entity.
+
+![FreeCAD Part Design workbench datum geometry toolbar](freecad_part_design_datum_geometry_toolbar.png)
+
+The **Attachment mode** parameter defines what types of entities are needed for positioning / attachment (hovering over an option describes what it does as well as !!supported!! reference types). Once attached, the **Attachment offset** parameters tweak the position by offsetting and a rotation.
+
+```{note}
+There are lots of attachment modes, but it seems the align ones are the simplest to use.
+```
+
+![FreeCAD Part Design workbench datum plane example](freecad_part_design_workbench_datum_plane.png)
+
+The example above attaches the datum plane to a vertex (origin) and 2 edges (normal vector and Y vector), defining that plane.
+
+`{ref} https://wiki.freecad.org/Part_DatumPlane`
 
 ## Variable Sets
 
