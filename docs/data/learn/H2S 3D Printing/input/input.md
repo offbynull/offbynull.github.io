@@ -4598,7 +4598,27 @@ Axis and angle define rotation - axis defines a vector and angle rotates around 
 An easier way to set the orientation is, in the Model pane, right-click and choose **Transform**. It sets the same properties highlighted in the above screenshot, but it also provides gizmos in the viewport and a popup pane with more friendly ways to set.
 ```
 
- `{ref} self`
+`{ref} self`
+
+##### Binding Geometry
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Body\/Binding Geometry)_TOPIC/i`
+
+In certain cases, a piece of outside geometry may need to be pulled into the body for further manipulation (e.g., a model created using Part workbench - not Part Design workbench - always lives outside of the body). To import that outside geometry into the body, a subshape binder is required:
+
+1. Ensure the body is active.
+2. Select the outside geometry.
+3. Click subshape binder in the toolbar (green blob with 3 dots) to create a subshape binder object in the body.
+
+![FreeCAD Part Design workbench subshape binder example](freecad_part_design_subshape_binder_example.png)
+
+The subshape binders **Bind Mode** property defines if it copies the original geometry or just links to it:
+
+* **Synchronized**: Live reference. Updates when source changes.
+* **Frozen**: Keeps link, but shape is frozen until refreshed/changed.
+* **Detached**: Copy/snapshot. Breaks live dependency, keeps current shape.
+
+`{ref} https://wiki.freecad.org/PartDesign_SubShapeBinder` `{ref} self`
 
 #### Sketch
 
@@ -4677,9 +4697,30 @@ FreeCAD/Sketcher Workbench/Sketching/Sketch Flipping_TOPIC
 
 `{ref} https://wiki.freecad.org/Sketcher_ValidateSketch`
 
-### Pad / Pocket
+### Features
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Pad \/ Pocket)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Features)_TOPIC/i`
+
+The subsections below detail feature types !!supported!! by the Part Design workbench. Most features present a Preview pane during creation.
+
+![FreeCAD Part Design workbench preview pane](freecad_part_design_preview_pane.png)
+
+* **Show preview overlay**: Presents a see-through overlay of what the feature looks like as parameters are being manipulated.
+* **Show final result**: Presents what the feature looks like as parameters are being manipulated.
+
+Creation may also insert gizmos during creation that mirror parameters of whatever is being created. The example below has a arrow gizmo to control the depth parameter.
+
+![FreeCAD Part Design workbench hole example](freecad_part_design_hole.png)
+
+```{note}
+I suspect this is likely to change in newer versions past 1.1, so I'm leaving this as a note:
+
+For features that are additive (add to the model), the overlay typically shows as green. For features that are subtractive (intersections cut out from the model), the overlay typically shows as red. Some feature overlays, such as chamfers and fillets, the overlay typically shows up as purple.
+```
+
+#### Pad / Pocket
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Pad \/ Pocket)_TOPIC/i`
 
 ```{prereq}
 FreeCAD/Part Design Workbench/User Interface_TOPIC
@@ -4693,7 +4734,7 @@ A pad operation and a pocket operation are effectively the same thing, except th
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-To pad / pocket, select a sketch and use either toolbar button 9 (Pad) or toolbar button 15 (Pocket). Once selected, gizmos appear in the 3D viewport and a parameter pane opens.
+To pad / pocket, select a sketch and use either toolbar button 9 (pad) or toolbar button 15 (pocket). Once selected, gizmos appear in the 3D viewport and a parameter pane opens.
 
 ![FreeCAD Part Design workbench pad example](freecad_part_design_pad_example.png)
 
@@ -4725,9 +4766,9 @@ The **Direction** parameter defines the direction of the sketch's extrusion:
 
 `{ref} https://wiki.freecad.org/PartDesign_Pad` `{ref} https://wiki.freecad.org/PartDesign_Pocket`
 
-### Hole
+#### Hole
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Hole)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Hole)_TOPIC/i`
 
 ```{prereq}
 FreeCAD/Part Design Workbench/User Interface_TOPIC
@@ -4813,9 +4854,9 @@ There are other head types !!based!! on standards. As of time of writing, I don'
 
 `{ref} https://wiki.freecad.org/PartDesign_Hole` `{ref} self`
 
-### Revolution / Groove
+#### Revolution / Groove
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Revolution \/ Groove)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Revolution \/ Groove)_TOPIC/i`
 
 ```{prereq}
 FreeCAD/Part Design Workbench/User Interface_TOPIC
@@ -4829,7 +4870,7 @@ A revolution operation and a groove operation are effectively the same thing, ex
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-To revolve / groove, select a sketch and use either toolbar button 10 (Pad) or toolbar button 17 (Pocket). Once selected, gizmos appear in the 3D viewport and a parameter pane opens.
+To revolve / groove, select a sketch and use either toolbar button 10 (revolution) or toolbar button 17 (groove). Once selected, gizmos appear in the 3D viewport and a parameter pane opens.
 
 ![FreeCAD Part Design workbench groove example](freecad_part_design_groove_example.png)
 
@@ -4866,27 +4907,257 @@ In a sketch, the elements can't be named. As such, when you select a constructio
 
 `{ref} https://wiki.freecad.org/PartDesign_Revolution` `{ref} https://wiki.freecad.org/PartDesign_Groove`
 
-### Loft
+#### Loft
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Loft)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Loft)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Part Design Workbench/User Interface_TOPIC
+FreeCAD/Part Design Workbench/Organization_TOPIC
+```
+
+An additive loft operation and a subtractive loft operation are the same thing, except that ...
+
+* additive creates a solid and merges it with existing geometry it collides with.
+* subtractive creates a solid and cuts out it from existing geometry it collides with.
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+A loft creates a solid by transitioning through sketches. To loft a set of sketches, either ...
+
+* use either toolbar button 11 (additive loft) or toolbar button 18 (subtractive loft), then ...
+  1. select the loft's initial sketch in the Select Attachment pane that pops up and click **OK**,
+  2. add the loft's subsequent sketches via the Add Segment button in the subsequent Loft Parameters pane that pops up (order of added sketches matter).
+* select the sketches to loft and use either toolbar button 11 (additive loft) or toolbar button 18 (subtractive loft). The selection order of the sketches matters (e.g., first selected will become loft's initial sketch, second selected becomes the first transition sketch).
+
+![FreeCAD Part Design workbench loft example](freecad_part_design_loft_example.png)
+
+```{note}
+It's totally unclear / undocumented how loft makes its transitions between sketches. For example, ...
+
+* there's nothing saying which vertexes line up with which vertexes between sketches,
+* there's nothing saying what happens when there's more vertexes in one sketch vs the next,
+* there's nothing saying what algorithm is used to bridge the gap between sketches:
+  * edges between sketches turned into planar faces vs curved surfaces - if curved, what defines the curvature?
+  * sketch 1 is a square, sketch 2 is the same square rotated 45 degrees - loft bends 45 degrees, but why not 180+45 degrees or 360+45 degrees?
+
+All ChatGPT says is that it delegates to OpenCASCADE.
+
+Notes from source:
+
+* To better control the shape of the loft, it is recommended that all cross-sections have the same number of segments. For example, for a loft between a rectangle and a circle, the circle should be broken down into 4 connected arcs.
+* You can loft from or toward a single vertex from a sketch or the body.
+* Vertices can only be either the start or end of a loft. Otherwise the loft body would consist of two solids connected at a single point. This would violate the CAD kernel's definition of a 3D object.
+* A cross-section cannot lie on the same plane as the one immediately preceding it.
+* If the sketch has inner geometry, then the order in which the sketch geometry is created should be the same for all sections. Either start all sections with the inner geometry, or start them all with the outer. Otherwise an invalid loft will be created where inner and outer walls cross.
+* It is not possible to loft disjoint or crossing loops.
+* Some failure modes will turn the part black.
+```
+
+A loft's sketches must be spaced out. It's typically for all of a loft's sketches to be attached to the same face / plane, but each offset such there's gaps between them. A sketch can be offset and rotated relative to whatever surface it's attached to using its AttachmentOffset properties.
+
+![FreeCAD Sketcher workbench attachment offset](freecad_sketcher_attachment_offset.png)
+
+The **Ruled surface** parameter defines whether transitions between sketches are smooth or straight (straight if checked).
+
+```{note}
+Documentation says this won't apply to a loft if it only has 2 sketches. I'm not sure why this is.
+```
+
+The **Closed** parameter makes a transition from the last sketch to the initial sketch, creating a loop.
 
 `{ref} https://wiki.freecad.org/PartDesign_AdditiveLoft` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveLoft`
 
-### Pipe
+#### Pipe
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Pipe)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Pipe)_TOPIC/i`
 
-`{ref} https://wiki.freecad.org/PartDesign_AdditivePipe` `{ref} https://wiki.freecad.org/PartDesign_SubtractivePipe`
+```{prereq}
+FreeCAD/Part Design Workbench/User Interface_TOPIC
+FreeCAD/Part Design Workbench/Organization_TOPIC
+FreeCAD/Part Design Workbench/Features/Loft_TOPIC
+FreeCAD/Part Design Workbench/Organization/Body/Binding Geometry_TOPIC
+FreeCAD/Part Design Workbench/Organization/Sketch/Attach_TOPIC
+```
 
-### Helix
+An additive pipe operation and a subtractive pipe operation are the same thing, except that ...
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Helix)_TOPIC/i`
+* additive creates a solid and merges it with existing geometry it collides with.
+* subtractive creates a solid and cuts out it from existing geometry it collides with.
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+A pipe creates a solid by transitioning through sketches, but does so by following one or more paths (e.g., edge, datum line, arc, b-spline). To pipe a path and a set of sketches, either ...
+
+* use either toolbar button 12 (additive pipe) or toolbar button 19 (subtractive pipe), then ...
+
+  1. select the pipe's initial sketch in the Select Attachment pane that pops up and click **OK**,
+  2. select the pipe's initial path in the Pipe Parameters by clicking the **Object** button within **Path to Sweep Along** and clicking the segment.
+
+* select the initial sketch to pipe and the segment to follow, then use either toolbar button 11 (additive pipe) or toolbar button 18 (subtractive pipe). The selection order matters (e.g., first selected the sketch then select the segment).
+
+![FreeCAD Part Design workbench pipe example](freecad_part_design_pipe_example.png)
+
+The pipe can transition through multiple paths and many sketches:
+
+* Add subsequent paths by clicking **Add Edge** and selecting the segment (order of edges matter).
+* Add subsequent sketches by clicking **Add Section** and selecting the sketch (order of added sketches matter). **Transform Mode** must be **Multisection** for this to be enabled.
+
+A pipe's sketches must be spaced out along the segments that make up the path, and the segments (lines, b-splines, etc..) that make up the path must be connected back-to-back. A common way to structure a pipe is to place sketches along a single b-spline. The b-spline can be created via the Part workbench or programmatically:
+
+```python
+import FreeCAD as App
+import Part
+
+pts = [
+    App.Vector(0,0,0),
+    App.Vector(20,0,10),
+    App.Vector(40,20,20),
+    App.Vector(60,10,40),
+]
+
+curve = Part.BSplineCurve()
+curve.interpolate(pts)
+
+edge = curve.toShape()
+wire = Part.Wire([edge])
+
+obj = App.ActiveDocument.addObject("Part::Feature", "PipePath")
+obj.Shape = wire
+App.ActiveDocument.recompute()
+```
+
+Since the b-spline belongs to the Part workbench rather than the Part Design workbench, it lives outside of the Part Design body where the sketches live. It needs to be imported into that Part Design body using a subshape binder:
+
+1. Ensure the body is active.
+2. Select the b-spline.
+3. Click subshape binder in the toolbar (green blob with 3 dots) to create a subshape binder object in the body.
+
+Sketches can then be attached to the b-spline by attaching them to that subshape binder. Each attached sketch can be placed somewhere along the b-spline by setting the sketch's **Map Path Parameter** property (0.0 places at start, 1.0 places at end). The sketch's normal will follow the b-spline's trajectory at the position its at, but can also be further manipulated using the sketch's **Attachment Offset** property. 
+
+![FreeCAD Part Design workbench sketch path mapping and attachment offset](freecad_part_design_attached_sketch_path_mapping_and_attachment_offset.png)
+
+```{seealso}
+FreeCAD/Part Design Workbench/Organization/Body/Binding Geometry_TOPIC
+FreeCAD/Part Design Workbench/Organization/Sketch/Attach_TOPIC
+```
+
+```{note}
+Much like loft, it's totally unclear / undocumented how pipe makes its transitions between sketches (e.g., which vertexes line up with which vertexes between sketches, what happens when there's more vertexes in one sketch vs the next).
+
+Notes from source:
+
+* To better control the shape of the pipe, it is recommended that all cross-sections have the same number of segments. For example, for a pipe between a rectangle and a circle, the circle should be broken down into 4 connected arcs.
+* You can pipe from or toward a single vertex from a sketch or the body.
+* When you select a vertex as section, it must be the last section of the pipe. Otherwise the pipe body would consist of two solids connected at a single point. This would violates the CAD kernel's definition of a 3D object. You can change the order of the sections by dragging them in the list.
+* The path can only be from a single sketch, feature or ShapeBinder. In case you want to sweep along several edges from different sketches, use a SubShapeBinder.
+* The path must not contain branches or T-junctions etc. Loops are allowed.
+* It can lead to issues if the cross-section is not perpendicular to the path in 3D.
+* A cross-section cannot lie on the same plane as the one immediately preceding it.
+* The cross-sections must not contain disjoint or crossing loops.
+* If the sketch has inner geometry, then the order in which the sketch geometry is created should be the same for all sections. Either start all sections with the inner geometry, or start them all with the outer. Otherwise an invalid pipe will be created where inner and outer walls cross.
+```
+
+![FreeCAD Sketcher workbench attachment offset](freecad_sketcher_attachment_offset.png)
+
+The **Corner transition** parameter defines how the path handles hard corners in the path:
+
+* **Transformed**: Hard corners are automatically dealt with, potentially resulting in skewing, warping, and/or rotation.
+* **Right corner**: Hard corners are not rounded (e.g., when the path goes from down to right at 90 degrees, it will abruptly change the profile, producing a hard cornered L shape).
+* **Rounded corner**: Hard corners are rounded (e.g., when the path goes from down to right at 90 degrees, it will hold the inner in place and sweep the other end to produce a rounded shape).
+
+The **Orientation mode** parameter defines how the profile rotates as it sweeps along the path:
+
+* **Standard**: Orientation stays normal to path (normal vector).
+* **Fixed**: Orientation keeps initial sketch's orientation. Cross-section shape will not rotate along with the path.
+* **Frenet**: Orientation minimizes twisting.
+* **Auxiliary**: Orientation is specified by a secondary path. For each point P along the path, there should be a point Q in the secondary path. As the profile is swept, the PQ line will be the normal of the swept path.
+* **Binormal**: Orientation set to constant direction/vector as the orientation reference.
+
+```{note}
+Documentation for the above two properties are sparse.
+
+Documentation says for Fixed, make a circular path so see what it means (it likely means the profile doesn't reorient !!based!! on the path and it just sticks with whatever orientation the initial profile sketch had).
+```
+
+`{ref} https://wiki.freecad.org/PartDesign_AdditivePipe` `{ref} https://wiki.freecad.org/PartDesign_SubtractivePipe` `{ref} https://www.youtube.com/watch?v=AqzJ58bM2rs`
+
+#### Helix
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Helix)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Part Design Workbench/User Interface_TOPIC
+FreeCAD/Part Design Workbench/Organization_TOPIC
+```
+
+An additive helix operation and a subtractive helix operation are the same thing, except that ...
+
+* additive creates a solid and merges it with existing geometry it collides with.
+* subtractive creates a solid and cuts out it from existing geometry it collides with.
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+A helix creates a solid by taking a sketch and ascendingly rotating it up some axis, similar to the threads of a screw. To helix a sketch, either ...
+
+* use either toolbar button 13 (additive helix) or toolbar button 20 (subtractive helix), then select the pipe's initial sketch in the Select Attachment pane that pops up and click **OK**.
+* select the sketch to helix, then use either toolbar button 13 (additive helix) or toolbar button 20 (subtractive helix).
+
+![FreeCAD Part Design workbench helix example](freecad_part_design_helix_example.png) ![FreeCAD Part Design workbench helix sketch example](freecad_part_design_helix_sketch_example.png)
+
+The **Axis** parameter controls which axis to rotate around.
+
+The **Left handed** parameter rotates in the opposite direction (to the left rather than the right).
+
+The **Reversed** parameter flips the ascension in the opposite direction (descends the helix instead).
+
+The **Mode** parameter defines how the ascension and rotation are configured. The values control which configuration fields show up:
+
+* **!!Pitch-Height-Angle!!**
+
+  * **Pitch** controls how far apart a full turn is (e.g., if the thread was 2mm wide and the pitch was 2mm there would be no space between threads vs if the thread was 2mm wide and the pitch was 4mm there would be 1 thread's worth of a gap between threads).
+  * **!!Height!!** controls how far the helix ascends.
+  * **Angle** controls tapering of the helix (negative degrees tapers inward vs positive degrees taper outwards).
+
+  Some other options have a **Turns** parameter (number of full rotations). **Turns** is implicitly defined by **Pitch** and **!!Height!!** (e.g., pitch of 4mm at 8mm high is 2 turns).
+
+* **Pitch-Turns-Angle**
+
+  * **Pitch** controls how far apart a full turn is (e.g., if the thread was 2mm wide and the pitch was 2mm there would be no space between threads vs if the thread was 2mm wide and the pitch was 4mm there would be 1 thread's worth of a gap between threads).
+  * **Turns** controls the number of full rotations.
+  * **Angle** controls tapering of the helix (negative degrees tapers inward vs positive degrees taper outwards).
+
+  There is no **!!Height!!** parameter here. **!!Height!!** is implicitly defined by **Pitch** and **Turns** (e.g., pitch of 4mm at 2 turns is 8mm high).
+
+* **!!Height-Turns-Angle!!**:
+
+  * **!!Height!!** controls how far the helix ascends.
+  * **Turns** controls the number of full rotations.
+  * **Angle** controls tapering of the helix (negative degrees tapers inward vs positive degrees taper outwards).
+
+  There is no **Pitch** parameter here. **Pitch** is implicitly defined by **!!Height!!** and **Turns** (e.g., !!height!! of 8mm at 2 turns implies a pitch of 4mm).
+
+* **!!Height-Turns-Growth!!**:
+
+  * **!!Height!!** controls how far the helix ascends.
+  * **Turns** controls the number of full rotations.
+  * **Growth** controls how much the helix widens at the end of each turn.
+
+  There is no **Pitch** parameter here. **Pitch** is implicitly defined by **!!Height!!** and **Turns** (e.g., !!height!! of 8mm at 2 turns implies a pitch of 4mm).
+
+  There is no **Angle** parameter here. **Angle** is implicitly defined by **Growth** (translates the widening per turn to an angle).
+
+```{note}
+In the screenshot example, the sketch defines the helix's thread as well as the rotational cylinder's radius. Note how the sketch is 9.9mm out from the center and **Axis** is set to **Vertical sketch axis**, meaning the radius of the helix is 9.9mm.
+
+If your helix follows a similar setup, unless you already have a face to attach to or want the helix at the origin, it may be a good idea to place a datum plane in the desired location and use it to sketch out a helix.
+```
 
 `{ref} https://wiki.freecad.org/PartDesign_AdditiveHelix` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveHelix`
 
-### Primitives
+#### Primitives
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Primitives)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Primitives)_TOPIC/i`
 
 `{ref} https://wiki.freecad.org/PartDesign_AdditiveBox` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveBox`
 
@@ -4904,53 +5175,69 @@ In a sketch, the elements can't be named. As such, when you select a constructio
 
 `{ref} https://wiki.freecad.org/PartDesign_AdditiveWedge` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveWedge`
 
-### Fillet / Chamfer
+#### Fillet / Chamfer
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Fillet \/ Chamfer)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Fillet \/ Chamfer)_TOPIC/i`
 
 `{ref} https://wiki.freecad.org/PartDesign_Fillet`
 
 `{ref} https://wiki.freecad.org/PartDesign_Chamfer`
 
-### Draft
+#### Draft
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Draft)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Draft)_TOPIC/i`
 
 `{ref} https://wiki.freecad.org/PartDesign_Draft`
 
-### Thickness
+#### Thickness
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Thickness)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Thickness)_TOPIC/i`
 
 `{ref} https://wiki.freecad.org/PartDesign_Thickness`
 
-### Boolean Operation
+#### #Boolean Operation
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Boolean Operation)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Boolean Operation)_TOPIC/i`
 
 `{ref} https://wiki.freecad.org/PartDesign_Boolean`
 
-### Mirror
+#### Mirror
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Mirror)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Mirror)_TOPIC/i`
 
 `{ref} https://wiki.freecad.org/PartDesign_Mirrored`
 
-### Linear Pattern / Polar Pattern
+#### Linear Pattern / Polar Pattern
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Linear Pattern \/ Polar Pattern)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Linear Pattern \/ Polar Pattern)_TOPIC/i`
 
 `{ref} https://wiki.freecad.org/PartDesign_LinearPattern`
 
 `{ref} https://wiki.freecad.org/PartDesign_PolarPattern`
 
-### Multi-Transform
+#### Multi-Transform
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Multi-Transform)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Multi-Transform)_TOPIC/i`
 
 `{ref} https://wiki.freecad.org/PartDesign_MultiTransform`
 
 `{ref} https://wiki.freecad.org/PartDesign_Scaled`
+
+### Datum Geometry
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Datum Geometry)_TOPIC/i`
+
+#### Datum Point
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Datum Geometry\/Datum Point)_TOPIC/i`
+
+#### Datum Line
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Datum Geometry\/Datum Line)_TOPIC/i`
+
+#### Datum Plane
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Datum Geometry\/Datum Plane)_TOPIC/i`
 
 ## Variable Sets
 
