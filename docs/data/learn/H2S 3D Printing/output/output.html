@@ -229,9 +229,10 @@
 <li><a href="#H_Fillet%20%2F%20Chamfer">Fillet / Chamfer</a></li>
 <li><a href="#H_Draft">Draft</a></li>
 <li><a href="#H_Thickness">Thickness</a></li>
-<li><a href="#H_Boolean%20Operation">Boolean Operation</a></li>
+<li><a href="#H_Boolean">Boolean</a></li>
 <li><a href="#H_Mirror">Mirror</a></li>
-<li><a href="#H_Linear%20Pattern%20%2F%20Polar%20Pattern">Linear Pattern / Polar Pattern</a></li>
+<li><a href="#H_Polar%20Pattern">Polar Pattern</a></li>
+<li><a href="#H_Linear%20Pattern">Linear Pattern</a></li>
 <li><a href="#H_Multi-Transform">Multi-Transform</a></li>
 </ul>
 <li><a href="#H_Datum%20Geometry">Datum Geometry</a></li>
@@ -243,6 +244,7 @@
 </ul>
 <li><a href="#H_Variable%20Sets">Variable Sets</a></li>
 <li><a href="#H_Quality-of-life%20Settings">Quality-of-life Settings</a></li>
+<li><a href="#H_Macro%20Ideas">Macro Ideas</a></li>
 </ul>
 <li><a href="#H_Terminology">Terminology</a></li>
 </ul>
@@ -5376,7 +5378,7 @@
 <p>To create a body, use toolbar button 8 to clone the current Model pane selection into a new body. A clone is linked, not copied. That means changing the original changes the clone.</p>
 <p><sub><a href="https://wiki.freecad.org/PartDesign_Clone">[src]</a></sub> <sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
 <a name="H1_Coordinate%20System"></a><h5>Coordinate System</h5>
-<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization%2FCoordinate%20System)_TOPIC%2Fi"></a><strong></strong></p>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization%2FBody%2FCoordinate%20System)_TOPIC%2Fi"></a><strong></strong></p>
 <p>Each body has its own local coordinate system that features nested within it are relative to. The properties of a body define its position and rotation within its parent container. In most cases, that parent container is a part, but a body can also live outside of a part.</p>
 <p><img src="freecad_part_design_body_translation_properties.png" alt="FreeCAD part design workbench body translation properties"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -5911,8 +5913,11 @@ App.ActiveDocument.recompute()
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
 <li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FDatum%20Geometry%2FDatum%20Plane)_TOPIC%2Fi">FreeCAD/Part Design Workbench/Datum Geometry/Datum Plane</a></li>
-<li>To place a datum plane normal to the face's orientation, same steps as above but <strong>Attachment mode</strong> should be either <strong>Align O-N-Y</strong> or <strong>Align O-Y-N</strong>.</li>
 </ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>To place a datum plane normal to the face's orientation, same steps as above but <strong>Attachment mode</strong> should be either <strong>Align O-N-Y</strong> or <strong>Align O-Y-N</strong>.</p>
 </div>
 <p><sub><a href="https://wiki.freecad.org/PartDesign_AdditiveHelix">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_SubtractiveHelix">[src]</a></sub></p>
 <a name="H_Primitives"></a><h4>Primitives</h4>
@@ -6009,7 +6014,7 @@ App.ActiveDocument.recompute()
 </div>
 <p>Thickness removes one or more faces and cuts out the inside of the object, giving it a bowl-like / shell-like effect.</p>
 <p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
-<p>To apply thickness, select relevant faces and use either toolbar button 26.</p>
+<p>To apply thickness, select relevant faces and use toolbar button 26.</p>
 <p>A <strong>Thickness Parameters</strong> pane will pop open. To add faces, click <strong>Select</strong>, select the face, and then click <strong>Confirm Selection</strong>. To remove faces, click on the face in the list and press Del.</p>
 <p><img src="freecad_part_design_thickness_example.png" alt="FreeCAD Part Design workbench thickness example"></p>
 <p>The <strong>Thickness</strong> field sets the thick the shell is. If <strong>Make thickness inwards</strong> is clicked, the original outline is kept but hollowed out vs padding the original outline to generate the shell.</p>
@@ -6029,20 +6034,185 @@ App.ActiveDocument.recompute()
 <p>According to the source, it's recommended to leave the <strong>Intersection</strong> checkbox unchecked because it relies on some unimplemented methods in a dependent library. See source for more information.</p>
 </div>
 <p><sub><a href="https://wiki.freecad.org/PartDesign_Thickness">[src]</a></sub></p>
-<a name="H_Boolean%20Operation"></a><h4>Boolean Operation</h4>
-<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FFeatures%2FBoolean%20Operation)_TOPIC%2Fi"></a><strong></strong></p>
+<a name="H_Boolean"></a><h4>Boolean</h4>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FFeatures%2FBoolean)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FUser%20Interface)_TOPIC%2Fi">FreeCAD/Part Design Workbench/User Interface</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization)_TOPIC%2Fi">FreeCAD/Part Design Workbench/Organization</a></li>
+</ul>
+</div>
+<p>Boolean moves one or more outside bodies into the active body and performs a boolean/set operation (union, intersection. subtraction).</p>
+<p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
+<p>To apply boolean, select relevant faces and use toolbar button 22. A <strong>Boolean Parameters</strong> pane will pop open.</p>
+<p><img src="freecad_part_design_boolean_example.png" alt="FreeCAD Part Design workbench boolean example"></p>
+<p>To move a body into the active body, click <strong>Add Body</strong> and select the body. To move an added body back out, click <strong>Remove Body</strong> and select the body in Model pane.</p>
+<p>The drop-down below the list of added bodies is the operation to perform:</p>
+<ul>
+<li><strong>Common</strong> is intersection.</li>
+<li><strong>Fuse</strong> is union.</li>
+<li><strong>Cut</strong> is subtraction - the added bodies are subtracted from the active body.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>You almost always will need to move and reorient the body when you're doing boolean operations like this.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization%2FBody%2FCoordinate%20System)_TOPIC%2Fi">FreeCAD/Part Design Workbench/Organization/Body/Coordinate System</a></li>
+</ul>
+</div>
 <p><sub><a href="https://wiki.freecad.org/PartDesign_Boolean">[src]</a></sub></p>
 <a name="H_Mirror"></a><h4>Mirror</h4>
 <p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FFeatures%2FMirror)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FUser%20Interface)_TOPIC%2Fi">FreeCAD/Part Design Workbench/User Interface</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization)_TOPIC%2Fi">FreeCAD/Part Design Workbench/Organization</a></li>
+</ul>
+</div>
+<p>Mirror copies either the entire body or specific features across a plane.</p>
+<p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
+<p>To apply mirror, use toolbar button 27. A <strong>Mirror Parameters</strong> pane will pop open.</p>
+<p><img src="freecad_part_design_mirror_example.png" alt="FreeCAD Part Design workbench mirror example"></p>
+<p>Select <strong>Transform body</strong> for mirroring of the full model or <strong>Transform tool shapes</strong> to mirror specific features. If <strong>Transform tool shapes</strong> is selected, for each feature to mirror, click <strong>Add Feature</strong> and select the feature in the Model pane. Likewise, remove a feature being mirror by clicking <strong>Remove Feature</strong> and selecting the feature in the Model pane.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Does order of the selected features matter? A safe bet is likely to add features in the same order.</p>
+</div>
+<p>The <strong>Plane</strong> field selects the plane across which mirroring happens:</p>
+<ul>
+<li>Base planes (e.g., XY plane).</li>
+<li>Datum planes.</li>
+<li>Sketch axes and construction lines from any feature that's based off a sketch.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FDatum%20Geometry%2FDatum%20Plane)_TOPIC%2Fi">FreeCAD/Part Design Workbench/Datum Geometry/Datum Plane</a></li>
+</ul>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>It looks like the safest bet is to build your own datum plane. To place a datum plane perpendicular to some face's orientation, ...</p>
+<ol>
+<li>create a sketch on the face and insert 3 points in an L shape.</li>
+<li>exit the sketch and reference those points to create a datum plane.</li>
+<li>set the datum plane's <strong>Attachment mode</strong> to either <strong>Align O-N-Y</strong> or <strong>Align O-Y-N</strong>.</li>
+</ol>
+<p>Instead of a sketch with points, you can also try placing 3 datum points on the face's edges, moving those datum points using the <strong>Map Path Property</strong> (it's hidden in the properties tab - you need to right click and show hidden properties).</p>
+</div>
 <p><sub><a href="https://wiki.freecad.org/PartDesign_Mirrored">[src]</a></sub></p>
-<a name="H_Linear%20Pattern%20%2F%20Polar%20Pattern"></a><h4>Linear Pattern / Polar Pattern</h4>
-<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FFeatures%2FLinear%20Pattern%20%2F%20Polar%20Pattern)_TOPIC%2Fi"></a><strong></strong></p>
-<p><sub><a href="https://wiki.freecad.org/PartDesign_LinearPattern">[src]</a></sub></p>
+<a name="H_Polar%20Pattern"></a><h4>Polar Pattern</h4>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FFeatures%2FPolar%20Pattern)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FUser%20Interface)_TOPIC%2Fi">FreeCAD/Part Design Workbench/User Interface</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization)_TOPIC%2Fi">FreeCAD/Part Design Workbench/Organization</a></li>
+</ul>
+</div>
+<p>Polar pattern copies either the entire body or specific features, multiple times around an axis.</p>
+<p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
+<p>To apply polar pattern, use toolbar button 29. A <strong>Polar Pattern Parameters</strong> pane will pop open.</p>
+<p><img src="freecad_part_design_polar_pattern_example.png" alt="FreeCAD Part Design workbench polar pattern example"></p>
+<p>Select <strong>Transform body</strong> for patterning of the full model or <strong>Transform tool shapes</strong> to pattern specific features. If <strong>Transform tool shapes</strong> is selected, for each feature to mirror, click <strong>Add Feature</strong> and select the feature in the Model pane. Likewise, remove a feature being mirror by clicking <strong>Remove Feature</strong> and selecting the feature in the Model pane.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Does order of the selected features matter? A safe bet is likely to add features in the same order.</p>
+</div>
+<p>The <strong>Axis</strong> field selects the axis across which copying happens:</p>
+<ul>
+<li>Basis (e.g., X axis).</li>
+<li>Datum lines.</li>
+<li>Sketch axes and construction lines from any feature that's based off a sketch.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>It may be best to use a datum line here. Create a sketch on the face, put the point that the datum line should pass through (make sure to fully constrain it by locking it into place or using projected construction geometry), exit the sketch, and insert a datum line referencing the point and the face using attachment mode "Normal to surface".</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>🔍SEE ALSO🔍</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FDatum%20Geometry%2FDatum%20Line)_TOPIC%2Fi">FreeCAD/Part Design Workbench/Datum Geometry/Datum Line</a></li>
+</ul>
+</div>
+<p>When <strong>Mode</strong> is ...</p>
+<ul>
+<li><strong>Extent</strong>, the <strong>Length</strong> field controls how much to rotate around the axis (e.g., 180 degrees, 360 degrees, 720 degrees) and <strong>Occurrences</strong> field controls the number of copies (evenly spaced out around the rotation).</li>
+<li><strong>Spacing</strong>, the <strong>Spacing</strong> field controls how much space there is between copies (e.g., 60 degrees between copies) and <strong>Occurrences</strong> field controls the number of copies.</li>
+</ul>
 <p><sub><a href="https://wiki.freecad.org/PartDesign_PolarPattern">[src]</a></sub></p>
+<a name="H_Linear%20Pattern"></a><h4>Linear Pattern</h4>
+<p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FFeatures%2FLinear%20Pattern)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FUser%20Interface)_TOPIC%2Fi">FreeCAD/Part Design Workbench/User Interface</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization)_TOPIC%2Fi">FreeCAD/Part Design Workbench/Organization</a></li>
+</ul>
+</div>
+<p>Linear pattern copies either the entire body or specific features, multiple times in a straight line.</p>
+<p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
+<p>To apply linear pattern, use toolbar button 28. A <strong>Linear Pattern Parameters</strong> pane will pop open.</p>
+<p><img src="freecad_part_design_linear_pattern_example.png" alt="FreeCAD Part Design workbench linear pattern example"></p>
+<p>Select <strong>Transform body</strong> for patterning of the full model or <strong>Transform tool shapes</strong> to pattern specific features. If <strong>Transform tool shapes</strong> is selected, for each feature to mirror, click <strong>Add Feature</strong> and select the feature in the Model pane. Likewise, remove a feature being mirror by clicking <strong>Remove Feature</strong> and selecting the feature in the Model pane.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Does order of the selected features matter? A safe bet is likely to add features in the same order.</p>
+</div>
+<p>The <strong>Direction</strong> area selects the line across which copying happens:</p>
+<ul>
+<li>Basis (e.g., X axis).</li>
+<li>Datum lines.</li>
+<li>Sketch axes and construction lines from any feature that's based off a sketch.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>It may be best to use a datum line here. Create a sketch on the face with a line (make sure to fully constrain it by locking it into place or using projected construction geometry).</p>
+</div>
+<p>When <strong>Mode</strong> is ...</p>
+<ul>
+<li><strong>Extent</strong>, the <strong>Length</strong> field controls the total amount of distance and <strong>Occurrences</strong> field controls the number of copies (evenly spaced out across that distance).</li>
+<li><strong>Spacing</strong>, the <strong>Spacing</strong> field controls how much space there is between copies (e.g., 10mm between copies) and <strong>Occurrences</strong> field controls the number of copies.</li>
+</ul>
+<p>The <strong>Direction 2</strong> checkbox displays a second <strong>Direction</strong> area, which is used to copy the copies from the first direction area. In the example screenshot, the first direction area produces 3 holes upward, while the second direction area places 3 copies of those 3 holes across, totalling 9 holes.</p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_LinearPattern">[src]</a></sub></p>
 <a name="H_Multi-Transform"></a><h4>Multi-Transform</h4>
 <p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FFeatures%2FMulti-Transform)_TOPIC%2Fi"></a><strong></strong></p>
-<p><sub><a href="https://wiki.freecad.org/PartDesign_MultiTransform">[src]</a></sub></p>
-<p><sub><a href="https://wiki.freecad.org/PartDesign_Scaled">[src]</a></sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
+<ul>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FUser%20Interface)_TOPIC%2Fi">FreeCAD/Part Design Workbench/User Interface</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FOrganization)_TOPIC%2Fi">FreeCAD/Part Design Workbench/Organization</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FFeatures%2FMirror)_TOPIC%2Fi">FreeCAD/Part Design Workbench/Features/Mirror</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FFeatures%2FPolar%20Pattern)_TOPIC%2Fi">FreeCAD/Part Design Workbench/Features/Polar Pattern</a></li>
+<li><a href="#BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FFeatures%2FLinear%20Pattern)_TOPIC%2Fi">FreeCAD/Part Design Workbench/Features/Linear Pattern</a></li>
+</ul>
+</div>
+<p>Multi-transform is a container that can apply a chain of linear pattern, polar pattern, and mirror features. In addition, it can apply scaling to copies produced by these features.</p>
+<p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
+<p>To apply multi-transform, either ...</p>
+<ul>
+<li>use toolbar button 30.</li>
+<li>select existing linear pattern, polar pattern, and / or mirror features in the Model pane and use toolbar 30. The selected features will be imported into the multi-transform.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>If you're importing: I suspect the selection has to be made in order to be added? Also each selection must to target the exact same set of features added in the exact same order?</p>
+</div>
+<p>A <strong>Multi-Transform Parameters</strong> pane will pop open.</p>
+<p><img src="freecad_part_design_multi_transform_example.png" alt="FreeCAD Part Design workbench multi-transform example"></p>
+<p>Select <strong>Transform body</strong> for patterning of the full model or <strong>Transform tool shapes</strong> to pattern specific features. If <strong>Transform tool shapes</strong> is selected, for each feature to mirror, click <strong>Add Feature</strong> and select the feature in the Model pane. Likewise, remove a feature being mirror by clicking <strong>Remove Feature</strong> and selecting the feature in the Model pane.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Does order of the selected features matter? A safe bet is likely to add features in the same order.</p>
+</div>
+<p>Right-click inside the <strong>Transformations</strong> list to add, delete, edit, and reorder transformations. The <strong>Scale</strong> transformation takes copies made in the previous transformation and applies compound scaling (e.g., first copy is 2x scaled, second copy, 3x scaled, etc..), as shown in the example. For copies of the body, this may work as intended. For copies of features, this may not work as intended (e.g., in the example screenshot, notice that the pockets don't seat on the face as they scale).</p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_MultiTransform">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_Scaled">[src]</a></sub></p>
 <a name="H_Datum%20Geometry"></a><h3>Datum Geometry</h3>
 <p><a name="BM_(FreeCAD%5C%2FPart%20Design%20Workbench%2FDatum%20Geometry)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -6153,6 +6323,37 @@ App.ActiveDocument.recompute()
 <li>Go to <strong>Edit</strong> → <strong>Preferences</strong> → <strong>Part Design</strong> → <strong>Shape Appearance</strong> and set <strong><a href="#BM_(line%20width%7Cextrusion%20width%7Cextruder%20width)%2Fi">Line Width</a></strong> to <strong>4 px</strong>.</li>
 </ol>
 <p><sub>[[self src]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub></p>
+<a name="H_Macro%20Ideas"></a><h2>Macro Ideas</h2>
+<ul>
+<li>
+<p>drop a datum plane cutting through a plane</p>
+<p>why is this useful?
+this is useful for doing things like mirror pattern of a feature, when your sketch isn't centered at the origin and oriented to one of the basis axes.</p>
+<ol>
+<li>sketch on face</li>
+<li>pull in edges of face as construction geometry on sketch</li>
+<li>drop 3 points on sketch in L shape, constrain them so that they're 1mm away from each other</li>
+<li>constrain middle point, lock to origin using horizontal and vertical dimension</li>
+<li>exit sketch</li>
+<li>insert datum plane that references the 3 points in the sketch, select attachment mode of "Align O-Y-N" or "Align O-N-Y"</li>
+<li>user may have to go into sketch and adjust L points based on where they want the datum plane to be positioned exactly</li>
+</ol>
+</li>
+<li>
+<p>drop a datum line matching a face's normal</p>
+<p>why is this useful?
+this is useful for doing things like polar pattern of a feature when your sketch isn't centered at the origin and oriented to one of the basis axes.
+this is useful if you want to attach two bodies together (via boolean), where the body being attached needs to be positioned - you can place the point and datum line somewhere, and then reference it in the body's transformation properties</p>
+<ol>
+<li>sketch on face</li>
+<li>pull in edges of face as construction geometry on sketch</li>
+<li>drop point on sketch, lock to origin using horizontal and vertical dimension</li>
+<li>exit sketch</li>
+<li>insert datum line that references sketch's point and face, select attachment mode as "normal to surface</li>
+<li>user will have to go into sketch and adjust point based on where they want the datum line to protrude from</li>
+</ol>
+</li>
+</ul>
 <a name="H_Terminology"></a><h1>Terminology</h1>
 <ul>
 <li>

@@ -4584,7 +4584,7 @@ To create a body, use toolbar button 8 to clone the current Model pane selection
 
 ##### Coordinate System
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Coordinate System)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Body\/Coordinate System)_TOPIC/i`
 
 Each body has its own local coordinate system that features nested within it are relative to. The properties of a body define its position and rotation within its parent container. In most cases, that parent container is a part, but a body can also live outside of a part.
 
@@ -5167,7 +5167,9 @@ To place a datum plane matching the face's orientation but with a specific origi
 
 ```{seealso}
 FreeCAD/Part Design Workbench/Datum Geometry/Datum Plane_TOPIC
+```
 
+```{note}
 To place a datum plane normal to the face's orientation, same steps as above but **Attachment mode** should be either **Align O-N-Y** or **Align O-Y-N**.
 ```
 
@@ -5291,7 +5293,7 @@ FreeCAD/Part Design Workbench/Organization_TOPIC
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-To apply !!thickness!!, select relevant faces and use either toolbar button 26.
+To apply !!thickness!!, select relevant faces and use toolbar button 26.
 
 A **!!Thickness!! Parameters** pane will pop open. To add faces, click **Select**, select the face, and then click **Confirm Selection**. To remove faces, click on the face in the list and press Del.
 
@@ -5318,9 +5320,38 @@ According to the source, it's recommended to leave the **Intersection** checkbox
 
 `{ref} https://wiki.freecad.org/PartDesign_Thickness`
 
-#### Boolean Operation
+#### Boolean
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Boolean Operation)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Boolean)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Part Design Workbench/User Interface_TOPIC
+FreeCAD/Part Design Workbench/Organization_TOPIC
+```
+
+Boolean moves one or more outside bodies into the active body and performs a boolean/set operation (union, intersection. subtraction).
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To apply boolean, select relevant faces and use toolbar button 22. A **Boolean Parameters** pane will pop open.
+
+![FreeCAD Part Design workbench boolean example](freecad_part_design_boolean_example.png)
+
+To move a body into the active body, click **Add Body** and select the body. To move an added body back out, click **Remove Body** and select the body in Model pane.
+
+The drop-down below the list of added bodies is the operation to perform:
+
+* **Common** is intersection.
+* **Fuse** is union.
+* **Cut** is subtraction - the added bodies are subtracted from the active body.
+
+```{note}
+You almost always will need to move and reorient the body when you're doing boolean operations like this.
+```
+
+```{seealso}
+FreeCAD/Part Design Workbench/Organization/Body/Coordinate System_TOPIC
+```
 
 `{ref} https://wiki.freecad.org/PartDesign_Boolean`
 
@@ -5328,23 +5359,171 @@ According to the source, it's recommended to leave the **Intersection** checkbox
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Features\/Mirror)_TOPIC/i`
 
+```{prereq}
+FreeCAD/Part Design Workbench/User Interface_TOPIC
+FreeCAD/Part Design Workbench/Organization_TOPIC
+```
+
+Mirror copies either the entire body or specific features across a plane.
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To apply mirror, use toolbar button 27. A **Mirror Parameters** pane will pop open.
+
+![FreeCAD Part Design workbench mirror example](freecad_part_design_mirror_example.png)
+
+Select **Transform body** for mirroring of the full model or **Transform tool shapes** to mirror specific features. If **Transform tool shapes** is selected, for each feature to mirror, click **Add Feature** and select the feature in the Model pane. Likewise, remove a feature being mirror by clicking **Remove Feature** and selecting the feature in the Model pane.
+
+```{note}
+Does order of the selected features matter? A safe bet is likely to add features in the same order.
+```
+
+The **Plane** field selects the plane across which mirroring happens:
+
+* Base planes (e.g., XY plane).
+* Datum planes.
+* Sketch axes and construction lines from any feature that's !!based!! off a sketch.
+
+```{seealso}
+FreeCAD/Part Design Workbench/Datum Geometry/Datum Plane_TOPIC
+```
+
+```{note}
+It looks like the safest bet is to build your own datum plane. To place a datum plane perpendicular to some face's orientation, ...
+
+1. create a sketch on the face and insert 3 points in an L shape.
+2. exit the sketch and reference those points to create a datum plane.
+3. set the datum plane's **Attachment mode** to either **Align O-N-Y** or **Align O-Y-N**.
+
+Instead of a sketch with points, you can also try placing 3 datum points on the face's edges, moving those datum points using the **Map Path Property** (it's hidden in the properties tab - you need to right click and show hidden properties). 
+```
+
 `{ref} https://wiki.freecad.org/PartDesign_Mirrored`
 
-#### Linear Pattern / Polar Pattern
+#### Polar Pattern
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Linear Pattern \/ Polar Pattern)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Polar Pattern)_TOPIC/i`
 
-`{ref} https://wiki.freecad.org/PartDesign_LinearPattern`
+```{prereq}
+FreeCAD/Part Design Workbench/User Interface_TOPIC
+FreeCAD/Part Design Workbench/Organization_TOPIC
+```
+
+Polar pattern copies either the entire body or specific features, multiple times around an axis.
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To apply polar pattern, use toolbar button 29. A **Polar Pattern Parameters** pane will pop open.
+
+![FreeCAD Part Design workbench polar pattern example](freecad_part_design_polar_pattern_example.png)
+
+Select **Transform body** for patterning of the full model or **Transform tool shapes** to pattern specific features. If **Transform tool shapes** is selected, for each feature to mirror, click **Add Feature** and select the feature in the Model pane. Likewise, remove a feature being mirror by clicking **Remove Feature** and selecting the feature in the Model pane.
+
+```{note}
+Does order of the selected features matter? A safe bet is likely to add features in the same order.
+```
+
+The **Axis** field selects the axis across which copying happens:
+
+* Basis (e.g., X axis).
+* Datum lines.
+* Sketch axes and construction lines from any feature that's !!based!! off a sketch.
+
+```{note}
+It may be best to use a datum line here. Create a sketch on the face, put the point that the datum line should pass through (make sure to fully constrain it by locking it into place or using projected construction geometry), exit the sketch, and insert a datum line referencing the point and the face using attachment mode "Normal to surface".
+```
+
+```{seealso}
+FreeCAD/Part Design Workbench/Datum Geometry/Datum Line_TOPIC
+```
+
+When **Mode** is ...
+
+* **Extent**, the **Length** field controls how much to rotate around the axis (e.g., 180 degrees, 360 degrees, 720 degrees) and **Occurrences** field controls the number of copies (evenly spaced out around the rotation).
+* **Spacing**, the **Spacing** field controls how much space there is between copies (e.g., 60 degrees between copies) and **Occurrences** field controls the number of copies.
 
 `{ref} https://wiki.freecad.org/PartDesign_PolarPattern`
+
+#### Linear Pattern
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Features\/Linear Pattern)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Part Design Workbench/User Interface_TOPIC
+FreeCAD/Part Design Workbench/Organization_TOPIC
+```
+
+Linear pattern copies either the entire body or specific features, multiple times in a straight line.
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To apply linear pattern, use toolbar button 28. A **Linear Pattern Parameters** pane will pop open.
+
+![FreeCAD Part Design workbench linear pattern example](freecad_part_design_linear_pattern_example.png)
+
+Select **Transform body** for patterning of the full model or **Transform tool shapes** to pattern specific features. If **Transform tool shapes** is selected, for each feature to mirror, click **Add Feature** and select the feature in the Model pane. Likewise, remove a feature being mirror by clicking **Remove Feature** and selecting the feature in the Model pane.
+
+```{note}
+Does order of the selected features matter? A safe bet is likely to add features in the same order.
+```
+
+The **Direction** area selects the line across which copying happens:
+
+* Basis (e.g., X axis).
+* Datum lines.
+* Sketch axes and construction lines from any feature that's !!based!! off a sketch.
+
+```{note}
+It may be best to use a datum line here. Create a sketch on the face with a line (make sure to fully constrain it by locking it into place or using projected construction geometry).
+```
+
+When **Mode** is ...
+
+* **Extent**, the **Length** field controls the total amount of distance and **Occurrences** field controls the number of copies (evenly spaced out across that distance).
+* **Spacing**, the **Spacing** field controls how much space there is between copies (e.g., 10mm between copies) and **Occurrences** field controls the number of copies.
+
+The **Direction 2** checkbox displays a second **Direction** area, which is used to copy the copies from the first direction area. In the example screenshot, the first direction area produces 3 !!holes!! upward, while the second direction area places 3 copies of those 3 !!holes!! across, totalling 9 !!holes!!.
+
+`{ref} https://wiki.freecad.org/PartDesign_LinearPattern`
 
 #### Multi-Transform
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Features\/Multi-Transform)_TOPIC/i`
 
-`{ref} https://wiki.freecad.org/PartDesign_MultiTransform`
+```{prereq}
+FreeCAD/Part Design Workbench/User Interface_TOPIC
+FreeCAD/Part Design Workbench/Organization_TOPIC
+FreeCAD/Part Design Workbench/Features/Mirror_TOPIC
+FreeCAD/Part Design Workbench/Features/Polar Pattern_TOPIC
+FreeCAD/Part Design Workbench/Features/Linear Pattern_TOPIC
+```
 
-`{ref} https://wiki.freecad.org/PartDesign_Scaled`
+Multi-transform is a container that can apply a chain of linear pattern, polar pattern, and mirror features. In addition, it can apply scaling to copies produced by these features.
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To apply multi-transform, either ...
+
+* use toolbar button 30.
+* select existing linear pattern, polar pattern, and / or mirror features in the Model pane and use toolbar 30. The selected features will be imported into the multi-transform.
+
+```{note}
+If you're importing: I suspect the selection has to be made in order to be added? Also each selection must to target the exact same set of features added in the exact same order?
+```
+
+A **Multi-Transform Parameters** pane will pop open.
+
+![FreeCAD Part Design workbench multi-transform example](freecad_part_design_multi_transform_example.png)
+
+Select **Transform body** for patterning of the full model or **Transform tool shapes** to pattern specific features. If **Transform tool shapes** is selected, for each feature to mirror, click **Add Feature** and select the feature in the Model pane. Likewise, remove a feature being mirror by clicking **Remove Feature** and selecting the feature in the Model pane.
+
+```{note}
+Does order of the selected features matter? A safe bet is likely to add features in the same order.
+```
+
+Right-click inside the **Transformations** list to add, delete, edit, and reorder transformations. The **Scale** transformation takes copies made in the previous transformation and applies compound scaling (e.g., first copy is 2x scaled, second copy, 3x scaled, etc..), as shown in the example. For copies of the body, this may work as intended. For copies of features, this may not work as intended (e.g., in the example screenshot, notice that the pockets don't seat on the face as they scale).
+
+`{ref} https://wiki.freecad.org/PartDesign_MultiTransform` `{ref} https://wiki.freecad.org/PartDesign_Scaled`
 
 ### Datum Geometry
 
@@ -5486,6 +5665,34 @@ The following instructions make it easier to select items using a trackpad, wher
 5. Go to **Edit** → **Preferences** → **Part Design** → **Shape Appearance** and set **Line Width** to **4 px**.
 
 `{ref} self`
+
+## Macro Ideas
+
+* drop a datum plane cutting through a plane
+
+  why is this useful?
+  this is useful for doing things like mirror pattern of a feature, when your sketch isn't centered at the origin and oriented to one of the basis axes.
+
+  1. sketch on face
+  2. pull in edges of face as construction geometry on sketch
+  3. drop 3 points on sketch in L shape, constrain them so that they're 1mm away from each other
+  4. constrain middle point, lock to origin using horizontal and vertical dimension
+  5. exit sketch
+  6. insert datum plane that references the 3 points in the sketch, select attachment mode of "Align O-Y-N" or "Align O-N-Y"
+  7. user may have to go into sketch and adjust L points !!based!! on where they want the datum plane to be positioned exactly
+
+* drop a datum line matching a face's normal
+
+  why is this useful?
+  this is useful for doing things like polar pattern of a feature when your sketch isn't centered at the origin and oriented to one of the basis axes.
+  this is useful if you want to attach two bodies together (via boolean), where the body being attached needs to be positioned - you can place the point and datum line somewhere, and then reference it in the body's transformation properties
+
+  1. sketch on face
+  2. pull in edges of face as construction geometry on sketch
+  3. drop point on sketch, lock to origin using horizontal and vertical dimension
+  4. exit sketch
+  5. insert datum line that references sketch's point and face, select attachment mode as "normal to surface
+  6. user will have to go into sketch and adjust point !!based!! on where they want the datum line to protrude from
 
 # Terminology
 
