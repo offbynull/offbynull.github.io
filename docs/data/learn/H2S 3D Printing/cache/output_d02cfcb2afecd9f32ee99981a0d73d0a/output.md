@@ -1,1 +1,0 @@
-<sub>[\[self src\]](data:text/html,%3C!doctype%20html%3E%0A%3Chtml%3E%0A%3Cbody%3E%0AThis%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.%0A%3C/body%3E%0A%3C/html%3E)</sub>

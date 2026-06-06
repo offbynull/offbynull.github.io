@@ -229,7 +229,7 @@ Filament can be loaded through either an !!AMS!! unit (e.g., AMS 2 Pro or AMS HT
  * an !!AMS!! unit isn't attached to the H2S.
  * the spool is oversized for the !!AMS!! unit.
  * the spool is for a material the !!AMS!! unit doesn't !!support!! (but the H2S does).
- * the spool is from an !!unsupported!! third-party. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/225`
+ * the spool is from an !!unsupported!! !!third-party!!. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/225`
 
 ```{note}
 The source doesn't cite this, but I know for a fact that TPU is not !!supported!! by the AMS 2 Pro and must be fed via the external spool holder (unless it's specifically branded as !!TPU for AMS!!, which Bambu Lab sells). 
@@ -337,7 +337,7 @@ An introductory YouTube video I watched mentioned that the faster the speed is, 
 To perform movements of the toolhead (XY axis) and heatbed (Z axis), navigate to **[Controls]** → **Motion** and tap the adjustment buttons as necessary. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/226`
 
 ```{note}
-This seems to only be for testing purposes and moving things to get at parts? I had to use this feature to get at a thin piece of plastic that popped off and fell on the bottom of the H2S. I moved the heatbed up so I could fit my hand in and reach it.
+This seems to only be for testing purposes and moving things to get at !!parts!!? I had to use this !!feature!! to get at a thin piece of plastic that popped off and fell on the bottom of the H2S. I moved the heatbed up so I could fit my hand in and reach it.
 ```
 
 ### Extruder Movement
@@ -910,7 +910,7 @@ The assembly tool has two **Mode** options:
 
   * **Parallel** button will reorient the objects so the selected faces are parallel.
   * **Center coincidence** button will bring the selected faces together.
-  * **Flip by Face 2** checkbox will flip second object such that the face's normal vector goes in the opposite direction.
+  * **!!Flip!! by Face 2** checkbox will !!flip!! second object such that the face's normal vector goes in the opposite direction.
 
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/assemble` `{ref} https://wiki.bambulab.com/en/software/bambu-studio/stacking-objects`
 
@@ -1016,7 +1016,7 @@ The subsections below discuss each of the above items in more detail.
 `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214` `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/33` `{ref} https://wiki.bambulab.com/en/software/bambu-studio/support`
 
 ```{note}
-What features qualify as a "critical region"? The [documentation](https://wiki.bambulab.com/en/software/bambu-studio/support) goes into further details: Cantilevers and sharp tails.
+What !!features!! qualify as a "critical region"? The [documentation](https://wiki.bambulab.com/en/software/bambu-studio/support) goes into further details: Cantilevers and sharp tails.
 
 No sense going over that information here.
 ```
@@ -1070,7 +1070,7 @@ The support's_BO type defines the geometry generated:
   * **Tree Strong:** Aggressively avoid merging circles from different branches as it gets closer to the heatbed, resulting in stronger supports_BO.
   * **Tree Organic:** Aggressively merge circles from different branches as it gets closer to the heatbed, resulting in less filament being used (similar end result as slim, but different approach).
   * **Tree Hybrid:** Combination of tree and normal supports_BO, selected !!based!! on criteria.
-  * **Default:** Blends **Tree Organic** and **Tree Hybrid**, depending on object features.
+  * **Default:** Blends **Tree Organic** and **Tree Hybrid**, depending on object !!features!!.
 
 ```{note}
 See source to figure out how default switches between and organic. Out of scope for this document.
@@ -1120,7 +1120,7 @@ The documentation says to treat these gap parameters not as independent paramete
 Bambu Studio/Object Supports/Support Type_TOPIC
 ```
 
-Interface_BO layers are support_BO layers that touch the object, while the rest of the support_BO body is referred to as the base_BO. Bambu studio allows targeting specific materials for a support's_BO base_BO and interface_BO. Navigate to the properties under **!!Support!!** → **!!Filament for Supports!!**. The property ...
+Interface_BO layers are support_BO layers that touch the object, while the rest of the support_BO !!body!! is referred to as the base_BO. Bambu studio allows targeting specific materials for a support's_BO base_BO and interface_BO. Navigate to the properties under **!!Support!!** → **!!Filament for Supports!!**. The property ...
 
 * **!!Support!!/!!raft!! !!base!!** controls the filament to use for the support's_BO base_BO.
 * **!!Support!!/!!raft!! !!interface!!** controls the filament to use for the support's_BO interface_BO.
@@ -1260,9 +1260,9 @@ The cutting tool has two modes, chosen using the **Mode** dropdown at the top of
      For the Plug type, if you're confused about frustum vs prizm: Frustum tapers the sides as it goes up (similar to a pyramid) while the prizm option keeps the sides straight.
      ```
 
-     To flip between the two sides of the cut plane, click the **Flip cut plane** button.
+     To !!flip!! between the two sides of the cut plane, click the **!!Flip!! cut plane** button.
 
-     To force the joinery in the middle of the cut plane, sleect **Middle of geometry** before clicking.
+     To force the joinery in the middle of the cut plane, select **Middle of geometry** before clicking.
 
   5. **After cut** defines how the cut pieces are treated:
 
@@ -1373,12 +1373,12 @@ As shown in the screenshots above, modifier parts appear gold when viewed in the
 
 Common use cases for modifier parts include ...
 
-* strengthening specific areas of an object by increasing infill density (e.g., head of a wrench has a high infill density while the body has low).
+* strengthening specific areas of an object by increasing infill density (e.g., head of a wrench has a high infill density while the !!body!! has low).
 * turning off fuzzy skin on specific areas of an object (e.g., the eyes, tongue, and nose of a teddy bear - doesn't make sense for these area to be fuzzy).
 * reducing print speed in specific areas of an object (e.g., top of a tall hing object or other problematic areas).
 
 ```{note}
-There's also a related feature called a !!height!! range modifier. It adjusts !!based!! on !!height!!. For example, top of very tall models can printer slower at higher layers for stability or top heavy models can have infill density increased at lower layers to stabilize.
+There's also a related !!feature!! called a !!height!! range modifier. It adjusts !!based!! on !!height!!. For example, top of very tall models can printer slower at higher layers for stability or top heavy models can have infill density increased at lower layers to stabilize.
 ```
 
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/modifier` `{ref} https://bambulab.com/en/support/academy/3/course/982688414357196800/chapter/51`
@@ -1488,7 +1488,7 @@ The majority of the parameters are self-explanatory.
 
 * **Size** is is the size of the icon.
 
-* **Mirror** buttons are helpers to flip the icon.
+* **Mirror** buttons are helpers to !!flip!! the icon.
 
 ```{note}
 There's some weirdness about how the icon is projected on to the surface of the object. If you have something with a curved surface (e.g., cone) and project a large icon that wraps around the cone, it only applies the part of the icon that's projected on to the viewport? If you apply it and then rotate the object, you'll see that the sides you weren't looking at didn't have the icon cut off
@@ -1568,7 +1568,7 @@ From [this page](https://bambulab.com/en/support/academy/3/course/98268841435719
 
 > When using variable layer height, avoid overly sharp changes in the layer height curve—meaning changes that occur too abruptly. Sudden transitions in layer height can leave visible marks or banding on the model’s surface.
 >
-> As shown in the image, the left example features a steep and jagged layer height curve, which leads to noticeable surface artifacts. On the right, smoother transitions result in a cleaner and more uniform surface finish.
+> As shown in the image, the left example !!features!! a steep and jagged layer height curve, which leads to noticeable surface artifacts. On the right, smoother transitions result in a cleaner and more uniform surface finish.
 ```
 
 When applying variable layer heights, ...
@@ -1645,7 +1645,7 @@ A seam is a mark that shows up when the toolhead prints an enclosed path, showin
 There are several ways to control the appearance of seams: Algorithmic placement (e.g., hiding seams on edges), manual placement (e.g., seam painting), and specialized printing techniques (e.g., scarf seams). The subsections below detail the common methods to mitigate seams.
 
 ```{note}
-Although not documented in any of the subsections below, the fuzzy skin feature can also help mitigate the appearance of seams by introducing a randomly jittered textured outside.
+Although not documented in any of the subsections below, the fuzzy skin !!feature!! can also help mitigate the appearance of seams by introducing a randomly jittered textured outside.
 ```
 
 ```{note}
@@ -1949,7 +1949,7 @@ Brim ears will be invisible once exiting this tool, only being visible again whe
 ```
 
 ```{note}
-I found this as well: https://wiki.bambulab.com/en/software/bambu-studio/use-disc-to-avoid-warping. This seems to be doing the same thing as brim ears but its entirely manual? Maybe it was made for an older version of Bambu Studio where brim ears feature wasn't available.
+I found this as well: https://wiki.bambulab.com/en/software/bambu-studio/use-disc-to-avoid-warping. This seems to be doing the same thing as brim ears but its entirely manual? Maybe it was made for an older version of Bambu Studio where brim ears !!feature!! wasn't available.
 ```
 
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/brim-ears`
@@ -2095,7 +2095,7 @@ Hole_BS / contour_BS compensation may be needed because ...
 * the filament material may have absorbed moisture, causing inconsistent extrusion.
 * first layer may have been squished (elephant foot), distorting holes_BS in that layer.
 * the hole_BS may be too small to accurately print - holes_BS with diameter close to the nozzle's size / holes_BS below 1mm.
-* the hole_BS may be fine, but may need to be chamfered (tapered lead-in) to accommodate the fastener.
+* the hole_BS may be fine, but may need to be chamfered_FC (tapered lead-in) to accommodate the fastener.
 * flow dynamics may need to be tuned.
 
 ```{seealso}
@@ -2160,7 +2160,7 @@ There's also an option for the classic wall generator to help with this thinness
 Once **Arachne** is enabled, the extra properties displayed in the screenshot above become present:
 
 * **Minimum wall !!width!!**: Minimum line width, as a percentage of nozzle diameter.
-* **Minimum feature size**: Minimum thinness to filter out during slicing, as a percentage of nozzle diameter.
+* **Minimum !!feature!! size**: Minimum thinness to filter out during slicing, as a percentage of nozzle diameter.
 
 ```{note}
 The other properties seem like advanced properties that control knobs/levers of the algorithm? It might not make sense to document them here because, even though the source documents them, they seem like internal concepts and it doesn't say what sense there is in changing them?
@@ -2399,7 +2399,7 @@ The slicer output shown in the **Preview** Screen helps identify problems prior 
 
 Of the **Color schemes** available, the following ones help highlight problems:
 
-* **Line Type** - Designates the path color !!based!! on print feature (e.g., infill, support_BO, top surface, bridge, or overhang).
+* **Line Type** - Designates the path color !!based!! on print !!feature!! (e.g., infill, support_BO, top surface, bridge, or overhang).
 * **Filament** - Designates the path color !!based!! on which filament is being printed. The slice result will also show how much of which filament is consumed.
 * **Print Speed** - Designates the path color !!based!! on how fast it prints.
 * **Fan Speed** - Designates the path color !!based!! on how fast the part cooling fan is spinning.
@@ -2419,9 +2419,9 @@ For more information, see the source.
 
 `{bm} /(FreeCAD)_TOPIC/i`
 
-FreeCAD is a parametric modeling tool. It contains different segments of functionality, referred to as workbenches. Each workbench targets a different aspect of the overall design workflow (e.g., sketching, turning sketches into 3D objects, and assembling 3D objects together).
+FreeCAD is a parametric 3D computer-aided design / modeling tool. It contains different segments of functionality, referred to as workbenches_FC. Each workbench_FC targets a different aspect of the overall design workflow (e.g., sketching_FC, turning sketches_FC into 3D objects, and assembling 3D objects together).
 
-The following subsections give a basic overview and usage reference for the subset of workbenches related to 3D printing.
+The following subsections give a basic overview and usage reference for the subset of workbenches_FC related to 3D printing.
 
 ```{note}
 This section assumes you have past experience with some 3D editors.
@@ -2433,7 +2433,7 @@ This section assumes you have past experience with some 3D editors.
 
 ![FreeCAD UI layout](freecad_ui_layout.png)
 
-Regardless of which workbench you're in, FreeCAD's UI will likely have the sections highlighted in the screenshot above. Almost everything in the toolbar can also be accessed via the main menu and triggered via a keyboard shortcut.
+Regardless of which workbench_FC you're in, FreeCAD's UI will likely have the sections highlighted in the screenshot above. Almost everything in the toolbar can also be accessed via the main menu and triggered via a keyboard shortcut.
 
 ```{note}
 When in doubt, click the button immediately to the right of 3 (pointer with a question mark) and select something to learn more about it.
@@ -2445,7 +2445,7 @@ If something is missing from your toolbar, navigate to **View** → **Toolbars**
 
 **Viewport**
 
- * (6) Viewport: The space in which work in performed. The viewport typically renders and allows control of geometry (e.g., 3D primitives, 2D sketches, and technical drawings). For some workbenches, the viewport displays something different than geometry (e.g., spreadsheet).
+ * (6) Viewport: The space in which work in performed. The viewport typically renders and allows control of geometry (e.g., 3D primitives, 2D sketches_FC, and technical drawings). For some workbenches_FC, the viewport displays something different than geometry (e.g., spreadsheet_FC).
 
  * (11) Navigation cube: When working in 3D, there will be a navigation cube (located in the viewport's top right in the example) that reduces the burden rotating and reorienting viewing angles, as well as changing perspectives. Clicking the various faces of the cube as well as the surrounding icons reorient the camera and change perspective.
 
@@ -2470,7 +2470,7 @@ If something is missing from your toolbar, navigate to **View** → **Toolbars**
 
 **Document hierarchy / operations**
 
- * (4) Model pane: List of open documents, as well as the hierarchy of each open document. In the example, the document Test3 has a part design body with a sketch in it. 
+ * (4) Model pane: List of open documents, as well as the hierarchy of each open document. In the example, the document Test3 has a part design_FC body_FC with a sketch_FC in it. 
 
  * (5) Properties pane: For the selected items, this pane lists the properties for those items. If the item is selected within a 3D viewport, the *Data* tab below shows the physical properties (e.g., what it is) while the *View* tab below shows the visual properties (e.g., how its rendered).
 
@@ -2489,7 +2489,7 @@ If something is missing from your toolbar, navigate to **View** → **Toolbars**
    * redo drop-down, which lists and allows going forward to subsequent state after an undo.
    * recompute, which recomputes calculations for the current selection or the active document if nothing is selected within it.
 
- * (2) Workbench switcher: Drop-down that switches between workbenches.
+ * (2) Workbench_FC switcher: Drop-down that switches between workbenches_FC.
 
  * (8) Diagnostic messages: Pop-out that displays log messages. The number displayed is the number of unread diagnostics messages.
 
@@ -2499,10 +2499,10 @@ If something is missing from your toolbar, navigate to **View** → **Toolbars**
 
 `{bm} /(FreeCAD\/Spreadsheet Workbench)_TOPIC/i`
 
-FreeCAD has a built-in spreadsheet and expression engine, accessible through the spreadsheet workbench. A spreadsheet is typically used to store parameters and run formulas, which then go on to be used as the parameters of geometry and other properties of an object. It can also go the other way, pulling data out of a model into a spreadsheet.
+FreeCAD has a built-in spreadsheet_FC and expression engine, accessible through the spreadsheet workbench_FC. A spreadsheet_FC is typically used to store parameters and run formulas, which then go on to be used as the parameters of geometry and other properties of an object. It can also go the other way, pulling data out of a model into a spreadsheet_FC.
 
 ```{note}
-The entire section assumes the reader has prior experience with other spreadsheet engines (e.g., Excel).
+The entire section assumes the reader has prior experience with other spreadsheet_FC engines (e.g., Excel).
 ```
 
 ### User Interface
@@ -2519,13 +2519,13 @@ FreeCAD/User Interface Layout_TOPIC
 
  * (1) Basic commands: These toolbar buttons give quick access to common operations. From left-to-right, ...
 
-   * new spreadsheet.
-   * import CSV as new spreadsheet.
-   * export spreadsheet to CSV.
+   * new spreadsheet_FC.
+   * import CSV as new spreadsheet_FC.
+   * export spreadsheet_FC to CSV.
 
 **Viewport**
 
- * (10) Spreadsheet: A matrix of cells, identified by column letter and row number (e.g., C3).
+ * (10) Spreadsheet_FC: A matrix of cells, identified by column letter and row number (e.g., C3).
 
     Type while a cell is selected to set that cell's contents. Right click on a row/column to add or remove rows/columns.
 
@@ -2533,7 +2533,7 @@ FreeCAD/User Interface Layout_TOPIC
 
  * (8) Cell content: This field shows and sets the content of the cell, which may be a formula or a literal.
 
- * (7) Zoom slider: This slider and accompanying drop-down are used to zoom in / out of the spreadsheet.
+ * (7) Zoom slider: This slider and accompanying drop-down are used to zoom in / out of the spreadsheet_FC.
 
 **Cell operations and properties**
 
@@ -2594,7 +2594,7 @@ FreeCAD/Spreadsheet Workbench/Expressions/Units_TOPIC
 
 `{bm} /(FreeCAD\/Spreadsheet Workbench\/Expressions)_TOPIC/i`
 
-In addition to being set to literals, spreadsheet cells and other properties may also be set to expressions. An expression executes some piece of logic using basic operators, functions, constants, conditionals, and references to other properties (e.g., other cells or data within a model). Operators and functions are unit-aware, requiring a valid combinations of units if supplied. For example, `2mm + 4mm` is valid while `2mm + 4` is not. This also applies to references to properties that have units (e.g., Pad001.Length + 1 isn't valid because it adds a pure number to a property containing a length - it requires Pad001.Length + 1mm). 
+In addition to being set to literals, spreadsheet_FC cells and other properties may also be set to expressions. An expression executes some piece of logic using basic operators, functions, constants, conditionals, and references to other properties (e.g., other cells or data within a model). Operators and functions are unit-aware, requiring a valid combinations of units if supplied. For example, `2mm + 4mm` is valid while `2mm + 4` is not. This also applies to references to properties that have units (e.g., Pad001.Length + 1 isn't valid because it adds a pure number to a property containing a length - it requires Pad001.Length + 1mm). 
 
 #### Units
 
@@ -2646,10 +2646,10 @@ Numbers in an expression may optional have a unit. The following tables contain 
 FreeCAD/Spreadsheet Workbench/Expressions/Units_TOPIC
 ```
 
-An expression can reference properties of other objects by referencing the path hierarchy. For example, if there's a diameter named (diameter constraint) lower_initial_diam within a sketch ...
+An expression can reference properties of other objects by referencing the path hierarchy. For example, if there's a diameter named (diameter constraint_FC) lower_initial_diam within a sketch_FC ...
 
-* with the label my_sketch, it's accessible within the spreadsheet as `=<<my_sketch>>.Constraints.lower_initial_diam`.
-* with the ID Sketch, it's accessible within the spreadsheet as `=Sketch.Constraints.lower_initial_diam`.
+* with the label !!my_sketch!!, it's accessible within the spreadsheet_FC as `=<<!!my_sketch!!>>.!!Constraints!!.lower_initial_diam`.
+* with the ID !!Sketch!!, it's accessible within the spreadsheet_FC as `=!!Sketch!!.!!Constraints!!.lower_initial_diam`.
 
 ```{note}
 To see the ID of objects, right click in the Model pane and navigate to **Tree Settings** → **Show Internal Name**.
@@ -2660,7 +2660,7 @@ If using labels, the label must be unique.
 ```
 
 ```{note}
-To reference a object (such as Sketch / my_sketch in the example), you must use the _self property. For example, `Sketch._self`.
+To reference a object (such as !!Sketch!! / !!my_sketch!! in the example), you must use the _self property. For example, `!!Sketch!!._self`.
 ```
 
 `{ref} https://wiki.freecad.org/Expressions`
@@ -2673,7 +2673,7 @@ To reference a object (such as Sketch / my_sketch in the example), you must use 
 FreeCAD/Spreadsheet Workbench/Expressions/Property Access_TOPIC
 ```
 
-To reference an item in a list or tuple, use the `[]` operator. For example, `Sketch.Constraints[0]` will pull the first constraint within the sketch object.
+To reference an item in a list or tuple, use the `[]` operator. For example, `!!Sketch!!.!!Constraints!![0]` will pull the first constraint_FC within the sketch_FC object.
 
 To reference an enumeration option's text, use the `[]` operator in addition to referencing the enumeration option itself. For example, `Pad.Type.Enum[Pad.Type]` will pull out the text for `Pad.Type`, while `Pad.Type` itself will only return it's index within the enumeration.
 
@@ -3002,18 +3002,18 @@ Rotation and Placement can each be represented by a `Matrix`. The following func
 
 `{bm} /(FreeCAD\/Sketcher Workbench)_TOPIC/i`
 
-Sketcher workbench allows creating 2D sketches. These 2D sketches typically go on to by used by other workbenches (e.g., they define the outline of some 3D feature in the creation of models via the part design workbench).
+Sketcher workbench_FC allows creating 2D sketches_FC. These 2D sketches_FC typically go on to by used by other workbenches_FC (e.g., they define the outline of some 3D feature_FC in the creation of models via the part design workbench_FC).
 
-Sketcher workbench has the following core primitives:
+Sketcher workbench_FC has the following core primitives:
 
- * Element: 2D geometric primitive (e.g., point, line, arc, and spline)
- * Constraint: Definition of an element's measurement, either directly (e.g., 5mm radius for an arc) or as a relationship (e.g., line 1 must be perpendicular to line 2).
+ * Element_FC: 2D geometric primitive (e.g., point, line, arc, and spline)
+ * Constraint_FC: Definition of an element_FC's measurement, either directly (e.g., 5mm radius for an arc) or as a relationship (e.g., line 1's slope must be perpendicular to line 2's slope).
 
-In the screenshot below, the red geometry is are visualizations of constraints (e.g., angle and radius), while the white lines are the geometric primitives those red lines apply to (e.g., arc).
+In the screenshot below, the red geometry are visualizations of constraints_FC (e.g., angle and radius), while the white lines are the geometric primitives those red lines apply to (e.g., arc).
 
 ![FreeCAD sketcher workbench simple arc sketch](freecad_sketcher_simple_arc_sketch.png)
 
-There are different element types (e.g., construction geometry projected geometry) and different constraint types (e.g., reference constraints, driving constraints). These are documented in the subsections below.
+There are different element_FC types (e.g., construction geometry_FC, projection geometry_FC) and different constraint_FC types (e.g., reference constraints_FC, driving constraints_FC). These are documented in the subsections below.
 
 ### User Interface
 
@@ -3025,50 +3025,50 @@ FreeCAD/User Interface Layout_TOPIC
 
 ![FreeCAD sketcher workbench UI layout](freecad_sketcher_ui_layout.png)
 
-The Sketcher workbench has two modes: Editing a sketch or viewing a sketch. The toolbar buttons change depending on the mode. The UI layout shown in the screenshot above is when editing a sketch, which is the mode that users will spend most of their time in.
+The Sketcher workbench_FC has two modes: Editing a sketch_FC or viewing a sketch_FC. The toolbar buttons change depending on the mode. The UI layout shown in the screenshot above is when editing a sketch_FC, which is the mode that users will spend most of their time in.
 
 ```{note}
-The behavior of many of the UI elements highlighted above / documented below changes !!based!! on the state of the application. For example, ...
+The behavior of many of the UI controls highlighted above / documented below changes !!based!! on the state of the application. For example, ...
 
-* if there are elements selected when the construction geometry button (3) is clicked, it'll turn those element into construction geometry.
-* if there aren't element selected when the construction geometry button (3) is clicked, all newly created elements (any button in 2) will be construction geometry until the construction geometry button is clicked again.
+* if there are elements_FC selected when the construction geometry_FC button (3) is clicked, it'll turn those element_FC into construction geometry_FC.
+* if there aren't element_FC selected when the construction geometry_FC button (3) is clicked, all newly created elements_FC (any button in 2) will be construction geometry_FC until the construction geometry_FC button is clicked again.
 
-These nuances aren't captured here, but in sections later on. This is just a basic accounting of the UI elements.
+These nuances aren't captured here, but in sections later on. This is just a basic accounting of the UI controls.
 ```
 
 **General Commands**
 
- * (1) General commands: These toolbar buttons give quick access to common operations. When not editing a sketch, the general commands are as follows:
+ * (1) General commands: These toolbar buttons give quick access to common operations. When not editing a sketch_FC, the general commands are as follows:
 
    ![FreeCAD sketcher workbench general toolbar when outside of sketch](freecad_sketcher_ui_general_toolbar_outside_sketch.png)
 
    From left-to-right, ...
 
-   * new sketch: Creates a new sketch object in the model pane.
-   * edit sketch: Enters the currently select sketch object in the model pane.
-   * attach sketch: Attach sketch to an piece of 3D geometry (e.g., face on a model).
-   * reorient sketch: Attach sketch to an origin plane (e.g., XY plane).
-   * validate sketch: Opens a pane to validate different aspects of the sketch (e.g., invalid constraints).
-   * merge sketches: Merge the sketches selected in the model pane.
-   * mirror sketch: Mirror the sketch selected in the model pane.
+   * new sketch_FC: Creates a new sketch_FC object in the model pane.
+   * edit sketch_FC: Enters the currently select sketch_FC object in the model pane.
+   * attach sketch_FC: Attach sketch_FC to an piece of 3D geometry (e.g., face on a model).
+   * reorient sketch_FC: Attach sketch_FC to an origin plane (e.g., XY plane).
+   * validate sketch_FC: Opens a pane to validate different aspects of the sketch_FC (e.g., invalid constraints_FC).
+   * merge sketches_FC: Merge the sketches_FC selected in the model pane.
+   * mirror sketch_FC: Mirror the sketch_FC selected in the model pane.
 
-   When editing a sketch, the general commands are as follows:
+   When editing a sketch_FC, the general commands are as follows:
 
    ![FreeCAD sketcher workbench general toolbar when inside of sketch](freecad_sketcher_ui_general_toolbar_inside_sketch.png)
  
    From left-to-right, ...
 
-   * leave sketch: Stop editing sketch.
-   * align view to sketch: Reorients camera such that it faces towards the sketch.
-   * toggle section view: Temporarily cut through and hide geometry that occludes a sketch (e.g., when the camera is aligned to the sketch, it may be occluded by currently visible 3D objects).
+   * leave sketch_FC: Stop editing sketch_FC.
+   * align view to sketch_FC: Reorients camera such that it faces towards the sketch_FC.
+   * toggle section view: Temporarily cut through and hide geometry that occludes a sketch_FC (e.g., when the camera is aligned to the sketch_FC, it may be occluded by currently visible 3D objects).
 
- * (13) Leave sketch.
+ * (13) Leave sketch_FC.
 
-**Elements and Constraints**
+**Elements_FC and Constraints_FC**
 
- * (3) Construction geometry toggle.
+ * (3) Construction geometry_FC toggle.
 
- * (2) Create elements: These toolbar buttons give quick access to create elements. From left-to-right, ...
+ * (2) Create elements_FC: These toolbar buttons give quick access to create elements_FC. From left-to-right, ...
 
    * create point.
    * create polyline.
@@ -3080,28 +3080,28 @@ These nuances aren't captured here, but in sections later on. This is just a bas
    * create slot of varying types.
    * create b-spline of varying types and parameterizations.
 
- * (5) Constraints toggle: These toolbar buttons disable constraints or keep them enabled but render them unenforced (referred to as reference constraints).
+ * (5) Constraints_FC toggle: These toolbar buttons disable constraints_FC or keep them enabled but render them unenforced (referred to as reference constraints_FC).
 
- * (4) Constraints: These toolbar buttons give quick access to create constraints. From left-to-right, ...
+ * (4) Create constraints_FC: These toolbar buttons give quick access to create constraints_FC. From left-to-right, ...
 
-   * create dimensional constraints of varying types (e.g., distance, radius, and angle)
-   * create coincident constraint.
-   * create parallel to basis axis constraint (e.g., force line to be horizontal or vertical).
-   * create parallel constraint (e.g., lines 1 and 2 must be parallel).
-   * create perpendicular constraint (e.g., lines 1 and 2 must be perpendicular).
-   * create tangent constraint (e.g., line and endpoint of arc must be tangent).
-   * create distance equality constraint (e.g., line 1 and 2 must be the same distance).
-   * create symmetry constraint (e.g., points 1 and 2 must be symmetrical across line 1).
-   * create block constraint.
+   * create dimensional constraints_FC of varying types (e.g., distance, radius, and angle)
+   * create coincident constraint_FC.
+   * create parallel to basis axis constraint_FC (e.g., force line to be horizontal or vertical).
+   * create parallel constraint_FC (e.g., lines 1 and 2 must be parallel).
+   * create perpendicular constraint_FC (e.g., lines 1 and 2 must be perpendicular).
+   * create tangent constraint_FC (e.g., line and endpoint of arc must be tangent).
+   * create distance equality constraint_FC (e.g., line 1 and 2 must be the same distance).
+   * create symmetry constraint_FC (e.g., points 1 and 2 must be symmetrical across line 1).
+   * create block constraint_FC.
 
- * (7) Selection helpers: These toolbar buttons give quick access to select elements / constraints associated with the current selection. From left-to-right, ...
+ * (7) Selection helpers: These toolbar buttons give quick access to select elements_FC / constraints_FC associated with the current selection. From left-to-right, ...
 
-   * select constraints associated with selection.
-   * select elements associated with selection.
+   * select constraints_FC associated with selection.
+   * select elements_FC associated with selection.
 
  * (8) Arc circular helper toggle: Toggles the visibility of the underlying circle / ellipse for circular arcs.
 
- * (10) Internal geometry toggle: Toggles the visibility of the internal geometry for certain element types (e.g., ellipse arc). 
+ * (10) Internal geometry toggle: Toggles the visibility of the internal geometry for certain element_FC types (e.g., ellipse arc). 
 
  * (11) Switch virtual space.
 
@@ -3127,17 +3127,17 @@ These nuances aren't captured here, but in sections later on. This is just a bas
 
 **Tools**
 
- * (12) Tools: These toolbar buttons give quick access to various sketching tools. From left-to-right, ...
+ * (12) Tools: These toolbar buttons give quick access to various sketching_FC tools. From left-to-right, ...
 
-   * fillet / chamfer.
+   * fillet_FC / chamfer_FC.
    * trim, split, or extend edges.
-   * project from external geometry (e.g., pull in an edge from an external model into the sketch) or project intersected external geometry (e.g., pull in an edge from a model face that intersects the sketch plane).
+   * project from external geometry (e.g., pull in an edge from an external model into the sketch_FC) or project intersected external geometry (e.g., pull in an edge from a model face that intersects the sketch_FC plane).
 
 **Panels**
 
- * (13) Constraints pane: This pane lists, allows selection, and allows configuration of constraints, mirroring whatever is selected in the viewport.
+ * (13) Constraints_FC pane: This pane lists, allows selection, and allows configuration of constraints_FC, mirroring whatever is selected in the viewport.
 
- * (14) Elements pane: This pane lists, allows selection, and allows configuration of elements, mirroring whatever is selected in the viewport.
+ * (14) Elements_FC pane: This pane lists, allows selection, and allows configuration of elements_FC, mirroring whatever is selected in the viewport.
 
 `{ref} https://wiki.freecad.org/Sketcher_Workbench`
 
@@ -3149,7 +3149,7 @@ These nuances aren't captured here, but in sections later on. This is just a bas
 FreeCAD/Sketcher Workbench/User Interface_TOPIC
 ```
 
-Sketching involves creating elements, constraining them, and deleting them. The sketch below is a non-trivial set of elements chained together using constraints.
+Sketching_FC involves creating elements_FC, constraining_FC them, and deleting them. The sketch_FC below is a non-trivial set of elements_FC chained together using constraints_FC.
 
 ![FreeCAD sketcher workbench example](freecad_sketcher_example.png)
 
@@ -3163,7 +3163,7 @@ The subsections below document these basic concepts.
 
 ![FreeCAD sketcher workbench elements and constraints toolbar](freecad_sketcher_elements_and_constraints_toolbar.png)
 
-To create an element, select the element from the toolbar (or the main menu, or use the element's shortcut key) and click on the viewport multiple times. For most elements, on the first click the viewport should show that the item is being created, and the movement of the mouse button and subsequent clicks further constructs the element. For example, to add a line, select the line in the toolbar, click in the viewport, and slightly move the mouse. The line's preview will display.
+To create an element_FC, select the element_FC from the toolbar (or the main menu, or use the element_FC's shortcut key) and click on the viewport multiple times. For most elements_FC, on the first click the viewport should show that the item is being created, and the movement of the mouse button and subsequent clicks further constructs the element_FC. For example, to add a line, select the line in the toolbar, click in the viewport, and slightly move the mouse. The line's preview will display.
 
 ![FreeCAD sketcher workbench line preview](freecad_sketcher_line_preview.png)
 
@@ -3171,14 +3171,14 @@ A subsequent click will be complete adding the line.
 
 ![FreeCAD sketcher workbench line complete](freecad_sketcher_line_complete.png)
 
-In the preview, there are two textboxes, one that specifies a distance and one that specifies an angle. These are referred to as On-View-Parameters, and they're available for certain elements, When in preview, pressing Tab will cycle into these textboxes, where a value may be entered followed by pressing Enter. Using them adds constraints to line. For example, if used for the line above, a constraint is added for the line's length and another constraint is added for the line's angle from the horizontal axis.
+In the preview, there are two textboxes, one that specifies a distance and one that specifies an angle. These are referred to as On-View-Parameters_FC, and they're available for certain elements_FC, When in preview, pressing Tab will cycle into these textboxes, where a value may be entered followed by pressing Enter. Using them adds constraints_FC to line. For example, if used for the line above, a constraint_FC is added for the line's length and another constraint_FC is added for the line's angle from the horizontal axis.
 
 ![FreeCAD sketcher workbench line complete constrained](freecad_sketcher_line_complete_constrained.png)
 
-Alternatively, an element can have constraints added to it by selecting the relevant portions of an element and clicking an applicable constraint. For example, the line can have the exact same constraints applied by ...
+Alternatively, an element_FC can have constraints_FC added to it by selecting the relevant portions of an element_FC and clicking an applicable constraint_FC. For example, the line can have the exact same constraints_FC applied by ...
 
- * selecting the line, then selecting distance dimension constraint in the toolbar.
- * selecting the line and the horizontal access, then selecting the angle dimension constraint in the toolbar.
+ * selecting the line, then selecting distance dimension constraint_FC in the toolbar.
+ * selecting the line and the horizontal access, then selecting the angle dimension constraint_FC in the toolbar.
 
 ![FreeCAD sketcher workbench line complete constrained toolbar constraints](freecad_sketcher_line_complete_constrained_toolbar_constraints.png)
 
@@ -3187,7 +3187,7 @@ FreeCAD/Sketcher Workbench/Sketching/Selection_TOPIC
 ```
 
 ```{note}
-There are multiple ways to apply constraints, discussed in each constraint's source. For example, instead of first selecting the line and then choosing the distance dimension constraint, you can first make sure nothing is selected, then click the distance dimension constraint, then click the line.
+There are multiple ways to apply constraints_FC, discussed in each constraint_FC's source. For example, instead of first selecting the line and then choosing the distance dimension constraint_FC, you can first make sure nothing is selected, then click the distance dimension constraint_FC, then click the line.
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_Workbench`
@@ -3196,13 +3196,13 @@ There are multiple ways to apply constraints, discussed in each constraint's sou
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/Creation\/Continue Mode)_TOPIC/i`
 
-Continue mode allows element / constraint creation to continue after an element / constraint is created, allowing multiple such elements / constraints to be created many times over. The creation tool remains active until the user hits Esc or selects some other tool from the toolbar. For example, after selecting the line element from the toolbar and creating a line on the sketch, more lines can be created on the sketch without having to click the line element again in the toolbar.
+Continue mode_FC allows element_FC / constraint_FC creation to continue after an element_FC / constraint_FC is created, allowing multiple such elements_FC / constraints_FC to be created many times over. The creation tool remains active until the user hits Esc or selects some other tool from the toolbar. For example, after selecting the line element_FC from the toolbar and creating a line on the sketch_FC, more lines can be created on the sketch_FC without having to click the line element_FC again in the toolbar.
 
 ```{note}
-Pressing Esc if no tool is active will exit sketch edit mode. This can be turned off in preferences if inadvertently pressing Esc too many times.
+Pressing Esc if no tool is active will exit sketch_FC edit mode. This can be turned off in preferences if inadvertently pressing Esc too many times.
 ```
 
-Continue mode can be turned off in preferences (on by default).
+Continue mode_FC can be turned off in preferences (on by default).
 
 `{ref} https://wiki.freecad.org/Sketcher_Workbench`
 
@@ -3210,9 +3210,9 @@ Continue mode can be turned off in preferences (on by default).
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/Creation\/On-View-Parameters)_TOPIC/i`
 
-For certain element creation tools, On-View-Parameters allows explicitly adding constraints during the creation process by presenting textboxes alongside the element's preview. For example, dropping a line will show a textbox for length constraint and a textbox for angle constraint. Pressing tab cycles through these textboxes, while pressing enter adds the constraints.
+For certain element_FC creation tools, On-View-Parameters_FC allows explicitly adding constraints_FC during the creation process by presenting input fields alongside the element_FC's preview. For example, dropping a line will show a textbox for length constraint_FC and a textbox for angle constraint_FC. Pressing tab cycles through these textboxes, while pressing enter adds the constraints_FC.
 
-Continue mode can be turned off and configured in preferences (on by default).
+Continue mode_FC can be turned off and configured in preferences (on by default).
 
 `{ref} https://wiki.freecad.org/Sketcher_Workbench`
 
@@ -3220,15 +3220,15 @@ Continue mode can be turned off and configured in preferences (on by default).
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Sketching\/Creation\/Auto Constraints)_TOPIC/i`
 
-When creating an element, if the placement of some part of that element ends on an existing element, an auto constraint may be applied. An auto constraint is a constraint that's automatically added by virtue of how the elements end up together. For example, if the end of a line ends up on the start of a line, auto constraint will add a constraint known as coincident constraint which bounds those two points together.
+When creating an element_FC, if the placement of some part of that element_FC ends on an existing element_FC, an auto constraint_FC may be applied. An auto constraint_FC is a constraint_FC that's automatically added by virtue of how the elements_FC end up together. For example, if the end of a line ends up on the start of a line, auto constraint_FC will add a constraint_FC known as coincident constraint_FC which bounds those two points together.
 
-When an auto constraint is to be applied, the icon of the constraint is shown on the lower right of the icon of the element being created.
+When an auto constraint_FC is to be applied, the icon of the constraint_FC is shown on the lower right of the icon of the element_FC being created.
 
 ```{note}
-I can't do a screenshot of this because flameshot won't capture the mouse cursor, but just imagine that you're creating a line. The mouse cursor will have the icon of the line creation icon (same as the toolbar) next to it. As you're putting down the line, when you get close to the existing line's point, a second smaller icon showing the constraint to be added show up to the right of the line creation icon. That second smaller icon is the coincident constraint icon.
+I can't do a screenshot of this because flameshot won't capture the mouse cursor, but just imagine that you're creating a line. The mouse cursor will have the icon of the line creation icon (same as the toolbar) next to it. As you're putting down the line, when you get close to the existing line's point, a second smaller icon showing the constraint_FC to be added show up to the right of the line creation icon. That second smaller icon is the coincident constraint_FC icon.
 ```
 
-Auto constraints is enabled/disabled per sketch, not globally. To change, update in the constraints pane or the sketch's view Autoconstraints property.
+Auto constraints_FC is enabled/disabled per sketch_FC, not globally. To change, update in the constraints_FC pane or the sketch_FC's view Autoconstraints_FC property.
 
 ![FreeCAD sketcher workbench auto constraints toggle](freecad_sketcher_auto_constraints_toggle.png)
 
@@ -3242,30 +3242,30 @@ Auto constraints is enabled/disabled per sketch, not globally. To change, update
 FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
 ```
 
-Elements and constraints can be selected in any of the following ways:
+Elements_FC and constraints_FC can be selected in any of the following ways:
 
-* **Single selection**: Left-clicking an element or constraint toggles whether its selected.
+* **Single selection**: Left-clicking an element_FC or constraint_FC toggles whether its selected.
 
-  Previously selected elements are not discarded on single select. While it isn't necessary to hold Ctrl while selecting multiple elements, it is beneficial in that a mis-click into empty space won't deselect everything.
+  Previously selected elements_FC are not discarded on single select. While it isn't necessary to hold Ctrl while selecting multiple elements_FC, it is beneficial in that a mis-click into empty space won't deselect everything.
 
-* **Box selection**: Left-clicking an empty area and dragging draws a selection rectangle, selecting elements within the rectangle (not constraints, only selections). Depending on the direction of the drag, the selection behavior changes. If the box dragging is from ...
+* **Box selection**: Left-clicking an empty area and dragging draws a selection rectangle, selecting elements_FC within the rectangle (not constraints_FC, only selections). Depending on the direction of the drag, the selection behavior changes. If the box dragging is from ...
 
-  * left to right, elements that lie completely inside the rectangle are selected.
-  * right to left, elements that touch or cross the rectangle are selected.
+  * left to right, elements_FC that lie completely inside the rectangle are selected.
+  * right to left, elements_FC that touch or cross the rectangle are selected.
 
-  Previously selected elements are not discarded on box select.
+  Previously selected elements_FC are not discarded on box select.
 
-* **Connection selection**: Double-clicking an edge selects all edges directly and indirectly connected to it via endpoints. Endpoints only need to have the same coordinates (no need endpoints to be connected via constraints - e.g.,coincident constraints).
+* **Connection selection**: Double-clicking an edge selects all edges directly and indirectly connected to it via endpoints. Endpoints only need to have the same coordinates (no need endpoints to be connected via constraints_FC - e.g.,coincident constraints_FC).
 
-  Previously selected elements are not discarded on connection select.
+  Previously selected elements_FC are not discarded on connection select.
 
-* **Element / Constraints pane**: Constraints and the individual components of each element (e.g., a line elements's endpoint and actual line) are selectable via the constraints pane and elements pane, respectively. The elements pane lists the elements component next to the element, which can be individually clicked (e.g., select 2-Line's first endpoint).
+* **Element_FC / Constraints_FC pane**: Constraints_FC and the individual components of each element_FC (e.g., a line elements_FC's endpoint and actual line) are selectable via the constraints_FC pane and elements_FC pane, respectively. The elements_FC pane lists the elements_FC component next to the element_FC, which can be individually clicked (e.g., select 2-Line's first endpoint).
   
   ![FreeCAD sketcher workbench elements and constrains pane](freecad_sketcher_elements_and_constraints.png)
 
-  Previously selected elements *are* discarded on connection select.
+  Previously selected elements_FC *are* discarded on connection select.
 
-* **Select all**: To select everything within a sketch, use Ctrl+A or navigate to **Edit** → **Select All**. 
+* **Select all**: To select everything within a sketch_FC, use Ctrl+A or navigate to **Edit** → **Select All**. 
 
 `{ref} https://wiki.freecad.org/Sketcher_Workbench`
 
@@ -3277,7 +3277,7 @@ Elements and constraints can be selected in any of the following ways:
 FreeCAD/Sketcher Workbench/Sketching/Selection_TOPIC
 ```
 
-To delete an element or constraint, select it and hit the Delete key. If an element is deleted, its related constraints are automatically deleted as well, even if they were left unselected when the Delete key was hit.
+To delete an element_FC or constraint_FC, select it and hit the Delete key. If an element_FC is deleted, its related constraints_FC are automatically deleted as well, even if they were left unselected when the Delete key was hit.
 
 `{ref} self`
 
@@ -3292,18 +3292,18 @@ FreeCAD/Sketcher Workbench/Sketching/Deletion_TOPIC
 FreeCAD/Spreadsheet Workbench/Expressions_TOPIC
 ```
 
-Constraints can be named by either ...
+Constraints_FC can be named by either ...
 
-* right-clicking on them in the Constraints pane and selecting Rename (shortcut key F2).
-* double-clicking the constraint in the viewport and assigning a name, but this only works if the constraint accepts a value.
+* right-clicking on them in the Constraints_FC pane and selecting Rename (shortcut key F2).
+* double-clicking the constraint_FC in the viewport and assigning a name, but this only works if the constraint_FC accepts a value.
 
 ![FreeCAD sketcher workbench constraint name and value dialog](freecad_sketcher_constraint_name_and_value_dialog.png)
 
-Constraints can also reference and calculate their values via expressions. The formula button (inside the value textbox, to its right) opens an Expression Editor window that allows entering an expression instead of a constant, similar to inserting a formula in a cell for a spreadsheet.
+Constraints_FC can also reference and calculate their values via expressions. The formula button (inside the value textbox, to its right) opens an Expression Editor window that allows entering an expression instead of a constant, similar to inserting a formula in a cell for a spreadsheet_FC.
 
 ![FreeCAD sketcher workbench expression editor dialog](freecad_sketcher_expression_editor_dialog.png)
 
-The expression can access data in the sketch (e.g., other constraints) as well as outside the sketch (e.g., alias in a spreadsheet or field in a VarSet). In the example, the constraint is copying the value of another constraint and multiplying it by 2.
+The expression can access data in the sketch_FC (e.g., other constraints_FC) as well as outside the sketch_FC (e.g., alias in a spreadsheet_FC or field in a VarSet). In the example, the constraint_FC is copying the value of another constraint_FC and multiplying it by 2.
 
 `{ref} self`
 
@@ -3317,39 +3317,39 @@ FreeCAD/Sketcher Workbench/Sketching/Selection_TOPIC
 FreeCAD/Sketcher Workbench/Sketching/Deletion_TOPIC
 ```
 
-An element is deemed projection geometry if that element was pulled in from a 3D object visible from the sketch. Projection geometry is linked to the 3D object it came from.
+An element_FC is deemed projection geometry_FC if that element_FC was pulled in from a 3D object visible from the sketch_FC. Projection geometry_FC is linked to the 3D object it came from.
 
 ```{note}
-Although not discussed yet, 3D objects can come from a variety of different places. For example, a sketch may be turned into 3D objects / 3D features on an existing 3D object via the part design workbench, and subsequent sketches may project geometry from that object.
+Although not discussed yet, 3D objects can come from a variety of different places. For example, a sketch_FC may be turned into 3D objects / 3D features_FC on an existing 3D object via the part design workbench_FC, and subsequent sketches_FC may project geometry from that object.
 ```
 
 ![FreeCAD sketcher workbench external geometry toolbar buttons](freecad_sketcher_external_geometry_toolbar_buttons.png)
 
-To project, select the External Projection toolbar button (keyboard shortcut G, X) and select until the all desired elements have been projected (Esc or select another tool to exit). In some cases, it may be difficult to select the desired external geometry (e.g., it may be on the opposite side of the object, hidden from view). Recall that the camera can be rotated while sketching. If rotated, the camera's rotation can be brought back inline with the sketch by clicking the Align View to Sketch toolbar button (keyboard shortcut Q, P): ![FreeCAD sketcher workbench align view to sketch toolbar button](freecad_sketcher_align_view_to_sketch_toolbar_button.png).
+To project, select the External Projection toolbar button (keyboard shortcut G, X) and select until the all desired elements_FC have been projected (Esc or select another tool to exit). In some cases, it may be difficult to select the desired external geometry (e.g., it may be on the opposite side of the object, hidden from view). Recall that the camera can be rotated while sketching_FC. If rotated, the camera's rotation can be brought back inline with the sketch_FC by clicking the Align View to Sketch_FC toolbar button (keyboard shortcut Q, P): ![FreeCAD sketcher workbench align view to sketch toolbar button](freecad_sketcher_align_view_to_sketch_toolbar_button.png).
 
 ![FreeCAD sketcher workbench projection geometry example](freecad_sketcher_projection_geometry_example.png)
 
-To project intersections with the sketching plane, select the External Intersection toolbar button (keyboard shortcut G, I) and select until all desired elements have been projected (Esc or select another tool to exist). In most cases, it's difficult to select the desired intersections because they're likely blocked from view. Recall that the Toggle Section View toolbar button (keyboard shortcut Q, S) will temporarily cut from view anything that extends past the sketch plane towards the camera: ![FreeCAD sketcher workbench toggle section view toolbar button](freecad_sketcher_toggle_section_view_toolbar_button.png).
+To project intersections with the sketching_FC plane, select the External Intersection toolbar button (keyboard shortcut G, I) and select until all desired elements_FC have been projected (Esc or select another tool to exist). In most cases, it's difficult to select the desired intersections because they're likely blocked from view. Recall that the Toggle Section View toolbar button (keyboard shortcut Q, S) will temporarily cut from view anything that extends past the sketch_FC plane towards the camera: ![FreeCAD sketcher workbench toggle section view toolbar button](freecad_sketcher_toggle_section_view_toolbar_button.png).
 
 ![FreeCAD sketcher workbench projection geometry intersection example](freecad_sketcher_projection_geometry_intersection_example.png)
 
 ```{note}
-When experimenting, I found pulling in intersections to be finicky. Certain curvatures won't get pulled in, or will get pulled in as only a single point off the curvature. It might be that not all conics are !!supported!!? Or maybe the feature is just buggy.
+When experimenting, I found pulling in intersections to be finicky. Certain curvatures won't get pulled in, or will get pulled in as only a single point off the curvature. It might be that not all conics are !!supported!!? Or maybe the feature_FC is just buggy.
 ```
 
 ```{note}
-Projected geometry may also be construction geometry, discussed in sections further one.
+Projected geometry_FC may also be construction geometry_FC, discussed in sections further one.
 ```
 
 ```{seealso}
 FreeCAD/Sketcher Workbench/Sketching/Construction Geometry_TOPIC
 ```
 
-The color and line style changes !!based!! on the type of projected element and the state of the overall sketch. The screenshot below shows the default colors used by FreeCAD for the various types and states.
+The color and line style changes !!based!! on the type of projected element_FC and the state of the overall sketch_FC. The screenshot below shows the default colors used by FreeCAD for the various types and states.
 
 ![FreeCAD Sketcher workbench element colors](freecad_sketcher_element_colors.png)
 
-`{ref} https://wiki.freecad.org/Sketcher_Tutorial` `{ref} https://wiki.freecad.org/Sketcher_Workbench` `{ref} self`
+`{ref} https://wiki.freecad.org/Sketcher_Tutorial` `{ref} https://wiki.freecad.org/Sketcher_Workbench` `{ref} https://wiki.freecad.org/Sketcher_Projection` `{ref} self`
 
 #### Construction Geometry
 
@@ -3362,35 +3362,35 @@ FreeCAD/Sketcher Workbench/Sketching/Deletion_TOPIC
 FreeCAD/Sketcher Workbench/Sketching/Projection Geometry_TOPIC
 ```
 
-An element is deemed as construction geometry if it isn't exposed to consumers of the sketch (it's internal to the sketch, hidden once the sketch is closed). Construction geometry is used within the sketch to assist in constraining other geometry.
+An element_FC is deemed as construction geometry_FC if it isn't exposed to consumers of the sketch_FC (it's internal to the sketch_FC, hidden once the sketch_FC is closed). Construction geometry_FC is used within the sketch_FC to assist in constraining_FC other geometry.
 
-Construction geometry comes in different forms:
+Construction geometry_FC comes in different forms:
 
-* Construction geometry: A normal element in the sketch is construction geometry.
+* Construction geometry_FC: A normal element_FC in the sketch_FC is construction geometry_FC.
 
   ![FreeCAD sketcher workbench construction geometry example](freecad_sketcher_construction_geometry_example.png)
 
-* Projected (external) construction geometry: A projected element in the sketch is construction geometry.
+* Projected geometry_FC that's also construction geometry_FC: A projected element_FC in the sketch_FC is construction geometry_FC.
 
   ![FreeCAD sketcher workbench projected construction geometry example](freecad_sketcher_projected_construction_geometry_example.png)
 
-* Internal alignment geometry: Construction geometry added by and tied to a complex element, used to control that element (e.g., ellipse control arms).
+* Internal alignment geometry_FC: Construction geometry_FC added by and tied to a complex element_FC, used to control that element_FC (e.g., ellipse control arms).
 
   ![FreeCAD sketcher workbench internal alignment geometry example](freecad_sketcher_internal_alignment_geometry_example.png)
 
-To toggle one or more elements to / from construction geometry, select the elements and click the toggle construction geometry button (keyboard shortcut G,N): ![FreeCAD sketcher workbench toggle construction geometry toolbar button](freecad_sketcher_toggle_construction_geometry_toolbar_button.png)
+To toggle one or more elements_FC to / from construction geometry_FC, select the elements_FC and click the toggle construction geometry_FC button (keyboard shortcut G,N): ![FreeCAD sketcher workbench toggle construction geometry toolbar button](freecad_sketcher_toggle_construction_geometry_toolbar_button.png)
 
-To toggle element creation from / to construction geometry, ensure nothing is selected and click te toggle construction geometry button. Toolbar buttons to create elements will change color to indicate that elements being created are construction geometry.
+To toggle element_FC creation from / to construction geometry_FC, ensure nothing is selected and click te toggle construction geometry_FC button. Toolbar buttons to create elements_FC will change color to indicate that elements_FC being created are construction geometry_FC.
 
 ![FreeCAD sketcher workbench construction geometry toggled off toolbar buttons](freecad_sketcher_construction_geometry_toggled_off_toolbar_buttons.png)
 
 ![FreeCAD sketcher workbench construction geometry toggled on toolbar buttons](freecad_sketcher_construction_geometry_toggled_on_toolbar_buttons.png)
 
-The color and line style changes !!based!! on the type of construction element and the state of the overall sketch. The screenshot below shows the default colors used by FreeCAD for the various types and states.
+The color and line style changes !!based!! on the type of construction element_FC and the state of the overall sketch_FC. The screenshot below shows the default colors used by FreeCAD for the various types and states.
 
 ![FreeCAD Sketcher workbench element colors](freecad_sketcher_element_colors.png)
 
-`{ref} https://wiki.freecad.org/Sketcher_Workbench` `{ref} https://wiki.freecad.org/Sketcher_Tutorial` `{ref} https://wiki.freecad.org/Sketcher_ToggleConstruction` `{ref} https://forum.freecad.org/viewtopic.php?t=55061` `{ref} self`
+`{ref} https://wiki.freecad.org/Sketcher_Workbench` `{ref} https://wiki.freecad.org/Sketcher_Tutorial` `{ref} https://wiki.freecad.org/Sketcher_ToggleConstruction` `{ref} https://forum.freecad.org/viewtopic.php?t=55061` `{ref} https://www.reddit.com/r/FreeCAD/comments/1m77d13/what_are_construction_geometries/` `{ref} self`
 
 #### Degrees of Freedom
 
@@ -3402,23 +3402,23 @@ FreeCAD/Sketcher Workbench/Sketching/Selection_TOPIC
 FreeCAD/Sketcher Workbench/Sketching/Deletion_TOPIC
 ```
 
-If an element ...
+If an element_FC ...
 
-* isn't constrained to the point where it's locked into a specific parameterization (e.g., location, rotation, angle, and whatever other parameters it may have), it's said to have n degrees of freedom, where n >= 1.
-* is constrained to the point where it's locked into a specific parameterization, it's said to be fully constrained (0 degrees of freedom).
+* isn't constrained_FC to the point where it's locked into a specific parameterization (e.g., location, rotation, angle, and whatever other parameters it may have), it's said to have n degrees of freedom_FC, where n >= 1.
+* is constrained_FC to the point where it's locked into a specific parameterization, it's said to be fully constrained_FC (0 degrees of freedom_FC).
 
-A degree of freedom is a parameterization that hasn't been set. For example, ...
+A degree of freedom_FC is a parameterization that hasn't been set. For example, ...
 
-* a point has 2 degrees of freedom:
+* a point has 2 degrees of freedom_FC:
 
   1. X position.
   2. Y position.
   
-  The example below fully constrains a point by setting its position in relation to the origin of the sketch.
+  The example below fully constrains a point by setting its position in relation to the origin of the sketch_FC.
 
   ![FreeCAD sketcher workbench fully constrained point example](freecad_sketcher_fully_constrained_point.png)
 
-* a line has 4 degrees of freedom:
+* a line has 4 degrees of freedom_FC:
 
   1. Start point's X position.
   2. Start point's Y position.
@@ -3429,7 +3429,7 @@ A degree of freedom is a parameterization that hasn't been set. For example, ...
 
   ![FreeCAD sketcher workbench fully constrained line example](freecad_sketcher_fully_constrained_line.png)
 
-* an arc has 5 degrees of freedom:
+* an arc has 5 degrees of freedom_FC:
 
   1. Center point's X position.
   2. Center point's Y position.
@@ -3437,36 +3437,36 @@ A degree of freedom is a parameterization that hasn't been set. For example, ...
   4. Angle between the two points comprising the arc.
   5. What segment of the underlying circle the arc sits on.
 
-  The example below fully constrains an arc by setting its center point to the origin of the sketch, setting the radius to 14mm, setting the angle of the arc to 45 degrees, and positioning the arc on the underlying circle by stating that the lower point sits 7mm above the X axis. 
+  The example below fully constrains an arc by setting its center point to the origin of the sketch_FC, setting the radius to 14mm, setting the angle of the arc to 45 degrees, and positioning the arc on the underlying circle by stating that the lower point sits 7mm above the X axis. 
 
   ![FreeCAD sketcher workbench fully constrained arc example](freecad_sketcher_fully_constrained_arc.png)
 
-The overall constraint state for all elements in the sketch is shown in the Sketch Edit pane.
+The overall constraint_FC state for all elements_FC in the sketch_FC is shown in the Sketch_FC Edit pane.
 
-* **Under-constrained** / **Fully constrained**: When there's 1 or more degrees of freedom, the Sketch Edit pane will report that the sketch is under-constrained. When there's exactly 0 degrees of freedom, the Sketch Edit pane will report that the sketch is fully constrained. In the example below, the two lines each have a point with a coincident constraint to the origin while the other endpoint is unconstrained (4 degrees of freedom). Clicking the degrees of freedom text in the Sketch Edit pane will will select the two unconstrained endpoints.
+* **Under-constrained_FC** / **Fully constrained_FC**: When there's 1 or more degrees of freedom_FC, the Sketch_FC Edit pane will report that the sketch_FC is under-constrained_FC. When there's exactly 0 degrees of freedom_FC, the Sketch_FC Edit pane will report that the sketch_FC is fully constrained_FC. In the example below, the two lines each have a point with a coincident constraint_FC to the origin while the other endpoint is unconstrained_FC (4 degrees of freedom_FC). Clicking the degrees of freedom_FC text in the Sketch_FC Edit pane will will select the two unconstrained_FC endpoints.
 
   ![FreeCAD sketcher workbench under-constrained example](freecad_sketcher_underconstrained_example.png)
 
-* **Redundant constraints** / **Partially redundant**: If a sketch has constraints that deduce to the same thing, the Sketch Edit pane will report that the sketch has redundant constraints. In the example below, the line's start point has a coincident constraint to the origin and ...
+* **Redundant constraints_FC** / **Partially redundant_FC**: If a sketch_FC has constraints_FC that deduce to the same thing, the Sketch_FC Edit pane will report that the sketch_FC has redundant constraints_FC. In the example below, the line's start point has a coincident constraint_FC to the origin and ...
 
-  * the end point has a horizontal distance constraint and vertical distance constraint, both set to 1mm.
-  * the line itself has a an angle constraint set to 45 degrees from the X axis.
+  * the end point has a horizontal distance constraint_FC and vertical distance constraint_FC, both set to 1mm.
+  * the line itself has a an angle constraint_FC set to 45 degrees from the X axis.
 
-  This reports a redundant constraint because the end point of (1mm, 1mm) implies a 45 degree angle from the X axis. Clicking the redundant constraints text in the Sketch Edit pane selects the redundant constraints.
+  This reports a redundant constraint_FC because the end point of (1mm, 1mm) implies a 45 degree angle from the X axis. Clicking the redundant constraints_FC text in the Sketch_FC Edit pane selects the redundant constraints_FC.
 
   ![FreeCAD sketcher workbench redundant constraints example](freecad_sketcher_redundant_constraints_example.png)
 
-* **Over-constrained**: If a sketch has conflicting constraints (they both can't be satisfied because they're opposed to each other), the Sketch Edit pane will report that the sketch has over-constrained. In the example below, the triangle in this sketch is constrained to be an equilateral triangle, but it also has a coincident constraint that says two of the triangle's vertices should be at the same point, making it an impossible to satisfy all constraints. Clicking the over-constrained text in the Sketch Edit pane selects the conflicting constraints.
+* **Over-constrained_FC**: If a sketch_FC has conflicting constraints_FC (they both can't be satisfied because they're opposed to each other), the Sketch_FC Edit pane will report that the sketch_FC has over-constrained_FC. In the example below, the triangle in this sketch_FC is constrained_FC to be an equilateral triangle, but it also has a coincident constraint_FC that says two of the triangle's vertices should be at the same point, making it an impossible to satisfy all constraints_FC. Clicking the over-constrained_FC text in the Sketch_FC Edit pane selects the conflicting constraints_FC.
 
   ![FreeCAD sketcher workbench over constrained example](freecad_sketcher_workbench_over_constrained_example.png)
   
-  Typically, once a conflicting constraint is added, the number of conflicting constraints reported becomes much more than 2. That's usually because the 1 added constraint goes is invalid against many existing constraints. The Sketch Edit pane doesn't group conflicting constraints together (e.g., 1,3,5 are valid together vs 2,4 are valid together, but all together they conflict) or give any reasoning as to why the constraints conflict (e.g., deduced angle is 30 degrees but angle constraint is attempting to set to 45 degrees).
+  Typically, once a conflicting constraint_FC is added, the number of conflicting constraints_FC reported becomes much more than 2. That's usually because the 1 added constraint_FC goes is invalid against many existing constraints_FC. The Sketch_FC Edit pane doesn't group conflicting constraints_FC together (e.g., 1,3,5 are valid together vs 2,4 are valid together, but all together they conflict) or give any reasoning as to why the constraints_FC conflict (e.g., deduced angle is 30 degrees but angle constraint_FC is attempting to set to 45 degrees).
 
 ```{note}
-There are other messages, but they usually mean something critical has gone wrong (e.g., Malformed constraints, Solver failed to converge).
+There are other messages, but they usually mean something critical has gone wrong (e.g., Malformed constraints_FC, Solver failed to converge).
 ```
 
-It is important that a completed sketch always be fully constrained, otherwise the solver (software responsible for applying constraints) may shift and reorient the elements on that sketch !!based!! on the what is and isn't constrained. Even if a sketch is fully constrained, it may still be subject to sketch flipping, a phenomenon where the sketch flips because even when fully constrained there is more than 1 possible outcome for the constraints. In the example below, both arcs have the exact same constraints (both fully constrained), but there are two possible solutions.
+It is important that a completed sketch_FC always be fully constrained_FC, otherwise the solver (software responsible for applying constraints_FC) may shift and reorient the elements_FC on that sketch_FC !!based!! on the what is and isn't constrained_FC. Even if a sketch_FC is fully constrained_FC, it may still be subject to sketch flipping_FC, a phenomenon where the sketch_FC changes because even when fully constrained_FC there is more than 1 possible outcome for the constraints_FC. In the example below, both arcs have the exact same constraints_FC (both fully constrained_FC), but there are two possible solutions.
 
 ![FreeCAD sketcher workbench two solutions for the same constrained arc example](freecad_sketcher_two_solutions_for_the_same_constrained_arc_example.png)
 
@@ -3474,7 +3474,7 @@ It is important that a completed sketch always be fully constrained, otherwise t
 FreeCAD/Sketcher Workbench/Sketching/Sketch Flipping_TOPIC
 ```
 
-`{ref} https://wiki.freecad.org/Sketcher_Workbench` `{ref} https://wiki.freecad.org/Sketcher_Tutorial` `{ref} https://wiki.freecad.org/Sketcher_Dialog` `{ref} https://www.reddit.com/r/FreeCAD/comments/1m24jo0/what_is_over_constraining/` `{ref} self`
+`{ref} https://wiki.freecad.org/Sketcher_Workbench` `{ref} https://wiki.freecad.org/Sketcher_Tutorial` `{ref} https://wiki.freecad.org/Sketcher_Dialog` `{ref} https://www.reddit.com/r/FreeCAD/comments/1m24jo0/what_is_over_constraining/` `{ref} https://forum.freecad.org/viewtopic.php?p=732972#p732972` `{ref} https://www.reddit.com/r/FreeCAD/comments/1ivu9lm/newbie_question_on_underconstrained/` `{ref} self`
 
 #### Sketch Flipping
 
@@ -3488,54 +3488,54 @@ FreeCAD/Sketcher Workbench/Constraints/Angle Dimension_TOPIC
 FreeCAD/Sketcher Workbench/Constraints/Distance Dimension_TOPIC
 ```
 
-Even if a sketch is fully constrained, it may still be subject to sketch flipping, a phenomenon where the sketch flips because even when fully constrained there is more than 1 possible outcome for the constraints.
+Even if a sketch_FC is fully constrained_FC, it may still be subject to sketch flipping_FC, a phenomenon where the sketch_FC reshapes because even when fully constrained_FC there is more than 1 possible outcome for the constraints_FC.
 
 * **Example 1**
 
-  In the example below, both arcs have the exact same constraints (both fully constrained), but there are two possible solutions.
+  In the example below, both arcs have the exact same constraints_FC (both fully constrained_FC), but there are two possible solutions.
 
   ![FreeCAD sketcher workbench two solutions for the same constrained arc example](freecad_sketcher_two_solutions_for_the_same_constrained_arc_example.png)
 
-  Sketch flipping happens because, in certain cases, directionality may not exist. There's no constraint that ties the arc as to which side of the X axis it's on.
+  Sketch flipping_FC happens because, in certain cases, directionality may not exist. There's no constraint_FC that ties the arc as to which side of the X axis it's on.
   
-  This can be fixed by adding a constraint to force directionality. For example, adding a horizontal constraint between the end of the arc and the origin adds directionality. A horizontal constraint / vertical constraint is signed, meaning that a value of 12mm goes in one direction while -12mm goes in the opposite direction.
+  This can be fixed by adding a constraint_FC to force directionality. For example, adding a horizontal constraint_FC between the end of the arc and the origin adds directionality. A horizontal constraint_FC / vertical constraint_FC is signed, meaning that a value of 12mm goes in one direction while -12mm goes in the opposite direction.
 
   ![FreeCAD sketcher workbench two solutions for the same constrained arc example fixed](freecad_sketcher_two_solutions_for_the_same_constrained_arc_example_fixed.png)
 
 * **Example 2**
 
-  In the example below, both shapes have the exact same constraints (both fully constrained) except that the second version is 50mm away from the Y axis instead of 16mm. Note that the sketch changed shape even though all other constraints are equivalent.
+  In the example below, both shapes have the exact same constraints_FC (both fully constrained_FC) except that the second version is 50mm away from the Y axis instead of 16mm. Note that the sketch_FC changed shape even though all other constraints_FC are equivalent.
 
   ![FreeCAD sketcher workbench two solutions for the same constrained L example a](freecad_sketcher_two_solutions_for_the_same_constrained_L_example_a.png) ![FreeCAD sketcher workbench two solutions for the same constrained L example b](freecad_sketcher_two_solutions_for_the_same_constrained_L_example_b.png)
 
-  As with the previous example, there is a lack of directionality that causes sketch flipping. The top horizontal line has a distance constraint of 10mm, but there's nothing constraining the order of the points (which of its two points is closer to the Y axis). The solver is free to swap the points as it sees fit, so long as the distance is still 10mm.
+  As with the previous example, there is a lack of directionality that causes sketch flipping_FC. The top horizontal line has a distance constraint_FC of 10mm, but there's nothing constraining_FC the order of the points (which of its two points is closer to the Y axis). The solver is free to swap the points as it sees fit, so long as the distance is still 10mm.
 
-  Again, this can be fixed by adding a constraint to force directionality. For example, instead of using a distance constraint of 10mm, using a horizontal constraint of 10mm will. A horizontal constraint with a value of 10mm will fix the sketch into one orientation, while -10mm will fix it into the other orientation.
+  Again, this can be fixed by adding a constraint_FC to force directionality. For example, instead of using a distance constraint_FC of 10mm, using a horizontal constraint_FC of 10mm will. A horizontal constraint_FC with a value of 10mm will fix the sketch_FC into one orientation, while -10mm will fix it into the other orientation.
 
   ![FreeCAD sketcher workbench two solutions for the same constrained L example fixed](freecad_sketcher_two_solutions_for_the_same_constrained_L_example_fixed.png)
 
 * **Example 3**
 
-  The example below is similar to the previous example, except more complex. There's double flipping occurring:
+  The example below is similar to the previous example, except more complex. There's double flipping_FC occurring:
   
-  1. The box and triangle are flipping across the symmetry line
-  2. The box has flipped such that the vertical line closer to the symmetry line has become the one farther from the symmetry line.
+  1. The box and triangle are flipping_FC across the symmetry line
+  2. The box has flipped_FC such that the vertical line closer to the symmetry line has become the one farther from the symmetry line.
 
   ![FreeCAD sketcher workbench two solutions for the same symmetry example a](freecad_sketcher_two_solutions_for_the_same_symmetry_example_a.png) ![FreeCAD sketcher workbench two solutions for the same symmetry example b](freecad_sketcher_two_solutions_for_the_same_symmetry_example_b.png)
 
-  Again, this can be fixed by adding constraint(s) to force directionality:
+  Again, this can be fixed by adding one or more constraints_FC to force directionality:
   
-  * Add a horizontal constraint to the box to ensure its points don't flip.
-  * Add a horizontal constraint between the symmetry line's point and either a point on the box or a point on the triangle, to ensure they stay on the correct side of the symmetry line.
+  * Add a horizontal constraint_FC to the box to ensure its points don't flip_FC.
+  * Add a horizontal constraint_FC between the symmetry line's point and either a point on the box or a point on the triangle, to ensure they stay on the correct side of the symmetry line.
 
   ![FreeCAD sketcher workbench two solutions for the same symmetry example fixed](freecad_sketcher_two_solutions_for_the_same_symmetry_example_fixed.png)
 
-To prevent flipping, it's important to anchor the sketch using constraints that !!support!! directionality. In general ...
+To prevent flipping_FC, it's important to anchor the sketch_FC using constraints_FC that !!support!! directionality. In general ...
 
-* horizontal constraints are signed, so they can specify directionality.
-* vertical constraints are signed, so they can specify directionality.
-* angle constraints are signed, so they can specify directionality, but that only works if the angle is anchored to something fixed (e.g., angle from x-axis and not the angle for an arc).
-* block constraints force an exact position, similar to adding a horizontal constraint and vertical constraint against the origin.
+* horizontal constraints_FC are signed, so they can specify directionality.
+* vertical constraints_FC are signed, so they can specify directionality.
+* angle constraints_FC are signed, so they can specify directionality, but that only works if the angle is anchored to something fixed (e.g., angle from x-axis and not the angle for an arc).
+* block constraints_FC force an exact position, similar to adding a horizontal constraint_FC and vertical constraint_FC against the origin.
 
 `{ref} https://wiki.freecad.org/Sketcher_Workbench#Flipping` `{ref} https://forum.freecad.org/viewtopic.php?t=10872` `{ref} self`
 
@@ -3554,10 +3554,10 @@ FreeCAD/Sketcher Workbench/Sketching/Sketch Flipping_TOPIC
 ```
 
 ```{note}
-The word !!contour!! here just means the outline of a shape that you draw in the sketcher. It doesn't have the same special meaning as the contours_BS vs holes_BS meaning in Bambu Studio.
+The word !!contour!! here just means the outline of a shape that you draw in the sketcher_FC. It doesn't have the same special meaning as the contours_BS vs holes_BS meaning in Bambu Studio.
 ```
 
-For a sketch to be valid for use as a 3D feature (e.g., as a profile that extrudes into a 3D addition or punches into a 3D face), it must conform to several expectations:
+For a sketch_FC to be valid for use as a 3D feature_FC (e.g., as a profile that extrudes into a 3D addition or punches into a 3D face), it must conform to several expectations:
 
 * **No open !!contours!!**: A !!contours!! must be closed, meaning gaps between endpoints of that !!contour!! aren't allowed (no matter how small).
 
@@ -3579,12 +3579,12 @@ For a sketch to be valid for use as a 3D feature (e.g., as a profile that extrud
 
   ![FreeCAD sketcher workbench T connection example](freecad_sketcher_t_connection_example.png)
 
-!!Contours!! are allowed to be nested (but not intersecting). Nesting alternates between creating voids in the 3D feature.
+!!Contours!! are allowed to be nested (but not intersecting). Nesting alternates between creating voids in the 3D feature_FC.
 
 ![FreeCAD sketcher workbench nested contours example](freecad_sketcher_nested_contours_example.png) ![FreeCAD part design workbench nested contours padded example](freecad_part_design_nested_contours_padded_example.png)
 
 ```{note}
-These rules don't apply to construction geometry because construction geometry doesn't appear outside of editing a sketch.
+These rules don't apply to construction geometry_FC because construction geometry_FC doesn't appear outside of editing a sketch_FC.
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_Workbench#Profile_sketches`
@@ -3599,13 +3599,13 @@ FreeCAD/Sketcher Workbench/Sketching/Selection_TOPIC
 FreeCAD/Sketcher Workbench/Sketching/Deletion_TOPIC
 ```
 
-An element is a 2D geometric primitive (e.g., point, line, arc, and spline). The element itself defines a primitive, while the parameterization of the primitive are defined by constraints applied to the element (constraints are discussed in later sections).
+An element_FC is a 2D geometric primitive (e.g., point, line, arc, and spline). The element_FC itself defines a primitive, while the parameterization of the primitive are defined by constraints_FC applied to the element_FC (constraints_FC are discussed in later sections).
 
 ```{seealso}
 FreeCAD/Sketcher Workbench/Constraints_TOPIC
 ```
 
-The subsections below detail the various elements available.
+The subsections below detail the various elements_FC available.
 
 `{ref} https://wiki.freecad.org/Basic_Sketcher_Tutorial`
 
@@ -3633,15 +3633,15 @@ FreeCAD/Sketcher Workbench/Sketching/Creation_TOPIC
 
 ![FreeCAD sketcher workbench numbered element toolbar buttons](freecad_sketcher_numbered_element_toolbar_buttons.png)
 
-To create a line, use toolbar button 3 (keyboard shortcut G,L). Once the tool is active, select the mode in which the line should be created (cycle keyboard shortcut M). The mode defines the constraints presented by On-View-Parameters when the line is being created:
+To create a line, use toolbar button 3 (keyboard shortcut G,L). Once the tool is active, select the mode in which the line should be created (cycle keyboard shortcut M). The mode defines the constraints_FC presented by On-View-Parameters_FC when the line is being created:
 
 * **Point, length, angle**
 * **Point, !!width!!, !!height!!**
-* **2 points** (no constraints presented)
+* **2 points** (no constraints_FC presented)
 
 ![FreeCAD sketcher workbench line parameters](freecad_sketcher_line_parameters.png)
 
-Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click again to place the second point.
+Click within the 3D viewport to place the element_FC and either fill out the On-View-Parameters_FC or click again to place the second point.
 
 ```{note}
 A line is made up of 2 points.
@@ -3667,13 +3667,13 @@ To create a rectangle, use toolbar button 6 to present a drop-down and either se
 
 The selection activates the tool with specific Rectangle Parameters preset. Those parameters can continue to be set once the tool is active:
 
-* **Mode**: The mode in which the rectangle should be created (cycle keyboard shortcut M). Mode defines the constraints presented by On-View-Parameters when the rectangle is being created.
-* **Rounded corners**: Whether the rectangle should have rounded corners (keyboard shortcut U). Rounded corners defines extra elements and constraints to be presented by On-View-Parameters when the rectangle is being created.
-* **Frame**: Whether the rectangle should be a frame (keyboard shortcut J), as in have an inner and outer border. Frame defines extra elements and constraints to be presented by On-View-Parameters when the rectangle is being created.
+* **Mode**: The mode in which the rectangle should be created (cycle keyboard shortcut M). Mode defines the constraints_FC presented by On-View-Parameters_FC when the rectangle is being created.
+* **Rounded corners**: Whether the rectangle should have rounded corners (keyboard shortcut U). Rounded corners defines extra elements_FC and constraints_FC to be presented by On-View-Parameters_FC when the rectangle is being created.
+* **Frame**: Whether the rectangle should be a frame (keyboard shortcut J), as in have an inner and outer border. Frame defines extra elements_FC and constraints_FC to be presented by On-View-Parameters_FC when the rectangle is being created.
 
 ![FreeCAD sketcher workbench rectangle parameters](freecad_sketcher_rectangle_parameters.png)
 
-Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.
+Click within the 3D viewport to place the element_FC and either fill out the On-View-Parameters_FC or click until placement is complete.
 
 ```{note}
 A rectangle is made up of at least 4 lines. 4 more added if it's framed. 4 arcs added if it's rounded.
@@ -3713,10 +3713,10 @@ Except for Polygon, the selection activates the tool with specific Polygon Param
 
 ![FreeCAD sketcher workbench polygon parameters](freecad_sketcher_polygon_parameters.png)
 
-Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.
+Click within the 3D viewport to place the element_FC and either fill out the On-View-Parameters_FC or click until placement is complete.
 
 ```{note}
-A polygon is made up of n lines and a circle (construction geometry).
+A polygon is made up of n lines and a circle (construction geometry_FC).
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_CreateTriangle`
@@ -3744,7 +3744,7 @@ To create an ellipse or circle, use toolbar button 5 to present a drop-down and 
 * Ellipse from Center (keyboard shortcut G,E,E).
 * Ellipse from 3 Points (keyboard shortcut G,3,E).
 
-Once the tool is active, select the mode in which the line should be created (cycle keyboard shortcut M). The mode defines the constraints presented by On-View-Parameters when the line is being created:
+Once the tool is active, select the mode in which the line should be created (cycle keyboard shortcut M). The mode defines the constraints_FC presented by On-View-Parameters_FC when the line is being created:
 
 * **Center**: Create circle/ellipse from a center point.
 * **3 rim points** / **Axis endpoints**: Create circle/ellipse from 3 points on the rim.
@@ -3752,7 +3752,7 @@ Once the tool is active, select the mode in which the line should be created (cy
 ![FreeCAD sketcher workbench circle parameters](freecad_sketcher_circle_parameters.png)
 ![FreeCAD sketcher workbench ellipse parameters](freecad_sketcher_ellipse_parameters.png)
 
-Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.
+Click within the 3D viewport to place the element_FC and either fill out the On-View-Parameters_FC or click until placement is complete.
 
 `{ref} https://wiki.freecad.org/Sketcher_CreateCircle`
 `{ref} https://wiki.freecad.org/Sketcher_Create3PointCircle`
@@ -3784,13 +3784,13 @@ Of the options, ...
   * **Center**: Create circle/ellipse from a center point.
   * **3 rim points** / **Axis endpoints**: Create circle/ellipse from 3 points on the rim.
 
-  The only mode that defines constraints presented by On-View-Parameters when being created is **Center**.
+  The only mode that defines constraints_FC presented by On-View-Parameters_FC when being created is **Center**.
 
   ![FreeCAD sketcher workbench arc parameters](freecad_sketcher_arc_parameters.png)
 
-* for the remainder, there are no options and On-View-Params aren't enabled.
+* for the remainder, there are no options and On-View-Params_FC aren't enabled.
 
-Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.
+Click within the 3D viewport to place the element_FC and either fill out the On-View-Parameters_FC or click until placement is complete.
 
 `{ref} https://wiki.freecad.org/Sketcher_CreateArc`
 `{ref} https://wiki.freecad.org/Sketcher_Create3PointArc`
@@ -3817,7 +3817,7 @@ A polyline is a helper that chains together lines and arcs into a path. To creat
 * Arc perpendicular (left) to the previous segment (hold Ctrl to snap arc to increments of 45 degree relative to the previous segment).
 * Arc perpendicular (right) to the previous segment (hold Ctrl to snap arc to increments of 45 degree relative to the previous segment).
 
-Click within the 3D viewport to place the element and continue clicking to draw. Hit Esc to end.
+Click within the 3D viewport to place the element_FC and continue clicking to draw. Hit Esc to end.
 
 There must be a previous segment for M to cycle through line and arc options (there will be if you dropped on an existing endpoint). For the initial segment, the mode is always hardcoded to a line (M won't cycle).
 
@@ -3849,7 +3849,7 @@ Slot and Arc Slot are different tools. When ...
 
   ![FreeCAD sketcher workbench rectangle parameters](freecad_sketcher_arc_slot_parameters.png)
 
-Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete.
+Click within the 3D viewport to place the element_FC and either fill out the On-View-Parameters_FC or click until placement is complete.
 
 
 `{ref} https://wiki.freecad.org/Sketcher_CreateSlot`
@@ -3879,7 +3879,7 @@ The selection activates the tool with specific Rectangle Parameters preset. Thos
 
 ![FreeCAD sketcher workbench b-spline parameters](freecad_sketcher_b_spline_parameters.png)
 
-Click within the 3D viewport to place the element and either fill out the On-View-Parameters or click until placement is complete. Hit Esc to end.
+Click within the 3D viewport to place the element_FC and either fill out the On-View-Parameters_FC or click until placement is complete. Hit Esc to end.
 
 There are various b-spline modifiers / helpers:
 
@@ -3913,13 +3913,13 @@ FreeCAD/Sketcher Workbench/Sketching/Deletion_TOPIC
 FreeCAD/Sketcher Workbench/Elements_TOPIC
 ```
 
-A constraint limits the possible values for an element's parameters. For example, a line may have an endpoint constrained onto the X-axis, in which case the position of that endpoint must always have a Y position of 0.
+A constraint_FC limits the possible values for an element_FC's parameters. For example, a line may have an endpoint constrained_FC onto the X-axis, in which case the position of that endpoint must always have a Y position of 0.
 
 ```{seealso}
 FreeCAD/Sketcher Workbench/Constraints_TOPIC
 ```
 
-The subsections below detail the various constraints available.
+The subsections below detail the various constraints_FC available.
 
 `{ref} https://wiki.freecad.org/Basic_Sketcher_Tutorial`
 
@@ -3927,22 +3927,22 @@ The subsections below detail the various constraints available.
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Distance Dimension)_TOPIC/i`
 
-A Distance Dimension constraint sets the distance.
+A Distance Dimension constraint_FC sets the distance.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Distance Dimension constraint, select the element (e.g., line), elements (e.g., line and arc), or element components (points on a line). Then, use toolbar button 1 to present a drop-down and select Distance Dimension (keyboard shortcut K,D). A pop-up will ask for the length value. Once the constraint has been created, press Esc to exit.
+To create a Distance Dimension constraint_FC, select the element_FC (e.g., line), elements_FC (e.g., line and arc), or element_FC components (points on a line). Then, use toolbar button 1 to present a drop-down and select Distance Dimension (keyboard shortcut K,D). A pop-up will ask for the length value. Once the constraint_FC has been created, press Esc to exit.
 
-Distance Dimension works on the elements most users expect (e.g., distance between two points, distance of a line). It also works on other elements. For example, Distance Dimension can be applied to point and a line, an arc, two circles / arcs, a line and a circle / arc,
+Distance Dimension works on the elements_FC most users expect (e.g., distance between two points, distance of a line). It also works on other elements_FC. For example, Distance Dimension can be applied to point and a line, an arc, two circles / arcs, a line and a circle / arc,
 
 ```{note}
-You can select the connstraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, ...
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that breaks down in certain cases. For example, ...
 
 * you can set the distance on a line by selecting Distance Dimension and then clicking on the line.
 * you can set the distance on a arc by selecting Distance Dimension and then clicking on the arc.
 * you CANNOT set the distance between a line and an arc by selecting Distance Dimension, then clicking the line, then clicking the arc.
 
-For the last point, as soon as you click the line, the constraint will get triggered on the line.
+For the last point, as soon as you click the line, the constraint_FC will get triggered on the line.
 
 To work around this, click the line and arc first, then select Distance Dimension.
 ```
@@ -3952,20 +3952,20 @@ By definition, a distance must be a non-negative value. Imagine two points on a 
 * the distance from A to B is abs(5-4)=1
 * the distance from B to A is abs(4-5)=1.
 
-Given this, it's important to remember that distance does not encode a direction (e.g., if it did, the abs would go away, meaning the distance from B to A would have been -1 instead of 1). This lack of direction means that the sketcher's solver can decide to flip sketches even if the sketch is fully constrained (unless it's somehow further constrained to define a direction). For example below, the rectangle below has two distance constraints, ...
+Given this, it's important to remember that distance does not encode a direction (e.g., if it did, the abs would go away, meaning the distance from B to A would have been -1 instead of 1). This lack of direction means that the sketcher_FC's solver can decide to flip_FC sketches_FC even if the sketch_FC is fully constrained_FC (unless it's somehow further constrained_FC to define a direction). For example below, the rectangle below has two distance constraints_FC, ...
 
 * one on the vertical side (15mm).
 * one on the horizontal side (20mm).
 
 ![FreeCAD sketcher workbench rectangle with distance dimensions](freecad_sketcher_rectangle_with_distance_dimensions.png)
 
-Because distance doesn't encode direction, the sketcher can decide to flip the horizontal edges or the vertical edges at any time. Imagine taking the lower-right corner of this rectangle and using a coincident constraint to tie it to the origin. Because the edges can flip, at any time the lower-right corner can become the upper-right corner, upper-left corner, or lower-left corner.
+Because distance doesn't encode direction, the sketcher_FC can decide to flip_FC the horizontal edges or the vertical edges at any time. Imagine taking the lower-right corner of this rectangle and using a coincident constraint_FC to tie it to the origin. Because the edges can flip_FC, at any time the lower-right corner can become the upper-right corner, upper-left corner, or lower-left corner.
 
 ![FreeCAD sketcher workbench rectangle with distance dimensions flip 1](freecad_sketcher_rectangle_with_distance_dimensions_flip_1.png)
 ![FreeCAD sketcher workbench rectangle with distance dimensions flip 2](freecad_sketcher_rectangle_with_distance_dimensions_flip_2.png)
 
 ```{note}
-To avoid sketch flipping, you need to add additional constraints that !!support!! directionality.
+To avoid sketch flipping_FC, you need to add additional constraints_FC that !!support!! directionality.
 ```
 
 ```{seealso}
@@ -3984,29 +3984,29 @@ FreeCAD/Sketcher Workbench/Constraints/Vertical Dimension_TOPIC
 FreeCAD/Sketcher Workbench/Constraints/Distance Dimension_TOPIC
 ```
 
-A Horizontal Dimension constraint sets the how far apart two elements are, horizontally. Unlike the Distance Dimension constraint, it allows direction via positive and negative values.
+A Horizontal Dimension constraint_FC sets the how far apart two elements_FC are, horizontally. Unlike the Distance Dimension constraint_FC, it allows direction via positive and negative values.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Horizontal Dimension constraint, select the element or element components (e.g., points on a line). Then, use toolbar button 1 to present a drop-down and select Horizontal Dimension (keyboard shortcut L). A pop-up will ask for the length value. Once the constraint has been created, press Esc to exit.
+To create a Horizontal Dimension constraint_FC, select the element_FC or element_FC components (e.g., points on a line). Then, use toolbar button 1 to present a drop-down and select Horizontal Dimension (keyboard shortcut L). A pop-up will ask for the length value. Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that breaks down in certain cases. For example, you can't apply to just a single point.
 ```
 
 If the selection is ...
 
-* one point, the constraint will be relative from the origin:
+* one point, the constraint_FC will be relative from the origin:
 
   * Positive value places point to the right of Y axis.
   * Negative value places point to the left of Y axis.
 
-* two points, the constraint will be relative from the first selected point:
+* two points, the constraint_FC will be relative from the first selected point:
 
   * Positive value places second point to the right of the first point.
   * Negative value places second point to the left of the first point.
 
-* one line, the constraints will be applied as if the line's two points were selected. The line's first dropped point during creating is treated as the first point, and the second dropped point is treated as the second point.
+* one line, the constraints_FC will be applied as if the line's two points were selected. The line's first dropped point during creating is treated as the first point, and the second dropped point is treated as the second point.
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainDistanceX` `{ref} self`
 
@@ -4018,29 +4018,29 @@ If the selection is ...
 FreeCAD/Sketcher Workbench/Constraints/Distance Dimension_TOPIC
 ```
 
-A Vertical Dimension constraint sets the how far apart two elements are, vertically. Unlike the Distance Dimension constraint, it allows direction via positive and negative values.
+A Vertical Dimension constraint_FC sets the how far apart two elements_FC are, vertically. Unlike the Distance Dimension constraint_FC, it allows direction via positive and negative values.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Vertical Dimension constraint, select the element or element components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Vertical Dimension (keyboard shortcut I). A pop-up will ask for the length value. Once the constraint has been created, press Esc to exit.
+To create a Vertical Dimension constraint_FC, select the element_FC or element_FC components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Vertical Dimension (keyboard shortcut I). A pop-up will ask for the length value. Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that breaks down in certain cases. For example, you can't apply to just a single point.
 ```
 
 If the selection is ...
 
-* one point, the constraint will be relative from the origin:
+* one point, the constraint_FC will be relative from the origin:
 
   * Positive value places point to the above of X axis.
   * Negative value places point to the below of X axis.
 
-* two points, the constraint will be relative from the first selected point:
+* two points, the constraint_FC will be relative from the first selected point:
 
   * Positive value places second point above the first point.
   * Negative value places second point below the first point.
 
-* one line, the constraints will be applied as if the line's two points were selected. The line's first dropped point during creating is treated as the first point, and the second dropped point is treated as the second point.
+* one line, the constraints_FC will be applied as if the line's two points were selected. The line's first dropped point during creating is treated as the first point, and the second dropped point is treated as the second point.
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainDistanceY` `{ref} self`
 
@@ -4053,21 +4053,21 @@ FreeCAD/Sketcher Workbench/Constraints/Horizontal Dimension_TOPIC
 FreeCAD/Sketcher Workbench/Constraints/Vertical Dimension_TOPIC
 ```
 
-Lock Position is not a constraint, but a helper that applies both a Vertical Dimension constraint and a Horizontal Dimension constraint to the selection, effectively locking the selection in place.
+Lock Position is not a constraint_FC, but a helper that applies both a Vertical Dimension constraint_FC and a Horizontal Dimension constraint_FC to the selection, effectively locking the selection in place.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To apply Lock Position, select the element or element components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Lock Position (keyboard shortcut K,L). Once the constraint has been created, press Esc to exit.
+To apply Lock Position, select the element_FC or element_FC components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Lock Position (keyboard shortcut K,L). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that breaks down in certain cases. For example, you can't apply to just a single point.
 ```
 
 If the selection is ...
 
-* one point, the constraints will be relative from the origin.
-* two points, the constraints will be relative from the the opposing points.
-* one line, the constraints will be applied as if the line's two points were selected.
+* one point, the constraints_FC will be relative from the origin.
+* two points, the constraints_FC will be relative from the the opposing points.
+* one line, the constraints_FC will be applied as if the line's two points were selected.
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainLock`
 
@@ -4075,20 +4075,20 @@ If the selection is ...
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Radius Dimension)_TOPIC/i`
 
-A Radius Dimension constraint sets the radius of circles, arcs, and B-spline weight circles.
+A Radius Dimension constraint_FC sets the radius of circles, arcs, and B-spline weight circles.
 
 ```{note}
 From the source:
 
-> After a B-spline is created, it is possible to define the weight of the control points by changing the radii of the weight circles. The equality constraints on the circles need to be deleted first. The radius constraint is arbitrary, the weight of the control points will be defined by the relative radii of the circles. It works similar to gravity: the bigger a circle is in relation to the others, the more the curve will be attracted to that control point.
+> After a B-spline is created, it is possible to define the weight of the control points by changing the radii of the weight circles. The equality constraints_FC on the circles need to be deleted first. The radius constraint_FC is arbitrary, the weight of the control points will be defined by the relative radii of the circles. It works similar to gravity: the bigger a circle is in relation to the others, the more the curve will be attracted to that control point.
 ```
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Radius Dimension constraint, select the element or element component (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Radius Dimension (keyboard shortcut K,R). A pop-up will ask for the radius value. Once the constraint has been created, press Esc to exit.
+To create a Radius Dimension constraint_FC, select the element_FC or element_FC component (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Radius Dimension (keyboard shortcut K,R). A pop-up will ask for the radius value. Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainRadius`
@@ -4097,7 +4097,7 @@ You can select the constraint first and then pick the two things to create a con
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Diameter Dimension)_TOPIC/i`
 
-A Diameter Dimension constraint sets the diameter of circles, and arcs.
+A Diameter Dimension constraint_FC sets the diameter of circles, and arcs.
 
 ```{note}
 Unlike Radius Dimension, Diameter Dimension cannot be used for B-splines. From the source:
@@ -4107,10 +4107,10 @@ Unlike Radius Dimension, Diameter Dimension cannot be used for B-splines. From t
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Diameter Dimension constraint, select the element or element component (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Diameter Dimension (keyboard shortcut K,O). A pop-up will ask for the diameter value. Once the constraint has been created, press Esc to exit.
+To create a Diameter Dimension constraint_FC, select the element_FC or element_FC component (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Diameter Dimension (keyboard shortcut K,O). A pop-up will ask for the diameter value. Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainDiameter`
@@ -4119,22 +4119,22 @@ You can select the constraint first and then pick the two things to create a con
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Angle Dimension)_TOPIC/i`
 
-An Angle Dimension sets the angle between two edges, a line an an axis of the sketch, or the aperture angle of a circular arc.
+An Angle Dimension sets the angle between two edges, a line an an axis of the sketch_FC, or the aperture angle of a circular arc.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Angle Dimension constraint, select the element or element component (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Angle Dimension (keyboard shortcut K,A). A pop-up will ask for the angle value. Once the constraint has been created, press Esc to exit.
+To create a Angle Dimension constraint_FC, select the element_FC or element_FC component (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Angle Dimension (keyboard shortcut K,A). A pop-up will ask for the angle value. Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
 ```
 
 If the selection is ...
 
-* one line, the constraint will be the angle relative to the horizontal axis.
-* one arc, the constraints will be the angle defining how far the arc's endpoints are from each other.
-* two lines, the constraints will be an angle between the two lines, where the center is the intersection point of the lines.
-* two lines and a point, the constraints will be an angle between the two lines, where the center is the point.
+* one line, the constraint_FC will be the angle relative to the horizontal axis.
+* one arc, the constraints_FC will be the angle defining how far the arc's endpoints are from each other.
+* two lines, the constraints_FC will be an angle between the two lines, where the center is the intersection point of the lines.
+* two lines and a point, the constraints_FC will be an angle between the two lines, where the center is the point.
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainAngle`
 
@@ -4147,20 +4147,20 @@ FreeCAD/Sketcher Workbench/Constraints/Radius Dimension_TOPIC
 FreeCAD/Sketcher Workbench/Constraints/Diameter Dimension_TOPIC
 ```
 
-Radius-Diameter Dimension is not a constraint, but a helper that applies either a Radius Dimension constraint or a Diameter Dimension constraint to the selection, depending on the type of element it is.
+Radius-Diameter Dimension is not a constraint_FC, but a helper that applies either a Radius Dimension constraint_FC or a Diameter Dimension constraint_FC to the selection, depending on the type of element_FC it is.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To apply Radius-Diameter Dimension, select the element or element components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Radius-Diameter Dimension (keyboard shortcut K,S). A pop-up will ask for the diameter/radius value. Once the constraint has been created, press Esc to exit.
+To apply Radius-Diameter Dimension, select the element_FC or element_FC components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Radius-Diameter Dimension (keyboard shortcut K,S). A pop-up will ask for the diameter/radius value. Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that breaks down in certain cases. For example, you can't apply to just a single point.
 ```
 
 If the selection is ...
 
-* an arc or b-spline weight circle, the constraints will be a Radius Dimension.
-* a circle, the constraint will be a Diameter Dimension.
+* an arc or b-spline weight circle, the constraints_FC will be a Radius Dimension.
+* a circle, the constraint_FC will be a Diameter Dimension.
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainRadiam`
 
@@ -4185,16 +4185,16 @@ FreeCAD/Sketcher Workbench/Constraints/Equal_TOPIC
 FreeCAD/Sketcher Workbench/Constraints/Symmetric_TOPIC
 ```
 
-Dimension is not a constraint, but a helper that allows cycling through most possible constraints for the element selection.
+Dimension is not a constraint_FC, but a helper that allows cycling through most possible constraints_FC for the element_FC selection.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To apply Dimension, select the element or element components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Dimension (keyboard shortcut D). Continue to hit M until the desired constraint appears and click to apply. A pop-up may appear asking for a value (e.g., angle if the constraint is Angle Dimension constraint). Once the constraint has been created, press Esc to exit.
+To apply Dimension, select the element_FC or element_FC components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Dimension (keyboard shortcut D). Continue to hit M until the desired constraint_FC appears and click to apply. A pop-up may appear asking for a value (e.g., angle if the constraint_FC is Angle Dimension constraint_FC). Once the constraint_FC has been created, press Esc to exit.
 
-For example, if the selection is two lines, the possible constraints that can be cycled through may include Angle Dimension and Parallel.
+For example, if the selection is two lines, the possible constraints_FC that can be cycled through may include Angle Dimension and Parallel.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that breaks down in certain cases. For example, you can't apply to just a single point.
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_Dimension`
@@ -4203,24 +4203,24 @@ You can select the constraint first and then pick the two things to create a con
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Coincident)_TOPIC/i`
 
-A Coincident constraint sets a point to lie on another point, edge (e.g., line, rim of an arc, rim of a circle, b-spline), or basis axis.
+A Coincident constraint_FC sets a point to lie on another point, edge (e.g., line, rim of an arc, rim of a circle, b-spline), or basis axis.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Coincident constraint, select the element or element component (e.g., two points). Then, use toolbar button 2 (keyboard shortcut C). A pop-up will ask for the angle value. Once the constraint has been created, press Esc to exit.
+To create a Coincident constraint_FC, select the element_FC or element_FC component (e.g., two points). Then, use toolbar button 2 (keyboard shortcut C). A pop-up will ask for the angle value. Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
 ```
 
 If the selection is ...
 
-* two points, the constraint will place the points on top of each other.
-* a point and an edge, the constraints will place the point along the edge.
-* a point and a basis axis, the constraints will place the point along the basis axis.
+* two points, the constraint_FC will place the points on top of each other.
+* a point and an edge, the constraints_FC will place the point along the edge.
+* a point and a basis axis, the constraints_FC will place the point along the basis axis.
 
 ```{note}
-Apparently there use to be 2 separate constraints for Coincident? This is two separate constraints unified into one: The old Coincident constraint and the old Point-on-Object constraint.
+Apparently there use to be 2 separate constraints_FC for Coincident? This is two separate constraints_FC unified into one: The old Coincident constraint_FC and the old Point-on-Object constraint_FC.
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainCoincidentUnified`
@@ -4229,14 +4229,14 @@ Apparently there use to be 2 separate constraints for Coincident? This is two se
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Horizontal)_TOPIC/i`
 
-A Horizontal constraint sets a pair of points or a line to be horizontal.
+A Horizontal constraint_FC sets a pair of points or a line to be horizontal.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Horizontal constraint, select the element or element component (e.g., two points). Then, use toolbar button 3 to present a drop-down and select Horizontal (keyboard shortcut H). Once the constraint has been created, press Esc to exit.
+To create a Horizontal constraint_FC, select the element_FC or element_FC component (e.g., two points). Then, use toolbar button 3 to present a drop-down and select Horizontal (keyboard shortcut H). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainHorizontal`
@@ -4245,14 +4245,14 @@ You can select the constraint first and then pick the two things to create a con
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Vertical)_TOPIC/i`
 
-A Vertical constraint sets a pair of points or a line to be vertical.
+A Vertical constraint_FC sets a pair of points or a line to be vertical.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Vertical constraint, select the element or element component (e.g., two points). Then, use toolbar button 3 to present a drop-down and select Vertical (keyboard shortcut V). Once the constraint has been created, press Esc to exit.
+To create a Vertical constraint_FC, select the element_FC or element_FC component (e.g., two points). Then, use toolbar button 3 to present a drop-down and select Vertical (keyboard shortcut V). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainVertical`
@@ -4266,20 +4266,20 @@ FreeCAD/Sketcher Workbench/Constraints/Radius Dimension_TOPIC
 FreeCAD/Sketcher Workbench/Constraints/Diameter Dimension_TOPIC
 ```
 
-Horizontal-Vertical is not a constraint, but a helper that applies either a Horizontal constraint or a Vertical constraint to the selection.
+Horizontal-Vertical is not a constraint_FC, but a helper that applies either a Horizontal constraint_FC or a Vertical constraint_FC to the selection.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To apply Horizontal-Vertical, select the element or element components (e.g., two points). Then, use toolbar button 3 to present a drop-down and select Horizontal-Vertical (keyboard shortcut A). Once the constraint has been created, press Esc to exit.
+To apply Horizontal-Vertical, select the element_FC or element_FC components (e.g., two points). Then, use toolbar button 3 to present a drop-down and select Horizontal-Vertical (keyboard shortcut A). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that breaks down in certain cases. For example, you can't apply to just a single point.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that breaks down in certain cases. For example, you can't apply to just a single point.
 ```
 
 If the selection is ...
 
-* closer to being horizontal, a Horizontal constraint will be applied.
-* closer to being horizontal, a Vertical constraint will be applied.
+* closer to being horizontal, a Horizontal constraint_FC will be applied.
+* closer to being horizontal, a Vertical constraint_FC will be applied.
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainHorVer`
 
@@ -4287,14 +4287,14 @@ If the selection is ...
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Parallel)_TOPIC/i`
 
-A Parallel constraint sets a pair of lines to be parallel.
+A Parallel constraint_FC sets a pair of lines to be parallel.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Parallel constraint, select the element or element component (e.g., two lines). Then, use toolbar button 4 (keyboard shortcut P). Once the constraint has been created, press Esc to exit.
+To create a Parallel constraint_FC, select the element_FC or element_FC component (e.g., two lines). Then, use toolbar button 4 (keyboard shortcut P). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainParallel`
@@ -4303,14 +4303,14 @@ You can select the constraint first and then pick the two things to create a con
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Perpendicular)_TOPIC/i`
 
-A Perpendicular constraint sets a pair of lines to be perpendicular.
+A Perpendicular constraint_FC sets a pair of lines to be perpendicular.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Perpendicular constraint, select the element or element component (e.g., two lines). Then, use toolbar button 5 (keyboard shortcut N). Once the constraint has been created, press Esc to exit.
+To create a Perpendicular constraint_FC, select the element_FC or element_FC component (e.g., two lines). Then, use toolbar button 5 (keyboard shortcut N). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainPerpendicular`
@@ -4319,14 +4319,14 @@ You can select the constraint first and then pick the two things to create a con
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Tangent-Colinear)_TOPIC/i`
 
-A Tangent-Colinear constraint sets two edges (e.g., line, rim of an arc, rim of a circle, b-spline), or an edge and an basis axis, to be tangent. The constraint treats edges as if they're unbounded (e.g., lines are virtually extend out to infinity and open curves are virtually extended, for the purpose of tangency).
+A Tangent-Colinear constraint_FC sets two edges (e.g., line, rim of an arc, rim of a circle, b-spline), or an edge and an basis axis, to be tangent. The constraint_FC treats edges as if they're unbounded (e.g., lines are virtually extend out to infinity and open curves are virtually extended, for the purpose of tangency).
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Tangent-Colinear constraint, select the element or element component (e.g., two lines). Then, use toolbar button 6 (keyboard shortcut T). Once the constraint has been created, press Esc to exit.
+To create a Tangent-Colinear constraint_FC, select the element_FC or element_FC component (e.g., two lines). Then, use toolbar button 6 (keyboard shortcut T). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainTangent`
@@ -4335,14 +4335,14 @@ You can select the constraint first and then pick the two things to create a con
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Equal)_TOPIC/i`
 
-An Equal constraint sets two edges (e.g., line, rim of an arc, rim of a circle, b-spline) to have the same length.
+An Equal constraint_FC sets two edges (e.g., line, rim of an arc, rim of a circle, b-spline) to have the same length.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create an Equal constraint, select the element or element component (e.g., two lines). Then, use toolbar button 7 (keyboard shortcut E). Once the constraint has been created, press Esc to exit.
+To create an Equal constraint_FC, select the element_FC or element_FC component (e.g., two lines). Then, use toolbar button 7 (keyboard shortcut E). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainEqual`
@@ -4351,14 +4351,14 @@ You can select the constraint first and then pick the two things to create a con
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Symmetric)_TOPIC/i`
 
-A Symmetric constraint sets two points to mirror each other symmetrically over a line, a basis axis, or around a point.
+A Symmetric constraint_FC sets two points to mirror each other symmetrically over a line, a basis axis, or around a point.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Symmetric constraint, select the element or element component (e.g., two lines). Then, use toolbar button 8 (keyboard shortcut S). Once the constraint has been created, press Esc to exit.
+To create a Symmetric constraint_FC, select the element_FC or element_FC component (e.g., two lines). Then, use toolbar button 8 (keyboard shortcut S). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainSymmetric`
@@ -4367,14 +4367,14 @@ You can select the constraint first and then pick the two things to create a con
 
 `{bm} /(FreeCAD\/Sketcher Workbench\/Constraints\/Block)_TOPIC/i`
 
-A Block constraint fixes an edge (e.g., line, rim of an arc, rim of a circle, b-spline) in place. It's mainly intended for b-splines, which can be difficult to fully constrain otherwise. 
+A Block constraint_FC fixes an edge (e.g., line, rim of an arc, rim of a circle, b-spline) in place. It's mainly intended for b-splines, which can be difficult to fully constrain otherwise. 
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Block constraint, select the element or element component (e.g., two lines). Then, use toolbar button 9 (keyboard shortcut K, B). Once the constraint has been created, press Esc to exit.
+To create a Block constraint_FC, select the element_FC or element_FC component (e.g., two lines). Then, use toolbar button 9 (keyboard shortcut K, B). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
-You can select the constraint first and then pick the two things to create a constraint between, but that may breaks down in certain cases where more than 1 selection is required.
+You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_ConstrainBlock`
@@ -4389,24 +4389,24 @@ FreeCAD/Spreadsheet Workbench_TOPIC
 FreeCAD/Sketcher Workbench_TOPIC
 ```
 
-Part Design workbench allows building 3D models, mostly by transforming 2D sketches into 3D features. For example, a sketch of a square that's 5mm by 5mm can be padded by 5mm to create a cube. Then, a sketch of a circle with a 3.5mm diameter can be placed on a face of that cube and pocketed to create a cylindrical !!hole!! through that cube.
+Part Design workbench_FC allows building 3D models, mostly by transforming 2D sketches_FC into 3D features_FC. For example, a sketch_FC of a square that's 5mm by 5mm can be padded by 5mm to create a cube. Then, a sketch_FC of a circle with a 3.5mm diameter can be placed on a face of that cube and pocketed to create a cylindrical !!hole!! through that cube.
 
 ![FreeCAD Part Design workbench example](freecad_part_design_example.png)
 
-Features are built out using a non-destructive workflow. That means, as features build on top of other features, it's possible to modify earlier features and have the change cascade down to later features. For example, with cylinder-through-box example above, it's possible to go up and change box's dimensions and fillet its corners. The cylinder cut-out feature will still apply.
+Features_FC are built out using a non-destructive workflow. That means, as features_FC build on top of other features_FC, it's possible to modify earlier features_FC and have the change cascade down to later features_FC. For example, with cylinder-through-box example above, it's possible to go up and change box's dimensions and fillet_FC its corners. The cylinder cut-out feature_FC will still apply.
 
 ![FreeCAD Part Design workbench example 2](freecad_part_design_example_2.png)
 
 ![FreeCAD Part Design workbench example 2 workflow](freecad_part_design_example_2_workflow.png)
 
-The core components of the Part Design workbench are parts, bodies, and sketches. A body is a model built mostly by transforming 2D sketches into 3D features. If the object has multiple bodies to it, those bodies are placed under a part.
+The core components of the Part Design workbench_FC are parts_FC, bodies_FC, and sketches_FC. A body_FC is a model built mostly by transforming 2D sketches_FC into 3D features_FC. If the object has multiple bodies_FC to it, those bodies_FC are placed under a standard part container_FC.
 
 ```{plantuml}
 @startuml
 
 hide circle
 
-Part ||--|{ Body : "contains"
+StdPart ||--|{ Body : "contains"
 Body ||--|{ NonSketchFeature : "built using"
 Body ||--|{ SketchFeature : "built using"
 
@@ -4425,65 +4425,65 @@ FreeCAD/User Interface Layout_TOPIC
 
 ![FreeCAD part design workbench user interface](freecad_part_design_user_interface.png)
 
-**Body**
+**Body_FC**
 
- * (1) Create new body.
+ * (1) Create new body_FC.
 
-**Sketch**
+**Sketch_FC**
 
- * (2) Sketch operations: These toolbar buttons give quick access to sketch functionality. A body can contain multiple sketches, where those sketches are attached on to a plane or an existing face of the model. Those sketches are selectable in the Model pane's tree, and each acts (in whole or partially) as the !!base!! for a 3D feature (e.g., pad sketch into 3D).
+ * (2) Sketch_FC operations: These toolbar buttons give quick access to sketch_FC functionality. A body_FC can contain multiple sketches_FC, where those sketches_FC are attached on to a plane or an existing face of the model. Those sketches_FC are selectable in the Model pane's tree, and each acts (in whole or partially) as the !!base!! for a 3D feature_FC (e.g., pad sketch_FC into 3D).
  
    From left-to-right, ...
 
    * drop-down to either ...
-     * create a sketch (either on plane or the selected face).
-     * attach an existing sketch to a face.
-     * edit an existing sketch.
-   * validate a sketch.
+     * create a sketch_FC (either on plane or the selected face).
+     * attach an existing sketch_FC to a face.
+     * edit an existing sketch_FC.
+   * validate a sketch_FC.
 
 **Helpers**
 
  * (3) Helpers: These toolbar buttons provide access to helpful tools. From left-to-right, ...
 
    * analyze selected geometry for errors.
-   * create a sub-shape binder, which pulls in geometry from another body / object by referencing it.
-   * clone selected into a new body (linked, not copied).
+   * create a sub-shape binder, which pulls in geometry from another body_FC / object by referencing it.
+   * clone selected into a new body_FC (linked, not copied).
 
-**Modeling Features**
+**Modeling Features_FC**
 
- * (4) Additive features: These toolbar buttons provide access to sketch-to-3D features that add to an object. From left-to-right, ...
+ * (4) Additive features_FC: These toolbar buttons provide access to !!sketch-to-3D!! features_FC that add to an object. From left-to-right, ...
 
-   * create a solid by padding a sketch.
-   * create a solid by revolving a sketch around an axis.
-   * create a solid by creating transitions between two or more sketches (sketches are cross-sections of the solid).
-   * create a solid by sweeping a sketch around a helix.
+   * create a solid by padding a sketch_FC.
+   * create a solid by revolving a sketch_FC around an axis.
+   * create a solid by creating transitions between two or more sketches_FC (sketches_FC are cross-sections of the solid).
+   * create a solid by sweeping a sketch_FC around a helix_FC.
    * create a primitive solid (e.g., box, cylinder, sphere).
 
- * (5) Subtractive features: These toolbar buttons provide access to sketch-to-3D features that remove from an object. From left-to-right, ...
+ * (5) Subtractive features_FC: These toolbar buttons provide access to !!sketch-to-3D!! features_FC that remove from an object. From left-to-right, ...
 
-   * cut-out from a solid by sinking a sketch.
-   * cut-out from a solid by cutting fastener !!holes!! (sketch must contain one or more circles).
-   * cut-out from a solid by revolving a sketch around an axis.
-   * cut-out from a solid by creating transitions between two or more sketches (sketches are cross-sections of the solid).
-   * cut-out from a solid by sweeping a sketch around a helix
+   * cut-out from a solid by sinking a sketch_FC.
+   * cut-out from a solid by cutting fastener !!holes!! (sketch_FC must contain one or more circles).
+   * cut-out from a solid by revolving a sketch_FC around an axis.
+   * cut-out from a solid by creating transitions between two or more sketches_FC (sketches_FC are cross-sections of the solid).
+   * cut-out from a solid by sweeping a sketch_FC around a helix_FC
    * cut-out from a solid by cutting out a primitive solid (e.g., box, cylinder, sphere)
 
- * (6) Import bodies and apply a boolean operation (e.g., intersection).
+ * (6) Import bodies_FC and apply a boolean operation (e.g., intersection).
 
- * (7) Dress-up: These toolbar buttons provide access to some basic non-sketch !!based!! features. From left-to-right, ...
+ * (7) Dress-up: These toolbar buttons provide access to some basic non-sketch_FC !!based!! features_FC. From left-to-right, ...
 
    * round selected edges / vertexes.
-   * chamfer selected edges / vertexes.
+   * chamfer_FC selected edges / vertexes.
    * angle selected face.
-   * convert body to a shell, leaving selected faces open.
+   * convert body_FC to a shell, leaving selected faces open.
 
-**Transformation Features**
+**Transformation Features_FC**
 
- * (8) Transformations: These toolbar buttons pattern on or more features. From left-to-right, ...
+ * (8) Transformations: These toolbar buttons pattern on or more features_FC. From left-to-right, ...
 
-   * mirror one or more features.
-   * create a linear pattern of one or more features.
-   * create a polar pattern of one or more features.
+   * mirror one or more features_FC.
+   * create a linear pattern of one or more features_FC.
+   * create a polar pattern of one or more features_FC.
    * create a pattern by combining the transformations mentioned above, as well as scale.
 
 `{ref} https://wiki.freecad.org/PartDesign_Workbench`
@@ -4496,35 +4496,35 @@ FreeCAD/User Interface Layout_TOPIC
 FreeCAD/Part Design Workbench\/User Interface_TOPIC
 ```
 
-The core components of the Part Design workbench are parts, bodies, and sketches. A part holds one or more bodies, and each body typically compounds several sketches into 3D geometry. While bodies can be created outside of parts, parts are beneficial in that a part encapsulates all bodies together as a unit (among other reasons).
+The core components of the Part Design workbench_FC are standard parts_FC, bodies_FC, and sketches_FC. A standard part_FC holds one or more bodies_FC, and each body_FC typically compounds several sketches_FC into 3D geometry. While bodies_FC can be created outside of standard parts_FC, standard parts_FC are beneficial in that a standard part_FC encapsulates all bodies_FC together as a unit (as well as can include other types of objects).
 
 ```{plantuml}
 @startuml
 
 hide circle
 
-Part ||--|{ Body : "contains"
+StdPart ||--|{ Body : "contains"
 Body ||--|{ NonSketchFeature : "built using"
 Body ||--|{ SketchFeature : "built using"
 
 @enduml
 ```
 
-#### Part
+#### Standard Part
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Part)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Standard Part)_TOPIC/i`
 
-A part is a container that can hold one or more bodies, as well as other types of objects. Parts aren't unique to the Part Design workbench, but they're valuable as an encapsulation for bodies because if what's being modeled consists of multiple bodies, having those bodies grouped under the same part makes it easier to reuse in other workbenches (e.g., assembly workbench).
+A standard part_FC is a container that can hold one or more bodies_FC, as well as other types of objects. Standard parts_FC aren't unique to the Part Design workbench_FC, but they're valuable as an encapsulation for bodies_FC because if what's being modeled consists of multiple bodies_FC, having those bodies_FC grouped under the same standard part_FC makes it easier to reuse in other workbenches_FC (e.g., assembly workbench_FC).
 
 `{ref} https://wiki.freecad.org/Std_Part` `{ref} self`
 
 ##### Create
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Part\/Create)_TOPIC/i`
+`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Standard Part\/Create)_TOPIC/i`
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-To create a part, use toolbar button 1. Bodies can be moved in to / out of the part by dragging them within the Model pane.
+To create a standard part_FC, use toolbar button 1. Bodies_FC can be moved in to / out of the standard part_FC by dragging them within the Model pane.
 
 `{ref} https://wiki.freecad.org/Std_Part` `{ref} self`
 
@@ -4532,7 +4532,7 @@ To create a part, use toolbar button 1. Bodies can be moved in to / out of the p
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Part\/Coordinate System)_TOPIC/i`
 
-A part has its own local coordinate system: Internally, bodies are moved and rotated using the local coordinate system. Externally, the part (and all the bodies within it) is moveable and rotatable as a single unit.
+A standard part_FC has its own local coordinate system_FC: Internally, bodies_FC are moved and rotated using the local coordinate system_FC. Externally, the standard part_FC (and all the bodies_FC within it) is moveable and rotatable as a single unit.
 
 ![FreeCAD part design workbench part model pane example](freecad_part_design_part_model_pane_example.png)
 
@@ -4551,16 +4551,18 @@ An easier way to set the orientation is, in the Model pane, right-click and choo
 `{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Body)_TOPIC/i`
 
 ```{prereq}
-FreeCAD/Part Design Workbench/Organization/Part_TOPIC
+FreeCAD/Part Design Workbench/Organization/Standard Part_TOPIC
 ```
 
-A body is a 3D model, mostly built by compounding several sketches into 3D geometry in a chain.
+A body_FC is a single contiguous 3D model, mostly built by compounding several sketches_FC into 3D geometry in a chain. Each item in the chain is referred to as a feature_FC, which is a distinct and editable.
 
-The list of features nested under a body comprise a non-destructive workflow. For example, a sketch of a square that's 5mm by 5mm can be padded by 10mm to create a rectangular prism. Then, a sketch of a circle with a 3.5mm diameter can be placed on a face of that prism and pocketed to create a cylindrical !!hole!! through that cube.
+The list of features_FC nested under a body_FC comprise a non-destructive workflow. For example, a sketch_FC of a square that's 5mm by 5mm can be padded by 10mm to create a rectangular prism. Then, a sketch_FC of a circle with a 3.5mm diameter can be placed on a face of that prism and pocketed to create a cylindrical !!hole!! through that cube.
 
 ![FreeCAD Part Design workbench example 2](freecad_part_design_example_2.png)
 
 ![FreeCAD Part Design workbench example 2 workflow](freecad_part_design_example_2_workflow.png)
+
+`{ref} https://wiki.freecad.org/PartDesign_Body` `{ref} https://wiki.freecad.org/Body`
 
 ##### Create
 
@@ -4568,7 +4570,7 @@ The list of features nested under a body comprise a non-destructive workflow. Fo
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-To create a body, use toolbar button 3 to create a new body. For certain operations, if there is no body, one is implicitly created when the operation runs (e.g., creating a new sketch from the Part Design workbench).
+Use toolbar button 3 to create a body_FC. For certain operations, if there is no body_FC, one is implicitly created when the operation runs (e.g., creating a new sketch_FC from the Part Design workbench_FC).
 
 `{ref} https://wiki.freecad.org/PartDesign_Body` `{ref} https://wiki.freecad.org/Body`
 
@@ -4578,7 +4580,7 @@ To create a body, use toolbar button 3 to create a new body. For certain operati
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-To create a body, use toolbar button 8 to clone the current Model pane selection into a new body. A clone is linked, not copied. That means changing the original changes the clone.
+Use toolbar button 8 to clone the current Model pane selection into a new body_FC. A clone is linked, not copied. That means changing the original changes the clone.
 
 `{ref} https://wiki.freecad.org/PartDesign_Clone` `{ref} self`
 
@@ -4586,7 +4588,7 @@ To create a body, use toolbar button 8 to clone the current Model pane selection
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Body\/Coordinate System)_TOPIC/i`
 
-Each body has its own local coordinate system that features nested within it are relative to. The properties of a body define its position and rotation within its parent container. In most cases, that parent container is a part, but a body can also live outside of a part.
+Each body_FC has its own local coordinate system_FC that features_FC nested within it are relative to. The properties of a body_FC define its position and rotation within its parent container. In most cases, that parent container is a standard part_FC, but a body_FC can also live outside of a standard part_FC.
 
 ![FreeCAD part design workbench body translation properties](freecad_part_design_body_translation_properties.png)
 
@@ -4604,11 +4606,11 @@ An easier way to set the orientation is, in the Model pane, right-click and choo
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Body\/Binding Geometry)_TOPIC/i`
 
-In certain cases, a piece of outside geometry may need to be pulled into the body for further manipulation (e.g., a model created using Part workbench - not Part Design workbench - always lives outside of the body). To import that outside geometry into the body, a subshape binder is required:
+In certain cases, a piece of outside geometry may need to be pulled into the body_FC for further manipulation (e.g., a model created using Part workbench_FC - not Part Design workbench_FC - always lives outside of the body_FC). To import that outside geometry into the body_FC, a subshape binder is required:
 
-1. Ensure the body is active.
+1. Ensure the body_FC is active.
 2. Select the outside geometry.
-3. Click subshape binder in the toolbar (green blob with 3 dots) to create a subshape binder object in the body.
+3. Click subshape binder in the toolbar (green blob with 3 dots) to create a subshape binder object in the body_FC.
 
 ![FreeCAD Part Design workbench subshape binder example](freecad_part_design_subshape_binder_example.png)
 
@@ -4629,7 +4631,7 @@ FreeCAD/Part Design Workbench/Organization/Body_TOPIC
 FreeCAD/Sketcher Workbench_TOPIC
 ```
 
-Sketches are core to building out a body. As such, the Part Design workbench provides quick access to sketching functionality.
+Sketches_FC are core to building out a body_FC. As such, the Part Design workbench_FC provides quick access to sketching_FC functionality.
 
 ##### Create
 
@@ -4637,18 +4639,18 @@ Sketches are core to building out a body. As such, the Part Design workbench pro
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-To create a sketch, use toolbar button 4 and select New Sketch. If the 3D viewport has ...
+To create a sketch_FC, use toolbar button 4 and select New Sketch_FC. If the 3D viewport has ...
 
-* a face selected, the sketch will be placed on the face's plane.
-* nothing is selected, the 3D viewport will present the standard basis axis planes (e.g., XY plane, XZ plane). Selecting one of those planes will place the sketch will be placed on that plane.
+* a face selected, the sketch_FC will be placed on the face's plane.
+* nothing is selected, the 3D viewport will present the standard basis axis planes (e.g., XY plane, XZ plane). Selecting one of those planes will place the sketch_FC will be placed on that plane.
 
 ```{note}
-Sketches cannot be attached to curved faces. The only workaround is to attach a datum plane on that face and center it somehow. That'll allow sketching onto the datum plane and cutting into the face / padding from the face (but you'll need to pad both ways because there'll be gaps between the datum plane and the curved face).
+Sketches_FC cannot be attached to curved faces. The only workaround is to attach a datum plane_FC on that face and center it somehow. That'll allow sketching_FC onto the datum plane_FC and cutting into the face / padding from the face (but you'll need to pad both ways because there'll be gaps between the datum plane_FC and the curved face).
 
-The other option is to use the curves workbench, which allows projecting a sketch onto a curved face.
+The other option is to use the curves workbench_FC, which allows projecting a sketch_FC onto a curved face.
 ```
 
-Once created, the sketch will be entered in Edit mode (Sketcher Workbench will activate). Clicking the Leave Sketch button in the toolbar / clicking the Leave button above the Sketch Edit pane will pop out of the sketch and back into Part Design.
+Once created, the sketch_FC will be entered in Edit mode (Sketcher Workbench_FC will activate). Clicking the Leave Sketch_FC button in the toolbar / clicking the Leave button above the Sketch_FC Edit pane will pop out of the sketch_FC and back into Part Design_FC.
 
 ![FreeCAD sketcher workbench popouts highlighted](freecad_sketcher_popouts_highlighted.png)
 
@@ -4660,7 +4662,7 @@ Once created, the sketch will be entered in Edit mode (Sketcher Workbench will a
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-To edit an existing sketch, select the sketch in the Model pane or 3D viewport, then use toolbar button 4 and select Edit Sketch.
+To edit an existing sketch_FC, select the sketch_FC in the Model pane or 3D viewport, then use toolbar button 4 and select Edit Sketch_FC.
 
 `{ref} https://wiki.freecad.org/Sketcher_EditSketch`
 
@@ -4670,7 +4672,7 @@ To edit an existing sketch, select the sketch in the Model pane or 3D viewport, 
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-To attach an existing sketch to something else (e.g., another face), select the thing to attach, then use toolbar button 4 and select Attach Sketch. A dialog will pop-up asking for which sketch to attach, then a subsequent dialog will pop-up asking for the method of attachment (should be Plane face most of the time.)
+To attach an existing sketch_FC to something else (e.g., another face), select the thing to attach, then use toolbar button 4 and select Attach Sketch_FC. A dialog will pop-up asking for which sketch_FC to attach, then a subsequent dialog will pop-up asking for the method of attachment (should be Plane face most of the time.)
 
 ![FreeCAD part design workbench attach sketch sketch selection](freecad_part_design_attach_sketch_sketch_selection.png) ![FreeCAD part design workbench attach sketch method selection](freecad_part_design_attach_sketch_method_selection.png)
 
@@ -4682,7 +4684,7 @@ To attach an existing sketch to something else (e.g., another face), select the 
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-To edit an existing sketch, select the sketch in the Model pane or 3D viewport, then use toolbar button 5. A Sketch Validation pane should appear wit buttons to test for specific issues.
+To edit an existing sketch_FC, select the sketch_FC in the Model pane or 3D viewport, then use toolbar button 5. A Sketch_FC Validation pane should appear wit buttons to test for specific issues.
 
 ![FreeCAD Part Design workbench sketch validation](freecad_part_design_sketch_validation.png)
 
@@ -4701,12 +4703,12 @@ FreeCAD/Sketcher Workbench/Sketching/Sketch Flipping_TOPIC
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Features)_TOPIC/i`
 
-The subsections below detail feature types !!supported!! by the Part Design workbench. Most features present a Preview pane during creation.
+The subsections below detail feature_FC types !!supported!! by the Part Design workbench_FC. Most features_FC present a Preview pane during creation.
 
 ![FreeCAD Part Design workbench preview pane](freecad_part_design_preview_pane.png)
 
-* **Show preview overlay**: Presents a see-through overlay of what the feature looks like as parameters are being manipulated.
-* **Show final result**: Presents what the feature looks like as parameters are being manipulated.
+* **Show preview overlay**: Presents a see-through overlay of what the feature_FC looks like as parameters are being manipulated.
+* **Show final result**: Presents what the feature_FC looks like as parameters are being manipulated.
 
 Creation may also insert gizmos during creation that mirror parameters of whatever is being created. The example below has a arrow gizmo to control the depth parameter.
 
@@ -4715,7 +4717,7 @@ Creation may also insert gizmos during creation that mirror parameters of whatev
 ```{note}
 I suspect this is likely to change in newer versions past 1.1, so I'm leaving this as a note:
 
-For features that are additive (add to the model), the overlay typically shows as green. For features that are subtractive (intersections cut out from the model), the overlay typically shows as red. Some feature overlays, such as chamfers and fillets, the overlay typically shows up as purple.
+For features_FC that are additive (add to the model), the overlay typically shows as green. For features_FC that are subtractive (intersections cut out from the model), the overlay typically shows as red. Some feature_FC overlays, such as chamfers_FC and fillets_FC, the overlay typically shows up as purple.
 ```
 
 #### Pad / Pocket
@@ -4734,11 +4736,11 @@ A pad operation and a pocket operation are effectively the same thing, except th
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-To pad / pocket, select a sketch and use either toolbar button 9 (pad) or toolbar button 15 (pocket). Once selected, gizmos appear in the 3D viewport and a parameter pane opens.
+To pad / pocket, select a sketch_FC and use either toolbar button 9 (pad) or toolbar button 15 (pocket). Once selected, gizmos appear in the 3D viewport and a parameter pane opens.
 
 ![FreeCAD Part Design workbench pad example](freecad_part_design_pad_example.png)
 
-The **Mode** parameter defines which directions the sketch is extruded in:
+The **Mode** parameter defines which directions the sketch_FC is extruded in:
 
 * **One sided**: Extrude in one direction.
 * **Two sided**: Extrude in one direction as well as the opposite direction, where each direction has its own set of parameters (e.g., each direction has its own length).
@@ -4758,10 +4760,10 @@ The **Type** parameter defines the stopping point of the extrusion:
 It isn't clearly explained what qualifies as a shape.
 ```
 
-The **Direction** parameter defines the direction of the sketch's extrusion:
+The **Direction** parameter defines the direction of the sketch_FC's extrusion:
 
-* **Sketch normal**: Normal vector of the sketch.
-* **Select reference...**: Direction of an edge / datum line.
+* **!!Sketch!! normal**: Normal vector of the sketch_FC.
+* **Select reference...**: Direction of an edge / datum line_FC.
 * **Custom direction**: Manually define a vector.
 
 `{ref} https://wiki.freecad.org/PartDesign_Pad` `{ref} https://wiki.freecad.org/PartDesign_Pocket`
@@ -4779,11 +4781,11 @@ A !!hole!! operation cuts out a standardized fastener !!hole!! from existing geo
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-To create a !!hole!!, create a sketch with one or more circles, arcs, and/or points (other entities are ignored). Then, select the sketch and use toolbar button 16. Once selected, gizmos may appear in the 3D viewport and a parameter pane opens.
+To create a !!hole!!, create a sketch_FC with one or more circles, arcs, and/or points (other entities are ignored). Then, select the sketch_FC and use toolbar button 16. Once selected, gizmos may appear in the 3D viewport and a parameter pane opens.
 
 ![FreeCAD Part Design workbench hole example](freecad_part_design_hole.png)
 
-The **Base profile types** parameter defines which sketch element types to make into !!holes!!:
+The **Base profile types** parameter defines which sketch_FC element_FC types to make into !!holes!!:
 
 * **Points, circles and arcs**: Position !!holes!! at points as well as the centers of circles and arcs.
 * **Circles and arcs**: Position !!holes!! the centers of circles and arcs.
@@ -4870,11 +4872,11 @@ A revolution operation and a groove operation are effectively the same thing, ex
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-To revolve / groove, select a sketch and use either toolbar button 10 (revolution) or toolbar button 17 (groove). Once selected, gizmos appear in the 3D viewport and a parameter pane opens.
+To revolve / groove, select a sketch_FC and use either toolbar button 10 (revolution) or toolbar button 17 (groove). Once selected, gizmos appear in the 3D viewport and a parameter pane opens.
 
 ![FreeCAD Part Design workbench groove example](freecad_part_design_groove_example.png)
 
-The **Type** parameter defines which directions the sketch is extruded in:
+The **Type** parameter defines which directions the sketch_FC is extruded in:
 
 * **Angle**: Extrude in one direction.
 * **Two angle**: Extrude in one direction as well as the opposite direction, where each direction has its own set of parameters (e.g., each direction has its own length).
@@ -4884,7 +4886,7 @@ The **Type** parameter defines which directions the sketch is extruded in:
 
 **Angle** and **Two angle** both enable the **Reversed** parameter, which reverses direction / directions of extrusion.
 
-**Angle** and **Through all** both enable the **Symmetric to plane** parameter, which defines if the plane should be in the middle of the extrusion (extrude half-way outward from the sketch and extrude half-way inward from the sketch). This parameter is only available for **Type** of **Angle**.
+**Angle** and **Through all** both enable the **Symmetric to plane** parameter, which defines if the plane should be in the middle of the extrusion (extrude half-way outward from the sketch_FC and extrude half-way inward from the sketch_FC). This parameter is only available for **Type** of **Angle**.
 
 ```{note}
 **Symmetric to plane** doesn't make any sense for **Through all**. Isn't this just the same as a full rotation (360 degrees)?
@@ -4892,17 +4894,17 @@ The **Type** parameter defines which directions the sketch is extruded in:
 
 **Axis** defines the axis from which the rotation happens:
 
-* **Vertical sketch axis** / **Horizontal sketch axis**: The rotation happens using sketch's vertical / horizontal axis as the rotation axis.
-* **Construction line n**: The rotation happens using construction geometry line in the sketch. Each line that is also construction geometry is listed.
+* **Vertical sketch_FC axis** / **Horizontal sketch_FC axis**: The rotation happens using sketch_FC's vertical / horizontal axis as the rotation axis.
+* **Construction line n**: The rotation happens using construction geometry_FC line in the sketch_FC. Each line that is also construction geometry_FC is listed.
 * **Base X-axis** / **Base Y-axis** / **Base Z-axis**: The rotation happens using a basis axis as the rotation axis.
-* **Select reference**: The rotation happens around a edge or datum line, which must be selected.
+* **Select reference**: The rotation happens around a edge or datum line_FC, which must be selected.
 
 ```{note}
-In most cases, you should pick planes/faces and sketch such that the horizontal / vertical axis of the sketch is the intended axis to rotate around.
+In most cases, you should pick planes/faces and sketch_FC such that the horizontal / vertical axis of the sketch_FC is the intended axis to rotate around.
 ```
 
 ```{note}
-In a sketch, the elements can't be named. As such, when you select a construction line, it's impossible to know which construction line you're setting. I complained about this [here](https://github.com/FreeCAD/FreeCAD/issues/30298).
+In a sketch_FC, the elements_FC can't be named. As such, when you select a construction line, it's impossible to know which construction line you're setting. I complained about this [here](https://github.com/FreeCAD/FreeCAD/issues/30298).
 ```
 
 `{ref} https://wiki.freecad.org/PartDesign_Revolution` `{ref} https://wiki.freecad.org/PartDesign_Groove`
@@ -4916,55 +4918,55 @@ FreeCAD/Part Design Workbench/User Interface_TOPIC
 FreeCAD/Part Design Workbench/Organization_TOPIC
 ```
 
-An additive loft operation and a subtractive loft operation are the same thing, except that ...
+An additive loft_FC operation and a subtractive loft_FC operation are the same thing, except that ...
 
 * additive creates a solid and merges it with existing geometry it collides with.
 * subtractive creates a solid and cuts out it from existing geometry it collides with.
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-A loft creates a solid by transitioning through sketches. To loft a set of sketches, either ...
+A loft_FC creates a solid by transitioning through sketches_FC that act as !!slices!! within the solid. To loft_FC a set of sketches_FC, either ...
 
-* use either toolbar button 11 (additive loft) or toolbar button 18 (subtractive loft), then ...
-  1. select the loft's initial sketch in the Select Attachment pane that pops up and click **OK**,
-  2. add the loft's subsequent sketches via the Add Segment button in the subsequent Loft Parameters pane that pops up (order of added sketches matter).
-* select the sketches to loft and use either toolbar button 11 (additive loft) or toolbar button 18 (subtractive loft). The selection order of the sketches matters (e.g., first selected will become loft's initial sketch, second selected becomes the first transition sketch).
+* use either toolbar button 11 (additive loft_FC) or toolbar button 18 (subtractive loft_FC), then ...
+  1. select the loft_FC's initial sketch_FC in the Select Attachment pane that pops up and click **OK**,
+  2. add the loft_FC's subsequent sketches_FC via the Add Segment button in the subsequent Loft_FC Parameters pane that pops up (order of added sketches_FC matter).
+* select the sketches_FC to loft_FC and use either toolbar button 11 (additive loft_FC) or toolbar button 18 (subtractive loft_FC). The selection order of the sketches_FC matters (e.g., first selected will become loft_FC's initial sketch_FC, second selected becomes the first transition sketch_FC).
 
 ![FreeCAD Part Design workbench loft example](freecad_part_design_loft_example.png)
 
 ```{note}
-It's totally unclear / undocumented how loft makes its transitions between sketches. For example, ...
+It's totally unclear / undocumented how loft_FC makes its transitions between sketches_FC. For example, ...
 
-* there's nothing saying which vertexes line up with which vertexes between sketches,
-* there's nothing saying what happens when there's more vertexes in one sketch vs the next,
-* there's nothing saying what algorithm is used to bridge the gap between sketches:
-  * edges between sketches turned into planar faces vs curved surfaces - if curved, what defines the curvature?
-  * sketch 1 is a square, sketch 2 is the same square rotated 45 degrees - loft bends 45 degrees, but why not 180+45 degrees or 360+45 degrees?
+* there's nothing saying which vertexes line up with which vertexes between sketches_FC,
+* there's nothing saying what happens when there's more vertexes in one sketch_FC vs the next,
+* there's nothing saying what algorithm is used to bridge the gap between sketches_FC:
+  * edges between sketches_FC turned into planar faces vs curved surfaces - if curved, what defines the curvature?
+  * sketch_FC 1 is a square, sketch_FC 2 is the same square rotated 45 degrees - loft_FC bends 45 degrees, but why not 180+45 degrees or 360+45 degrees?
 
 All ChatGPT says is that it delegates to OpenCASCADE.
 
 Notes from source:
 
-* To better control the shape of the loft, it is recommended that all cross-sections have the same number of segments. For example, for a loft between a rectangle and a circle, the circle should be broken down into 4 connected arcs.
-* You can loft from or toward a single vertex from a sketch or the body.
-* Vertices can only be either the start or end of a loft. Otherwise the loft body would consist of two solids connected at a single point. This would violate the CAD kernel's definition of a 3D object.
+* To better control the shape of the loft_FC, it is recommended that all cross-sections have the same number of segments. For example, for a loft_FC between a rectangle and a circle, the circle should be broken down into 4 connected arcs.
+* You can loft_FC from or toward a single vertex from a sketch_FC or the body_FC.
+* Vertices can only be either the start or end of a loft_FC. Otherwise the loft_FC body_FC would consist of two solids connected at a single point. This would violate the CAD kernel's definition of a 3D object.
 * A cross-section cannot lie on the same plane as the one immediately preceding it.
-* If the sketch has inner geometry, then the order in which the sketch geometry is created should be the same for all sections. Either start all sections with the inner geometry, or start them all with the outer. Otherwise an invalid loft will be created where inner and outer walls cross.
-* It is not possible to loft disjoint or crossing loops.
+* If the sketch_FC has inner geometry, then the order in which the sketch_FC geometry is created should be the same for all sections. Either start all sections with the inner geometry, or start them all with the outer. Otherwise an invalid loft_FC will be created where inner and outer walls cross.
+* It is not possible to loft_FC disjoint or crossing loops.
 * Some failure modes will turn the part black.
 ```
 
-A loft's sketches must be spaced out. It's typically for all of a loft's sketches to be attached to the same face / plane, but each offset such there's gaps between them. A sketch can be offset and rotated relative to whatever surface it's attached to using its AttachmentOffset properties.
+A loft_FC's sketches_FC must be spaced out. It's typically for all of a loft_FC's sketches_FC to be attached to the same face / plane, but each offset such there's gaps between them. A sketch_FC can be offset and rotated relative to whatever surface it's attached to using its AttachmentOffset properties.
 
 ![FreeCAD Sketcher workbench attachment offset](freecad_sketcher_attachment_offset.png)
 
-The **Ruled surface** parameter defines whether transitions between sketches are smooth or straight (straight if checked).
+The **Ruled surface** parameter defines whether transitions between sketches_FC are smooth or straight (straight if checked).
 
 ```{note}
-Documentation says this won't apply to a loft if it only has 2 sketches. I'm not sure why this is.
+Documentation says this won't apply to a loft_FC if it only has 2 sketches_FC. I'm not sure why this is.
 ```
 
-The **Closed** parameter makes a transition from the last sketch to the initial sketch, creating a loop.
+The **Closed** parameter makes a transition from the last sketch_FC to the initial sketch_FC, creating a loop.
 
 `{ref} https://wiki.freecad.org/PartDesign_AdditiveLoft` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveLoft`
 
@@ -4980,30 +4982,30 @@ FreeCAD/Part Design Workbench/Organization/Body/Binding Geometry_TOPIC
 FreeCAD/Part Design Workbench/Organization/Sketch/Attach_TOPIC
 ```
 
-An additive pipe operation and a subtractive pipe operation are the same thing, except that ...
+An additive pipe_FC operation and a subtractive pipe_FC operation are the same thing, except that ...
 
 * additive creates a solid and merges it with existing geometry it collides with.
 * subtractive creates a solid and cuts out it from existing geometry it collides with.
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-A pipe creates a solid by transitioning through sketches, but does so by following one or more paths (e.g., edge, datum line, arc, b-spline). To pipe a path and a set of sketches, either ...
+A pipe_FC creates a solid by transitioning through sketches_FC in addition to following a chain of one or more paths (e.g., edge, arc, b-spline). To pipe_FC a path and a set of sketches_FC, either ...
 
-* use either toolbar button 12 (additive pipe) or toolbar button 19 (subtractive pipe), then ...
+* use either toolbar button 12 (additive pipe_FC) or toolbar button 19 (subtractive pipe_FC), then ...
 
-  1. select the pipe's initial sketch in the Select Attachment pane that pops up and click **OK**,
-  2. select the pipe's initial path in the Pipe Parameters by clicking the **Object** button within **Path to Sweep Along** and clicking the segment.
+  1. select the pipe_FC's initial sketch_FC in the Select Attachment pane that pops up and click **OK**,
+  2. select the pipe_FC's initial path in the Pipe_FC Parameters by clicking the **Object** button within **Path to Sweep Along** and clicking the segment.
 
-* select the initial sketch to pipe and the segment to follow, then use either toolbar button 11 (additive pipe) or toolbar button 18 (subtractive pipe). The selection order matters (e.g., first selected the sketch then select the segment).
+* select the initial sketch_FC to pipe_FC and the segment to follow, then use either toolbar button 11 (additive pipe_FC) or toolbar button 18 (subtractive pipe_FC). The selection order matters (e.g., first selected the sketch_FC then select the segment).
 
 ![FreeCAD Part Design workbench pipe example](freecad_part_design_pipe_example.png)
 
-The pipe can transition through multiple paths and many sketches:
+The pipe_FC can transition through multiple paths and many sketches_FC:
 
 * Add subsequent paths by clicking **Add Edge** and selecting the segment (order of edges matter).
-* Add subsequent sketches by clicking **Add Section** and selecting the sketch (order of added sketches matter). **Transform Mode** must be **Multisection** for this to be enabled.
+* Add subsequent sketches_FC by clicking **Add Section** and selecting the sketch_FC (order of added sketches_FC matter). **Transform Mode** must be **Multisection** for this to be enabled.
 
-A pipe's sketches must be spaced out along the segments that make up the path, and the segments (lines, b-splines, etc..) that make up the path must be connected back-to-back. A common way to structure a pipe is to place sketches along a single b-spline. The b-spline can be created via the Part workbench or programmatically:
+A pipe_FC's sketches_FC must be spaced out along the segments that make up the path, and the segments (lines, b-splines, etc..) that make up the path must be connected back-to-back. A common way to structure a pipe_FC is to place sketches_FC along a single b-spline. The b-spline can be created via the Part workbench_FC or programmatically:
 
 ```python
 import FreeCAD as App
@@ -5027,13 +5029,13 @@ obj.Shape = wire
 App.ActiveDocument.recompute()
 ```
 
-Since the b-spline belongs to the Part workbench rather than the Part Design workbench, it lives outside of the Part Design body where the sketches live. It needs to be imported into that Part Design body using a subshape binder:
+Since the b-spline belongs to the Part workbench_FC rather than the Part Design workbench_FC, it lives outside of the Part Design_FC body_FC where the sketches_FC live. It needs to be imported into that Part Design_FC body_FC using a subshape binder:
 
-1. Ensure the body is active.
+1. Ensure the body_FC is active.
 2. Select the b-spline.
-3. Click subshape binder in the toolbar (green blob with 3 dots) to create a subshape binder object in the body.
+3. Click subshape binder in the toolbar (green blob with 3 dots) to create a subshape binder object in the body_FC.
 
-Sketches can then be attached to the b-spline by attaching them to that subshape binder. Each attached sketch can be placed somewhere along the b-spline by setting the sketch's **Map Path Parameter** property (0.0 places at start, 1.0 places at end). The sketch's normal will follow the b-spline's trajectory at the position its at, but can also be further manipulated using the sketch's **Attachment Offset** property. 
+Sketches_FC can then be attached to the b-spline by attaching them to that subshape binder. Each attached sketch_FC can be placed somewhere along the b-spline by setting the sketch_FC's **Map Path Parameter** property (0.0 places at start, 1.0 places at end). The sketch_FC's normal will follow the b-spline's trajectory at the position its at, but can also be further manipulated using the sketch_FC's **Attachment Offset** property. 
 
 ![FreeCAD Part Design workbench sketch path mapping and attachment offset](freecad_part_design_attached_sketch_path_mapping_and_attachment_offset.png)
 
@@ -5043,19 +5045,19 @@ FreeCAD/Part Design Workbench/Organization/Sketch/Attach_TOPIC
 ```
 
 ```{note}
-Much like loft, it's totally unclear / undocumented how pipe makes its transitions between sketches (e.g., which vertexes line up with which vertexes between sketches, what happens when there's more vertexes in one sketch vs the next).
+Much like loft_FC, it's totally unclear / undocumented how pipe_FC makes its transitions between sketches_FC (e.g., which vertexes line up with which vertexes between sketches_FC, what happens when there's more vertexes in one sketch_FC vs the next).
 
 Notes from source:
 
-* To better control the shape of the pipe, it is recommended that all cross-sections have the same number of segments. For example, for a pipe between a rectangle and a circle, the circle should be broken down into 4 connected arcs.
-* You can pipe from or toward a single vertex from a sketch or the body.
-* When you select a vertex as section, it must be the last section of the pipe. Otherwise the pipe body would consist of two solids connected at a single point. This would violates the CAD kernel's definition of a 3D object. You can change the order of the sections by dragging them in the list.
-* The path can only be from a single sketch, feature or ShapeBinder. In case you want to sweep along several edges from different sketches, use a SubShapeBinder.
+* To better control the shape of the pipe_FC, it is recommended that all cross-sections have the same number of segments. For example, for a pipe_FC between a rectangle and a circle, the circle should be broken down into 4 connected arcs.
+* You can pipe_FC from or toward a single vertex from a sketch_FC or the body_FC.
+* When you select a vertex as section, it must be the last section of the pipe_FC. Otherwise the pipe_FC body_FC would consist of two solids connected at a single point. This would violates the CAD kernel's definition of a 3D object. You can change the order of the sections by dragging them in the list.
+* The path can only be from a single sketch_FC, feature_FC or ShapeBinder. In case you want to sweep along several edges from different sketches_FC, use a SubShapeBinder.
 * The path must not contain branches or T-junctions etc. Loops are allowed.
 * It can lead to issues if the cross-section is not perpendicular to the path in 3D.
 * A cross-section cannot lie on the same plane as the one immediately preceding it.
 * The cross-sections must not contain disjoint or crossing loops.
-* If the sketch has inner geometry, then the order in which the sketch geometry is created should be the same for all sections. Either start all sections with the inner geometry, or start them all with the outer. Otherwise an invalid pipe will be created where inner and outer walls cross.
+* If the sketch_FC has inner geometry, then the order in which the sketch_FC geometry is created should be the same for all sections. Either start all sections with the inner geometry, or start them all with the outer. Otherwise an invalid pipe_FC will be created where inner and outer walls cross.
 ```
 
 ![FreeCAD Sketcher workbench attachment offset](freecad_sketcher_attachment_offset.png)
@@ -5069,7 +5071,7 @@ The **Corner transition** parameter defines how the path handles hard corners in
 The **Orientation mode** parameter defines how the profile rotates as it sweeps along the path:
 
 * **Standard**: Orientation stays normal to path (normal vector).
-* **Fixed**: Orientation keeps initial sketch's orientation. Cross-section shape will not rotate along with the path.
+* **Fixed**: Orientation keeps initial sketch_FC's orientation. Cross-section shape will not rotate along with the path.
 * **Frenet**: Orientation minimizes twisting.
 * **Auxiliary**: Orientation is specified by a secondary path. For each point P along the path, there should be a point Q in the secondary path. As the profile is swept, the PQ line will be the normal of the swept path.
 * **Binormal**: Orientation set to constant direction/vector as the orientation reference.
@@ -5077,7 +5079,7 @@ The **Orientation mode** parameter defines how the profile rotates as it sweeps 
 ```{note}
 Documentation for the above two properties are sparse.
 
-Documentation says for Fixed, make a circular path so see what it means (it likely means the profile doesn't reorient !!based!! on the path and it just sticks with whatever orientation the initial profile sketch had).
+Documentation says for Fixed, make a circular path so see what it means (it likely means the profile doesn't reorient !!based!! on the path and it just sticks with whatever orientation the initial profile sketch_FC had).
 ```
 
 `{ref} https://wiki.freecad.org/PartDesign_AdditivePipe` `{ref} https://wiki.freecad.org/PartDesign_SubtractivePipe` `{ref} https://www.youtube.com/watch?v=AqzJ58bM2rs`
@@ -5091,17 +5093,17 @@ FreeCAD/Part Design Workbench/User Interface_TOPIC
 FreeCAD/Part Design Workbench/Organization_TOPIC
 ```
 
-An additive helix operation and a subtractive helix operation are the same thing, except that ...
+An additive helix_FC operation and a subtractive helix_FC operation are the same thing, except that ...
 
 * additive creates a solid and merges it with existing geometry it collides with.
 * subtractive creates a solid and cuts out it from existing geometry it collides with.
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-A helix creates a solid by taking a sketch and ascendingly rotating it up some axis, similar to the threads of a screw. To helix a sketch, either ...
+A helix_FC creates a solid by taking a sketch_FC and rotating it up / down some axis, similar to the threads of a screw. To helix_FC a sketch_FC, either ...
 
-* use either toolbar button 13 (additive helix) or toolbar button 20 (subtractive helix), then select the pipe's initial sketch in the Select Attachment pane that pops up and click **OK**.
-* select the sketch to helix, then use either toolbar button 13 (additive helix) or toolbar button 20 (subtractive helix).
+* use either toolbar button 13 (additive helix_FC) or toolbar button 20 (subtractive helix_FC), then select the helix_FC's initial sketch_FC in the Select Attachment pane that pops up and click **OK**.
+* select the sketch_FC to helix_FC, then use either toolbar button 13 (additive helix_FC) or toolbar button 20 (subtractive helix_FC).
 
 ![FreeCAD Part Design workbench helix example](freecad_part_design_helix_example.png) ![FreeCAD Part Design workbench helix sketch example](freecad_part_design_helix_sketch_example.png)
 
@@ -5109,15 +5111,15 @@ The **Axis** parameter controls which axis to rotate around.
 
 The **Left handed** parameter rotates in the opposite direction (to the left rather than the right).
 
-The **Reversed** parameter flips the ascension in the opposite direction (descends the helix instead).
+The **Reversed** parameter flips_FC the ascension in the opposite direction (descends the helix_FC instead).
 
 The **Mode** parameter defines how the ascension and rotation are configured. The values control which configuration fields show up:
 
 * **!!Pitch-Height-Angle!!**
 
   * **Pitch** controls how far apart a full turn is (e.g., if the thread was 2mm wide and the pitch was 2mm there would be no space between threads vs if the thread was 2mm wide and the pitch was 4mm there would be 1 thread's worth of a gap between threads).
-  * **!!Height!!** controls how far the helix ascends.
-  * **Angle** controls tapering of the helix (negative degrees tapers inward vs positive degrees taper outwards).
+  * **!!Height!!** controls how far the helix_FC ascends.
+  * **Angle** controls tapering of the helix_FC (negative degrees tapers inward vs positive degrees taper outwards).
 
   Some other options have a **Turns** parameter (number of full rotations). **Turns** is implicitly defined by **Pitch** and **!!Height!!** (e.g., pitch of 4mm at 8mm high is 2 turns).
 
@@ -5125,44 +5127,44 @@ The **Mode** parameter defines how the ascension and rotation are configured. Th
 
   * **Pitch** controls how far apart a full turn is (e.g., if the thread was 2mm wide and the pitch was 2mm there would be no space between threads vs if the thread was 2mm wide and the pitch was 4mm there would be 1 thread's worth of a gap between threads).
   * **Turns** controls the number of full rotations.
-  * **Angle** controls tapering of the helix (negative degrees tapers inward vs positive degrees taper outwards).
+  * **Angle** controls tapering of the helix_FC (negative degrees tapers inward vs positive degrees taper outwards).
 
   There is no **!!Height!!** parameter here. **!!Height!!** is implicitly defined by **Pitch** and **Turns** (e.g., pitch of 4mm at 2 turns is 8mm high).
 
 * **!!Height-Turns-Angle!!**:
 
-  * **!!Height!!** controls how far the helix ascends.
+  * **!!Height!!** controls how far the helix_FC ascends.
   * **Turns** controls the number of full rotations.
-  * **Angle** controls tapering of the helix (negative degrees tapers inward vs positive degrees taper outwards).
+  * **Angle** controls tapering of the helix_FC (negative degrees tapers inward vs positive degrees taper outwards).
 
   There is no **Pitch** parameter here. **Pitch** is implicitly defined by **!!Height!!** and **Turns** (e.g., !!height!! of 8mm at 2 turns implies a pitch of 4mm).
 
 * **!!Height-Turns-Growth!!**:
 
-  * **!!Height!!** controls how far the helix ascends.
+  * **!!Height!!** controls how far the helix_FC ascends.
   * **Turns** controls the number of full rotations.
-  * **Growth** controls how much the helix widens at the end of each turn.
+  * **Growth** controls how much the helix_FC widens at the end of each turn.
 
   There is no **Pitch** parameter here. **Pitch** is implicitly defined by **!!Height!!** and **Turns** (e.g., !!height!! of 8mm at 2 turns implies a pitch of 4mm).
 
   There is no **Angle** parameter here. **Angle** is implicitly defined by **Growth** (translates the widening per turn to an angle).
 
 ```{note}
-In the screenshot example, the sketch defines the helix's thread as well as the rotational cylinder's radius. Note how the sketch is 9.9mm out from the center and **Axis** is set to **Vertical sketch axis**, meaning the radius of the helix is 9.9mm.
+In the screenshot example, the sketch_FC defines the helix_FC's thread as well as the rotational cylinder's radius. Note how the sketch_FC is 9.9mm out from the center and **Axis** is set to **Vertical sketch_FC axis**, meaning the radius of the helix_FC is 9.9mm.
 
-If your helix follows a similar setup, unless you already have a face to attach to or want the helix at the origin, it may be a good idea to place a datum plane in the desired location and use it to sketch out a helix.
+If your helix_FC follows a similar setup, unless you already have a face to attach to or want the helix_FC at the origin, it may be a good idea to place a datum plane_FC in the desired location and use it to sketch_FC out a helix_FC.
 
-To place a datum plane matching the face's orientation but with a specific origin:
+To place a datum plane_FC matching the face's orientation but with a specific origin:
 
-1. Place a sketch on the face with ...
+1. Place a sketch_FC on the face with ...
 
-   * a point for the center of the helix rotation axis.
+   * a point for the center of the helix_FC rotation axis.
    * a horizontal line from the point.
    * a vertical line from the point.
 
-2. Create a new datum plane and use the center point as reference 1, the horizontal line as reference 2, and the vertical line as reference 3
+2. Create a new datum plane_FC and use the center point as reference 1, the horizontal line as reference 2, and the vertical line as reference 3
 3. Set **Attachment mode** to **Align O-X-Y**.
-4. Place a sketch to new datum plane. The origin will be the center point.
+4. Place a sketch_FC to new datum plane_FC. The origin will be the center point.
 ```
 
 ```{seealso}
@@ -5170,7 +5172,7 @@ FreeCAD/Part Design Workbench/Datum Geometry/Datum Plane_TOPIC
 ```
 
 ```{note}
-To place a datum plane normal to the face's orientation, same steps as above but **Attachment mode** should be either **Align O-N-Y** or **Align O-Y-N**.
+To place a datum plane_FC normal to the face's orientation, same steps as above but **Attachment mode** should be either **Align O-N-Y** or **Align O-Y-N**.
 ```
 
 `{ref} https://wiki.freecad.org/PartDesign_AdditiveHelix` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveHelix`
@@ -5213,27 +5215,27 @@ FreeCAD/Part Design Workbench/User Interface_TOPIC
 FreeCAD/Part Design Workbench/Organization_TOPIC
 ```
 
-Fillet / chamfer cuts into a edge. A fillet's cut is rounded while a chamfer's cut is straight.
+Fillet_FC / chamfer_FC cuts into a edge. A fillet_FC's cut is rounded while a chamfer_FC's cut is straight.
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-To apply fillet/chamfer, select relevant faces and edges and use either toolbar button 23 (fillet) or toolbar button 24 (chamfer).
+To apply fillet_FC/chamfer_FC, select relevant faces and edges and use either toolbar button 23 (fillet_FC) or toolbar button 24 (chamfer_FC).
 
 ```{note}
-Fillets and chamfers are notoriously brittle for non-destructive workflows. For example, if you add a fillet/chamfer but then make a modification in a previous step of the non-destructive workflow, the fillet/chamfer will fail. The edges will have changed and fillet/chamfer typically isn't able to automatically guess what the new edges are. 
+Fillets_FC and chamfers_FC are notoriously brittle for non-destructive workflows. For example, if you add a fillet_FC/chamfer_FC but then make a modification in a previous step of the non-destructive workflow, the fillet_FC/chamfer_FC will fail. The edges will have changed and fillet_FC/chamfer_FC typically isn't able to automatically guess what the new edges are. 
 
-For this reason, I've seen only that they recommend leaving fillet/chamfer operations until the very end.
+For this reason, I've seen only that they recommend leaving fillet_FC/chamfer_FC operations until the very end.
 
 Tested on FreeCAD 1.1.1.
 ```
 
-A **Fillet Parameters** / **Chamfer Parameters** pane will pop open. To add edges/faces, click **Select**, select the edges/face, and then click **Confirm Selection**. To remove edges/faces, click on the edge/face in the list and press Del.
+A **Fillet_FC Parameters** / **Chamfer_FC Parameters** pane will pop open. To add edges/faces, click **Select**, select the edges/face, and then click **Confirm Selection**. To remove edges/faces, click on the edge/face in the list and press Del.
 
-For fillet, use the **Radius** field or the gizmos to set the radius of the curve.
+For fillet_FC, use the **Radius** field or the gizmos to set the radius of the curve.
 
-![FreeCAD Part Design workbench fillet example](freecad_part_design_fillet_example.png)
+![FreeCAD Part Design workbench fillet example](freecad_part_design_fillet_FC_example.png)
 
-For chamfer, use the **Type** or the gizmos to define how steep the the cut is:
+For chamfer_FC, use the **Type** or the gizmos to define how steep the the cut is:
 
 * **Equal distance** sets the cut point equally away from both ends of the edge, defined by **Size**.
 * **Two distance** sets the cut point for each edge, defined by **Size** and **Size 2**.
@@ -5256,6 +5258,10 @@ FreeCAD/Part Design Workbench/User Interface_TOPIC
 FreeCAD/Part Design Workbench/Organization_TOPIC
 ```
 
+```{note}
+Draft looks to be broken for custom curves outsides of shapes derived from conics (e.g., spheres, half spheres, cylinders). Anything that involves a custom curved face won't work.
+```
+
 Draft adds an angle to one or more faces.
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
@@ -5270,7 +5276,7 @@ The **Draft angle** field sets the angle to offset the faces (can be negative).
 
 The **Neutral Plane** field sets the plane in which the edge must be anchored (won't lift or sink). To set, click the button and select a face. In the example above, the neural plane is the top face. The 4 sides which have draft applied fan out toward the bottom because the top edges are locked in place.
 
-The **Pull Direction** field sets the direction in which the angle is applied. To set, click the button and select an edge (or something edge-like, like a datum line?).
+The **Pull Direction** field sets the direction in which the angle is applied. To set, click the button and select an edge (or something edge-like, like a datum line_FC?).
 
 ```{note}
 I think **Pull Direction** is the normal of the face by default. Here's what the source says:
@@ -5287,19 +5293,26 @@ I think **Pull Direction** is the normal of the face by default. Here's what the
 ```{prereq}
 FreeCAD/Part Design Workbench/User Interface_TOPIC
 FreeCAD/Part Design Workbench/Organization_TOPIC
+FreeCAD/Part Design Workbench/Features/Loft_TOPIC
 ```
 
-!!Thickness!! removes one or more faces and cuts out the inside of the object, giving it a bowl-like / shell-like effect.
+```{note}
+Thickness_FC looks to be broken for custom curves outsides of shapes derived from conics (e.g., spheres, half spheres, cylinders). Anything that involves a custom curved face won't work.
+
+One thing I've tried doing that may work in some cases where thickness_FC fails is a subtractive loft_FC. You take profile sketches_FC and punch through the solid. You may need to do multiple such subtractive lofts_FC to get what you're hoping for.
+```
+
+Thickness_FC removes one or more faces and cuts out the inside of the object, giving it a bowl-like / shell-like effect.
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
-To apply !!thickness!!, select relevant faces and use toolbar button 26.
+To apply thickness_FC, select relevant faces and use toolbar button 26.
 
-A **!!Thickness!! Parameters** pane will pop open. To add faces, click **Select**, select the face, and then click **Confirm Selection**. To remove faces, click on the face in the list and press Del.
+A **Thickness_FC Parameters** pane will pop open. To add faces, click **Select**, select the face, and then click **Confirm Selection**. To remove faces, click on the face in the list and press Del.
 
 ![FreeCAD Part Design workbench thickness example](freecad_part_design_thickness_example.png)
 
-The **!!Thickness!!** field sets the !!thick!! the shell is. If **Make !!thickness!! inwards** is clicked, the original outline is kept but hollowed out vs padding the original outline to generate the shell.
+The **Thickness_FC** field sets the !!thick!! the shell is. If **Make thickness_FC inwards** is clicked, the original outline is kept but hollowed out vs padding the original outline to generate the shell.
 
 The **Mode** field must be set to **Skin**.
 
@@ -5309,7 +5322,7 @@ According to the source, the only option implemented for **Mode** is **Skin** an
 
 The **Join type** field defines how non-tangential faces of the shell are joined together:
 
-* **Arc**: Faces that do not intersect are joined by a fillet with a radius equal to **!!Thickness!!** value.
+* **Arc**: Faces that do not intersect are joined by a fillet_FC with a radius equal to **Thickness_FC** value.
 * **Intersection**: Faces that do not intersect are extended to meet at their virtual intersection.
 
 The **Intersection** checkbox avoids self-intersection in some models. 
@@ -5329,7 +5342,7 @@ FreeCAD/Part Design Workbench/User Interface_TOPIC
 FreeCAD/Part Design Workbench/Organization_TOPIC
 ```
 
-Boolean moves one or more outside bodies into the active body and performs a boolean/set operation (union, intersection. subtraction).
+Boolean moves one or more outside bodies_FC into the active body_FC and performs a boolean/set operation (union, intersection. subtraction).
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
@@ -5337,16 +5350,16 @@ To apply boolean, select relevant faces and use toolbar button 22. A **Boolean P
 
 ![FreeCAD Part Design workbench boolean example](freecad_part_design_boolean_example.png)
 
-To move a body into the active body, click **Add Body** and select the body. To move an added body back out, click **Remove Body** and select the body in Model pane.
+To move a body_FC into the active body_FC, click **Add Body_FC** and select the body_FC. To move an added body_FC back out, click **Remove Body_FC** and select the body_FC in Model pane.
 
-The drop-down below the list of added bodies is the operation to perform:
+The drop-down below the list of added bodies_FC is the operation to perform:
 
 * **Common** is intersection.
 * **Fuse** is union.
-* **Cut** is subtraction - the added bodies are subtracted from the active body.
+* **Cut** is subtraction - the added bodies_FC are subtracted from the active body_FC.
 
 ```{note}
-You almost always will need to move and reorient the body when you're doing boolean operations like this.
+You almost always will need to move and reorient the body_FC when you're doing boolean operations like this.
 ```
 
 ```{seealso}
@@ -5364,7 +5377,7 @@ FreeCAD/Part Design Workbench/User Interface_TOPIC
 FreeCAD/Part Design Workbench/Organization_TOPIC
 ```
 
-Mirror copies either the entire body or specific features across a plane.
+Mirror copies either the entire body_FC or specific features_FC across a plane.
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
@@ -5372,30 +5385,30 @@ To apply mirror, use toolbar button 27. A **Mirror Parameters** pane will pop op
 
 ![FreeCAD Part Design workbench mirror example](freecad_part_design_mirror_example.png)
 
-Select **Transform body** for mirroring of the full model or **Transform tool shapes** to mirror specific features. If **Transform tool shapes** is selected, for each feature to mirror, click **Add Feature** and select the feature in the Model pane. Likewise, remove a feature being mirror by clicking **Remove Feature** and selecting the feature in the Model pane.
+Select **Transform body_FC** for mirroring of the full model or **Transform tool shapes** to mirror specific features_FC. If **Transform tool shapes** is selected, for each feature_FC to mirror, click **Add Feature_FC** and select the feature_FC in the Model pane. Likewise, remove a feature_FC being mirror by clicking **Remove Feature_FC** and selecting the feature_FC in the Model pane.
 
 ```{note}
-Does order of the selected features matter? A safe bet is likely to add features in the same order.
+Does order of the selected features_FC matter? A safe bet is likely to add features_FC in the same order.
 ```
 
 The **Plane** field selects the plane across which mirroring happens:
 
 * Base planes (e.g., XY plane).
-* Datum planes.
-* Sketch axes and construction lines from any feature that's !!based!! off a sketch.
+* Datum planes_FC.
+* Sketch_FC axes and construction lines from any feature_FC that's !!based!! off a sketch_FC.
 
 ```{seealso}
 FreeCAD/Part Design Workbench/Datum Geometry/Datum Plane_TOPIC
 ```
 
 ```{note}
-It looks like the safest bet is to build your own datum plane. To place a datum plane perpendicular to some face's orientation, ...
+It looks like the safest bet is to build your own datum plane_FC. To place a datum plane_FC perpendicular to some face's orientation, ...
 
-1. create a sketch on the face and insert 3 points in an L shape.
-2. exit the sketch and reference those points to create a datum plane.
-3. set the datum plane's **Attachment mode** to either **Align O-N-Y** or **Align O-Y-N**.
+1. create a sketch_FC on the face and insert 3 points in an L shape.
+2. exit the sketch_FC and reference those points to create a datum plane_FC.
+3. set the datum plane_FC's **Attachment mode** to either **Align O-N-Y** or **Align O-Y-N**.
 
-Instead of a sketch with points, you can also try placing 3 datum points on the face's edges, moving those datum points using the **Map Path Property** (it's hidden in the properties tab - you need to right click and show hidden properties). 
+Instead of a sketch_FC with points, you can also try placing 3 datum points_FC on the face's edges, moving those datum points_FC using the **Map Path Property** (it's hidden in the properties tab - you need to right click and show hidden properties). 
 ```
 
 `{ref} https://wiki.freecad.org/PartDesign_Mirrored`
@@ -5409,7 +5422,7 @@ FreeCAD/Part Design Workbench/User Interface_TOPIC
 FreeCAD/Part Design Workbench/Organization_TOPIC
 ```
 
-Polar pattern copies either the entire body or specific features, multiple times around an axis.
+Polar pattern copies either the entire body_FC or specific features_FC, multiple times around an axis.
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
@@ -5417,20 +5430,20 @@ To apply polar pattern, use toolbar button 29. A **Polar Pattern Parameters** pa
 
 ![FreeCAD Part Design workbench polar pattern example](freecad_part_design_polar_pattern_example.png)
 
-Select **Transform body** for patterning of the full model or **Transform tool shapes** to pattern specific features. If **Transform tool shapes** is selected, for each feature to mirror, click **Add Feature** and select the feature in the Model pane. Likewise, remove a feature being mirror by clicking **Remove Feature** and selecting the feature in the Model pane.
+Select **Transform body_FC** for patterning of the full model or **Transform tool shapes** to pattern specific features_FC. If **Transform tool shapes** is selected, for each feature_FC to mirror, click **Add Feature_FC** and select the feature_FC in the Model pane. Likewise, remove a feature_FC being mirror by clicking **Remove Feature_FC** and selecting the feature_FC in the Model pane.
 
 ```{note}
-Does order of the selected features matter? A safe bet is likely to add features in the same order.
+Does order of the selected features_FC matter? A safe bet is likely to add features_FC in the same order.
 ```
 
 The **Axis** field selects the axis across which copying happens:
 
 * Basis (e.g., X axis).
-* Datum lines.
-* Sketch axes and construction lines from any feature that's !!based!! off a sketch.
+* Datum lines_FC.
+* Sketch_FC axes and construction lines from any feature_FC that's !!based!! off a sketch_FC.
 
 ```{note}
-It may be best to use a datum line here. Create a sketch on the face, put the point that the datum line should pass through (make sure to fully constrain it by locking it into place or using projected construction geometry), exit the sketch, and insert a datum line referencing the point and the face using attachment mode "Normal to surface".
+It may be best to use a datum line_FC here. Create a sketch_FC on the face, put the point that the datum line_FC should pass through (make sure to fully constrain it by locking it into place or using projected construction geometry_FC), exit the sketch_FC, and insert a datum line_FC referencing the point and the face using attachment mode "Normal to surface".
 ```
 
 ```{seealso}
@@ -5453,7 +5466,7 @@ FreeCAD/Part Design Workbench/User Interface_TOPIC
 FreeCAD/Part Design Workbench/Organization_TOPIC
 ```
 
-Linear pattern copies either the entire body or specific features, multiple times in a straight line.
+Linear pattern copies either the entire body_FC or specific features_FC, multiple times in a straight line.
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
@@ -5461,20 +5474,20 @@ To apply linear pattern, use toolbar button 28. A **Linear Pattern Parameters** 
 
 ![FreeCAD Part Design workbench linear pattern example](freecad_part_design_linear_pattern_example.png)
 
-Select **Transform body** for patterning of the full model or **Transform tool shapes** to pattern specific features. If **Transform tool shapes** is selected, for each feature to mirror, click **Add Feature** and select the feature in the Model pane. Likewise, remove a feature being mirror by clicking **Remove Feature** and selecting the feature in the Model pane.
+Select **Transform body_FC** for patterning of the full model or **Transform tool shapes** to pattern specific features_FC. If **Transform tool shapes** is selected, for each feature_FC to mirror, click **Add Feature_FC** and select the feature_FC in the Model pane. Likewise, remove a feature_FC being mirror by clicking **Remove Feature_FC** and selecting the feature_FC in the Model pane.
 
 ```{note}
-Does order of the selected features matter? A safe bet is likely to add features in the same order.
+Does order of the selected features_FC matter? A safe bet is likely to add features_FC in the same order.
 ```
 
 The **Direction** area selects the line across which copying happens:
 
 * Basis (e.g., X axis).
-* Datum lines.
-* Sketch axes and construction lines from any feature that's !!based!! off a sketch.
+* Datum lines_FC.
+* Sketch_FC axes and construction lines from any feature_FC that's !!based!! off a sketch_FC.
 
 ```{note}
-It may be best to use a datum line here. Create a sketch on the face with a line (make sure to fully constrain it by locking it into place or using projected construction geometry).
+It may be best to use a datum line_FC here. Create a sketch_FC on the face with a line (make sure to fully constrain it by locking it into place or using projected construction geometry_FC).
 ```
 
 When **Mode** is ...
@@ -5498,30 +5511,30 @@ FreeCAD/Part Design Workbench/Features/Polar Pattern_TOPIC
 FreeCAD/Part Design Workbench/Features/Linear Pattern_TOPIC
 ```
 
-Multi-transform is a container that can apply a chain of linear pattern, polar pattern, and mirror features. In addition, it can apply scaling to copies produced by these features.
+Multi-transform is a container that can apply a chain of linear pattern, polar pattern, and mirror features_FC. In addition, it can apply scaling to copies produced by these features_FC.
 
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
 
 To apply multi-transform, either ...
 
 * use toolbar button 30.
-* select existing linear pattern, polar pattern, and / or mirror features in the Model pane and use toolbar 30. The selected features will be imported into the multi-transform.
+* select existing linear pattern, polar pattern, and / or mirror features_FC in the Model pane and use toolbar 30. The selected features_FC will be imported into the multi-transform.
 
 ```{note}
-If you're importing: I suspect the selection has to be made in order to be added? Also each selection must to target the exact same set of features added in the exact same order?
+If you're importing: I suspect the selection has to be made in order to be added? Also each selection must to target the exact same set of features_FC added in the exact same order?
 ```
 
 A **Multi-Transform Parameters** pane will pop open.
 
 ![FreeCAD Part Design workbench multi-transform example](freecad_part_design_multi_transform_example.png)
 
-Select **Transform body** for patterning of the full model or **Transform tool shapes** to pattern specific features. If **Transform tool shapes** is selected, for each feature to mirror, click **Add Feature** and select the feature in the Model pane. Likewise, remove a feature being mirror by clicking **Remove Feature** and selecting the feature in the Model pane.
+Select **Transform body_FC** for patterning of the full model or **Transform tool shapes** to pattern specific features_FC. If **Transform tool shapes** is selected, for each feature_FC to mirror, click **Add Feature_FC** and select the feature_FC in the Model pane. Likewise, remove a feature_FC being mirror by clicking **Remove Feature_FC** and selecting the feature_FC in the Model pane.
 
 ```{note}
-Does order of the selected features matter? A safe bet is likely to add features in the same order.
+Does order of the selected features_FC matter? A safe bet is likely to add features_FC in the same order.
 ```
 
-Right-click inside the **Transformations** list to add, delete, edit, and reorder transformations. The **Scale** transformation takes copies made in the previous transformation and applies compound scaling (e.g., first copy is 2x scaled, second copy, 3x scaled, etc..), as shown in the example. For copies of the body, this may work as intended. For copies of features, this may not work as intended (e.g., in the example screenshot, notice that the pockets don't seat on the face as they scale).
+Right-click inside the **Transformations** list to add, delete, edit, and reorder transformations. The **Scale** transformation takes copies made in the previous transformation and applies compound scaling (e.g., first copy is 2x scaled, second copy, 3x scaled, etc..), as shown in the example. For copies of the body_FC, this may work as intended. For copies of features_FC, this may not work as intended (e.g., in the example screenshot, notice that the pockets don't seat on the face as they scale).
 
 `{ref} https://wiki.freecad.org/PartDesign_MultiTransform` `{ref} https://wiki.freecad.org/PartDesign_Scaled`
 
@@ -5535,9 +5548,9 @@ FreeCAD/Part Design Workbench/Organization_TOPIC
 FreeCAD/Part Design Workbench/Features_TOPIC
 ```
 
-Datum geometry are helper primitives typically used to position other objects (e.g., sketches, features), similar to construction geometry in sketches. Datum geometry aren't unique to the Part Design workbench.
+Datum geometry_FC are helper primitives typically used to position other objects (e.g., sketches_FC, features_FC), similar to construction geometry_FC in sketches_FC. Datum geometry_FC aren't unique to the Part Design workbench_FC.
 
-Datum geometry can inserted into the current body using the toolbar button next to the button that creates a new part.
+Datum geometry_FC can inserted into the current body_FC using the toolbar button next to the button that creates a new standard part_FC.
 
 ![FreeCAD Part Design workbench datum geometry toolbar](freecad_part_design_datum_geometry_toolbar.png)
 
@@ -5547,36 +5560,36 @@ Datum geometry can inserted into the current body using the toolbar button next 
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Datum Geometry\/Datum Point)_TOPIC/i`
 
-A datum point needs one or more entities to define its attachment / positioning (e.g., faces, lines, vertices). To insert a datum point, either ...
+A datum point_FC commonly needs one or more objects to define its attachment / positioning (e.g., faces, lines, vertices). To insert a datum point_FC, either ...
 
-* select the entities to attach the datum point to, then select the Datum Point toolbar button.
-* deselect everything, select the Datum Point toolbar button, then individually reference entities in the Attachment pane pop-up by clicking a Reference button and selecting the entity.
+* select the objects to attach the datum point_FC to, then select the Datum Point_FC toolbar button.
+* deselect everything, select the Datum Point_FC toolbar button, then individually reference objects in the Attachment pane pop-up by clicking a Reference button and selecting the entity.
 
 ![FreeCAD Part Design workbench datum geometry toolbar](freecad_part_design_datum_geometry_toolbar.png)
 
-The **Attachment mode** parameter defines what types of entities are needed for positioning / attachment (hovering over an option describes what it does as well as !!supported!! reference types). Once attached, the **Attachment offset** parameters tweak the position by offsetting and a rotation.
+The **Attachment mode** parameter defines what types of objects are needed for positioning / attachment (hovering over an option describes what it does as well as !!supported!! reference types). Once attached, the **Attachment offset** parameters tweak the position by offsetting and a rotation.
 
 ![FreeCAD Part Design workbench datum point example](freecad_part_design_workbench_datum_point.png)
 
-The example above attaches the datum point to a vertex and then positionally offsets itself.
+The example above attaches the datum point_FC to a vertex and then positionally offsets itself.
 
 ```{note}
 One thing I found that might be useful for the future:
 
-1. Attach to the datum point to an edge (and nothing else) and set **Attachment mode** to **On edge**.
-2. Click OK to finish placing the datum point.
-3. Select the datum point, right-click in the Properties pane, and enable **Show hidden**.
+1. Attach to the datum point_FC to an edge (and nothing else) and set **Attachment mode** to **On edge**.
+2. Click OK to finish placing the datum point_FC.
+3. Select the datum point_FC, right-click in the Properties pane, and enable **Show hidden**.
 4. Set the **Map Path Parameter** to move the point along the line (between 0 to 1).
 
-Why does this matter? I wanted to use this to appropriately position a helix, but it didn't work out. You can use two datum points to make a datum line, but a datum line is infinite (it doesn't have a start/stop). Furthermore, FreeCAD currently doesn't let you further put a datum point on that datum line. The idea I had was to use datum points to create a datum line, then place a datum point on that datum line to act as the center point for a datum plane. The datum plane's normal would be defined with another datum line that's 90 degrees to the first datum line.
+Why does this matter? I wanted to use this to appropriately position a helix_FC, but it didn't work out. You can use two datum points_FC to make a datum line_FC, but a datum line_FC is infinite (it doesn't have a start/stop). Furthermore, FreeCAD currently doesn't let you further put a datum point_FC on that datum line_FC. The idea I had was to use datum points_FC to create a datum line_FC, then place a datum point_FC on that datum line_FC to act as the center point for a datum plane_FC. The datum plane_FC's normal would be defined with another datum line_FC that's 90 degrees to the first datum line_FC.
 
-ChatGPT instead suggested I place a sketch on the face with ...
+ChatGPT instead suggested I place a sketch_FC on the face with ...
 
-* a point for the center of the helix rotation axis.
+* a point for the center of the helix_FC rotation axis.
 * a horizontal line from the point.
 * a vertical line from the point.
 
-Then, create a new datum plane and use the center point as reference 1, the horizontal line as reference 2, and the vertical line as reference 3, and **Align O-X-Y** as the **Attachment mode**. You can then attach a sketch to that datum plane and the origin will be the center point.
+Then, create a new datum plane_FC and use the center point as reference 1, the horizontal line as reference 2, and the vertical line as reference 3, and **Align O-X-Y** as the **Attachment mode**. You can then attach a sketch_FC to that datum plane_FC and the origin will be the center point.
 ```
 
 `{ref} https://wiki.freecad.org/Part_DatumPoint`
@@ -5589,21 +5602,21 @@ Then, create a new datum plane and use the center point as reference 1, the hori
 FreeCAD/Part Design Workbench/Datum Geometry/Datum Point_TOPIC
 ```
 
-A datum line needs one or more entities to define its attachment / positioning (e.g., faces, lines, vertices). To insert a datum line, either ...
+A datum line_FC typically needs one or more objects to define its attachment / positioning (e.g., faces, lines, vertices). To insert a datum line_FC, either ...
 
-* select the entities to attach the datum line to, then select the Datum Line toolbar button.
-* deselect everything, select the Datum Line toolbar button, then individually reference entities in the Attachment pane pop-up by clicking a Reference button and selecting the entity.
+* select the objects to attach the datum line_FC to, then select the Datum Line_FC toolbar button.
+* deselect everything, select the Datum Line_FC toolbar button, then individually reference objects in the Attachment pane pop-up by clicking a Reference button and selecting the entity.
 
 ![FreeCAD Part Design workbench datum geometry toolbar](freecad_part_design_datum_geometry_toolbar.png)
 
-The **Attachment mode** parameter defines what types of entities are needed for positioning / attachment (hovering over an option describes what it does as well as !!supported!! reference types). Once attached, the **Attachment offset** parameters tweak the position by offsetting and a rotation.
+The **Attachment mode** parameter defines what types of objects are needed for positioning / attachment (hovering over an option describes what it does as well as !!supported!! reference types). Once attached, the **Attachment offset** parameters tweak the position by offsetting and a rotation.
 
 ![FreeCAD Part Design workbench datum line example](freecad_part_design_workbench_datum_line.png)
 
-The example above attaches the datum line to 2 datum points, defining that line.
+The example above attaches the datum line_FC to 2 datum points_FC, defining that line.
 
 ```{note}
-In the 3D viewport, the line doesn't extend all the way to the second point. That's likely because a datum line is unbounded and should be treated more like an axis than a line that starts/stops at specific points?
+In the 3D viewport, the line doesn't extend all the way to the second point. That's likely because a datum line_FC is unbounded and should be treated more like an axis than a line that starts/stops at specific points?
 ```
 
 `{ref} https://wiki.freecad.org/Part_DatumLine`
@@ -5617,14 +5630,14 @@ FreeCAD/Part Design Workbench/Datum Geometry/Datum Point_TOPIC
 FreeCAD/Part Design Workbench/Datum Geometry/Datum Line_TOPIC
 ```
 
-A datum plane needs one or more entities to define its attachment / positioning (e.g., faces, lines, vertices). To insert a datum line, either ...
+A datum plane_FC needs one or more objects to define its attachment / positioning (e.g., faces, lines, vertices). To insert a datum line_FC, either ...
 
-* select the entities to attach the datum plane to, then select the Datum Plane toolbar button.
-* deselect everything, select the Datum Plane toolbar button, then individually reference entities in the Attachment pane pop-up by clicking a Reference button and selecting the entity.
+* select the objects to attach the datum plane_FC to, then select the Datum Plane_FC toolbar button.
+* deselect everything, select the Datum Plane_FC toolbar button, then individually reference objects in the Attachment pane pop-up by clicking a Reference button and selecting the entity.
 
 ![FreeCAD Part Design workbench datum geometry toolbar](freecad_part_design_datum_geometry_toolbar.png)
 
-The **Attachment mode** parameter defines what types of entities are needed for positioning / attachment (hovering over an option describes what it does as well as !!supported!! reference types). Once attached, the **Attachment offset** parameters tweak the position by offsetting and a rotation.
+The **Attachment mode** parameter defines what types of objects are needed for positioning / attachment (hovering over an option describes what it does as well as !!supported!! reference types). Once attached, the **Attachment offset** parameters tweak the position by offsetting and a rotation.
 
 ```{note}
 There are lots of attachment modes, but it seems the align ones are the simplest to use.
@@ -5632,9 +5645,28 @@ There are lots of attachment modes, but it seems the align ones are the simplest
 
 ![FreeCAD Part Design workbench datum plane example](freecad_part_design_workbench_datum_plane.png)
 
-The example above attaches the datum plane to a vertex (origin) and 2 edges (normal vector and Y vector), defining that plane.
+The example above attaches the datum plane_FC to a vertex (origin) and 2 edges (normal vector and Y vector), defining that plane.
 
 `{ref} https://wiki.freecad.org/Part_DatumPlane`
+
+#### Local Coordinate System
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Datum Geometry\/Local Coordinate System)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Part Design Workbench/Datum Geometry/Datum Point_TOPIC
+FreeCAD/Part Design Workbench/Datum Geometry/Datum Line_TOPIC
+FreeCAD/Part Design Workbench/Datum Geometry/Datum Plane_TOPIC
+```
+
+A local coordinate system_FC is a frame of reference, defining it's own origin and basis axes relative to the parent origin and basis axes. A local coordinate system_FC needs one or more objects to define its attachment / positioning (e.g., faces, lines, vertices). To insert a datum line_FC, either ...
+
+* select the objects to attach the datum plane_FC to, then select the Datum Plane_FC toolbar button.
+* deselect everything, select the Datum Plane_FC toolbar button, then individually reference objects in the Attachment pane pop-up by clicking a Reference button and selecting the entity.
+
+![FreeCAD Part Design workbench datum geometry toolbar](freecad_part_design_datum_geometry_toolbar.png)
+
+Many objects come with their own builtin local coordinate system_FC (e.g., a prism may have its own local coordinate system_FC, where the vertexes of the prism are defined related to that local coordinate system_FC). Objects may also be attached to local coordinate system_FC (or some other object with a builtin local coordinate system_FC), such that their position and/or orientation are relative to the local coordinate system_FC (**Attachment Mode** property). `{ref} https://wiki.freecad.org/Part_CoordinateSystem` `{ref} https://www.youtube.com/watch?v=BxcHS0GLdKg`
 
 ## Variable Sets
 
@@ -5660,39 +5692,100 @@ The following instructions make it easier to select items using a trackpad, wher
 
 1. Go to **Edit** → **Preferences** → **Display** → **3D View** and set **Marker size** to **11 px**.
 2. Go to **Edit** → **Preferences** → **General** → **Selection** and set **Radius** to **11 px**.
-3. Go to **Edit** → **Preferences** → **Sketcher** → **Appearance** and set all line widths to **4 px** (these seem to just be for elements, not constraints?).
-4. Go to **Edit** → **Preferences** → **Part Design** → **Shape Appearance** and set **Vertex Size** to **9 px** (can't seem to go till 11).
-5. Go to **Edit** → **Preferences** → **Part Design** → **Shape Appearance** and set **Line Width** to **4 px**.
+3. Go to **Edit** → **Preferences** → **Sketcher_FC** → **Appearance** and set all line widths to **4 px** (these seem to just be for elements_FC, not constraints_FC?).
+4. Go to **Edit** → **Preferences** → **Part Design_FC** → **Shape Appearance** and set **Vertex Size** to **9 px** (can't seem to go till 11).
+5. Go to **Edit** → **Preferences** → **Part Design_FC** → **Shape Appearance** and set **Line Width** to **4 px**.
+
+**Rotate at point**
+
+The following instructions make it so that rotation happens at where your mouse cursor is at, not at the viewport center.
+
+1. Go to **Edit** → **Preferences** → **Display** → **Navigation** → **Navigation** and set **Rotation mode** to **Drag at cursor**.
 
 `{ref} self`
 
 ## Macro Ideas
 
-* drop a datum plane cutting through a plane
+### Boolean Union Lineup
+
+Given two bodies_FC A and B, this script helps position body_FC B when union'd onto body_FC A. Both body_FC A and body_FC B should have a local coordinate system_FC positioned and oriented at the attachment point. The macro will translate and rotate body_FC B such that its LCS_FC matches body_FC A's LCS_FC.
+
+This script assumes flat faces from body_FC A and body_FC B will be "kissing" when the local coordinate system_FCs line up. This might be a problem if floating point rounding error causes FreeCAD to see a gap between the faces (see [here](https://forum.freecad.org/viewtopic.php?p=891702#p891702)).
+
+
+```python
+import FreeCAD as App
+import FreeCADGui as Gui
+
+doc = App.ActiveDocument
+sel = Gui.Selection.getSelection()
+
+if len(sel) != 2:
+    raise Exception("Select exactly two LCS objects: first A_LCS, second B_LCS")
+
+a_lcs = sel[0]
+b_lcs = sel[1]
+
+# Find the Body that owns B_LCS
+b_body = b_lcs.getParentGeoFeatureGroup()
+if b_body is None:
+    raise Exception("Could not find Body containing B_LCS")
+
+# Global placement of target LCS on A
+a_lcs_global = a_lcs.getGlobalPlacement()
+
+# Global placement of source LCS on B, before moving B
+b_lcs_global = b_lcs.getGlobalPlacement()
+
+# Global placement of B Body, before moving it
+b_body_global = b_body.getGlobalPlacement()
+
+# Transform needed to move B_LCS onto A_LCS
+delta = a_lcs_global.multiply(b_lcs_global.inverse())
+
+# Apply same transform to B Body
+b_body_new_global = delta.multiply(b_body_global)
+
+# Convert back to local placement if B Body has a parent container
+parent = b_body.getParentGeoFeatureGroup()
+if parent is not None:
+    parent_global = parent.getGlobalPlacement()
+    b_body.Placement = parent_global.inverse().multiply(b_body_new_global)
+else:
+    b_body.Placement = b_body_new_global
+
+doc.recompute()
+
+print("Moved B Body so B_LCS matches A_LCS")
+```
+
+![Example screenshot of macro](freecad_lcs_lineup_macro.png)
+
+* drop a datum plane_FC cutting through a plane
 
   why is this useful?
-  this is useful for doing things like mirror pattern of a feature, when your sketch isn't centered at the origin and oriented to one of the basis axes.
+  this is useful for doing things like mirror pattern of a feature_FC, when your sketch_FC isn't centered at the origin and oriented to one of the basis axes.
 
-  1. sketch on face
-  2. pull in edges of face as construction geometry on sketch
-  3. drop 3 points on sketch in L shape, constrain them so that they're 1mm away from each other
+  1. sketch_FC on face
+  2. pull in edges of face as construction geometry_FC on sketch_FC
+  3. drop 3 points on sketch_FC in L shape, constrain them so that they're 1mm away from each other
   4. constrain middle point, lock to origin using horizontal and vertical dimension
-  5. exit sketch
-  6. insert datum plane that references the 3 points in the sketch, select attachment mode of "Align O-Y-N" or "Align O-N-Y"
-  7. user may have to go into sketch and adjust L points !!based!! on where they want the datum plane to be positioned exactly
+  5. exit sketch_FC
+  6. insert datum plane_FC that references the 3 points in the sketch_FC, select attachment mode of "Align O-Y-N" or "Align O-N-Y"
+  7. user may have to go into sketch_FC and adjust L points !!based!! on where they want the datum plane_FC to be positioned exactly
 
-* drop a datum line matching a face's normal
+* drop a datum line_FC matching a face's normal
 
   why is this useful?
-  this is useful for doing things like polar pattern of a feature when your sketch isn't centered at the origin and oriented to one of the basis axes.
-  this is useful if you want to attach two bodies together (via boolean), where the body being attached needs to be positioned - you can place the point and datum line somewhere, and then reference it in the body's transformation properties
+  this is useful for doing things like polar pattern of a feature_FC when your sketch_FC isn't centered at the origin and oriented to one of the basis axes.
+  this is useful if you want to attach two bodies_FC together (via boolean), where the body_FC being attached needs to be positioned - you can place the point and datum line_FC somewhere, and then reference it in the body_FC's transformation properties
 
-  1. sketch on face
-  2. pull in edges of face as construction geometry on sketch
-  3. drop point on sketch, lock to origin using horizontal and vertical dimension
-  4. exit sketch
-  5. insert datum line that references sketch's point and face, select attachment mode as "normal to surface
-  6. user will have to go into sketch and adjust point !!based!! on where they want the datum line to protrude from
+  1. sketch_FC on face
+  2. pull in edges of face as construction geometry_FC on sketch_FC
+  3. drop point on sketch_FC, lock to origin using horizontal and vertical dimension
+  4. exit sketch_FC
+  5. insert datum line_FC that references sketch_FC's point and face, select attachment mode as "normal to surface
+  6. user will have to go into sketch_FC and adjust point !!based!! on where they want the datum line_FC to protrude from
 
 # Terminology
 
@@ -5963,17 +6056,15 @@ The following instructions make it easier to select items using a trackpad, wher
 
   `{bm-error} Did you mean a set of slices (slices_SET) or the act of slicing (slices_PROC)?/(slices)/`
 
-* `{bm} layer height/(layer height|slice height|layer's height|slice's height|height of layer|height of slice)/i` `{bm} /(height'?s?)_LH/i` `{bm} /(thickness|thickness|thicker)_LH/i` - !!Height!! of an individual layer within a sliced 3D object. `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214`
+* `{bm} layer height/(layer height|slice height|layer's height|slice's height|height of layer|height of slice)/i` `{bm} /(height'?s?)_LH/i` `{bm} /(thickness|thicker|thicken|thick)_LH/i` - !!Height!! of an individual layer within a sliced 3D object. `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214`
 
   `{bm-error} Use _LH if referencing layer height, or wrap in !!/(height'?s?)/i`
   `{bm-error} Don't need _LH suffix to disambiguate layer height/(layer height_LH|slice height_LH|layer's height_LH|slice's height_LH|height of layer_LH|height of slice_LH)/`
 
-* `{bm} line width/(line width|extrusion width|extruder width)/i` `{bm} /(width'?s?)_LW/i` `{bm} /(thickness|thickness|thicker)_LW/i` - !!Width!! of printed filament, as extruded by the nozzle. `{ref} https://wiki.bambulab.com/en/software/bambu-studio/parameter/line-width`
+* `{bm} line width/(line width|extrusion width|extruder width)/i` `{bm} /(width'?s?)_LW/i` `{bm} /(thickness|thicker|thicken|thick)_LW/i` - !!Width!! of printed filament, as extruded by the nozzle. `{ref} https://wiki.bambulab.com/en/software/bambu-studio/parameter/line-width`
 
   `{bm-error} Use _LW if referencing line width, or wrap in !!/(width'?s?)/i`
   `{bm-error} Don't need _LW suffix to disambiguate line width/(line width_LW|extrusion width_LW|extruder width_LW)/`
-
-  `{bm-error} Use _LW if referencing line width, or use _LH if referencing layer height, or wrap in !!/(thickness|thickness|thicker)/i`
 
 * `{bm} bridging/(bridging|bridge)/i` - Part of a 3D object where there is a mid-air horizontal gap between two or more sides, leaving that part with nothing underneath it to help hold it up. During printing, supports_BO are often added to bridging areas.
 
@@ -6067,7 +6158,7 @@ The following instructions make it easier to select items using a trackpad, wher
 * `{bm} skirt loop/(skirt loop|skirt)/i` - A loop printed at the beginning to prime the nozzle (e.g., remove residue and test flow). `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/35`
 
   ```{note}
-  This feature isn't used all that much with a printer like the H2S because the H2S already prints a priming line for this.
+  This !!feature!! isn't used all that much with a printer like the H2S because the H2S already prints a priming line for this.
   ```
 
 * `{bm} seam` - Mark that shows up the Z-axis  when the toolhead prints an enclosed path, showing up where the start and end of the path meet. `{ref} https://wiki.bambulab.com/en/software/bambu-studio/Seam`
@@ -6108,6 +6199,160 @@ The following instructions make it easier to select items using a trackpad, wher
 * `{bm} flow ratio/(flow ratio|flow rate)/i` - A scaling factor that adjusts the actual amount of filament extruded vs the theoretical amount calculated by the slicer.
 
 * `{bm} heat deflection temperature` `{bm} /(HDT)/` - Minimum temperature at which 0.45 MPa and 1.8 MPa of stress cause some material to bend by a small standardized amount (ISO 75 deflection threshold). `{ref} https://en.wikipedia.org/wiki/Heat_deflection_temperature`
+
+* `{bm} FreeCAD` - A parametric 3D computer-aided design / modeling tool. `{ref} https://www.freecad.org/`
+
+* `{bm} /(workbenches|workbench)_FC/i` - A set of tools, commands, views, panels, and workflows within FreeCAD grouped together for a particular type of design (e.g., spreadsheet workbench_FC). `{ref} https://wiki.freecad.org/Workbenches`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(workbenches|workbench)|/i`
+
+* `{bm} spreadsheet workbench/(spreadsheet workbench)_FC/i` `{bm} /(spreadsheets?)_FC/i` - A FreeCAD workbench_FC that allows creating and editing of !!spreadsheets!!, similar to Excel or LibreOffice Calc. Spreadsheets_FC are intended for parameterization of models and extraction of model parameters. `{ref} https://wiki.freecad.org/Spreadsheet_Workbench`
+
+  `{bm-error} You added _FC to the wrong part. Add after workbench/(spreadsheet_FC workbench)/i`
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(spreadsheet workbench)/i`
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(spreadsheets?)/i`
+
+* `{bm} sketcher workbench/(sketcher workbench|sketcher)_FC/i` `{bm} /(sketches|sketching|sketch)_FC/i` - A workbench_FC that allows creating and editing of 2D !!sketches!!. !!Sketches!! typically go on to be used to build out 3D features_FC within the part design workbench_FC. The !!sketcher workbench!! is often just referred to as the !!sketcher!!. `{ref} https://wiki.freecad.org/Sketcher_Workbench`
+
+  `{bm-error} You added _FC to the wrong part. Add after workbench/(sketcher_FC workbench)/i`
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(sketcher workbench|sketcher)/i`
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(sketches|sketching|sketch)/i`
+
+* `{bm} element/(elements?)_FC/i` - A 2D geometric primitive in a sketch_FC (e.g., point, line, arc, and spline). `{ref} https://wiki.freecad.org/Basic_Sketcher_Tutorial`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(elements?)/i`
+
+* `{bm} constraint/(constraints?|constraining|constrained)_FC/i` - A definition of an element_FC's measurement, either directly (e.g., 5mm radius for an arc) or as a relationship (e.g., line 1's slope must be perpendicular to line 2's slope). `{ref} https://wiki.freecad.org/Basic_Sketcher_Tutorial`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(constraints?|constraining|constrained)/i`
+
+* `{bm} reference constraint/(reference constraints?)_FC/i` - A constraint_FC that's rendered in the sketch_FC but unenforced. `{ref} https://forum.freecad.org/viewtopic.php?t=23535` `{ref} https://wiki.freecad.org/Sketcher_ToggleDrivingConstraint`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(reference constraints?)/i`
+
+* `{bm} driving constraint/(driving constraints?)_FC/i` - A constraint_FC that's enforced (as opposed to a reference constraint_FC, which is unenforced). `{ref} https://wiki.freecad.org/Sketcher_ToggleDrivingConstraint`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(driving constraints?)/i`
+
+* `{bm} auto constraints/(auto\s?constraints?)_FC/i` - When creating an element_FC, if the placement of some part of that element_FC ends on an existing element_FC, an auto constraint_FC may be applied. An auto constraint_FC is a constraint_FC that's automatically added by virtue of how the elements_FC end up together. `{ref} https://wiki.freecad.org/Sketcher_Workbench#Drawing_aids`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(auto\s?constraints?)/i`
+
+* `{bm} On-View-Parameters/(On-View-Parameters|On-View-Params)_FC/i` - For certain element_FC creation tools, !!On-View-Parameters!! allows explicitly adding constraints_FC during the creation process by presenting input fields alongside the element_FC's preview. `{ref} https://wiki.freecad.org/Sketcher_Workbench#Drawing_aids`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(On-View-Parameters|On-View-Params)/i`
+
+* `{bm} continue mode/(continue mode|continuous mode)_FC/i` - Does not exit an element_FC / constraint_FC creation tool once the element_FC has been created, allowing multiple such elements_FC / constraints_FC to be created many times over. `{ref} https://wiki.freecad.org/Sketcher_Workbench#Drawing_aids`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(continue mode|continuous mode)/i`
+
+* `{bm} under-constrained/(under[\s\-]?constrained)_FC/i` - A sketch_FC is said to be !!under-constrained!! if there exists at least 1 element_FC which has at least 1 degree of freedom_FC (e.g., it can move freely horizontally, it can move freely vertically, it can rotate freely around a point). `{ref} https://www.reddit.com/r/FreeCAD/comments/1ivu9lm/newbie_question_on_underconstrained/`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(under[\s\-]?constrained)/i`
+
+* `{bm} fully constrained/(fully[\s\-]?constrained)_FC/i` - A sketch_FC is said to be !!fully constrained!! if all elements_FC have 0 degrees of freedom_FC (e.g., it can't move freely horizontally, it can't move freely vertically, it can't rotate freely around a point). `{ref} https://wiki.freecad.org/Sketcher_Workbench#Constraints`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(fully[\s\-]?constrained)/i`
+
+* `{bm} redundant constraints?/(partially[\s-]redundant[\s\-]constraints?|partially[\s-]redundant|redundant[\s\-]constraints?)_FC/i` - A sketch_FC is said to have !!redundant constraints!! if there exists 1 or more constraints_FC that deduce to the same thing (e.g., a line is constrained_FC to have a horizontal distance of 1mm and a vertical distance of 1mm, but it's also constrained_FC to 45 degrees from the X axis - the angle is redundant as it's implied from the distances). `{ref} https://forum.freecad.org/viewtopic.php?p=732972#p732972`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(partially[\s-]redundant[\s\-]constraints?|partially[\s-]redundant|redundant[\s\-]constraints?)/i`
+
+* `{bm} over-constrained/(over[\s\-]?constrained)_FC/i` - A sketch_FC is said to be !!over-constrained!! if it has conflicting constraints_FC (e.g., a line is constrained_FC to have a horizontal distance of 1mm and a vertical distance of 1mm, but it's also constrained_FC to 30 degrees from the X axis - the angle 30 degree angle is in conflict with the angle implied from the 1mm vertical and 1mm horizontal distance, which is 45 degrees). `{ref} https://www.reddit.com/r/FreeCAD/comments/1m24jo0/what_is_over_constraining/` `{ref} https://forum.freecad.org/viewtopic.php?p=732972#p732972`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(over[\s\-]?constrained)/i`
+
+* `{bm} projection geometry/(projection geometry|projection geometries|projected geometry|projected geometries|external geometry|external geometries)_FC/i` - An element_FC pulled in from a 3D object visible from the sketch_FC, linked to the 3D object it came from. `{ref} https://wiki.freecad.org/Sketcher_Projection`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(projection geometry|projection geometries|projected geometry|projected geometries)/i`
+
+* `{bm} construction geometry/(construction geometry|construction geometries|internal alignment geometry|internal alignment geometries)_FC/i` - An element_FC that isn't exposed to consumers of the sketch_FC (it's internal to the sketch_FC, hidden once the sketch_FC is closed). `{ref} https://www.reddit.com/r/FreeCAD/comments/1m77d13/what_are_construction_geometries/`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(construction geometry|construction geometries|internal alignment geometry|internal alignment geometries)/i`
+
+* `{bm} degrees of freedom/(degrees? of freedom)_FC/i` - An element_FC that isn't constrained_FC to the point where it's locked into a specific parameterization (e.g., location, rotation, angle) is said to have n !!degrees of freedom!!, where n >= 1. `{ref} https://www.reddit.com/r/FreeCAD/comments/1ivu9lm/newbie_question_on_underconstrained/`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(degrees? of freedom)/i`
+
+* `{bm} sketch flipping/(sketch flipping|flipped|flips?|flipping)_FC/i` - A phenomenon where a sketch_FC !!flips!! because there is more than 1 mathematical solution to its constraints_FC. For example, imagine a triangle where the ...
+
+  1. !!base!! is constrained_FC to be between (0,0) and (0,5).
+  2. left side is constrained_FC to start at (0,0) and have a distance of 3mm.
+  3. right side is constrained_FC to start at (0,5) and have a distance of 3mm.
+  4. left side and right side are constrained_FC to have their ends at the same location (coincident constraint_FC).
+
+  The above set of constraints_FC has 2 solutions: Either the tip of the triangle can be above the X-axis or below the X-axis. `{ref} https://wiki.freecad.org/Sketcher_Workbench#Flipping` `{ref} https://forum.freecad.org/viewtopic.php?t=10872`
+
+  ```{seealso}
+  FreeCAD/Sketcher Workbench/Sketching/Sketch Flipping_TOPIC
+  ```
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(sketch flipping|flipped|flips?|flipping)/i`
+  `{bm-error} Did you add _FC to the wrong word? If not, wrap in !!/(sketch_FC flip)/i`
+
+* `{bm} standard part/(standard part containers?|standard parts?\b|\bpart containers?|stdpart containers?|stdparts?)_FC/i` - A FreeCAD container with its own coordinate system that can hold one or more objects. For example, a !!standard part container!! can hold multiple bodies_FC, where those bodies_FC's position and rotation are relative to that !!standard part container's!! coordinate system. `{ref} https://wiki.freecad.org/Std_Part`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(standard part containers?|standard parts?\b|\bpart containers?|stdpart containers?|stdparts?)/i`
+
+* `{bm} datum/(datum geometry|datum geometries|datum)_FC/i` - Auxiliary geometry that is not part of the final shape of the model, but used as a reference and !!support!! for sketches_FC and other objects. !!Datums!! aren't unique to a specific workbench_FC. `{ref} https://wiki.freecad.org/Datum`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(datum geometry|datum geometries|datum)/i`
+
+* `{bm} datum point/(datum points?)_FC/i` - Datum geometry_FC that's a point. `{ref} https://wiki.freecad.org/Part_DatumPoint`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(datum points?)/i`
+
+* `{bm} datum line/(datum lines?)_FC/i` - Datum geometry_FC that's an infinite line (axis). `{ref} https://wiki.freecad.org/Part_DatumLine`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(datum lines?)/i`
+
+* `{bm} datum plane/(datum planes?)_FC/i` - Datum geometry_FC that's a plane. `{ref} https://wiki.freecad.org/Part_DatumPlane`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(datum planes?)/i`
+
+* `{bm} local coordinate system/(local coordinate system)_FC/i` `{bm} /(LCS)_FC/` - Datum geometry_FC that acts as a frame of reference, defining it's own origin and basis axes relative to the parent origin and basis axes. Many objects come with their own builtin !!local coordinate system!! (e.g., a prism may have its own !!local coordinate system!!, where the vertexes of the prism are defined in reference to that !!local coordinate system!!). Objects may also be attached to !!local coordinate system!! (or some other object with a builtin !!local coordinate system!!), such that their position and/or orientation are relative to the !!local coordinate system!! (see Attachment Mode property). `{ref} https://wiki.freecad.org/Part_CoordinateSystem` `{ref} https://www.youtube.com/watch?v=BxcHS0GLdKg`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(local coordinate system)/i`
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(LCS)/`
+
+* `{bm} part design workbench/(part design workbench)_FC/i` `{bm} /(part design)_FC/i` - A workbench_FC allows building 3D models, mostly by transforming 2D sketches_FC into 3D features_FC. `{ref} https://wiki.freecad.org/PartDesign_Workbench`
+
+  `{bm-error} You added _FC to the wrong part. Add after workbench/(part design_FC workbench)/i`
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(part design workbench)/i`
+
+* `{bm} body/(body|bodies)_FC/i` - A single contiguous 3D model, mostly built by compounding several sketches_FC into 3D geometry in a chain. `{ref} https://wiki.freecad.org/PartDesign_Body` `{ref} https://wiki.freecad.org/Body`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(body|bodies)/i`
+
+* `{bm} feature/(additive features?|subtractive features?|features?)_FC/i` - A distance and editable step within a body_FC. An !!additive feature!! is a !!feature!! that adds to the body_FC, while a !!subtractive feature!! is a !!feature!! that removes something from the body_FC. `{ref} https://wiki.freecad.org/PartDesign_Feature`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(additive features?|subtractive features?|features?)/i`
+
+* `{bm} loft/(lofts?)_FC/i` - A feature_FC that constructs a solid by transitioning through sketches_FC that act as !!slices!! within the solid. `{ref} https://wiki.freecad.org/PartDesign_AdditiveLoft` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveLoft`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(lofts?)/i`
+
+* `{bm} pipe/(pipes?)_FC/i` - A feature_FC that constructs a solid by transitioning through sketches_FC that act as !!slices!! within the solid in addition to following a chain of one or more paths (e.g., edge, arc, b-spline). `{ref} https://wiki.freecad.org/PartDesign_AdditivePipe` `{ref} https://wiki.freecad.org/PartDesign_SubtractivePipe` `{ref} https://www.youtube.com/watch?v=AqzJ58bM2rs`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(pipes?)/i`
+
+* `{bm} helix/(helix|helixes)_FC/i` - A feature_FC that constructs solid by taking a sketch_FC and rotating it up / down some axis, similar to the threads of a screw. `{ref} https://wiki.freecad.org/PartDesign_AdditiveHelix` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveHelix`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(helix|helixes)/i`
+
+* `{bm} fillet/(filleted|fillet'd|fillets?)_FC/i` - A feature_FC that cuts into a edge, rounding it. `{ref} https://wiki.freecad.org/PartDesign_Fillet`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(filleted|fillet'd|fillets?)/i`
+
+* `{bm} chamfer/(chamfered|chamfer'd|chamfers?)_FC/i` - A feature_FC that cuts into a edge, creating an angled straight edge where that edge was. `{ref} https://wiki.freecad.org/PartDesign_Chamfer`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(chamfered|chamfer'd|chamfers?)/i`
+
+* `{bm} thickness/(thickness)_FC/i` - A feature_FC that converts a solid to a shell, removing selected faces and !!thickening!! the faces. `{ref} https://wiki.freecad.org/PartDesign_Thickness`
+
+
+`{bm-error} Use _LW if referencing line width, or use _LH if referencing layer height, or use _FC if referencing the FreeCAD thickness feature, or wrap in !!/(thickness)/i`
+`{bm-error} Use _LW if referencing line width, or use _LH if referencing layer height, or wrap in !!/(thicker|thicken|thick)/i`
 
 `{bm-error} Did you mean Bambu Lab (not plural)?/(Bambu Labs)/`
 

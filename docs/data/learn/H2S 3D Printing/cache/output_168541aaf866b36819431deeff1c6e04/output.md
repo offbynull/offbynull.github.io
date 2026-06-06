@@ -1,0 +1,1 @@
+<sub>[\[self src\]](data:text/plain,This%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.)</sub>
