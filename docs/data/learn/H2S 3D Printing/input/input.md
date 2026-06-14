@@ -26,12 +26,12 @@ The subsections below detail the machinery within the chamber.
 
 `{bm} /(Hardware\/Toolhead)_TOPIC/i`
 
-The machinery responsible for laying down material is the toolhead. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227` The toolhead is an assembly consisting of ...
+The machinery responsible for laying down material is the toolhead. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227` The toolhead is an !!assembly!! consisting of ...
 
 * a PTFE connector.
 * a filament sensor: Sensor detecting the presence of filament in the toolhead, located where the filament is fed into the toolhead. The filament sensor prevents printing without filament, allowing prints to resume once new filament is available. `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214`
 * an extruder: Motor within the toolhead that grips and moves filament between the PTFE connector to the hotend
-* a hotend with nozzle: Assembly responsible for melting filament for deposit on to a print. A hotend includes a ...
+* a hotend with nozzle: !!Assembly!! responsible for melting filament for deposit on to a print. A hotend includes a ...
 
   * coldend - keeps filament at lower temperature.
   * nozzle - heated to melt the filament and deposit it onto a print.
@@ -634,7 +634,7 @@ The sidebar contains a ...
 
 * **Printer** section that controls which printer to use and its configuration (e.g., build plate and nozzle).
 * **Project Filaments** section that controls the filaments are available to the project. For example, a model within the project can be painted such that different areas of the model use different filaments, but those filaments have to be made available to the project first via this section.
-* **Process** section that controls the hierarchy of entities within the project (e.g., models may be grouped together, referred to as an assembly). Each entity has properties to it that can be modified (e.g., parameters that control how the model prints).
+* **Process** section that controls the hierarchy of entities within the project (e.g., models may be grouped together, referred to as an assembly_BS). Each entity has properties to it that can be modified (e.g., parameters that control how the model prints).
 
 ### Project Filaments
 
@@ -680,11 +680,11 @@ Bambu Studio/User Interface/3D Viewport_TOPIC
 Bambu Studio/User Interface/Project Filaments_TOPIC
 ```
 
-Bambu Studio has a section for defining how models and model groupings (assemblies) are printed. The Process section is in the sidebar of the Prepare screen and the Preview screen.
+Bambu Studio has a section for defining how models and model groupings (assemblies_BS) are printed. The Process section is in the sidebar of the Prepare screen and the Preview screen.
 
 ![Bambu Studio Prepare screen process](bambu_studio_prepare_process.png)
 
-The Process section can change scope using a toggle (section 1). The scope can either be global, or it can target a specific set of objects (e.g., a model, an assembly, or some combination of models/assemblies). If not scoped globally, an object hierarchy will be displayed directly below the toggle (section 3). The selections in the object hierarchy will reflect those in the 3D viewport and vice versa.
+The Process section can change scope using a toggle (section 1). The scope can either be global, or it can target a specific set of objects (e.g., a model, an assembly_BS, or some combination of models/assemblies_BS). If not scoped globally, an object hierarchy will be displayed directly below the toggle (section 3). The selections in the object hierarchy will reflect those in the 3D viewport and vice versa.
 
 Below the object hierarchy is a hierarchy of parameters that control printing:
 
@@ -870,11 +870,11 @@ Bambu Studio/User Interface_TOPIC
 
 In certain cases, two objects may need to combine into one for printing, such that they print as a single object vs two separate objects.
 
-In the Prepare screen's 3D viewport, select two or more objects, then right-click to open the context menu and select **Merge**. Merged objects are placed under a single assembly.
+In the Prepare screen's 3D viewport, select two or more objects, then right-click to open the context menu and select **Merge**. Merged objects are placed under a single assembly_BS.
 
 ![Bambu Studio Prepare screen assembly example](bambu_studio_prepare_assemble_example.png)
 
-Once objects are within a single assembly, they can be manually moved into each other and / or levitated off the build plate using the move tool (Prepare screen's toolbar button 6, keyboard shortcut M). If objects aren't merged but occupy the same space, slicing will print them as if they're distinct. That is, if two objects occupy the same space, the outer shell / wall of both objects will be drawn inside each other.
+Once objects are within a single assembly_BS, they can be manually moved into each other and / or levitated off the build plate using the move tool (Prepare screen's toolbar button 6, keyboard shortcut M). If objects aren't merged but occupy the same space, slicing will print them as if they're distinct. That is, if two objects occupy the same space, the outer shell / wall of both objects will be drawn inside each other.
 
 ![Bambu Studio Preview screen conflicting objects vs non-conflicting objects](bambu_studio_conflicting_vs_non_conflicting_models.png)
 
@@ -882,7 +882,7 @@ Once objects are within a single assembly, they can be manually moved into each 
 Doing a mesh boolean union also fixed this outer wall drawing problem.
 ```
 
-Alternatively, an object can be loaded and combined with an existing object at the same time. In the 3D viewport, right-click the existing object to open the context menu and navigate to **Add Part** → **Load** and select the new object to combine with in the file selection dialog. The objects will be combined in the same way (as an assembly).
+Alternatively, an object can be loaded and combined with an existing object at the same time. In the 3D viewport, right-click the existing object to open the context menu and navigate to **Add Part** → **Load** and select the new object to combine with in the file selection dialog. The objects will be combined in the same way (as an assembly_BS).
 
 ```{seealso}
 Bambu Studio/Object Set Operations_TOPIC
@@ -891,20 +891,20 @@ Bambu Studio/Object Set Operations_TOPIC
 ![Bambu Studio Prepare screen toolbar](bambu_studio_prepare_toolbar.png)
 
 ```{note}
-You can push objects into each other without putting them under the same assembly, but it'll complain during slicing.
+You can push objects into each other without putting them under the same assembly_BS, but it'll complain during slicing.
 ```
 
-Alternatively, two objects can be repositioned and reoriented such that they touch each other using the assembly tool (Prepare screen's toolbar button 12, keyboard shortcut Y). The assembly tool opens a pop-up used to target how and where the objects touch.
+Alternatively, two objects can be repositioned and reoriented such that they touch each other using the !!assembly!! tool (Prepare screen's toolbar button 12, keyboard shortcut Y). The !!assembly!! tool opens a pop-up used to target how and where the objects touch.
 
 ![Bambu Studio Prepare screen assemble parameters](bambu_studio_prepare_assemble_parameters.png)
 
-The assembly tool has two **Mode** options:
+The !!assembly!! tool has two **Mode** options:
 
-* **Point and Point Assembly**: Touches objects on specific points (e.g., vertex).
+* **Point and Point !!Assembly!!**: Touches objects on specific points (e.g., vertex).
 
   Click on a point on the first object and click on point on the second object. The first point should highlight as cyan while the second face should highlight as purple, and sections 2 and 3 of the screenshot should update to indicate that a selection's been made. From there, XYZ coordinate fields should show up in the dialog. Set those fields to 0 to bring the points together.
 
-* **Face and Face Assembly**: Touches objects on specific faces.
+* **Face and Face !!Assembly!!**: Touches objects on specific faces.
 
   Click on a face of the first object and click on a face of the second object. The first face should highlight as cyan while the second face should highlight as purple, and sections 2 and 3 of the screenshot should update to indicate that a selection's been made. From there, the ...
 
@@ -915,11 +915,11 @@ The assembly tool has two **Mode** options:
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/assemble` `{ref} https://wiki.bambulab.com/en/software/bambu-studio/stacking-objects`
 
 ```{note}
-Technically, merging into an assembly isn't required to use the assembly tool in the toolbar. But, if the intent is to stack the objects on top of each other such that one of them has a face off the build plate, it won't work (both objects will be forced back down to touch the build plate). 
+Technically, merging into an assembly_BS isn't required to use the !!assembly!! tool in the toolbar. But, if the intent is to stack the objects on top of each other such that one of them has a face off the build plate, it won't work (both objects will be forced back down to touch the build plate). 
 ```
 
 ```{note}
-The mesh boolean tool (button 11, keyboard shortcut B) can be used to merge the parts of an assembly back into a single model. The mesh boolean tool takes multiple objects (e.g., parts of an assembly or multiple high-level models) and performs a boolean operation on them (e.g., union, intersect, subtraction). So, to combine an assembly to a single object, use the union option.
+The mesh boolean tool (button 11, keyboard shortcut B) can be used to merge the parts of an assembly_BS back into a single model. The mesh boolean tool takes multiple objects (e.g., parts of an assembly_BS or multiple high-level models) and performs a boolean operation on them (e.g., union, intersect, subtraction). So, to combine an assembly_BS to a single object, use the union option.
 ```
 
 ```{seealso}
@@ -1238,7 +1238,7 @@ Bambu Studio/Object Supports_TOPIC
 Bambu Studio/User Interface_TOPIC
 ```
 
-In certain cases, an object may either need to be cut (e.g., oversized for printer) or may benefit from being cut (e.g., minimize need for supports_BO or make it easier to sand/paint/finish). Cut pieces are typically assembled and fused back together after printing (e.g., glue, pen welding, joinery).
+In certain cases, an object may either need to be cut (e.g., oversized for printer) or may benefit from being cut (e.g., minimize need for supports_BO or make it easier to sand/paint/finish). Cut pieces are typically !!assembled!! and fused back together after printing (e.g., glue, pen welding, joinery).
 
 In the Prepare screen's 3D viewport, an object can be cut by selecting it and clicking cut tool in the Prepare screen's toolbar (button 10, keyboard shortcut C), which will open a pop-up, present a cutting plane in the 3D viewport, and present cutting plane rotational axis and offset !!height!! controls in the 3D viewport.
 
@@ -1267,7 +1267,7 @@ The cutting tool has two modes, chosen using the **Mode** dropdown at the top of
   5. **After cut** defines how the cut pieces are treated:
 
      * **Object A/B**: Object is split into two, where the checkboxes define how each piece gets oriented on the build plate.
-     * **Cut to parts**: Object is split into an assembly of 2 parts, where parts remain in place.
+     * **Cut to parts**: Object is split into an assembly_BS of 2 parts, where parts remain in place.
 
   ![Bambu Studio Prepare screen cut planar parameters](bambu_studio_prepare_cut_planar_parameters.png)
 
@@ -1284,14 +1284,14 @@ The cutting tool has two modes, chosen using the **Mode** dropdown at the top of
   5. **After cut** defines how the cut pieces are treated:
 
      * **Object A/B**: Object is split into two, where the checkboxes define how each piece gets oriented on the build plate.
-     * **Cut to parts**: Object is split into an assembly of 2 parts, where parts remain in place.
+     * **Cut to parts**: Object is split into an assembly_BS of 2 parts, where parts remain in place.
 
   ![Bambu Studio Prepare screen cut planar parameters](bambu_studio_prepare_cut_dovetail_parameters.png)
 
 `{ref} https://bambulab.com/en/support/academy/3/course/986946695195025408/chapter/33` `{ref} https://wiki.bambulab.com/en/software/bambu-studio/cut-tool`
 
 ```{note}
-The mesh boolean tool (button 11, keyboard shortcut B) can be used to merge the parts of an assembly back into a single model. The mesh boolean tool takes multiple objects (e.g., parts of an assembly or multiple high-level models) and performs a boolean operation on them (e.g., union, intersect, subtraction). So, to combine an assembly to a single object, use the union option.
+The mesh boolean tool (button 11, keyboard shortcut B) can be used to merge the parts of an assembly_BS back into a single model. The mesh boolean tool takes multiple objects (e.g., parts of an assembly_BS or multiple high-level models) and performs a boolean operation on them (e.g., union, intersect, subtraction). So, to combine an assembly_BS to a single object, use the union option.
 ```
 
 ## Object Set Operations
@@ -1315,14 +1315,14 @@ The mesh boolean tool has 3 possible operations:
 * **Intersection**: Creates a new model composed of only the overlapping parts between all models.
 * **Subtraction**: Removes a chunk from a model, using other models as the cut-out stencil.
 
-Regardless of which you pick, you can specify which of the selected models to apply the operation to. The resulting operation creates a single model with the chosen set operation applied (*not an assembly of models*, but a single model).
+Regardless of which you pick, you can specify which of the selected models to apply the operation to. The resulting operation creates a single model with the chosen set operation applied (*not an assembly_BS of models*, but a single model).
 
 Given that the mesh boolean tool creates a single new model, the resulting single model typically doesn't encounter overlap issues during slicing. For example, if models aren't union'd but occupy the same space, slicing will print them as if they're distinct. That is, if two models occupy the same space, the outer shell / wall of both models will be drawn inside each other.
 
 ![Bambu Studio Preview screen conflicting objects vs non-conflicting objects](bambu_studio_conflicting_vs_non_conflicting_objects.png) `{ref} https://wiki.bambulab.com/en/software/bambu-studio/mesh-boolean`
 
 ```{note}
-Merging two objects under the same assembly also fixed this outer wall drawing problem.
+Merging two objects under the same assembly_BS also fixed this outer wall drawing problem.
 ```
 
 ```{seealso}
@@ -1338,11 +1338,11 @@ Bambu Studio/Object Combining_TOPIC
 Bambu Studio/Object Set Operations_TOPIC
 ```
 
-A negative part is an object that gets combined with an existing set of objects (same assembly), but it's purpose is to subtract areas of the existing objects. Any region of the existing objects that intersect with the negative part are cut out during slicing.
+A negative part is an object that gets combined with an existing set of objects (same assembly_BS), but it's purpose is to subtract areas of the existing objects. Any region of the existing objects that intersect with the negative part are cut out during slicing.
 
 ![Bambu Studio Prepare screen negative part example](bambu_studio_prepare_negative_part_example.png) ![Bambu Studio Preview screen negative part example](bambu_studio_preview_negative_part_example.png)
 
-To add a negative part, right-click on an object to open the context-menu and navigate to **Add negative part** and select either a primitive or **Load...** to import a model. The negative part will be placed under an assembly along with the parts of the original object.
+To add a negative part, right-click on an object to open the context-menu and navigate to **Add negative part** and select either a primitive or **Load...** to import a model. The negative part will be placed under an assembly_BS along with the parts of the original object.
 
 As shown in the screenshots above, negative parts appear slightly transparent when viewed in the **Prepare** screen and can be manipulated just like any other object. However, in the **Preview** screen, any region of the existing objects that intersect with the negative part are cut out during slicing.
 
@@ -1363,11 +1363,11 @@ Bambu Studio/Fuzzy Skin_TOPIC
 Bambu Studio/Object Infill_TOPIC
 ```
 
-A modifier part is an object that gets combined with an existing set of models (same assembly), but it's purpose is to modify properties of specific areas of existing models. Any region of the existing models that intersect with the modifier part have the modifier part's properties applied.
+A modifier part is an object that gets combined with an existing set of models (same assembly_BS), but it's purpose is to modify properties of specific areas of existing models. Any region of the existing models that intersect with the modifier part have the modifier part's properties applied.
 
 ![Bambu Studio Prepare screen modifier part example](bambu_studio_prepare_modifier_part_example.png) ![Bambu Studio Preview screen modifier part example](bambu_studio_preview_modifier_part_example.png)
 
-To add a modifier part, right-click on an object to open the context-menu and navigate to **Add modifier** and select either a primitive or **Load...** to import a model. The modifier part will be placed under an assembly along with the parts of the original object.
+To add a modifier part, right-click on an object to open the context-menu and navigate to **Add modifier** and select either a primitive or **Load...** to import a model. The modifier part will be placed under an assembly_BS along with the parts of the original object.
 
 As shown in the screenshots above, modifier parts appear gold when viewed in the **Prepare** screen and can be manipulated just like any other model. However, in the **Preview** screen, any region of the existing models that intersect with the modifier part have their properties changed to that of the modifier part (e.g., change filament color or apply fuzzy skin).
 
@@ -1469,7 +1469,7 @@ The majority of the parameters are self-explanatory.
     Use **Depth** to sink the text into the object (e.g., 1-2mm) because just printing on the surface on the object might not be enough securely adhere to the object. Embedding past the surface creates a tighter physical connection to hold the text in place.
 
     ```{note}
-    Printing on the surface on the object might not be enough securely adhere to the object. Once the icon has been placed, it's added under an assembly along with the object. Select the icon and move it slightly into the object. Embedding past the surface into the actual object creates a tighter physical connection to hold the icon in place.
+    Printing on the surface on the object might not be enough securely adhere to the object. Once the icon has been placed, it's added under an assembly_BS along with the object. Select the icon and move it slightly into the object. Embedding past the surface into the actual object creates a tighter physical connection to hold the icon in place.
     ```
 
     ```{note}
@@ -1778,7 +1778,7 @@ In the object's parameters, ...
   According to the source: ..., it should be noted that some seam positions cannot be accurately divided into the set number of steps, so the actual scarf steps ≥ the set scarf steps.
   ```
 
-* when **Quality** → **Seam** → **Seam joint for inner walls** is enabled, inner walls will also have a scarf seam.
+* when **Quality** → **Seam** → **Seam !!joint!! for inner walls** is enabled, inner walls will also have a scarf seam.
 
 `{ref} https://wiki.bambulab.com/en/software/bambu-studio/Seam`
 
@@ -2066,7 +2066,7 @@ Bambu Studio/Negative Parts_TOPIC
 Bambu Studio/Object Seam_TOPIC
 ```
 
-Printed objects that require accurate fitting with other components (e.g., screws or other printed parts) sometimes don't fit they way they should because of variances introduced during printing. For holes_BS and contours_BS running *running down the Z-axis*, Bambu Studio provides calibration steps to compensate for these variances:
+Printed objects that require accurate fitting with other !!components!! (e.g., screws or other printed parts) sometimes don't fit they way they should because of variances introduced during printing. For holes_BS and contours_BS running *running down the Z-axis*, Bambu Studio provides calibration steps to compensate for these variances:
 
 ![Bambu Studio Prepare screen contour hole example](bambu_studio_prepare_contour_hole_example.png)
 
@@ -3259,7 +3259,7 @@ Elements_FC and constraints_FC can be selected in any of the following ways:
 
   Previously selected elements_FC are not discarded on connection select.
 
-* **Element_FC / Constraints_FC pane**: Constraints_FC and the individual components of each element_FC (e.g., a line elements_FC's endpoint and actual line) are selectable via the constraints_FC pane and elements_FC pane, respectively. The elements_FC pane lists the elements_FC component next to the element_FC, which can be individually clicked (e.g., select 2-Line's first endpoint).
+* **Element_FC / Constraints_FC pane**: Constraints_FC and the individual sub-elements_FC of each element_FC (e.g., a line elements_FC's endpoint and actual line) are selectable via the constraints_FC pane and elements_FC pane, respectively. The elements_FC pane lists the individual elements_FC as well as the sub-elements_FC for those elements_FC, which can be individually clicked (e.g., select 2-Line's first endpoint).
   
   ![FreeCAD sketcher workbench elements and constrains pane](freecad_sketcher_elements_and_constraints.png)
 
@@ -3669,14 +3669,14 @@ The selection activates the tool with specific Rectangle Parameters preset. Thos
 
 * **Mode**: The mode in which the rectangle should be created (cycle keyboard shortcut M). Mode defines the constraints_FC presented by On-View-Parameters_FC when the rectangle is being created.
 * **Rounded corners**: Whether the rectangle should have rounded corners (keyboard shortcut U). Rounded corners defines extra elements_FC and constraints_FC to be presented by On-View-Parameters_FC when the rectangle is being created.
-* **Frame**: Whether the rectangle should be a frame (keyboard shortcut J), as in have an inner and outer border. Frame defines extra elements_FC and constraints_FC to be presented by On-View-Parameters_FC when the rectangle is being created.
+* **!!Frame!!**: Whether the rectangle should be a !!frame!! (keyboard shortcut J), as in have an inner and outer border. !!Frame!! defines extra elements_FC and constraints_FC to be presented by On-View-Parameters_FC when the rectangle is being created.
 
 ![FreeCAD sketcher workbench rectangle parameters](freecad_sketcher_rectangle_parameters.png)
 
 Click within the 3D viewport to place the element_FC and either fill out the On-View-Parameters_FC or click until placement is complete.
 
 ```{note}
-A rectangle is made up of at least 4 lines. 4 more added if it's framed. 4 arcs added if it's rounded.
+A rectangle is made up of at least 4 lines. 4 more added if it's !!framed!!. 4 arcs added if it's rounded.
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_CreateRectangle` 
@@ -3931,7 +3931,12 @@ A Distance Dimension constraint_FC sets the distance.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Distance Dimension constraint_FC, select the element_FC (e.g., line), elements_FC (e.g., line and arc), or element_FC components (points on a line). Then, use toolbar button 1 to present a drop-down and select Distance Dimension (keyboard shortcut K,D). A pop-up will ask for the length value. Once the constraint_FC has been created, press Esc to exit.
+To create a Distance Dimension constraint_FC, select either ...
+
+* an element_FC (e.g., line)
+* a pair of items, where each item can be either an element_FC or a sub-element_FC (e.g., line and arc, point and a line, point and a point).
+
+Then, use toolbar button 1 to present a drop-down and select Distance Dimension (keyboard shortcut K,D). A pop-up will ask for the length value. Once the constraint_FC has been created, press Esc to exit.
 
 Distance Dimension works on the elements_FC most users expect (e.g., distance between two points, distance of a line). It also works on other elements_FC. For example, Distance Dimension can be applied to point and a line, an arc, two circles / arcs, a line and a circle / arc,
 
@@ -3988,7 +3993,12 @@ A Horizontal Dimension constraint_FC sets the how far apart two elements_FC are,
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Horizontal Dimension constraint_FC, select the element_FC or element_FC components (e.g., points on a line). Then, use toolbar button 1 to present a drop-down and select Horizontal Dimension (keyboard shortcut L). A pop-up will ask for the length value. Once the constraint_FC has been created, press Esc to exit.
+To create a Horizontal Dimension constraint_FC, select either ...
+
+* an element_FC (e.g., line)
+* a pair of items, where each item can be either an element_FC or a sub-element_FC (e.g., two points on different lines).
+
+Then, use toolbar button 1 to present a drop-down and select Horizontal Dimension (keyboard shortcut L). A pop-up will ask for the length value. Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that breaks down in certain cases. For example, you can't apply to just a single point.
@@ -4022,7 +4032,12 @@ A Vertical Dimension constraint_FC sets the how far apart two elements_FC are, v
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Vertical Dimension constraint_FC, select the element_FC or element_FC components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Vertical Dimension (keyboard shortcut I). A pop-up will ask for the length value. Once the constraint_FC has been created, press Esc to exit.
+To create a Vertical Dimension constraint_FC, select either ...
+
+* an element_FC (e.g., line)
+* a pair of items, where each item can be either an element_FC or a sub-element_FC (e.g., two points on different lines).
+
+Then, use toolbar button 1 to present a drop-down and select Vertical Dimension (keyboard shortcut I). A pop-up will ask for the length value. Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that breaks down in certain cases. For example, you can't apply to just a single point.
@@ -4057,7 +4072,7 @@ Lock Position is not a constraint_FC, but a helper that applies both a Vertical 
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To apply Lock Position, select the element_FC or element_FC components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Lock Position (keyboard shortcut K,L). Once the constraint_FC has been created, press Esc to exit.
+To apply Lock Position, select the element_FC, use toolbar button 1 to present a drop-down, and select Lock Position (keyboard shortcut K,L). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that breaks down in certain cases. For example, you can't apply to just a single point.
@@ -4085,7 +4100,7 @@ From the source:
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Radius Dimension constraint_FC, select the element_FC or element_FC component (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Radius Dimension (keyboard shortcut K,R). A pop-up will ask for the radius value. Once the constraint_FC has been created, press Esc to exit.
+To create a Radius Dimension constraint_FC, select an element_FC (e.g., arc), use toolbar button 1 to present a drop-down, and select Radius Dimension (keyboard shortcut K,R). A pop-up will ask for the radius value. Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
@@ -4107,7 +4122,7 @@ Unlike Radius Dimension, Diameter Dimension cannot be used for B-splines. From t
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Diameter Dimension constraint_FC, select the element_FC or element_FC component (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Diameter Dimension (keyboard shortcut K,O). A pop-up will ask for the diameter value. Once the constraint_FC has been created, press Esc to exit.
+To create a Diameter Dimension constraint_FC, select the element_FC (e.g., circle), use toolbar button 1 to present a drop-down, and select Diameter Dimension (keyboard shortcut K,O). A pop-up will ask for the diameter value. Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
@@ -4123,7 +4138,12 @@ An Angle Dimension sets the angle between two edges, a line an an axis of the sk
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Angle Dimension constraint_FC, select the element_FC or element_FC component (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Angle Dimension (keyboard shortcut K,A). A pop-up will ask for the angle value. Once the constraint_FC has been created, press Esc to exit.
+To create a Angle Dimension constraint_FC, select either ...
+
+* an element_FC (e.g., line)
+* a pair of items, where each item can be either an element_FC or a sub-element_FC (e.g., two lines).
+
+Then, use toolbar button 1 to present a drop-down and select Angle Dimension (keyboard shortcut K,A). A pop-up will ask for the angle value. Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
@@ -4151,7 +4171,7 @@ Radius-Diameter Dimension is not a constraint_FC, but a helper that applies eith
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To apply Radius-Diameter Dimension, select the element_FC or element_FC components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Radius-Diameter Dimension (keyboard shortcut K,S). A pop-up will ask for the diameter/radius value. Once the constraint_FC has been created, press Esc to exit.
+To apply Radius-Diameter Dimension, select the element_FC (e.g., arc), use toolbar button 1 to present a drop-down, and select Radius-Diameter Dimension (keyboard shortcut K,S). A pop-up will ask for the diameter/radius value. Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that breaks down in certain cases. For example, you can't apply to just a single point.
@@ -4189,12 +4209,21 @@ Dimension is not a constraint_FC, but a helper that allows cycling through most 
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To apply Dimension, select the element_FC or element_FC components (e.g., two points). Then, use toolbar button 1 to present a drop-down and select Dimension (keyboard shortcut D). Continue to hit M until the desired constraint_FC appears and click to apply. A pop-up may appear asking for a value (e.g., angle if the constraint_FC is Angle Dimension constraint_FC). Once the constraint_FC has been created, press Esc to exit.
+To apply Dimension, select either ...
+
+* an element_FC (e.g., line)
+* a pair of items, where each item can be either an element_FC or a sub-element_FC (e.g., two points on different lines).
+
+Then, use toolbar button 1 to present a drop-down and select Dimension (keyboard shortcut D). Continue to hit M until the desired constraint_FC appears and click to apply. A pop-up may appear asking for a value (e.g., angle if the constraint_FC is Angle Dimension constraint_FC). Once the constraint_FC has been created, press Esc to exit.
 
 For example, if the selection is two lines, the possible constraints_FC that can be cycled through may include Angle Dimension and Parallel.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that breaks down in certain cases. For example, you can't apply to just a single point.
+```
+
+```{note}
+Will selecting 3 items work? Select 2 points and a line - does it default to a symmetry constraint_FC?
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_Dimension`
@@ -4207,7 +4236,12 @@ A Coincident constraint_FC sets a point to lie on another point, edge (e.g., lin
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Coincident constraint_FC, select the element_FC or element_FC component (e.g., two points). Then, use toolbar button 2 (keyboard shortcut C). A pop-up will ask for the angle value. Once the constraint_FC has been created, press Esc to exit.
+To create a Coincident constraint_FC, select either ...
+
+* an element_FC (e.g., line)
+* a pair of items, where each item can be either an element_FC or a sub-element_FC (e.g., a point and a line).
+
+Then, use toolbar button 2 (keyboard shortcut C). A pop-up will ask for the angle value. Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
@@ -4233,7 +4267,12 @@ A Horizontal constraint_FC sets a pair of points or a line to be horizontal.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Horizontal constraint_FC, select the element_FC or element_FC component (e.g., two points). Then, use toolbar button 3 to present a drop-down and select Horizontal (keyboard shortcut H). Once the constraint_FC has been created, press Esc to exit.
+To create a Horizontal constraint_FC, select either ...
+
+* an element_FC (e.g., line)
+* a pair of items, where each item can be either an element_FC or a sub-element_FC (e.g., two points).
+
+Then, use toolbar button 3 to present a drop-down and select Horizontal (keyboard shortcut H). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
@@ -4249,7 +4288,12 @@ A Vertical constraint_FC sets a pair of points or a line to be vertical.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Vertical constraint_FC, select the element_FC or element_FC component (e.g., two points). Then, use toolbar button 3 to present a drop-down and select Vertical (keyboard shortcut V). Once the constraint_FC has been created, press Esc to exit.
+To create a Vertical constraint_FC, select either ...
+
+* an element_FC (e.g., line)
+* a pair of items, where each item can be either an element_FC or a sub-element_FC (e.g., two points).
+
+Then, use toolbar button 3 to present a drop-down and select Vertical (keyboard shortcut V). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
@@ -4270,7 +4314,12 @@ Horizontal-Vertical is not a constraint_FC, but a helper that applies either a H
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To apply Horizontal-Vertical, select the element_FC or element_FC components (e.g., two points). Then, use toolbar button 3 to present a drop-down and select Horizontal-Vertical (keyboard shortcut A). Once the constraint_FC has been created, press Esc to exit.
+To apply Horizontal-Vertical, select either ...
+
+* an element_FC (e.g., line)
+* a pair of items, where each item can be either an element_FC or a sub-element_FC (e.g., two points).
+
+Then, use toolbar button 3 to present a drop-down and select Horizontal-Vertical (keyboard shortcut A). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that breaks down in certain cases. For example, you can't apply to just a single point.
@@ -4291,7 +4340,7 @@ A Parallel constraint_FC sets a pair of lines to be parallel.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Parallel constraint_FC, select the element_FC or element_FC component (e.g., two lines). Then, use toolbar button 4 (keyboard shortcut P). Once the constraint_FC has been created, press Esc to exit.
+To create a Parallel constraint_FC, select the elements_FC (e.g., two lines) and use toolbar button 4 (keyboard shortcut P). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
@@ -4307,7 +4356,7 @@ A Perpendicular constraint_FC sets a pair of lines to be perpendicular.
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Perpendicular constraint_FC, select the element_FC or element_FC component (e.g., two lines). Then, use toolbar button 5 (keyboard shortcut N). Once the constraint_FC has been created, press Esc to exit.
+To create a Perpendicular constraint_FC, select the elements_FC (e.g., two lines) and use toolbar button 5 (keyboard shortcut N). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
@@ -4323,7 +4372,7 @@ A Tangent-Colinear constraint_FC sets two edges (e.g., line, rim of an arc, rim 
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Tangent-Colinear constraint_FC, select the element_FC or element_FC component (e.g., two lines). Then, use toolbar button 6 (keyboard shortcut T). Once the constraint_FC has been created, press Esc to exit.
+To create a Tangent-Colinear constraint_FC, select the elements_FC (e.g., two lines) and use toolbar button 6 (keyboard shortcut T). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
@@ -4339,7 +4388,7 @@ An Equal constraint_FC sets two edges (e.g., line, rim of an arc, rim of a circl
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create an Equal constraint_FC, select the element_FC or element_FC component (e.g., two lines). Then, use toolbar button 7 (keyboard shortcut E). Once the constraint_FC has been created, press Esc to exit.
+To create an Equal constraint_FC, select the element_FC (e.g., two lines) and use toolbar button 7 (keyboard shortcut E). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
@@ -4355,7 +4404,7 @@ A Symmetric constraint_FC sets two points to mirror each other symmetrically ove
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Symmetric constraint_FC, select the element_FC or element_FC component (e.g., two lines). Then, use toolbar button 8 (keyboard shortcut S). Once the constraint_FC has been created, press Esc to exit.
+To create a Symmetric constraint_FC, select the element_FC or element_FC !!component!! (e.g., two lines). Then, use toolbar button 8 (keyboard shortcut S). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
@@ -4371,7 +4420,7 @@ A Block constraint_FC fixes an edge (e.g., line, rim of an arc, rim of a circle,
 
 ![FreeCAD sketcher workbench numbered constraint toolbar buttons](freecad_sketcher_numbered_constraint_toolbar_buttons.png)
 
-To create a Block constraint_FC, select the element_FC or element_FC component (e.g., two lines). Then, use toolbar button 9 (keyboard shortcut K, B). Once the constraint_FC has been created, press Esc to exit.
+To create a Block constraint_FC, select the element_FC (e.g., line) and use toolbar button 9 (keyboard shortcut K, B). Once the constraint_FC has been created, press Esc to exit.
 
 ```{note}
 You can select the constraint_FC first and then pick the two things to create a constraint_FC between, but that may breaks down in certain cases where more than 1 selection is required.
@@ -4399,14 +4448,13 @@ Features_FC are built out using a non-destructive workflow. That means, as featu
 
 ![FreeCAD Part Design workbench example 2 workflow](freecad_part_design_example_2_workflow.png)
 
-The core components of the Part Design workbench_FC are parts_FC, bodies_FC, and sketches_FC. A body_FC is a model built mostly by transforming 2D sketches_FC into 3D features_FC. If the object has multiple bodies_FC to it, those bodies_FC are placed under a standard part container_FC.
+The core !!components!! of the Part Design workbench_FC are bodies_FC and sketches_FC. A body_FC is a model built mostly by transforming 2D sketches_FC into 3D features_FC.
 
 ```{plantuml}
 @startuml
 
 hide circle
 
-StdPart ||--|{ Body : "contains"
 Body ||--|{ NonSketchFeature : "built using"
 Body ||--|{ SketchFeature : "built using"
 
@@ -4496,7 +4544,7 @@ FreeCAD/User Interface Layout_TOPIC
 FreeCAD/Part Design Workbench\/User Interface_TOPIC
 ```
 
-The core components of the Part Design workbench_FC are standard parts_FC, bodies_FC, and sketches_FC. A standard part_FC holds one or more bodies_FC, and each body_FC typically compounds several sketches_FC into 3D geometry. While bodies_FC can be created outside of standard parts_FC, standard parts_FC are beneficial in that a standard part_FC encapsulates all bodies_FC together as a unit (as well as can include other types of objects).
+The core !!components!! of the Part Design workbench_FC are bodies_FC and sketches_FC. Each body_FC typically compounds several sketches_FC into 3D geometry.
 
 ```{plantuml}
 @startuml
@@ -4510,51 +4558,15 @@ Body ||--|{ SketchFeature : "built using"
 @enduml
 ```
 
-#### Standard Part
-
-`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Standard Part)_TOPIC/i`
-
-A standard part_FC is a container that can hold one or more bodies_FC, as well as other types of objects. Standard parts_FC aren't unique to the Part Design workbench_FC, but they're valuable as an encapsulation for bodies_FC because if what's being modeled consists of multiple bodies_FC, having those bodies_FC grouped under the same standard part_FC makes it easier to reuse in other workbenches_FC (e.g., assembly workbench_FC).
-
-`{ref} https://wiki.freecad.org/Std_Part` `{ref} self`
-
-##### Create
-
-`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Standard Part\/Create)_TOPIC/i`
-
-![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
-
-To create a standard part_FC, use toolbar button 1. Bodies_FC can be moved in to / out of the standard part_FC by dragging them within the Model pane.
-
-`{ref} https://wiki.freecad.org/Std_Part` `{ref} self`
-
-##### Coordinate System
-
-`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Part\/Coordinate System)_TOPIC/i`
-
-A standard part_FC has its own local coordinate system_FC: Internally, bodies_FC are moved and rotated using the local coordinate system_FC. Externally, the standard part_FC (and all the bodies_FC within it) is moveable and rotatable as a single unit.
-
-![FreeCAD part design workbench part model pane example](freecad_part_design_part_model_pane_example.png)
-
-```{note}
-Axis and angle define rotation - axis defines a vector and angle rotates around that vector.
-```
-
-```{note}
-An easier way to set the orientation is, in the Model pane, right-click and choose **Transform**. It sets the same properties highlighted in the above screenshot, but it also provides gizmos in the viewport and a popup pane with more friendly ways to set.
-```
-
-`{ref} self`
-
 #### Body
 
 `{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Body)_TOPIC/i`
 
 ```{prereq}
-FreeCAD/Part Design Workbench/Organization/Standard Part_TOPIC
+FreeCAD/Datum Geometry/Local Coordinate System_TOPIC
 ```
 
-A body_FC is a single contiguous 3D model, mostly built by compounding several sketches_FC into 3D geometry in a chain. Each item in the chain is referred to as a feature_FC, which is a distinct and editable.
+A body_FC is a single contiguous 3D model, mostly built by compounding several sketches_FC into 3D geometry in a chain. Each item in the chain is referred to as a feature_FC, which is a distinct and editable step in the building of the model.
 
 The list of features_FC nested under a body_FC comprise a non-destructive workflow. For example, a sketch_FC of a square that's 5mm by 5mm can be padded by 10mm to create a rectangular prism. Then, a sketch_FC of a circle with a 3.5mm diameter can be placed on a face of that prism and pocketed to create a cylindrical !!hole!! through that cube.
 
@@ -4562,31 +4574,17 @@ The list of features_FC nested under a body_FC comprise a non-destructive workfl
 
 ![FreeCAD Part Design workbench example 2 workflow](freecad_part_design_example_2_workflow.png)
 
-`{ref} https://wiki.freecad.org/PartDesign_Body` `{ref} https://wiki.freecad.org/Body`
-
-##### Create
-
-`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Body\/Create)_TOPIC/i`
-
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+**Create**
 
 Use toolbar button 3 to create a body_FC. For certain operations, if there is no body_FC, one is implicitly created when the operation runs (e.g., creating a new sketch_FC from the Part Design workbench_FC).
 
-`{ref} https://wiki.freecad.org/PartDesign_Body` `{ref} https://wiki.freecad.org/Body`
+**Clone**
 
-##### Clone
+Use toolbar button 8 to clone the current body_FC selected in the Model pane into a new body_FC. A clone is linked, not copied. That means changing the original changes the clone.
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Body\/Clone)_TOPIC/i`
-
-![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
-
-Use toolbar button 8 to clone the current Model pane selection into a new body_FC. A clone is linked, not copied. That means changing the original changes the clone.
-
-`{ref} https://wiki.freecad.org/PartDesign_Clone` `{ref} self`
-
-##### Coordinate System
-
-`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Body\/Coordinate System)_TOPIC/i`
+**Local Coordinate System_FC**
 
 Each body_FC has its own local coordinate system_FC that features_FC nested within it are relative to. The properties of a body_FC define its position and rotation within its parent container. In most cases, that parent container is a standard part_FC, but a body_FC can also live outside of a standard part_FC.
 
@@ -4600,27 +4598,7 @@ Axis and angle define rotation - axis defines a vector and angle rotates around 
 An easier way to set the orientation is, in the Model pane, right-click and choose **Transform**. It sets the same properties highlighted in the above screenshot, but it also provides gizmos in the viewport and a popup pane with more friendly ways to set.
 ```
 
-`{ref} self`
-
-##### Binding Geometry
-
-`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Body\/Binding Geometry)_TOPIC/i`
-
-In certain cases, a piece of outside geometry may need to be pulled into the body_FC for further manipulation (e.g., a model created using Part workbench_FC - not Part Design workbench_FC - always lives outside of the body_FC). To import that outside geometry into the body_FC, a subshape binder is required:
-
-1. Ensure the body_FC is active.
-2. Select the outside geometry.
-3. Click subshape binder in the toolbar (green blob with 3 dots) to create a subshape binder object in the body_FC.
-
-![FreeCAD Part Design workbench subshape binder example](freecad_part_design_subshape_binder_example.png)
-
-The subshape binders **Bind Mode** property defines if it copies the original geometry or just links to it:
-
-* **Synchronized**: Live reference. Updates when source changes.
-* **Frozen**: Keeps link, but shape is frozen until refreshed/changed.
-* **Detached**: Copy/snapshot. Breaks live dependency, keeps current shape.
-
-`{ref} https://wiki.freecad.org/PartDesign_SubShapeBinder` `{ref} self`
+`{ref} https://wiki.freecad.org/PartDesign_Body` `{ref} https://wiki.freecad.org/Body`
 
 #### Sketch
 
@@ -4633,11 +4611,9 @@ FreeCAD/Sketcher Workbench_TOPIC
 
 Sketches_FC are core to building out a body_FC. As such, the Part Design workbench_FC provides quick access to sketching_FC functionality.
 
-##### Create
-
-`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Sketch\/Create)_TOPIC/i`
-
 ![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+**Creation**
 
 To create a sketch_FC, use toolbar button 4 and select New Sketch_FC. If the 3D viewport has ...
 
@@ -4654,37 +4630,19 @@ Once created, the sketch_FC will be entered in Edit mode (Sketcher Workbench_FC 
 
 ![FreeCAD sketcher workbench popouts highlighted](freecad_sketcher_popouts_highlighted.png)
 
-`{ref} https://wiki.freecad.org/PartDesign_NewSketch`
-
-##### Edit
-
-`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Sketch\/Edit)_TOPIC/i`
-
-![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+**Edit**
 
 To edit an existing sketch_FC, select the sketch_FC in the Model pane or 3D viewport, then use toolbar button 4 and select Edit Sketch_FC.
 
-`{ref} https://wiki.freecad.org/Sketcher_EditSketch`
-
-##### Attach
-
-`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Sketch\/Attach)_TOPIC/i`
-
-![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+**Attach**
 
 To attach an existing sketch_FC to something else (e.g., another face), select the thing to attach, then use toolbar button 4 and select Attach Sketch_FC. A dialog will pop-up asking for which sketch_FC to attach, then a subsequent dialog will pop-up asking for the method of attachment (should be Plane face most of the time.)
 
 ![FreeCAD part design workbench attach sketch sketch selection](freecad_part_design_attach_sketch_sketch_selection.png) ![FreeCAD part design workbench attach sketch method selection](freecad_part_design_attach_sketch_method_selection.png)
 
-`{ref} https://wiki.freecad.org/Sketcher_MapSketch`
+**Validate**
 
-##### Validate
-
-`{bm} /(FreeCAD\/Part Design Workbench\/Organization\/Sketch\/Validate)_TOPIC/i`
-
-![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
-
-To edit an existing sketch_FC, select the sketch_FC in the Model pane or 3D viewport, then use toolbar button 5. A Sketch_FC Validation pane should appear wit buttons to test for specific issues.
+To validate an existing sketch_FC, select the sketch_FC in the Model pane or 3D viewport, then use toolbar button 5. A Sketch_FC Validation pane should appear wit buttons to test for specific issues.
 
 ![FreeCAD Part Design workbench sketch validation](freecad_part_design_sketch_validation.png)
 
@@ -4697,7 +4655,27 @@ FreeCAD/Sketcher Workbench/Sketching/3D Feature Validity_TOPIC
 FreeCAD/Sketcher Workbench/Sketching/Sketch Flipping_TOPIC
 ```
 
-`{ref} https://wiki.freecad.org/Sketcher_ValidateSketch`
+`{ref} https://wiki.freecad.org/Sketcher_ValidateSketch` `{ref} https://wiki.freecad.org/Sketcher_MapSketch` `{ref} https://wiki.freecad.org/Sketcher_EditSketch` `{ref} https://wiki.freecad.org/PartDesign_NewSketch`
+
+### Binding Geometry
+
+`{bm} /(FreeCAD\/Part Design Workbench\/Binding Geometry)_TOPIC/i`
+
+In certain cases, a piece of outside geometry may need to be pulled into the body_FC for further manipulation (e.g., a model created using Part workbench_FC - not Part Design workbench_FC - always lives outside of the body_FC). To import that outside geometry into the body_FC, a subshape binder is required:
+
+1. Ensure the body_FC is active.
+2. Select the outside geometry.
+3. Click subshape binder in the toolbar (green blob with 3 dots) to create a subshape binder object in the body_FC.
+
+![FreeCAD Part Design workbench subshape binder example](freecad_part_design_subshape_binder_example.png)
+
+The subshape binders **Bind Mode** property defines if it copies the original geometry or just links to it:
+
+* **Synchronized**: Live reference. Updates when source changes.
+* **Frozen**: Keeps link, but shape is frozen until refreshed/changed.
+* **Detached**: Copy/snapshot. Breaks live dependency, keeps current shape.
+
+`{ref} https://wiki.freecad.org/PartDesign_SubShapeBinder` `{ref} self`
 
 ### Features
 
@@ -4952,7 +4930,7 @@ Notes from source:
 * Vertices can only be either the start or end of a loft_FC. Otherwise the loft_FC body_FC would consist of two solids connected at a single point. This would violate the CAD kernel's definition of a 3D object.
 * A cross-section cannot lie on the same plane as the one immediately preceding it.
 * If the sketch_FC has inner geometry, then the order in which the sketch_FC geometry is created should be the same for all sections. Either start all sections with the inner geometry, or start them all with the outer. Otherwise an invalid loft_FC will be created where inner and outer walls cross.
-* It is not possible to loft_FC disjoint or crossing loops.
+* It is not possible to loft_FC !!disjoint!! or crossing loops.
 * Some failure modes will turn the part black.
 ```
 
@@ -4978,8 +4956,8 @@ The **Closed** parameter makes a transition from the last sketch_FC to the initi
 FreeCAD/Part Design Workbench/User Interface_TOPIC
 FreeCAD/Part Design Workbench/Organization_TOPIC
 FreeCAD/Part Design Workbench/Features/Loft_TOPIC
-FreeCAD/Part Design Workbench/Organization/Body/Binding Geometry_TOPIC
-FreeCAD/Part Design Workbench/Organization/Sketch/Attach_TOPIC
+FreeCAD/Part Design Workbench/Binding Geometry_TOPIC
+FreeCAD/Part Design Workbench/Organization/Sketch_TOPIC
 ```
 
 An additive pipe_FC operation and a subtractive pipe_FC operation are the same thing, except that ...
@@ -5040,8 +5018,8 @@ Sketches_FC can then be attached to the b-spline by attaching them to that subsh
 ![FreeCAD Part Design workbench sketch path mapping and attachment offset](freecad_part_design_attached_sketch_path_mapping_and_attachment_offset.png)
 
 ```{seealso}
-FreeCAD/Part Design Workbench/Organization/Body/Binding Geometry_TOPIC
-FreeCAD/Part Design Workbench/Organization/Sketch/Attach_TOPIC
+FreeCAD/Part Design Workbench/Binding Geometry_TOPIC
+FreeCAD/Part Design Workbench/Organization/Sketch_TOPIC
 ```
 
 ```{note}
@@ -5056,7 +5034,7 @@ Notes from source:
 * The path must not contain branches or T-junctions etc. Loops are allowed.
 * It can lead to issues if the cross-section is not perpendicular to the path in 3D.
 * A cross-section cannot lie on the same plane as the one immediately preceding it.
-* The cross-sections must not contain disjoint or crossing loops.
+* The cross-sections must not contain !!disjoint!! or crossing loops.
 * If the sketch_FC has inner geometry, then the order in which the sketch_FC geometry is created should be the same for all sections. Either start all sections with the inner geometry, or start them all with the outer. Otherwise an invalid pipe_FC will be created where inner and outer walls cross.
 ```
 
@@ -5168,7 +5146,7 @@ To place a datum plane_FC matching the face's orientation but with a specific or
 ```
 
 ```{seealso}
-FreeCAD/Part Design Workbench/Datum Geometry/Datum Plane_TOPIC
+FreeCAD/Datum Geometry/Datum Plane_TOPIC
 ```
 
 ```{note}
@@ -5363,7 +5341,7 @@ You almost always will need to move and reorient the body_FC when you're doing b
 ```
 
 ```{seealso}
-FreeCAD/Part Design Workbench/Organization/Body/Coordinate System_TOPIC
+FreeCAD/Part Design Workbench/Organization/Body_TOPIC
 ```
 
 `{ref} https://wiki.freecad.org/PartDesign_Boolean`
@@ -5398,7 +5376,7 @@ The **Plane** field selects the plane across which mirroring happens:
 * Sketch_FC axes and construction lines from any feature_FC that's !!based!! off a sketch_FC.
 
 ```{seealso}
-FreeCAD/Part Design Workbench/Datum Geometry/Datum Plane_TOPIC
+FreeCAD/Datum Geometry/Datum Plane_TOPIC
 ```
 
 ```{note}
@@ -5447,7 +5425,7 @@ It may be best to use a datum line_FC here. Create a sketch_FC on the face, put 
 ```
 
 ```{seealso}
-FreeCAD/Part Design Workbench/Datum Geometry/Datum Line_TOPIC
+FreeCAD/Datum Geometry/Datum Line_TOPIC
 ```
 
 When **Mode** is ...
@@ -5538,27 +5516,744 @@ Right-click inside the **Transformations** list to add, delete, edit, and reorde
 
 `{ref} https://wiki.freecad.org/PartDesign_MultiTransform` `{ref} https://wiki.freecad.org/PartDesign_Scaled`
 
-### Datum Geometry
+## Assembly Workbench
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Datum Geometry)_TOPIC/i`
+`{bm} /(FreeCAD\/Assembly Workbench)_TOPIC/i`
+
+```{prereq}
+FreeCAD/User Interface Layout_TOPIC
+FreeCAD/Spreadsheet Workbench_TOPIC
+FreeCAD/Sketcher Workbench_TOPIC
+FreeCAD/Part Design Workbench_TOPIC
+```
+
+Assembly workbench_FC allows linking individual models by specifying how they fit and move together. For example, a piston and its enclosure can be linked together such that piston moves up and down its enclosure.
+
+![FreeCAD assembly workbench example](freecad_assembly_example.png)
+
+The core !!component!! of the assembly workbench_FC is the joint_FC. A joint_FC positions and restricts the degrees of freedom_FC a model has in relation to some other model.
+
+```{plantuml}
+@startuml
+
+hide circle
+
+Assembly ||--o{ Joint : "contains"
+Assembly ||--o{ Component : "contains"
+Joint }|--o{ Component : "constrains movement of"
+
+@enduml
+```
+
+`{ref} https://wiki.freecad.org/Assembly_Workbench` `{ref} https://blog.freecad.org/2024/09/30/tutorial-getting-started-with-the-assembly-workbench/`
+
+### User Interface
+
+`{bm} /(FreeCAD\/Assembly Workbench\/User Interface)_TOPIC/i`
+
+```{prereq}
+FreeCAD/User Interface Layout_TOPIC
+FreeCAD/Spreadsheet Workbench_TOPIC
+FreeCAD/Sketcher Workbench_TOPIC
+FreeCAD/Part Design Workbench_TOPIC
+FreeCAD/Standard Part_TOPIC
+```
+
+![FreeCAD assembly workbench user interface](freecad_assembly_user_interface.png)
+
+**Assembly_FC**
+
+ * (1) Create new assembly_FC.
+ * (2) Add component_FC (may be a model or a standard part_FC).
+ * (3) Solve assembly_FC.
+ * (4) Explode view of assembly_FC.
+ * (5) Simulation of assembly_FC.
+ * (6) Bill of materials.
+
+**Joints_FC**
+
+ * (7) Joint_FC types: These toolbar buttons give quick access to joints_FC functionality. From left-to-right, ...
+
+   * create grounded joint_FC, locking a component_FC into place.
+   * create fixed joint_FC, locking a component_FC relative to another component_FC.
+   * create revolute joint_FC, locking a component_FC's movement such it only revolves around some axis.
+   * create cylindrical joint_FC, locking a component_FC's movement such it only revolves and slides along some axis (combination of slider joint_FC and revolute joint_FC).
+   * create slider joint_FC, locking a component_FC's movement such that it only slides along some axis.
+   * create ball joint_FC, locking a component_FC_FC's movement to a specific point, allowing unrestricted movement so long as it touches that point.
+   * create distance joint_FC, locking the movement of two components_FC to be a specific distance from each other.
+   * create parallel joint_FC, locking the movement of two components_FC such that their z-axis are parallel.
+   * create perpendicular joint_FC, locking the movement of two components_FC such that their z-axis are perpendicular.
+   * create angle joint_FC, locking the movement of two components_FC such that their z-axis are fixed at a specific angle.
+   * create rack and pinion joint_FC, locking a component_FC with a sliding joint_FC around a component_FC with a revolute joint_FC.
+   * create screw joint_FC, locking a component_FC with a sliding joint_FC around a component_FC with a revolute joint_FC.
+   * drop-down to either ...
+     * create gear joint_FC, locking two components_FC with revolute joints_FC together, with opposite rotating direction.
+     * belt joint_FC locks_FC, locking two rotating components_FC with revolute joints_FC together, with same rotation direction.
+
+`{ref} https://wiki.freecad.org/Assembly_Workbench` `{ref} https://blog.freecad.org/2024/09/30/tutorial-getting-started-with-the-assembly-workbench/`
+
+### Organization
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Organization)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Assembly Workbench\/User Interface_TOPIC
+```
+
+The core pieces of the assembly workbench_FC are components_FC and joints_FC. A component_FC is either a model or a standard part_FC containing a group of models. A joint_FC is a linkage between components_FC that restricts its positioning, orientation, and / or movement (e.g., restricts its degrees of freedom_FC). For example, a slider joint_FC locks one component_FC to another, restricting its movement such that it can only slide along some axis on that / derived from that component_FC.
+
+* A joint_FC constrains the movement of one or more components_FC, often relative to each other.
+* A component_FC can be !!constrained!! by by zero or more joints_FC.
+
+```{plantuml}
+@startuml
+
+hide circle
+
+Assembly ||--o{ Joint : "contains"
+Assembly ||--o{ Component : "contains"
+Joint }|--o{ Component : "constrains movement of"
+
+@enduml
+```
+
+`{ref} https://wiki.freecad.org/Assembly_Workbench` `{ref} https://blog.freecad.org/2024/09/30/tutorial-getting-started-with-the-assembly-workbench/`
+
+#### Assembly
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Organization\/Assembly)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Standard Part_TOPIC
+```
+
+An assembly_FC is a container of that ties together models (e.g., bodies_FC, standard parts_FC containing bodies_FC) with joints_FC, defining how those models move in relation to each other. An assembly_FC can also contain sub-assemblies_FC. A sub-assembly_FC is an assembly_FC that's nested within another assembly_FC.
+
+![FreeCAD Assembly workbench toolbar](freecad_assembly_toolbar.png)
+
+To create an assembly_FC, use toolbar button 1 (keyboard shortcut A). Assemblies_FC can be created at the top-level, within an existing assembly_FC (in which case it's referred to as a sub-assembly_FC), or even within a standard part_FC.
+
+`{ref} https://blog.freecad.org/2024/09/30/tutorial-getting-started-with-the-assembly-workbench/` `{ref} https://wiki.freecad.org/Assembly_CreateAssembly` `{ref} self`
+
+#### Component
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Organization\/Component)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Assembly Workbench/Organization/Assembly_TOPIC
+FreeCAD/Standard Part_TOPIC
+```
+
+A component_FC is a non-joint_FC object within an assembly_FC (e.g., body_FC, standard part_FC, sub-assemblies_FC).
+
+![FreeCAD Assembly workbench toolbar](freecad_assembly_toolbar.png)
+
+To insert a component_FC, use toolbar button 2 and select Component_FC (keyboard shortcut I). An Insert pane should appear with options to insert one or more components_FC or sub-assemblies_FC.
+
+![FreeCAD Assembly workbench insert](freecad_assembly_insert.png)
+
+Clicking objects in the drop-down imports them into the assembly_FC. Importable objects include models, standard parts_FC, and assemblies_FC (become sub-assemblies_FC in the assembly_FC being imported into). Each object imported is imported as a reference as opposed to a copy, meaning changes in the source will reflect in the assembly_FC.
+
+Above the list is a text field that filters items in the list.
+
+Below the field is ...
+
+* the button **Open File**, which opens a file to introduce new objects.
+* the checkbox **Show only parts**, which filters the list of objects to standard parts_FC and assemblies_FC.
+* the checkbox **Rigid sub-assemblies_FC**, which imports assemblies_FC without joint_FC movements enabled.
+
+```{note}
+Rigidness of sub-assemblies_FC can be toggled in the Properties pane, under **General** → **Rigid**.
+```
+
+If the object being imported is the first object, a prompt will show up asking if the object should be locked into place with a grounded joint_FC. An assembly_FC needs at least one grounded joint_FC on which other joints_FC and objects are anchored.
+
+![FreeCAD Assembly workbench first insert grounding popup](freecad_assembly_first_insert_grounding_popup.png)
+
+A component_FC can be moved by left mouse button dragging in the 3D viewport. If movement is !!constrained!! by joints_FC, only allowed movements are applied during dragging.
+
+If a component_FC is not !!constrained!! by joints_FC, selecting it presents a gizmo that can be used to move it around. A sub-assembly_FC that's rigid is always moved as a whole, while a sub-assembly_FC that isn't rigid can have its individual components_FC separated and moved.
+
+```{note}
+It looks like the individual components_FC of a non-rigid sub-assembly_FC seem to snap back into place once a grounded joint_FC is applied?
+```
+
+![FreeCAD Assembly workbench unconstrained movement gizmo](freecad_assembly_unconstrained_movement_gizmo.png)
+
+`{ref} https://blog.freecad.org/2024/09/30/tutorial-getting-started-with-the-assembly-workbench/` `{ref} https://wiki.freecad.org/Assembly_Workbench` `{ref} https://wiki.freecad.org/Assembly_InsertLink` `{ref} self`
+
+#### Joint
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Organization\/Joint)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Assembly Workbench/Organization/Assembly_TOPIC
+FreeCAD/Assembly Workbench/Organization/Component_TOPIC
+```
+
+A joint_FC constrains the movement of one or more components_FC, often relative to each other.
+
+![FreeCAD Assembly workbench toolbar](freecad_assembly_toolbar.png)
+
+There are many types of joints_FC, starting from toolbar button 7 onward. An assembly_FC needs at least one grounded joint_FC on which other joints_FC and objects are anchored.
+
+Each individual joint_FC type is documented in further detail in sections further down.
+
+```{note}
+A core mistake people often make with joints_FC is thinking that they can be compounded. A joint_FC removes all but some options for movement. That's why if you try to place a sliding joint_FC and a revolute joint_FC on the same pair of objects, they cancel each other out.
+
+* The sliding joint_FC cancels out all motion except moving up and down an axis.
+* The revolute joint_FC cancels out all motion except revolving around an axis.
+
+The sliding joint_FC won't let the revolute joint_FC revolve, and the revolute joint_FC won't let the sliding joint_FC slide. See [here](https://forum.freecad.org/viewtopic.php?t=105828).
+```
+
+`{ref} https://blog.freecad.org/2024/09/30/tutorial-getting-started-with-the-assembly-workbench/` `{ref} https://wiki.freecad.org/Assembly_Workbench` `{ref} self`
+
+#### Frame
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Organization\/Frame)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Assembly Workbench/Organization/Component_TOPIC
+FreeCAD/Assembly Workbench/Organization/Joint_TOPIC
+```
+
+A frame_FC binds a component_FC's element_FC (e.g., face, plane, vertex) to a joint_FC, providing that element_FC with its own local coordinate system_FC. A joint_FC restrict the movement of its frames_FC (and thereby the component_FCs those frames_FC are attached to) !!based!! on that joint_FC's type and parameters.
+
+```{plantuml}
+@startuml
+
+hide circle
+left to right direction
+
+Joint ||--o{ Frame : "has"
+Component ||--|{ Component_Element : "has"
+Frame ||--|| Component_Element : "binds to"
+
+@enduml
+```
+
+A frame_FC is visualized in the viewport as a white transparent disc:
+
+* The white disc represents a frame_FC's XY plane.
+* The red line to the side of the white disc represents that frame_FC's X-axis.
+* The green line to the side of the white disc represents that frame_FC's Y-axis.
+* The blue line coming out from the white disc's center represents that frame_FC's z-axis / plane normal.
+
+The joint_FC in the example below is a sliding joint_FC. A sliding joint_FC has two frames_FC, restricted such that the frames_FC are parallel to each other and the only movement/rotation change allowed is sliding up-and-down the z-axis.
+
+![FreeCAD Assembly workbench slider joint example](freecad_assembly_slider_joint_example.png)
+
+```{note}
+A frame_FC isn't something you explicitly add. It's there wherever a joint_FC is paired to a component_FC element_FC.
+```
+
+### Joints
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Joints)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Assembly Workbench/User Interface_TOPIC
+FreeCAD/Assembly Workbench/Organization_TOPIC
+FreeCAD/Datum Geometry/Local Coordinate System_TOPIC
+```
+
+The subsections below detail joint_FC types !!supported!! by the assembly workbench_FC. Most joints_FC present a configuration pane during creation with a constant subset of options.
+
+![FreeCAD Assembly workbench joint configuration pane](freecad_assembly_joint_configuration_example.png)
+
+* (1) **Joint_FC type**: Joint_FC being applied. The joint_FC type can be changed by using this drop-down. Some joints_FC types may not be available (e.g., grounded joint_FC).
+
+  ```{note}
+  Sometimes, changing this value doesn't work. The joint_FC will show up as the selected type but it won't be applied.
+
+  Noted in v1.1.1.
+  ```
+
+* (2) **Model elements_FC**: Model elements_FC (e.g., faces, edges, vertices) which the joint_FC applies to. 
+
+* (3) **Configuration**: Configuration options for the select joint_FC type. Options differ per joint_FC type.
+
+* (4) **Isolate**: Controls how unrelated components_FC appear when the joint_FC is selected:
+
+  * **Transparent** views unrelated components_FC partially transparent.
+  * **!!Wireframe!!** views unrelated components_FC as !!wireframe!!.
+  * **Hidden** removes unrelated components_FC from view.
+  * **Disabled** keeps unrelated components_FC in view as-is.
+
+  ![FreeCAD assembly workbench isolate transparent example](freecad_assembly_isolate_transparent_example.png) ![FreeCAD assembly workbench isolate wireframe example](freecad_assembly_isolate_wireframe_example.png)
+
+When offset and rotation parameters don't specify a relation (as in the example above), many joint_FC types apply it to the z-axis of one of their frame_FC's local coordinate system_FCs. In the example above, the offset parameter of 7mm is applied to the second frame_FC's local coordinate system_FC's z-axis.
+
+Often times, it's possible to offset and rotate in more directions by selecting **Show advanced offsets** (or some equivalent checkbox / button). In the example above, selecting **Show advanced offsets** replaces the **Offset** and **Rotation** fields with **Offset1** and **Offset2**. These new fields directly control the offset and rotation for their respective frames_FC's local coordinate system_FC.
+
+![FreeCAD assembly workbench offset advanced example](freecad_assembly_offset_advanced_example.png)
+
+```{note}
+It sounds like what's happening here is that when you go to create a joint_FC, it attaches to a frame_FC to each of the component_FC elements_FC you've selected (it centers them?).
+
+* The first frame_FC is attached to component_FC 1's element_FC and has its own LCS_FC.
+* The second frame_FC is attached to component_FC 2's element_FC and has its own LCS_FC.
+
+The translation/rotation adjustments move the component_FC relative to the frame_FC it's attached to:
+
+* **Offset1** is relative to the first frame_FC's LCS_FC
+* **Offset2** is relative to the second frame_FC's LCS_FC.
+
+That is, the frame_FCS stays in place, but the component_FC it's attached to moves around (e.g., translates out 5mm and rotates over Z-axis by 45 degrees).
+
+I suppose it's like this because you can't position and rotate frames_FC. You select the element_FC and a frame_FC gets attached to it at some place on the element_FC in some orientation, and it's your responsibility to adjust the translation and rotation to ensure it's as expected?
+
+![FreeCAD assembly workbench offset both advanced example](freecad_assembly_offset_both_advanced_example.png)
+```
+
+`{ref} https://wiki.freecad.org/Assembly_Workbench` `{ref} self`
+
+#### Grounded Joint
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Joints\/Grounded Joint)_TOPIC/i`
+
+A grounded joint_FC locks the location and orientation of an assembly_FC piece. A non-empty assembly_FC needs to have at least one grounded joint_FC.
+
+![FreeCAD Assembly workbench toolbar](freecad_assembly_toolbar.png)
+
+To apply a grounded joint_FC, select the component_FC and select toolbar button 7 (keyboard shortcut G). Doing this multiple times toggles the grounded joint_FC on and off.
+
+Once a grounded joint_FC is applied, a red lock will appear over the piece.
+
+![FreeCAD assembly workbench grounded joint example](freecad_assembly_grounded_joint_example.png)
+
+`{ref} https://wiki.freecad.org/Assembly_ToggleGrounded`
+
+#### Fixed Joint
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Joints\/Fixed Joint)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Assembly Workbench/Joints/Grounded Joint_TOPIC
+```
+
+A fixed joint_FC locks one component_FC onto another component_FC, preventing any movement or rotation.
+
+![FreeCAD Assembly workbench toolbar](freecad_assembly_toolbar.png)
+
+To apply a fixed joint_FC, either ...
+
+* select two elements_FC (e.g., edge, face, vertex), one on each component_FC, and then select toolbar button 8 (keyboard shortcut F).
+* select toolbar button 8 (keyboard shortcut F), then select two elements_FC (e.g., edge, face, vertex), one on each component_FC.
+
+![FreeCAD Assembly workbench fixed joint example](freecad_assembly_fixed_joint_example.png)
+
+* **Offset**: Translates joint_FC's second frame_FC's LCS_FC's z-axis.
+* **Rotation**: Rotates around the joint_FC's second frame_FC's LCS_FC's z-axis.
+* **Up/down button**: !!Flips!! joint_FC's LCS_FC such that the z-axis points in the opposite direction.
+
+```{note}
+Options not described here are described in the parent section.
+```
+
+`{ref} https://wiki.freecad.org/Assembly_CreateJointFixed`
+
+#### Revolute Joint
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Joints\/Revolute Joint)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Assembly Workbench/Joints/Grounded Joint_TOPIC
+```
+
+A revolute joint_FC allows the rotation of one component_FC around another component_FC using the shared z-axis between both frames_FC. All other movements and rotations are restricted.
+
+![FreeCAD Assembly workbench toolbar](freecad_assembly_toolbar.png)
+
+To apply a revolute joint_FC, either ...
+
+* select two elements_FC (e.g., edge, face, vertex), one on each component_FC, and then select toolbar button 9 (keyboard shortcut R).
+* select toolbar button 9 (keyboard shortcut R), then select two elements_FC (e.g., edge, face, vertex), one on each component_FC.
+
+![FreeCAD Assembly workbench revolute joint example](freecad_assembly_revolute_joint_example.png)
+
+A revolute joint_FC lines matches up both frames_FC and rotates around the shared z-axis.
+
+* **Offset**: Translates joint_FC's second frame_FC's LCS_FC's z-axis.
+* **Up/down button**: !!Flips!! joint_FC's LCS_FC such that the normal points in the opposite direction.
+* **Min angle / Max angle**: If enabled, restricts the rotational angle range.
+
+```{note}
+Options not described here are described in the parent section.
+```
+
+```{note}
+There's a bug in 1.1.1 (and maybe other versions) where angles \< 180 or \> 180 roll over. Sometimes that's a problem because it can only target the interior angle range instead of the exterior angle range (or vice versa - I forget). You can workaround the bug by going into the joint_FC's properties and setting **Limits** → **Angle Min** / **Angle Max**.
+```
+
+`{ref} https://wiki.freecad.org/Assembly_CreateJointRevolute`
+
+#### Slider Joint
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Joints\/Slider Joint)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Assembly Workbench/Joints/Grounded Joint_TOPIC
+```
+
+A slider joint_FC allows the sliding of one component_FC along another component_FC using the shared z-axis between both frames_FC. All other movement and rotation are restricted.
+
+![FreeCAD Assembly workbench toolbar](freecad_assembly_toolbar.png)
+
+To apply a slider joint_FC, either ...
+
+* select two elements_FC (e.g., edge, face, vertex), one on each component_FC, and then select toolbar button 11 (keyboard shortcut S).
+* select toolbar button 11 (keyboard shortcut S), then select two elements_FC (e.g., edge, face, vertex), one on each component_FC.
+
+![FreeCAD Assembly workbench slider joint example](freecad_assembly_slider_joint_example.png)
+
+* **Rotation**: Rotates around the joint_FC's second frame_FC's LCS_FC's z-axis.
+* **Up/down button**: !!Flips!! joint_FC's LCS_FC such that the normal points in the opposite direction.
+* **Min length / Max length**: If enabled, restricts how far the two frames_FC can extend out in either direction.
+
+```{note}
+Options not described here are described in the parent section.
+```
+
+`{ref} https://wiki.freecad.org/Assembly_CreateJointSlider`
+
+#### Cylindrical Joint
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Joints\/Cylindrical Joint)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Assembly Workbench/Joints/Grounded Joint_TOPIC
+FreeCAD/Assembly Workbench/Joints/Revolute Joint_TOPIC
+FreeCAD/Assembly Workbench/Joints/Slider Joint_TOPIC
+```
+
+A cylindrical joint_FC is a combination of the slider joint_FC and revolute joint_FC. Both sliding and rotation are allowed (matching the allowed movement/rotation of both slider joint_FC and revolute joint_FC), but all other movements and rotations are restricted.
+
+![FreeCAD Assembly workbench toolbar](freecad_assembly_toolbar.png)
+
+To apply a cylindrical joint_FC, either ...
+
+* select two elements_FC (e.g., edge, face, vertex), one on each component_FC, and then select toolbar button 10 (keyboard shortcut C).
+* select toolbar button 10 (keyboard shortcut C), then select two elements_FC (e.g., edge, face, vertex), one on each component_FC.
+
+![FreeCAD Assembly workbench cylindrical joint example](freecad_assembly_cylindrical_joint_example.png)
+
+* **Up/down button**: !!Flips!! joint_FC's LCS_FC such that the normal points in the opposite direction.
+* **Min length / Max length**: If enabled, restricts how far the two frames_FC can extend out in either direction.
+* **Min angle / Max angle**: If enabled, restricts the rotational angle range.
+
+```{note}
+Options not described here are described in the parent section.
+```
+
+```{note}
+There's a bug in 1.1.1 (and maybe other versions) where angles \< 180 or \> 180 roll over. Sometimes that's a problem because it can only target the interior angle range instead of the exterior angle range (or vice versa - I forget). You can workaround the bug by going into the joint_FC's properties and setting **Limits** → **Angle Min** / **Angle Max**.
+```
+
+```{note}
+A core mistake people often make with joints_FC is thinking that they can be compounded. A joint_FC removes all but some options for movement. That's why if you try to place a sliding joint_FC and a revolute joint_FC on the same pair of objects, they cancel each other out.
+
+* The sliding joint_FC cancels out all motion except moving up and down an axis.
+* The revolute joint_FC cancels out all motion except revolving around an axis.
+
+The sliding joint_FC won't let the revolute joint_FC revolve, and the revolute joint_FC won't let the sliding joint_FC slide. See [here](https://forum.freecad.org/viewtopic.php?t=105828).
+```
+
+`{ref} https://wiki.freecad.org/Assembly_CreateJointCylindrical`
+
+#### Ball Joint
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Joints\/Ball Joint)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Assembly Workbench/Joints/Grounded Joint_TOPIC
+```
+
+A ball joint_FC allows the movement of one component_FC relative to another component_FC so long as the center of those components_FC's frames_FC are touching.
+
+![FreeCAD Assembly workbench toolbar](freecad_assembly_toolbar.png)
+
+To apply a ball joint_FC, either ...
+
+* select two elements_FC (e.g., edge, face, vertex), one on each component_FC, and then select toolbar button 112(keyboard shortcut B).
+* select toolbar button 12 (keyboard shortcut B), then select two elements_FC (e.g., edge, face, vertex), one on each component_FC.
+
+![FreeCAD Assembly workbench ball joint example](freecad_assembly_ball_joint_example.png)
+
+```{note}
+Options not described here are described in the parent section.
+```
+
+`{ref} https://wiki.freecad.org/Assembly_CreateJointBall`
+
+#### Distance Joint
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Joints\/Distance Joint)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Assembly Workbench/Joints/Grounded Joint_TOPIC
+```
+
+A distance joint_FC allows the movement of one component_FC relative to another component_FC so long as the distance between them is some constant.
+
+![FreeCAD Assembly workbench toolbar](freecad_assembly_toolbar.png)
+
+To apply a distance joint_FC, either ...
+
+* select two elements_FC (e.g., edge, face, vertex), one on each component_FC, and then select toolbar button 13 (keyboard shortcut D).
+* select toolbar button 13 (keyboard shortcut D), then select two elements_FC (e.g., edge, face, vertex), one on each component_FC.
+
+![FreeCAD Assembly workbench distance joint example](freecad_assembly_distance_joint_example.png)
+
+* **Distance**: Distance between frames_FC.
+* **Up/down button**: !!Flips!! joint_FC's LCS_FC such that the normal points in the opposite direction.
+
+```{note}
+Options not described here are described in the parent section.
+```
+
+```{note}
+There's a bug in 1.1.1 (and maybe other versions) where you have to select component_FC elements_FC in a certain order or certain way, otherwise this joint_FC won't work?
+```
+
+`{ref} https://wiki.freecad.org/Assembly_CreateJointDistance`
+
+#### Parallel Joint
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Joints\/Parallel Joint)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Assembly Workbench/Joints/Grounded Joint_TOPIC
+```
+
+A parallel joint_FC allows the movement of one component_FC relative to another component_FC so long as those components_FC's frames_FC have parallel planes.
+
+![FreeCAD Assembly workbench toolbar](freecad_assembly_toolbar.png)
+
+To apply a parallel joint_FC, either ...
+
+* select two elements_FC (e.g., edge, face, vertex), one on each component_FC, and then select toolbar button 14(keyboard shortcut N).
+* select toolbar button 14 (keyboard shortcut N), then select two elements_FC (e.g., edge, face, vertex), one on each component_FC.
+
+![FreeCAD Assembly workbench parallel joint example](freecad_assembly_parallel_joint_example.png)
+
+* **Up/down button**: !!Flips!! joint_FC's LCS_FC such that the normal points in the opposite direction.
+
+```{note}
+Options not described here are described in the parent section.
+```
+
+`{ref} https://wiki.freecad.org/Assembly_CreateJointParallel`
+
+#### Perpendicular Joint
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Joints\/Perpendicular Joint)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Assembly Workbench/Joints/Grounded Joint_TOPIC
+```
+
+A perpendicular joint_FC allows the movement of one component_FC relative to another component_FC so long as those components_FC's frames_FC have perpendicular planes.
+
+![FreeCAD Assembly workbench toolbar](freecad_assembly_toolbar.png)
+
+To apply a perpendicular joint_FC, either ...
+
+* select two elements_FC (e.g., edge, face, vertex), one on each component_FC, and then select toolbar button 15 (keyboard shortcut M).
+* select toolbar button 15 (keyboard shortcut M), then select two elements_FC (e.g., edge, face, vertex), one on each component_FC.
+
+![FreeCAD Assembly workbench perpendicular joint example](freecad_assembly_perpendicular_joint_example.png)
+
+```{note}
+Options not described here are described in the parent section.
+```
+
+`{ref} https://wiki.freecad.org/Assembly_CreateJointPerpendicular`
+
+#### Angle Joint
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Joints\/Angle Joint)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Assembly Workbench/Joints/Grounded Joint_TOPIC
+```
+
+An angle joint_FC allows the movement of one component_FC relative to another component_FC so long as those components_FC's frames_FC have normals at some constant angle.
+
+![FreeCAD Assembly workbench toolbar](freecad_assembly_toolbar.png)
+
+To apply a angle joint_FC, either ...
+
+* select two elements_FC (e.g., edge, face, vertex), one on each component_FC, and then select toolbar button 16 (keyboard shortcut X).
+* select toolbar button 16 (keyboard shortcut X), then select two elements_FC (e.g., edge, face, vertex), one on each component_FC.
+
+![FreeCAD Assembly workbench angle joint example](freecad_assembly_angle_joint_example.png)
+
+* **Angle**: Angle between the frame_FC normals.
+
+```{note}
+Options not described here are described in the parent section.
+```
+
+`{ref} https://wiki.freecad.org/Assembly_CreateJointAngle`
+
+#### Rack and Pinion Joint
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Joints\/Rack and Pinion Joint)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Assembly Workbench/Joints/Grounded Joint_TOPIC
+FreeCAD/Assembly Workbench/Joints/Revolute Joint_TOPIC
+FreeCAD/Assembly Workbench/Joints/Slider Joint_TOPIC
+```
+
+A rack and pinion joint_FC ties together a slider joint_FC and a revolute joint_FC, such that rotation of that revolve joint_FC results in sliding of the slider joint_FC and vice versa. This gives the impression of a cog/pinion moving across a rack.
+
+![FreeCAD Assembly workbench toolbar](freecad_assembly_toolbar.png)
+
+Prior to applying a rack and pinion joint_FC, ensure that ...
+
+1. there's a component_FC with a sliding joint_FC.
+2. there's a component_FC with a revolute joint_FC.
+
+To apply a rack and pinion joint_FC, either ...
+
+* select two elements_FC (e.g., edge, face, vertex), one on each component_FC, and then select toolbar button 17 (keyboard shortcut Q).
+* select toolbar button 17 (keyboard shortcut Q), then select two elements_FC (e.g., edge, face, vertex), one on each component_FC.
+
+One element_FC must be on a component_FC that is sliding (e.g., the rack), while the second element_FC must be on the revolving component_FC (e.g., pinion). The normals of the 2 frames_FC must be perpendicular to each other  (*blue lines must be 90 degrees*).
+
+![FreeCAD Assembly workbench rack and pinion joint example](freecad_assembly_rack_and_pinion_joint_example.png)
+
+![FreeCAD Assembly workbench rack and pinion joint example 2](freecad_assembly_rack_and_pinion_joint_example_2.png)
+
+**Pitch radius**: The contact radius of the revolving component_FC against the rack component_FC.
+
+```{note}
+Options not described here are described in the parent section.
+```
+
+```{note}
+If the pitch radius is 0, it'll crash once you try to move it? Noticed in FreeCAD 1.1.1.
+```
+
+```{note}
+What does pitch / contact radius mean? Imagine you have a wheel with spokes rotating similar to the one in the example above, but the shape the sliding bar's indents were tapered down such that the teeth of the wheel can't fit all the way till they touch the bottom of the indent. The distance from the wheel's center to that touching point is the pitch radius.
+```
+
+```{note}
+For effective use of this joint_FC type, you'll likely need to use helper geometry: Datum points_FC, datum planes_FC, local coordinate systems_FC, and sketch_FC elements_FC. Note the use of helper geometry in the second example screenshot above: The grounded joint_FC is a body_FC with nothing but a sketch_FC line on the z-axis and a sketch_FC line on the x-axis. The revolve joint_FC is using one of those lines as its revolving axis, and the slider joint_FC is using the other line as the sliding axis.
+```
+
+`{ref} https://wiki.freecad.org/Assembly_CreateJointRackPinion` `{ref} https://www.youtube.com/watch?v=hVuJGtUuzBc`
+
+#### Screw Joint
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Joints\/Screw Joint)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Assembly Workbench/Joints/Grounded Joint_TOPIC
+FreeCAD/Assembly Workbench/Joints/Revolute Joint_TOPIC
+FreeCAD/Assembly Workbench/Joints/Slider Joint_TOPIC
+```
+
+A screw joint_FC ties together a slider joint_FC and a revolute joint_FC, such that sliding the slider joint_FC revolves the revolute joint_FC. This gives the impression of a screw turning as it goes down.
+
+![FreeCAD Assembly workbench toolbar](freecad_assembly_toolbar.png)
+
+Prior to applying a screw joint_FC, ensure that ...
+
+1. there's a component_FC with a sliding joint_FC.
+2. there's a component_FC with a revolute joint_FC rotating along the same axis that sliding is occurring on.
+
+To apply a screw joint_FC, either ...
+
+* select two elements_FC (e.g., edge, face, vertex), one on each component_FC, and then select toolbar button 18 (keyboard shortcut W).
+* select toolbar button 18 (keyboard shortcut W), then select two elements_FC (e.g., edge, face, vertex), one on each component_FC.
+
+One element_FC must be on a component_FC that the sliding joint_FC is sliding in/out of (e.g., screw !!hole!!), while the second element_FC must be on the revolving component_FC (e.g., screw). The normals of the 2 frames_FC must be pointing at each other (*blue lines must be facing each other*).
+
+Once applied, sliding will also result in revolving.
+
+```{note}
+Not vice versa? Manual revolving doesn't seem to work?
+```
+
+```{note}
+Unlike most other joints_FC, it looks like you have to actually apply this before you're able to slide and see the revolutions happening. If it hasn't been applied yet, it'll be locked?
+```
+
+![FreeCAD Assembly workbench screw joint example](freecad_assembly_screw_joint_example.png)
+
+**Thread pitch**: The thread pitch of the revolving component_FC representing the screw (distance the screw advances in 1 full turn).
+
+```{note}
+Options not described here are described in the parent section.
+```
+
+```{note}
+For effective use of this joint_FC type, you'll likely need to use helper geometry: Datum points_FC, datum planes_FC, local coordinate systems_FC, and sketch_FC elements_FC. Note the use of helper geometry in the example screenshot above: What's sliding in-and-out of the screw !!hole!! is a sketch_FC line, and the circle on the screw head is a sketch_FC circle placed on the face of the screw
+```
+
+`{ref} https://wiki.freecad.org/Assembly_CreateJointScrew` `{ref} https://www.youtube.com/watch?v=3O26-9ZFCg4` `{ref} https://www.youtube.com/shorts/iJmfQk553aA`
+
+#### Gear / Belt Joint
+
+`{bm} /(FreeCAD\/Assembly Workbench\/Joints\/Gear \/ Belt Joint)_TOPIC/i`
+
+```{prereq}
+FreeCAD/Assembly Workbench/Joints/Grounded Joint_TOPIC
+FreeCAD/Assembly Workbench/Joints/Revolute Joint_TOPIC
+```
+
+A gear / belt joint_FC ties two revolute joints_FC together, such that revolving one automatically revolves the other. This gives the impression of one gear moving another. A gear joint_FC revolves in opposite directions while a belt joint_FC revolves in the same direction.
+
+![FreeCAD Assembly workbench toolbar](freecad_assembly_toolbar.png)
+
+Prior to applying a gear / belt joint_FC, ensure that there two components_FC each with a revolute joint_FC whose frame_FC normal points in the same direction / opposite direction. To apply a gear / belt joint_FC, either ...
+
+* select two elements_FC - the element_FC that each component_FC has its revolve joint_FC on. Then, select toolbar button 19's drop-down and select either gear joint_FC (keyboard shortcut T) or belt joint_FC (keyboard shortcut L).
+* select toolbar button 19's drop-down and select either gear joint_FC (keyboard shortcut T) or belt joint_FC (keyboard shortcut L). Then, select two elements_FC - the element_FC that each component_FC has its revolve joint_FC on.
+
+```{note}
+What happens if the frame_FC normals are in opposite directions? Will it rotate in the opposite direction when you intended it to rotate in the same direction?
+```
+
+![FreeCAD Assembly workbench gear belt joint example](freecad_assembly_gear_belt_joint_example.png)
+
+**Reverse rotation**: Swaps the joint_FC type between **Gears** and **Belt**. The only difference between them is if the direction is reversed
+
+```{note}
+Options not described here are described in the parent section.
+```
+
+```{note}
+For effective use of this joint_FC type, you'll likely need to use helper geometry: Datum points_FC, datum planes_FC, local coordinate systems_FC, and sketch_FC elements_FC. Note the use of helper geometry in the example screenshot above: The two gears are each rotating around a sketch_FC line. Those 2 sketch_FC lines are on the same sketch_FC, which is in a body_FC that has a grounded joint_FC applied.
+```
+
+`{ref} https://wiki.freecad.org/Assembly_CreateJointGears` `{ref} https://wiki.freecad.org/Assembly_CreateJointBelt` `{ref} self`
+
+## Datum Geometry
+
+`{bm} /(FreeCAD\/Datum Geometry)_TOPIC/i`
 
 ```{prereq}
 FreeCAD/Sketcher Workbench/Sketching/Construction Geometry_TOPIC
-FreeCAD/Part Design Workbench/Organization_TOPIC
-FreeCAD/Part Design Workbench/Features_TOPIC
 ```
 
-Datum geometry_FC are helper primitives typically used to position other objects (e.g., sketches_FC, features_FC), similar to construction geometry_FC in sketches_FC. Datum geometry_FC aren't unique to the Part Design workbench_FC.
+Datum geometry_FC are helper primitives typically used to position other objects (e.g., sketches_FC, features_FC, bodies_FC in an assembly_FC), similar to construction geometry_FC in sketches_FC. Datum geometry_FC aren't unique to a specific workbench_FC.
 
-Datum geometry_FC can inserted into the current body_FC using the toolbar button next to the button that creates a new standard part_FC.
+Datum geometry_FC can inserted using the toolbar button next to the button that creates a new standard part_FC.
 
 ![FreeCAD Part Design workbench datum geometry toolbar](freecad_part_design_datum_geometry_toolbar.png)
 
 `{ref} https://wiki.freecad.org/Datum`
 
-#### Datum Point
+### Datum Point
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Datum Geometry\/Datum Point)_TOPIC/i`
+`{bm} /(FreeCAD\/Datum Geometry\/Datum Point)_TOPIC/i`
 
 A datum point_FC commonly needs one or more objects to define its attachment / positioning (e.g., faces, lines, vertices). To insert a datum point_FC, either ...
 
@@ -5594,12 +6289,12 @@ Then, create a new datum plane_FC and use the center point as reference 1, the h
 
 `{ref} https://wiki.freecad.org/Part_DatumPoint`
 
-#### Datum Line
+### Datum Line
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Datum Geometry\/Datum Line)_TOPIC/i`
+`{bm} /(FreeCAD\/Datum Geometry\/Datum Line)_TOPIC/i`
 
 ```{prereq}
-FreeCAD/Part Design Workbench/Datum Geometry/Datum Point_TOPIC
+FreeCAD/Datum Geometry/Datum Point_TOPIC
 ```
 
 A datum line_FC typically needs one or more objects to define its attachment / positioning (e.g., faces, lines, vertices). To insert a datum line_FC, either ...
@@ -5623,11 +6318,11 @@ In the 3D viewport, the line doesn't extend all the way to the second point. Tha
 
 #### Datum Plane
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Datum Geometry\/Datum Plane)_TOPIC/i`
+`{bm} /(FreeCAD\/Datum Geometry\/Datum Plane)_TOPIC/i`
 
 ```{prereq}
-FreeCAD/Part Design Workbench/Datum Geometry/Datum Point_TOPIC
-FreeCAD/Part Design Workbench/Datum Geometry/Datum Line_TOPIC
+FreeCAD/Datum Geometry/Datum Point_TOPIC
+FreeCAD/Datum Geometry/Datum Line_TOPIC
 ```
 
 A datum plane_FC needs one or more objects to define its attachment / positioning (e.g., faces, lines, vertices). To insert a datum line_FC, either ...
@@ -5651,15 +6346,15 @@ The example above attaches the datum plane_FC to a vertex (origin) and 2 edges (
 
 #### Local Coordinate System
 
-`{bm} /(FreeCAD\/Part Design Workbench\/Datum Geometry\/Local Coordinate System)_TOPIC/i`
+`{bm} /(FreeCAD\/Datum Geometry\/Local Coordinate System)_TOPIC/i`
 
 ```{prereq}
-FreeCAD/Part Design Workbench/Datum Geometry/Datum Point_TOPIC
-FreeCAD/Part Design Workbench/Datum Geometry/Datum Line_TOPIC
-FreeCAD/Part Design Workbench/Datum Geometry/Datum Plane_TOPIC
+FreeCAD/Datum Geometry/Datum Point_TOPIC
+FreeCAD/Datum Geometry/Datum Line_TOPIC
+FreeCAD/Datum Geometry/Datum Plane_TOPIC
 ```
 
-A local coordinate system_FC is a frame of reference, defining it's own origin and basis axes relative to the parent origin and basis axes. A local coordinate system_FC needs one or more objects to define its attachment / positioning (e.g., faces, lines, vertices). To insert a datum line_FC, either ...
+A local coordinate system_FC is a !!frame!! of reference, defining it's own origin and basis axes relative to the parent origin and basis axes. A local coordinate system_FC needs one or more objects to define its attachment / positioning (e.g., faces, lines, vertices). To insert a datum line_FC, either ...
 
 * select the objects to attach the datum plane_FC to, then select the Datum Plane_FC toolbar button.
 * deselect everything, select the Datum Plane_FC toolbar button, then individually reference objects in the Attachment pane pop-up by clicking a Reference button and selecting the entity.
@@ -5667,6 +6362,27 @@ A local coordinate system_FC is a frame of reference, defining it's own origin a
 ![FreeCAD Part Design workbench datum geometry toolbar](freecad_part_design_datum_geometry_toolbar.png)
 
 Many objects come with their own builtin local coordinate system_FC (e.g., a prism may have its own local coordinate system_FC, where the vertexes of the prism are defined related to that local coordinate system_FC). Objects may also be attached to local coordinate system_FC (or some other object with a builtin local coordinate system_FC), such that their position and/or orientation are relative to the local coordinate system_FC (**Attachment Mode** property). `{ref} https://wiki.freecad.org/Part_CoordinateSystem` `{ref} https://www.youtube.com/watch?v=BxcHS0GLdKg`
+
+## Standard Part
+
+```{prereq}
+FreeCAD/User Interface Layout_TOPIC
+FreeCAD/Datum Geometry/Local Coordinate System_TOPIC
+```
+
+`{bm} /(FreeCAD\/Standard Part)_TOPIC/i`
+
+A standard part_FC is a container that holds many objects, where those objects can be an assortment of different types (e.g., bodies_FC, assemblies_FC). A standard part_FC is typically used to encapsulate related objects together, providing its own local coordinate system_FC so that objects within it are positioned and rotated relative to that local coordinate system_FC, but externally the standard part_FC (and everything within it) is moveable and rotatable as a single unit.
+
+![FreeCAD part design workbench part model pane example](freecad_part_design_part_model_pane_example.png)
+
+Standard parts_FC aren't unique to any specific workbench_FC. They're  bodies_FC because if what's being modeled consists of multiple bodies_FC, having those bodies_FC grouped under the same standard part_FC makes it easier to reuse in other workbenches_FC (e.g., assembly workbench_FC).
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+To create a standard part_FC, use toolbar button 1. Objects can be moved in to / out of the standard part_FC by dragging them within the Model pane.
+
+`{ref} https://wiki.freecad.org/Std_Part` `{ref} self`
 
 ## Variable Sets
 
@@ -5808,7 +6524,7 @@ print("Moved B Body so B_LCS matches A_LCS")
 
   ![external spool diagram](external_spool.drawio.svg)
 
-* `{bm} toolhead` - An assembly consisting of ...
+* `{bm} toolhead` - An !!assembly!! consisting of ...
 
   * a PTFE connector
   * a filament sensor.
@@ -5839,7 +6555,7 @@ print("Moved B Body so B_LCS matches A_LCS")
 
   An extruder is part of a toolhead. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 
-* `{bm} hotend/(hotend|nozzle|silicone sock|heat sink|cold end|silicone sock|heating assembly)/i` - An assembly responsible for melting filament for deposit on to a print. A hotend includes a ...
+* `{bm} hotend/(hotend|nozzle|silicone sock|heat sink|cold end|silicone sock|heating assembly)/i` - An !!assembly!! responsible for melting filament for deposit on to a print. A hotend includes a ...
 
   * coldend - keeps filament at lower temperature.
   * nozzle - heated to melt the filament and deposit it onto a print.
@@ -5904,7 +6620,7 @@ print("Moved B Body so B_LCS matches A_LCS")
   * Red double flash: Print error.
   * Green solid: Print successful. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
 
-* `{bm} build plate` - A plate that sits on the heatbed and serves as the print surface. There are different types of build plates, each with different properties targeting different filament materials. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227` Build plates are intended to be consumable, meaning that in comparison to other major components they're intended to be replaced much sooner. `{ref} https://us.store.bambulab.com/products/bambu-textured-pei-plate` `{ref} https://us.store.bambulab.com/products/bambu-smooth-pei-plate` `{ref} https://us.store.bambulab.com/products/bambu-engineering-plate` `{ref} https://us.store.bambulab.com/products/bambu-cool-plate-supertack-pro`
+* `{bm} build plate` - A plate that sits on the heatbed and serves as the print surface. There are different types of build plates, each with different properties targeting different filament materials. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227` Build plates are intended to be consumable, meaning that in comparison to other major !!components!! they're intended to be replaced much sooner. `{ref} https://us.store.bambulab.com/products/bambu-textured-pei-plate` `{ref} https://us.store.bambulab.com/products/bambu-smooth-pei-plate` `{ref} https://us.store.bambulab.com/products/bambu-engineering-plate` `{ref} https://us.store.bambulab.com/products/bambu-cool-plate-supertack-pro`
 
   ```{note}
   To avoid contamination, do not touch the build plate other than the front edge. `{ref} https://bambulab.com/en/support/academy/10/course/1031276070794240000/chapter/227`
@@ -5925,7 +6641,7 @@ print("Moved B Body so B_LCS matches A_LCS")
 
 * `{bm} Engineering Plate` - A build plate compatible with all filament materials but requires a layer of glue before printing. Although compatible with all filament materials, the Engineering Plate targets high temperature filament materials. `{ref} https://us.store.bambulab.com/products/bambu-engineering-plate`
 
-* `{bm} vision encoder` - A calibration tool used to compensate for natural and wear related variances, allowing for high accuracy prints that can tightly assembly. The vision encoder is a slab that sits on the heatbed, shaped similarly to a build plate. However, it's only used for calibration and not meant to be printed on (replace with build plate once calibrated). `{ref} https://us.store.bambulab.com/products/vision-encoder?id=601545719002021889`
+* `{bm} vision encoder` - A calibration tool used to compensate for natural and wear related variances, allowing for high accuracy prints that can tightly !!assemble!!. The vision encoder is a slab that sits on the heatbed, shaped similarly to a build plate. However, it's only used for calibration and not meant to be printed on (replace with build plate once calibrated). `{ref} https://us.store.bambulab.com/products/vision-encoder?id=601545719002021889`
 
 * `{bm} chamber` - The enclosure of the H2S, climate controlled and encapsulating everything within (e.g., toolhead, motors, heatbed, CoreXY system, and fans). `{ref} https://wiki.bambulab.com/en/h2s`
 
@@ -6012,7 +6728,7 @@ print("Moved B Body so B_LCS matches A_LCS")
 * `{bm} Stereolithography (STL)/\b(STL)\b/` `{bm} /(stereolithography)/i` - File format for single 3D object's geometry, stored as triangles. It does not contain any other information such as color or texture. `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214`
 
   ```{note}
-  This is intended for the surface geometry of a single object? You can technically include internal geometry or disjointed geometry but if it doesn't form a closed "watertight" volume then it's "non-manifold" and invalid for 3D printing.
+  This is intended for the surface geometry of a single object? You can technically include internal geometry or !!disjointed!! geometry but if it doesn't form a closed "watertight" volume then it's "non-manifold" and invalid for 3D printing.
   ```
 
 * `{bm} 3D Manufacturing Format (3MF)/\b(3MF)\b/` `{bm} /(3D manufacturing format)/i` - File format for 3D objects destined for 3D printing. 3MF !!supports!! color, text, and material properties. 3MF is preferred to STL because it can store multiple objects, print settings, and other metadata. `{ref} https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214`.
@@ -6170,11 +6886,11 @@ print("Moved B Body so B_LCS matches A_LCS")
 
 * `{bm} bottom surface` - The lowest surface of an object, just before the infill. Bottom surfaces may consist of multiple layers. `{ref} https://wiki.bambulab.com/en/software/bambu-studio/fill-patterns`
 
-* `{bm} assembly/(assembly|assemblies)/i` - A set of objects grouped together as a single object. `{ref} https://wiki.bambulab.com/en/software/bambu-studio/assemble`
+* `{bm} assembly/(assembly|assemblies)_BS/i` - A set of objects grouped together as a single object. `{ref} https://wiki.bambulab.com/en/software/bambu-studio/assemble`
 
-* `{bm} negative part` - an object within an assembly whose purpose is to subtract areas of other objects in that assembly (where those objects themselves aren't specialized objects like negative parts). `{ref} https://bambulab.com/en/support/academy/3/course/982590125637046272/chapter/45`
+* `{bm} negative part` - an object within an !!assembly!! whose purpose is to subtract areas of other objects in that assembly_BS (where those objects themselves aren't specialized objects like negative parts). `{ref} https://bambulab.com/en/support/academy/3/course/982590125637046272/chapter/45`
 
-* `{bm} modifier part` - an object within an assembly whose purpose is to modify the properties of other objects in that assembly (where those objects themselves aren't specialized objects like negative parts). `{ref} https://wiki.bambulab.com/en/software/bambu-studio/modifier`
+* `{bm} modifier part` - an object within an !!assembly!! whose purpose is to modify the properties of other objects in that assembly_BS (where those objects themselves aren't specialized objects like negative parts). `{ref} https://wiki.bambulab.com/en/software/bambu-studio/modifier`
 
 * `{bm} contour/(contours?)_BS/i` - The outer perimeter of the object as printed up the Z-axis (collective outer perimeters of the layers that make up the printed object). For example, for an object of a salad bowl, the shape of the unhollowed out bowl is the contour_BS. `{ref} https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation`
 
@@ -6218,7 +6934,14 @@ print("Moved B Body so B_LCS matches A_LCS")
   `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(sketcher workbench|sketcher)/i`
   `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(sketches|sketching|sketch)/i`
 
-* `{bm} element/(elements?)_FC/i` - A 2D geometric primitive in a sketch_FC (e.g., point, line, arc, and spline). `{ref} https://wiki.freecad.org/Basic_Sketcher_Tutorial`
+* `{bm} element/(elements?)_FC/i` - A geometric building block.
+
+  * For a 3D model, examples of !!elements!! include vertices, lines, and faces.
+  * For a 2D sketch_FC, examples of !!elements!! include points, lines, arcs, and splines.
+
+  Some !!elements!! may contain !!sub-elements!!. For example, a sketch_FC line has two points.
+  
+  `{ref} https://wiki.freecad.org/Basic_Sketcher_Tutorial` `{ref} self`
 
   `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(elements?)/i`
 
@@ -6310,7 +7033,7 @@ print("Moved B Body so B_LCS matches A_LCS")
 
   `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(datum planes?)/i`
 
-* `{bm} local coordinate system/(local coordinate system)_FC/i` `{bm} /(LCS)_FC/` - Datum geometry_FC that acts as a frame of reference, defining it's own origin and basis axes relative to the parent origin and basis axes. Many objects come with their own builtin !!local coordinate system!! (e.g., a prism may have its own !!local coordinate system!!, where the vertexes of the prism are defined in reference to that !!local coordinate system!!). Objects may also be attached to !!local coordinate system!! (or some other object with a builtin !!local coordinate system!!), such that their position and/or orientation are relative to the !!local coordinate system!! (see Attachment Mode property). `{ref} https://wiki.freecad.org/Part_CoordinateSystem` `{ref} https://www.youtube.com/watch?v=BxcHS0GLdKg`
+* `{bm} local coordinate system/(local coordinate systems?)_FC/i` `{bm} /(LCS)_FC/` - Datum geometry_FC that acts as a !!frame!! of reference, defining it's own origin and basis axes relative to the parent origin and basis axes. Many objects come with their own builtin !!local coordinate system!! (e.g., a prism may have its own !!local coordinate system!!, where the vertexes of the prism are defined in reference to that !!local coordinate system!!). Objects may also be attached to !!local coordinate system!! (or some other object with a builtin !!local coordinate system!!), such that their position and/or orientation are relative to the !!local coordinate system!! (see Attachment Mode property). `{ref} https://wiki.freecad.org/Part_CoordinateSystem` `{ref} https://www.youtube.com/watch?v=BxcHS0GLdKg`
 
   `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(local coordinate system)/i`
   `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(LCS)/`
@@ -6350,6 +7073,21 @@ print("Moved B Body so B_LCS matches A_LCS")
 
 * `{bm} thickness/(thickness)_FC/i` - A feature_FC that converts a solid to a shell, removing selected faces and !!thickening!! the faces. `{ref} https://wiki.freecad.org/PartDesign_Thickness`
 
+* `{bm} assembly workbench/(assembly workbench|assembly|assemblies|assembled)_FC/i` - A FreeCAD workbench_FC that specifies how individual models fit and move together (e.g., model A and model B slide against each other) to simulate mechanical movements. `{ref} https://wiki.freecad.org/Assembly_Workbench`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(assembly workbench|assembly|assemblies|assembled)/i`
+
+* `{bm} joint/(joints?)_FC/i` - Fully or partially restricts the movement of one or more components_FC, often relative to each other. `{ref} https://wiki.freecad.org/Assembly_Workbench`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(joints?)/i`
+
+* `{bm} component/(components?)_FC/i` - A component_FC is a non-joint_FC object within the assembly_FC (e.g., body_FC, standard part_FC, sub-assemblies_FC). `{ref} https://wiki.freecad.org/Assembly_Workbench`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(components?)/i`
+
+* `{bm} frame/(frames?)_FC/i` - Binds a component_FC's element_FC (e.g., face, plane, vertex) to a joint_FC. `{ref} self`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(frames?)/i`
 
 `{bm-error} Use _LW if referencing line width, or use _LH if referencing layer height, or use _FC if referencing the FreeCAD thickness feature, or wrap in !!/(thickness)/i`
 `{bm-error} Use _LW if referencing line width, or use _LH if referencing layer height, or wrap in !!/(thicker|thicken|thick)/i`

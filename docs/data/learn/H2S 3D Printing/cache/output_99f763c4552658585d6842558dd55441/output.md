@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://wiki.freecad.org/PartDesign_Clone)</sub>
