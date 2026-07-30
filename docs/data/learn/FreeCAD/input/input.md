@@ -1132,56 +1132,6 @@ To prevent flipping_FC, it's important to anchor the sketch_FC using constraints
 
 `{ref} https://wiki.freecad.org/Sketcher_Workbench#Flipping` `{ref} https://forum.freecad.org/viewtopic.php?t=10872` `{ref} self`
 
-### 3D Feature Validity
-
-`{bm} /(Sketcher Workbench\/Sketching\/3D Feature Validity)_TOPIC/i`
-
-```{prereq}
-Sketcher Workbench/Sketching/Creation_TOPIC
-Sketcher Workbench/Sketching/Selection_TOPIC
-Sketcher Workbench/Sketching/Deletion_TOPIC
-Sketcher Workbench/Sketching/Construction Geometry_TOPIC
-Sketcher Workbench/Sketching/Projection Geometry_TOPIC
-Sketcher Workbench/Sketching/Degrees of Freedom_TOPIC
-Sketcher Workbench/Sketching/Sketch Flipping_TOPIC
-```
-
-```{note}
-The word !!contour!! here just means the outline of a shape that you draw in the sketcher_FC. It doesn't have the same special meaning as the contours_BS vs holes_BS meaning in Bambu Studio.
-```
-
-For a sketch_FC to be valid for use as a 3D feature_FC (e.g., as a profile that extrudes into a 3D addition or punches into a 3D face), it must conform to several expectations:
-
-* **No open !!contours!!**: A !!contours!! must be closed, meaning gaps between endpoints of that !!contour!! aren't allowed (no matter how small).
-
-  ![FreeCAD sketcher workbench open contour example](freecad_sketcher_open_contour_example.png)
-
-* **No intersection**: A !!contour!! must not intersect with other !!contours!! or self-intersect.
-
-  ![FreeCAD sketcher workbench intersecting contours example](freecad_intersecting_contours_example.png)
-
-  ```{note}
-  While it !!contours!! can't intersect, one !!contour!! is allowed to be wholly contained in the. See further down for more information.
-  ```
-
-* **No shared edges between !!contours!!**: Two !!contours!! must not share an edge. 
-
-  ![FreeCAD sketcher workbench 2 contours with shared edge example](freecad_sketcher_2_contours_with_shared_edge_eample.png) ![FreeCAD sketcher workbench 2 contours with touching overlapping edges example](freecad_sketcher_2_contours_with_touching_overlapping_edges_eample.png)
-
-* **No T-connections**: A !!contour!! must not have two edges sharing a common point / point touching an edge.
-
-  ![FreeCAD sketcher workbench T connection example](freecad_sketcher_t_connection_example.png)
-
-!!Contours!! are allowed to be nested (but not intersecting). Nesting alternates between creating voids in the 3D feature_FC.
-
-![FreeCAD sketcher workbench nested contours example](freecad_sketcher_nested_contours_example.png) ![FreeCAD part design workbench nested contours padded example](freecad_part_design_nested_contours_padded_example.png)
-
-```{note}
-These rules don't apply to construction geometry_FC because construction geometry_FC doesn't appear outside of editing a sketch_FC.
-```
-
-`{ref} https://wiki.freecad.org/Sketcher_Workbench#Profile_sketches`
-
 ## Elements
 
 `{bm} /(Sketcher Workbench\/Elements)_TOPIC/i`
@@ -2137,7 +2087,7 @@ User Interface Layout_TOPIC
 Part Design Workbench\/User Interface_TOPIC
 ```
 
-The core !!components!! of the Part Design workbench_FC are bodies_FC and sketches_FC. Each body_FC typically compounds several sketches_FC into 3D geometry.
+The core !!components!! of the Part Design workbench_FC are bodies_FC, features_FC, and sketches_FC. A body_FC is a contiguous model created by chaining together distinct steps, known as features_FC. Each feature_FC is a distinct and editable step in the building of that body_FC, and it's typically an extension of a sketch_FC into 3D geometry (e.g., a sketch_FC drawn on a face is extruded/padded to create a new addition).
 
 ```{plantuml}
 @startuml
@@ -2161,7 +2111,11 @@ Body ||--|{ SketchFeature : "built using"
 Datum Geometry/Local Coordinate System_TOPIC
 ```
 
-A body_FC is a single contiguous 3D model, mostly built by compounding several sketches_FC into 3D geometry in a chain. Each item in the chain is referred to as a feature_FC, which is a distinct and editable step in the building of the model.
+A body_FC is a single contiguous 3D model, mostly built by extending sketches_FC into 3D geometry in a chain. Each item in the chain is referred to as a feature_FC, which is a distinct and editable step in the building of the model.
+
+```{note}
+A body_FC seems to be intended to be contiguous, but you can design it such that it's not contiguous? FreeCAD always treats it as a single piece, even if it isn't.
+```
 
 The list of features_FC nested under a body_FC comprise a non-destructive workflow. For example, a sketch_FC of a square that's 5mm by 5mm can be padded by 10mm to create a rectangular prism. Then, a sketch_FC of a circle with a 3.5mm diameter can be placed on a face of that prism and pocketed to create a cylindrical !!hole!! through that cube.
 
@@ -2194,6 +2148,60 @@ An easier way to set the orientation is, in the Model pane, right-click and choo
 ```
 
 `{ref} https://wiki.freecad.org/PartDesign_Body` `{ref} https://wiki.freecad.org/Body`
+
+#### Tip
+
+`{bm} /(Part Design Workbench\/Organization\/Body\/Tip)_TOPIC/i`
+
+A body_FC's tip_FC is the index its feature_FC chain that defines the current working point and current geometry. For example, consider a body_FC consisting of 5 features_FC (index 0 to 4) but having its tip_FC set to index 2. The feature_FC at index 2 is what defines the body_FC's overall geometry (any feature_FC after index 2 is ignored), and adding a feature_FC will inject that feature_FC as index 3 and move the tip_FC over to it.
+
+By default, a body_FC's tip_FC is set to the last feature_FC in the chain. To move it a different index, use the right-click the feature_FC in the Model pane and select **!!Set Tip!!** 
+
+![FreeCAD Part Design workbench set tip](freecad_part_design_set_tip.png)
+
+`{ref} https://wiki.freecad.org/PartDesign_Body#Tip`
+
+#### Base Feature
+
+`{bm} /(Part Design Workbench\/Organization\/Body\/Base Feature)_TOPIC/i`
+
+A base feature_FC is a reference to an existing object that's imported as the first step of a body_FC. A base feature_FC object is always a live reference. Changes to the source object are automatically applied to the body_FC.
+
+![FreeCAD Part Design workbench base feature example](freecad_part_design_base_feature_example.png)
+
+A base feature_FC can be added in many ways:
+
+* Select an existing object and create a clone (toolbar button 8).
+* Select an existing object and create a new body_FC (toolbar button 3) *sometimes* creates that body_FC with the object as its base feature_FC.
+* Create a new body_FC and select an object for its **Base Feature_FC** property in the Model pane.
+
+```{note}
+The 2nd method uses the word *sometimes* because it doesn't seem to work if the selected object is a body_FC, but does seem to work if the object is a part workbench_FC object?
+```
+
+![FreeCAD Part Design workbench toolbar](freecad_part_design_toolbar.png)
+
+`{ref} https://wiki.freecad.org/PartDesign_Body#Base_Feature`
+
+#### Subshape Binder
+
+`{bm} /(Part Design Workbench\/Organization\/Body\/Subshape Binder)_TOPIC/i`
+
+A subshape binder_FC is a reference to an existing object that's imported as a design reference (e.g., it isn't part of the model, but acts more as helper geometry to construct the model). To add a subshape binder, ...
+
+1. ensure the body_FC is active.
+2. select the outside geometry.
+3. click subshape binder in the toolbar (green blob with 3 dots) to create a subshape binder object in the body_FC.
+
+![FreeCAD Part Design workbench subshape binder example](freecad_part_design_subshape_binder_example.png)
+
+The subshape binders **Bind Mode** property defines if it copies the original geometry or just links to it:
+
+* **Synchronized**: Live reference. Updates when source changes.
+* **Frozen**: Keeps link, but shape is frozen until refreshed/changed.
+* **Detached**: Copy/snapshot. Breaks live dependency, keeps current shape.
+
+`{ref} https://wiki.freecad.org/PartDesign_SubShapeBinder` `{ref} self`
 
 ### Sketch
 
@@ -2246,37 +2254,60 @@ It's too much work to go through what all these are. At a high-level, it should 
 ```
 
 ```{seealso}
-Sketcher Workbench/Sketching/3D Feature Validity_TOPIC
 Sketcher Workbench/Sketching/Sketch Flipping_TOPIC
 ```
 
 `{ref} https://wiki.freecad.org/Sketcher_ValidateSketch` `{ref} https://wiki.freecad.org/Sketcher_MapSketch` `{ref} https://wiki.freecad.org/Sketcher_EditSketch` `{ref} https://wiki.freecad.org/PartDesign_NewSketch`
 
-## Binding Geometry
+#### 3D Feature Validity
 
-`{bm} /(Part Design Workbench\/Binding Geometry)_TOPIC/i`
+`{bm} /(Part Design Workbench\/Organization\/Sketch\/3D Feature Validity)_TOPIC/i`
 
-In certain cases, a piece of outside geometry may need to be pulled into the body_FC for further manipulation (e.g., a model created using Part workbench_FC - not Part Design workbench_FC - always lives outside of the body_FC). To import that outside geometry into the body_FC, a subshape binder is required:
+```{prereq}
+Sketcher Workbench/Sketching/Creation_TOPIC
+Sketcher Workbench/Sketching/Selection_TOPIC
+Sketcher Workbench/Sketching/Deletion_TOPIC
+Sketcher Workbench/Sketching/Construction Geometry_TOPIC
+Sketcher Workbench/Sketching/Projection Geometry_TOPIC
+Sketcher Workbench/Sketching/Degrees of Freedom_TOPIC
+Sketcher Workbench/Sketching/Sketch Flipping_TOPIC
+```
 
-1. Ensure the body_FC is active.
-2. Select the outside geometry.
-3. Click subshape binder in the toolbar (green blob with 3 dots) to create a subshape binder object in the body_FC.
+For a sketch_FC to be valid for use as a 3D feature_FC (e.g., as a profile that extrudes into a 3D addition or punches into a 3D face), it must conform to several expectations:
 
-![FreeCAD Part Design workbench subshape binder example](freecad_part_design_subshape_binder_example.png)
+* **No open !!contours!!**: A !!contours!! must be closed, meaning gaps between endpoints of that !!contour!! aren't allowed (no matter how small).
 
-The subshape binders **Bind Mode** property defines if it copies the original geometry or just links to it:
+  ![FreeCAD sketcher workbench open contour example](freecad_sketcher_open_contour_example.png)
 
-* **Synchronized**: Live reference. Updates when source changes.
-* **Frozen**: Keeps link, but shape is frozen until refreshed/changed.
-* **Detached**: Copy/snapshot. Breaks live dependency, keeps current shape.
+* **No intersection**: A !!contour!! must not intersect with other !!contours!! or self-intersect.
 
-In addition to subshape binder, geometry may be imported into the body_FC as a !!base feature!! object if it's the first step of a body_FC (body_FC is empty). Dragging-and-dropping the object into the empty body_FC within the Model pane results in the !!base feature!! object being added.
+  ![FreeCAD sketcher workbench intersecting contours example](freecad_intersecting_contours_example.png)
 
-A !!base feature!! object is always a live reference. Changes to the source object are automatically applied to the body_FC.
+  ```{note}
+  While it !!contours!! can't intersect, one !!contour!! is allowed to be wholly contained in the. See further down for more information.
+  ```
 
-![FreeCAD Part Design workbench base feature example](freecad_part_design_base_feature_example.png)
+* **No shared edges between !!contours!!**: Two !!contours!! must not share an edge. 
 
-`{ref} https://wiki.freecad.org/PartDesign_SubShapeBinder` `{ref} self`
+  ![FreeCAD sketcher workbench 2 contours with shared edge example](freecad_sketcher_2_contours_with_shared_edge_eample.png) ![FreeCAD sketcher workbench 2 contours with touching overlapping edges example](freecad_sketcher_2_contours_with_touching_overlapping_edges_eample.png)
+
+* **No T-connections**: A !!contour!! must not have two edges sharing a common point / point touching an edge.
+
+  ![FreeCAD sketcher workbench T connection example](freecad_sketcher_t_connection_example.png)
+
+!!Contours!! are allowed to be nested (but not intersecting). Nesting alternates between creating voids in the 3D feature_FC.
+
+![FreeCAD sketcher workbench nested contours example](freecad_sketcher_nested_contours_example.png) ![FreeCAD part design workbench nested contours padded example](freecad_part_design_nested_contours_padded_example.png)
+
+```{note}
+These rules don't apply to construction geometry_FC because construction geometry_FC doesn't appear outside of editing a sketch_FC.
+```
+
+```{note}
+These rules apply to the part design workbench_FC, but potentially may not apply to the part workbench_FC. For example, you can use open sketches_FC in the part workbench_FC to generated curved surfaces.
+```
+
+`{ref} https://wiki.freecad.org/Sketcher_Workbench#Profile_sketches`
 
 ## Features
 
@@ -2364,7 +2395,7 @@ To create a !!hole!!, create a sketch_FC with one or more circles, arcs, and/or 
 
 ![FreeCAD Part Design workbench hole example](freecad_part_design_hole.png)
 
-The **Base profile types** parameter defines which sketch_FC element_FC types to make into !!holes!!:
+The **!!Base profile types!!** parameter defines which sketch_FC element_FC types to make into !!holes!!:
 
 * **Points, circles and arcs**: Position !!holes!! at points as well as the centers of circles and arcs.
 * **Circles and arcs**: Position !!holes!! the centers of circles and arcs.
@@ -2391,7 +2422,7 @@ Below **Depth type** is a picture that shows the general type of fastener to exp
 
 * depth of the fastener is defined by **Depth** (**Depth** is disabled if **Depth type** is set to **Through all**).
 * !!width!! of the fastener is is defined by **Diameter** (**Diameter** is hardcoded if a **Standard** and **Size** were set other than **None**).
-* sharpness of the fastener's tip is defined by **Drill angle**, and **Include in depth** defines if the tip is additional to the **Depth** field's value or added on top of it.
+* sharpness of the fastener's !!tip!! is defined by **Drill angle**, and **Include in depth** defines if the !!tip!! is additional to the **Depth** field's value or added on top of it.
 
 The **Switch direction** parameter reverses the direction of the !!hole!! cut-outs.
 
@@ -2557,7 +2588,8 @@ The **Closed** parameter makes a transition from the last sketch_FC to the initi
 Part Design Workbench/User Interface_TOPIC
 Part Design Workbench/Organization_TOPIC
 Part Design Workbench/Features/Loft_TOPIC
-Part Design Workbench/Binding Geometry_TOPIC
+Part Design Workbench/Organization/Body/Subshape Binder_TOPIC
+Part Design Workbench/Organization/Body/Base Feature_TOPIC
 Part Design Workbench/Organization/Sketch_TOPIC
 ```
 
@@ -2608,7 +2640,7 @@ obj.Shape = wire
 App.ActiveDocument.recompute()
 ```
 
-Since the b-spline belongs to the Part workbench_FC rather than the Part Design workbench_FC, it lives outside of the Part Design_FC body_FC where the sketches_FC live. It needs to be imported into that Part Design_FC body_FC using a subshape binder:
+Since the b-spline belongs to the Part workbench_FC rather than the Part Design workbench_FC, it lives outside of the Part Design_FC body_FC where the sketches_FC live. It needs to be imported into that Part Design_FC body_FC using a subshape binder_FC or as a base feature_FC:
 
 1. Ensure the body_FC is active.
 2. Select the b-spline.
@@ -2619,7 +2651,8 @@ Sketches_FC can then be attached to the b-spline by attaching them to that subsh
 ![FreeCAD Part Design workbench sketch path mapping and attachment offset](freecad_part_design_attached_sketch_path_mapping_and_attachment_offset.png)
 
 ```{seealso}
-Part Design Workbench/Binding Geometry_TOPIC
+Part Design Workbench/Organization/Body/Subshape Binder_TOPIC
+Part Design Workbench/Organization/Body/Base Feature_TOPIC
 Part Design Workbench/Organization/Sketch_TOPIC
 ```
 
@@ -3113,7 +3146,7 @@ Select **Transform body_FC** for patterning of the full model or **Transform too
 Does order of the selected features_FC matter? A safe bet is likely to add features_FC in the same order.
 ```
 
-Right-click inside the **Transformations** list to add, delete, edit, and reorder transformations. The **Scale** transformation takes copies made in the previous transformation and applies compound scaling (e.g., first copy is 2x scaled, second copy, 3x scaled, etc..), as shown in the example. For copies of the body_FC, this may work as intended. For copies of features_FC, this may not work as intended (e.g., in the example screenshot, notice that the pockets don't seat on the face as they scale).
+Right-click inside the **Transformations** list to add, delete, edit, and reorder transformations. The **Scale** transformation takes copies made in the previous transformation and applies !!compound!! scaling (e.g., first copy is 2x scaled, second copy, 3x scaled, etc..), as shown in the example. For copies of the body_FC, this may work as intended. For copies of features_FC, this may not work as intended (e.g., in the example screenshot, notice that the pockets don't seat on the face as they scale).
 
 `{ref} https://wiki.freecad.org/PartDesign_MultiTransform` `{ref} https://wiki.freecad.org/PartDesign_Scaled`
 
@@ -3134,7 +3167,7 @@ Part workbench_FC allows building a 3D object through a hierarchy of transformat
 * produces a 3D object through a hierarchy of transformations as opposed to a linear chain of 2D sketch_FC to 3D feature_FC.
 * produces a 3D object outside of a container, meaning the operations / transformations don't need to nest in a container similar to part design_FC's body_FC.
 
-The core !!components!! of the part workbench_FC are geometry objects and compounds (compounds are a grouping of geometry objects, treated as a single piece of geometry). The workflow is to build out more complex pieces of geometry through transformations: Multiple pieces of existing geometry into one or more pieces of new geometry (e.g., boolean intersection, converting two 2D lines to a ruled surface, sweeping_FC over profiles).
+The core !!components!! of the part workbench_FC are geometry objects and compounds_FC (a compound_FC is a grouping of geometry objects, treated as a single piece of geometry). The workflow is to build out more complex pieces of geometry through transformations: Multiple pieces of existing geometry into one or more pieces of new geometry (e.g., boolean intersection, converting two 2D lines to a ruled surface, sweeping_FC over profiles).
 
 ```{plantuml}
 @startuml
@@ -3200,9 +3233,9 @@ User Interface Layout_TOPIC
 * (5) Boolean operations: These toolbar buttons transform multiple pieces of geometry. From left-to-right, ...
 
   * drop-down to either ...
-    * group together (compound) several pieces of geometry (not a boolean union, restrictions apply).
-    * break apart a compound back to its individual parts.
-    * break out some geometry in a compound, using filters.
+    * group together (compound_FC) several pieces of geometry (not a boolean union, restrictions apply).
+    * break apart a compound_FC back to its individual parts.
+    * break out some geometry in a compound_FC, using filters.
   * boolean operation between two 3D objects (e.g., union, intersection, difference).
   * boolean difference a 3D object from another.
   * boolean union two 3D objects.
@@ -3212,9 +3245,9 @@ User Interface Layout_TOPIC
     * boolean union two walled / hollowed 3D objects, preserving voids on one of the objects.
     * boolean difference two walled / hollowed 3D objects, making sure to remove the void as well.
   * drop-down to either ...
-    * splits two 3D objects into it's boolean differences (both A-B and B-A) and boolean intersection, under a compound. The compound of differences and intersection together form the boolean union.
-    * splits a 3D object using another 3D object as a "cutter", resulting in its boolean difference (A-B only) and boolean intersection. The split pieces are placed as individual 3D objects, not under a compound.
-    * splits a 3D object using another 3D object as a "cutter", resulting in its boolean difference (A-B only) and boolean intersection. The split pieces under a compound.
+    * splits two 3D objects into it's boolean differences (both A-B and B-A) and boolean intersection, under a compound_FC. The compound_FC of differences and intersection together form the boolean union.
+    * splits a 3D object using another 3D object as a "cutter", resulting in its boolean difference (A-B only) and boolean intersection. The split pieces are placed as individual 3D objects, not under a compound_FC.
+    * splits a 3D object using another 3D object as a "cutter", resulting in its boolean difference (A-B only) and boolean intersection. The split pieces under a compound_FC.
     * boolean XOR two 3D objects, effectively removing the boolean intersection (\[A-B\]∪\[B-A\])
 
 * (7) !!Defeaturing!!: Removes certain !!features!! of a 3D object (e.g. !!holes!!, chamfers_FC, edges_FC), to fix defects and simplify.
@@ -3233,7 +3266,7 @@ User Interface Layout_TOPIC
 Part Workbench\/User Interface_TOPIC
 ```
 
-The core !!components!! of the Part workbench_FC are geometry and compounds. A compound object is a grouping of a geometry objects, treated as a single geometry object.
+The core !!components!! of the Part workbench_FC are geometry and compounds_FC. A compound_FC is a grouping of a geometry objects, treated as a single geometry object.
 
 ```{plantuml}
 @startuml
@@ -3250,7 +3283,7 @@ A geometry object could be ...
 
 * a primitive (e.g., cube, line, cone, vertex).
 * the result of some transformation (e.g., boolean intersection of two objects, filleting_FC an edge).
-* the combination of geometry objects (e.g., compound object).
+* the combination of geometry objects (e.g., compoun_FCd object).
 * a body_FC.
 
 ```{seealso}
@@ -3284,7 +3317,7 @@ Sketcher Workbench_TOPIC
 Standard Part_TOPIC
 ```
 
-A compound object is a set of geometry objects brought together under a single container, where that container itself is a geometry object. This is not a boolean union - objects aren't merged in together.
+A compound_FC is a set of geometry objects brought together under a single container, where that container itself is a geometry object. A compound_FC is not a boolean operation - objects remain separate as opposed to being merged together in together.
 
 ![FreeCAD Part workbench compound example](freecad_partwb_compound_example.png)
 
@@ -3300,34 +3333,14 @@ Compound ||--o{ Geometry : "contains"
 ```
 
 ```{note}
-How is this different from a standard part_FC? Standard part_FC is a container that holds multiple geometry objects but itself isn't geometry, while compound is? The source mentions that the compound has a "topological shape".
+How is this different from a standard part_FC? Standard part_FC is a container that holds multiple geometry objects but itself isn't geometry, while compound_FC is? The source mentions that a compound_FC has a "topological shape".
 ```
 
 ```{note}
-The source says compounds can't include meshes?
+The source says compounds_FC can't include meshes?
 ```
 
 `{ref} https://wiki.freecad.org/Part_Compound`
-
-
-### Profile
-
-`{bm} /(Part Design Workbench\/Organization\/Profile)_TOPIC/i`
-
-```{prereq}
-Part Workbench/Organization/Geometry_TOPIC
-Sketcher Workbench_TOPIC
-```
-
-A profile is a set of geometry that's 2D and coplanar: Sketches_FC, 2D primitive shapes (e.g., circle, square, ellipse), a set of connected coplanar edges/wires that may or may not be closed (e.g., 3 wires forming a U shape is not closed). Profiles often go on to be to generate faces, and surfaces, and 3D objects (e.g., 2 edges can generate a ruled surface, a loft_FC can generate a 3D object or curved surface).
-
-```{note}
-A profile isn't a container / distinct type of object, but it's referred to multiple times throughout the wiki and is required by several operations, and so I thought it'd be good to add it in the organization.
-```
-
-![FreeCAD Part workbench profile operation example](freecad_partwb_profile_operation_example.png)
-
-`{ref} self`
 
 ## Part Design Interoperability
 
@@ -3336,7 +3349,8 @@ A profile isn't a container / distinct type of object, but it's referred to mult
 ```{prereq}
 Part Workbench/Organization_TOPIC
 Part Design Workbench/Organization/Body_TOPIC
-Part Design Workbench/Binding Geometry_TOPIC
+Part Design Workbench/Organization/Body/Base Feature_TOPIC
+Part Design Workbench/Organization/Body/Subshape Binder_TOPIC
 ```
 
 **Part Design Workbench_FC to Part Workbench_FC**
@@ -3572,7 +3586,7 @@ There are many types of joints_FC, starting from toolbar button 7 onward. An ass
 Each individual joint_FC type is documented in further detail in sections further down.
 
 ```{note}
-A core mistake people often make with joints_FC is thinking that they can be compounded. A joint_FC removes all but some options for movement. That's why if you try to place a sliding joint_FC and a revolute joint_FC on the same pair of objects, they cancel each other out.
+A core mistake people often make with joints_FC is thinking that they can be !!compounded!!. A joint_FC removes all but some options for movement. That's why if you try to place a sliding joint_FC and a revolute joint_FC on the same pair of objects, they cancel each other out.
 
 * The sliding joint_FC cancels out all motion except moving up and down an axis.
 * The revolute joint_FC cancels out all motion except revolving around an axis.
@@ -3825,7 +3839,7 @@ There's a bug in 1.1.1 (and maybe other versions) where angles \< 180 or \> 180 
 ```
 
 ```{note}
-A core mistake people often make with joints_FC is thinking that they can be compounded. A joint_FC removes all but some options for movement. That's why if you try to place a sliding joint_FC and a revolute joint_FC on the same pair of objects, they cancel each other out.
+A core mistake people often make with joints_FC is thinking that they can be !!compounded!!. A joint_FC removes all but some options for movement. That's why if you try to place a sliding joint_FC and a revolute joint_FC on the same pair of objects, they cancel each other out.
 
 * The sliding joint_FC cancels out all motion except moving up and down an axis.
 * The revolute joint_FC cancels out all motion except revolving around an axis.
@@ -4674,7 +4688,7 @@ print("Moved B Body so B_LCS matches A_LCS")
 
 * `{bm} FreeCAD` - A parametric 3D computer-aided design / modeling tool. `{ref} https://www.freecad.org/`
 
-* `{bm} /(workbenches|workbench)_FC/i` - A set of tools, commands, views, panels, and workflows within FreeCAD grouped together for a particular type of design (e.g., spreadsheet workbench_FC). `{ref} https://wiki.freecad.org/Workbenches`
+* `{bm} workbench/(workbenches|workbench)_FC/i` - A set of tools, commands, views, panels, and workflows within FreeCAD grouped together for a particular type of design (e.g., spreadsheet workbench_FC). `{ref} https://wiki.freecad.org/Workbenches`
 
   `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(workbenches|workbench)|/i`
 
@@ -4760,7 +4774,7 @@ print("Moved B Body so B_LCS matches A_LCS")
   3. right side is constrained_FC to start at (0,5) and have a distance of 3mm.
   4. left side and right side are constrained_FC to have their ends at the same location (coincident constraint_FC).
 
-  The above set of constraints_FC has 2 solutions: Either the tip of the triangle can be above the X-axis or below the X-axis. `{ref} https://wiki.freecad.org/Sketcher_Workbench#Flipping` `{ref} https://forum.freecad.org/viewtopic.php?t=10872`
+  The above set of constraints_FC has 2 solutions: Either the !!tip!! of the triangle can be above the X-axis or below the X-axis. `{ref} https://wiki.freecad.org/Sketcher_Workbench#Flipping` `{ref} https://forum.freecad.org/viewtopic.php?t=10872`
 
   ```{seealso}
   FreeCAD/Sketcher Workbench/Sketching/Sketch Flipping_TOPIC
@@ -4803,7 +4817,7 @@ print("Moved B Body so B_LCS matches A_LCS")
   `{bm-error} You added _FC to the wrong part. Add after workbench/(part design_FC workbench)/i`
   `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(part design workbench)/i`
 
-* `{bm} body/(body|bodies)_FC/i` - A single contiguous 3D model, mostly built through a linear chain of operations where each operation compounds a sketch_FC (or a set of sketches_FC) into a feature_FC. `{ref} https://wiki.freecad.org/PartDesign_Body` `{ref} https://wiki.freecad.org/Body`
+* `{bm} body/(body|bodies)_FC/i` - A single contiguous 3D model, built through a linear chain of features_FC. `{ref} https://wiki.freecad.org/PartDesign_Body` `{ref} https://wiki.freecad.org/Body`
 
   `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(body|bodies)/i`
 
@@ -4811,11 +4825,11 @@ print("Moved B Body so B_LCS matches A_LCS")
 
   `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(additive features?|subtractive features?|features?)/i`
 
-* `{bm} loft/(lofts?)_FC/i` - A feature_FC that constructs a solid by transitioning through sketches_FC that act as !!slices!! within the solid. `{ref} https://wiki.freecad.org/PartDesign_AdditiveLoft` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveLoft`
+* `{bm} loft/(lofts?|lofted)_FC/i` - A solid created by transitioning through profiles. Loft_FC is present as a feature_FC type in the part design workbench_FC and as an operation in the part workbench_FC. `{ref} https://wiki.freecad.org/PartDesign_AdditiveLoft` `{ref} https://wiki.freecad.org/PartDesign_SubtractiveLoft` `{ref} https://wiki.freecad.org/Part_Loft`
 
-  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(lofts?)/i`
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(lofts?|lofted)/i`
 
-* `{bm} pipe/(pipes?|sweeps?|piping|piped|sweeping|sweeped)_FC/i` - A feature_FC that constructs a solid by transitioning through sketches_FC that act as !!slices!! within the solid in addition to following a chain of one or more paths (e.g., edge, arc, b-spline). `{ref} https://wiki.freecad.org/PartDesign_AdditivePipe` `{ref} https://wiki.freecad.org/PartDesign_SubtractivePipe` `{ref} https://www.youtube.com/watch?v=AqzJ58bM2rs`
+* `{bm} pipe/(pipes?|sweeps?|piping|piped|sweeping|sweeped)_FC/i` - A solid created by transitioning through profiles in addition to following a path (e.g., edge, arc, b-spline). Pipe_FC is present as a feature_FC type in the part design workbench_FC and as an operation in the part workbench_FC. `{ref} https://wiki.freecad.org/PartDesign_AdditivePipe` `{ref} https://wiki.freecad.org/PartDesign_SubtractivePipe` `{ref} https://wiki.freecad.org/Part_Sweep` `{ref} https://www.youtube.com/watch?v=AqzJ58bM2rs`
 
   `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(pipes?|sweeps?|piping|piped|sweeping|sweeped)/i`
 
@@ -4823,11 +4837,11 @@ print("Moved B Body so B_LCS matches A_LCS")
 
   `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(helix|helixes)/i`
 
-* `{bm} fillet/(filleting|filleted|fillet'd|fillets?)_FC/i` - A feature_FC that cuts into a edge, rounding it. `{ref} https://wiki.freecad.org/PartDesign_Fillet`
+* `{bm} fillet/(filleting|filleted|fillet'd|fillets?)_FC/i` - A rounded bevel cut into an edge. Fillet_FC is present as a feature_FC type in the part design workbench_FC, an operation in the part workbench_FC, and an operation in the sketcher workbench_FC. `{ref} https://wiki.freecad.org/PartDesign_Fillet` `{ref} https://wiki.freecad.org/Part_Fillet` `{ref} https://wiki.freecad.org/Sketcher_CreateFillet`
 
   `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(filleting|filleted|fillet'd|fillets?)/i`
 
-* `{bm} chamfer/(chamfering|chamfered|chamfer'd|chamfers?)_FC/i` - A feature_FC that cuts into a edge, creating an angled straight edge where that edge was. `{ref} https://wiki.freecad.org/PartDesign_Chamfer`
+* `{bm} chamfer/(chamfering|chamfered|chamfer'd|chamfers?)_FC/i` - A bevel cut into an edge. Chamfer_FC is present as a feature_FC type in the part design workbench_FC and as an operation in the part workbench_FC. `{ref} https://wiki.freecad.org/PartDesign_Chamfer` `{ref} https://wiki.freecad.org/Part_Chamfer`
 
   `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(chamfering|chamfered|chamfer'd|chamfers?)/i`
 
@@ -4875,6 +4889,22 @@ print("Moved B Body so B_LCS matches A_LCS")
 * `{bm} app link/(app links?)_FC/i` - An object that is a link to another object. `{ref} https://wiki.freecad.org/App_Link` `{ref} https://wiki.freecad.org/Std_LinkMake`
 
   `{bm-error} You added _FC to the wrong part./(app_FC links?)/i`
+
+* `{bm} base feature/(base features?)_FC/i` - Reference to an existing object that's imported as the first feature_FC of a body_FC. `{ref} https://wiki.freecad.org/PartDesign_Body#Base_Feature`
+
+  `{bm-error} You added _FC to the wrong part./(base_FC features?)/i`
+
+* `{bm} subshape binder/(subshape binders?)_FC/i` - Reference to an existing object that's imported into a body_FC as a design reference / helper geometry. `{ref} https://wiki.freecad.org/PartDesign_SubShapeBinder`
+
+  `{bm-error} You added _FC to the wrong part./(subshape_FC binders?)/i`
+
+* `{bm} tip/(\btips?\b)_FC/i` - Index within a body_FC's feature_FC chain that defines the current working point and current geometry. `{ref} https://wiki.freecad.org/PartDesign_Body#Tip`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(\btips?\b)/i`
+
+* `{bm} compound/(compounds?|compounded)_FC/i` - A set of geometry objects brought together under a single container, where that container itself is a geometry object. A compound_FC is not a boolean operation - objects remain separate as opposed to being merged together in together. `{ref} https://wiki.freecad.org/Part_Compound`
+
+  `{bm-error} Did you mean to add _FC here? If not, wrap in !!/(compounds?|compounded)/i`
 
 `{bm-ignore} !!([\w\-'\s]+?)!!/i`
 

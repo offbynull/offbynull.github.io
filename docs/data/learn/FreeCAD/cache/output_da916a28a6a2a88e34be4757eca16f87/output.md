@@ -5,7 +5,8 @@
  * Part Design Workbench/User Interface_TOPIC
  * Part Design Workbench/Organization_TOPIC
  * Part Design Workbench/Features/Loft_TOPIC
- * Part Design Workbench/Binding Geometry_TOPIC
+ * Part Design Workbench/Organization/Body/Subshape Binder_TOPIC
+ * Part Design Workbench/Organization/Body/Base Feature_TOPIC
  * Part Design Workbench/Organization/Sketch_TOPIC
 
 </div>

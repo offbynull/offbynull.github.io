@@ -51,7 +51,6 @@
 <li><a href="#H_Construction%20Geometry">Construction Geometry</a></li>
 <li><a href="#H_Degrees%20of%20Freedom">Degrees of Freedom</a></li>
 <li><a href="#H_Sketch%20Flipping">Sketch Flipping</a></li>
-<li><a href="#H_3D%20Feature%20Validity">3D Feature Validity</a></li>
 </ul>
 <li><a href="#H_Elements">Elements</a></li>
 <ul>
@@ -94,9 +93,16 @@
 <li><a href="#H_Organization">Organization</a></li>
 <ul>
 <li><a href="#H_Body">Body</a></li>
-<li><a href="#H_Sketch">Sketch</a></li>
+<ul>
+<li><a href="#H_Tip">Tip</a></li>
+<li><a href="#H_Base%20Feature">Base Feature</a></li>
+<li><a href="#H_Subshape%20Binder">Subshape Binder</a></li>
 </ul>
-<li><a href="#H_Binding%20Geometry">Binding Geometry</a></li>
+<li><a href="#H_Sketch">Sketch</a></li>
+<ul>
+<li><a href="#H_3D%20Feature%20Validity">3D Feature Validity</a></li>
+</ul>
+</ul>
 <li><a href="#H_Features">Features</a></li>
 <ul>
 <li><a href="#H_Pad%20%2F%20Pocket">Pad / Pocket</a></li>
@@ -123,7 +129,6 @@
 <ul>
 <li><a href="#H_Geometry">Geometry</a></li>
 <li><a href="#H_Compound">Compound</a></li>
-<li><a href="#H_Profile">Profile</a></li>
 </ul>
 <li><a href="#H_Part%20Design%20Interoperability">Part Design Interoperability</a></li>
 <li><a href="#H_Primitive">Primitive</a></li>
@@ -1635,54 +1640,6 @@
 <li>block <a href="#BM_(constraints%3F%7Cconstraining%7Cconstrained)_FC%2Fi">constraints</a> force an exact position, similar to adding a horizontal <a href="#BM_(constraints%3F%7Cconstraining%7Cconstrained)_FC%2Fi">constraint</a> and vertical <a href="#BM_(constraints%3F%7Cconstraining%7Cconstrained)_FC%2Fi">constraint</a> against the origin.</li>
 </ul>
 <p><sub><a href="https://wiki.freecad.org/Sketcher_Workbench#Flipping">[src]</a></sub> <sub><a href="https://forum.freecad.org/viewtopic.php?t=10872">[src]</a></sub> <sub>[[self src]](data:text/plain,This%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.)</sub></p>
-<a name="H_3D%20Feature%20Validity"></a><h3>3D Feature Validity</h3>
-<p><a name="BM_(Sketcher%20Workbench%5C%2FSketching%2F3D%20Feature%20Validity)_TOPIC%2Fi"></a><strong></strong></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Sketcher%20Workbench%5C%2FSketching%2FCreation)_TOPIC%2Fi">Sketcher Workbench/Sketching/Creation</a></li>
-<li><a href="#BM_(Sketcher%20Workbench%5C%2FSketching%2FSelection)_TOPIC%2Fi">Sketcher Workbench/Sketching/Selection</a></li>
-<li><a href="#BM_(Sketcher%20Workbench%5C%2FSketching%2FDeletion)_TOPIC%2Fi">Sketcher Workbench/Sketching/Deletion</a></li>
-<li><a href="#BM_(Sketcher%20Workbench%5C%2FSketching%2FConstruction%20Geometry)_TOPIC%2Fi">Sketcher Workbench/Sketching/Construction Geometry</a></li>
-<li><a href="#BM_(Sketcher%20Workbench%5C%2FSketching%2FProjection%20Geometry)_TOPIC%2Fi">Sketcher Workbench/Sketching/Projection Geometry</a></li>
-<li><a href="#BM_(Sketcher%20Workbench%5C%2FSketching%2FDegrees%20of%20Freedom)_TOPIC%2Fi">Sketcher Workbench/Sketching/Degrees of Freedom</a></li>
-<li><a href="#BM_(Sketcher%20Workbench%5C%2FSketching%2FSketch%20Flipping)_TOPIC%2Fi">Sketcher Workbench/Sketching/Sketch Flipping</a></li>
-</ul>
-</div>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The word contour here just means the outline of a shape that you draw in the <a href="#BM_(sketcher%20workbench%7Csketcher)_FC%2Fi">sketcher</a>. It doesn't have the same special meaning as the contours_BS vs holes_BS meaning in Bambu Studio.</p>
-</div>
-<p>For a <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> to be valid for use as a 3D <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> (e.g., as a profile that extrudes into a 3D addition or punches into a 3D face), it must conform to several expectations:</p>
-<ul>
-<li>
-<p><strong>No open contours</strong>: A contours must be closed, meaning gaps between endpoints of that contour aren't allowed (no matter how small).</p>
-<p><img src="freecad_sketcher_open_contour_example.png" alt="FreeCAD sketcher workbench open contour example"></p>
-</li>
-<li>
-<p><strong>No intersection</strong>: A contour must not intersect with other contours or self-intersect.</p>
-<p><img src="freecad_intersecting_contours_example.png" alt="FreeCAD sketcher workbench intersecting contours example"></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>While it contours can't intersect, one contour is allowed to be wholly contained in the. See further down for more information.</p>
-</div>
-</li>
-<li>
-<p><strong>No shared edges between contours</strong>: Two contours must not share an edge.</p>
-<p><img src="freecad_sketcher_2_contours_with_shared_edge_eample.png" alt="FreeCAD sketcher workbench 2 contours with shared edge example"> <img src="freecad_sketcher_2_contours_with_touching_overlapping_edges_eample.png" alt="FreeCAD sketcher workbench 2 contours with touching overlapping edges example"></p>
-</li>
-<li>
-<p><strong>No T-connections</strong>: A contour must not have two edges sharing a common point / point touching an edge.</p>
-<p><img src="freecad_sketcher_t_connection_example.png" alt="FreeCAD sketcher workbench T connection example"></p>
-</li>
-</ul>
-<p>Contours are allowed to be nested (but not intersecting). Nesting alternates between creating voids in the 3D <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a>.</p>
-<p><img src="freecad_sketcher_nested_contours_example.png" alt="FreeCAD sketcher workbench nested contours example"> <img src="freecad_part_design_nested_contours_padded_example.png" alt="FreeCAD part design workbench nested contours padded example"></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>These rules don't apply to <a href="#BM_(construction%20geometry%7Cconstruction%20geometries%7Cinternal%20alignment%20geometry%7Cinternal%20alignment%20geometries)_FC%2Fi">construction geometry</a> because <a href="#BM_(construction%20geometry%7Cconstruction%20geometries%7Cinternal%20alignment%20geometry%7Cinternal%20alignment%20geometries)_FC%2Fi">construction geometry</a> doesn't appear outside of editing a <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a>.</p>
-</div>
-<p><sub><a href="https://wiki.freecad.org/Sketcher_Workbench#Profile_sketches">[src]</a></sub></p>
 <a name="H_Elements"></a><h2>Elements</h2>
 <p><a name="BM_(Sketcher%20Workbench%5C%2FElements)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -2511,7 +2468,7 @@
 <li><a href="#BM_(Part%20Design%20Workbench%5C%2FUser%20Interface)_TOPIC%2Fi">Part Design Workbench/User Interface</a></li>
 </ul>
 </div>
-<p>The core components of the <a href="#BM_(part%20design%20workbench)_FC%2Fi">Part Design workbench</a> are <a href="#BM_(body%7Cbodies)_FC%2Fi">bodies</a> and <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a>. Each <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> typically compounds several <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> into 3D geometry.</p>
+<p>The core components of the <a href="#BM_(part%20design%20workbench)_FC%2Fi">Part Design workbench</a> are <a href="#BM_(body%7Cbodies)_FC%2Fi">bodies</a>, <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">features</a>, and <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a>. A <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> is a contiguous model created by chaining together distinct steps, known as <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">features</a>. Each <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> is a distinct and editable step in the building of that <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>, and it's typically an extension of a <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> into 3D geometry (e.g., a <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> drawn on a face is extruded/padded to create a new addition).</p>
 <p><img src="puml_810d0fa30ab75322d8d6b9bb342c33dd.svg" alt="PlantUML diagram"></p>
 <p><sub><a href="https://wiki.freecad.org/PartDesign_Workbench">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_Body">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Body">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_NewSketch">[src]</a></sub></p>
 <a name="H_Body"></a><h3>Body</h3>
@@ -2522,7 +2479,11 @@
 <li><a href="#BM_(Datum%20Geometry%5C%2FLocal%20Coordinate%20System)_TOPIC%2Fi">Datum Geometry/Local Coordinate System</a></li>
 </ul>
 </div>
-<p>A <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> is a single contiguous 3D model, mostly built by compounding several <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> into 3D geometry in a chain. Each item in the chain is referred to as a <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a>, which is a distinct and editable step in the building of the model.</p>
+<p>A <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> is a single contiguous 3D model, mostly built by extending <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> into 3D geometry in a chain. Each item in the chain is referred to as a <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a>, which is a distinct and editable step in the building of the model.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>A <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> seems to be intended to be contiguous, but you can design it such that it's not contiguous? <a href="#BM_(FreeCAD)%2Fi">FreeCAD</a> always treats it as a single piece, even if it isn't.</p>
+</div>
 <p>The list of <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">features</a> nested under a <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> comprise a non-destructive workflow. For example, a <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> of a square that's 5mm by 5mm can be padded by 10mm to create a rectangular prism. Then, a <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> of a circle with a 3.5mm diameter can be placed on a face of that prism and pocketed to create a cylindrical hole through that cube.</p>
 <p><img src="freecad_part_design_example_2.png" alt="FreeCAD Part Design workbench example 2"></p>
 <p><img src="freecad_part_design_example_2_workflow.png" alt="FreeCAD Part Design workbench example 2 workflow"></p>
@@ -2543,6 +2504,44 @@
 <p>An easier way to set the orientation is, in the Model pane, right-click and choose <strong>Transform</strong>. It sets the same properties highlighted in the above screenshot, but it also provides gizmos in the viewport and a popup pane with more friendly ways to set.</p>
 </div>
 <p><sub><a href="https://wiki.freecad.org/PartDesign_Body">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Body">[src]</a></sub></p>
+<a name="H_Tip"></a><h4>Tip</h4>
+<p><a name="BM_(Part%20Design%20Workbench%5C%2FOrganization%2FBody%2FTip)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>'s tip_FC is the index its <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> chain that defines the current working point and current geometry. For example, consider a <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> consisting of 5 <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">features</a> (index 0 to 4) but having its tip_FC set to index 2. The <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> at index 2 is what defines the <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>'s overall geometry (any <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> after index 2 is ignored), and adding a <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> will inject that <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> as index 3 and move the tip_FC over to it.</p>
+<p>By default, a <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>'s tip_FC is set to the last <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> in the chain. To move it a different index, use the right-click the <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> in the Model pane and select <strong>Set Tip</strong></p>
+<p><img src="freecad_part_design_set_tip.png" alt="FreeCAD Part Design workbench set tip"></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Body#Tip">[src]</a></sub></p>
+<a name="H_Base%20Feature"></a><h4>Base Feature</h4>
+<p><a name="BM_(Part%20Design%20Workbench%5C%2FOrganization%2FBody%2FBase%20Feature)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A <a href="#BM_(base%20features%3F)_FC%2Fi">base feature</a> is a reference to an existing object that's imported as the first step of a <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>. A <a href="#BM_(base%20features%3F)_FC%2Fi">base feature</a> object is always a live reference. Changes to the source object are automatically applied to the <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>.</p>
+<p><img src="freecad_part_design_base_feature_example.png" alt="FreeCAD Part Design workbench base feature example"></p>
+<p>A <a href="#BM_(base%20features%3F)_FC%2Fi">base feature</a> can be added in many ways:</p>
+<ul>
+<li>Select an existing object and create a clone (toolbar button 8).</li>
+<li>Select an existing object and create a new <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> (toolbar button 3) <em>sometimes</em> creates that <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> with the object as its <a href="#BM_(base%20features%3F)_FC%2Fi">base feature</a>.</li>
+<li>Create a new <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> and select an object for its <strong><a href="#BM_(base%20features%3F)_FC%2Fi">Base Feature</a></strong> property in the Model pane.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The 2nd method uses the word <em>sometimes</em> because it doesn't seem to work if the selected object is a <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>, but does seem to work if the object is a <a href="#BM_(part%20workbench)_FC%2Fi">part workbench</a> object?</p>
+</div>
+<p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_Body#Base_Feature">[src]</a></sub></p>
+<a name="H_Subshape%20Binder"></a><h4>Subshape Binder</h4>
+<p><a name="BM_(Part%20Design%20Workbench%5C%2FOrganization%2FBody%2FSubshape%20Binder)_TOPIC%2Fi"></a><strong></strong></p>
+<p>A <a href="#BM_(subshape%20binders%3F)_FC%2Fi">subshape binder</a> is a reference to an existing object that's imported as a design reference (e.g., it isn't part of the model, but acts more as helper geometry to construct the model). To add a subshape binder, ...</p>
+<ol>
+<li>ensure the <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> is active.</li>
+<li>select the outside geometry.</li>
+<li>click subshape binder in the toolbar (green blob with 3 dots) to create a subshape binder object in the <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>.</li>
+</ol>
+<p><img src="freecad_part_design_subshape_binder_example.png" alt="FreeCAD Part Design workbench subshape binder example"></p>
+<p>The subshape binders <strong>Bind Mode</strong> property defines if it copies the original geometry or just links to it:</p>
+<ul>
+<li><strong>Synchronized</strong>: Live reference. Updates when source changes.</li>
+<li><strong>Frozen</strong>: Keeps link, but shape is frozen until refreshed/changed.</li>
+<li><strong>Detached</strong>: Copy/snapshot. Breaks live dependency, keeps current shape.</li>
+</ul>
+<p><sub><a href="https://wiki.freecad.org/PartDesign_SubShapeBinder">[src]</a></sub> <sub>[[self src]](data:text/plain,This%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.)</sub></p>
 <a name="H_Sketch"></a><h3>Sketch</h3>
 <p><a name="BM_(Part%20Design%20Workbench%5C%2FOrganization%2FSketch)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -2582,30 +2581,58 @@
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
-<li><a href="#BM_(Sketcher%20Workbench%5C%2FSketching%2F3D%20Feature%20Validity)_TOPIC%2Fi">Sketcher Workbench/Sketching/3D Feature Validity</a></li>
 <li><a href="#BM_(Sketcher%20Workbench%5C%2FSketching%2FSketch%20Flipping)_TOPIC%2Fi">Sketcher Workbench/Sketching/Sketch Flipping</a></li>
 </ul>
 </div>
 <p><sub><a href="https://wiki.freecad.org/Sketcher_ValidateSketch">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Sketcher_MapSketch">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Sketcher_EditSketch">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_NewSketch">[src]</a></sub></p>
-<a name="H_Binding%20Geometry"></a><h2>Binding Geometry</h2>
-<p><a name="BM_(Part%20Design%20Workbench%5C%2FBinding%20Geometry)_TOPIC%2Fi"></a><strong></strong></p>
-<p>In certain cases, a piece of outside geometry may need to be pulled into the <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> for further manipulation (e.g., a model created using <a href="#BM_(part%20workbench)_FC%2Fi">Part workbench</a> - not <a href="#BM_(part%20design%20workbench)_FC%2Fi">Part Design workbench</a> - always lives outside of the <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>). To import that outside geometry into the <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>, a subshape binder is required:</p>
-<ol>
-<li>Ensure the <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> is active.</li>
-<li>Select the outside geometry.</li>
-<li>Click subshape binder in the toolbar (green blob with 3 dots) to create a subshape binder object in the <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>.</li>
-</ol>
-<p><img src="freecad_part_design_subshape_binder_example.png" alt="FreeCAD Part Design workbench subshape binder example"></p>
-<p>The subshape binders <strong>Bind Mode</strong> property defines if it copies the original geometry or just links to it:</p>
+<a name="H_3D%20Feature%20Validity"></a><h4>3D Feature Validity</h4>
+<p><a name="BM_(Part%20Design%20Workbench%5C%2FOrganization%2FSketch%2F3D%20Feature%20Validity)_TOPIC%2Fi"></a><strong></strong></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>↩PREREQUISITES↩</strong></p>
 <ul>
-<li><strong>Synchronized</strong>: Live reference. Updates when source changes.</li>
-<li><strong>Frozen</strong>: Keeps link, but shape is frozen until refreshed/changed.</li>
-<li><strong>Detached</strong>: Copy/snapshot. Breaks live dependency, keeps current shape.</li>
+<li><a href="#BM_(Sketcher%20Workbench%5C%2FSketching%2FCreation)_TOPIC%2Fi">Sketcher Workbench/Sketching/Creation</a></li>
+<li><a href="#BM_(Sketcher%20Workbench%5C%2FSketching%2FSelection)_TOPIC%2Fi">Sketcher Workbench/Sketching/Selection</a></li>
+<li><a href="#BM_(Sketcher%20Workbench%5C%2FSketching%2FDeletion)_TOPIC%2Fi">Sketcher Workbench/Sketching/Deletion</a></li>
+<li><a href="#BM_(Sketcher%20Workbench%5C%2FSketching%2FConstruction%20Geometry)_TOPIC%2Fi">Sketcher Workbench/Sketching/Construction Geometry</a></li>
+<li><a href="#BM_(Sketcher%20Workbench%5C%2FSketching%2FProjection%20Geometry)_TOPIC%2Fi">Sketcher Workbench/Sketching/Projection Geometry</a></li>
+<li><a href="#BM_(Sketcher%20Workbench%5C%2FSketching%2FDegrees%20of%20Freedom)_TOPIC%2Fi">Sketcher Workbench/Sketching/Degrees of Freedom</a></li>
+<li><a href="#BM_(Sketcher%20Workbench%5C%2FSketching%2FSketch%20Flipping)_TOPIC%2Fi">Sketcher Workbench/Sketching/Sketch Flipping</a></li>
 </ul>
-<p>In addition to subshape binder, geometry may be imported into the <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> as a base feature object if it's the first step of a <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> (<a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> is empty). Dragging-and-dropping the object into the empty <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> within the Model pane results in the base feature object being added.</p>
-<p>A base feature object is always a live reference. Changes to the source object are automatically applied to the <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>.</p>
-<p><img src="freecad_part_design_base_feature_example.png" alt="FreeCAD Part Design workbench base feature example"></p>
-<p><sub><a href="https://wiki.freecad.org/PartDesign_SubShapeBinder">[src]</a></sub> <sub>[[self src]](data:text/plain,This%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.)</sub></p>
+</div>
+<p>For a <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> to be valid for use as a 3D <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> (e.g., as a profile that extrudes into a 3D addition or punches into a 3D face), it must conform to several expectations:</p>
+<ul>
+<li>
+<p><strong>No open contours</strong>: A contours must be closed, meaning gaps between endpoints of that contour aren't allowed (no matter how small).</p>
+<p><img src="freecad_sketcher_open_contour_example.png" alt="FreeCAD sketcher workbench open contour example"></p>
+</li>
+<li>
+<p><strong>No intersection</strong>: A contour must not intersect with other contours or self-intersect.</p>
+<p><img src="freecad_intersecting_contours_example.png" alt="FreeCAD sketcher workbench intersecting contours example"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>While it contours can't intersect, one contour is allowed to be wholly contained in the. See further down for more information.</p>
+</div>
+</li>
+<li>
+<p><strong>No shared edges between contours</strong>: Two contours must not share an edge.</p>
+<p><img src="freecad_sketcher_2_contours_with_shared_edge_eample.png" alt="FreeCAD sketcher workbench 2 contours with shared edge example"> <img src="freecad_sketcher_2_contours_with_touching_overlapping_edges_eample.png" alt="FreeCAD sketcher workbench 2 contours with touching overlapping edges example"></p>
+</li>
+<li>
+<p><strong>No T-connections</strong>: A contour must not have two edges sharing a common point / point touching an edge.</p>
+<p><img src="freecad_sketcher_t_connection_example.png" alt="FreeCAD sketcher workbench T connection example"></p>
+</li>
+</ul>
+<p>Contours are allowed to be nested (but not intersecting). Nesting alternates between creating voids in the 3D <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a>.</p>
+<p><img src="freecad_sketcher_nested_contours_example.png" alt="FreeCAD sketcher workbench nested contours example"> <img src="freecad_part_design_nested_contours_padded_example.png" alt="FreeCAD part design workbench nested contours padded example"></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>These rules don't apply to <a href="#BM_(construction%20geometry%7Cconstruction%20geometries%7Cinternal%20alignment%20geometry%7Cinternal%20alignment%20geometries)_FC%2Fi">construction geometry</a> because <a href="#BM_(construction%20geometry%7Cconstruction%20geometries%7Cinternal%20alignment%20geometry%7Cinternal%20alignment%20geometries)_FC%2Fi">construction geometry</a> doesn't appear outside of editing a <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a>.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>These rules apply to the <a href="#BM_(part%20design%20workbench)_FC%2Fi">part design workbench</a>, but potentially may not apply to the <a href="#BM_(part%20workbench)_FC%2Fi">part workbench</a>. For example, you can use open <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> in the <a href="#BM_(part%20workbench)_FC%2Fi">part workbench</a> to generated curved surfaces.</p>
+</div>
+<p><sub><a href="https://wiki.freecad.org/Sketcher_Workbench#Profile_sketches">[src]</a></sub></p>
 <a name="H_Features"></a><h2>Features</h2>
 <p><a name="BM_(Part%20Design%20Workbench%5C%2FFeatures)_TOPIC%2Fi"></a><strong></strong></p>
 <p>The subsections below detail <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> types supported by the <a href="#BM_(part%20design%20workbench)_FC%2Fi">Part Design workbench</a>. Most <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">features</a> present a Preview pane during creation.</p>
@@ -2805,54 +2832,54 @@
 <li><a href="#BM_(Part%20Design%20Workbench%5C%2FOrganization)_TOPIC%2Fi">Part Design Workbench/Organization</a></li>
 </ul>
 </div>
-<p>An additive <a href="#BM_(lofts%3F)_FC%2Fi">loft</a> operation and a subtractive <a href="#BM_(lofts%3F)_FC%2Fi">loft</a> operation are the same thing, except that ...</p>
+<p>An additive <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a> operation and a subtractive <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a> operation are the same thing, except that ...</p>
 <ul>
 <li>additive creates a solid and merges it with existing geometry it collides with.</li>
 <li>subtractive creates a solid and cuts out it from existing geometry it collides with.</li>
 </ul>
 <p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
-<p>A <a href="#BM_(lofts%3F)_FC%2Fi">loft</a> creates a solid by transitioning through <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> that act as slices within the solid. To <a href="#BM_(lofts%3F)_FC%2Fi">loft</a> a set of <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a>, either ...</p>
+<p>A <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a> creates a solid by transitioning through <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> that act as slices within the solid. To <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a> a set of <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a>, either ...</p>
 <ul>
-<li>use either toolbar button 11 (additive <a href="#BM_(lofts%3F)_FC%2Fi">loft</a>) or toolbar button 18 (subtractive <a href="#BM_(lofts%3F)_FC%2Fi">loft</a>), then ...
+<li>use either toolbar button 11 (additive <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a>) or toolbar button 18 (subtractive <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a>), then ...
 <ol>
-<li>select the <a href="#BM_(lofts%3F)_FC%2Fi">loft</a>'s initial <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> in the Select Attachment pane that pops up and click <strong>OK</strong>,</li>
-<li>add the <a href="#BM_(lofts%3F)_FC%2Fi">loft</a>'s subsequent <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> via the Add Segment button in the subsequent <a href="#BM_(lofts%3F)_FC%2Fi">Loft</a> Parameters pane that pops up (order of added <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> matter).</li>
+<li>select the <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a>'s initial <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> in the Select Attachment pane that pops up and click <strong>OK</strong>,</li>
+<li>add the <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a>'s subsequent <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> via the Add Segment button in the subsequent <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">Loft</a> Parameters pane that pops up (order of added <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> matter).</li>
 </ol>
 </li>
-<li>select the <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> to <a href="#BM_(lofts%3F)_FC%2Fi">loft</a> and use either toolbar button 11 (additive <a href="#BM_(lofts%3F)_FC%2Fi">loft</a>) or toolbar button 18 (subtractive <a href="#BM_(lofts%3F)_FC%2Fi">loft</a>). The selection order of the <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> matters (e.g., first selected will become <a href="#BM_(lofts%3F)_FC%2Fi">loft</a>'s initial <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a>, second selected becomes the first transition <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a>).</li>
+<li>select the <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> to <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a> and use either toolbar button 11 (additive <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a>) or toolbar button 18 (subtractive <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a>). The selection order of the <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> matters (e.g., first selected will become <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a>'s initial <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a>, second selected becomes the first transition <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a>).</li>
 </ul>
 <p><img src="freecad_part_design_loft_example.png" alt="FreeCAD Part Design workbench loft example"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>It's totally unclear / undocumented how <a href="#BM_(lofts%3F)_FC%2Fi">loft</a> makes its transitions between <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a>. For example, ...</p>
+<p>It's totally unclear / undocumented how <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a> makes its transitions between <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a>. For example, ...</p>
 <ul>
 <li>there's nothing saying which vertexes line up with which vertexes between <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a>,</li>
 <li>there's nothing saying what happens when there's more vertexes in one <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> vs the next,</li>
 <li>there's nothing saying what algorithm is used to bridge the gap between <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a>:
 <ul>
 <li>edges between <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> turned into planar faces vs curved surfaces - if curved, what defines the curvature?</li>
-<li><a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> 1 is a square, <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> 2 is the same square rotated 45 degrees - <a href="#BM_(lofts%3F)_FC%2Fi">loft</a> bends 45 degrees, but why not 180+45 degrees or 360+45 degrees?</li>
+<li><a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> 1 is a square, <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> 2 is the same square rotated 45 degrees - <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a> bends 45 degrees, but why not 180+45 degrees or 360+45 degrees?</li>
 </ul>
 </li>
 </ul>
 <p>All ChatGPT says is that it delegates to OpenCASCADE.</p>
 <p>Notes from source:</p>
 <ul>
-<li>To better control the shape of the <a href="#BM_(lofts%3F)_FC%2Fi">loft</a>, it is recommended that all cross-sections have the same number of segments. For example, for a <a href="#BM_(lofts%3F)_FC%2Fi">loft</a> between a rectangle and a circle, the circle should be broken down into 4 connected arcs.</li>
-<li>You can <a href="#BM_(lofts%3F)_FC%2Fi">loft</a> from or toward a single vertex from a <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> or the <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>.</li>
-<li>Vertices can only be either the start or end of a <a href="#BM_(lofts%3F)_FC%2Fi">loft</a>. Otherwise the <a href="#BM_(lofts%3F)_FC%2Fi">loft</a> <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> would consist of two solids connected at a single point. This would violate the CAD kernel's definition of a 3D object.</li>
+<li>To better control the shape of the <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a>, it is recommended that all cross-sections have the same number of segments. For example, for a <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a> between a rectangle and a circle, the circle should be broken down into 4 connected arcs.</li>
+<li>You can <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a> from or toward a single vertex from a <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> or the <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>.</li>
+<li>Vertices can only be either the start or end of a <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a>. Otherwise the <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a> <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> would consist of two solids connected at a single point. This would violate the CAD kernel's definition of a 3D object.</li>
 <li>A cross-section cannot lie on the same plane as the one immediately preceding it.</li>
-<li>If the <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> has inner geometry, then the order in which the <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> geometry is created should be the same for all sections. Either start all sections with the inner geometry, or start them all with the outer. Otherwise an invalid <a href="#BM_(lofts%3F)_FC%2Fi">loft</a> will be created where inner and outer walls cross.</li>
-<li>It is not possible to <a href="#BM_(lofts%3F)_FC%2Fi">loft</a> disjoint or crossing loops.</li>
+<li>If the <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> has inner geometry, then the order in which the <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> geometry is created should be the same for all sections. Either start all sections with the inner geometry, or start them all with the outer. Otherwise an invalid <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a> will be created where inner and outer walls cross.</li>
+<li>It is not possible to <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a> disjoint or crossing loops.</li>
 <li>Some failure modes will turn the part black.</li>
 </ul>
 </div>
-<p>A <a href="#BM_(lofts%3F)_FC%2Fi">loft</a>'s <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> must be spaced out. It's typically for all of a <a href="#BM_(lofts%3F)_FC%2Fi">loft</a>'s <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> to be attached to the same face / plane, but each offset such there's gaps between them. A <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> can be offset and rotated relative to whatever surface it's attached to using its AttachmentOffset properties.</p>
+<p>A <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a>'s <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> must be spaced out. It's typically for all of a <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a>'s <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> to be attached to the same face / plane, but each offset such there's gaps between them. A <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> can be offset and rotated relative to whatever surface it's attached to using its AttachmentOffset properties.</p>
 <p><img src="freecad_sketcher_attachment_offset.png" alt="FreeCAD Sketcher workbench attachment offset"></p>
 <p>The <strong><a href="#BM_(ruled%20surface)%2Fi">Ruled surface</a></strong> parameter defines whether transitions between <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> are smooth or straight (straight if checked).</p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Documentation says this won't apply to a <a href="#BM_(lofts%3F)_FC%2Fi">loft</a> if it only has 2 <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a>. I'm not sure why this is.</p>
+<p>Documentation says this won't apply to a <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a> if it only has 2 <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a>. I'm not sure why this is.</p>
 </div>
 <p>The <strong>Closed</strong> parameter makes a transition from the last <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> to the initial <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a>, creating a loop.</p>
 <p><sub><a href="https://wiki.freecad.org/PartDesign_AdditiveLoft">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_SubtractiveLoft">[src]</a></sub></p>
@@ -2864,7 +2891,8 @@
 <li><a href="#BM_(Part%20Design%20Workbench%5C%2FUser%20Interface)_TOPIC%2Fi">Part Design Workbench/User Interface</a></li>
 <li><a href="#BM_(Part%20Design%20Workbench%5C%2FOrganization)_TOPIC%2Fi">Part Design Workbench/Organization</a></li>
 <li><a href="#BM_(Part%20Design%20Workbench%5C%2FFeatures%2FLoft)_TOPIC%2Fi">Part Design Workbench/Features/Loft</a></li>
-<li><a href="#BM_(Part%20Design%20Workbench%5C%2FBinding%20Geometry)_TOPIC%2Fi">Part Design Workbench/Binding Geometry</a></li>
+<li><a href="#BM_(Part%20Design%20Workbench%5C%2FOrganization%2FBody%2FSubshape%20Binder)_TOPIC%2Fi">Part Design Workbench/Organization/Body/Subshape Binder</a></li>
+<li><a href="#BM_(Part%20Design%20Workbench%5C%2FOrganization%2FBody%2FBase%20Feature)_TOPIC%2Fi">Part Design Workbench/Organization/Body/Base Feature</a></li>
 <li><a href="#BM_(Part%20Design%20Workbench%5C%2FOrganization%2FSketch)_TOPIC%2Fi">Part Design Workbench/Organization/Sketch</a></li>
 </ul>
 </div>
@@ -2914,7 +2942,7 @@ obj = App.ActiveDocument.addObject(<span class="hljs-string">"Part::Feature"</sp
 obj.Shape = wire
 App.ActiveDocument.recompute()
 </code></pre>
-<p>Since the b-spline belongs to the <a href="#BM_(part%20workbench)_FC%2Fi">Part workbench</a> rather than the <a href="#BM_(part%20design%20workbench)_FC%2Fi">Part Design workbench</a>, it lives outside of the <a href="#BM_(part%20design)_FC%2Fi">Part Design</a> <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> where the <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> live. It needs to be imported into that <a href="#BM_(part%20design)_FC%2Fi">Part Design</a> <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> using a subshape binder:</p>
+<p>Since the b-spline belongs to the <a href="#BM_(part%20workbench)_FC%2Fi">Part workbench</a> rather than the <a href="#BM_(part%20design%20workbench)_FC%2Fi">Part Design workbench</a>, it lives outside of the <a href="#BM_(part%20design)_FC%2Fi">Part Design</a> <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> where the <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> live. It needs to be imported into that <a href="#BM_(part%20design)_FC%2Fi">Part Design</a> <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> using a <a href="#BM_(subshape%20binders%3F)_FC%2Fi">subshape binder</a> or as a <a href="#BM_(base%20features%3F)_FC%2Fi">base feature</a>:</p>
 <ol>
 <li>Ensure the <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> is active.</li>
 <li>Select the b-spline.</li>
@@ -2925,13 +2953,14 @@ App.ActiveDocument.recompute()
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>🔍SEE ALSO🔍</strong></p>
 <ul>
-<li><a href="#BM_(Part%20Design%20Workbench%5C%2FBinding%20Geometry)_TOPIC%2Fi">Part Design Workbench/Binding Geometry</a></li>
+<li><a href="#BM_(Part%20Design%20Workbench%5C%2FOrganization%2FBody%2FSubshape%20Binder)_TOPIC%2Fi">Part Design Workbench/Organization/Body/Subshape Binder</a></li>
+<li><a href="#BM_(Part%20Design%20Workbench%5C%2FOrganization%2FBody%2FBase%20Feature)_TOPIC%2Fi">Part Design Workbench/Organization/Body/Base Feature</a></li>
 <li><a href="#BM_(Part%20Design%20Workbench%5C%2FOrganization%2FSketch)_TOPIC%2Fi">Part Design Workbench/Organization/Sketch</a></li>
 </ul>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>Much like <a href="#BM_(lofts%3F)_FC%2Fi">loft</a>, it's totally unclear / undocumented how <a href="#BM_(pipes%3F%7Csweeps%3F%7Cpiping%7Cpiped%7Csweeping%7Csweeped)_FC%2Fi">pipe</a> makes its transitions between <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> (e.g., which vertexes line up with which vertexes between <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a>, what happens when there's more vertexes in one <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> vs the next).</p>
+<p>Much like <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a>, it's totally unclear / undocumented how <a href="#BM_(pipes%3F%7Csweeps%3F%7Cpiping%7Cpiped%7Csweeping%7Csweeped)_FC%2Fi">pipe</a> makes its transitions between <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> (e.g., which vertexes line up with which vertexes between <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a>, what happens when there's more vertexes in one <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> vs the next).</p>
 <p>Notes from source:</p>
 <ul>
 <li>To better control the shape of the <a href="#BM_(pipes%3F%7Csweeps%3F%7Cpiping%7Cpiped%7Csweeping%7Csweeped)_FC%2Fi">pipe</a>, it is recommended that all cross-sections have the same number of segments. For example, for a <a href="#BM_(pipes%3F%7Csweeps%3F%7Cpiping%7Cpiped%7Csweeping%7Csweeped)_FC%2Fi">pipe</a> between a rectangle and a circle, the circle should be broken down into 4 connected arcs.</li>
@@ -3166,7 +3195,7 @@ App.ActiveDocument.recompute()
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
 <p><a href="#BM_(thickness%7Cthicker%7Cthicken%7Cthick)_FC%2Fi">Thickness</a> looks to be broken for custom curves outsides of shapes derived from conics (e.g., spheres, half spheres, cylinders). Anything that involves a custom curved face won't work.</p>
-<p>One thing I've tried doing that may work in some cases where <a href="#BM_(thickness%7Cthicker%7Cthicken%7Cthick)_FC%2Fi">thickness</a> fails is a subtractive <a href="#BM_(lofts%3F)_FC%2Fi">loft</a>. You take profile <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> and punch through the solid. You may need to do multiple such subtractive <a href="#BM_(lofts%3F)_FC%2Fi">lofts</a> to get what you're hoping for.</p>
+<p>One thing I've tried doing that may work in some cases where <a href="#BM_(thickness%7Cthicker%7Cthicken%7Cthick)_FC%2Fi">thickness</a> fails is a subtractive <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a>. You take profile <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> and punch through the solid. You may need to do multiple such subtractive <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">lofts</a> to get what you're hoping for.</p>
 </div>
 <p><a href="#BM_(thickness%7Cthicker%7Cthicken%7Cthick)_FC%2Fi">Thickness</a> removes one or more faces and cuts out the inside of the object, giving it a bowl-like / shell-like effect.</p>
 <p><img src="freecad_part_design_toolbar.png" alt="FreeCAD Part Design workbench toolbar"></p>
@@ -3386,7 +3415,7 @@ App.ActiveDocument.recompute()
 <li>produces a 3D object through a hierarchy of transformations as opposed to a linear chain of 2D <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> to 3D <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a>.</li>
 <li>produces a 3D object outside of a container, meaning the operations / transformations don't need to nest in a container similar to <a href="#BM_(part%20design)_FC%2Fi">part design</a>'s <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>.</li>
 </ul>
-<p>The core components of the <a href="#BM_(part%20workbench)_FC%2Fi">part workbench</a> are geometry objects and compounds (compounds are a grouping of geometry objects, treated as a single piece of geometry). The workflow is to build out more complex pieces of geometry through transformations: Multiple pieces of existing geometry into one or more pieces of new geometry (e.g., boolean intersection, converting two 2D lines to a <a href="#BM_(ruled%20surface)%2Fi">ruled surface</a>, <a href="#BM_(pipes%3F%7Csweeps%3F%7Cpiping%7Cpiped%7Csweeping%7Csweeped)_FC%2Fi">sweeping</a> over profiles).</p>
+<p>The core components of the <a href="#BM_(part%20workbench)_FC%2Fi">part workbench</a> are geometry objects and <a href="#BM_(compounds%3F%7Ccompounded)_FC%2Fi">compounds</a> (a <a href="#BM_(compounds%3F%7Ccompounded)_FC%2Fi">compound</a> is a grouping of geometry objects, treated as a single piece of geometry). The workflow is to build out more complex pieces of geometry through transformations: Multiple pieces of existing geometry into one or more pieces of new geometry (e.g., boolean intersection, converting two 2D lines to a <a href="#BM_(ruled%20surface)%2Fi">ruled surface</a>, <a href="#BM_(pipes%3F%7Csweeps%3F%7Cpiping%7Cpiped%7Csweeping%7Csweeped)_FC%2Fi">sweeping</a> over profiles).</p>
 <p><img src="puml_59b2e74e41851e3ce252a832ded88fd4.svg" alt="PlantUML diagram"></p>
 <p><img src="freecad_partwb_example.png" alt="FreeCAD part workbench example"></p>
 <a name="H3_User%20Interface"></a><h2>User Interface</h2>
@@ -3432,7 +3461,7 @@ App.ActiveDocument.recompute()
 <li><a href="#BM_(chamfering%7Cchamfered%7Cchamfer'd%7Cchamfers%3F)_FC%2Fi">chamfer</a> edges.</li>
 <li>create face from wires (e.g., from a <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a>).</li>
 <li>create a <a href="#BM_(ruled%20surface)%2Fi">ruled surface</a> between two wires.</li>
-<li><a href="#BM_(lofts%3F)_FC%2Fi">loft</a> through a set of profiles.</li>
+<li><a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">loft</a> through a set of profiles.</li>
 <li><a href="#BM_(pipes%3F%7Csweeps%3F%7Cpiping%7Cpiped%7Csweeping%7Csweeped)_FC%2Fi">sweep</a> through a set of profiles.</li>
 <li>boolean intersection two objects, as wire geometry.</li>
 <li>create wireframe cross sections from an exist 3D object.</li>
@@ -3452,9 +3481,9 @@ App.ActiveDocument.recompute()
 <ul>
 <li>drop-down to either ...
 <ul>
-<li>group together (compound) several pieces of geometry (not a boolean union, restrictions apply).</li>
-<li>break apart a compound back to its individual parts.</li>
-<li>break out some geometry in a compound, using filters.</li>
+<li>group together (<a href="#BM_(compounds%3F%7Ccompounded)_FC%2Fi">compound</a>) several pieces of geometry (not a boolean union, restrictions apply).</li>
+<li>break apart a <a href="#BM_(compounds%3F%7Ccompounded)_FC%2Fi">compound</a> back to its individual parts.</li>
+<li>break out some geometry in a <a href="#BM_(compounds%3F%7Ccompounded)_FC%2Fi">compound</a>, using filters.</li>
 </ul>
 </li>
 <li>boolean operation between two 3D objects (e.g., union, intersection, difference).</li>
@@ -3470,9 +3499,9 @@ App.ActiveDocument.recompute()
 </li>
 <li>drop-down to either ...
 <ul>
-<li>splits two 3D objects into it's boolean differences (both A-B and B-A) and boolean intersection, under a compound. The compound of differences and intersection together form the boolean union.</li>
-<li>splits a 3D object using another 3D object as a "cutter", resulting in its boolean difference (A-B only) and boolean intersection. The split pieces are placed as individual 3D objects, not under a compound.</li>
-<li>splits a 3D object using another 3D object as a "cutter", resulting in its boolean difference (A-B only) and boolean intersection. The split pieces under a compound.</li>
+<li>splits two 3D objects into it's boolean differences (both A-B and B-A) and boolean intersection, under a <a href="#BM_(compounds%3F%7Ccompounded)_FC%2Fi">compound</a>. The <a href="#BM_(compounds%3F%7Ccompounded)_FC%2Fi">compound</a> of differences and intersection together form the boolean union.</li>
+<li>splits a 3D object using another 3D object as a "cutter", resulting in its boolean difference (A-B only) and boolean intersection. The split pieces are placed as individual 3D objects, not under a <a href="#BM_(compounds%3F%7Ccompounded)_FC%2Fi">compound</a>.</li>
+<li>splits a 3D object using another 3D object as a "cutter", resulting in its boolean difference (A-B only) and boolean intersection. The split pieces under a <a href="#BM_(compounds%3F%7Ccompounded)_FC%2Fi">compound</a>.</li>
 <li>boolean XOR two 3D objects, effectively removing the boolean intersection ([A-B]∪[B-A])</li>
 </ul>
 </li>
@@ -3495,13 +3524,13 @@ App.ActiveDocument.recompute()
 <li><a href="#BM_(Part%20Workbench%5C%2FUser%20Interface)_TOPIC%2Fi">Part Workbench/User Interface</a></li>
 </ul>
 </div>
-<p>The core components of the <a href="#BM_(part%20workbench)_FC%2Fi">Part workbench</a> are geometry and compounds. A compound object is a grouping of a geometry objects, treated as a single geometry object.</p>
+<p>The core components of the <a href="#BM_(part%20workbench)_FC%2Fi">Part workbench</a> are geometry and <a href="#BM_(compounds%3F%7Ccompounded)_FC%2Fi">compounds</a>. A <a href="#BM_(compounds%3F%7Ccompounded)_FC%2Fi">compound</a> is a grouping of a geometry objects, treated as a single geometry object.</p>
 <p><img src="puml_99685312fbc1ef70e26393c3edf96ada.svg" alt="PlantUML diagram"></p>
 <p>A geometry object could be ...</p>
 <ul>
 <li>a primitive (e.g., cube, line, cone, vertex).</li>
 <li>the result of some transformation (e.g., boolean intersection of two objects, <a href="#BM_(filleting%7Cfilleted%7Cfillet'd%7Cfillets%3F)_FC%2Fi">filleting</a> an edge).</li>
-<li>the combination of geometry objects (e.g., compound object).</li>
+<li>the combination of geometry objects (e.g., compoun_FCd object).</li>
 <li>a <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>.</li>
 </ul>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -3532,34 +3561,18 @@ App.ActiveDocument.recompute()
 <li><a href="#BM_(Standard%20Part)_TOPIC%2Fi">Standard Part</a></li>
 </ul>
 </div>
-<p>A compound object is a set of geometry objects brought together under a single container, where that container itself is a geometry object. This is not a boolean union - objects aren't merged in together.</p>
+<p>A <a href="#BM_(compounds%3F%7Ccompounded)_FC%2Fi">compound</a> is a set of geometry objects brought together under a single container, where that container itself is a geometry object. A <a href="#BM_(compounds%3F%7Ccompounded)_FC%2Fi">compound</a> is not a boolean operation - objects remain separate as opposed to being merged together in together.</p>
 <p><img src="freecad_partwb_compound_example.png" alt="FreeCAD Part workbench compound example"></p>
 <p><img src="puml_99685312fbc1ef70e26393c3edf96ada.svg" alt="PlantUML diagram"></p>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>How is this different from a standard part_FC? Standard part_FC is a container that holds multiple geometry objects but itself isn't geometry, while compound is? The source mentions that the compound has a "topological shape".</p>
+<p>How is this different from a standard part_FC? Standard part_FC is a container that holds multiple geometry objects but itself isn't geometry, while <a href="#BM_(compounds%3F%7Ccompounded)_FC%2Fi">compound</a> is? The source mentions that a <a href="#BM_(compounds%3F%7Ccompounded)_FC%2Fi">compound</a> has a "topological shape".</p>
 </div>
 <div style="margin:2em; background-color: #e0e0e0;">
 <p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>The source says compounds can't include meshes?</p>
+<p>The source says <a href="#BM_(compounds%3F%7Ccompounded)_FC%2Fi">compounds</a> can't include meshes?</p>
 </div>
 <p><sub><a href="https://wiki.freecad.org/Part_Compound">[src]</a></sub></p>
-<a name="H_Profile"></a><h3>Profile</h3>
-<p><a name="BM_(Part%20Design%20Workbench%5C%2FOrganization%2FProfile)_TOPIC%2Fi"></a><strong></strong></p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>↩PREREQUISITES↩</strong></p>
-<ul>
-<li><a href="#BM_(Part%20Workbench%5C%2FOrganization%2FGeometry)_TOPIC%2Fi">Part Workbench/Organization/Geometry</a></li>
-<li><a href="#BM_(Sketcher%20Workbench)_TOPIC%2Fi">Sketcher Workbench</a></li>
-</ul>
-</div>
-<p>A profile is a set of geometry that's 2D and coplanar: <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">Sketches</a>, 2D primitive shapes (e.g., circle, square, ellipse), a set of connected coplanar edges/wires that may or may not be closed (e.g., 3 wires forming a U shape is not closed). Profiles often go on to be to generate faces, and surfaces, and 3D objects (e.g., 2 edges can generate a <a href="#BM_(ruled%20surface)%2Fi">ruled surface</a>, a <a href="#BM_(lofts%3F)_FC%2Fi">loft</a> can generate a 3D object or curved surface).</p>
-<div style="margin:2em; background-color: #e0e0e0;">
-<p><strong>⚠️NOTE️️️⚠️</strong></p>
-<p>A profile isn't a container / distinct type of object, but it's referred to multiple times throughout the wiki and is required by several operations, and so I thought it'd be good to add it in the organization.</p>
-</div>
-<p><img src="freecad_partwb_profile_operation_example.png" alt="FreeCAD Part workbench profile operation example"></p>
-<p><sub>[[self src]](data:text/plain,This%20was%20derived%20using%20self%20experimentation%20-%20there%20is%20no%20source%20other%20than%20myself.)</sub></p>
 <a name="H_Part%20Design%20Interoperability"></a><h2>Part Design Interoperability</h2>
 <p><a name="BM_(Part%20Workbench%5C%2FPart%20Design%20Interoperability)_TOPIC%2Fi"></a><strong></strong></p>
 <div style="margin:2em; background-color: #e0e0e0;">
@@ -3567,7 +3580,8 @@ App.ActiveDocument.recompute()
 <ul>
 <li><a href="#BM_(Part%20Workbench%5C%2FOrganization)_TOPIC%2Fi">Part Workbench/Organization</a></li>
 <li><a href="#BM_(Part%20Design%20Workbench%5C%2FOrganization%2FBody)_TOPIC%2Fi">Part Design Workbench/Organization/Body</a></li>
-<li><a href="#BM_(Part%20Design%20Workbench%5C%2FBinding%20Geometry)_TOPIC%2Fi">Part Design Workbench/Binding Geometry</a></li>
+<li><a href="#BM_(Part%20Design%20Workbench%5C%2FOrganization%2FBody%2FBase%20Feature)_TOPIC%2Fi">Part Design Workbench/Organization/Body/Base Feature</a></li>
+<li><a href="#BM_(Part%20Design%20Workbench%5C%2FOrganization%2FBody%2FSubshape%20Binder)_TOPIC%2Fi">Part Design Workbench/Organization/Body/Subshape Binder</a></li>
 </ul>
 </div>
 <p><strong><a href="#BM_(part%20design%20workbench)_FC%2Fi">Part Design Workbench</a> to <a href="#BM_(part%20workbench)_FC%2Fi">Part Workbench</a></strong></p>
@@ -4717,7 +4731,7 @@ this is useful if you want to attach two <a href="#BM_(body%7Cbodies)_FC%2Fi">bo
 <p><a name="BM_(FreeCAD)%2Fi"></a><strong>FreeCAD</strong> - A parametric 3D computer-aided design / modeling tool. <sub><a href="https://www.freecad.org/">[src]</a></sub></p>
 </li>
 <li>
-<p><a name="BM_(workbenches%7Cworkbench)_FC%2Fi"></a><strong></strong> - A set of tools, commands, views, panels, and workflows within <a href="#BM_(FreeCAD)%2Fi">FreeCAD</a> grouped together for a particular type of design (e.g., <a href="#BM_(spreadsheet%20workbench)_FC%2Fi">spreadsheet workbench</a>). <sub><a href="https://wiki.freecad.org/Workbenches">[src]</a></sub></p>
+<p><a name="BM_(workbenches%7Cworkbench)_FC%2Fi"></a><strong>workbench</strong> - A set of tools, commands, views, panels, and workflows within <a href="#BM_(FreeCAD)%2Fi">FreeCAD</a> grouped together for a particular type of design (e.g., <a href="#BM_(spreadsheet%20workbench)_FC%2Fi">spreadsheet workbench</a>). <sub><a href="https://wiki.freecad.org/Workbenches">[src]</a></sub></p>
 <p></p>
 </li>
 <li>
@@ -4847,7 +4861,7 @@ this is useful if you want to attach two <a href="#BM_(body%7Cbodies)_FC%2Fi">bo
 </p>
 </li>
 <li>
-<p><a name="BM_(body%7Cbodies)_FC%2Fi"></a><strong>body</strong> - A single contiguous 3D model, mostly built through a linear chain of operations where each operation compounds a <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketch</a> (or a set of <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a>) into a <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a>. <sub><a href="https://wiki.freecad.org/PartDesign_Body">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Body">[src]</a></sub></p>
+<p><a name="BM_(body%7Cbodies)_FC%2Fi"></a><strong>body</strong> - A single contiguous 3D model, built through a linear chain of <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">features</a>. <sub><a href="https://wiki.freecad.org/PartDesign_Body">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Body">[src]</a></sub></p>
 <p></p>
 </li>
 <li>
@@ -4855,11 +4869,11 @@ this is useful if you want to attach two <a href="#BM_(body%7Cbodies)_FC%2Fi">bo
 <p></p>
 </li>
 <li>
-<p><a name="BM_(lofts%3F)_FC%2Fi"></a><strong>loft</strong> - A <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> that constructs a solid by transitioning through <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> that act as slices within the solid. <sub><a href="https://wiki.freecad.org/PartDesign_AdditiveLoft">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_SubtractiveLoft">[src]</a></sub></p>
+<p><a name="BM_(lofts%3F%7Clofted)_FC%2Fi"></a><strong>loft</strong> - A solid created by transitioning through profiles. <a href="#BM_(lofts%3F%7Clofted)_FC%2Fi">Loft</a> is present as a <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> type in the <a href="#BM_(part%20design%20workbench)_FC%2Fi">part design workbench</a> and as an operation in the <a href="#BM_(part%20workbench)_FC%2Fi">part workbench</a>. <sub><a href="https://wiki.freecad.org/PartDesign_AdditiveLoft">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_SubtractiveLoft">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Part_Loft">[src]</a></sub></p>
 <p></p>
 </li>
 <li>
-<p><a name="BM_(pipes%3F%7Csweeps%3F%7Cpiping%7Cpiped%7Csweeping%7Csweeped)_FC%2Fi"></a><strong>pipe</strong> - A <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> that constructs a solid by transitioning through <a href="#BM_(sketches%7Csketching%7Csketch)_FC%2Fi">sketches</a> that act as slices within the solid in addition to following a chain of one or more paths (e.g., edge, arc, b-spline). <sub><a href="https://wiki.freecad.org/PartDesign_AdditivePipe">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_SubtractivePipe">[src]</a></sub> <sub><a href="https://www.youtube.com/watch?v=AqzJ58bM2rs">[src]</a></sub></p>
+<p><a name="BM_(pipes%3F%7Csweeps%3F%7Cpiping%7Cpiped%7Csweeping%7Csweeped)_FC%2Fi"></a><strong>pipe</strong> - A solid created by transitioning through profiles in addition to following a path (e.g., edge, arc, b-spline). <a href="#BM_(pipes%3F%7Csweeps%3F%7Cpiping%7Cpiped%7Csweeping%7Csweeped)_FC%2Fi">Pipe</a> is present as a <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> type in the <a href="#BM_(part%20design%20workbench)_FC%2Fi">part design workbench</a> and as an operation in the <a href="#BM_(part%20workbench)_FC%2Fi">part workbench</a>. <sub><a href="https://wiki.freecad.org/PartDesign_AdditivePipe">[src]</a></sub> <sub><a href="https://wiki.freecad.org/PartDesign_SubtractivePipe">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Part_Sweep">[src]</a></sub> <sub><a href="https://www.youtube.com/watch?v=AqzJ58bM2rs">[src]</a></sub></p>
 <p></p>
 </li>
 <li>
@@ -4867,11 +4881,11 @@ this is useful if you want to attach two <a href="#BM_(body%7Cbodies)_FC%2Fi">bo
 <p></p>
 </li>
 <li>
-<p><a name="BM_(filleting%7Cfilleted%7Cfillet'd%7Cfillets%3F)_FC%2Fi"></a><strong>fillet</strong> - A <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> that cuts into a edge, rounding it. <sub><a href="https://wiki.freecad.org/PartDesign_Fillet">[src]</a></sub></p>
+<p><a name="BM_(filleting%7Cfilleted%7Cfillet'd%7Cfillets%3F)_FC%2Fi"></a><strong>fillet</strong> - A rounded bevel cut into an edge. <a href="#BM_(filleting%7Cfilleted%7Cfillet'd%7Cfillets%3F)_FC%2Fi">Fillet</a> is present as a <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> type in the <a href="#BM_(part%20design%20workbench)_FC%2Fi">part design workbench</a>, an operation in the <a href="#BM_(part%20workbench)_FC%2Fi">part workbench</a>, and an operation in the <a href="#BM_(sketcher%20workbench%7Csketcher)_FC%2Fi">sketcher workbench</a>. <sub><a href="https://wiki.freecad.org/PartDesign_Fillet">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Part_Fillet">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Sketcher_CreateFillet">[src]</a></sub></p>
 <p></p>
 </li>
 <li>
-<p><a name="BM_(chamfering%7Cchamfered%7Cchamfer'd%7Cchamfers%3F)_FC%2Fi"></a><strong>chamfer</strong> - A <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> that cuts into a edge, creating an angled straight edge where that edge was. <sub><a href="https://wiki.freecad.org/PartDesign_Chamfer">[src]</a></sub></p>
+<p><a name="BM_(chamfering%7Cchamfered%7Cchamfer'd%7Cchamfers%3F)_FC%2Fi"></a><strong>chamfer</strong> - A bevel cut into an edge. <a href="#BM_(chamfering%7Cchamfered%7Cchamfer'd%7Cchamfers%3F)_FC%2Fi">Chamfer</a> is present as a <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> type in the <a href="#BM_(part%20design%20workbench)_FC%2Fi">part design workbench</a> and as an operation in the <a href="#BM_(part%20workbench)_FC%2Fi">part workbench</a>. <sub><a href="https://wiki.freecad.org/PartDesign_Chamfer">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Part_Chamfer">[src]</a></sub></p>
 <p></p>
 </li>
 <li>
@@ -4918,6 +4932,22 @@ this is useful if you want to attach two <a href="#BM_(body%7Cbodies)_FC%2Fi">bo
 </li>
 <li>
 <p><a name="BM_(app%20links%3F)_FC%2Fi"></a><strong>app link</strong> - An object that is a link to another object. <sub><a href="https://wiki.freecad.org/App_Link">[src]</a></sub> <sub><a href="https://wiki.freecad.org/Std_LinkMake">[src]</a></sub></p>
+<p></p>
+</li>
+<li>
+<p><a name="BM_(base%20features%3F)_FC%2Fi"></a><strong>base feature</strong> - Reference to an existing object that's imported as the first <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> of a <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>. <sub><a href="https://wiki.freecad.org/PartDesign_Body#Base_Feature">[src]</a></sub></p>
+<p></p>
+</li>
+<li>
+<p><a name="BM_(subshape%20binders%3F)_FC%2Fi"></a><strong>subshape binder</strong> - Reference to an existing object that's imported into a <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a> as a design reference / helper geometry. <sub><a href="https://wiki.freecad.org/PartDesign_SubShapeBinder">[src]</a></sub></p>
+<p></p>
+</li>
+<li>
+<p><a name="BM_(%5Cbtips%3F%5Cb)_FC%2Fi"></a><strong>tip</strong> - Index within a <a href="#BM_(body%7Cbodies)_FC%2Fi">body</a>'s <a href="#BM_(additive%20features%3F%7Csubtractive%20features%3F%7Cfeatures%3F)_FC%2Fi">feature</a> chain that defines the current working point and current geometry. <sub><a href="https://wiki.freecad.org/PartDesign_Body#Tip">[src]</a></sub></p>
+<p></p>
+</li>
+<li>
+<p><a name="BM_(compounds%3F%7Ccompounded)_FC%2Fi"></a><strong>compound</strong> - A set of geometry objects brought together under a single container, where that container itself is a geometry object. A <a href="#BM_(compounds%3F%7Ccompounded)_FC%2Fi">compound</a> is not a boolean operation - objects remain separate as opposed to being merged together in together. <sub><a href="https://wiki.freecad.org/Part_Compound">[src]</a></sub></p>
 <p></p>
 </li>
 </ul>

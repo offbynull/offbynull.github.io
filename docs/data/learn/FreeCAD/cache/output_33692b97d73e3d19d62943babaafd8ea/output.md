@@ -4,7 +4,8 @@
 
  * Part Workbench/Organization_TOPIC
  * Part Design Workbench/Organization/Body_TOPIC
- * Part Design Workbench/Binding Geometry_TOPIC
+ * Part Design Workbench/Organization/Body/Base Feature_TOPIC
+ * Part Design Workbench/Organization/Body/Subshape Binder_TOPIC
 
 </div>
 
