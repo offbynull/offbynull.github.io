@@ -47,6 +47,33 @@ body {
   margin-bottom: 1em;
 }
 
+.blog-posts .toggle ~ li {
+    display: none;
+}
+
+.blog-posts.all .toggle ~ li {
+    display: list-item;
+}
+
+.blog-posts .toggle {
+    cursor: pointer;
+    list-style-type: disclosure-closed;
+}
+
+.blog-posts.all .toggle {
+    list-style-type: disclosure-open;
+}
+
+.blog-post-date {
+    margin-top: -0.75em;
+    margin-bottom: 2em;
+    color: #666;
+}
+
+.blog-post-back {
+    margin-top: 3em;
+}
+
 a {
   color: #61dafb;
 }
