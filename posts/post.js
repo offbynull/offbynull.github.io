@@ -1,0 +1,1 @@
+document.title = document.querySelector('.post h1').textContent + ' - ' + document.title;
