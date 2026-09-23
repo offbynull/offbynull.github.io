@@ -1,0 +1,11 @@
+@import url('../main.css');
+
+.post-date {
+    margin-top: -0.75em;
+    margin-bottom: 2em;
+    color: #666;
+}
+
+.post-back {
+    margin-top: 3em;
+}
