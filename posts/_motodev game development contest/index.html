@@ -17,14 +17,14 @@
                     <a href="../../">← back</a>
                 </div>
                 <div class="post">
-                    <h1>Things I've tried: MOTODEV Game Developer Challenge</h1>
+                    <h1>Things I've tried: Chasing the Indie Gamedev Dream</h1>
                     <!-- NOTE: Use sentence case for title (as opposed to title case) and do not end with period (e.g., My post about stuff) -->
                     <div class="post-date">MONTH DAY, YEAR</div>
                     <!-- NOTE: Use full month above, note abbreviation (e.g., September 20, 2026) -->
 
-                    In 2007, at the age of 22, I had decided to resign from what was arguably my first real software engineering job to enter a game development competition. The MOTODEV Game Developer Challenge, put on by Motorola, was a competition for indie gamedevs. The goal of was to develop a game for one of two flagship Motorola phones that were out at the time, either the Motorola KRZR K1 or the Motorola Q line of phones. 
+                    <p>In 2007, at the age of 22, I had decided to resign from what was arguably my first real software engineering job to enter a game development competition. The MOTODEV Game Developer Challenge, put on by Motorola, was a competition for indie gamedevs. The goal of was to develop a game for one of two flagship Motorola phones that were out at the time, either the Motorola KRZR K1 or the Motorola Q line of phones.</p>
 
-                    My entry to the competition was Mad Kaz, a vertical platformer for the KRZR that was backed by a custom game engine I had built specifically for the competition. Mad Kaz was the culmination of my experiences around code and games, from early childhood when my father came home with our first family PC all the way up to resigning from my job. It's been nearly 2 decades and so my memories around Mad Kaz and the competition are fuzzy at best, but thankfully I still have the old source control repositories for the game as well as my old Thunderbird email profile which help fill in the gaps from that time.
+                    <p>My entry to the competition was Mad Kaz, a vertical platformer for the KRZR that was backed by a custom game engine I had built specifically for the competition. Mad Kaz was the culmination of my experiences around code and games, from early childhood when my father came home with our first family PC all the way up to resigning from my job. It's been nearly 2 decades and so my memories around Mad Kaz and the competition are fuzzy at best, but thankfully I still have the old source control repositories for the game as well as my old Thunderbird email profile which help fill in the gaps from that time.</p>
 
                     <blockquote>
                         <p>Original entry description: Mad Kaz is a vertical platformer where you lead the title character through a series of unique levels, each crazier than the last. Mad Kaz features six zones with between four to ten levels per zone, and eight different game modes. Built on top of a unique engine, Mad Kaz allows users to create their own levels with customized game play, cinematics, music, and style. Levels can be uploaded onto phones via either Bluetooth or the Internet. The source code packages for the engine, levels, and SDK can be found on the CodeYield Development site.</p>
@@ -37,54 +37,129 @@
                         <img src="mk_5.png" />
                         <img src="mk_6.png" />
                     </blockquote>
+
+                    <h2>Entering the competition</h2>
                     
-                    The MOTODEV Game Developer Challenge was opened to contestants on Feb 21 and ran until Aug 10, 2007. Around mid-March, I had registered an LLC along with a domain name for the competition. Shortly afterwards, I notified my employer at the time, airG, that I was parting ways. I hadn't given an exact reason for why I was leaving, just that I was leaving. Part of the reason may have had to do with what I witnessed when a former colleague, after having a baby, attempted to leave for greener pastures to another mobile developer. They had prevented him starting his new job over worries that he would take over trade secrets or other intellectual property. As my last few days of employment were closing in, I recall being excited about the competition, to the point that when I had to dinner with a few college classmates and colleagues I was close with. I secretly let them know that the reason I was leaving was to enter the competition. The competition itself had no huge prize or payout. The prize was nothing more than a publishing contract with a mid-tier mobile game publisher and some free Motorola devices. But, the prizes didn't matter to me so much as the competition itself. It was, I was hoping, the start of something bigger.
+                    <p>The MOTODEV Game Developer Challenge was opened to contestants on Feb 21 and ran until Aug 10, 2007. Around mid-March, I had registered an LLC along with a domain name for the competition. Shortly afterwards, I notified my employer at the time, airG, that I was parting ways. I hadn't given an exact reason for why I was leaving, just that I was leaving. Part of the reason may have had to do with what I witnessed when a former colleague, after having a baby, attempted to leave for greener pastures to another mobile developer. They had prevented him starting his new job over worries that he would take over trade secrets or other intellectual property.</p>
                     
-                    Between late March and early April is when I officially began work on my entry. My original odea for my entry was a 2D MMO virtual world, similar to Habbo Hotel but for mobile phones. I had pitched a similar idea to one of airG's directors a while back while still employed there. I had fixed a costly bug on a flagship phone that was preventing airG's app from shipping on the device, and so as a reward he had taken me to a lunch. I recall that he wasn't entirely enthused by the idea. While he hadn't fully articulated the reasons, there were likely a few. The first was fit. At the time, airG made a popular social networking app, not games. The second was how much of an uphill climb it would be. Even if airG did make games, such a game would be resource-intensive to make and it would be challenging for it to become a commercial success. The third was technical feasibility. The mobile phones of the era were severally resource-constrained. Devices often only had hundreds of kilobytes of heap, 1 to 10 megabytes of persistent storage, and screens dimensions between 100 to 200 pixels. Even if those constraints weren't there, Internet connectivity was a problem. It was slow, inconsistent, heavily metered, and was billed based on usage. You didn't have to do a lot to get a big Internet usage bill.
+                    <p>As my last few days of employment were closing in, I recall being excited about the competition, to the point that when I had to dinner with a few college classmates and colleagues I was close with. I secretly let them know that the reason I was leaving was to enter the competition. The competition itself had no huge prize or payout. The prize was nothing more than a publishing contract with a mid-tier mobile game publisher and some free Motorola devices. But, the prizes didn't matter to me so much as the competition itself. It was, I was hoping, the start of something bigger.</p>
                     
-                    Even with all of those hurdles, I still wanted to try. At the time, I had around $7,500 in my name and was still living in my childhood home in the same bedroom I grew up in. Before I could do anything, I needed a KRZR K1 or similar device. I went to a local store selling imported handsets and picked up the closest device they had on-hand to the KRZR K1, which ended up being the Motorola SLVR L7, along with a Samsung SGH-D520 just so I had another device I could try playing the game on. I then decided to black out my bedroom windows with a thick blanket and duct tape to prevent being distracted by outside light seeping in. I started out by making a plan. I charted out tasks and estimates in a GAANT chart, mocked out a UI flow, and mocked out a simple map that would be the base of the MMO. The idea was to have it be a platform more so than a game. Scripts would drive logic, where those scripts and related assets would flow in directly off of the Internet. The ultimate goal was to have users generate their own content that made up a massive explorable world.
+                    <p>Between late March and early April is when I officially began work on my entry. My original idea for my entry was a 2D MMO virtual world, similar to Habbo Hotel but for mobile phones. I had pitched a similar idea to one of airG's directors a while back while still employed there. I had fixed a costly bug on a flagship phone that was preventing airG's app from shipping on the device, and so as a reward he had taken me to a lunch.</p>
+                    
+                    <p>I recall that he wasn't entirely enthused by the idea. While he hadn't fully articulated the reasons, there were likely a few. The first was fit. At the time, airG made a popular social networking app, not games. The second was how much of an uphill climb it would be. Even if airG did make games, such a game would be resource-intensive to make and it would be challenging for it to become a commercial success. The third was technical feasibility. The mobile phones of the era were severally resource-constrained. Devices often only had hundreds of kilobytes of heap, 1 to 10 megabytes of persistent storage, and screens dimensions between 100 to 200 pixels. Even if those constraints weren't there, Internet connectivity was a problem. It was slow, inconsistent, heavily metered, and was billed based on usage. You didn't have to do a lot to get a big Internet usage bill.</p>
+
+                    <h2>Building the engine: The MMO that never was</h2>
+                    
+                    <p>Even with all of those hurdles, I still wanted to try. At the time, I had around $7,500 in my name and was still living in my childhood home in the same bedroom I grew up in. Before I could do anything, I needed a KRZR K1 or similar device. I went to a local store selling imported handsets and picked up the closest device they had on-hand to the KRZR K1, which ended up being the Motorola SLVR L7, along with a Samsung SGH-D520 just so I had another device I could try playing the game on. I then decided to black out my bedroom windows with a thick blanket and duct tape to prevent being distracted by outside light seeping in.</p>
+                    
+                    <p>I started by making a plan. I charted out tasks and estimates in a GAANT chart, mocked out a UI flow, and mocked out a simple map that would be the base of the MMO. The idea was to have it be a platform more so than a game. Scripts would drive logic, where those scripts and related assets would flow in directly off of the Internet. The ultimate goal was to have users generate their own content that made up a massive explorable world.</p>
 
                     <img src="original_gaant.png"/>
                     <img src="original_ui_flow.png"/>
                     <img src="original_mmo_demo_map_layout.png"/>
 
-                    From a technology perspective, everything in that GAANT chart and those mockups were attainable, but not for a single developer with 3-4 months of time. The timelines within the chart, which were already wishful thinking to begin with, showed that development would stretch past the competition's deadline of early August. As such, the MMO wasn't possible. Nevertheless, there were components in the GAANT chart that I figured would be needed regardless of what game I ended up making, and so I began working on them while I thought of alternative game ideas. 
+                    <p>From a technology perspective, everything in that GAANT chart and those mockups were attainable, but not for a single developer with 3-4 months of time. The timelines within the chart, which were already wishful thinking to begin with, showed that development would stretch past the competition's deadline of early August. As such, the MMO wasn't possible. Nevertheless, there were components in the GAANT chart that I figured would be needed regardless of what game I ended up making, and so I began working on them while I thought of alternative game ideas.</p> 
                     
-                    Between April 3 and 10, I implemented the font engine. Java-enabled phones of that era didn't normalize to a single specific font for all applications to use. Instead, each class of device had its own font and it was impossible to switch out to a different one. For example, the exact same app running on a Nokia S60 vs a Motorola KRZR would look different, because, among other reasons, the font used to render out a string of text was different. Most developers would work around this problem by using bitmap fonts, an image consisting of a grid of characters. I chose a different approach for my font engine. Somewhere along in my engineering journey, I came across Hershey vector fonts, which were simple fonts defined as a chain of connected line. They were free, easy to decode and render, and easy to apply transformations to such as rotating and scaling.
+                    <p>Between April 3 and April 10, I implemented the font engine. Java-enabled phones of that era didn't normalize to a single specific font for all applications to use. Instead, each class of device had its own font and it was impossible to switch out to a different one. For example, the exact same app running on a Nokia S60 vs a Motorola KRZR would look different, because, among other reasons, the font used to render out a string of text was different. Most developers would work around this problem by using bitmap fonts, an image consisting of a grid of characters. I chose a different approach for my font engine. Somewhere along in my engineering journey, I came across Hershey vector fonts, which were simple fonts defined as a chain of connected line. They were free, easy to decode and render, and easy to apply transformations to such as rotating and scaling.</p>
 
-                    Between April 12 and April 14, I implemented a lightweight huffman tree. A huffman tree implementation wasn't part of the GAANT chart, but I figured that there would be some networking aspect to the game and so I wanted my network traffic to be compressed to keep things efficient. Less data being sent over the Internet meant there was less potential of chewing up the player's mobile Internet quota (and hopefully less likely that they'd end up with a large bill). There were no built-in compressions packages in Java phones of that era and simple Java open-source implementations intended for resource-constrainted devices weren't all that prevalent. Huffman was more or less the most advanced compression algorithm that I'd internalized and was comfortable with.
+                    <p>Between April 12 and April 14, I implemented a lightweight huffman tree. A huffman tree implementation wasn't part of the GAANT chart, but I figured that there would be some networking aspect to the game and so I wanted my network traffic to be compressed to keep things efficient. Less data being sent over the Internet meant there was less potential of chewing up the player's mobile Internet quota (and hopefully less likely that they'd end up with a large bill). There were no built-in compressions packages in Java phones of that era and simple Java open-source implementations intended for resource-constrainted devices weren't all that prevalent. Huffman was more or less the most advanced compression algorithm that I'd internalized and was comfortable with.</p>
 
-                    From April 14 to May 3, I implemented the virtual machine and assembler. The intention with the virtual machine was to drive the game's logic and animations, similar to how the the original Quake engine had a virtual machine the enabled Quake's gameplay as well as its near endless modifications. The virtual machine and assembler were both very basic. The virtual machine had opcodes similar to that of Java's virtual machine, and the assembler's syntax was similar to assemblers I had come across in my teens.
+                    <p>Between April 14 and May 3, I implemented the virtual machine and assembler. The intention with the virtual machine was to drive the game's logic and animations, similar to how the the original Quake engine had a virtual machine the enabled Quake's gameplay as well as its near endless modifications. The virtual machine and assembler were both very basic. The virtual machine had opcodes similar to that of Java's virtual machine, and the assembler's syntax was similar to assemblers I had come across in my teens.</p>
 
-                    From May 4 to May 7, I implemented audio and image functions. The functions, I had figured, would be helpful for whatever game I ended up with. There was a software audio mixer I wrote that turned out to be a failure. While the emulator would successfully mix the audio sources, the device itself wouldn't. There was also an image transformation suite which contained common manipulations such as scaling, rotation, colorization, brightness, and contrast.
+                    <p>Between May 4 and May 7, I implemented audio and image functions. The functions, I had figured, would be helpful for whatever game I ended up with. There was a software audio mixer I wrote that turned out to be a failure. While the emulator would successfully mix the audio sources, the device itself wouldn't. There was also an image transformation suite which contained common manipulations such as scaling, rotation, colorization, brightness, and contrast.</p>
 
-                    <blockquote><strong>Full coding timeline analysis</strong>
+                    <h2>Cutting scope: Choosing Mad Kaz</h2>
 
-                      | Revisions | Date range | What changed |
-                      |---|---|---|
-                      | 0 | Apr 3 | Empty repository. |
-                      | 1–17 | Apr 11–14 | Built Hershey font conversion and rendering, then added word wrapping, resizing, and Huffman compression. |
-                      | 18–39 | Apr 21–May 3 | Added an assembler and VM instruction set, generalized the VM, and built J2ME benchmarks and runtime support. |
-                      | 40–56 | May 4–7 | Added WAV mixing and image/PNG tools, palette replacement, graphics management, and tiling. |
-                      | 57–83 | May 8–12 | Added game canvas, sprites, scenes, music, logo animation, and text handling; adjusted loading and key-repeat behavior for phones. |
-                      | 84–124 | May 13–31 | Added menus, windows, dialogs, persistent storage, and image rotation; refined text layout and fixed device/input bugs. |
-                      | 125–131 | Jun 2–4 | Added Micro3D-related tools and scrolling/physics code; comments note unfinished gravity and offset behavior. |
-                      | 132–150 | Jun 4–14 | Added the first large Mad Kaz implementation, including its VM, gameplay, collisions, and image/resource handling. Later changes renamed the play canvas and optimized performance; one replaces many `StringBuffer` UI values with `char[]`. |
-                      | 151–168 | Jun 14–19 | Expanded game-specific VM operations for state, input, effects, and timers. Added custom-map UI and began network access. |
-                      | 169–193 | Jun 20–28 | Added network map downloads, local storage and browsing, and tools to package downloadable levels from XML. Extended gameplay controls, sprites, and graphics parsing. |
-                      | 194–203 | Jul 1–3 | Prototyped Bluetooth multiplayer and menus, then added a credits sequence and gameplay/timing fixes. |
-                      | 204–213 | Jul 5–10 | Added an automated-scene engine and tests, then connected scene behavior to the game and SDK. |
-                      | 214–227 | Jul 12–21 | Added configuration storage, level selection/unlocks, and substantial zone and level content. |
-                      | 228–246 | Jul 22–27 | Removed the unplayable multiplayer path, added peer-to-peer custom-map transfer, and optimized level packaging with an indexed combiner. Reorganized zone 6 as zone 5. |
-                      | 247–268 | Jul 27–28 | Revised setup, credits, copyright/license text, and packaging; removed map compression; reorganized into trunk/tags and created MOTODEV/alpha snapshots. Added a downloadable “Space Quest” map. |
-                    
+                    <p>Sometime between early to mid-May, I decided that the game I want to implement would be a re-imagining of NS-SHAFT and NS-TOWER blended into one. NS-SHAFT and NS-TOWER were introduced to me by a college classmate as a way of killing time while we were held up in the computer labs. The twist with this re-imagining was that it'd be narrative experience, with zones and levels, where each level would be unique in terms of graphics, audio, and gameplay mechanics. I came up with a set of levels that I wanted to the game to have. The title character, Mad Kaz (that's me, I'm Kaz 🙂), would climb up from inside the Earth and eventually out into space, before encountering a boss battle and falling back down to Earth. I named it Mad Kaz: The Beginning.</p>
+
+                    <blockquote><strong>Spreadsheet detailing the original levels planned for Mad Kaz</strong>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Level Num</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>1</td>
+                            <td>Internal Core</td>
+                            <td>Climb</td>
+                            <td>Hot wavy screen. Stepping tiles look like they're so hot that they're almost molten. Background includes a cavernous view of the earth with magma shooting out of the edges, etc.. etc..</td>
+                          </tr>
+                          <tr>
+                            <td>2</td>
+                            <td>Below The Crust</td>
+                            <td>No-Drop Climb</td>
+                            <td>Stepping on clay pieces. Nothing to exciting about this zone, covered in a repetitive dirt view.</td>
+                          </tr>
+                          <tr>
+                            <td>3</td>
+                            <td>The Surface</td>
+                            <td>No-Drop Climb</td>
+                            <td>Earth's surface. Building windows, etc... Shake every now and then to symbol a missile hit and flash screen white. Possible rain as well?</td>
+                          </tr>
+                          <tr>
+                            <td>4</td>
+                            <td>In The Sky</td>
+                            <td>No-Drop Climb</td>
+                            <td>Zoomed out view of city and buildings in ruins, and missiles piling into buildings. Lots of Wind fucking with your movements. Hard time going left/right depending on direction of the wind.</td>
+                          </tr>
+                          <tr>
+                            <td>5</td>
+                            <td>Above The Chaos</td>
+                            <td>No-Drop Climb</td>
+                            <td>Dusk sun going down. Dark black clouds underneath. Nothing too special.</td>
+                          </tr>
+                          <tr>
+                            <td>6</td>
+                            <td>The Horizon</td>
+                            <td>Low-Grav No-Drop Climb</td>
+                            <td>Watching sun go down on earth's horizon Nothing special about this one, just an introduction to low-grav jumping.</td>
+                          </tr>
+                          <tr>
+                            <td>7</td>
+                            <td>Approaching The Ring</td>
+                            <td>Low-Grav No-Drop Climb</td>
+                            <td>Everythings really dark so it's hard to see where you're jumping. At some point earlier heat vision googles might have been picked up which could be used here.</td>
+                          </tr>
+                          <tr>
+                            <td>8</td>
+                            <td>Inside The Ring</td>
+                            <td>No-Drop Climb</td>
+                            <td>Alien ships flying back and forth and general alien ship look.</td>
+                          </tr>
+                          <tr>
+                            <td>9</td>
+                            <td>The Boss</td>
+                            <td>Fast Drop</td>
+                            <td>Hard drop down a corridor. The boss does a lot to mess you up, including blanking out your screen for seconds at a time. There is an electric beam coming down that you must avoid in this hard drop. Must press action button on specific tiles to damage the enemy</td>
+                          </tr>
+                          <tr>
+                            <td>10</td>
+                            <td>The Escape</td>
+                            <td>Fast Drop</td>
+                            <td>The laser beam is still following you even after the boss is dead, you must outrun it.</td>
+                          </tr>
+                          <tr>
+                            <td>11</td>
+                            <td>It All Comes Down</td>
+                            <td>Fast Drop</td>
+                            <td>Service tunnel you came up in is collapsing. Stay ahead of collapsing debris.</td>
+                          </tr>
+                          <tr>
+                            <td>12</td>
+                            <td>The Aftermath</td>
+                            <td>Free Fall</td>
+                            <td>Free falling back to Earth. You'll see pieces of the tubes used to draw magma from the earth falling down in the background in a hail of fire. Avoid hitting debris when falling.</td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </blockquote>
 
-                    Sometime between early to mid-May, I decided that the game I want to implement would be a re-imagining of NS-SHAFT and NS-TOWER blended into one. NS-SHAFT and NS-TOWER were introduced to me by a college classmate as a way of killing time while we were held up in the computer labs. The twist with this re-imagining was that it'd be narrative experience, with zones and levels, where each level would be unique in terms of graphics, audio, and gameplay mechanics. I came up with a set of levels that I wanted to the game to have. The title character, Mad Kaz (that's me, I'm Kaz 🙂), would climb up from inside the Earth and eventually out into space, before encountering a boss battle and falling back down to Earth. I named it Mad Kaz: The Beginning.
-
-                    <img src="original_mad_kaz_levels.png"/>
-
-                    Shortly after, I began seeking out artists to help piece it out together. For the concept art, I contracted out to an old highschool classmate, William, to create some basic sketches. There was no direction, I just asked him to envision how something like this would look and sketch it out. For the pixel art, I found a talented pixel artist online through PixelJoint, Mykola, who was based in Ukraine. He agreed to a contract to help convert the concept art into pixel art. Some of the art he built for the game is still on his old PixelJoint profile <a href="https://pixeljoint.com/pixelart/23794.htm">here</a> and <a href="https://pixeljoint.com/pixelart/23793.htm">here</a>.
+                    <p>Shortly after, I began seeking out artists to help piece it out together. For the concept art, I contracted out to an old highschool classmate, William, to create some basic sketches. There was no direction, I just asked him to envision how something like this would look and sketch it out. For the pixel art, I found a talented pixel artist online through PixelJoint, Mykola, who was based in Ukraine. He agreed to a contract to help convert the concept art into pixel art. Some of the art he built for the game is still on his old PixelJoint profile <a href="https://pixeljoint.com/pixelart/23794.htm">here</a> and <a href="https://pixeljoint.com/pixelart/23793.htm">here</a>.</p>
 
                     <img src="william_CIMG0130.JPG"/>
                     <img src="william_P6130010.JPG"/>
@@ -95,9 +170,13 @@
                     <img src="mykola_teeth_mock.png"/>
                     <img src="mykola_teeth_mock_clamped.png"/>
 
-                    Even with a concrete plan and the extra help, it turned out that it was still too ambitious. The roughly 3 remaining months wasn't enough time to complete on both the game's engine and build out that much game logic and art. Pixel art didn't start flowing in until mid-June. I hadn't begun coding up the majority of the game's levels, outside of a few practice levels, until mid-July. Before that, I was still primarily trying to put the pieces of the game's engine together. In old emails from Mykola, I could see that I was breaking under the pressure. I ended up deciding to reduce the number of levels and restructure such that where each level was actually a zone with multiple levels that re-used assets and had similar game logic, similar to original Sonic The Hedgehog games. I was fleshing out these zones up until the very end. There wasn't enough time to balance any of the gameplay. Even if there was, I don't think I had it in me to know what fair balancing would entail or feel like.
+                    <h2>Cutting scope, again: Spread too thin</h2>
 
-                    <blockquote><strong>Pixel artist responding to my email crashing out</strong>
+                    <p>Even with a concrete plan and the extra help, it turned out that it was still too ambitious. The roughly 3 remaining months wasn't enough time to complete on both the game's engine and build out that much game logic and art. Pixel art didn't start flowing in until mid-June. I hadn't begun coding up the majority of the game's levels, outside of a few practice levels, until mid-July. Before that, I was still primarily trying to put the pieces of the game's engine together.</p>
+                    
+                    <p>In old emails from Mykola, I could see that I was breaking under the pressure. I ended up deciding to reduce the number of levels and restructure such that where each level was actually a zone with multiple levels that re-used assets and had similar game logic, similar to original Sonic The Hedgehog games. I was fleshing out these zones up until the very end. There wasn't enough time to balance any of the gameplay. Even if there was, I don't think I had it in me to know what fair balancing would entail or feel like.</p>
+
+                    <blockquote><strong>Mykola responding my crashout</strong>
                       <p>
                         <strong>From:</strong> Mykola &lt;mykola31@gmail.com&gt;<br>
                         <strong>To:</strong> Kasra F. &lt;kasraf@codeyielddevelopment.com&gt;<br>
@@ -131,52 +210,12 @@
 
                       <p>
                         notes:<br>
-                        - the concept art doesn't count the fact that the player sprite is 24x24<br>
-                        though :D, so naturally it's going to be much more cartoony<br>
-                        proportions a la the ns tower dude.
-                      </p>
-
-                      <p>
-                        I only did the static frame for the dude, if you like it I'll animate<br>
-                        the motions.
-                      </p>
-
-                      <p>
-                        (as you can see the style of character is in large part inspired by<br>
-                        mega man 16bit games, and I hope you like the idea, I'd really like to<br>
-                        have that colorful vivid look to the game)
-                      </p>
-
-                      <p>
-                        - you told me the engine can flip gfx, how about flipping some tiles<br>
-                        randomly? I think some levels especially the early ones would benefit<br>
-                        from that in diversity.
-                      </p>
-
-                      <p>
-                        - all tiles are slightly bigger than 42 x 10, so just center the<br>
-                        collision rectangle around the center of respective tile.<br>
-                        (also the tiles sheet layout is kind of not too optimized I guess I'll have<br>
-                        to rearrange it once the tiles are all done).
-                      </p>
-
-                      <p>
-                        - notice that some tiles will use faux perspective (you've seen that<br>
-                        in some platform games before), so for those jsut put the collision<br>
-                        rect a bit down.
+                        [...]
                       </p>
 
                       <p>
                         let me know what you think bout these :) and then I'm moving on to<br>
                         more gfx.
-                      </p>
-
-                      <p>
-                        --<br>
-                        Best regards,<br>
-                        Mykola, <a href="mailto:mykola31@gmail.com">mykola31@gmail.com</a><br>
-                        <a href="http://myk31.com">http://myk31.com</a><br>
-                        <a href="http://mykola31.deviantart.com/">http://mykola31.deviantart.com/</a>
                       </p>
 
                       <figure>
@@ -198,92 +237,555 @@
                       </figure>
                     </blockquote>
                     
-                    With the exception of zone 6, which was just a single level acting as an outro that pays homage to friends and those who worked on the game, I had forgotten about the actual levels and content within each zone. I asked AI to go through the files and give a rundown:
+                    <p>With the exception of zone 6, which was just a single level acting as an outro that pays homage to friends and those who worked on the game, I had forgotten about the actual levels and content within each zone. I asked AI to go through the game's data and give an analysis:</p>
 
-                    <blockquote>
-                      <strong>Level analysis</strong>
+                    <blockquote><strong>AI level analysis</strong>
+                      <p>[...]</p>
 
-                      <p>Mad Kaz shipped with six zones. Each zone takes the same basic vertical-platforming system and changes it around a different idea.</p>
+                      <p>
+                        The earlier campaign design was very different from what shipped. <code>original_level_ideas.ods</code> describes twelve sequential stages taking Mad Kaz from deep inside the Earth, through the surface and into space, followed by a boss fight, escape, and free-fall back to Earth. The notes include lava, wind, low gravity, darkness and heat vision, missiles, beam hazards, collapsing tunnels, and falling debris. Concept art from July 2007 shows the same lava, city, tunnel, and alien themes.
+                      </p>
 
-                      <p><strong>Intro — movement and control.</strong><br>
-                      Free Drop introduces falling and horizontal movement. Free Climb reverses the objective and introduces charged jumps. Limited Climb removes horizontal control and airborne charging. Limited Climb 2 adds failure for falling outside the visible area. Hard Drop returns to descent under greater pressure. The abstract grid presentation fits the zone's role as a tutorial and movement test.</p>
+                      <p>
+                        A lot of that material seems to have been reworked rather than discarded. No-drop climbing became a recurring restriction, darkness and heat vision resemble Black Out and Stalker, screen shake became central to Giagantor, beam hazards survived in Climb to Space, and fast-drop pressure appears in Hard Drop and Bomby Sunset.
+                      </p>
 
-                      <p><strong>Homework — platform physics.</strong><br>
-                      Homework Intro introduces platforms with different jump properties. Sunset City reuses those mechanics under a time limit. The three Bomby Sunset stages turn the game into a long descent involving a falling bomb, with platforms having a stronger effect on downward speed in each stage. The Great Escape turns falling speed into attack strength: landing on a specific upper platform sends out a wave that pushes back the giant stickman boss, with harder landings creating a stronger effect. The zone takes platform behavior from a basic movement property and turns it into part of the game's combat.</p>
-
-                      <p><strong>Hippie — perception and instability.</strong><br>
-                      The zone is built around hallucination. Psychedelic constantly changes the background colors. The Confusion stages make platforms and backgrounds harder to tell apart by reducing the number of colors and changing the background to match the platforms. Flashbacks reuses imagery from the previous Homework zone, making the idea of a hallucination literal. Checkers uses a high-contrast checkerboard environment to interfere with spatial perception. Day Dreams generates two different platform layouts and switches between them. The progression moves from unreliable visuals to unreliable level geometry.</p>
-
-                      <p><strong>Time Trials — indirect control.</strong><br>
-                      The five stages increase from 200 to 400, 800, 1600, and 2000 floors, with a target time of 2:56. Direct horizontal control is restricted. Different platforms change horizontal speed, direction, or jump power, so the player has to use the platforms themselves as a form of steering. The levels stay mechanically similar while becoming much longer. The main challenge is route planning, time pressure, and endurance.</p>
-
-                      <p><strong>Giagantor — mass, impact, and environmental feedback.</strong><br>
-                      The story says that Mad Kaz has been turned into a giant, and the mechanics treat his weight as a problem.</p>
-
-                      <p>In the Tippy Toe stages, landing too hard can cause failure. Landing speed also controls screen shake and phone vibration. Later stages space the platforms farther apart, making soft landings harder.</p>
-
-                      <p>Inner Tippy Toe keeps the same impact system but hides platforms behind a building facade. The shaking caused by landing is no longer just feedback; it also helps the player make sense of an environment that is difficult to see.</p>
-
-                      <p>Climb to Space changes the source of the danger. Authorities attack from the sides with bright beams, and screen shaking warns that the beams are about to close in. Each stage makes the attack faster and gives the player less room for error.</p>
-
-                      <p>Across the zone, the same kind of feedback changes purpose: <strong>the player's weight creates danger, shaking becomes information, and then shaking becomes warning.</strong></p>
-
-                      <p><strong>Author — credits as a level.</strong><br>
-                      Authors and Friends displays a timed sequence of photographs before the stage ends. The credits are implemented through the same level scripting system used by the rest of the game instead of through a separate credits system.</p>
-
-                      <strong>Analysis</strong>
-
-                      <p>Mad Kaz changed significantly during development. An earlier design document describes a twelve-stage story where Mad Kaz starts deep inside the Earth, climbs to the surface, continues into space, fights a boss, escapes, and then falls back to Earth. The planned levels included lava, wind, low gravity, darkness and heat vision, missile impacts, aliens, screen blackouts, an electric beam, collapsing tunnels, and falling debris. Concept art from the same period shows lava fields, a city, tunnels, and alien designs.</p>
-
-                      <p>The shipped game is very different. Instead of one continuous story, it is divided into zones built around different gameplay ideas. Some parts of the earlier design seem to have survived in changed form. Restricted climbing became a repeated rule. Darkness and alternate vision became the Black Out and Stalker modes. Screen shake became an important part of Giagantor. The beam attacks and climb into space returned in Climb to Space. Fast falling and escape pressure show up again in Hard Drop and the Bomby Sunset levels.</p>
-
-                      <p>This change also made the game easier to finish. A long story campaign would have needed more unique art, environments, events, and level-specific logic. The zone structure made it possible to reuse art and related mechanics while letting the scripting system change movement, collisions, visuals, timers, hazards, and other rules.</p>
-
-                      <p>Mad Kaz therefore started as a more traditional, story-driven journey and evolved into something stranger and better suited to its programmable engine: a collection of themed changes to the rules of one core platformer. That change is probably why the final game does such a good job of showing what the VM could do.</p>
+                      <p>
+                        Mad Kaz started closer to a linear, story-driven vertical journey and evolved into something stranger and more suited to its programmable engine: a collection of themed rule mutations built on one core platformer. That change is probably why the final game demonstrates the VM so effectively.
+                      </p>
                     </blockquote>
                     
-                    The final paragraph hit the nail on head: <q>"Mad Kaz therefore started as a more traditional, story-driven journey and evolved into something stranger and better suited to its programmable engine: a collection of themed changes to the rules of one core platformer. That change is probably why the final game does such a good job of showing what the VM could do."</q> In the end, Mad Kaz wasn't so much a game as much as it was a tech demo for a game engine that I had built in those 4 months. Those 4 months weren't enough time for me to build out both the engine and the game, and so the game ended up simply being unbalanced levels that tried to shove in as many game engine features as possible.
+                    <p>The final paragraph hit the nail on head. In the end, Mad Kaz wasn't so much a game as much as it was a tech demo for a game engine that I had built in those 4 months. Those 4 months weren't enough time for me to build out both the engine and the game, and so the game ended up simply being unbalanced levels that tried to shove in as many game engine features as possible.</p>
 
-                    I submitted Mad Kaz into the competition on July 29th, 2007, about 2 weeks before the August 10th deadline. A confirmation email arrived the next day, and that was it. I never heard back from the people running the contest about their thoughts on Mad Kaz or how it ranked against other games in the competition. I showed the game to a couple of my real life friends and they thought it was alright. I had an online friend load it up on his phone and give it a try, he thought it was alright. I posted some screenshots in an IRC chatroom, to which someone replied saying the graphics were bad. I emailed my father informing him of what I was up after 4 months without work, to which he replied with the common encouraging words that parents are known to say to their children. And that was it. Looking back, I wish there was something more to make it more triumphant or satisifying in the end, but I recall feeling dejected immediately after submitting it. Maybe it was because my entry wasn't as polished as what I was hoping for, or maybe it was from putting myself through 4 months of self-imposed abuse and verging on being broke.
+                    <details><summary>AI level-by-level analysis</summary>
+                      <blockquote>
 
-                    <details>
-                        <summary>Email to father</summary>
-                        <img src="kambiz_email.png" alt="Hi Kasra, I saw your game, You did a fantastic work, I am very proud of you. With all hope and  good luck to you you are the best, anyway you are a winner to me. Cheers!!!! Kambiz - Hey Kambiz, Here's what I've been working on for the past 3 or so months. I  entered it into the Motorola competition a couple of days ago. It was designed to run specific Motorola phones and some other phones (Motorola Vxxx, Motorola SLVR, Motorola K1, Samsung SGH- D520, etc.. etc..), so you can't play it on your phone. http://www.codeyielddevelopment.com/madkaz.php"/>
+                        <p>
+                            Mad Kaz shipped with six zones. The zones are more than graphical themes:
+                            each one takes the same basic vertical-platformer machinery and explores
+                            a different idea.
+                        </p>
+
+                        <p>
+                            <strong>Intro = control</strong>,
+                            <strong>Homework = block physics</strong>,
+                            <strong>Hippie = perception</strong>,
+                            <strong>Time Trials = indirect control</strong>,
+                            <strong>Giagantor = impact and environmental feedback</strong>, and
+                            <strong>Author = credits implemented as a level</strong>.
+                        </p>
+
+                        <h4>Intro</h4>
+
+                        <p>
+                            The Intro zone is a deliberately constructed tutorial rather than a
+                            collection of generic easy stages.
+                        </p>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Level</th>
+                                    <th>What it does</th>
+                                    <th>Purpose</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Free Drop</td>
+                                    <td>Fall to the bottom with normal left/right steering.</td>
+                                    <td>Introduces falling and horizontal control.</td>
+                                </tr>
+                                <tr>
+                                    <td>Free Climb</td>
+                                    <td>Climb upward, charge jumps with <code>7</code>, and steer or charge while airborne.</td>
+                                    <td>Introduces the normal climbing and jump-charging model.</td>
+                                </tr>
+                                <tr>
+                                    <td>Limited Climb</td>
+                                    <td>Removes horizontal control and airborne charging.</td>
+                                    <td>Forces the player to commit to trajectories before jumping.</td>
+                                </tr>
+                                <tr>
+                                    <td>Limited Climb 2</td>
+                                    <td>Retains the movement restrictions and adds failure for falling out of view.</td>
+                                    <td>Makes the scrolling camera itself part of the challenge.</td>
+                                </tr>
+                                <tr>
+                                    <td>Hard Drop</td>
+                                    <td>Returns to descent with sparse platforms and failure for falling behind.</td>
+                                    <td>Tests the movement system under pressure.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p>
+                            The progression is systematic: <strong>teach the unrestricted movement
+                            model, remove freedoms one at a time, then test the player under
+                            pressure.</strong> The abstract grid artwork also makes the zone look
+                            more like a training environment than a story location.
+                        </p>
+
+
+                        <h4>Homework</h4>
+
+                        <p>
+                            Homework is where the game starts changing what platforms
+                            <em>mean</em>, rather than simply changing where they are placed.
+                        </p>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Level</th>
+                                    <th>What it does</th>
+                                    <th>Purpose</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Homework Intro</td>
+                                    <td>
+                                        Introduces three platform types with different jump strengths,
+                                        roughly <code>0x90</code>, <code>0x110</code>, and
+                                        <code>0x7f</code>.
+                                    </td>
+                                    <td>Asks the player to experiment and learn the new platform vocabulary.</td>
+                                </tr>
+                                <tr>
+                                    <td>Sunset City</td>
+                                    <td>Reuses the same platform types under a roughly 50-second deadline.</td>
+                                    <td>Places the tutorial mechanics inside an actual scenario.</td>
+                                </tr>
+                                <tr>
+                                    <td>Bomby Sunset 1</td>
+                                    <td>
+                                        A long descent while a bomb is falling toward the city.
+                                        Hitting platforms while moving quickly only reduces downward speed.
+                                    </td>
+                                    <td>Turns platform collisions into something the player has to manage during a rapid descent.</td>
+                                </tr>
+                                <tr>
+                                    <td>Bomby Sunset 2</td>
+                                    <td>Platforms remove much more downward velocity.</td>
+                                    <td>Increases the penalty for poor collision choices.</td>
+                                </tr>
+                                <tr>
+                                    <td>Bomby Sunset 3</td>
+                                    <td>Platforms stop the player's descent completely.</td>
+                                    <td>Completes the progression from mild slowdown to complete obstruction.</td>
+                                </tr>
+                                <tr>
+                                    <td>The Great Escape</td>
+                                    <td>
+                                        A giant stickman advances toward the player. Landing on the
+                                        upper platform fires a math wave, with its strength based on
+                                        falling velocity. The player must survive for 40 seconds.
+                                    </td>
+                                    <td>Turns an existing movement property into a combat mechanic.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p>
+                            The Great Escape is particularly revealing. The game does not add a
+                            conventional attack button. Instead, something the player already
+                            understands—<strong>falling velocity</strong>—becomes attack strength.
+                            Homework moves from learning unusual platform properties to deliberately
+                            exploiting physics.
+                        </p>
+
+
+                        <h4>Hippie</h4>
+
+                        <p>
+                            Hippie is fundamentally a <strong>perception-manipulation zone</strong>.
+                            The farther the player progresses, the less reliable the screen becomes.
+                        </p>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Level</th>
+                                    <th>What it does</th>
+                                    <th>Purpose</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Psychedelic</td>
+                                    <td>Continuously changes the background through randomized colors.</td>
+                                    <td>Introduces visual interference without greatly changing the mechanics.</td>
+                                </tr>
+                                <tr>
+                                    <td>Confusion 1</td>
+                                    <td>Standing on a colored platform changes the background to the same color.</td>
+                                    <td>Begins making foreground and background difficult to separate.</td>
+                                </tr>
+                                <tr>
+                                    <td>Confusion 2</td>
+                                    <td>Uses four colors.</td>
+                                    <td>Reduces the visual distinctions available to the player.</td>
+                                </tr>
+                                <tr>
+                                    <td>Confusion 3</td>
+                                    <td>Uses three colors.</td>
+                                    <td>Further reduces foreground/background separation.</td>
+                                </tr>
+                                <tr>
+                                    <td>Confusion 4</td>
+                                    <td>Uses two colors.</td>
+                                    <td>Makes the visual ambiguity stronger.</td>
+                                </tr>
+                                <tr>
+                                    <td>Confusion 5</td>
+                                    <td>Keeps the two-color setup and adds immediate failure for falling.</td>
+                                    <td>Adds mechanical punishment to the visual confusion.</td>
+                                </tr>
+                                <tr>
+                                    <td>Flashbacks</td>
+                                    <td>
+                                        Loads imagery from the previous Homework zone, including
+                                        graph-paper, boss, and wave elements.
+                                    </td>
+                                    <td>Makes the supposed mental flashbacks literal callbacks to earlier gameplay.</td>
+                                </tr>
+                                <tr>
+                                    <td>Checkers</td>
+                                    <td>Uses a high-contrast checkerboard environment.</td>
+                                    <td>Interferes with spatial perception through pattern rather than color alone.</td>
+                                </tr>
+                                <tr>
+                                    <td>Day Dreams</td>
+                                    <td>
+                                        Generates two different platform maps and swaps between them
+                                        every five seconds while also manipulating color.
+                                    </td>
+                                    <td>Makes the level geometry itself unreliable.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p>
+                            The zone progresses from <strong>visual noise → foreground/background
+                            confusion → memories of earlier gameplay → actual instability of the
+                            level geometry.</strong>
+                        </p>
+
+
+                        <h4>Time Trials</h4>
+
+                        <p>
+                            The five stages are mechanically very similar, but increase sharply in
+                            scale: <strong>200 → 400 → 800 → 1600 → 2000 floors</strong>, all with
+                            a target time of <strong>2:56</strong>.
+                        </p>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Level</th>
+                                    <th>Distance</th>
+                                    <th>What changes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>200 Floor Sprint</td>
+                                    <td>200 floors</td>
+                                    <td>Introduces the Time Trials rule set.</td>
+                                </tr>
+                                <tr>
+                                    <td>400 Floor Sprint</td>
+                                    <td>400 floors</td>
+                                    <td>Same rules, twice the distance.</td>
+                                </tr>
+                                <tr>
+                                    <td>800 Floor Sprint</td>
+                                    <td>800 floors</td>
+                                    <td>Same rules over a longer run.</td>
+                                </tr>
+                                <tr>
+                                    <td>1600 Floor Sprint</td>
+                                    <td>1600 floors</td>
+                                    <td>Turns the mechanic into an endurance challenge.</td>
+                                </tr>
+                                <tr>
+                                    <td>2000 Floor Sprint</td>
+                                    <td>2000 floors</td>
+                                    <td>The longest version of the same challenge.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p>
+                            Direct left/right control is disabled. Different platforms alter
+                            horizontal velocity, direction, or jump power, and normal horizontal
+                            movement is restored after leaving them. In other words,
+                            <strong>the platforms substitute for the steering controls.</strong>
+                            The player navigates by choosing which movement behavior the next
+                            platform should provide.
+                        </p>
+
+                        <p>
+                            The zone is therefore about <strong>route planning under indirect
+                            control</strong>, followed by escalating endurance. It also shows how
+                            the scripting system could make the same character controller behave
+                            very differently without changing the Java engine.
+                        </p>
+
+                        <p>
+                            <small>
+                                The text for the 800 Floor Sprint accidentally calls it a
+                                "600 floor sprint"; the level data itself specifies 800.
+                            </small>
+                        </p>
+
+
+                        <h4>Giagantor</h4>
+
+                        <p>
+                            Giagantor has the strongest connection between story and mechanics.
+                            Mad Kaz has been turned into a giant, so the levels revolve around
+                            <strong>his weight disturbing the environment.</strong>
+                        </p>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Level</th>
+                                    <th>What it does</th>
+                                    <th>Purpose</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Tippy Toe 1</td>
+                                    <td>
+                                        Descend 500 floors. Landing too hard causes failure.
+                                        Landing velocity also drives screen shake and phone vibration.
+                                    </td>
+                                    <td>Turns the player's own mass into the main hazard.</td>
+                                </tr>
+                                <tr>
+                                    <td>Tippy Toe 2</td>
+                                    <td>Same rule, but the platforms are farther apart.</td>
+                                    <td>Makes soft landings harder to achieve.</td>
+                                </tr>
+                                <tr>
+                                    <td>Tippy Toe 3</td>
+                                    <td>Platforms are farther apart again.</td>
+                                    <td>Further increases unavoidable falling speed.</td>
+                                </tr>
+                                <tr>
+                                    <td>Inner Tippy Toe 1</td>
+                                    <td>
+                                        Platforms are obscured behind a building facade. The player
+                                        is told to use the shaking caused by landing to locate hidden blocks.
+                                    </td>
+                                    <td>Changes screen shake from feedback into information.</td>
+                                </tr>
+                                <tr>
+                                    <td>Inner Tippy Toe 2</td>
+                                    <td>Uses the same idea with sparser platforms.</td>
+                                    <td>Makes the hidden-platform problem harder.</td>
+                                </tr>
+                                <tr>
+                                    <td>Climb to Space 1</td>
+                                    <td>
+                                        A 900-floor ascent while authorities fire bright beams from
+                                        the sides. Screen shake warns that the beams are about to
+                                        converge. Four hits are allowed.
+                                    </td>
+                                    <td>Changes shaking from information about the player's impact into warning of an outside threat.</td>
+                                </tr>
+                                <tr>
+                                    <td>Climb to Space 2</td>
+                                    <td>Beams converge faster and only three hits are allowed.</td>
+                                    <td>Increases pressure while keeping the same mechanic.</td>
+                                </tr>
+                                <tr>
+                                    <td>Climb to Space 3</td>
+                                    <td>Beams converge much faster and a single hit ends the level.</td>
+                                    <td>The strictest version of the beam-avoidance mechanic.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p>
+                            "Don't attract attention" is represented through actual
+                            <strong>impact velocity</strong>, rather than through a separate stealth
+                            meter. Later, the same environmental effect is reused in different ways.
+                        </p>
+
+                        <p>
+                            The zone has a clear progression:
+                            <strong>your giant size makes your own movement dangerous → screen
+                            shaking becomes useful information → the same shaking becomes a warning
+                            of an external attack.</strong>
+                        </p>
+
+                        <p>
+                            The beam attack is also implemented partly by moving the permissible
+                            side boundaries inward, another example of the presentation being built
+                            through changes to the underlying game rules rather than through a
+                            separate enemy system.
+                        </p>
+
+
+                        <h4>Author Zone</h4>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Level</th>
+                                    <th>What it does</th>
+                                    <th>Purpose</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Authors and Friends</td>
+                                    <td>
+                                        Cycles through photographs of Kasra, Mykola, Xonic,
+                                        Farzad/Farshad, James "Ghaleon," and Ed "Eduardo,"
+                                        changing the image every 15 seconds.
+                                    </td>
+                                    <td>Implements the game's credits as an ordinary scripted level.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p>
+                            There is also a very 2007-J2ME technical detail here: after switching
+                            photographs, the script explicitly invokes garbage collection,
+                            presumably because keeping several full-screen images around on the
+                            target heap was undesirable.
+                        </p>
+
+                        <p>
+                            The entire credits sequence is therefore another example of the VM's
+                            flexibility: rather than creating a dedicated credits subsystem, the
+                            game implements the credits using the same programmable level system as
+                            everything else.
+                        </p>
+                      </blockquote>
                     </details>
 
-                    Around that time, I was using a spreadsheet to keep track of my checking and savings balance. The records show that I started the competition with around $7,500 in my name. By the time I submitted Mad Kaz in late July, I had around $1,500. By September, it went down to $1,100. October, it went further down to $600. In early August, shortly after the submission was in, I began looking for work again. I sent applications to whatever places were looking to hire, but I was also trying to leverage my work on Mad Kaz to get hired as a game studio. I had decided to open-source the game's code and assets so potential interviewers could review what I did and hopefully come to the conclusion that I'm skilled enough.
+                    <h2>Submission: The anticlimax</h2>
 
-                    I had submitted applications to Radical Entertainment, Threewave, Blue Castle Games, and a mobile game developer named IUGO. None of these studios are around anymore. The application to Radical Entertainment went nowhere. Threewave had me fill out a questionnaire and did scheduled a phone screen afterwards, but ultimately it didn't move forward either. I knew Threewave from their work on the Threewave CTF mod for Quake 1, which I regularly played growing up. Blue Castle Games had me come in for an interview. It didn't go smooth. They were hiring for a junior network programmer position for Dead Rising 2. I might have felt like I would be a shoe-in for this position because network programming for twitchy games was something I often thought about - how to handle unreliability and extrapolate movement to hide latency, mtu, dropped packets, etc.., mostly because of the stories I heard about QuakeWorld's networking code. It was the first time I was asked to sign an NDA prior to an interview, and it was also the first time I was subjected to the typical software engineering interview hazing rituals that were popularized by Google around that time. One of the interviewers had went through Mad Kaz's code and decided to give me a shit test by making a snide comment, "so this virtual machine of yours, all it is is a for loop?", to which I didn't give him the reaction that he wanted. They also decided to give me a brainteaser riddle at the end, the 3 prisoners hat riddle, which I didn't even attempt to answer. I recall during one part of the interview where I was whiteboarding and talking out a problem they gave me about how to model zombie movements, and one of them jumped in with a question to which I, without thinking, blurted out "wait, shut up", as a new thought entered my head. Needless to say, the interview was a disaster. IUGO also had me come in for an interview. The owner and everyone were very kind to me. I remember one of my old college classmates was working there as well. They had me sit down and fill out a stack of papers full of gaming coding and design questions. I recall that, when I was done, the interviewer just threw it to the side, saying something to the effect of "i don't need to look at it, i know you know your stuff". At the end of the interview, I think they gave me an offer or if they didn't they were on the verge of giving me an offer. I ended up walking away. I don't recall exactly why. It might have been because the interview at Blue Castle Games was coming up the next day, or I may have been feeling too full of myself and gunning for a more senior role, or it may have been because the office felt uncomfortably bright. It was a very sunny that day and the I recall the IUGO offices were letting a lot of that sun in. I had spent most of my time building Mad Kaz in a blacked out room.
+                    <p>I submitted Mad Kaz into the competition on July 29th, 2007, about 2 weeks before the August 10th deadline. A confirmation email arrived the next day, and that was it. I never heard back from the people running the contest about their thoughts on Mad Kaz or how it ranked against other games in the competition. I showed the game to a couple of my real life friends and they thought it was alright. I had an online friend load it up on his phone and give it a try, he thought it was alright. I posted some screenshots in an IRC chatroom, to which someone replied saying the graphics were bad. I emailed my father informing him of what I was up after 4 months unemployed, to which he replied with the common encouraging words that parents are known to say to their children. And that was it.</p>
 
-                    In the end, I needed money and so I accepted a job at a company that made software to sync calendars between Google calendar and Outlook, making less than that job that I resigned from.
-                    
-                    When I ask AI to do an in-depth analysis of Mad Kaz and compare against the closest known contemporaries of its time, here's what it says:
-                    
-                    <blockquote>
-                      As executable software, its value is low. The original services are not demonstrably operational today, the MIDP/JSR-82 deployment environment is obsolete, and the supplied source/build infrastructure requires reconstruction. The old project endpoints were not accessible through my current web checks.
+                    <blockquote><strong>Father's reaction</strong>
+                      <p>
+                        <strong>From:</strong> MOE FAGHIHI &lt;mfaghihi@shaw.ca&gt;<br>
+                        <strong>To:</strong> Kaz F &lt;kazwizz84@hotmail.com&gt;<br>
+                        <strong>Date:</strong> Tue, 31 Jul 2007 19:12:07 PDT<br>
+                        <strong>Subject:</strong> Re:
+                      </p>
 
-                      As technical prior art, its value is much higher. It documents a complete pre-smartphone attempt at programmable mobile UGC before EA was publicly marketing phone-created/shared levels in Boom Blox in 2008. That does not prove influence, but it is historically significant chronology.
+                      <p>Hi Kasra,</p>
 
-                      As an educational artifact, it remains unusually rich: constrained bytecode-interpreter design, compiler/runtime agreement, custom packfiles, capability narrowing, J2ME rendering, RMS persistence, HTTP retrieval and Bluetooth protocols all exist together in source.
+                      <p>
+                        I saw your game, You did a fantastic work, I am very proud of you. With<br>
+                        all hope and good luck to you you are the best, anyway you are a<br>
+                        winner to me.
+                      </p>
 
-                      Its most useful lesson today may be the contrast inside the same artifact: very strong systems ambition and product integration can coexist with weak sandbox resource governance, weak reproducibility, poor author tooling and almost nonexistent verification evidence.
+                      <p>Cheers!!!!</p>
 
-                      The project was therefore not “mediocre.” It was exceptionally ambitious and probably highly original at its actual product layer, surprisingly complete, technically sophisticated, and simultaneously far too brittle to deserve a strong production-engineering rating.
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;Kambiz</p>
+
+                      <p>
+                        ----- Original Message -----<br>
+                        From: Kaz F &lt;kazwizz84@hotmail.com&gt;<br>
+                        Date: Tuesday, July 31, 2007 4:49 pm<br>
+                        Subject:<br>
+                        To: mfaghihi@shaw.ca
+                      </p>
+
+                      <p>
+                        &gt; Hey Kambiz,<br>
+                        &gt;&nbsp;&nbsp;<br>
+                        &gt; Here's what I've been working on for the past 3 or so months. I<br>
+                        &gt; entered it into the Motorola competition a couple of days ago. It<br>
+                        &gt; was designed to run specific Motorola phones and some other<br>
+                        &gt; phones (Motorola Vxxx, Motorola SLVR, Motorola K1, Samsung SGH-<br>
+                        &gt; D520, etc.. etc..), so you can't play it on your phone.<br>
+                        &gt;&nbsp;&nbsp;<br>
+                        &gt; <a href="http://www.codeyielddevelopment.com/madkaz.php">http://www.codeyielddevelopment.com/madkaz.php</a><br>
+                      </p>
                     </blockquote>
                     
-                    Nothing in Mad Kaz was an original idea, but the collection of all of it's constituent pieces together made for something that no one had attempted before on mobile phones. It was the collective, blended, result of my experiences around gaming and coding, starting from my childhood, to my time at college, all the way up to the job working on mobile phone apps that I ultimately resigned from to enter the competition.
-                    
-                    The idea for a virtual machine came from the original Quake game as well as Java. I had grown up playing Quake, a game I was never very good at but always loved because of how QuakeC and the accompanying virtual machine enabled a near endless amount of mods and maps to be produced (Threewave CTF, Future vs Fantasy, Rocket Arena, AirQuake, Team Fortress, Quake Rally, and Cujo were some of the ones I remember). Similarly, in highschool we had programming classes where we learned how to code in Java 1.2, and somewhere along the line I eventually became aware that Java's write-once run-anywhere claim was possible because there was virtual machine and interpreter sitting in between.
+                    <p>Looking back, I wish there was something more to make it more triumphant or satisifying in the end. I recall feeling dejected immediately after sending in the submission. Maybe it was because my entry wasn't as polished as what I was hoping for, or maybe it was from putting myself through 4 months of self-imposed abuse and verging on being broke.</p>
 
-                    The idea for bluetooth transfers and Internet downloads of new levels, which was possible because the virtual machine, was also heavily inspired by Quake and the myriad of later games that had similar technology. My earliest recollection was QuakeWorld, where a client would download a map from the server if it didn't already exist. The only thing that was different with Mad Kaz's implementation was that it was on a phone, and phones of this era were severely resource constrained.
+                    <h2>Aftermath: Back to reality</h2>
 
-                    The image manipulation package had modules for resizing, rotation, pixel post-processing, and editing PNGs. The ideas behind those modules came from a few different places. I likely was introduced to the concept of non-trivial resizing and rotation back in college. That same classmate who introduced me to NS-SHAFT and NS-TOWER had decided one day to kill time by writing code to resize an image using bilinear scaling. I don't recall if we knew that it was called bilinear scaling at the time, he was bright and it's entirely possible that he reasoned about the entire process on his own, but it was something that stuck with me as a core memory and likely was the seed for the image rotation and resizing in Mad Kaz. Those operations required rational numbers but many phones at the time, including the Motorola KRZR, either didn't support floating point or did support it but it wasn't fast enough for heavy usage (e.g., emulated through software). Somewhere along the way, either at my employer or earlier, I had learned about fixed point math and lookup tables. I recall having thought up the idea of using fixed point math to help implement a progress bar in one of airG's apps. Mad Kaz's image manipulation used basic fixed point math arithmetic and built-out lookup tables for trig functions such as sine to do the math for resizing and rotation.
+                    <p>Around that time, I was using a spreadsheet to keep track of my checking and savings balance. Money was starting to run low. The records show that I started the competition with around $7,500 in my name. By the time I submitted Mad Kaz in late July, I had around $1,500. By September, it went down to $1,100. October, it went further down to $600.</p>
                     
-                    The PNG editing module was from an idea I overheard one while working at airG. I recall overhearing more senior engineers discuss how someone they knew wrote code to go in and edit a PNG file's palette at runtime. I ended up going to a popular website known for documenting file formats at that the time (wotsit.org) and pulled out the file format for PNGs, then spent a few days at work playing around with it trying to come up with interesting things to do with it. I recall implementing a night-vision style effect where map tiles were green-scaled but sprites were fully bright green. I took that same idea of runtime palette manipulation and pushed it into Mad Kaz's engine. Space on the device was limited so it wasn't like you could have tens of different variants of the same tile and sprite sets, but you could use this to manipulate the source image's content and load it up multiple times.
+                    <p>In early August, shortly after the submission was in, I began looking for work again. I sent applications to whatever places were looking to hire, but I was also trying to leverage my work on Mad Kaz to get hired as a game studio. I had decided to open-source the game's code and assets so potential interviewers could review what I did and hopefully come to the conclusion that I'm skilled enough.</p>
 
-                    The list goes on and on. It was all prior art that, at some point or another, I had experienced and internalized in some way.
+                    <p>I had submitted applications to Radical Entertainment, Threewave, Blue Castle Games, and a mobile game developer named IUGO. None of these studios are around anymore. The application to Radical Entertainment went nowhere. Threewave had me fill out a questionnaire and did scheduled a phone screen afterwards, but ultimately it didn't move forward either. I knew Threewave from their work on the Threewave CTF mod for Quake 1, which I regularly played growing up.</p>
                     
-                    Looking back, this story's archetype wasn't uncommon for the mid-to-late 2000s era of computing. A young individual, inexperienced but full of spirit / full of themselves, and having grown up with video games of the 1990s and early 2000s, saves up just enough money to leave whatever it is they're doing to gamble on making their own indie game. Their hope is that what ends up coming out is both worthwhile and accepted by the market, similar to Commander Keen, but more often than not that ends up not being the case and what they're left with is a set of humbling experience. Dreaming up an idea only to have to continually water it down at each stage, hoping people you're relying on will be able follow through in time, having to explain to loved ones why you willingly left behind gainful employment, watching what little money you have evaporate, and ultimately starting with hope and ending with the bittersweet feeling of completing what you set out to do only to crawl back to the grind. In the end, I'm grateful that I actually managed to produce something to submit for the competition, even if it was a shell of what I originally planned for.
+                    <p>Blue Castle Games had me come in for an interview. It didn't go smooth. They were hiring for a junior network programmer position for Dead Rising 2. I might have felt like I would be a shoe-in for this position because network programming for twitchy games was something I often thought about - how to handle unreliability and extrapolate movement to hide latency, mtu, dropped packets, etc.., mostly because of the stories I heard about QuakeWorld's networking code. It was the first time I was asked to sign an NDA prior to an interview, and it was also the first time I was subjected to the typical software engineering interview hazing rituals that were popularized by Google around that time. One of the interviewers had went through Mad Kaz's code and decided to give me a shit test by making a snide comment, "so this virtual machine of yours, all it is is a for loop?", to which I didn't give him the reaction that he wanted. They also decided to give me a brainteaser riddle at the end, the 3 prisoners hat riddle, which I didn't even attempt to answer. I recall during one part of the interview where I was whiteboarding and talking out a problem they gave me about how to model zombie movements, and one of them jumped in with a question to which I, without thinking, blurted out "wait, shut up", as a new thought entered my head. Needless to say, the interview was a disaster.</p>
+                    
+                    <p>IUGO also had me come in for an interview. The owner and employees were very kind to me. I remember one of my old college classmates was working there as well. They had me sit down and fill out a stack of papers full of gaming coding and design questions. I recall that, when I was done, the interviewer just threw it to the side, saying something to the effect of "i don't need to look at it, i know you know your stuff". At the end of the interview, I think they gave me an offer or if they didn't they were on the verge of giving me an offer. I ended up walking away. I don't recall exactly why. It might have been because the interview at Blue Castle Games was coming up the next day, or I may have been feeling too full of myself and gunning for a more senior role, or it may have been because the office felt uncomfortably bright. It was a very sunny that day and the I recall the IUGO offices were letting a lot of that sun in. I had spent most of my time building Mad Kaz in a blacked out room.</p>
+
+                    <p>In the end, I needed money and so I accepted a job at a company that made software to sync calendars between Google calendar and Outlook. The salary was lower than that of the original job that I had resigned from.</p>
+                    
+                    <h2>The technology: How it all came to be</h2>
+
+                    <p>When I ask AI to do an in-depth analysis of Mad Kaz and compare against the closest known contemporaries of its time, here's what it says:</p>
+                    
+                    <blockquote>
+                      <p>As executable software, its value is low. The original services are not demonstrably operational today, the MIDP/JSR-82 deployment environment is obsolete, and the supplied source/build infrastructure requires reconstruction. The old project endpoints were not accessible through my current web checks.</p>
+
+                      <p>As technical prior art, its value is much higher. It documents a complete pre-smartphone attempt at programmable mobile UGC before EA was publicly marketing phone-created/shared levels in Boom Blox in 2008. That does not prove influence, but it is historically significant chronology.</p>
+
+                      <p>As an educational artifact, it remains unusually rich: constrained bytecode-interpreter design, compiler/runtime agreement, custom packfiles, capability narrowing, J2ME rendering, RMS persistence, HTTP retrieval and Bluetooth protocols all exist together in source.</p>
+
+                      <p>Its most useful lesson today may be the contrast inside the same artifact: very strong systems ambition and product integration can coexist with weak sandbox resource governance, weak reproducibility, poor author tooling and almost nonexistent verification evidence. The project was therefore not “mediocre.” It was exceptionally ambitious and probably highly original at its actual product layer, surprisingly complete, technically sophisticated, and simultaneously far too brittle to deserve a strong production-engineering rating.</p>
+                    </blockquote>
+                    
+                    <p>Nothing in Mad Kaz was an original idea, but the collection of all of it's constituent pieces together made for something that no one had attempted before on mobile phones. It was the collective, blended, result of my experiences around gaming and coding, starting from my childhood, to my time at college, all the way up to the job working on mobile phone apps that I ultimately resigned from to enter the competition.</p>
+                    
+                    <p>The idea for a virtual machine came from the original Quake game as well as Java. I had grown up playing Quake, a game I was never very good at but always loved because of how QuakeC and the accompanying virtual machine enabled a near endless amount of mods and maps to be produced (Threewave CTF, Future vs Fantasy, Rocket Arena, AirQuake, Team Fortress, Quake Rally, and Cujo were some of the ones I remember). Similarly, in highschool we had programming classes where we learned how to code in Java 1.2, and somewhere along the line I eventually became aware that Java's write-once run-anywhere claim was possible because there was virtual machine and interpreter sitting in between.</p>
+
+                    <p>The idea for bluetooth transfers and Internet downloads of new levels, which was possible because the virtual machine, was also heavily inspired by Quake and the myriad of later games that had similar technology. My earliest recollection was QuakeWorld, where a client would download a map from the server if it didn't already exist. The only thing that was different with Mad Kaz's implementation was that it was on a phone, and phones of this era were severely resource constrained.</p>
+
+                    <p>The image manipulation package had modules for resizing, rotation, pixel post-processing, and editing PNGs. The ideas behind those modules came from a few different places. I likely was introduced to the concept of non-trivial resizing and rotation back in college. That same classmate who introduced me to NS-SHAFT and NS-TOWER had decided one day to kill time by writing code to resize an image using bilinear scaling. I don't recall if we knew that it was called bilinear scaling at the time, he was bright and it's entirely possible that he reasoned about the entire process on his own, but it was something that stuck with me as a core memory and likely was the seed for the image rotation and resizing in Mad Kaz.</p>
+                    
+                    <p>Those image manipulation operations required rational numbers but many phones at the time, including the Motorola KRZR, either didn't support floating point or did support it but it wasn't fast enough for heavy usage (e.g., emulated through software). Somewhere along the way, either at my employer or earlier, I had learned about fixed point math and lookup tables. I recall having thought up the idea of using fixed point math to help implement a progress bar in one of airG's apps. Mad Kaz's image manipulation used basic fixed point math arithmetic and built-out lookup tables for trig functions such as sine to do the math for resizing and rotation.</p>
+                    
+                    <p>The PNG editing module was from an idea I overheard one while working at airG. I recall overhearing more senior engineers discuss how someone they knew wrote code to go in and edit a PNG file's palette at runtime. I ended up going to a popular website known for documenting file formats at that the time (wotsit.org) and pulled out the file format for PNGs, then spent a few days at work playing around with it trying to come up with interesting things to do with it. I recall implementing a night-vision style effect where map tiles were green-scaled but sprites were fully bright green. I took that same idea of runtime palette manipulation and pushed it into Mad Kaz's engine. Space on the device was limited so it wasn't like you could have tens of different variants of the same tile and sprite sets, but you could use this to manipulate the source image's content and load it up multiple times.</p>
+
+                    <p>The list goes on and on. It was all prior art that, at some point or another, I had experienced and internalized in some way.</p>
+
+                    <blockquote><strong>Full coding timeline analysis</strong>
+
+                      | Revisions | Date range | What changed |
+                      |---|---|---|
+                      | 0 | Apr 3 | Empty repository. |
+                      | 1–17 | Apr 11–14 | Built Hershey font conversion and rendering, then added word wrapping, resizing, and Huffman compression. |
+                      | 18–39 | Apr 21–May 3 | Added an assembler and VM instruction set, generalized the VM, and built J2ME benchmarks and runtime support. |
+                      | 40–56 | May 4–7 | Added WAV mixing and image/PNG tools, palette replacement, graphics management, and tiling. |
+                      | 57–83 | May 8–12 | Added game canvas, sprites, scenes, music, logo animation, and text handling; adjusted loading and key-repeat behavior for phones. |
+                      | 84–124 | May 13–31 | Added menus, windows, dialogs, persistent storage, and image rotation; refined text layout and fixed device/input bugs. |
+                      | 125–131 | Jun 2–4 | Added Micro3D-related tools and scrolling/physics code; comments note unfinished gravity and offset behavior. |
+                      | 132–150 | Jun 4–14 | Added the first large Mad Kaz implementation, including its VM, gameplay, collisions, and image/resource handling. Later changes renamed the play canvas and optimized performance; one replaces many `StringBuffer` UI values with `char[]`. |
+                      | 151–168 | Jun 14–19 | Expanded game-specific VM operations for state, input, effects, and timers. Added custom-map UI and began network access. |
+                      | 169–193 | Jun 20–28 | Added network map downloads, local storage and browsing, and tools to package downloadable levels from XML. Extended gameplay controls, sprites, and graphics parsing. |
+                      | 194–203 | Jul 1–3 | Prototyped Bluetooth multiplayer and menus, then added a credits sequence and gameplay/timing fixes. |
+                      | 204–213 | Jul 5–10 | Added an automated-scene engine and tests, then connected scene behavior to the game and SDK. |
+                      | 214–227 | Jul 12–21 | Added configuration storage, level selection/unlocks, and substantial zone and level content. |
+                      | 228–246 | Jul 22–27 | Removed the unplayable multiplayer path, added peer-to-peer custom-map transfer, and optimized level packaging with an indexed combiner. Reorganized zone 6 as zone 5. |
+                      | 247–268 | Jul 27–28 | Revised setup, credits, copyright/license text, and packaging; removed map compression; reorganized into trunk/tags and created MOTODEV/alpha snapshots. Added a downloadable “Space Quest” map. |
+                    
+                    </blockquote>
+
+                    <h2>Looking back</h2>
+                    
+                    <p>Looking back, this story's archetype wasn't uncommon for the mid-to-late 2000s era of computing. A young individual, inexperienced but full of spirit / full of themselves, and having grown up with video games of the 1990s and early 2000s, saves up just enough money to leave whatever it is they're doing to gamble on making their own indie game. Their hope is that what ends up coming out is both worthwhile and accepted by the market, similar to Commander Keen, but more often than not that ends up not being the case and what they're left with is a set of humbling experience. Dreaming up an idea only to have to continually water it down at each stage, hoping people you're relying on will be able follow through in time, having to explain to loved ones why you willingly left behind gainful employment, watching what little money you have evaporate, and ultimately starting with hope and ending with the bittersweet feeling of completing what you set out to do only to crawl back to the grind. In the end, I'm grateful that I actually managed to produce something to submit for the competition, even if it was a shell of what I originally planned for.</p>
                     
 
 
