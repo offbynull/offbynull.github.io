@@ -5,7 +5,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <title>offbynull</title>
-        <link rel="stylesheet" href="../../index.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2.1.1/out/dark.css">
         <link rel="stylesheet" href="../post.css">
         <script src="../post.js" defer></script>  <!-- Updates title tag with posts title -->
     </head>
@@ -26,8 +26,10 @@
 
                     <p>My entry to the competition was Mad Kaz, a vertical platformer for the KRZR that was backed by a custom game engine I had built specifically for the competition. Mad Kaz was the culmination of my experiences around code and games, from early childhood when my father came home with our first family PC all the way up to resigning from my job. It's been nearly 2 decades and so my memories around Mad Kaz and the competition are fuzzy at best, but thankfully I still have the old source control repositories for the game as well as my old Thunderbird email profile which help fill in the gaps from that time.</p>
 
+                    <p>Original entry description:</p>
+
                     <blockquote>
-                        <p>Original entry description: Mad Kaz is a vertical platformer where you lead the title character through a series of unique levels, each crazier than the last. Mad Kaz features six zones with between four to ten levels per zone, and eight different game modes. Built on top of a unique engine, Mad Kaz allows users to create their own levels with customized game play, cinematics, music, and style. Levels can be uploaded onto phones via either Bluetooth or the Internet. The source code packages for the engine, levels, and SDK can be found on the CodeYield Development site.</p>
+                        Mad Kaz is a vertical platformer where you lead the title character through a series of unique levels, each crazier than the last. Mad Kaz features six zones with between four to ten levels per zone, and eight different game modes. Built on top of a unique engine, Mad Kaz allows users to create their own levels with customized game play, cinematics, music, and style. Levels can be uploaded onto phones via either Bluetooth or the Internet. The source code packages for the engine, levels, and SDK can be found on the CodeYield Development site.</p>
 
                         <img src="mk_0.png" />
                         <img src="mk_1.png" />
@@ -70,9 +72,13 @@
 
                     <h2>Cutting scope: Choosing Mad Kaz</h2>
 
-                    <p>Sometime between early to mid-May, I decided that the game I wanted to implement would be a re-imagining of NS-SHAFT and NS-TOWER blended into one. NS-SHAFT and NS-TOWER were introduced to me by a college classmate as a way of killing time while we were held up in the computer labs. The twist with this re-imagining was that it'd be a narrative experience with levels, where each level would be unique in terms of graphics, audio, and gameplay mechanics. I came up with a set of levels that I wanted the game to have. The title character, Mad Kaz (that's me, I'm Kaz 🙂), would climb up from inside the Earth and eventually out into space, before encountering a boss battle and falling back down to Earth. I named it Mad Kaz: The Beginning.</p>
+                    <p>Sometime between early to mid-May, I decided that the game I wanted to implement would be a re-imagining of NS-SHAFT and NS-TOWER blended into one. NS-SHAFT and NS-TOWER were introduced to me by a college classmate as a way of killing time while we were held up in the computer labs. The twist with this re-imagining was that it'd be a narrative experience with levels, where each level would be unique in terms of graphics, audio, and gameplay mechanics.</p>
+                    
+                    <p>I came up with a set of levels that I wanted the game to have. The title character, Mad Kaz (that's me, I'm Kaz 🙂), would climb up from inside the Earth and eventually out into space, before encountering a boss battle and falling back down to Earth. I named it Mad Kaz: The Beginning.</p>
 
-                    <blockquote><strong>Spreadsheet detailing the original levels planned for Mad Kaz</strong>
+                    <p>Original document detailing levels:</p>
+
+                    <blockquote>
                       <table>
                         <thead>
                           <tr>
@@ -176,7 +182,9 @@
                     
                     <p>In old emails from Mykola, I could see that I was cracking under the pressure. I ended up deciding to scrap the original level design and instead restructure into zones. Each zone would have multiple levels that re-used assets and had similar game logic, similar to original Sonic The Hedgehog games.</p>
 
-                    <blockquote><strong>Mykola responding to my crashout</strong>
+                    Mykola's response to my crashout:
+
+                    <blockquote>
                       <p>
                         <strong>From:</strong> Mykola &lt;mykola31@gmail.com&gt;<br>
                         <strong>To:</strong> Kasra F. &lt;kasraf@codeyielddevelopment.com&gt;<br>
@@ -237,24 +245,9 @@
                       </figure>
                     </blockquote>
 
-                    <p>There were 6 zones in total. Zone 1, Intro Zone, acted as a tutorial. It got the player familiar with gameplay mechanics. Zone 6, Author Zone, was a single level that acted as a credit sequence. It displayed the names and photos of friends and those who worked on the game. In between were Homework Zone, Hippie Zone, Time Trials Zone, and Giagantor Zone. Each zone attempted to have a unique twist to it.</p>
+                    <p>There were 6 zones in total: Intro, Homework, Hippie, Time Trials, Giagantor, and Author. Zone 1, Intro Zone, acted as a tutorial. It got the player familiar with gameplay mechanics. Zone 6, Author Zone, was a single level that acted as a credit sequence. It displayed the names and photos of friends and those who worked on the game. In between were Homework Zone, Hippie Zone, Time Trials Zone, and Giagantor Zone. Each zone attempted to have a unique twist to it.</p>
 
-                    <blockquote>
-                      <ol>
-                        <li><strong>Intro Zone</strong>: Story-wise, this is essentially a training area rather than a narrative chapter. Mad Kaz is simply learning the basic rules of movement. Mechanically, it starts with basic falling and climbing, then removes steering and airborne charging, and finally adds camera/failure pressure.</li>
-                        <li><strong>Homework Zone</strong>: Mad Kaz is sucked into a “homework dimension” while doing after-school homework and has to work his way through it. Mechanically, the zone focuses on platforms with different physics, then turns those behaviors into timed descent challenges and finally a boss fight where falling velocity becomes attack strength.</li>
-                        <li><strong>Hippie Zone</strong>: After escaping Homework, Mad Kaz returns to Earth and finds it taken over by hippies who attack him with hallucinations and distorted perception. The zone starts with color changes and visual confusion, then moves into flashbacks, checkerboard distortion, and eventually unstable level geometry.</li>
-                        <li><strong>Time Trials Zone</strong>: The story framing is minimal: Mad Kaz must complete a series of timed challenges to “win the gold.” Mechanically, direct steering is restricted, so the player has to use different platform behaviors to control movement. Each level keeps the same basic rules while increasing from 200 to 2000 floors.</li>
-                        <li><strong>Giagantor Zone</strong>: After the Time Trials, hippies abduct Mad Kaz, force-feed him “hippie juice,” and turn him into a giant monster. He has to avoid capture while his own size causes problems. Hard landings become dangerous, screen shake and vibration become gameplay feedback, hidden platforms turn that feedback into information, and later the same shaking warns of beam attacks as he tries to escape into space.</li>
-                        <li><strong>Author Zone</strong>: This is effectively the epilogue/credits. There is no real story beyond showing photos of people who helped make the game. It is implemented as a normal scripted level, which also serves as another demonstration of the level system's flexibility.</li>
-                      </ol>
-                    </blockquote>
-
-                    <p>Chronologically, these zones were built out in a different order than they appear in the game. July 13-14, zone 1, Intro zone, was built. July 16-19, zone 2, Homework Zone, was built. July 19-23, zone 6, Author Zone, was built. The remaining zones were built between July 21-26, with bugfixes and tweaks around July 27-28.</p>
-                      
-                    <p>What likely had happened was that, Homework Zone, the one chronologically sandwiched between Intro Zone and Author Zone, was the zone closest to the original story. It had a cityscape, climbing up, racing down attempting to outrun a bomb, and there was even a boss fight. The remaining zones 3-5 were likely added afterwards as disjointed filler content, because Homework Zone by itself basically wasn't anywhere near good enough to be the entire game. While the zone had a rustic, scrappy charm to it, it didn't look or play great. I had built the zone because I wanted to get a zone in where I didn't have to go back and forth with my pixel artist, Mykola, and so I had sat down and fleshed out some poorly drawn schoolbook-doodle type graphics in Microsoft Paint. Graph paper, stick men, pencil drawings, etc...</p>
-
-                    <details><summary>Level-by-level breakdown of each zone</summary>
+                    <details><summary>AI analysis and breakdown of zones</summary>
                       <blockquote>
 
                         <p>
@@ -668,6 +661,10 @@
                         </p>
                       </blockquote>
                     </details>
+
+                    <p>Chronologically, these zones were built out in a different order than they appear in the game. July 13-14, zone 1, Intro zone, was built. July 16-19, zone 2, Homework Zone, was built. July 19-23, zone 6, Author Zone, was built. The remaining zones were built between July 21-26, with bugfixes and tweaks around July 27-28.</p>
+                      
+                    <p>What likely had happened was that, Homework Zone, the one chronologically sandwiched between Intro Zone and Author Zone, was the zone closest to the original story. It had a cityscape, climbing up, racing down attempting to outrun a bomb, and there was even a boss fight. The remaining zones 3-5 were likely added afterwards as disjointed filler content, because Homework Zone by itself basically wasn't anywhere near good enough to be the entire game. While the zone had a rustic, scrappy charm to it, it didn't look or play great. I had built the zone because I wanted to get a zone in where I didn't have to go back and forth with my pixel artist, Mykola, and so I had sat down and fleshed out some poorly drawn schoolbook-doodle type graphics in Microsoft Paint. Graph paper, stick men, pencil drawings, etc...</p>
                     
                     <p>I was fleshing out these 6 zones up until the very end. The final touches to the zones were made around July 27th-28th, and the entire game was submitted into the competition on July 29th. There wasn't enough time to balance the gameplay. Even if there was, I don't think I had it in me to know what fair balancing would entail or feel like. And so, in the end, Mad Kaz wasn't so much a narrative experience that progressively took advantage of the engine's features as much as it was a tech demo for an engine that I had built in those 4 months. Those 4 months weren't enough time for me to build out both the engine and the game, and so the game ended up simply being unbalanced levels that tried to shove in as many game engine features as possible.</p>                     
 
@@ -675,7 +672,9 @@
 
                     <p>I submitted Mad Kaz into the competition on July 29th, 2007, about 2 weeks before the August 10th deadline. A confirmation email arrived the next day, and that was it. I never heard back from the people running the contest about their thoughts on Mad Kaz or how it ranked against other games in the competition. I showed the game to a couple of my real life friends and they thought it was alright. I had an online friend load it up on his phone and give it a try. He thought it was alright. I posted some screenshots in an IRC chatroom, to which someone replied saying the graphics were bad. I emailed my father informing him of what I was up to after 4 months unemployed, to which he replied with the common encouraging words that parents are known to say to their children. And that was it.</p>
 
-                    <blockquote><strong>Father's reaction</strong>
+                    Father's email response:
+
+                    <blockquote>
                       <p>
                         <strong>From:</strong> MOE FAGHIHI &lt;mfaghihi@shaw.ca&gt;<br>
                         <strong>To:</strong> Kaz F &lt;kazwizz84@hotmail.com&gt;<br>
