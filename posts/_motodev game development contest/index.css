@@ -1,4 +1,18 @@
 .thumbnail {
-    max-width: 128px;
+    max-height: 128px;
     height: auto;
+}
+
+figcaption {
+  font-size: 0.9em;
+  color: #9aa6b2;
+  font-style: italic;
+}
+
+figcaption:first-child {
+  margin-bottom: 0.75rem;
+}
+
+figcaption:last-child {
+  margin-top: 0.75rem;
 }
