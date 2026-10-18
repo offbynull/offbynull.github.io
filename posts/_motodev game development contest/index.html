@@ -47,16 +47,13 @@
                     
                     <p>The MOTODEV Game Developer Challenge opened to contestants on February 21, 2007, running until August 10, 2007. The origins of where I learned about the competition are lost. Chances are that it was through promotional material I encountered while on the job. My employer at the time, airG, developed a popular social networking app for a broad range of handsets and carriers. Employees often had access to the latest mobile devices, along with developer marketing material from handset manufacturers.</p>
                     
-                    <p>Mid-march, about two weeks before my employment at airG ended, I began work on the competition. Because I was still employed for those two weeks, I technically couldn't begin work on the entry itself. Instead, I focused on prep work. The competition's submission form required a company name, so one of the first things I did was register an LLC. On the evening of March 23, 2007, the company CodeYield Development Inc was incorporated. An hour later, the domain name codeyielddevelopment.com was registered. The day after, I created a company logo. A week after that, a highschool friend delivered the company website he created for me incorporating that logo.</p>
+                    <p>Mid-March, about two weeks before my employment at airG ended, I began work on the competition. Because I was still employed for those two weeks, I technically couldn't begin work on the entry itself. Instead, I focused on prep work. The competition's submission form required a company name, so one of the first things I did was register an LLC. On the evening of March 23, 2007, the company CodeYield Development Inc was incorporated. An hour later, the domain name codeyielddevelopment.com was registered. The day after, I created a company logo. A week after that, a high school friend delivered the company website he created for me incorporating that logo.</p>
 
                     <figure>
                       <a href="cyd_website.png" target="_blank">
                         <img class="thumbnail" src="cyd_website.png" alt="CodeYield Development website">
                       </a>
-                      <a href="gamechallenge_entry.avif" target="_blank">
-                        <img class="thumbnail" src="gamechallenge_entry.avif" alt="Entry submission form">
-                      </a>
-                      <figcaption>From left-to-right: Company website, entry submission form</figcaption>
+                      <figcaption>CodeYield Development website</figcaption>
                     </figure>
 
                     <p>As my last few days of employment closed in, I went to dinner with a few close friends and coworkers. I privately let them know that I was leaving to enter the competition. Prior to that, I hadn't disclosed my plans to anyone. The competition's prize wasn't much. It was a publishing contract with a mid-tier mobile game publisher and some free Motorola devices. To me, the prize was something else. The prize, I was hoping, would be a stepping stone to something better.</p>
@@ -65,7 +62,7 @@
 
                     <h2>Building the engine: The MMO that never was</h2>
                     
-                    <p>Even with all of drawbacks, I still wanted to make the MMO. At the time, I had around $7,500 to my name and was still living in my parent's home, in the same bedroom I grew up in. Before I could do anything, I needed a KRZR K1 or similar device. I went to a local store selling imported handsets and picked up the closest device in-stock to the KRZR K1, the Motorola SLVR L7. Alongside that I purchased a Samsung SGH-D520, just so I could have another device to try playing the game on.</p>
+                    <p>Even with all of the drawbacks, I still wanted to make the MMO. At the time, I had around $7,500 to my name and was still living in my parent's home, in the same bedroom I grew up in. Before I could do anything, I needed a KRZR K1 or similar device. I went to a local store selling imported handsets and picked up the closest device in stock to the KRZR K1, the Motorola SLVR L7. Alongside that I purchased a Samsung SGH-D520, just so I could have another device to try playing the game on.</p>
                     
                     <p>With the devices in hand, the next step was to prep my bedroom as a work area. With only 3 to 4 months left to deliver, I needed to minimize distractions. I took my mother's thick faux-fur blanket and duct taped its edges to the walls bordering my 108sqft bedroom's only window, effectively blacking out the room. The only light available to me, I thought, should be the light from the monitor directly in front of me.</p>
 
@@ -87,8 +84,7 @@
                       </a>
 
                       <figcaption>
-                        Bedroom and mobile phones<br/>
-                        From left-to-right: Bedroom (realtor photo), floor plan (bedroom highlighted), SLVR, SGH-D520, KRZR
+                        From left to right: Bedroom (realtor photo), floor plan (bedroom highlighted), SLVR, SGH-D520, KRZR
                       </figcaption>
                     </figure>
                     
@@ -108,18 +104,18 @@
                         <img class="thumbnail" src="original_mmo_demo_map_layout.avif" alt="Envisioned MMO map, containing multiple chat lounges, a maze game, a checkers game, and a tank game">
                       </a>
 
-                      <figcaption>From left-to-right: High-level estimates, low-level estimates, UI flow mockup, map mockup</figcaption>
+                      <figcaption>From left to right: High-level estimates, low-level estimates, UI flow mockup, map mockup</figcaption>
                     </figure>
 
                     <p>From a technology perspective, everything in the plan was attainable, but not by a single developer with 3-4 months of time. The timelines, which were already wishful thinking to begin with, showed that development would stretch far past the competition's deadline of early August. And so, the MMO idea was a non-starter.</p>
 
-                    <p>What wasn't a non-starter were the components in that timeline. Many of them, I figured, would be needed regardless of game I eventually decided on making. Between April 3 and April 10, I implemented the font renderer. The font renderer would work around the issue of inconsistent default fonts on Java phones by manually drawing out custom character glyphs.</p>
+                    <p>What wasn't a non-starter were the components in that timeline. Many of them, I figured, would be needed regardless of the game I eventually decided on making. Between April 3 and April 10, I implemented the font renderer. The font renderer would work around the issue of inconsistent default fonts on Java phones by manually drawing out custom character glyphs.</p>
                     
                     <p>A few days later, between April 12 and April 14, I implemented a lightweight Huffman tree. Mobile Internet connectivity back then was billed by usage. Huffman compression could save the player from an expensive mobile Internet bill.</p>
 
-                    <p>A few days after that, between April 14 and May 3, I implemented a barebones virtual machine and assembler. A virtual machine would separate the game's logic from it's executable, similar to how QuakeC separated Quake's engine from the seemingly endless number of player-created maps and mods.</p>
+                    <p>A few days after that, between April 14 and May 3, I implemented a barebones virtual machine and assembler. A virtual machine would separate the game's logic from its executable, similar to how QuakeC separated Quake's engine from the seemingly endless number of player-created maps and mods.</p>
                     
-                    <p>Yet a few days after that, between May 4 and May 7, I implemented image transformation functions and real-time audio mixing. The image transformations would make the game's art assets more flexible. The audio mixer, which worked on the emulator but not on the actual device, was intended to workaround the device limits on playing multiple audio file at the same time.</p>
+                    <p>Yet a few days after that, between May 4 and May 7, I implemented image transformation functions and real-time audio mixing. The image transformations would make the game's art assets more flexible. The audio mixer, which worked on the emulator but not on the actual device, was intended to work around the device limits on playing multiple audio file at the same time.</p>
 
                     <figure>
                       <a href="text_rendering_test.png" target="_blank">
@@ -134,7 +130,7 @@
                       <a href="benchmark_test.png" target="_blank">
                         <img class="thumbnail" src="benchmark_test.png" alt="Menu screen for selecting one of many benchmarking tests.">
                       </a>
-                      <figcaption>From left-to-right: Font render test, image rotate test, image post-process test, benchmark suite</figcaption>
+                      <figcaption>From left to right: Font render test, image rotate test, image post-process test, benchmark suite</figcaption>
                     </figure>
 
                     <p>Between early to mid-May, around the time the image and audio components were implemented, was when I finally settled on the game I wanted to implement.</p>
@@ -143,9 +139,9 @@
 
                     <p>I decided that the game I wanted to implement would be a re-imagining of NS-SHAFT and NS-TOWER blended into one. NS-SHAFT and NS-TOWER were introduced to me by a college classmate as a way of killing time while we were held up in the computer labs. The twist with this re-imagining was that it'd be a narrative experience with levels, where each level would be unique in terms of graphics, audio, and gameplay mechanics.</p>
                     
-                    <p>I came up with a set of levels that I wanted the game to have. The title character, Mad Kaz (that's me, I'm Kaz 🙂), would climb up from inside the Earth and eventually out into space, before encountering a boss battle and falling back down to Earth. I named it Mad Kaz: The Beginning.</p>
+                    <p>I came up with the set of levels that I wanted the game to have. The title character, Mad Kaz (that's me, I'm Kaz 🙂), would climb up from inside the Earth and eventually out into space, before encountering a boss battle and falling back down to Earth. I named it Mad Kaz: The Beginning.</p>
 
-                    <figure>
+                    <figure id="original-levels">
                       <blockquote>
                         <ol>
                           <li><strong>Internal Core</strong> <em>(Climb)</em>: Hot wavy screen. Stepping tiles look almost molten. Cavernous earth view with magma.</li>
@@ -166,11 +162,7 @@
                       <figcaption>Original level descriptions</figcaption>
                     </figure>
 
-                    <p>Shortly after, I began looking for contract artists to help piece it all together. For music, I found a Norwegian chiptunes musician by the name of Xonic the Fox. Xonic, around 19 at the time, produced 3 MIDI tracks based on a small set of requirements to hit certain evocative themes. The closest surviving archive of Xonic's website from that time is from September 2007, roughly a month after the competition ended: <a href="https://web.archive.org/web/20070901005905/www.freewebs.com/go64mus">Technomancer</a>.</p>
-
-                    <p>For concept art, I reached out to an old high school classmate, William, to create a few basic sketches. There were no requirements. I simply asked him to envision how things should look.</p>
-
-                    <p>For pixel art, I found Mykola, a Ukrainian pixel artist who was around 22 at the time. Mykola agreed to help reimagine the concept art as pixel art. Some of the art he built for the game is still on his old PixelJoint profile <a href="https://pixeljoint.com/pixelart/23794.htm">here</a> and <a href="https://pixeljoint.com/pixelart/23793.htm">here</a>. The closest surviving archive of Mykola's website from that time is from July 2007, around the time pixel art was flowing into the game: <a href="https://web.archive.org/web/20070707075948/myk31.com">Myk31</a>.</p>
+                    <p>Shortly after, I began looking for contract artists to help piece it all together. For music, I found a Norwegian chiptunes musician by the name of Xonic the Fox. Xonic, around 19 at the time, produced 3 MIDI tracks based on a small set of requirements to hit certain evocative themes. For concept art, I reached out to an old high school classmate, William, to create a few basic sketches. There were no requirements. I simply asked him to envision how things should look. For pixel art, I found Mykola, a Ukrainian pixel artist who was around 22 at the time. Mykola agreed to help reimagine the concept art as pixel art. Some of his art for the game is still up on his old PixelJoint profile <a href="https://pixeljoint.com/pixelart/23794.htm">here</a> and <a href="https://pixeljoint.com/pixelart/23793.htm">here</a>.</p>
 
                     <figure>
                       <a href="mykola_blocks.png" target="_blank">
@@ -185,6 +177,8 @@
                       <a href="mykola_teeth_mock_clamped.png" target="_blank">
                         <img class="thumbnail" src="mykola_teeth_mock_clamped.png" alt="Envisioned city scape level with helicopters and a giant clamping jaw, jaw closed">
                       </a>
+
+                      <p>Closest surviving archive of Mykola's website (July 2007): <a href="https://web.archive.org/web/20070707075948/myk31.com">Myk31</a>.
 
                       <figcaption>Sample of Mykola's pixel art.</figcaption>
                     </figure>
@@ -212,15 +206,16 @@
                         <img class="thumbnail" src="william_city.avif" alt="Cityscape environment">
                       </a>
 
-                      <figcaption>Sample of William's concept art</figcaption>
+                      <figcaption>William artifacts</figcaption>
                     </figure>
 
                     <figure>
                       <p><audio controls preload="none" src="xonic_danger zone.mp3"></audio> - Danger Zone, <a href="xonic_danger zone.mid">original MIDI</a></p>
                       <p><audio controls preload="none" src="xonic_road warrior.mp3"></audio> - Road Warrior, <a href="xonic_road warrior.mid">original MIDI</a></p>
                       <p><audio controls preload="none" src="xonic_solitude.mp3"></audio> - Solitude, <a href="xonic_solitude.mid">original MIDI</a></p>
+                      <p>Closest surviving archive of Xonic's website (September 2007): <a href="https://web.archive.org/web/20070901005905/www.freewebs.com/go64mus">Technomancer</a>.</p>
 
-                      <figcaption>Songs produced by Xonic.</figcaption>
+                      <figcaption>Xonic artifacts.</figcaption>
                     </figure>
 
                     <h2>Cutting scope, again: Spread too thin</h2>
@@ -276,11 +271,11 @@
                       <figcaption>Mykola's e-mail</figcaption>
                     </figure>
 
-                    <p>I decided to cut scope again. I scrapped the original level design and instead restructured the game into zones. Each zone would have multiple levels that re-used assets and had similar game logic, similar to original Sonic The Hedgehog games.</p>
+                    <p>I decided to cut scope again. I scrapped the original level design and instead restructured the game into zones. Each zone would have multiple levels that re-used assets and had similar game logic, similar to the original Sonic The Hedgehog games.</p>
 
-                    <p>There were 6 zones in total: Intro, Homework, Hippie, Time Trials, Giagantor, and Author. Zone 1, Intro Zone, acted as a tutorial. It got the player familiar with gameplay mechanics. Zone 6, Author Zone, was a single level that acted as a credit sequence. It displayed the names and photos of friends and those who worked on the game. In between were Homework Zone, Hippie Zone, Time Trials Zone, and Giagantor Zone. Each zone attempted to have a unique twist to it: <a href="zone_breakdown.html">Zone breakdown and analysis.</a></p>
+                    <p>The original plan was to have <a href="#original-levels" target="_blank">12 unique levels</a>. The new plan was to have 6 unique zones: Intro, Homework, Hippie, Time Trials, Giagantor, and Author. The opening and closing zones, Intro and Author, were write-offs. Author Zone was nothing more than a single level that acted as a credit sequence, paying homage to friends and those who worked on the game. Intro Zone was a tutorial, getting the player familiar with gameplay mechanics. The 4 zones in between were the real content: <a href="zone_breakdown.html">Zone breakdown and analysis.</a></p>
 
-                    <p>Chronologically, these zones were built out in a different order than they appear in the game.</p>
+                    <p>Chronologically, these zones were built in a different order than they appeared in-game.</p>
                     
                     <ul>
                       <li>July 13-14, zone 1, Intro Zone, was built.</li>
@@ -289,15 +284,15 @@
                       <li>July 21-26, zones 3 to 5, Hippie Zone, Time Trials Zone, and Giagantor Zone, were built.</li>
                     </ul>
                       
-                    <p>Homework Zone, the one chronologically sandwiched between Intro Zone and Author Zone, was the zone closest to Mad Kaz's original story arc. It had cityscape climbing, racing downward to outrun a bomb, and there was even a boss fight. I had built it because I wanted to get a zone in where I didn't have to go back and forth with my pixel artist, Mykola, and so I had sat down and fleshed out some poorly drawn schoolbook-doodle type graphics in Microsoft Paint: Graph paper, pencil drawings, stick men, etc. The remaining zones 3-5 were added afterwards by gluing together various pixel art pieces into something that bordered on being passable.</p>
+                    <p>Homework, the zone chronologically sandwiched between Intro and Author, was the zone closest to Mad Kaz's original story arc. It had cityscape climbing, racing downward to outrun a bomb, and there was even a boss fight. I built it because I wanted a zone where I didn't have to go back and forth with my pixel artist, Mykola. I pieced together the art myself, fleshing out poorly drawn schoolbook-doodle style graphics in Microsoft Paint: Graph paper, pencil drawings, stick men, etc. The remaining zones 3-5 were added afterwards by gluing together various pixel art pieces into something that bordered on being passable.</p>
                     
-                    <p>I fleshed out these zones for as long as I could hold out. July 26th was when the last zone was completed. Bugfixes and tweaks ran through July 27th and 28th. There wasn't enough left in me to do much else after that. Even though there was still roughly 2 weeks remaining until the competition deadline, I was drained. I could have used that time. I never sat through a full playthrough of the entire game, or even a full playthrough of certain zones within the game. I could have balanced the gameplay to make the game fun to play (it wasn't). I could have fixed typos. I could have finished implementing the game engine's networking component. The list goes on.</p>
+                    <p>I fleshed out these zones for as long as I could hold out. July 26th was when the last zone was completed. Bugfixes and tweaks ran through July 27th and 28th. There wasn't enough left in me to do much else after that. Even though there were still roughly 2 weeks remaining until the competition deadline, I was drained. I could have used that time. I never sat through a full playthrough of the entire game, or even a full playthrough of certain zones within the game. I could have balanced the gameplay to make it fun to play (it wasn't). I could have fixed typos. I could have finished implementing the game engine's networking component. The list goes on.</p>
                     
-                    <p>And so, in the end, Mad Kaz wasn't so much a game as much as it was a tech demo for a game engine. The 4 months I had spent putting things together weren't enough for me to build out both a game engine and the game's originally intended levels, and so the result was a mishmash of unbalanced and narratively disjointed levels that tried to shove in as many engine features as possible.</p>
+                    <p>And so, in the end, Mad Kaz wasn't so much a game as much as it was a tech demo for a game engine. The 4 months I had spent putting things together weren't enough for me to build out both a game engine and the game's originally intended levels. The result was a mishmash of unbalanced and narratively disjointed levels that tried to shove in as many engine features as possible.</p>
 
                     <figure>
                       <p><a href="mad_kaz_submission_game/index.html" target="_blank">Mad Kaz game</a>: The game, as it was when it was submitted into the competition. It's been converted by AI such that it's playable inside a browser.</p>
-                      <p><a href="https://github.com/offbynull/mad_kaz" target="_blank">Maz Kaz's code</a>: The game's source code and assets, as they were when the game was submitted into the competition.</p>
+                      <p><a href="https://github.com/offbynull/mad_kaz" target="_blank">Mad Kaz's code</a>: The game's source code and assets, as they were when the game was submitted into the competition.</p>
                       <p><a href="mad_kaz_submission_document.pdf" target="_blank">Mad Kaz's entry documentation</a>: The game's competition entry documentation. It was submitted along with the game into the competition.</p>
                       <p><a href="mad_kaz_submission_form.avif" target="_blank">Mad Kaz's entry form</a>: The game's competition entry form, signed and dated.
                           <!-- <img class="thumbnail" src="mad_kaz_submission_form.avif" alt="Mad Kaz signed entry form for the competition"> -->
@@ -307,12 +302,12 @@
 
                     <h2>Submission: The anticlimax</h2>
 
-                    <p>I submitted Mad Kaz into the competition on July 29th, 2007, about 2 weeks before the August 10th deadline. A confirmation email arrived the next day, and that was it. I never heard back from the people running the contest about their thoughts on Mad Kaz or how it ranked against other games in the competition. I showed the game to a couple of my real life friends and they thought it was alright. I had an online friend load it up on his phone and give it a try. He thought it was alright. I posted some screenshots in an IRC chatroom, to which someone replied saying the graphics were bad. I emailed my father informing him of what I was up to after 4 months unemployed, to which he replied with the generic encouraging words that parents are known to say to their children. And, that was it.</p>
+                    <p>I submitted Mad Kaz into the competition on July 29th, 2007, about 2 weeks before the August 10th deadline. A confirmation email arrived the next day, and that was it. I never heard back from the people running the contest about their thoughts on Mad Kaz or how it ranked against other games in the competition. I showed the game to a couple of my real-life friends and they thought it was alright. I had an online friend load it up on his phone and give it a try. He thought it was alright. I posted some screenshots in an IRC chatroom, to which someone replied saying the graphics were bad. I emailed my father informing him of what I was up to after 4 months unemployed, to which he replied with the generic encouraging words that parents are known to say to their children. And, that was it.</p>
 
                     <figure>
                       <blockquote>
                         <p>
-                            <strong>From:</strong> MOE FAGHIHI &lt;m***@s***.ca&gt;<br>
+                            <strong>From:</strong> MOE F &lt;m***@s***.ca&gt;<br>
                             <strong>To:</strong> Kaz F &lt;k***@h***.com&gt;<br>
                             <strong>Date:</strong> Tue, 31 Jul 2007 19:12:07 PDT<br>
                             <strong>Subject:</strong> Re:
@@ -354,7 +349,7 @@
                       <figcaption>Father's reaction after hearing about what I've been up to</figcaption>
                     </figure>
                     
-                    <p>Looking back, there was an expectation that sending in the submission would result some kind of defining moment of pride and accomplishment. Instead, it was dejection and regret. Maybe it was because my entry wasn't what I had hoped for, or maybe it was because I subjected myself to 4 months of in-the-dark confinement and was verging on going broke.</p>
+                    <p>Looking back, there was an expectation that sending in the submission would result in some kind of defining moment of pride and accomplishment. Instead, it was dejection and regret. Maybe it was because my entry wasn't what I had hoped for, or maybe it was because I subjected myself to 4 months of confinement devoid of natural light and was verging on going broke.</p>
 
                     <h2>Aftermath: Back to reality</h2>
 
@@ -364,14 +359,14 @@
                     
                     <p>The application to Radical Entertainment went nowhere. Threewave had me fill out a questionnaire and did schedule a phone screen afterwards, but ultimately it didn't move forward either. I knew Threewave from their work on the Threewave CTF mod for Quake 1, which I regularly played growing up.</p>
                     
-                    <p>Blue Castle Games had me come in for an interview. They were hiring for a junior network programmer position for Dead Rising 2. Network programming for twitchy games was something I often thought about, mostly because of stories I heard about QuakeWorld's networking code. And, more importantly, Mad Kaz did have an unfinished networking implementation that was stripped out at the last second.</p>
+                    <p>Blue Castle Games had me come in for an interview. They were hiring for a <a href="https://web.archive.org/web/20071115235430/http://www.bluecastlegames.com/jobs_softwareengineer_junior.html">junior network programmer</a> for Dead Rising 2. Network programming for twitchy games was something I often thought about, mostly because of stories I heard about QuakeWorld's networking code. And, more importantly, Mad Kaz did have an unfinished networking implementation that was stripped out at the last second.</p>
                     
-                    <p>The interview was a disaster. One of the interviewers had gone through Mad Kaz's code and seemingly decided to gauge my composure by making a comment to get under my skin. "So, this virtual machine of yours, all it is is a for loop?" I didn't give him the reaction that he wanted. During a whiteboarding segment, I was talking out a problem they gave me about how to model zombie movements. When one of them jumped in with a question, without thinking I blurted, "Wait, shut up" as a new thought entered my head. At the end was my first experience with interview brainteasers. The final interviewer asked me the <a href="https://www.physicsforums.com/threads/riddle-of-the-three-prisoners-who-knows-their-hat-color.331079">three-prisoners hat riddle</a>. It was a deer-in-the-headlights moment.</p>
+                    <p>The interview was a disaster. One of the interviewers had gone through Mad Kaz's code and seemingly decided to gauge my composure by making a comment to get under my skin. "So, this virtual machine of yours, all it is is a for loop?" I didn't give him the reaction that he wanted. During a whiteboarding segment, I was talking out a problem on how to model zombie swarm movements. When one of them jumped in with a question, without thinking I blurted, "Wait, shut up" as a new thought entered my head. At the end was my first experience with interview brainteasers. The final interviewer asked me the <a href="https://www.physicsforums.com/threads/riddle-of-the-three-prisoners-who-knows-their-hat-color.331079">three-prisoners hat riddle</a>. It was a deer-in-the-headlights moment.</p>
 
                     <figure>
                       <blockquote>
                         <p>
-                            <strong>From:</strong> Melissa Schellenberg &lt;m***@bluecastlegames.com&gt;<br>
+                            <strong>From:</strong> Melissa S &lt;m***@bluecastlegames.com&gt;<br>
                             <strong>To:</strong> 'Kasra F' &lt;k***@***.ca&gt;<br>
                             <strong>Date:</strong> Mon, 10 Sep 2007 18:28:08 PDT<br>
                             <strong>Subject:</strong> RE: Interview Next Steps from Blue Castle Games
@@ -398,21 +393,21 @@
                         <p>Have a good night!</p>
 
                         <p>
-                            Melissa Schellenberg<br>
+                            Melissa S<br>
                             [...]<br/>
                         </p>
                       </blockquote>
                       <figcaption>BlueCastle interview invitation</figcaption>
                     </figure>
                     
-                    <p>IUGO also had me come in for an interview. The owner and employees were very kind to me. I remember one of my old college classmates was working there as well. They had me sit down and fill out a stack of papers full of gaming coding and design questions. When I was done, the interviewer just threw it to the side, saying something to the effect of "I don't need to look at it. I know you know your stuff."</p>
+                    <p>IUGO interviewed me after a personal appeal. The owner and employees were very kind to me. I remember one of my old college classmates was working there as well. They had me sit down and fill out a stack of papers full of gaming coding and design questions. When I was done, the interviewer just threw it to the side, saying something to the effect of "I don't need to look at it. I know you know your stuff."</p>
                     
-                    <p>At the end of the interview, I think they gave me an offer or if they didn't they were on the verge of giving me an offer. I ended up walking away. I don't recall exactly why. It might have been because I was actively interviewing at Blue Castle Games, or I may have been feeling too full of myself and gunning for a more senior role, or it may have been because the office felt uncomfortably bright. It was a very sunny day that day. IUGO's office space let a lot of that sun in. I had spent most of my time building Mad Kaz in my blacked out bedroom.</p>
+                    <p>At the end of the interview, I think they gave me an offer, or, if they didn't they were on the verge of giving one. I ended up walking away. I don't recall exactly why. It might have been because I was actively interviewing at Blue Castle Games, or I may have been feeling too full of myself and gunning for a more senior role, or it may have been because the office felt uncomfortably bright. It was a very sunny day that day. IUGO's office space let a lot of that sun in. I had spent most of my time building Mad Kaz in my blacked out bedroom.</p>
 
                     <figure>
                       <blockquote>
                         <p>
-                            <strong>From:</strong> Hong-Yee Wong &lt;h***@iugome.com&gt;<br>
+                            <strong>From:</strong> Hong-Yee W &lt;h***@iugome.com&gt;<br>
                             <strong>To:</strong> 'Kaz F' &lt;k***@h***.com&gt;<br>
                             <strong>Date:</strong> Wed, 05 Sep 2007 13:57:30 PDT<br>
                             <strong>Subject:</strong> RE: Application for J2ME/BREW Programmer
@@ -425,9 +420,7 @@
                             11am. Our office address remains unchanged - see below.
                         </p>
 
-                        <p>Regards,</p>
-
-                        <p>Hong-Yee</p>
+                        <p>[...]</p>
 
                         <p>_____</p>
 
@@ -467,16 +460,8 @@
 
                         <p>
                             Please come in for an interview tomorrow (20 Nov) at 3pm. Our office is in<br>
-                            Yaletown:
+                            Yaletown: [...]
                         </p>
-
-                        <p>
-                            [...]
-                        </p>
-
-                        <p>Regards,</p>
-
-                        <p>Hong-Yee</p>
 
                         <p>
                             -----Original Message-----<br>
@@ -505,9 +490,9 @@
  
                     <p>Many of the individual components within Mad Kaz were born out of my experiences at airG, a company that's still around: <a href="https://corp.airg.com">https://corp.airg.com</a>. airG's R&D head was forgiving enough to look past my attitude problem and let me work under him. He made several attempts at a scriptable platform for their mobile apps. Those scriptable platforms, along with Java's virtual machine and Quake's virtual machine, became the inspiration for Mad Kaz's virtual machine and assembler.</p>
                     
-                    <p>Mad Kaz's PNG editing module was inspired from overhearing a watercooler discussion at airG. A senior engineer mentioned how someone they knew wrote code to go in and edit a PNG's palette at runtime. After hearing that, I visited a <a href="https://web.archive.org/web/20060829121200/http://www.wotsit.org/">now defunct website known for documenting file formats</a>, pulled out the specifications for PNG, and spent a few days at work trying to come up with interesting things to do with palette modifications.</p>
+                    <p>Mad Kaz's PNG editing module was inspired from overhearing a watercooler discussion at airG. A senior engineer mentioned how someone they knew wrote code to go in and edit a PNG's palette at runtime. After hearing that, I visited a <a href="https://web.archive.org/web/20060829121200/http://www.wotsit.org/">now-defunct website known for documenting file formats</a>, pulled out the specifications for PNG, and spent a few days at work trying to come up with interesting things to do with palette modifications.</p>
 
-                    <p>Mad Kaz's image manipulation functions were inspired by a college classmate who also worked with me at airG. He was the same one that introduced me to NS-SHAFT and NS-TOWER. While sitting in a college computer lab one day, he had written code to resize an image using bilinear scaling. We didn't know that it was called bilinear scaling at the time, but his work was the seed for Mad Kaz's image rotation, scaling, and post-processing effects.</p>
+                    <p>Mad Kaz's image manipulation functions were inspired by a college classmate who also worked with me at airG. He was the same who that introduced me to NS-SHAFT and NS-TOWER. While sitting in a college computer lab one day, he had written code to resize an image using bilinear scaling. We didn't know that it was called bilinear scaling at the time, but his work was the seed for Mad Kaz's image rotation, scaling, and post-processing effects.</p>
 
                     <p>Mad Kaz's image manipulation functions required rational numbers, but most mobile phones at that time didn't include a hardware floating point unit. Somewhere along the way, I had learned about fixed point math and lookup tables. I used fixed point math to implement a progress bar in one of airG's apps, and I also used it to perform the image manipulation math in Mad Kaz.</p>
 
