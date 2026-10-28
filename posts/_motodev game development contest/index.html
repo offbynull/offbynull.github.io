@@ -23,9 +23,9 @@
                     <div class="post-date">MONTH DAY, YEAR</div>
                     <!-- NOTE: Use full month above, note abbreviation (e.g., September 20, 2026) -->
 
-                    <p>In 2007, at the age of 22, I resigned from what was arguably my first real software engineering job to enter an indie gamedev competition: The <a href="https://web.archive.org/web/20070218154715/https://developer.motorola.com/eventstraining/gamechallenge/">MOTODEV Game Developer Challenge</a>. The competition was Motorola's attempt to attract developers to its then-flagship <a href="https://en.wikipedia.org/wiki/Motorola_Krzr">KRZR K1</a>.</p>
+                    <p>In 2007, at the age of 22, I resigned from what was arguably my first real software engineering job to enter an indie gamedev competition. That competition was Motorola's <a href="https://web.archive.org/web/20070218154715/https://developer.motorola.com/eventstraining/gamechallenge/">MOTODEV Game Developer Challenge</a>, which asked developers to create new games for the then-flagship <a href="https://en.wikipedia.org/wiki/Motorola_Krzr">Motorola KRZR K1</a>.</p>
 
-                    <p>My entry to the competition was Mad Kaz, a vertical platformer backed by a custom game engine. This post recounts how Mad Kaz came to be, pieced together from old memories and archival records. It documents how poor decisions early on turned what could have been a great game into what was effectively a salvage operation.</p>
+                    <p>My entry to the competition was Mad Kaz, a vertical platformer backed by a custom game engine. This post recounts the chain of misguided decisions that ultimately led to Mad Kaz and the career aftermath that followed, pieced together from old memories and archival records.</p>
 
                     <figure>
                         <blockquote>
@@ -40,18 +40,16 @@
                             <img src="mk_6.png" alt="Mad Kaz screenshot"/>
                         </blockquote>
 
-                        <figcaption>Original entry description</figcaption>
+                        <figcaption>Contest entry description</figcaption>
                     </figure>
 
                     <h2>Entering the competition</h2>
                     
-                    <p>While the details on how I came across the competition are lost, the motivations behind entering aren't. In late 2006, I was roughly a year into working as a software engineer on a decently popular mobile social networking app. My enthusiasm for the work wasn't as high as it was when I had originally been hired, and so I quietly decided to start looking for what would come next.</p>
+                    <p>While the details on how I came across the competition are lost, the motivations behind entering aren't. In late 2006, I was roughly a year into working as a software engineer on a decently popular mobile social networking app. My enthusiasm for the work wasn't as strong as it was when I had originally been hired, and so I quietly decided to start looking for what would come next.</p>
 
-                    <p>Somewhere between looking through job openings and weighing options for continued education, I came across the MOTODEV Game Developer Challenge. I decided that this was it. I had grown up playing PC games in the 1990s and early 2000s, and the low-level mobile development experience I had gained from my job was directly applicable to developing mobile games. I had written graphics code, networking code, low-level optimizations, math-heavy code, and code that closely resembled game loops.</p>
-                    
-                    <p>There was a prize for the winning entry, but winning wasn't really the goal. I figured that if I could make an impressive enough entry, it would serve as a launchpad for something more, whether that meant starting an indie game studio, finding work in game development, or simply gaining credibility in the broader online gamedev community.</p>
+                    <p>Somewhere between looking through job openings and weighing going back for another round of college, I came across the MOTODEV Game Developer Challenge. I figured that if I could make a game that was impressive enough, it would serve as a launchpad into something greater: starting an indie game studio, or a gig working on console games, or maybe just gaining credibility in the broader online gamedev community. I had the relevant experience. I had grown up playing PC games in the 1990s and early 2000s, and the low-level mobile development experience I had gained on-the-job was applicable to developing games. I had written graphics code, networking code, low-level optimizations, math-heavy code, and code that closely resembled game loops.</p>
                       
-                    <p>With all that in mind, I registered myself to enter the contest. The MOTODEV Game Developer Challenge opened to contestants on February 21, 2007, running until August 10, 2007. Mid-March, I submitted my two weeks resignation notice to my employer. Except for a few close friends and coworkers, I didn't disclose the reason behind the resignation to anyone, including my own parents. I spent those last two weeks of employment prepping for the competition by registering an LLC and having a high school acquaintance put its website together.</p>
+                    <p>The MOTODEV Game Developer Challenge opened to contestants on February 21, 2007, running until August 10, 2007. I submitted my two-week resignation notice to my employer around mid-March, keeping the reason behind the resignation quiet except for a few close friends and coworkers. I spent those last two weeks prepping for the competition by registering an LLC and having a high school acquaintance put its website together.</p>
 
                     <figure>
                       <a href="cyd_website.png" target="_blank">
@@ -62,9 +60,9 @@
 
                     <h2>Building the engine: The MMO that never was</h2>
                     
-                    <p>Early April, once employment officially ended, I began work on my game. The motivation was to bet on something impressive. The idea I came up with was a top-down 2D MMO virtual world, similar to Habbo Hotel but for mobile phones. I had pitched a similar idea to an executive at my employer, at a reward lunch he had taken me to for fixing a costly bug. His thoughts were that it was a challenging idea to get behind. An MMO would be costly to produce and the market for it would be tiny. Mobile phones around that time were severely constrained and mobile Internet connectivity was expensive. Only those with high-end phones and mobile Internet would be able to play.</p>
+                    <p>Early April, once my employment officially ended, I began work on the actual game. The idea I came up with was a top-down 2D MMO virtual world, similar to Habbo Hotel but for mobile phones. I had pitched a similar idea to an executive at my employer, at a reward lunch he had taken me to for fixing a blocker bug. He wasn't in love with the idea. An MMO would be costly to produce and the market for it would be tiny. Mobile phones around that time were severely constrained and mobile Internet connectivity was expensive. Only people with high-end phones and mobile Internet would be able to play.</p>
 
-                    <p>Even with all of the drawbacks, I still wanted to make the MMO. At the time, I had around $7,500 to my name and was still living in my parents' home, in the same bedroom I grew up in. Before I could do anything, I needed a KRZR K1 or similar device. I went to a local store selling imported mobile phones and picked up the closest device in stock to the KRZR K1, the Motorola SLVR L7. Alongside that I purchased a Samsung SGH-D520, just so I could have another device to try playing the game on.</p>
+                    <p>From my standpoint, those drawbacks didn't matter all that much. I was aiming to make something impressive for the competition, not aiming to make a commercially viable mass-market product. At the time, I had around $7,500 to my name and was still living in my parents' home, in the same bedroom I grew up in. Before I could do anything, I needed a KRZR K1 or similar device. I went to a local store selling imported mobile phones and picked up the closest device in stock to the KRZR K1, the Motorola SLVR L7. Alongside that I purchased a Samsung SGH-D520, just so I could have another device to try playing the game on.</p>
                     
                     <p>With the devices in hand, the next step was to prep my bedroom as a work area. With only 3 to 4 months left to deliver, I needed to minimize distractions. I took my mother's thick faux-fur blanket and duct taped its edges to the walls bordering my 108sqft bedroom's only window, effectively blacking out the room. By eliminating outside light and keeping the room's lights switched off, the only light source remaining would be from the monitor directly in front of me.</p>
 
@@ -90,7 +88,7 @@
                       </figcaption>
                     </figure>
                     
-                    <p>I started out by making a plan. I charted out tasks and timelines in a Gantt chart, mocked out a UI flow, and mocked out a demonstration map. The idea was for the MMO to be more of a platform than a game. Scripts and assets would flow directly from the Internet, driving the game's logic and gameplay. The ultimate goal was to have a massive explorable world where users themselves would grow out the content.</p>
+                    <p>I started out by making a plan. I charted out tasks and timelines in a Gantt chart, mocked out a UI flow, and mocked out a demonstration map. The idea was for the MMO to be more of a platform than a game. Scripts and assets would flow directly from the Internet, driving the game's logic and gameplay. The ultimate goal was to have a massive explorable world where users themselves would expand the world with their own content.</p>
 
                     <figure>
                       <a href="original_gaant_summary.avif" target="_blank">
@@ -109,17 +107,13 @@
                       <figcaption>From left to right: High-level estimates, low-level estimates, UI flow mockup, map mockup</figcaption>
                     </figure>
 
-                    <p>From a technology perspective, everything in the plan was attainable, but not by a single developer in three or four months. The timelines, which were already wishful thinking to begin with, showed that development would stretch far past the competition's deadline of early August. And so, the MMO idea was a non-starter.</p>
+                    <p>Every task in that Gantt chart was doable, but not by a single developer in three or four months. The timelines, which were already wishful thinking to begin with, showed that development would stretch well past the competition's deadline of early August. And so, the MMO idea was a non-starter.</p>
 
-                    <p>What wasn't a non-starter were the components in that timeline. Many of them, I figured, would be needed regardless of the game idea I eventually settled on. I started out by spending a week building the font renderer. The font renderer would work around the issue of inconsistent default fonts on J2ME phones by manually drawing out custom character glyphs.</p>
-                    
-                    <p>Next, I spent a couple of days building a lightweight Huffman compressor. Mobile Internet connectivity around that time was billed by the megabyte. Compressing packets could end up saving the player some money.</p>
+                    <p>What wasn't a non-starter were the components in that timeline. Many of them, I figured, would be needed regardless of the game idea I eventually settled on. And so, I started building them. First, a font renderer. One week, gone. Then, a Huffman compressor. Another two to three days, gone. Then, a virtual machine and assembler. Another twenty-one days, gone. Then, image transformations and real-time audio mixing. Another three to five days, gone.</p>
 
-                    <p>After that, I spent 3 weeks building a barebones virtual machine and assembler. A virtual machine would separate the game's logic from its executable, similar to how QuakeC separated Quake's engine from the seemingly endless number of player-created maps and mods.</p>
-                    
-                    <p>Yet after that, I spent a few days implementing image transformation functions and real-time audio mixing. The image transformations would make the game's art assets more flexible. The audio mixer, which worked on the emulator but not on the actual device, was intended to work around the device limits on playing multiple audio files at the same time.</p>
-
-                    <p>By mid-May, around the time the image and audio components were implemented, I finally settled on a game to build.</p>
+                    <p>By the time I was done, I had spent roughly a third of my available time speculating on engine features for an unknown game. I had figured that any real game would need this base set of features. It would need to display text in more than just the phone's default font. It would need to support Internet multiplayer: Mobile Internet was billed by the megabyte; multiplayer traffic needed compression. It would need to support user-generated content: Extendible game logic required a virtual machine, like QuakeC did for Quake, while image and audio transformations would make user-supplied assets flexible.</p>
+                      
+                    <p>By mid-May, with a month and a half already gone, I finally settled on a game idea.</p>
 
                     <figure>
                       <a href="text_rendering_test.png" target="_blank">
@@ -161,7 +155,7 @@
 
                       <p>Closest surviving archive of Mykola's website (July 2007): <a href="https://web.archive.org/web/20070707075948/myk31.com">Myk31</a>.</p>
 
-                      <p>Mykola's Mad Kaz uploads to PixelJoint: <a href="https://pixeljoint.com/pixelart/23794.htm">Upload 1</a> and <a href="https://pixeljoint.com/pixelart/23793.htm">Upload 2</a>
+                      <p>Mykola's Mad Kaz uploads to PixelJoint: <a href="https://pixeljoint.com/pixelart/23794.htm">Upload 1</a> and <a href="https://pixeljoint.com/pixelart/23793.htm">Upload 2</a></p>
 
                       <figcaption>Mykola artifacts</figcaption>
                     </figure>
@@ -310,7 +304,7 @@
                       <figcaption>Father's reaction</figcaption>
                     </figure>
                     
-                    <p>Looking back, there was an expectation that submitting Mad Kaz would result in some kind of defining moment of pride and accomplishment. Instead, it was dejection and regret. I had spent four months working in darkness, watching my savings dwindle, only to end up with something that fell well short of what I originally intended.</p>
+                    <p>Looking back, there was an expectation that submitting Mad Kaz would result in some kind of defining moment of pride and accomplishment. Instead, it was dejection and regret. I had spent four months working in darkness, watching my savings dwindle, only to end up with something that was nowhere near what I originally intended.</p>
 
                     <h2>Aftermath: Back to reality</h2>
 
@@ -320,9 +314,9 @@
                     
                     <p>The application to Radical Entertainment went nowhere. Threewave had me fill out a questionnaire and did schedule a phone screen afterwards, but ultimately it didn't move forward either.</p>
                     
-                    <p>Blue Castle Games had me come in for an interview. They were hiring for a <a href="https://web.archive.org/web/20071115235430/http://www.bluecastlegames.com/jobs_softwareengineer_junior.html">junior network programmer</a> for Dead Rising 2. Network programming for twitchy games was something I often thought about, mostly because of stories I heard about QuakeWorld's networking code. And, more importantly, Mad Kaz did have an unfinished multiplayer networking implementation that was stripped out at the last second.</p>
+                    <p>Blue Castle Games had me come in for an interview. They were hiring a <a href="https://web.archive.org/web/20071115235430/http://www.bluecastlegames.com/jobs_softwareengineer_junior.html">junior network programmer</a> for Dead Rising 2. Network programming for twitchy games was something I often thought about, and more importantly Mad Kaz did have an unfinished multiplayer networking implementation that was stripped out at the last second.</p>
                     
-                    <p>The interview lasted two hours. One of the interviewers had gone through Mad Kaz's code. "So, this virtual machine of yours, all it is is a for loop?" Thinking it was a deliberate attempt to gauge my composure, I flatly responded "Yes, sure." Later, during a whiteboarding segment, I was talking out a problem on how to model zombie movements. When one of the interviewers jumped in with a question, without thinking I blurted, "Wait, shut up" as a new thought entered my head. At the end was my first experience with interview brainteasers. The final interviewer asked me the <a href="https://www.physicsforums.com/threads/riddle-of-the-three-prisoners-who-knows-their-hat-color.331079">three-prisoners hat riddle</a>. I froze up. It wasn't something I had thought to prepare for.</p>
+                    <p>The interview was a disaster. One of the interviewers had gone through Mad Kaz's code. "So, this virtual machine of yours, all it is is a for loop?" Thinking he was deliberately trying to get a reaction out of me, I responded with a flat "Yes, sure." Later, during a whiteboarding segment, I was talking out a problem on how to model zombie movements. When one of the interviewers jumped in with a question, without thinking I blurted, "Wait, shut up" as a new thought entered my head. At the end was my first experience with interview brainteasers. The final interviewer asked me the <a href="https://www.physicsforums.com/threads/riddle-of-the-three-prisoners-who-knows-their-hat-color.331079">three-prisoners hat riddle</a>. It wasn't something I had thought to prepare for and so I froze.</p>
 
                     <figure>
                       <blockquote>
@@ -356,9 +350,9 @@
                       <figcaption>BlueCastle interview invitation</figcaption>
                     </figure>
                     
-                    <p>IUGO interviewed me after a personal appeal. I arrived at the interview greeted by a college acquaintance that I hadn't known worked there at the time. During the actual interview, an interviewer had me sit down with a stack of papers full of game coding and design questions. When I finished, he tossed them aside, saying something to the effect of "I don't need to look at it. I know you know your stuff."</p>
+                    <p>IUGO had me come in for an interview after a personal appeal. I showed up to the interview running into a college acquaintance, not knowing beforehand that he worked there. During the interview, one of the interviewers had me sit down with a stack of papers full of game coding and design questions. When I finished, he tossed them aside, saying something to the effect of "I don't need to look at it. I know you know your stuff."</p>
                     
-                    <p>At the end of the interview, I spoke with the CEO. He had either given me an offer or was on the verge of giving one. I ended up walking away. I don't recall exactly why. It may have been because I was actively interviewing at Blue Castle Games, or I may have been feeling too full of myself and gunning for a more senior role, or it may have been because the office felt uncomfortably bright. It was an unusually sunny day that day. IUGO's office space let a lot of that sun in. I had spent most of my time building Mad Kaz in my blacked-out bedroom.</p>
+                    <p>At the end of the interview, I spoke with the CEO. He had either given me an offer or was on the verge of giving one. I ended up walking away. I don't recall exactly why. It may have been because I was actively interviewing at Blue Castle Games, or I may have been feeling too full of myself and gunning for a more senior role, or it may have been because the office felt uncomfortably bright. It was unusually sunny that day. IUGO's office space let a lot of that sun in. I had spent most of my time building Mad Kaz in my blacked-out bedroom.</p>
 
                     <figure>
                       <blockquote>
@@ -381,7 +375,7 @@
                         <p>
                             From: Kaz F [mailto:k***@h***.com]<br>
                             Sent: Thursday, August 02, 2007 3:20 PM<br>
-                            To: hy@iugome.com<br>
+                            To: h***@iugome.com<br>
                             Subject: RE: Application for J2ME/BREW Programmer
                         </p>
 
@@ -434,7 +428,7 @@
                       <figcaption>IUGO interview invitation</figcaption>
                     </figure>
 
-                    <p>In the end, I was getting dangerously low on funds and so I accepted a job at a company that made calendar software. The salary was around 15% lower than that of the original job that I had resigned from. Weeks after starting, I revisited the <a href="https://web.archive.org/web/20071021030058/http://developer.motorola.com/eventstraining/gamechallenge/">MOTODEV Game Developer Challenge website</a>. Mad Kaz hadn't won, nor was it one of the finalists.</p>
+                    <p>In the end, I was getting dangerously low on funds and so I accepted a job at a company that made calendar software. The salary was around 15% lower than that of the job I resigned from to enter the competition. Weeks after starting, I revisited the <a href="https://web.archive.org/web/20071021030058/http://developer.motorola.com/eventstraining/gamechallenge/">MOTODEV Game Developer Challenge website</a>. Mad Kaz hadn't won, nor was it one of the finalists.</p>
 
                     <h2>Addendum: Engine postmortem</h2>
 
