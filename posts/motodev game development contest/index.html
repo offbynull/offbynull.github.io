@@ -1,0 +1,1087 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <link rel="icon" href="../../favicon.ico" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>offbynull</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2.1.1/out/dark.css">
+  <link rel="stylesheet" href="../post.css">
+  <link rel="stylesheet" href="index.css">
+  <script src="../post.js" defer></script> <!-- Updates title tag with posts title -->
+</head>
+
+<body>
+  <div id="root">
+    <div class="App">
+      <div class="post-back">
+        <a href="../../">← back</a>
+      </div>
+      <div class="post">
+        <h1>Things I've tried: Becoming an Indie Gamedev</h1>
+        <!-- NOTE: Use sentence case for title (as opposed to title case) and do not end with period (e.g., My post about stuff) -->
+        <div class="post-date">November 12, 2026</div>
+        <!-- NOTE: Use full month above, note abbreviation (e.g., September 20, 2026) -->
+
+        <p>In 2007, at the age of 22, I resigned from what was arguably my first real software engineering job to enter
+          Motorola's <a
+            href="https://web.archive.org/web/20070218154715/https://developer.motorola.com/eventstraining/gamechallenge/">MOTODEV
+            Game Developer Challenge</a>, an indie gamedev competition for the then-flagship <a
+            href="https://en.wikipedia.org/wiki/Motorola_Krzr">KRZR K1</a>. My entry to the competition was Mad Kaz, a
+          vertical platformer backed by a custom game engine.</p>
+
+        <figure>
+          <blockquote>
+            <p>Mad Kaz is a vertical platformer where you lead the title character through a series of unique levels,
+              each crazier than the last. Mad Kaz features six zones with between four to ten levels per zone, and eight
+              different game modes. Built on top of a unique engine, Mad Kaz allows users to create their own levels
+              with customized game play, cinematics, music, and style. Levels can be uploaded onto phones via either
+              Bluetooth or the Internet. The source code packages for the engine, levels, and SDK can be found on the
+              CodeYield Development site.</p>
+
+            <img src="mk_0.png" alt="Mad Kaz screenshot" />
+            <img src="mk_1.png" alt="Mad Kaz screenshot" />
+            <img src="mk_2.png" alt="Mad Kaz screenshot" />
+            <img src="mk_3.png" alt="Mad Kaz screenshot" />
+            <img src="mk_4.png" alt="Mad Kaz screenshot" />
+            <img src="mk_5.png" alt="Mad Kaz screenshot" />
+            <img src="mk_6.png" alt="Mad Kaz screenshot" />
+          </blockquote>
+
+          <figcaption>Contest entry description</figcaption>
+        </figure>
+
+        <p>Mad Kaz was my first attempt at building a real, non-trivial game. I pieced it together in the span of four
+          months. Most of those four months was spent building an elaborate game engine rather
+          than the game itself. Consequently, the game itself was hot garbage. The engine, on the other hand,
+          turned out pretty
+          well. It was a programmable UGC platform built from scratch by a lone 22 year-old engineer and successfully
+          ran on a device with 800kb of heap. It had a virtual machine and assembler, font system, graphical post
+          processing, downloadable levels, level sharing, windowing system, etc. Many of the engine features were
+          inspired by the games I grew up playing in the 1990s and early 2000s.</p>
+
+        <p>Below is the playable game along with anecdotes and artifacts detailing the game's development and struggles.
+          Use the "Next" and "Previous" buttons to flip forward and backward.</p>
+
+        <ul>
+          <li><a href="mad_kaz_submission_game/index.html" target="_blank">Mad Kaz</a> - The game itself, converted by
+            AI to be playable inside a browser.</li>
+          <li><a href="https://github.com/offbynull/mad_kaz" target="_blank">Mad Kaz code</a> - The game's source code
+            and game assets, as they were when the game was submitted to the competition.</li>
+        </ul>
+
+        <button onclick="changeArtifact(-1)">← Previous</button><button onclick="changeArtifact(1)">Next →</button>
+
+        <hr>
+        <div class="artifact">
+          <div class="artifact-flip" id="bedroom">
+            <h2>Work area (1/10)</h2>
+
+            <p>Back around the time of the competition, I was still living in my childhood home with my mother. My
+              108sqft bedroom was where I built Mad Kaz. I prepared it as a work area by duct taping my mother's thick
+              faux-fur blanket to the walls bordering the room's only window. The intention was to minimize distractions
+              by blacking out the room. There was a queen sized box frame bed with its head pushed up against the wall
+              with the window. Butted up against the middle of the wall to the window's right was an IKEA HEMNES desk.
+              On top of the desk was my PC tower and a single flatscreen monitor.</p>
+
+            <p>Except for food and washroom breaks, I spent the entire four months locked in this room building Mad Kaz.
+            </p>
+
+            <figure>
+              <a href="bedroom_empty_annotated_with_dimensions.avif" target="_blank">
+                <img class="thumbnail" src="bedroom_empty_annotated_with_dimensions_thumbnail.avif"
+                  alt="Childhood bedroom, realtor photo with staging furniture removed via AI">
+              </a>
+              <a href="hemnes-desk-light-brown.avif" target="_blank">
+                <img class="thumbnail" src="hemnes-desk-light-brown-thumbnail.avif"
+                  alt="IKEA HEMNES desk with wood grain finish">
+              </a>
+              <a href="home_floor_plan_annotated.webp" target="_blank">
+                <img class="thumbnail" src="home_floor_plan_annotated_thumbnail.webp"
+                  alt="Home floor plan with bedroom highlighted">
+              </a>
+
+              <figcaption>
+                From left to right: Bedroom (realtor photo), IKEA HEMNES desk (product photo), floor plan (bedroom
+                highlighted)
+              </figcaption>
+            </figure>
+
+          </div>
+          <div class="artifact-flip" id="phones">
+            <h2>Test devices (2/10)</h2>
+
+            <p>The competition launched in late February but I didn't enter until early April. Given the time crunch,
+              it didn't make sense to place an online order for an unlocked KRZR and sit around waiting for it to
+              arrive. Instead, I went to a local store selling imported mobile phones and purchased the closest device I
+              could find: The Motorola SLVR. The SLVR and the KRZR had similar features, but the SLVR was under-specced.
+              My thinking at the time was that if the game ran fine on the SLVR, it would run fine on the KRZR.</p>
+
+            <p>Alongside the SLVR, I also purchased a Samsung SGH-D520, just so I could have another device to test
+              with. The shop owner cut the tax off the price because I bought two phones and paid cash.</p>
+
+            <figure>
+              <a href="https://commons.wikimedia.org/w/index.php?curid=1482695" target="_blank">
+                <img class="thumbnail" src="Motorola_SLVR_L7_flickr_214905784_1280w_Q70_thumbnail.avif"
+                  alt="Motorola SLVR L7">
+              </a>
+              <a href="https://commons.wikimedia.org/w/index.php?curid=189948312" target="_blank">
+                <img class="thumbnail" src="Samsung_SGH-D520_(Aqua_Black)_-_Front_(Open)_1280w_Q70_thumbnail.avif"
+                  alt="Samsung SGH-D520">
+              </a>
+              <a href="https://commons.wikimedia.org/w/index.php?curid=167959741" target="_blank">
+                <img class="thumbnail" src="Motorola_KRZR_K1_1280w_Q70_thumbnail.avif" alt="Motorola KRZR K1">
+              </a>
+
+              <figcaption>
+                From left to right: SLVR (wikipedia photo), SGH-D520 (wikipedia photo), KRZR (wikipedia photo)
+              </figcaption>
+            </figure>
+
+            <figure>
+              <table>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>KRZR</th>
+                    <th>SLVR</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Java version</td>
+                    <td>MIDP 2.0 / CLDC 1.1</td>
+                    <td>MIDP 2.0 / CLDC 1.1</td>
+                  </tr>
+                  <tr>
+                    <td>Java heap size</td>
+                    <td>939kb</td>
+                    <td>800kb</td>
+                  </tr>
+                  <tr>
+                    <td>Java record store max</td>
+                    <td>512kb</td>
+                    <td>512kb</td>
+                  </tr>
+                  <tr>
+                    <td>Persistent memory</td>
+                    <td>20mb</td>
+                    <td>11mb</td>
+                  </tr>
+                  <tr>
+                    <td>Display</td>
+                    <td>1.9" TFT, 176x220, 256K colors</td>
+                    <td>1.9" TFT, 176x220, 256K colors</td>
+                  </tr>
+                  <tr>
+                    <td>Bluetooth version</td>
+                    <td>2.0</td>
+                    <td>1.2</td>
+                  </tr>
+                </tbody>
+              </table>
+              <figcaption>KRZR vs SLVR spec comparison</figcaption>
+            </figure>
+          </div>
+          <div class="artifact-flip" id="mmo-origins">
+            <h2>Origins of the engine (3/10)</h2>
+
+            <p>Before coming up with Mad Kaz, I was planning to make an entirely different game. My original game idea
+              was a social top-down 2D MMO with mini-games. I created documents mocking out how it would look and how I
+              would go about building it.</p>
+
+            <figure>
+              <a href="original_gaant_summary.avif" target="_blank">
+                <img class="thumbnail" src="original_gaant_summary_thumbnail.avif"
+                  alt="Gaant chart, detailing high-level tasks">
+              </a>
+              <a href="original_gaant.avif" target="_blank">
+                <img class="thumbnail" src="original_gaant_thumbnail.avif"
+                  alt="Long-form Gaant chart, detailing high-level and low-level tasks">
+              </a>
+              <a href="original_ui_flow.avif" target="_blank">
+                <img class="thumbnail" src="original_ui_flow_thumbnail.avif" alt="User interface flow">
+              </a>
+              <a href="original_mmo_demo_map_layout.avif" target="_blank">
+                <img class="thumbnail" src="original_mmo_demo_map_layout_thumbnail.avif"
+                  alt="Envisioned MMO map, containing multiple chat lounges, a maze game, a checkers game, and a tank game">
+              </a>
+
+              <figcaption>From left to right: High-level estimates, low-level estimates, UI flow mockup, map mockup
+              </figcaption>
+            </figure>
+
+            <p>I ditched the MMO idea early on because, even if it all went according to plan, development would have
+              stretched well past the competition's deadline of early August. What I didn't ditch were the game engine
+              components highlighted in the work plan. I figured that many of them would still be needed regardless of
+              the game idea I finally settled on.</p>
+
+            <p>Before ultimately deciding on Mad Kaz as the game to build, I spent a week building a font renderer, half
+              a week on a Huffman compressor, three weeks on a virtual machine and assembler, and one week on image
+              transformations and real-time audio mixing.</p>
+
+            <figure>
+              <a href="text_rendering_test.png" target="_blank">
+                <img class="thumbnail" src="text_rendering_test_thumbnail.png" alt="Text rendering">
+              </a>
+              <a href="image_rotation_test.png" target="_blank">
+                <img class="thumbnail" src="image_rotation_test_thumbnail.png"
+                  alt="A sprite in the first row, and that same sprite rotated 350 degrees in the second row">
+              </a>
+              <a href="image_postprocessing_test.png" target="_blank">
+                <img class="thumbnail" src="image_postprocessing_test_thumbnail.png"
+                  alt="A sprite in the first row, followed by the subsequent rows containing manipulated versions of that sprite: grayscale, inverted, and tiled">
+              </a>
+              <a href="benchmark_test.png" target="_blank">
+                <img class="thumbnail" src="benchmark_test_thumbnail.png"
+                  alt="Menu screen for selecting one of many benchmarking tests.">
+              </a>
+              <figcaption>From left to right: Font render test, image rotate test, image post-process test, benchmark
+                suite</figcaption>
+            </figure>
+          </div>
+          <div class="artifact-flip" id="mad-kaz-original-plan">
+            <h2>Origins of Mad Kaz (4/10)</h2>
+
+            <p>Mad Kaz was intended to be a reimagining of the games <a
+                href="https://www.youtube.com/watch?v=kR5l14rhfjo">NS-SHAFT</a> and <a
+                href="https://www.youtube.com/watch?v=4F1F8O6TkMo">NS-TOWER</a>, blended into a unified narrative
+              experience with levels. Each level was to be unique in terms of graphics, audio, and gameplay mechanics. I
+              came up with a story arc along with a list of levels. The title character, Mad Kaz, would climb up from
+              inside the Earth and eventually out into space, before encountering an alien boss battle and falling back
+              down to Earth.</p>
+
+            <figure>
+              <table style="table-layout: auto;">
+                <thead>
+                  <tr>
+                    <th>Level Num</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Internal Core</td>
+                    <td>Climb</td>
+                    <td>Hot wavy screen. Stepping tiles look like they're so hot that they're almost molten. Background
+                      includes a cavernous view of the earth with magma shooting out of the edges, etc.. etc..</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Below The Crust</td>
+                    <td>No-Drop Climb</td>
+                    <td>Stepping on clay pieces. Nothing to exciting about this zone, covered in a repetitive dirt view.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>The Surface</td>
+                    <td>No-Drop Climb</td>
+                    <td>Earth's surface. Building windows, etc... Shake every now and then to symbol a missile hit and
+                      flash screen white. Possible rain as well?</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>In The Sky</td>
+                    <td>No-Drop Climb</td>
+                    <td>Zoomed out view of city and buildings in ruins, and missiles piling into buildings. Lots of Wind
+                      fucking with your movements. Hard time going left/right depending on direction of the wind.</td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>Above The Chaos</td>
+                    <td>No-Drop Climb</td>
+                    <td>Dusk sun going down. Dark black clouds underneath. Nothing too special.</td>
+                  </tr>
+                  <tr>
+                    <td>6</td>
+                    <td>The Horizon</td>
+                    <td>Low-Grav No-Drop Climb</td>
+                    <td>Watching sun go down on earth's horizon Nothing special about this one, just an introduction to
+                      low-grav jumping.</td>
+                  </tr>
+                  <tr>
+                    <td>7</td>
+                    <td>Approaching The Ring</td>
+                    <td>Low-Grav No-Drop Climb</td>
+                    <td>Everythings really dark so it's hard to see where you're jumping. At some point earlier heat
+                      vision googles might have been picked up which could be used here.</td>
+                  </tr>
+                  <tr>
+                    <td>8</td>
+                    <td>Inside The Ring</td>
+                    <td>No-Drop Climb</td>
+                    <td>Alien ships flying back and forth and general alien ship look.</td>
+                  </tr>
+                  <tr>
+                    <td>9</td>
+                    <td>The Boss</td>
+                    <td>Fast Drop</td>
+                    <td>Hard drop down a corridor. The boss does a lot to mess you up, including blanking out your
+                      screen for seconds at a time. There is an electric beam coming down that you must avoid in this
+                      hard drop. Must press action button on specific tiles to damage the enemy</td>
+                  </tr>
+                  <tr>
+                    <td>10</td>
+                    <td>The Escape</td>
+                    <td>Fast Drop</td>
+                    <td>The laser beam is still following you even after the boss is dead, you must outrun it.</td>
+                  </tr>
+                  <tr>
+                    <td>11</td>
+                    <td>It All Comes Down</td>
+                    <td>Fast Drop</td>
+                    <td>Service tunnel you came up in is collapsing. Stay ahead of collapsing debris.</td>
+                  </tr>
+                  <tr>
+                    <td>12</td>
+                    <td>The Aftermath</td>
+                    <td>Free Fall</td>
+                    <td>Free falling back to Earth. You'll see pieces of the tubes used to draw magma from the earth
+                      falling down in the background in a hail of fire. Avoid hitting debris when falling.</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <figcaption>Mad Kaz's original level description spreadsheet</figcaption>
+            </figure>
+          </div>
+          <div class="artifact-flip" id="mad-kaz-art">
+            <h2>Mad Kaz's art (5/10)</h2>
+
+            <p>To help piece Mad Kaz's levels together, I contracted out to several artists. A chiptunes musician by the
+              name of Xonic the Fox produced three MIDI tracks. A few basic concept art sketches were created by a high
+              school classmate, William. Those sketches then went to Mykola, a pixel artist who agreed to do the
+              important work of reimagining them as pixel art.</p>
+
+            <figure>
+              <a href="mykola_teeth_mock.png" target="_blank">
+                <img class="thumbnail" src="mykola_teeth_mock.png"
+                  alt="Envisioned city scape level with helicopters and a giant clamping jaw, jaw opened">
+              </a>
+              <a href="mykola_teeth_mock_clamped.png" target="_blank">
+                <img class="thumbnail" src="mykola_teeth_mock_clamped.png"
+                  alt="Envisioned city scape level with helicopters and a giant clamping jaw, jaw closed">
+              </a>
+              <a href="mykola_checker_mock.png" target="_blank">
+                <img class="thumbnail" src="mykola_checker_mock.png" alt="Envisioned level with checker background">
+              </a>
+              <a href="mykola_blocks.png" target="_blank">
+                <img class="thumbnail" src="mykola_blocks.png" alt="Sample stepping blocks">
+              </a>
+              <a href="mykola_blocks_timetr.png" target="_blank">
+                <img class="thumbnail" src="mykola_blocks_timetr.png" alt="Sample stepping blocks">
+              </a>
+              <a href="mykola_dude_sheet_2x.png" target="_blank">
+                <img class="thumbnail" src="mykola_dude_sheet_2x.png"
+                  alt="Mad Kaz imagined as a pixel art character, sprite sheet">
+              </a>
+              <a href="mykola_brickwall_mock.png" target="_blank">
+                <img class="thumbnail" src="mykola_brickwall_mock.png" alt="Brick wall with window">
+              </a>
+              <a href="mykola_bubble.png" target="_blank">
+                <img class="thumbnail" src="mykola_bubble.png" alt="Air bubble">
+              </a>
+              <a href="mykola_discoball.png" target="_blank">
+                <img class="thumbnail" src="mykola_discoball.png" alt="Discoball">
+              </a>
+              <a href="mykola_city_copters_wflip.png" target="_blank">
+                <img class="thumbnail" src="mykola_city_copters_wflip.png" alt="Helicopter sprite sheet">
+              </a>
+              <a href="mykola_font_blue.png" target="_blank">
+                <img class="thumbnail" src="mykola_font_blue.png" alt="In-game blue font">
+              </a>
+              <a href="mykola_font_neutral.png" target="_blank">
+                <img class="thumbnail" src="mykola_font_neutral.png" alt="In-game neutral font">
+              </a>
+              <a href="mykola_pill.png" target="_blank">
+                <img class="thumbnail" src="mykola_pill.png" alt="Pill">
+              </a>
+              <a href="mykola_planet.png" target="_blank">
+                <img class="thumbnail" src="mykola_planet.png" alt="Planet">
+              </a>
+              <a href="mykola_sat.png" target="_blank">
+                <img class="thumbnail" src="mykola_sat.png" alt="Satellite">
+              </a>
+              <a href="mykola_stars.png" target="_blank">
+                <img class="thumbnail" src="mykola_stars.png" alt="Stars background">
+              </a>
+              <a href="mykola_tiles_space_sky.png" target="_blank">
+                <img class="thumbnail" src="mykola_tiles_space_sky.png" alt="Stepping blocks for sky and space">
+              </a>
+              <a href="mykola_window_2.png" target="_blank">
+                <img class="thumbnail" src="mykola_window_2.png" alt="Window">
+              </a>
+              <a href="mykola_teeth.png" target="_blank">
+                <img class="thumbnail" src="mykola_teeth.png" alt="Clamping teeth / jaws">
+              </a>
+              <a href="mykola_menu_about.png" target="_blank">
+                <img class="thumbnail" src="mykola_menu_about.png" alt="About menu header">
+              </a>
+              <a href="mykola_menu_helpmenu.png" target="_blank">
+                <img class="thumbnail" src="mykola_menu_helpmenu.png" alt="Help menu header">
+              </a>
+              <a href="mykola_menu_levelselect.png" target="_blank">
+                <img class="thumbnail" src="mykola_menu_levelselect.png" alt="Level select menu header">
+              </a>
+              <a href="mykola_menu_mainmenu.png" target="_blank">
+                <img class="thumbnail" src="mykola_menu_mainmenu.png" alt="Main menu header">
+              </a>
+              <a href="mykola_menu_selectzone.png" target="_blank">
+                <img class="thumbnail" src="mykola_menu_selectzone.png" alt="Zone selection menu header">
+              </a>
+
+              <p>Closest surviving archive of Mykola's website (July 2007): <a
+                  href="https://web.archive.org/web/20070707075948/myk31.com">Myk31</a>.</p>
+
+              <p>Mykola's Mad Kaz uploads to PixelJoint: <a href="https://pixeljoint.com/pixelart/23794.htm">Upload
+                  1</a> and <a href="https://pixeljoint.com/pixelart/23793.htm">Upload 2</a></p>
+
+              <figcaption>Mykola artifacts</figcaption>
+            </figure>
+
+            <figure>
+              <a href="william_CIMG0130.avif" target="_blank">
+                <img class="thumbnail" src="william_CIMG0130_thumbnail.avif" alt="Character neutral pose">
+              </a>
+              <a href="william_lavafield1.avif" target="_blank">
+                <img class="thumbnail" src="william_lavafield1_thumbnail.avif"
+                  alt="Environment with what looks to be a river bank with bon fires and a city in the distance">
+              </a>
+              <a href="william_lavafield2.avif" target="_blank">
+                <img class="thumbnail" src="william_lavafield2_thumbnail.avif"
+                  alt="Environment with what looks to be a volcanic eruption in the distance">
+              </a>
+              <a href="william_tunnel.avif" target="_blank">
+                <img class="thumbnail" src="william_tunnel_thumbnail.avif"
+                  alt="Environment with looks like a elevator running through a tunnel shaft">
+              </a>
+              <a href="william_city.avif" target="_blank">
+                <img class="thumbnail" src="william_city_thumbnail.avif" alt="Cityscape environment">
+              </a>
+              <a href="william_P6130010.avif" target="_blank">
+                <img class="thumbnail" src="william_P6130010_thumbnail.avif" alt="Character sword holstering pose">
+              </a>
+              <a href="william_alien-brainstorm....avif" target="_blank">
+                <img class="thumbnail" src="william_alien-brainstorm..._thumbnail.avif" alt="Alien concepts">
+              </a>
+
+              <figcaption>William artifacts</figcaption>
+            </figure>
+
+            <figure>
+              <p><audio controls preload="none" src="xonic_danger zone.mp3"></audio> - Danger Zone, <a
+                  href="xonic_danger zone.mid">original MIDI</a></p>
+              <p><audio controls preload="none" src="xonic_road warrior.mp3"></audio> - Road Warrior, <a
+                  href="xonic_road warrior.mid">original MIDI</a></p>
+              <p><audio controls preload="none" src="xonic_solitude.mp3"></audio> - Solitude, <a
+                  href="xonic_solitude.mid">original MIDI</a></p>
+              <p>Closest surviving archive of Xonic's website (September 2007): <a
+                  href="https://web.archive.org/web/20070901005905/www.freewebs.com/go64mus">Technomancer</a>.</p>
+
+              <figcaption>Xonic artifacts</figcaption>
+            </figure>
+          </div>
+          <div class="artifact-flip" id="mad-kaz-scope-down">
+            <h2>Scaling down Mad Kaz (6/10)</h2>
+
+            <p>There wasn't enough time to both complete the game engine and build the game's <a
+                href="appendix_mad_kaz_original_levels_plan.html">twelve levels</a>. To try and make things work, I
+              scaled down the levels into six zones. Each zone was to have multiple levels that re-used assets and had
+              similar game logic.</p>
+
+            <p>Of those six zones, two were writeoffs. The first zone was a tutorial and the last zone was nothing more
+              than an in-game credit sequence cycling through names and photos of friends and people who worked on the
+              game. The four zones in the middle were the meat of the game.</p>
+
+            <a href="appendix_zone_breakdown.html" target="_blank">Zone breakdown and analysis</a>
+
+            <p>Old emails from that time show that I wasn't keeping it together. I hadn't properly scoped out the game's
+              development and dumped too much time into making the engine. My blacked-out bedroom also wasn't
+              helping. It was impossible for me to tell if it was day or night. I would pass out and wake up at random
+              hours.</p>
+
+            <figure>
+              <blockquote>
+                <p>
+                  <strong>From:</strong> Mykola &lt;m***@g***.com&gt;<br>
+                  <strong>To:</strong> Kasra F. &lt;k***@c***.com&gt;<br>
+                  <strong>Date:</strong> Wed, 13 Jun 2007 02:49:06 PDT<br>
+                  <strong>Subject:</strong> Re[2]: Progress?
+                </p>
+
+                <p>
+                  Man what the hell, don't get pissed.<br>
+                  look I told you I got sick with flu last week, I know you're pissed by it but<br>
+                  so am I - cuz there's nothing I could do about it.<br>
+                  I'm still not 100% but now I can at least use my computer normally so<br>
+                  things should be ok.
+                </p>
+
+                <p>
+                  I'm absolutely not gonna drop out, that's for sure. Don't panick man!<br>
+                  Please.
+                </p>
+
+                <p>
+                  NOW. on to the game itself.<br>
+                  I like both the music and the concept art. music is a good fit to the<br>
+                  game I believe.
+                </p>
+
+                <p>
+                  I attached some gfx you requested first. some floor tiles + the player<br>
+                  sprite.
+                </p>
+
+                <p>
+                  notes:<br>
+
+                </p>
+
+                <p>
+                  [...]
+                </p>
+
+                <p>
+                  let me know what you think bout these :) and then I'm moving on to<br>
+                  more gfx.
+                </p>
+
+                <figure>
+                  <img
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAAAyCAMAAACd646MAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAABjUExURf///wAAAK4aANMhAP9dABxMWNBKfbp1ZtNMADg4OFEuJmEAAIVRRmG4zVYXL1AAAJubm/+ZAAAid+vDueLi4pMwVpYTAMfm7eK+tq2trdN+AJ7T4P/dq7BVAPWjAGMwADMzM4sgJZEAAAAhdFJOU///////////////////////////////////////////AJ/B0CEAAAHvSURBVHja7JjrkqIwEEZJEAfMrHjNjgrOvv9TbujudAI6sx9jlT+2PJFO0oQ+WBrKsvjzBIqXZL6kRJGrLEomKbuu2wJ0HVvs+VyfiboeR0mHMY+sSspgWAg8opI8l6nkyGJDDVsrdMvUxyDZwWRVEgtupezdKadIIsXikSrLSJJ0WiVaK7v7cfXoLF1Y39Y50WBvU2HU5pIbSg7hw+bhNrzfUiS2pmZrX+twuPHYJDM0lTiupeWpLmU0lNsQh4Mk3vN3Z9rL5xOnwyCTEAsJi5tJhkq8lMo7znMnnqkkmaa40lEMB0laqxKvvR29K88LWpVEi3NJ54g0UkiS4X17H89n0o53MLS8xZk+u7IqLk45Pz754ANyUsWN+p875jyF3YNPYYMiV81cTxJzQOGrzAeKUYk5bDan0wYJZDEfbyhsIUmocDhggSRvOCNJ02Dh55LmdGrCAYSGJKt3lFUmwWEJTpLsYMfuAQkOSd5XcEsSs4MbS3BM2oxm3haeu/6/+y28xtDLKoyRZF3si8A/Q7RUBUb1bMm6ACViQR3R8jTJernfhxcSloOl+o1TJQkOSX7hPCAJ386hQBb76/XaT3JDHEmOSygcv5J89n3/+a3kiMOSy+USikzivVySoPtd93yF8/qz4CV5SUD+CjAAV/JtlfrnosMAAAAASUVORK5CYII="
+                    alt="Floor tile graphics">
+                  <figcaption>blocks.png</figcaption>
+                </figure>
+
+                <figure>
+                  <img
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAAVUExURVtZ2f///1+26LfW6F2H4P9dKzMzM5ohFpIAAAAHdFJOU////////wAaSwNGAAAAm0lEQVR42nzSWw7EIAgF0AtY97/kwlUUTVN+OuEEeWTQZyCi78jfMDNthZB5EVG0hhtEKFiCXTBqLhC5SwrYUZJgP/AcbyU8LPgA+QQ/xnjJHHSDbzHnvcFT0JhLD+DafkRV5guwcQiYL2BRBBYh3yIgwAyjYgGnoow2BXyvGCD71wXZg6HnETVgngAX+Hs9mk/B/u8A6+vxCjAAL6oHMw4HtscAAAAASUVORK5CYII="
+                    alt="Player sprite">
+                  <figcaption>dude.png</figcaption>
+                </figure>
+              </blockquote>
+
+              <figcaption>Mykola's e-mail responding to my meltdown</figcaption>
+            </figure>
+          </div>
+          <div class="artifact-flip" id="mad-kaz-submission">
+            <h2>Mad Kaz submission (7/10)</h2>
+
+            <p>July 26th was when the last zone was completed. Bugfixes and tweaks ran through July 27th and 28th. I
+              submitted Mad Kaz to the competition on July 29th. There were still 2 weeks remaining until the
+              competition's deadline, but money was running tight and I was burning out.</p>
+
+            <p>Mad Kaz's fundamental flaw was that it just wasn't fun to play. It ultimately ended up becoming a game
+              engine tech demo rather than a game, consisting of a mishmash of unbalanced and narratively disjointed
+              levels that tried to shove in as many engine features as possible. In a perfect world, I would have spent
+              those remaining 2 weeks play testing and polishing the game play as much as possible.</p>
+
+            <figure>
+              <a href="mad_kaz_submission_form.avif" target="_blank">
+                <img class="thumbnail" src="mad_kaz_submission_form_thumbnail.avif"
+                  alt="Mad Kaz signed entry form for the competition">
+              </a>
+
+              <a href="mad_kaz_submission_document.pdf" target="_blank">
+                <img class="thumbnail" src="mad_kaz_submission_document_page1_thumbnail.avif"
+                  alt="Mad Kaz's competition entry documentation, submitted along with the game into the competition.">
+              </a>
+
+              <p><a href="https://github.com/offbynull/mad_kaz" target="_blank">Mad Kaz source code and assets.</a></p>
+
+              <p><a href="mad_kaz_submission_game/index.html" target="_blank">Mad Kaz game</a>, converted by AI to be
+                playable inside a browser.</p>
+
+              <figcaption>From left to right: Entry form, entry documentation, source code, playable game</figcaption>
+            </figure>
+
+            <p>I showed Mad Kaz to a few friends. Many of them didn't understand or care about the technical merits of
+              the engine. I also wrote my father, living in California at the
+              time, letting him know what I had been up to during the four months I'd been unemployed. I don't think he
+              fully grasped what had happened.</p>
+
+            <figure>
+              <blockquote>
+                <p>
+                  <strong>From:</strong> MOE F &lt;m***@s***.ca&gt;<br>
+                  <strong>To:</strong> Kaz F &lt;k***@h***.com&gt;<br>
+                  <strong>Date:</strong> Tue, 31 Jul 2007 19:12:07 PDT<br>
+                  <strong>Subject:</strong> Re:
+                </p>
+
+                <p>Hi Kasra,</p>
+
+                <p>
+                  I saw your game, You did a fantastic work, I am very proud of you. With<br>
+                  all hope and good luck to you you are the best, anyway you are a<br>
+                  winner to me.
+                </p>
+
+                <p>Cheers!!!!</p>
+
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;Kambiz</p>
+
+                <p>
+                  ----- Original Message -----<br>
+                  From: Kaz F &lt;k***@h***.com&gt;<br>
+                  Date: Tuesday, July 31, 2007 4:49 pm<br>
+                  Subject:<br>
+                  To: m***@s***.ca
+                </p>
+
+                <p>
+                  &gt; Hey Kambiz,<br>
+                  &gt;&nbsp;&nbsp;<br>
+                  &gt; Here's what I've been working on for the past 3 or so months. I<br>
+                  &gt; entered it into the Motorola competition a couple of days ago. It<br>
+                  &gt; was designed to run specific Motorola phones and some other<br>
+                  &gt; phones (Motorola Vxxx, Motorola SLVR, Motorola K1, Samsung SGH-<br>
+                  &gt; D520, etc.. etc..), so you can't play it on your phone.<br>
+                  &gt;&nbsp;&nbsp;<br>
+                  &gt; <a
+                    href="http://www.codeyielddevelopment.com/madkaz.php">http://www.codeyielddevelopment.com/madkaz.php</a><br>
+                </p>
+              </blockquote>
+
+              <figcaption>Father's reaction</figcaption>
+            </figure>
+          </div>
+          <div class="artifact-flip" id="mad-kaz-post-submission">
+            <h2>Post-submission job hunt (8/10)</h2>
+
+            <p>Back around that time, I was using a spreadsheet to track my bank balance. Money was beginning
+              to run tight. I started the competition with around $7,500 to my name. By the time I
+              submitted Mad Kaz in late July, I had around $2,500 remaining and was on a steep downward trajectory.</p>
+
+            <figure>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Chequing</th>
+                    <th>Savings</th>
+                    <th>Combined</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Mar 15</td>
+                    <td>$436.93</td>
+                    <td>$7,001.25</td>
+                    <td>$7,438.18</td>
+                  </tr>
+                  <tr>
+                    <td>Mar 30</td>
+                    <td>$366.81</td>
+                    <td>$7,001.25</td>
+                    <td>$7,368.06</td>
+                  </tr>
+                  <tr>
+                    <td>Apr 6</td>
+                    <td>$366.81</td>
+                    <td>$5,781.31</td>
+                    <td>$6,148.12</td>
+                  </tr>
+                  <tr>
+                    <td>Apr 9</td>
+                    <td>$516.81</td>
+                    <td>$5,631.31</td>
+                    <td>$6,148.12</td>
+                  </tr>
+                  <tr>
+                    <td>Apr 13</td>
+                    <td>$29.65</td>
+                    <td>$5,631.31</td>
+                    <td>$5,660.96</td>
+                  </tr>
+                  <tr>
+                    <td>Apr 15</td>
+                    <td>$160.96</td>
+                    <td>$5,500.00</td>
+                    <td>$5,660.96</td>
+                  </tr>
+                  <tr>
+                    <td>Apr 27</td>
+                    <td>$1,708.62</td>
+                    <td>$5,500.00</td>
+                    <td>$7,208.62</td>
+                  </tr>
+                  <tr>
+                    <td>May 6</td>
+                    <td>$1,185.26</td>
+                    <td>$5,500.00</td>
+                    <td>$6,685.26</td>
+                  </tr>
+                  <tr>
+                    <td>May 10</td>
+                    <td>$876.76</td>
+                    <td>$5,500.00</td>
+                    <td>$6,376.76</td>
+                  </tr>
+                  <tr>
+                    <td>May 30</td>
+                    <td>$876.76</td>
+                    <td>$4,698.41</td>
+                    <td>$5,575.17</td>
+                  </tr>
+                  <tr>
+                    <td>Jun 28</td>
+                    <td>$1,876.76</td>
+                    <td>$3,699.28</td>
+                    <td>$5,576.04</td>
+                  </tr>
+                  <tr>
+                    <td>Jul 11 16:17</td>
+                    <td>$2,576.61</td>
+                    <td>$3,000.00</td>
+                    <td>$5,576.61</td>
+                  </tr>
+                  <tr>
+                    <td>Jul 11 16:20</td>
+                    <td>$539.04</td>
+                    <td>$3,000.00</td>
+                    <td>$3,539.04</td>
+                  </tr>
+                  <tr>
+                    <td>Jul 17</td>
+                    <td>$539.04</td>
+                    <td>$2,000.00</td>
+                    <td>$2,539.04</td>
+                  </tr>
+                  <tr>
+                    <td>Aug 7</td>
+                    <td>$1,039.04</td>
+                    <td>$1,500.26</td>
+                    <td>$2,539.30</td>
+                  </tr>
+                  <tr>
+                    <td>Aug 14</td>
+                    <td>$231.86</td>
+                    <td>$1,500.26</td>
+                    <td>$1,732.12</td>
+                  </tr>
+                  <tr>
+                    <td>Aug 19</td>
+                    <td>$631.86</td>
+                    <td>$1,098.26</td>
+                    <td>$1,730.12</td>
+                  </tr>
+                  <tr>
+                    <td>Sep 8</td>
+                    <td>$311.58</td>
+                    <td>$1,098.26</td>
+                    <td>$1,409.84</td>
+                  </tr>
+                  <tr>
+                    <td>Sep 20 17:15</td>
+                    <td>$311.58</td>
+                    <td>$798.38</td>
+                    <td>$1,109.96</td>
+                  </tr>
+                  <tr>
+                    <td>Sep 20 17:16</td>
+                    <td>$611.58</td>
+                    <td>$498.38</td>
+                    <td>$1,109.96</td>
+                  </tr>
+                  <tr>
+                    <td>Oct 6 16:27</td>
+                    <td>$611.58</td>
+                    <td>$197.45</td>
+                    <td>$809.03</td>
+                  </tr>
+                  <tr>
+                    <td>Oct 6 16:29</td>
+                    <td>$761.58</td>
+                    <td>$47.45</td>
+                    <td>$809.03</td>
+                  </tr>
+                  <tr>
+                    <td>Oct 27</td>
+                    <td>$592.09</td>
+                    <td>$47.45</td>
+                    <td>$639.54</td>
+                  </tr>
+                </tbody>
+              </table>
+              <figcaption>Bank spreadsheet</figcaption>
+            </figure>
+
+            <p>I started looking for work again almost immediately after submitting Mad Kaz. I fired off applications to
+              anywhere that was hiring, but at the same time I was also trying to leverage Mad Kaz to get hired at a
+              real game studio. I ended up open-sourcing Mad Kaz in the hopes that a technically-inclined reviewer would
+              look through it and come to the conclusion that there was enough there to pull me in for an interview.</p>
+
+            <p>I applied to four now-defunct studios: Radical Entertainment, Threewave, Blue Castle Games, and IUGO. The
+              application to Radical Entertainment went nowhere. Threewave had me fill out a questionnaire and scheduled
+              a phone screen, but ultimately it didn't move forward either.</p>
+
+            <p>Blue Castle Games had me come in for an interview. They were hiring a <a
+                href="https://web.archive.org/web/20071115235430/http://www.bluecastlegames.com/jobs_softwareengineer_junior.html">junior
+                network programmer</a> for Dead Rising 2. It didn't go well. An interviewer had gone through Mad Kaz's
+              code and made derisive comments in what felt like a failed attempt at shit testing me. Another
+              interviewer had me whiteboarding how to model zombie movements, and when he jumped in with a question a
+              competing thought entered my head and I inadvertently told him to shut up. The
+              interview ended with a brain teaser that had me fumbling and freezing up (<a
+                href="https://www.physicsforums.com/threads/riddle-of-the-three-prisoners-who-knows-their-hat-color.331079">three-prisoners
+                hat riddle</a>).</p>
+
+            <figure>
+              <blockquote>
+                <p>
+                  <strong>From:</strong> Melissa S &lt;m***@bluecastlegames.com&gt;<br>
+                  <strong>To:</strong> 'Kasra F' &lt;k***@***.ca&gt;<br>
+                  <strong>Date:</strong> Mon, 10 Sep 2007 18:28:08 PDT<br>
+                  <strong>Subject:</strong> RE: Interview Next Steps from Blue Castle Games
+                </p>
+
+                <p>Hi Kaz,</p>
+
+                <p>
+                  There will be two interviews - one from 10-11 and another from 11-12.D***<br>
+                  will be there, as will J*** (Technical Director), V***<br>
+                  (Programmer), and T*** (Sr. Programmer). I will meet you when you<br>
+                  arrive and get you settled in.
+                </p>
+
+                <p>
+                  The interviews will cover a mix of technical and "soft" skill questions. I<br>
+                  can't tell you the exact questions they will ask, but I can tell you that<br>
+                  they will ask you to do some coding work on a white board in addition to<br>
+                  answering questions orally.
+                </p>
+
+                <p>Hope that helps! I will send you the NDA and directions tomorrow morning.</p>
+
+                <p>Have a good night!</p>
+              </blockquote>
+              <figcaption>Blue Castle interview invitation</figcaption>
+            </figure>
+
+            <p>IUGO had me come in for an interview after I made a personal appeal to the CEO. It went well. The
+              atmosphere was relaxed. A college acquaintance was working there. One of the interviewers had me sit down
+              with a stack of papers full of game coding and design questions. When I finished, he tossed them aside,
+              saying something to the effect of "I don't need to look at it. I know you know your stuff."</p>
+
+            <p>The last part of the interview had me chatting with the CEO. He had either given me an offer or was on
+              the verge of giving one, but I ended up walking away. I don't recall exactly why. It may have been because
+              I was actively interviewing at Blue Castle Games, or I may have been feeling too full of myself and
+              gunning for a more senior role, or it may have been because the office felt uncomfortably bright. It was
+              unusually sunny that day. IUGO's office space let a lot of that sun in. I had spent most of my time
+              building Mad Kaz in my blacked-out bedroom.</p>
+
+            <figure>
+              <blockquote>
+                <p>
+                  <strong>From:</strong> Hong-Yee W &lt;h***@iugome.com&gt;<br>
+                  <strong>To:</strong> 'Kaz F' &lt;k***@h***.com&gt;<br>
+                  <strong>Date:</strong> Wed, 05 Sep 2007 13:57:30 PDT<br>
+                  <strong>Subject:</strong> RE: Application for J2ME/BREW Programmer
+                </p>
+
+                <p>Hi Kazra,</p>
+
+                <p>
+                  Let's try this again. Please come in for an interview tomorrow (6 Sep) at<br>
+                  11am. Our office address remains unchanged - see below.
+                </p>
+
+                <p>[...]</p>
+
+                <p>
+                  From: Kaz F [mailto:k***@h***.com]<br>
+                  Sent: Thursday, August 02, 2007 3:20 PM<br>
+                  To: h***@iugome.com<br>
+                  Subject: RE: Application for J2ME/BREW Programmer
+                </p>
+
+                <p>Hey Hong,</p>
+
+                <p>
+                  I'm just getting in touch with you to give you an update on my status. I<br>
+                  gave in my resignation at AirG a little while after initially sending in my<br>
+                  resume to IUGO so that I could take part in the Motodev game developer<br>
+                  challenge. I made sure to incorporate before I made my submission (strictly<br>
+                  for liability reasons). You can find the game and source code (GPLv3) on my<br>
+                  website. If any other positions at IUGO open up that you think I'm qualified<br>
+                  for, don't hesitate to give me a shout.
+                </p>
+
+                <p>I've attached my resume in case you want to glance it over again.</p>
+
+                <p>- Kaz</p>
+
+                <p>
+                  From: h***@iugome.com<br>
+                  To: k***@h***.com<br>
+                  Subject: RE: Application for J2ME/BREW Programmer<br>
+                  Date: Mon, 20 Nov 2006 13:37:58 PST
+                </p>
+
+                <p>Hi Kasra,</p>
+
+                <p>
+                  Please come in for an interview tomorrow (20 Nov) at 3pm. Our office is in<br>
+                  Yaletown: [...]
+                </p>
+
+                <p>
+                  -----Original Message-----<br>
+                  From: Kaz F [mailto:k***@h***.com]<br>
+                  Sent: Sunday, November 19, 2006 5:51 PM<br>
+                  To: h***@iugome.com<br>
+                  Subject: Application for J2ME/BREW Programmer
+                </p>
+
+                <p>Dear IUGO HR Department,</p>
+
+                <p>
+                  This letter is to express my interest in discussing the mobile game
+                  developer position posted on the IUGO website. [...]
+                </p>
+              </blockquote>
+
+              <figcaption>IUGO interview invitation</figcaption>
+            </figure>
+
+            <p>In the end, my money was drying up. I had around $800 left in the bank and so I accepted a job at a
+              company that made calendar software. The salary was around 15% lower than that of the job I resigned from
+              to enter the competition. Weeks after starting, I revisited the <a
+                href="https://web.archive.org/web/20071021030058/http://developer.motorola.com/eventstraining/gamechallenge/">MOTODEV
+                Game Developer Challenge website</a>. Mad Kaz hadn't won, nor was it one of the finalists. I never heard
+              from the people running the competition about their thoughts on Mad Kaz or how it ranked against other
+              games in the competition.</p>
+          </div>
+          <div class="artifact-flip" id="mad-kaz-engine-post-mortem">
+            <h2>Engine postmortem (9/10)</h2>
+
+            <p>Mad Kaz's engine was the culmination of my experiences with gaming and coding, starting from early
+              childhood experiments on the first family PC my father purchased in the early 1990s all the way up to the
+              job I resigned from to enter the competition.</p>
+
+            <p>As a game, Mad Kaz failed. As a game engine, it succeeded at doing something few at the time had
+              attempted: It was a programmable UGC platform for the resource-constrained mobile devices of that era. The
+              individual components of the engine weren't all that unique or original. Doom had already popularized pack
+              files, Quake had already popularized scripting, QuakeWorld had already popularized in-game level
+              downloads, countless games performed dynamic audio mixing and graphical post-processing, etc. It was the
+              collection of those individual components together under a single umbrella, running successfully on a
+              Java device with 800kb of heap, that made for something special.</p>
+
+            <p>Many of the individual components within Mad Kaz were born out of my experiences at my <a
+                href="https://corp.airg.com">former employer</a>. The R&D
+              head at the time was forgiving enough to look past my attitude problem and let me work under him. He made
+              several attempts at a scriptable platform for their mobile apps. Those scriptable platforms, along with
+              Java's virtual machine and Quake's virtual machine, became the inspiration for Mad Kaz's virtual machine
+              and assembler.
+            </p>
+
+            <p>Mad Kaz's PNG palette editing module was inspired from overhearing a watercooler discussion one day at
+              work. A
+              senior engineer mentioned how someone they knew wrote code to go in and edit a PNG's palette at runtime.
+              After hearing that, I visited a <a
+                href="https://web.archive.org/web/20060829121200/http://www.wotsit.org/">now-defunct website known for
+                indexing file format specifications</a>, pulled out the specifications for PNG, and spent a few days at
+              work trying to come up with interesting things to do with palette modifications.</p>
+
+            <p>Mad Kaz's image manipulation functions were inspired by a college classmate. While sitting in a college
+              computer lab one day, he wrote code to resize an image using bilinear scaling. We didn't know that it was
+              called bilinear scaling at the time, but his idea of pixel-to-pixel gradients was the seed for Mad Kaz's
+              image rotation, scaling, and post-processing effects.</p>
+
+            <p>Mad Kaz's image manipulation functions required rational numbers, but most mobile phones at that time
+              didn't include a hardware floating point unit. Somewhere along the way, I had learned about fixed-point
+              math and lookup tables. I used fixed-point math to implement a progress bar in one of my employer's mobile
+              apps, and I also used it to perform the image manipulation math in Mad Kaz.</p>
+
+            <p>The list goes on. It was all prior art that, at some point or another, I had experienced and internalized
+              in some way.</p>
+
+            <figure>
+              <ul>
+                <li><strong>Apr 3:</strong> Empty repository.</li>
+                <li><strong>Apr 11-14:</strong> Built Hershey font conversion and rendering, then added word wrapping,
+                  resizing, and Huffman compression.</li>
+                <li><strong>Apr 21-May 3:</strong> Added an assembler and VM instruction set, generalized the VM, and
+                  built J2ME benchmarks and runtime support.</li>
+                <li><strong>May 4-7:</strong> Added WAV mixing and image/PNG tools, palette replacement, graphics
+                  management, and tiling.</li>
+                <li><strong>May 8-12:</strong> Added game canvas, sprites, scenes, music, logo animation, and text
+                  handling; adjusted loading and key-repeat behavior for phones.</li>
+                <li><strong>May 13-31:</strong> Added menus, windows, dialogs, persistent storage, and image rotation;
+                  refined text layout and fixed device/input bugs.</li>
+                <li><strong>Jun 2-4:</strong> Added Micro3D-related tools and scrolling/physics code; comments note
+                  unfinished gravity and offset behavior.</li>
+                <li><strong>Jun 4-14:</strong> Added the first large Mad Kaz implementation, including its VM, gameplay,
+                  collisions, and image/resource handling. Later changes renamed the play canvas and optimized
+                  performance; one replaces many <code>StringBuffer</code> UI values with <code>char[]</code>.</li>
+                <li><strong>Jun 14-19:</strong> Expanded game-specific VM operations for state, input, effects, and
+                  timers. Added custom-map UI and began network access.</li>
+                <li><strong>Jun 20-28:</strong> Added network map downloads, local storage and browsing, and tools to
+                  package downloadable levels from XML. Extended gameplay controls, sprites, and graphics parsing.</li>
+                <li><strong>Jul 1-3:</strong> Prototyped Bluetooth multiplayer and menus, then added a credits sequence
+                  and gameplay/timing fixes.</li>
+                <li><strong>Jul 5-10:</strong> Added an automated-scene engine and tests, then connected scene behavior
+                  to the game and SDK.</li>
+                <li><strong>Jul 12-21:</strong> Added configuration storage, level selection/unlocks, and substantial
+                  zone and level content.</li>
+                <li><strong>Jul 22-27:</strong> Removed the unplayable multiplayer path, added peer-to-peer custom-map
+                  transfer, and optimized level packaging with an indexed combiner. Reorganized zone 6 as zone 5.</li>
+                <li><strong>Jul 27-28:</strong> Revised setup, credits, copyright/license text, and packaging; removed
+                  map compression; reorganized into trunk/tags and created MOTODEV/alpha snapshots. Added a downloadable
+                  "Space Quest" map.</li>
+              </ul>
+              <figcaption>Development timeline, summarized by AI from the original repository</figcaption>
+            </figure>
+          </div>
+          <div class="artifact-flip" id="incorporation">
+            <h2>Incorporating (10/10)</h2>
+
+            <p>One unimportant but mildly interesting fact about Mad Kaz and the competition was that I incorporated a
+              company to enter the competition with: CodeYield Development Inc. I contracted out the company's website
+              design to a high school friend and got myself a fax number. For some reason, I thought that people
+              wouldn't take the company seriously unless it had a fax number.</p>
+
+            <figure>
+              <a href="cyd_website.png" target="_blank">
+                <img class="thumbnail" src="cyd_website_thumbnail.png" alt="CodeYield Development website">
+              </a>
+              <p>Closest surviving archive of CodeYield Development's website (February 2011): <a
+                  href="https://web.archive.org/web/20110208044938/http://codeyielddevelopment.com/">CodeYield
+                  Development</a>.</p>
+              <a href="https://www.bclaws.gov.bc.ca/civix/document/id/corpreg/corpreg/crpn0322fin1007">Corporate
+                registry notice.</a>
+              <figcaption>Left to right: CodeYield Development screenshot, CodeYield Development archive, corporate
+                registry notice.</figcaption>
+            </figure>
+          </div>
+        </div>
+        <hr>
+
+        <button onclick="changeArtifact(-1)">← Previous</button><button onclick="changeArtifact(1)">Next →</button>
+
+        <script>
+          const artifacts = document.querySelectorAll('.artifact-flip');
+          let current = 0;
+
+          function changeArtifact(direction) {
+            artifacts[current].style.display = 'none';
+            current = (current + direction + artifacts.length) % artifacts.length;
+            artifacts[current].style.display = 'block';
+          }
+
+          artifacts.forEach((el, i) => {
+            el.style.display = i === 0 ? 'block' : 'none';
+          });
+        </script>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
