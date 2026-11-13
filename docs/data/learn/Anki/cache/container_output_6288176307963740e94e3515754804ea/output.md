@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(levenshtein distance|string distance)/i"></span>

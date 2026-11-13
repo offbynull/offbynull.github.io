@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://www.reddit.com/r/FreeCAD/comments/1m77d13/what_are_construction_geometries/)</sub>

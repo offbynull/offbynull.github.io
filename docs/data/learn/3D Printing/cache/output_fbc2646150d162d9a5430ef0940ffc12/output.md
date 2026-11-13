@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://wiki.bambulab.com/en/software/bambu-studio/release/release-note-2-5-3)</sub>

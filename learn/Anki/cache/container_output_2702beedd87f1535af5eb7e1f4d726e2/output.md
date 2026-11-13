@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(intensity|relative abundance|abundance)/i"></span>

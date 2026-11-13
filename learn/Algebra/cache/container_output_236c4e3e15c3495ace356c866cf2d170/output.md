@@ -1,0 +1,10 @@
+`{bm-disable-all}`[arithmetic_code/relation/properties/GreaterThanOrEqualProperties.py](arithmetic_code/relation/properties/GreaterThanOrEqualProperties.py) (lines 26 to 32):`{bm-enable-all}`
+
+```python
+def subtraction(rel: Relation, operand: Node, cache: ExplosionCache) -> set[RelationWithDomain]:
+    if rel.op == '>=':
+        _lhs = FunctionNode('-', [rel.lhs, operand])
+        _rhs = FunctionNode('-', [rel.rhs, operand])
+        return {RelationWithDomain.create(rel.op, _lhs, _rhs)}
+    return set()
+```

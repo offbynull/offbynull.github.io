@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(motif matrix|motif matrices)/i"></span>

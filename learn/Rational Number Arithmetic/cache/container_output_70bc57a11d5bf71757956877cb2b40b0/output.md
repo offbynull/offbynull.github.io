@@ -1,0 +1,1 @@
+`{kt}\begin{array}{l}\phantom{{{3}\smash{)}}}{{25\green{0}}} \\{{3}}\overline{\smash{)}{752}} \\\phantom{{{3}\smash{)}}}{\underline{6}} \\\phantom{{{3}\smash{)}}}{15} \\\phantom{{{3}\smash{)}}}{\underline{15}} \\\phantom{{{3}\smash{)}}}{\phantom{0}02} \\\phantom{{{3}\smash{)}}}{\phantom{00}\underline{\green{0}}} \\\phantom{{{3}\smash{)}}}{\phantom{00}\green{2}} \\\end{array}`

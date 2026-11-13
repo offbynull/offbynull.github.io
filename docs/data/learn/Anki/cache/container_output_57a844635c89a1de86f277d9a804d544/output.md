@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(divide-and-conquer algorithm|divide and conquer algorithm)/i"></span>

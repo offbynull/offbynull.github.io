@@ -1,0 +1,918 @@
+<!DOCTYPE html><html><head>
+            <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+            <meta content="utf-8" http-equiv="encoding">
+          <title>Game Theory</title><meta name="viewport" content="width=device-width,initial-scale=1"><link href=".temp_githib_css/github-markdown.css" rel="stylesheet"><link href=".temp_highlightjs_css/default.css" rel="stylesheet"></head>
+          <body class="markdown-body"><p></p>
+<div class="toc">
+<ul>
+<li><a href="#H_Terminology">Terminology</a></li>
+<li><a href="#H_Exercises">Exercises</a></li>
+<ul>
+<li><a href="#H_2.9.1%20Exercise%202.1%20a">2.9.1 Exercise 2.1 a</a></li>
+<li><a href="#H_2.9.1%20Exercise%202.1%20b">2.9.1 Exercise 2.1 b</a></li>
+<li><a href="#H_2.9.1%20Exercise%202.2%20a">2.9.1 Exercise 2.2 a</a></li>
+<li><a href="#H_2.9.1%20Exercise%202.2%20b">2.9.1 Exercise 2.2 b</a></li>
+<li><a href="#H_2.9.1%20Exercise%202.3%20a">2.9.1 Exercise 2.3 a</a></li>
+<li><a href="#H_2.9.1%20Exercise%202.3%20b">2.9.1 Exercise 2.3 b</a></li>
+<li><a href="#H_2.9.1%20Exercise%202.3%20c">2.9.1 Exercise 2.3 c</a></li>
+</ul>
+</ul>
+</div>
+<a name="H_Terminology"></a><h1>Terminology</h1>
+<ul>
+<li>
+<p><a name="BM_(game%20theory)%2Fi"></a><strong>game theory</strong> - A formal language for the representation and analysis of interactive situations where several <a href="#BM_(player)%2Fi">player</a>s take actions that jointly determine the final outcome. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p11]</a></sub> <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p18]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(player)%2Fi"></a><strong>player</strong> - An agent that acts purposefully and logically to get as close as possible to a set of well-defined goals. What a <a href="#BM_(player)%2Fi">player</a> is depends on the context. For example, in the context of ...</p>
+<ul>
+<li>economic behaviour, a <a href="#BM_(player)%2Fi">player</a> is a human.</li>
+<li>molecular biology, a <a href="#BM_(player)%2Fi">player</a> may be a pathogenic bacteria, immune cell, virus, etc..</li>
+<li>computer simulations, a <a href="#BM_(player)%2Fi">player</a> is typically an artificial agent.</li>
+</ul>
+<p><sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p11]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(homo%20rationalis)%2Fi"></a><strong>homo rationalis</strong> - An agent that acts purposefully and logically to get as close as possible to a set of well-defined goals. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p12]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(cooperative%20game%20theory)%2Fi"></a><strong>cooperative game theory</strong> - A branch of <a href="#BM_(game%20theory)%2Fi">game theory</a> where <a href="#BM_(player)%2Fi">player</a>s can cooperate through communication, forming coalitions, and making binding agreements. An example of <a href="#BM_(cooperative%20game%20theory)%2Fi">cooperative game theory</a> is politics, where various groups often form larger coalitions. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p12]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(non-cooperative%20game%20theory)%2Fi"></a><strong>non-cooperative game theory</strong> - A branch of <a href="#BM_(game%20theory)%2Fi">game theory</a> where <a href="#BM_(player)%2Fi">player</a>s are either unable to communicate or unable to make binding agreements. An example of <a href="#BM_(non-cooperative%20game%20theory)%2Fi">non-cooperative game theory</a> is competing firms that are hampered from colluding due to anti-trust laws.  <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p12]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(ordinal%20payoff%7Cordinal%20pay-off%7Cordinal%20game)%2Fi"></a><strong>ordinal payoff</strong> - A <a href="#BM_(game)%2Fi">game</a> where the <a href="#BM_(preference)%2Fi">preference</a>s of discrete outcomes are ranked using numbers. For example, the <a href="#BM_(preference)%2Fi">preference</a> for the type of cake to consume at a birthday party may be ...</p>
+<ol>
+<li>no cake available</li>
+<li>non-chocolate cake</li>
+<li>chocolate cake</li>
+</ol>
+<p>Item 3 (chocolate cake) is preferable over item 2 (non-chocolate cake), which is preferable over 1 (no cake).  <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p12]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(cardinal%20payoff%7Ccardinal%20pay-off%7Ccardinal%20game)%2Fi"></a><strong>cardinal payoff</strong> - A <a href="#BM_(game)%2Fi">game</a> where the <a href="#BM_(preference)%2Fi">preference</a> of outcome is based on quantities (e.g. amount of money) rather than a ranking of discrete items based on <a href="#BM_(preference)%2Fi">preference</a> (<a href="#BM_(ordinal%20payoff%7Cordinal%20pay-off%7Cordinal%20game)%2Fi">ordinal payoff</a>s).  <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p12]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(selfish%20and%20greedy)%2Fi"></a><strong>selfish and greedy</strong> - A <a href="#BM_(player)%2Fi">player</a> that focuses exclusively on itself when evaluating outcomes (selfish) and has <a href="#BM_(preference)%2Fi">preference</a> for an outcome where it gains more over less (greedy). <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p18]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(fair-minded)%2Fi"></a><strong>fair-minded</strong> - A <a href="#BM_(player)%2Fi">player</a> whose <a href="#BM_(preference)%2Fi">preference</a> is that all <a href="#BM_(player)%2Fi">player</a>s benefit equally. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p18]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(benevolent%7Cbenevolence)%2Fi"></a><strong>benevolent</strong> - A <a href="#BM_(player)%2Fi">player</a> that, when comparing a set of possible outcomes where they gain nothing, has a <a href="#BM_(preference)%2Fi">preference</a> for other <a href="#BM_(player)%2Fi">player</a>s gaining more over less. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p18]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(preference)%2Fi"></a><strong>preference</strong> - Given a set of outcomes, a <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(preference)%2Fi">preference</a>s are the order in which those outcomes are desired. It's not safe to assume that all <a href="#BM_(player)%2Fi">player</a>s in a <a href="#BM_(game)%2Fi">game</a> are <a href="#BM_(selfish%20and%20greedy)%2Fi">selfish and greedy</a>. For example, a <a href="#BM_(player)%2Fi">player</a> may <a href="#BM_(benevolent%7Cbenevolence)%2Fi">benevolent</a> or <a href="#BM_(fair-minded)%2Fi">fair-minded</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p18]</a></sub></p>
+<p>There are four common ways of representing <a href="#BM_(preference)%2Fi">preference</a>s. Imagine a scenario where, given the outcomes <code>{o1, o2, o3, o4}</code>, the <a href="#BM_(preference)%2Fi">preference</a> for those outcomes is <code>o3</code> is better than <code>o1</code>, which is just as good as <code>o4</code>, which in turn is better than <code>o2</code> (best is <code>o3</code>, worst is <code>o2</code>).</p>
+<ul>
+<li>
+<p>Relational notation - Represent which outcome has <a href="#BM_(preference)%2Fi">preference</a> over the other using ...</p>
+<ul>
+<li><code>&gt;</code>: <code>A &gt; B</code> means outcome A is better than outcome B.</li>
+<li><code>==</code>: <code>A == B</code> means outcome A is just as good as outcome B.</li>
+</ul>
+<p>These <a href="#BM_(preference)%2Fi">preference</a>s are typically written chained together (e.g. <code>A &gt; B == C</code> is equivalent to <code>A &gt; B and B == C</code>). <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p20]</a></sub></p>
+<p>The scenario above would be represented as <code>o3 &gt; o1 == o4 &gt; o2</code>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The book also provides the following notation: <code>&gt;=</code>, where <code>A &gt;= B</code> means outcome <code>A</code> is at least as good as outcome <code>B</code>. Then it goes through a convoluted section that explains <code>&gt;</code> and <code>==</code> can be represented just by <code>&gt;=</code>. For example, given two outcomes <code>{A, B}</code>, the relation ...</p>
+<ul>
+<li><code>A == B</code> can be represented using just <code>&gt;=</code> as <code>A &gt;= B and B &gt;= A</code>.</li>
+<li><code>A &gt; B</code> can be represented using just <code>&gt;=</code> as <code>A &gt;= B and not(B &gt;= A)</code>.</li>
+</ul>
+<p>The problem is, I don't know what "at least as good as" means in terms of the desire for an outcome. If something A is "at least as good as" B (e.g. <code>A &gt;= B</code>), there's the possibility that I'll gain more from A vs B, so why wouldn't I always prefer A over B?</p>
+</div>
+</li>
+<li>
+<p>Cartesian product - Given the cartesian product of the outcomes with itself, keep only the ordered pairs <code>[A, B]</code> where <code>A</code> is at least desired as much as <code>B</code>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p20]</a></sub></p>
+<p>The scenario above would be represented as follows.</p>
+<pre class="hljs"><code>[
+  [<span class="hljs-string">o1</span>, <span class="hljs-string">o1</span>], [<span class="hljs-string">o1</span>, <span class="hljs-string">o4</span>], [<span class="hljs-string">o1</span>, <span class="hljs-string">o2</span>],
+  [<span class="hljs-string">o2</span>, <span class="hljs-string">o2</span>],
+  [<span class="hljs-string">o3</span>, <span class="hljs-string">o3</span>], [<span class="hljs-string">o3</span>, <span class="hljs-string">o1</span>], [<span class="hljs-string">o3</span>, <span class="hljs-string">o4</span>], [<span class="hljs-string">o3</span>, <span class="hljs-string">o2</span>],
+  [<span class="hljs-string">o4</span>, <span class="hljs-string">o4</span>], [<span class="hljs-string">o4</span>, <span class="hljs-string">o1</span>], [<span class="hljs-string">o4</span>, <span class="hljs-string">o2</span>]
+]
+</code></pre>
+</li>
+<li>
+<p>Ranked list - Represent which outcome has <a href="#BM_(preference)%2Fi">preference</a> as a list from best-to-worst, where equally desired outcomes are put into the same index.  <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p21]</a></sub></p>
+<p>The scenario above would be represented as follows.</p>
+<ol>
+<li>o3</li>
+<li>o1 and o4</li>
+<li>o2</li>
+</ol>
+</li>
+<li>
+<p>Number assignment - Represent which output has <a href="#BM_(preference)%2Fi">preference</a> by assigning a number to each outcome, where larger numbers are desired more than smaller numbers. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p21]</a></sub></p>
+<p>The scenario above could be represented as the following mapping <code>{o3=30, o1=19, o4=19, o2=6}</code>.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Assigning numbers in this way is sometimes referred to as a <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p21]</a></sub></p>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p><a name="BM_(utility%20function%7Cutility)%2Fi"></a><strong>utility function</strong> - Given a set of outcomes and <a href="#BM_(preference)%2Fi">preference</a>s for those outcomes, a <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a> assigns a number to each outcome, where that number identifies that outcome's ranking in terms of <a href="#BM_(preference)%2Fi">preference</a>. Given two outcomes A and B, if ...</p>
+<ul>
+<li>A is more desired than B (<code>A&gt;B</code>), A is assigned a higher number than B.</li>
+<li>A is equally desired as B (<code>A==B</code>), A is assigned the same number as B.</li>
+</ul>
+<p><sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p21]</a></sub></p>
+<p>The numbers are simply identifying ranking based on best-to-worst, they aren't quantities. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p21]</a></sub> As such, there are an infinity number of <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a>s that represent the same <a href="#BM_(preference)%2Fi">preference</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p22]</a></sub> For example, <code>o3 &gt; o1 == o4 &gt; o2</code> may be mapped by a <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a> as <code>{o3=30, o1=19, o4=19, o2=6}</code>, <code>{o3=3, o1=2, o4=2, o2=-50}</code>, <code>{o3=70, o1=3, o4=3, o2=1}</code>, etc..</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>If the outcomes are drink Coke vs drink Sprite and the <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a> assigns `{Coke=30, Sprite=10}, that doesn't mean Coke is 3 times more as desired as Sprite. It simply means Coke is preferred over Sprite.</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(strategy%7Cstrategies)%2Fi"></a><strong>strategy</strong> - One of many choices that a <a href="#BM_(player)%2Fi">player</a> has in a <a href="#BM_(game)%2Fi">game</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p19]</a></sub>  For example, Alice and Bob are the <a href="#BM_(player)%2Fi">player</a>s of a <a href="#BM_(game)%2Fi">game</a> where ...</p>
+<ul>
+<li>Alice's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>[Lie, Get Violent, Stay Silent]</code>.</li>
+<li>Bob's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>[Truth, Lie]</code>.</li>
+</ul>
+</li>
+<li>
+<p><a name="BM_(strategy%20profile)%2Fi"></a><strong>strategy profile</strong> - Given a set of <a href="#BM_(player)%2Fi">player</a>s and their <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> <code>[[P1, S1], [P2, S2], ..., [Pn, Sn]]</code>, <code>S</code> is the cartesian product of each <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a>: <code>S1 x S2 x ... Sn</code>. Each element in <code>S</code> is called a <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p19]</a></sub></p>
+<p>For example, Alice and Bob are the <a href="#BM_(player)%2Fi">player</a>s of a <a href="#BM_(game)%2Fi">game</a> where ...</p>
+<ul>
+<li>Alice's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>[Lie, Get Violent, Stay Silent]</code>.</li>
+<li>Bob's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>[Truth, Lie]</code>.</li>
+</ul>
+<p>The cartesian product of these <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are listed below. Each entry is a <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>.</p>
+<ul>
+<li><code>[Lie, Truth]</code></li>
+<li><code>[Lie, Lie]</code></li>
+<li><code>[Get Violent, Truth]</code></li>
+<li><code>[Get Violent, Lie]</code></li>
+<li><code>[Stay Silent, Truth]</code></li>
+<li><code>[Stay Silent, Lie]</code></li>
+</ul>
+</li>
+<li>
+<p><a name="BM_(game%5B-%5Cs%5Dframe)%2Fi"></a><strong>game frame</strong> - The cartesian product of each <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> in a <a href="#BM_(game)%2Fi">game</a>, where each output has a set of outcomes. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p18-19]</a></sub> For example, the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game-frame</a> below is for a scenario where Alice's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>[Lie, Get Violent, Stay Silent]</code> and Bob's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>[Truth, Lie]</code>.</p>
+<pre class="hljs"><code>[<span class="hljs-string">Lie</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span>  <span class="hljs-string">A</span> <span class="hljs-string">freed,</span> <span class="hljs-string">B</span> <span class="hljs-string">jailed</span>
+[<span class="hljs-string">Lie</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span>  <span class="hljs-string">A</span> <span class="hljs-string">freed,</span> <span class="hljs-string">B</span> <span class="hljs-string">freed</span>
+[<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span>  <span class="hljs-string">A</span> <span class="hljs-string">jailed,</span> <span class="hljs-string">B</span> <span class="hljs-string">jailed</span>
+[<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span>  <span class="hljs-string">A</span> <span class="hljs-string">jailed,</span> <span class="hljs-string">B</span> <span class="hljs-string">freed</span>
+[<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span>  <span class="hljs-string">A</span> <span class="hljs-string">freed,</span> <span class="hljs-string">B</span> <span class="hljs-string">jailed</span>
+[<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span>  <span class="hljs-string">A</span> <span class="hljs-string">freed,</span> <span class="hljs-string">B</span> <span class="hljs-string">freed</span>
+</code></pre>
+<p>If there are only two <a href="#BM_(player)%2Fi">player</a>s, a <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game-frame</a> can be represented as a table. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p19]</a></sub></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Truth</th>
+<th>Lie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lie</td>
+<td>A freed, B jailed</td>
+<td>A freed, B freed</td>
+</tr>
+<tr>
+<td>Get Violent</td>
+<td>A jailed, B jailed</td>
+<td>A jailed, B freed</td>
+</tr>
+<tr>
+<td>Stay Silent</td>
+<td>A freed, B jailed</td>
+<td>A freed, B freed</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><a name="BM_(game%5B-%5Cs%5Dframe%20in%20strategic%20form)%2Fi"></a><strong>game frame in strategic form</strong> - Representation of a <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game frame</a> as the tuple <code>[I, S, O, f]</code>, where ...</p>
+<ul>
+<li><code>I</code> is the set of <a href="#BM_(player)%2Fi">player</a>s: <code>[1, 2, ..., n]</code></li>
+<li><code>S</code> is the set of <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> each <a href="#BM_(player)%2Fi">player</a> has: <code>[S1, S2, ..., Sn]</code></li>
+<li><code>O</code> is the set of outcomes: <code>[O1, O2, ..., Om]</code>.</li>
+<li><code>f</code> is a function that maps each <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> in <code>S</code> to an outcome in <code>O</code>.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Each index in <code>S</code> maps to the <a href="#BM_(player)%2Fi">player</a> at the same index in <code>I</code>. For example, <code>S2</code> is the set of <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> for <a href="#BM_(player)%2Fi">player</a> <code>2</code>.</p>
+</div>
+<p><code>S</code> on its own is represented as the complete set of <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s for the <a href="#BM_(game)%2Fi">game</a>: The cartesian product of <code>[S1, S2, ..., S4]</code>. For each <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> <code>s</code> in <code>S</code>, <code>f(s) E O</code>.</p>
+<p><sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p19]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(game)%2Fi"></a><strong>game</strong> - A <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game frame</a> along with the <a href="#BM_(preference)%2Fi">preference</a>s of each <a href="#BM_(player)%2Fi">player</a> in that <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game frame</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p19]</a></sub></p>
+<p>For example, given <a href="#BM_(player)%2Fi">player</a>s A and B with the following <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game frame</a>, ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>B: Truth</th>
+<th>B: Lie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A: Lie</td>
+<td>A freed / B jailed</td>
+<td>A freed / B freed</td>
+</tr>
+<tr>
+<td>A: Get Violent</td>
+<td>A jailed / B jailed</td>
+<td>A jailed / B freed</td>
+</tr>
+<tr>
+<td>A: Stay Silent</td>
+<td>A freed / B jailed</td>
+<td>A freed / B freed</td>
+</tr>
+</tbody>
+</table>
+<p>The <a href="#BM_(preference)%2Fi">preference</a> of <a href="#BM_(player)%2Fi">player</a>...</p>
+<ul>
+<li>A is ranked <code>[A freed / B jailed, A freed / B freed, A jailed / B jailed, A jailed / B freed]</code>.</li>
+<li>B is ranked <code>[A freed / B freed, A jailed / B freed, A jailed / B jailed, A freed / B jailed]</code>.</li>
+</ul>
+</li>
+<li>
+<p><a name="BM_(ordinal%20game%20in%20strategic%20form)%2Fi"></a><strong>ordinal game in strategic form</strong> - Representation of an <a href="#BM_(ordinal%20payoff%7Cordinal%20pay-off%7Cordinal%20game)%2Fi">ordinal game</a> as a <a href="#BM_(game%5B-%5Cs%5Dframe%20in%20strategic%20form)%2Fi">game frame in strategic form</a> with an extra item appended to the tuple: The <a href="#BM_(preference)%2Fi">preference</a> for each <a href="#BM_(player)%2Fi">player</a> in the <a href="#BM_(game)%2Fi">game</a>. As such, the items of the tuple are as follows:</p>
+<ul>
+<li><code>I</code> is the set of <a href="#BM_(player)%2Fi">player</a>s: <code>[1, 2, ..., n]</code></li>
+<li><code>S</code> is the set of <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> each <a href="#BM_(player)%2Fi">player</a> has: <code>[S1, S2, ..., Sn]</code> (<code>S</code> on its own is represented as the complete set of <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s for the <a href="#BM_(game)%2Fi">game</a>).</li>
+<li><code>O</code> is the set of outcomes: <code>[O1, O2, ..., Om]</code>.</li>
+<li><code>f</code> is a function that maps each <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> in <code>S</code> to an outcome in <code>O</code>.</li>
+<li><code>P</code> is the set containing each <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(preference)%2Fi">preference</a> rankings: <code>[P1, P2, ..., Pn]</code>.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Similar to <code>S</code>, each index in <code>P</code> maps to the <a href="#BM_(player)%2Fi">player</a> at the same index in <code>I</code>. For example, <code>P2</code> is the <a href="#BM_(preference)%2Fi">preference</a> ranking for <a href="#BM_(player)%2Fi">player</a> <code>2</code>.</p>
+</div>
+<p><sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p22]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi"></a><strong>payoff function</strong> - Maps each <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> in a <a href="#BM_(game)%2Fi">game</a> to a <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(preference)%2Fi">preference</a>s via a <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p22]</a></sub>  For example, the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game-frame</a> below is for a scenario where Alice's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Lie, Get Violent, Stay Silent}</code> and Bob's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> are <code>{Truth, Lie}</code>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>B: Truth</th>
+<th>B: Lie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A: Lie</td>
+<td>A freed / B jailed</td>
+<td>A freed / B freed</td>
+</tr>
+<tr>
+<td>A: Get Violent</td>
+<td>A jailed / B jailed</td>
+<td>A jailed / B freed</td>
+</tr>
+<tr>
+<td>A: Stay Silent</td>
+<td>A freed / B jailed</td>
+<td>A freed / B freed</td>
+</tr>
+</tbody>
+</table>
+<p>Listed from most-to-least desired, the <a href="#BM_(preference)%2Fi">preference</a>s of <a href="#BM_(player)%2Fi">player</a>...</p>
+<ul>
+<li>Alice are <code>[A freed / B jailed, A freed / B freed, A jailed / B jailed, A jailed / B freed]</code>.</li>
+<li>Bob are <code>[A freed / B freed, A jailed / B freed, A jailed / B jailed, A freed / B jailed]</code>.</li>
+</ul>
+<p>Once each <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(preference)%2Fi">preference</a>s is passed through its respective <a href="#BM_(utility%20function%7Cutility)%2Fi">utility function</a>, those <a href="#BM_(preference)%2Fi">preference</a>s are represented as numeric rankings. The numeric rankings for ...</p>
+<ul>
+<li>Alice is <code>{A freed / B jailed: 4, A freed / B freed: 3,  A jailed / B jailed: 2, A jailed / B freed: 2}</code>.</li>
+<li>Bob is   <code>{A freed / B jailed: 1, A freed / B freed: 10, A jailed / B jailed: 3, A jailed / B freed: 6}</code>.</li>
+</ul>
+<p>Instead of mapping each outcome to a numeric rank (as is done above), a <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff function</a> maps the <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> <em>that leads to that outcome</em> to a numeric rank. The <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff function</a>s for Alice and Bob perform mappings as follows.</p>
+<pre class="hljs"><code><span class="hljs-attr">Alice:</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">4</span>          <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 4</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span>            <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 3</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">2</span>  <span class="hljs-comment"># outcome is A jailed / B jailed, which is ranked as 2</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">2</span>    <span class="hljs-comment"># outcome is A jailed / B freed, which is ranked as 2</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">4</span>  <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 4</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span>    <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 3</span>
+<span class="hljs-attr">Bob:</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">1</span>          <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 1</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">10</span>           <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 10</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span>  <span class="hljs-comment"># outcome is A jailed / B jailed, which is ranked as 3</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">6</span>    <span class="hljs-comment"># outcome is A jailed / B freed, which is ranked as 6</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">1</span>  <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 1</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">10</span>   <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 10</span>
+</code></pre>
+</li>
+<li>
+<p><a name="BM_(reduced-form%20ordinal%20game%20in%20strategic%20form)%2Fi"></a><strong>reduced-form ordinal game in strategic form</strong> - An <a href="#BM_(ordinal%20game%20in%20strategic%20form)%2Fi">ordinal game in strategic form</a> but condensed by removing / replacing certain items in the tuple.</p>
+<p>The following items have been removed from the tuple:</p>
+<ul>
+<li><code>O</code> is the set of outcomes: <code>[O1, O2, ..., Om]</code>.</li>
+<li><code>f</code> is a function that maps each <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> in <code>S</code> to an outcome in <code>O</code>.</li>
+<li><code>P</code> is the set of <a href="#BM_(preference)%2Fi">preference</a> each <a href="#BM_(player)%2Fi">player</a> has: <code>[P1, P2, ..., Pn]</code>.</li>
+</ul>
+<p>The following items have been added to the tuple:</p>
+<ul>
+<li><code>fp</code> is the set containing each <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff function</a>: <code>[fp1, fp2, ..., fpn]</code></li>
+</ul>
+<p>As such, the items of the tuple are as follows:</p>
+<ul>
+<li><code>I</code> is the set of <a href="#BM_(player)%2Fi">player</a>s: <code>[1, 2, ..., n]</code></li>
+<li><code>S</code> is the set of <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> each <a href="#BM_(player)%2Fi">player</a> has: <code>[S1, S2, ..., Sn]</code> (<code>S</code> on its own is represented as the complete set of <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s for the <a href="#BM_(game)%2Fi">game</a>).</li>
+<li><code>fp</code> is the set containing each <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff function</a>: <code>[fp1, fp2, ..., fpn]</code></li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Similar to <code>S</code>, each index in <code>fp</code> maps to the <a href="#BM_(player)%2Fi">player</a> at the same index in <code>I</code>. For example, <code>fp2</code> is the <a href="#BM_(preference)%2Fi">preference</a> ranking for <a href="#BM_(player)%2Fi">player</a> <code>2</code>.</p>
+</div>
+<p>Previously, <a href="#BM_(player)%2Fi">player</a> n had its <a href="#BM_(preference)%2Fi">preference</a>s for outcomes <code>O</code> specified in <code>Pn</code>. The idea with this change is that, since a <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> in <code>S</code> leads to an outcome in <code>O</code>, <a href="#BM_(player)%2Fi">player</a> n can specify its <a href="#BM_(preference)%2Fi">preference</a> by mapping <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s directly to numeric rankings via <code>fpn()</code>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p22]</a></sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>It's called reduced-form because some information has been lost. Specifically, <code>O</code> is no longer there, which actually spelled out what the outcomes were.</p>
+</div>
+<p>A table is commonly used to represent a <a href="#BM_(reduced-form%20ordinal%20game%20in%20strategic%20form)%2Fi">reduced-form ordinal game in strategic form</a> when there are only 2 <a href="#BM_(player)%2Fi">player</a>s. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p23]</a></sub>  For example, Alice and Bob are the <a href="#BM_(player)%2Fi">player</a>s in a <a href="#BM_(game)%2Fi">game</a>. The <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> for ...</p>
+<ul>
+<li>Alice are <code>[Lie, Get Violent, Stay Silent]</code>.</li>
+<li>Bob are <code>[Truth, Lie]</code>.</li>
+</ul>
+<p>Once each <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> is passed through both Alice's <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff function</a> and Bob's <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff function</a>s, their <a href="#BM_(preference)%2Fi">preference</a>s are encoded using the following numeric rankings:</p>
+<pre class="hljs"><code><span class="hljs-attr">Alice:</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">4</span>          <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 4</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span>            <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 3</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">2</span>  <span class="hljs-comment"># outcome is A jailed / B jailed, which is ranked as 2</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">2</span>    <span class="hljs-comment"># outcome is A jailed / B freed, which is ranked as 2</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">4</span>  <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 4</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span>    <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 3</span>
+<span class="hljs-attr">Bob:</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">1</span>          <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 1</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">10</span>           <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 10</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span>  <span class="hljs-comment"># outcome is A jailed / B jailed, which is ranked as 3</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">6</span>    <span class="hljs-comment"># outcome is A jailed / B freed, which is ranked as 6</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">1</span>  <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 1</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">10</span>   <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 10</span>
+</code></pre>
+<p>The table lists out Alice's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> on the left and Bob's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> on the top. Each cell in the table maps to a <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>. Alice and Bob's numeric rankings for each <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> are paired together and placed into the cell for that <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>B: Truth</th>
+<th>B: Lie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A: Lie</td>
+<td>[4, 1]</td>
+<td>[3, 10]</td>
+</tr>
+<tr>
+<td>A: Get Violent</td>
+<td>[2, 3]</td>
+<td>[2, 6]</td>
+</tr>
+<tr>
+<td>A: Stay Silent</td>
+<td>[4, 1]</td>
+<td>[3, 10]</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p><a name="BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi"></a><strong>strict dominance</strong> - Given two <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> <code>[A, B]</code> for a <a href="#BM_(player)%2Fi">player</a> in a <a href="#BM_(game)%2Fi">game</a>, <code>A</code> is said to <a href="#BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi">strictly dominate</a> <code>B</code> if the <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s containing <code>A</code> all have a higher <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff</a> than the corresponding <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s containing <code>B</code>. In this case, corresponding means that the other <a href="#BM_(player)%2Fi">player</a>s's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> must match between the <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s. For example, the following two <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s use the same <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> for all <a href="#BM_(player)%2Fi">player</a>s other than the <a href="#BM_(player)%2Fi">player</a> at index 1: <code>[Walk, Lie, Run, Cheat]</code> vs <code>[Walk, Truth, Run, Cheat]</code>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p24]</a></sub></p>
+<p><a href="gt_ch1_code/ReducedFormOrdinalGame.py">gt_ch1_code/ReducedFormOrdinalGame.py</a> (lines 26 to 36):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">strictly_dominates_other</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy1: <span class="hljs-built_in">str</span>, strategy2: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-keyword">for</span> player_strategy_profile <span class="hljs-keyword">in</span> product(*(s <span class="hljs-keyword">if</span> i != player <span class="hljs-keyword">else</span> {<span class="hljs-string">'FAKE'</span>} <span class="hljs-keyword">for</span> i, s <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(self.strategies))):
+        player_strategy_profile_1 = <span class="hljs-built_in">list</span>(player_strategy_profile)
+        player_strategy_profile_2 = <span class="hljs-built_in">list</span>(player_strategy_profile)
+        player_strategy_profile_1[player] = strategy1
+        player_strategy_profile_2[player] = strategy2
+        payoff_1 = self.player_strategy_profile_preference(player, <span class="hljs-built_in">tuple</span>(player_strategy_profile_1))
+        payoff_2 = self.player_strategy_profile_preference(player, <span class="hljs-built_in">tuple</span>(player_strategy_profile_2))
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> (payoff_1 &gt; payoff_2):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre>
+<p>For example, Alice and Bob are the <a href="#BM_(player)%2Fi">player</a>s in a <a href="#BM_(game)%2Fi">game</a>. The <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> for ...</p>
+<ul>
+<li>Alice are <code>[Lie, Get Violent, Stay Silent]</code>.</li>
+<li>Bob are <code>[Truth, Lie]</code>.</li>
+</ul>
+<p>Once each <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> is passed through both Alice's <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff function</a> and Bob's <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff function</a>s, their <a href="#BM_(preference)%2Fi">preference</a>s are encoded using the following <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff</a>s:</p>
+<pre class="hljs"><code><span class="hljs-attr">Alice:</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">4</span>          <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 4</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span>            <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 3</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">2</span>  <span class="hljs-comment"># outcome is A jailed / B jailed, which is ranked as 2</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">2</span>    <span class="hljs-comment"># outcome is A jailed / B freed, which is ranked as 2</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">4</span>  <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 4</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span>    <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 3</span>
+<span class="hljs-attr">Bob:</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">1</span>          <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 1</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">10</span>           <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 10</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span>  <span class="hljs-comment"># outcome is A jailed / B jailed, which is ranked as 3</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">6</span>    <span class="hljs-comment"># outcome is A jailed / B freed, which is ranked as 6</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">1</span>  <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 1</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">10</span>   <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 10</span>
+</code></pre>
+<ul>
+<li>For Alice, the <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> ...
+<ul>
+<li>Lie <a href="#BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi">strictly dominate</a>s Get Violent.</li>
+<li>Stay Silent <a href="#BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi">strictly dominate</a>s Get Violent.</li>
+</ul>
+</li>
+<li>For Bob, the <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> Lie <a href="#BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi">strictly dominate</a>s Truth.</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>It's easier to think of this in terms of a reduced <a href="#BM_(game)%2Fi">game</a> in strategic-form table. For example, the <a href="#BM_(game)%2Fi">game</a> above is represented as follows.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>B: Truth</th>
+<th>B: Lie</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A: Lie</td>
+<td>[4, 1]</td>
+<td>[3, 10]</td>
+</tr>
+<tr>
+<td>A: Get Violent</td>
+<td>[2, 3]</td>
+<td>[2, 6]</td>
+</tr>
+<tr>
+<td>A: Stay Silent</td>
+<td>[4, 1]</td>
+<td>[3, 10]</td>
+</tr>
+</tbody>
+</table>
+<p>For Alice, each Lie <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff</a> is greater than the corresponding Get Violent <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff</a> (4&gt;2 and 3&gt;2), as such Lie <a href="#BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi">strictly dominate</a>s Get Violent.</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(weak%20dominance%7Cweakly%20dominate)%2Fi"></a><strong>weak dominance</strong> - Given two <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> <code>[A, B]</code> for a <a href="#BM_(player)%2Fi">player</a> in a <a href="#BM_(game)%2Fi">game</a>, <code>A</code> is said to <a href="#BM_(weak%20dominance%7Cweakly%20dominate)%2Fi">weakly dominate</a> <code>B</code> if both of the following conditions are met:</p>
+<ul>
+<li>All <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s containing <code>A</code> have a greater than or equal <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff</a> than the corresponding <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s containing <code>B</code>.</li>
+<li>At least one <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> in <code>A</code> has a greater <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff</a> than the corresponding <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> containing <code>B</code>.</li>
+</ul>
+<p>In this case, corresponding means that the other <a href="#BM_(player)%2Fi">player</a>s's <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> must match between the <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s. For example, the following two <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s use the same <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> for all <a href="#BM_(player)%2Fi">player</a>s other than the <a href="#BM_(player)%2Fi">player</a> at index 1: <code>[Walk, Lie, Run, Cheat]</code> vs <code>[Walk, Truth, Run, Cheat]</code>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p24]</a></sub></p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>If <code>A</code> <a href="#BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi">strictly dominate</a>s <code>B</code>, it also meets the conditions to <a href="#BM_(weak%20dominance%7Cweakly%20dominate)%2Fi">weakly dominate</a> <code>B</code> (but not necessarily the other way around). When the book says <a href="#BM_(weak%20dominance%7Cweakly%20dominate)%2Fi">weakly dominate</a>s, it usually means it <a href="#BM_(weak%20dominance%7Cweakly%20dominate)%2Fi">weakly dominate</a>s but not <a href="#BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi">strictly dominate</a>s. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p26]</a></sub></p>
+</div>
+<p><a href="gt_ch1_code/ReducedFormOrdinalGame.py">gt_ch1_code/ReducedFormOrdinalGame.py</a> (lines 40 to 54):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">weakly_dominates_other</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy1: <span class="hljs-built_in">str</span>, strategy2: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    strict_found = <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">for</span> player_strategy_profile <span class="hljs-keyword">in</span> product(*(s <span class="hljs-keyword">if</span> i != player <span class="hljs-keyword">else</span> {<span class="hljs-string">'FAKE'</span>} <span class="hljs-keyword">for</span> i, s <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(self.strategies))):
+        player_strategy_profile_1 = <span class="hljs-built_in">list</span>(player_strategy_profile)
+        player_strategy_profile_2 = <span class="hljs-built_in">list</span>(player_strategy_profile)
+        player_strategy_profile_1[player] = strategy1
+        player_strategy_profile_2[player] = strategy2
+        payoff_1 = self.player_strategy_profile_preference(player, <span class="hljs-built_in">tuple</span>(player_strategy_profile_1))
+        payoff_2 = self.player_strategy_profile_preference(player, <span class="hljs-built_in">tuple</span>(player_strategy_profile_2))
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> (payoff_1 &gt;= payoff_2):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">if</span> payoff_1 &gt; payoff_2:
+            strict_found = <span class="hljs-literal">True</span>
+    <span class="hljs-keyword">return</span> strict_found
+</code></pre>
+<p>For example, Alice and Bob are the <a href="#BM_(player)%2Fi">player</a>s in a <a href="#BM_(game)%2Fi">game</a>. The <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> for ...</p>
+<ul>
+<li>Alice are <code>[Lie, Get Violent, Stay Silent]</code>.</li>
+<li>Bob are <code>[Truth, Lie]</code>.</li>
+</ul>
+<p>Once each <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> is passed through both Alice's <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff function</a> and Bob's <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff function</a>s, their <a href="#BM_(preference)%2Fi">preference</a>s are encoded using the following <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff</a>s:</p>
+<pre class="hljs"><code><span class="hljs-attr">Alice:</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">5</span>          <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 4</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span>            <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 3</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">2</span>  <span class="hljs-comment"># outcome is A jailed / B jailed, which is ranked as 2</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">2</span>    <span class="hljs-comment"># outcome is A jailed / B freed, which is ranked as 2</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">4</span>  <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 4</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span>    <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 3</span>
+<span class="hljs-attr">Bob:</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">1</span>          <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 1</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Lie</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">10</span>           <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 10</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span>  <span class="hljs-comment"># outcome is A jailed / B jailed, which is ranked as 3</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Get</span> <span class="hljs-string">Violent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">6</span>    <span class="hljs-comment"># outcome is A jailed / B freed, which is ranked as 6</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Truth</span>]<span class="hljs-string">:</span> <span class="hljs-number">1</span>  <span class="hljs-comment"># outcome is A freed / B jailed, which is ranked as 1</span>
+ <span class="hljs-bullet">-</span> [<span class="hljs-string">Stay</span> <span class="hljs-string">Silent</span>, <span class="hljs-string">Lie</span>]<span class="hljs-string">:</span> <span class="hljs-number">10</span>   <span class="hljs-comment"># outcome is A freed / B freed, which is ranked as 10</span>
+</code></pre>
+<ul>
+<li>For Alice, the <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> ...
+<ul>
+<li>Lie <a href="#BM_(weak%20dominance%7Cweakly%20dominate)%2Fi">weakly dominate</a>s (and <a href="#BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi">strictly dominate</a>s) Get Violent.</li>
+<li>Lie <a href="#BM_(weak%20dominance%7Cweakly%20dominate)%2Fi">weakly dominate</a>s (but does not <a href="#BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi">strictly dominate</a>) Stay Silent.</li>
+<li>Stay Silent <a href="#BM_(weak%20dominance%7Cweakly%20dominate)%2Fi">weakly dominate</a>s (and <a href="#BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi">strictly dominate</a>s) Get Violent.</li>
+</ul>
+</li>
+<li>For Bob, the <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> Lie <a href="#BM_(weak%20dominance%7Cweakly%20dominate)%2Fi">weakly dominate</a>s (and <a href="#BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi">strictly dominate</a>s) Truth.</li>
+</ul>
+</li>
+<li>
+<p><a name="BM_(strictly%20dominant)%2Fi"></a><strong>strictly dominant</strong> - Given <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> <code>A</code> for a <a href="#BM_(player)%2Fi">player</a> in a <a href="#BM_(game)%2Fi">game</a>, <code>A</code> is said to be <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a> if it's <a href="#BM_(strict%20dominance%7Cstrictly%20dominate)%2Fi">strictly dominate</a>s every other <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> that <a href="#BM_(player)%2Fi">player</a> has. A <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a> <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> is colloquially known as the best <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a>. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p26]</a></sub></p>
+<p><a href="gt_ch1_code/ReducedFormOrdinalGame.py">gt_ch1_code/ReducedFormOrdinalGame.py</a> (lines 71 to 77):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">strictly_dominates_overall</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-keyword">for</span> other_strategy <span class="hljs-keyword">in</span> self.strategies[player]:
+        <span class="hljs-keyword">if</span> strategy == other_strategy:
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> self.strictly_dominates_other(player, strategy, other_strategy):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre>
+</li>
+<li>
+<p><a name="BM_(weakly%20dominant)%2Fi"></a><strong>weakly dominant</strong> - Given <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> <code>A</code> for a <a href="#BM_(player)%2Fi">player</a> in a <a href="#BM_(game)%2Fi">game</a>, <code>A</code> is said to be <a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a> if, for every other <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> that <a href="#BM_(player)%2Fi">player</a> has, <code>A</code> is either equivalent or <code>A</code> <a href="#BM_(weak%20dominance%7Cweakly%20dominate)%2Fi">weakly dominate</a>s it. <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p26]</a></sub></p>
+<p><a href="gt_ch1_code/ReducedFormOrdinalGame.py">gt_ch1_code/ReducedFormOrdinalGame.py</a> (lines 81 to 88):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">weakly_dominates_overall</span>(<span class="hljs-params">self, player: <span class="hljs-built_in">int</span>, strategy: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+    <span class="hljs-keyword">for</span> other_strategy <span class="hljs-keyword">in</span> self.strategies[player]:
+        <span class="hljs-keyword">if</span> strategy == other_strategy:
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> self.weakly_dominates_other(player, strategy, other_strategy) \
+                <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> self.equivalent_to_other(player, strategy, other_strategy):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre>
+<p>By definition, if a <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> is <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a>, it's also <a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a>. To disambiguate, in most cases <a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a> is interpreted as "<a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a> but not <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a>". <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p27]</a></sub></p>
+</li>
+<li>
+<p><a name="BM_(strictly%20dominant-strategy%20equilibrium)%2Fi"></a><strong>strictly dominant-strategy equilibrium</strong> - A <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> where the <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> for each <a href="#BM_(player)%2Fi">player</a> is <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a>.  <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p27]</a></sub></p>
+<p><a href="gt_ch1_code/ReducedFormOrdinalGame.py">gt_ch1_code/ReducedFormOrdinalGame.py</a> (lines 92 to 95):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">strictly_dominant_strategy_equilibrium</span>(<span class="hljs-params">self, strategy_profile: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">str</span>]</span>):
+    <span class="hljs-keyword">for</span> i, _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(self.players):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> self.strictly_dominates_overall(i, strategy_profile[i]):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre>
+</li>
+<li>
+<p><a name="BM_(weakly%20dominant-strategy%20equilibrium%7Cdominant-strategy%20equilibrium)%2Fi"></a><strong>weakly dominant-strategy equilibrium</strong> - A <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> where the <a href="#BM_(strategy%7Cstrategies)%2Fi">strategy</a> ...</p>
+<ul>
+<li>for each <a href="#BM_(player)%2Fi">player</a> is <a href="#BM_(weakly%20dominant)%2Fi">weakly dominant</a>.</li>
+<li>for at least one <a href="#BM_(player)%2Fi">player</a>, is not <a href="#BM_(strictly%20dominant)%2Fi">strictly dominant</a>.  <sub><a href="http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html">[GT2018:p27]</a></sub></li>
+</ul>
+<p><a href="gt_ch1_code/ReducedFormOrdinalGame.py">gt_ch1_code/ReducedFormOrdinalGame.py</a> (lines 100 to 106):</p>
+<pre class="hljs"><code><span class="hljs-keyword">def</span> <span class="hljs-title function_">weakly_dominant_strategy_equilibrium</span>(<span class="hljs-params">self, strategy_profile: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">str</span>]</span>):
+    found_strict_dom = <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">for</span> i, _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(self.players):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> self.weakly_dominates_overall(i, strategy_profile[i]):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        found_strict_dom = self.strictly_dominates_overall(i, strategy_profile[i])
+    <span class="hljs-keyword">return</span> found_strict_dom
+</code></pre>
+</li>
+</ul>
+<p>TODO: pg28 top of page, make code example for prisoner dilemma</p>
+<p>TODO: pg28 top of page, make code example for prisoner dilemma</p>
+<p>TODO: pg28 top of page, make code example for prisoner dilemma</p>
+<p>TODO: pg28 top of page, make code example for prisoner dilemma</p>
+<p>TODO: pg28 top of page, make code example for prisoner dilemma</p>
+<p>TODO: pg28 top of page, make code example for prisoner dilemma</p>
+<p>TODO: pg28 top of page, make code example for prisoner dilemma</p>
+<p>TODO: pg28 top of page, make code example for prisoner dilemma</p>
+<a name="H_Exercises"></a><h1>Exercises</h1>
+<a name="H_2.9.1%20Exercise%202.1%20a"></a><h2>2.9.1 Exercise 2.1 a</h2>
+<p>Recall <a href="#BM_(game%5B-%5Cs%5Dframe%20in%20strategic%20form)%2Fi">game frame in strategic form</a>: <code>[I, S, O, f]</code>, where ...</p>
+<ul>
+<li><code>I</code> is the set of <a href="#BM_(player)%2Fi">player</a>s: <code>[1, 2, ..., n]</code></li>
+<li><code>S</code> is the set of <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> each <a href="#BM_(player)%2Fi">player</a> has: <code>[S1, S2, ..., Sn]</code></li>
+<li><code>O</code> is the set of outcomes: <code>[O1, O2, ..., Om]</code>.</li>
+<li><code>f</code> is a function that maps each <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a> in <code>S</code> to an outcome in <code>O</code>.</li>
+</ul>
+<p>As a <a href="#BM_(game%5B-%5Cs%5Dframe%20in%20strategic%20form)%2Fi">game frame in strategic form</a>, the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game frame</a> is described as ...</p>
+<pre class="hljs"><code><span class="hljs-attr">I:</span> <span class="hljs-number">2</span>  <span class="hljs-comment"># 2 players, 1 is Antonia and 2 is Bob</span>
+<span class="hljs-attr">S:</span>
+  <span class="hljs-bullet">-</span> [<span class="hljs-string">Pick</span> <span class="hljs-number">2</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">4</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">6</span>] <span class="hljs-comment"># Player 1's strategies (Antonia)</span>
+  <span class="hljs-bullet">-</span> [<span class="hljs-string">Pick</span> <span class="hljs-number">1</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">3</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">5</span>] <span class="hljs-comment"># Player 2's strategies (Bob)</span>
+<span class="hljs-attr">O:</span> [<span class="hljs-string">Mexican</span>, <span class="hljs-string">Italian</span>, <span class="hljs-string">Japanese</span>]
+<span class="hljs-attr">f:</span>
+  [<span class="hljs-string">Pick</span> <span class="hljs-number">2</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">1</span>]<span class="hljs-string">:</span> <span class="hljs-string">Mexican</span>
+  [<span class="hljs-string">Pick</span> <span class="hljs-number">2</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">3</span>]<span class="hljs-string">:</span> <span class="hljs-string">Mexican</span>
+  [<span class="hljs-string">Pick</span> <span class="hljs-number">2</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">5</span>]<span class="hljs-string">:</span> <span class="hljs-string">Italian</span>
+  [<span class="hljs-string">Pick</span> <span class="hljs-number">4</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">1</span>]<span class="hljs-string">:</span> <span class="hljs-string">Mexican</span>
+  [<span class="hljs-string">Pick</span> <span class="hljs-number">4</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">3</span>]<span class="hljs-string">:</span> <span class="hljs-string">Italian</span>
+  [<span class="hljs-string">Pick</span> <span class="hljs-number">4</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">5</span>]<span class="hljs-string">:</span> <span class="hljs-string">Japanese</span>
+  [<span class="hljs-string">Pick</span> <span class="hljs-number">6</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">1</span>]<span class="hljs-string">:</span> <span class="hljs-string">Italian</span>
+  [<span class="hljs-string">Pick</span> <span class="hljs-number">6</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">3</span>]<span class="hljs-string">:</span> <span class="hljs-string">Japanese</span>
+  [<span class="hljs-string">Pick</span> <span class="hljs-number">6</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">5</span>]<span class="hljs-string">:</span> <span class="hljs-string">Japanese</span>
+</code></pre>
+<p>As a table, the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game frame</a> is described as ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>B: Pick 1</th>
+<th>B: Pick 3</th>
+<th>B: Pick 5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A: Pick 2</td>
+<td>Mexican</td>
+<td>Mexican</td>
+<td>Italian</td>
+</tr>
+<tr>
+<td>A: Pick 4</td>
+<td>Mexican</td>
+<td>Italian</td>
+<td>Japanese</td>
+</tr>
+<tr>
+<td>A: Pick 6</td>
+<td>Italian</td>
+<td>Japanese</td>
+<td>Japanese</td>
+</tr>
+</tbody>
+</table>
+<a name="H_2.9.1%20Exercise%202.1%20b"></a><h2>2.9.1 Exercise 2.1 b</h2>
+<p>Recall <a href="#BM_(reduced-form%20ordinal%20game%20in%20strategic%20form)%2Fi">reduced-form ordinal game in strategic form</a>: <code>[I, S, fp]</code>, where ...</p>
+<ul>
+<li><code>I</code> is the set of <a href="#BM_(player)%2Fi">player</a>s: <code>[1, 2, ..., n]</code></li>
+<li><code>S</code> is the set of <a href="#BM_(strategy%7Cstrategies)%2Fi">strategies</a> each <a href="#BM_(player)%2Fi">player</a> has: <code>[S1, S2, ..., Sn]</code> (<code>S</code> on its own is represented as the complete set of <a href="#BM_(strategy%20profile)%2Fi">strategy profile</a>s for the <a href="#BM_(game)%2Fi">game</a>).</li>
+<li><code>fp</code> is the set containing each <a href="#BM_(player)%2Fi">player</a>'s <a href="#BM_(pay%5B-%5Cs%5D%3Foff%20function%7Cpay%5B-%5Cs%5D%3Foff)%2Fi">payoff function</a>: <code>[fp1, fp2, ..., fpn]</code></li>
+</ul>
+<p>As a <a href="#BM_(reduced-form%20ordinal%20game%20in%20strategic%20form)%2Fi">reduced-form ordinal game in strategic form</a>, the <a href="#BM_(game)%2Fi">game</a> is described as ...</p>
+<pre class="hljs"><code><span class="hljs-attr">I:</span> <span class="hljs-number">2</span>  <span class="hljs-comment"># 2 players, 1 is Antonia and 2 is Bob</span>
+<span class="hljs-attr">S:</span>
+  <span class="hljs-bullet">-</span> [<span class="hljs-string">Pick</span> <span class="hljs-number">2</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">4</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">6</span>] <span class="hljs-comment"># Player 1's strategies (Antonia)</span>
+  <span class="hljs-bullet">-</span> [<span class="hljs-string">Pick</span> <span class="hljs-number">1</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">3</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">5</span>] <span class="hljs-comment"># Player 2's strategies (Bob)</span>
+<span class="hljs-attr">fp:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-comment"># Antonia's strategies to preference rankings</span>
+    [<span class="hljs-string">Pick</span> <span class="hljs-number">2</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">1</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span> <span class="hljs-comment"># Mexican</span>
+    [<span class="hljs-string">Pick</span> <span class="hljs-number">2</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">3</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span> <span class="hljs-comment"># Mexican</span>
+    [<span class="hljs-string">Pick</span> <span class="hljs-number">2</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">5</span>]<span class="hljs-string">:</span> <span class="hljs-number">2</span> <span class="hljs-comment"># Italian</span>
+    [<span class="hljs-string">Pick</span> <span class="hljs-number">4</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">1</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span> <span class="hljs-comment"># Mexican</span>
+    [<span class="hljs-string">Pick</span> <span class="hljs-number">4</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">3</span>]<span class="hljs-string">:</span> <span class="hljs-number">2</span> <span class="hljs-comment"># Italian</span>
+    [<span class="hljs-string">Pick</span> <span class="hljs-number">4</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">5</span>]<span class="hljs-string">:</span> <span class="hljs-number">1</span> <span class="hljs-comment"># Japanese</span>
+    [<span class="hljs-string">Pick</span> <span class="hljs-number">6</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">1</span>]<span class="hljs-string">:</span> <span class="hljs-number">2</span> <span class="hljs-comment"># Italian</span>
+    [<span class="hljs-string">Pick</span> <span class="hljs-number">6</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">3</span>]<span class="hljs-string">:</span> <span class="hljs-number">1</span> <span class="hljs-comment"># Japanese</span>
+    [<span class="hljs-string">Pick</span> <span class="hljs-number">6</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">5</span>]<span class="hljs-string">:</span> <span class="hljs-number">1</span> <span class="hljs-comment"># Japanese</span>
+    <span class="hljs-comment"># Bob's strategies to preference rankings</span>
+  <span class="hljs-bullet">-</span> [<span class="hljs-string">Pick</span> <span class="hljs-number">2</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">1</span>]<span class="hljs-string">:</span> <span class="hljs-number">2</span> <span class="hljs-comment"># Mexican</span>
+    [<span class="hljs-string">Pick</span> <span class="hljs-number">2</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">3</span>]<span class="hljs-string">:</span> <span class="hljs-number">2</span> <span class="hljs-comment"># Mexican</span>
+    [<span class="hljs-string">Pick</span> <span class="hljs-number">2</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">5</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span> <span class="hljs-comment"># Italian</span>
+    [<span class="hljs-string">Pick</span> <span class="hljs-number">4</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">1</span>]<span class="hljs-string">:</span> <span class="hljs-number">2</span> <span class="hljs-comment"># Mexican</span>
+    [<span class="hljs-string">Pick</span> <span class="hljs-number">4</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">3</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span> <span class="hljs-comment"># Italian</span>
+    [<span class="hljs-string">Pick</span> <span class="hljs-number">4</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">5</span>]<span class="hljs-string">:</span> <span class="hljs-number">1</span> <span class="hljs-comment"># Japanese</span>
+    [<span class="hljs-string">Pick</span> <span class="hljs-number">6</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">1</span>]<span class="hljs-string">:</span> <span class="hljs-number">3</span> <span class="hljs-comment"># Italian</span>
+    [<span class="hljs-string">Pick</span> <span class="hljs-number">6</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">3</span>]<span class="hljs-string">:</span> <span class="hljs-number">1</span> <span class="hljs-comment"># Japanese</span>
+    [<span class="hljs-string">Pick</span> <span class="hljs-number">6</span>, <span class="hljs-string">Pick</span> <span class="hljs-number">5</span>]<span class="hljs-string">:</span> <span class="hljs-number">1</span> <span class="hljs-comment"># Japanese</span>
+</code></pre>
+<p>As a table, the <a href="#BM_(reduced-form%20ordinal%20game%20in%20strategic%20form)%2Fi">reduced-form ordinal game in strategic form</a> is described as ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>B: Pick 1</th>
+<th>B: Pick 3</th>
+<th>B: Pick 5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A: Pick 2</td>
+<td><code>[3,2]</code></td>
+<td><code>[3,2]</code></td>
+<td><code>[2,3]</code></td>
+</tr>
+<tr>
+<td>A: Pick 4</td>
+<td><code>[3,2]</code></td>
+<td><code>[2,3]</code></td>
+<td><code>[1,1]</code></td>
+</tr>
+<tr>
+<td>A: Pick 6</td>
+<td><code>[2,3]</code></td>
+<td><code>[1,1]</code></td>
+<td><code>[1,1]</code></td>
+</tr>
+</tbody>
+</table>
+<a name="H_2.9.1%20Exercise%202.2%20a"></a><h2>2.9.1 Exercise 2.2 a</h2>
+<p>As a table, the <a href="#BM_(game%5B-%5Cs%5Dframe)%2Fi">game frame</a> is described as ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>B: Pick 0</th>
+<th>B: Pick 1</th>
+<th>B: Pick 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A: Pick 2</td>
+<td>A:0/B:+2</td>
+<td>A:0/B:+3</td>
+<td>A:0/B:+2</td>
+</tr>
+<tr>
+<td>A: Pick 4</td>
+<td>A:0/B:+2</td>
+<td>A:+5/B:+5</td>
+<td>A:+4/B:+2</td>
+</tr>
+<tr>
+<td>A: Pick 6</td>
+<td>A:+4/B:+2</td>
+<td>A:+3/B:+7</td>
+<td>A:+2/B:0</td>
+</tr>
+</tbody>
+</table>
+<a name="H_2.9.1%20Exercise%202.2%20b"></a><h2>2.9.1 Exercise 2.2 b</h2>
+<p>Recall that a <a href="#BM_(player)%2Fi">player</a> being <a href="#BM_(selfish%20and%20greedy)%2Fi">selfish and greedy</a> means that it only cares about how much it gain and prefers more gain over less</p>
+<p>If both Antonia and Bob are <a href="#BM_(selfish%20and%20greedy)%2Fi">selfish and greedy</a>, as a table, the <a href="#BM_(reduced-form%20ordinal%20game%20in%20strategic%20form)%2Fi">reduced-form ordinal game in strategic form</a> is described as ...</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>B: Pick 0</th>
+<th>B: Pick 1</th>
+<th>B: Pick 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A: Pick 2</td>
+<td><code>[0,2]</code></td>
+<td><code>[0,3]</code></td>
+<td><code>[0,2]</code></td>
+</tr>
+<tr>
+<td>A: Pick 4</td>
+<td><code>[0,2]</code></td>
+<td><code>[5,5]</code></td>
+<td><code>[4,2]</code></td>
+</tr>
+<tr>
+<td>A: Pick 6</td>
+<td><code>[4,2]</code></td>
+<td><code>[3,7]</code></td>
+<td><code>[2,0]</code></td>
+</tr>
+</tbody>
+</table>
+<a name="H_2.9.1%20Exercise%202.3%20a"></a><h2>2.9.1 Exercise 2.3 a</h2>
+<table>
+<tbody><tr><th>C: Yes Press</th><th>C: No Press</th></tr>
+<tr><td>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>B: Yes Press</th>
+<th>B: No Press</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A: Yes Press</td>
+<td>A</td>
+<td>B</td>
+</tr>
+<tr>
+<td>A: No Press</td>
+<td>B</td>
+<td>A</td>
+</tr>
+</tbody>
+</table>
+</td><td>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>B: Yes Press</th>
+<th>B: No Press</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A: Yes Press</td>
+<td>B</td>
+<td>A</td>
+</tr>
+<tr>
+<td>A: No Press</td>
+<td>A</td>
+<td>C</td>
+</tr>
+</tbody>
+</table>
+</td></tr>
+</tbody></table>
+<a name="H_2.9.1%20Exercise%202.3%20b"></a><h2>2.9.1 Exercise 2.3 b</h2>
+<table>
+<tbody><tr><th>C: Yes Press</th><th>C: No Press</th></tr>
+<tr><td>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>B: Yes Press</th>
+<th>B: No Press</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A: Yes Press</td>
+<td><code>[1,0,0]</code></td>
+<td><code>[0,1,0]</code></td>
+</tr>
+<tr>
+<td>A: No Press</td>
+<td><code>[0,1,0]</code></td>
+<td><code>[1,0,0]</code></td>
+</tr>
+</tbody>
+</table>
+</td><td>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>B: Yes Press</th>
+<th>B: No Press</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A: Yes Press</td>
+<td><code>[0,1,0]</code></td>
+<td><code>[1,0,0]</code></td>
+</tr>
+<tr>
+<td>A: No Press</td>
+<td><code>[1,0,0]</code></td>
+<td><code>[0,0,1]</code></td>
+</tr>
+</tbody>
+</table>
+</td></tr>
+</tbody></table>
+<a name="H_2.9.1%20Exercise%202.3%20c"></a><h2>2.9.1 Exercise 2.3 c</h2>
+<table>
+<tbody><tr><th>C: Yes Press</th><th>C: No Press</th></tr>
+<tr><td>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>B: Yes Press</th>
+<th>B: No Press</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A: Yes Press</td>
+<td><code>[2,0,0]</code></td>
+<td><code>[0,2,1]</code></td>
+</tr>
+<tr>
+<td>A: No Press</td>
+<td><code>[0,2,1]</code></td>
+<td><code>[2,0,0]</code></td>
+</tr>
+</tbody>
+</table>
+</td><td>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>B: Yes Press</th>
+<th>B: No Press</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A: Yes Press</td>
+<td><code>[0,2,1]</code></td>
+<td><code>[2,0,0]</code></td>
+</tr>
+<tr>
+<td>A: No Press</td>
+<td><code>[2,0,0]</code></td>
+<td><code>[0,1,2]</code></td>
+</tr>
+</tbody>
+</table>
+</td></tr>
+</tbody></table>
+        </body></html>

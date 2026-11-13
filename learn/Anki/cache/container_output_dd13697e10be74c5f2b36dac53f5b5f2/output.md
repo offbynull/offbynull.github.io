@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="Basic Local Alignment Search Tool"></span>

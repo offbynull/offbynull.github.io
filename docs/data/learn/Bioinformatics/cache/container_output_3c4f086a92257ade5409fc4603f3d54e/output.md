@@ -1,1 +1,0 @@
-<span style="background-color: yellow; color: black; padding: 3px">v2</span>

@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(consensus string|consensus sequence|consensus)/i"></span>

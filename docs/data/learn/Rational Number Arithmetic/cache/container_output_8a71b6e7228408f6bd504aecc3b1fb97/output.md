@@ -1,1 +1,0 @@
-![Concept diagram for fraction 0 / 3](MainNumberLineDraw8a03c4151927c7230f6c815fcc126452.svg)

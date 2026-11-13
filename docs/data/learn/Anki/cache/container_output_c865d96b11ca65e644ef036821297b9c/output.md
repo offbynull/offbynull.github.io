@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(blocks substitution matrix|blocks substitution matrices|blocks amino acid substitution matrices|blocks amino acid substitution matrix)/i"></span>

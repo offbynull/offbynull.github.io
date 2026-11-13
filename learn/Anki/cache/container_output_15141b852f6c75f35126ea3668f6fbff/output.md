@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="\b(BLOSUM)\d*\b//false/true"></span>

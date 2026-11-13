@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(non-emitting hidden state|silent hidden state)/i"></span>

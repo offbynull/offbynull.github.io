@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(viral envelope|viral envelope protein|envelope protein)/i"></span>

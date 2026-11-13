@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://bambulab.com/en/support/academy/10/course/1031276649528733696/chapter/214)</sub>

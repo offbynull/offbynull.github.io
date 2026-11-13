@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(circadian clock|circadian oscillator)/i"></span>

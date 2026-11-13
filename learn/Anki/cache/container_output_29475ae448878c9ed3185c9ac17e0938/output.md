@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(hybrid alphabet|alternate alphabet|alternative alphabet)/i"></span>

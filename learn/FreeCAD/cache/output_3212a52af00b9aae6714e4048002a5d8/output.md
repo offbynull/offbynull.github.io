@@ -1,0 +1,1 @@
+<sub>[\[src\]](https://wiki.freecad.org/PartDesign_SubtractiveWedge)</sub>

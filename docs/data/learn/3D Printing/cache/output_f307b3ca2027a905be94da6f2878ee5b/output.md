@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://wiki.bambulab.com/en/software/bambu-studio/xy-hole-contour-compensation)</sub>

@@ -1,1 +1,0 @@
-<sub>\[[WIKI:Contingency Table](https://en.wikipedia.org/w/index.php?title=Contingency_table&oldid=1055319221)\]</sub>

@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(IUPAC nucleotide code|IUPAC)/i"></span>

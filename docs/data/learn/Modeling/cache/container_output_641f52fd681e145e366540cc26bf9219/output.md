@@ -1,1 +1,0 @@
-<sub>\[[IC](https://www.worldcat.org/title/1121436656):p33\]</sub>

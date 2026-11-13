@@ -1,0 +1,1 @@
+<span style="background-color: red; color: white; padding: 3px">(10.5+10.5)/2=10.5</span>

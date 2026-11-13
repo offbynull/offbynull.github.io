@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://blog.freecad.org/2024/09/30/tutorial-getting-started-with-the-assembly-workbench/)</sub>

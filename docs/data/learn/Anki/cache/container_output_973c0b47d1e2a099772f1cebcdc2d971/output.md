@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(four points? condition|four point theorem)/i"></span>

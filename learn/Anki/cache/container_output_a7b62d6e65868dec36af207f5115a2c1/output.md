@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="lagging half-strand"></span>

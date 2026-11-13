@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://bambulab.com/en-us/filament/ppa-cf)</sub>

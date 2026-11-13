@@ -1,1 +1,0 @@
-![Concept diagram for fraction 0 / 8](MainNumberLineDraw8afdb355492fd0f7e454628f18d0440a.svg)

@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(reverse half-strand|backward half-strand|backwards half-strand)/i"></span>

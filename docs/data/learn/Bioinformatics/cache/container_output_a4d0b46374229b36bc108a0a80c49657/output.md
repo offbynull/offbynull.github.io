@@ -1,1 +1,0 @@
-<span style="background-color: cyan; color: black; padding: 3px">v5</span>

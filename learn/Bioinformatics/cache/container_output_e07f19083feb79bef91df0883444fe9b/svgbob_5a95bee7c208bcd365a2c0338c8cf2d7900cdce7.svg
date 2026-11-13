@@ -1,0 +1,2564 @@
+<svg class="bob" font-family="arial" font-size="14" height="1408" width="896" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="triangle" markerHeight="8" markerWidth="8" orient="auto" refX="4" refY="2" viewBox="0 0 8 4">
+<polygon class="fg_fill" points="0,0 0,4 8,2 0,0"/>
+</marker>
+<marker id="clear_triangle" markerHeight="10" markerWidth="10" orient="auto" refX="1" refY="7" viewBox="0 0 20 14">
+<polygon class="bg_fill" points="2,2 2,12 18,7 2,2"/>
+</marker>
+<marker id="circle" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<circle class="fg_fill" cx="10" cy="10" r="8"/>
+</marker>
+<marker id="square" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<rect class="fg_fill" height="20" width="20" x="0" y="0"/>
+</marker>
+<marker id="open_circle" markerHeight="10" markerWidth="10" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<circle class="bg_fill" cx="10" cy="10" r="4"/>
+</marker>
+<marker id="big_open_circle" markerHeight="20" markerWidth="20" orient="auto" refX="20" refY="20" viewBox="0 0 40 40">
+<circle class="bg_fill" cx="20" cy="20" r="6"/>
+</marker>
+</defs>
+<style type="text/css">
+
+rect.backdrop {
+    fill: white;
+}
+text{
+    fill: black;
+}
+
+circle {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+}
+
+line {
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    stroke-linecap: round;
+    stroke-linejoin: miter;
+}
+
+path {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    stroke-linecap: round;
+    stroke-linejoin: miter;
+}
+
+line.dashed {
+    stroke-dasharray: 5;
+}
+
+.fg_fill {
+    fill: black;
+}
+
+
+.bg_fill {
+    fill: white;
+    stroke: black;
+    stroke-width: 2;
+}
+
+tspan.head{
+    fill: none;
+    stroke: none;
+}
+    
+</style>
+<rect class="backdrop" height="1408" width="896" x="0" y="0"/>
+<g>
+<line x1="4" x2="4" y1="1132" y2="1396"/>
+<path d="M 4 1396 A 4 4 0 0 0 8 1400"/>
+<path d="M 8 1128 A 4 4 0 0 0 4 1132"/>
+</g>
+<g>
+<line x1="8" x2="408" y1="1128" y2="1128"/>
+<path d="M 412 1132 A 4 4 0 0 0 408 1128"/>
+</g>
+<g>
+<line x1="8" x2="408" y1="1400" y2="1400"/>
+<path d="M 408 1400 A 4 4 0 0 0 412 1396"/>
+</g>
+<g>
+<line x1="108" x2="108" y1="540" y2="1028"/>
+<path d="M 108 1028 A 4 4 0 0 0 112 1032"/>
+<path d="M 112 536 A 4 4 0 0 0 108 540"/>
+</g>
+<g>
+<line x1="112" x2="384" y1="536" y2="536"/>
+<path d="M 388 540 A 4 4 0 0 0 384 536"/>
+</g>
+<g>
+<line x1="112" x2="384" y1="1032" y2="1032"/>
+<path d="M 384 1032 A 4 4 0 0 0 388 1028"/>
+</g>
+<g>
+<line x1="140" x2="140" y1="60" y2="436"/>
+<path d="M 140 436 A 4 4 0 0 0 144 440"/>
+<path d="M 144 56 A 4 4 0 0 0 140 60"/>
+</g>
+<g>
+<line x1="144" x2="376" y1="56" y2="56"/>
+<path d="M 380 60 A 4 4 0 0 0 376 56"/>
+</g>
+<g>
+<line x1="144" x2="376" y1="440" y2="440"/>
+<path d="M 376 440 A 4 4 0 0 0 380 436"/>
+</g>
+<g>
+<line x1="380" x2="380" y1="60" y2="436"/>
+</g>
+<g>
+<line x1="388" x2="388" y1="540" y2="1028"/>
+</g>
+<g>
+<line x1="412" x2="412" y1="1132" y2="1396"/>
+</g>
+<g>
+<line x1="484" x2="484" y1="1132" y2="1396"/>
+<path d="M 484 1396 A 4 4 0 0 0 488 1400"/>
+<path d="M 488 1128 A 4 4 0 0 0 484 1132"/>
+</g>
+<g>
+<line x1="488" x2="888" y1="1128" y2="1128"/>
+<path d="M 892 1132 A 4 4 0 0 0 888 1128"/>
+</g>
+<g>
+<line x1="488" x2="888" y1="1400" y2="1400"/>
+<path d="M 888 1400 A 4 4 0 0 0 892 1396"/>
+</g>
+<g>
+<line x1="500" x2="500" y1="60" y2="436"/>
+<path d="M 500 436 A 4 4 0 0 0 504 440"/>
+<path d="M 504 56 A 4 4 0 0 0 500 60"/>
+</g>
+<g>
+<line x1="500" x2="500" y1="540" y2="1028"/>
+<path d="M 500 1028 A 4 4 0 0 0 504 1032"/>
+<path d="M 504 536 A 4 4 0 0 0 500 540"/>
+</g>
+<g>
+<line x1="504" x2="736" y1="56" y2="56"/>
+<path d="M 740 60 A 4 4 0 0 0 736 56"/>
+</g>
+<g>
+<line x1="504" x2="736" y1="440" y2="440"/>
+<path d="M 736 440 A 4 4 0 0 0 740 436"/>
+</g>
+<g>
+<line x1="504" x2="776" y1="536" y2="536"/>
+<path d="M 780 540 A 4 4 0 0 0 776 536"/>
+</g>
+<g>
+<line x1="504" x2="776" y1="1032" y2="1032"/>
+<path d="M 776 1032 A 4 4 0 0 0 780 1028"/>
+</g>
+<g>
+<line x1="740" x2="740" y1="60" y2="436"/>
+</g>
+<g>
+<line x1="780" x2="780" y1="540" y2="1028"/>
+</g>
+<g>
+<line x1="892" x2="892" y1="1132" y2="1396"/>
+</g>
+<g>
+<text x="1" y="12">
+Cluster membership is denoted using letters.
+</text>
+</g>
+<g>
+<text x="17" y="1260">
+M
+</text>
+</g>
+<g>
+<text x="41" y="1324">
+M
+</text>
+</g>
+<g>
+<text x="41" y="1388">
+M
+</text>
+</g>
+<g>
+<text x="49" y="1212">
+M
+</text>
+</g>
+<g>
+<text x="57" y="1356">
+M
+</text>
+</g>
+<g>
+<text x="65" y="1276">
+M
+</text>
+</g>
+<g>
+<text x="73" y="1180">
+M
+</text>
+</g>
+<g>
+<text x="97" y="1340">
+M
+</text>
+</g>
+<g>
+<text x="121" y="1260">
+M
+</text>
+</g>
+<g>
+<text x="129" y="812">
+C
+</text>
+</g>
+<g>
+<text x="129" y="876">
+C
+</text>
+</g>
+<g>
+<text x="137" y="844">
+C
+</text>
+</g>
+<g>
+<text x="137" y="892">
+C
+</text>
+</g>
+<g>
+<text x="137" y="1180">
+M
+</text>
+</g>
+<g>
+<text x="145" y="764">
+C
+</text>
+</g>
+<g>
+<text x="145" y="956">
+C
+</text>
+</g>
+<g>
+<text x="145" y="1308">
+M
+</text>
+</g>
+<g>
+<text x="153" y="124">
+C
+</text>
+</g>
+<g>
+<text x="153" y="156">
+C
+</text>
+</g>
+<g>
+<text x="153" y="220">
+C
+</text>
+</g>
+<g>
+<text x="153" y="284">
+C
+</text>
+</g>
+<g>
+<text x="153" y="348">
+C
+</text>
+</g>
+<g>
+<text x="153" y="380">
+C
+</text>
+</g>
+<g>
+<text x="153" y="412">
+C
+</text>
+</g>
+<g>
+<text x="153" y="780">
+C
+</text>
+</g>
+<g>
+<text x="153" y="796">
+C
+</text>
+</g>
+<g>
+<text x="153" y="828">
+C
+</text>
+</g>
+<g>
+<text x="153" y="860">
+C
+</text>
+</g>
+<g>
+<text x="153" y="924">
+C
+</text>
+</g>
+<g>
+<text x="153" y="940">
+C
+</text>
+</g>
+<g>
+<text x="153" y="1244">
+M
+</text>
+</g>
+<g>
+<text x="153" y="1372">
+M
+</text>
+</g>
+<g>
+<text x="161" y="748">
+C
+</text>
+</g>
+<g>
+<text x="161" y="812">
+C
+</text>
+</g>
+<g>
+<text x="161" y="892">
+C
+</text>
+</g>
+<g>
+<text x="161" y="908">
+C
+</text>
+</g>
+<g>
+<text x="169" y="108">
+C
+</text>
+</g>
+<g>
+<text x="169" y="172">
+C
+</text>
+</g>
+<g>
+<text x="169" y="204">
+C
+</text>
+</g>
+<g>
+<text x="169" y="252">
+C
+</text>
+</g>
+<g>
+<text x="169" y="300">
+C
+</text>
+</g>
+<g>
+<text x="169" y="332">
+C
+</text>
+</g>
+<g>
+<text x="169" y="428">
+C
+</text>
+</g>
+<g>
+<text x="169" y="764">
+C
+</text>
+</g>
+<g>
+<text x="169" y="844">
+C
+</text>
+</g>
+<g>
+<text x="169" y="972">
+C
+</text>
+</g>
+<g>
+<text x="169" y="988">
+C
+</text>
+</g>
+<g>
+<text x="177" y="140">
+C
+</text>
+</g>
+<g>
+<text x="177" y="716">
+C
+</text>
+</g>
+<g>
+<text x="177" y="876">
+C
+</text>
+</g>
+<g>
+<text x="177" y="924">
+C
+</text>
+</g>
+<g>
+<text x="177" y="956">
+C
+</text>
+</g>
+<g>
+<text x="177" y="1020">
+C
+</text>
+</g>
+<g>
+<text x="177" y="1340">
+M
+</text>
+</g>
+<g>
+<text x="177" y="1388">
+M
+</text>
+</g>
+<g>
+<text x="185" y="172">
+C
+</text>
+</g>
+<g>
+<text x="185" y="220">
+C
+</text>
+</g>
+<g>
+<text x="185" y="236">
+C
+</text>
+</g>
+<g>
+<text x="185" y="268">
+C
+</text>
+</g>
+<g>
+<text x="185" y="396">
+C
+</text>
+</g>
+<g>
+<text x="185" y="764">
+C
+</text>
+</g>
+<g>
+<text x="185" y="796">
+C
+</text>
+</g>
+<g>
+<text x="185" y="844">
+C
+</text>
+</g>
+<g>
+<text x="185" y="860">
+C
+</text>
+</g>
+<g>
+<text x="185" y="892">
+C
+</text>
+</g>
+<g>
+<text x="185" y="908">
+C
+</text>
+</g>
+<g>
+<text x="185" y="1004">
+C
+</text>
+</g>
+<g>
+<text x="185" y="1148">
+EXPECTED
+</text>
+</g>
+<g>
+<text x="185" y="1212">
+M
+</text>
+</g>
+<g>
+<text x="193" y="732">
+C
+</text>
+</g>
+<g>
+<text x="193" y="812">
+C
+</text>
+</g>
+<g>
+<text x="193" y="1260">
+M
+</text>
+</g>
+<g>
+<text x="201" y="124">
+C
+</text>
+</g>
+<g>
+<text x="201" y="156">
+C
+</text>
+</g>
+<g>
+<text x="201" y="204">
+C
+</text>
+</g>
+<g>
+<text x="201" y="284">
+C
+</text>
+</g>
+<g>
+<text x="201" y="316">
+C
+</text>
+</g>
+<g>
+<text x="201" y="348">
+C
+</text>
+</g>
+<g>
+<text x="201" y="380">
+C
+</text>
+</g>
+<g>
+<text x="201" y="412">
+C
+</text>
+</g>
+<g>
+<text x="201" y="556">
+EXPECTED
+</text>
+</g>
+<g>
+<text x="201" y="700">
+C
+</text>
+</g>
+<g>
+<text x="201" y="924">
+C
+</text>
+</g>
+<g>
+<text x="201" y="940">
+C
+</text>
+</g>
+<g>
+<text x="201" y="988">
+C
+</text>
+</g>
+<g>
+<text x="201" y="1020">
+C
+</text>
+</g>
+<g>
+<text x="209" y="748">
+C
+</text>
+</g>
+<g>
+<text x="209" y="780">
+C
+</text>
+</g>
+<g>
+<text x="217" y="140">
+C
+</text>
+</g>
+<g>
+<text x="217" y="188">
+C
+</text>
+</g>
+<g>
+<text x="217" y="220">
+C
+</text>
+</g>
+<g>
+<text x="217" y="252">
+C
+</text>
+</g>
+<g>
+<text x="217" y="300">
+C
+</text>
+</g>
+<g>
+<text x="217" y="332">
+C
+</text>
+</g>
+<g>
+<text x="217" y="364">
+C
+</text>
+</g>
+<g>
+<text x="217" y="428">
+C
+</text>
+</g>
+<g>
+<text x="217" y="956">
+C
+</text>
+</g>
+<g>
+<text x="217" y="972">
+C
+</text>
+</g>
+<g>
+<text x="225" y="76">
+EXPECTED
+</text>
+</g>
+<g>
+<text x="225" y="716">
+C
+</text>
+</g>
+<g>
+<text x="233" y="732">
+C
+</text>
+</g>
+<g>
+<text x="233" y="1004">
+C
+</text>
+</g>
+<g>
+<text x="241" y="908">
+E
+</text>
+</g>
+<g>
+<text x="249" y="604">
+E
+</text>
+</g>
+<g>
+<text x="249" y="1020">
+C
+</text>
+</g>
+<g>
+<text x="257" y="588">
+E
+</text>
+</g>
+<g>
+<text x="257" y="892">
+E
+</text>
+</g>
+<g>
+<text x="273" y="620">
+E
+</text>
+</g>
+<g>
+<text x="273" y="876">
+E
+</text>
+</g>
+<g>
+<text x="273" y="908">
+E
+</text>
+</g>
+<g>
+<text x="281" y="604">
+E
+</text>
+</g>
+<g>
+<text x="281" y="860">
+E
+</text>
+</g>
+<g>
+<text x="281" y="1212">
+CC
+</text>
+</g>
+<g>
+<text x="281" y="1228">
+C
+</text>
+</g>
+<g>
+<text x="281" y="1340">
+E
+</text>
+</g>
+<g>
+<text x="281" y="1356">
+E
+</text>
+</g>
+<g>
+<text x="289" y="588">
+E
+</text>
+</g>
+<g>
+<text x="289" y="652">
+E
+</text>
+</g>
+<g>
+<text x="289" y="844">
+E
+</text>
+</g>
+<g>
+<text x="297" y="108">
+E
+</text>
+</g>
+<g>
+<text x="297" y="140">
+E
+</text>
+</g>
+<g>
+<text x="297" y="172">
+E
+</text>
+</g>
+<g>
+<text x="297" y="236">
+E
+</text>
+</g>
+<g>
+<text x="297" y="268">
+E
+</text>
+</g>
+<g>
+<text x="297" y="284">
+E
+</text>
+</g>
+<g>
+<text x="297" y="316">
+E
+</text>
+</g>
+<g>
+<text x="297" y="396">
+E
+</text>
+</g>
+<g>
+<text x="297" y="428">
+E
+</text>
+</g>
+<g>
+<text x="297" y="684">
+E
+</text>
+</g>
+<g>
+<text x="297" y="764">
+E
+</text>
+</g>
+<g>
+<text x="297" y="796">
+E
+</text>
+</g>
+<g>
+<text x="297" y="892">
+E
+</text>
+</g>
+<g>
+<text x="297" y="1196">
+C
+</text>
+</g>
+<g>
+<text x="297" y="1228">
+CC
+</text>
+</g>
+<g>
+<text x="297" y="1244">
+C
+</text>
+</g>
+<g>
+<text x="297" y="1324">
+EE
+</text>
+</g>
+<g>
+<text x="297" y="1340">
+E
+</text>
+</g>
+<g>
+<text x="297" y="1356">
+E
+</text>
+</g>
+<g>
+<text x="297" y="1372">
+E
+</text>
+</g>
+<g>
+<text x="305" y="620">
+E
+</text>
+</g>
+<g>
+<text x="305" y="780">
+E
+</text>
+</g>
+<g>
+<text x="305" y="812">
+E
+</text>
+</g>
+<g>
+<text x="305" y="828">
+E
+</text>
+</g>
+<g>
+<text x="305" y="908">
+E
+</text>
+</g>
+<g>
+<text x="305" y="1212">
+CC
+</text>
+</g>
+<g>
+<text x="313" y="124">
+E
+</text>
+</g>
+<g>
+<text x="313" y="188">
+E
+</text>
+</g>
+<g>
+<text x="313" y="220">
+E
+</text>
+</g>
+<g>
+<text x="313" y="300">
+E
+</text>
+</g>
+<g>
+<text x="313" y="332">
+E
+</text>
+</g>
+<g>
+<text x="313" y="364">
+E
+</text>
+</g>
+<g>
+<text x="313" y="412">
+E
+</text>
+</g>
+<g>
+<text x="313" y="604">
+E
+</text>
+</g>
+<g>
+<text x="313" y="668">
+E
+</text>
+</g>
+<g>
+<text x="313" y="716">
+E
+</text>
+</g>
+<g>
+<text x="313" y="844">
+E
+</text>
+</g>
+<g>
+<text x="313" y="1100">
+GLOBULAR BUT DIFFERENT DENSITY
+</text>
+</g>
+<g>
+<text x="313" y="1244">
+CC
+</text>
+</g>
+<g>
+<text x="313" y="1340">
+EE
+</text>
+</g>
+<g>
+<text x="313" y="1356">
+EE
+</text>
+</g>
+<g>
+<text x="321" y="652">
+E
+</text>
+</g>
+<g>
+<text x="321" y="748">
+E
+</text>
+</g>
+<g>
+<text x="321" y="796">
+E
+</text>
+</g>
+<g>
+<text x="321" y="876">
+E
+</text>
+</g>
+<g>
+<text x="321" y="1180">
+C
+</text>
+</g>
+<g>
+<text x="321" y="1196">
+CC
+</text>
+</g>
+<g>
+<text x="321" y="1228">
+CC
+</text>
+</g>
+<g>
+<text x="321" y="1260">
+CCC
+</text>
+</g>
+<g>
+<text x="321" y="1308">
+EEE
+</text>
+</g>
+<g>
+<text x="321" y="1324">
+E
+</text>
+</g>
+<g>
+<text x="321" y="1372">
+E
+</text>
+</g>
+<g>
+<text x="321" y="1388">
+E
+</text>
+</g>
+<g>
+<text x="329" y="108">
+E
+</text>
+</g>
+<g>
+<text x="329" y="140">
+E
+</text>
+</g>
+<g>
+<text x="329" y="172">
+E
+</text>
+</g>
+<g>
+<text x="329" y="204">
+E
+</text>
+</g>
+<g>
+<text x="329" y="268">
+E
+</text>
+</g>
+<g>
+<text x="329" y="380">
+E
+</text>
+</g>
+<g>
+<text x="329" y="636">
+E
+</text>
+</g>
+<g>
+<text x="329" y="684">
+E
+</text>
+</g>
+<g>
+<text x="329" y="732">
+E
+</text>
+</g>
+<g>
+<text x="337" y="700">
+E
+</text>
+</g>
+<g>
+<text x="337" y="844">
+E
+</text>
+</g>
+<g>
+<text x="337" y="1180">
+C
+</text>
+</g>
+<g>
+<text x="337" y="1212">
+CC
+</text>
+</g>
+<g>
+<text x="337" y="1244">
+CC
+</text>
+</g>
+<g>
+<text x="337" y="1340">
+E
+</text>
+</g>
+<g>
+<text x="337" y="1356">
+E
+</text>
+</g>
+<g>
+<text x="337" y="1388">
+E
+</text>
+</g>
+<g>
+<text x="345" y="156">
+E
+</text>
+</g>
+<g>
+<text x="345" y="252">
+E
+</text>
+</g>
+<g>
+<text x="345" y="284">
+E
+</text>
+</g>
+<g>
+<text x="345" y="316">
+E
+</text>
+</g>
+<g>
+<text x="345" y="348">
+E
+</text>
+</g>
+<g>
+<text x="345" y="652">
+E
+</text>
+</g>
+<g>
+<text x="345" y="764">
+E
+</text>
+</g>
+<g>
+<text x="345" y="796">
+E
+</text>
+</g>
+<g>
+<text x="345" y="1196">
+C
+</text>
+</g>
+<g>
+<text x="345" y="1228">
+C
+</text>
+</g>
+<g>
+<text x="345" y="1324">
+E
+</text>
+</g>
+<g>
+<text x="345" y="1372">
+E
+</text>
+</g>
+<g>
+<text x="353" y="732">
+E
+</text>
+</g>
+<g>
+<text x="353" y="748">
+E
+</text>
+</g>
+<g>
+<text x="353" y="780">
+E
+</text>
+</g>
+<g>
+<text x="353" y="812">
+E
+</text>
+</g>
+<g>
+<text x="353" y="1180">
+C
+</text>
+</g>
+<g>
+<text x="353" y="1260">
+C
+</text>
+</g>
+<g>
+<text x="353" y="1308">
+E
+</text>
+</g>
+<g>
+<text x="353" y="1340">
+E
+</text>
+</g>
+<g>
+<text x="353" y="1356">
+E
+</text>
+</g>
+<g>
+<text x="353" y="1388">
+E
+</text>
+</g>
+<g>
+<text x="361" y="124">
+E
+</text>
+</g>
+<g>
+<text x="361" y="204">
+E
+</text>
+</g>
+<g>
+<text x="361" y="236">
+E
+</text>
+</g>
+<g>
+<text x="361" y="300">
+E
+</text>
+</g>
+<g>
+<text x="361" y="332">
+E
+</text>
+</g>
+<g>
+<text x="361" y="364">
+E
+</text>
+</g>
+<g>
+<text x="361" y="396">
+E
+</text>
+</g>
+<g>
+<text x="361" y="428">
+E
+</text>
+</g>
+<g>
+<text x="361" y="508">
+ELONGATED ANE CURVED
+</text>
+</g>
+<g>
+<text x="361" y="684">
+E
+</text>
+</g>
+<g>
+<text x="361" y="1196">
+C
+</text>
+</g>
+<g>
+<text x="361" y="1212">
+C
+</text>
+</g>
+<g>
+<text x="361" y="1228">
+C
+</text>
+</g>
+<g>
+<text x="361" y="1244">
+C
+</text>
+</g>
+<g>
+<text x="361" y="1324">
+E
+</text>
+</g>
+<g>
+<text x="361" y="1372">
+EE
+</text>
+</g>
+<g>
+<text x="369" y="716">
+E
+</text>
+</g>
+<g>
+<text x="369" y="1340">
+E
+</text>
+</g>
+<g>
+<text x="369" y="1356">
+E
+</text>
+</g>
+<g>
+<text x="377" y="1196">
+C
+</text>
+</g>
+<g>
+<text x="377" y="1212">
+CC
+</text>
+</g>
+<g>
+<text x="377" y="1228">
+C
+</text>
+</g>
+<g>
+<text x="377" y="1244">
+C
+</text>
+</g>
+<g>
+<text x="377" y="1324">
+E
+</text>
+</g>
+<g>
+<text x="385" y="1340">
+EE
+</text>
+</g>
+<g>
+<text x="385" y="1356">
+E
+</text>
+</g>
+<g>
+<text x="385" y="1372">
+E
+</text>
+</g>
+<g>
+<text x="393" y="1228">
+C
+</text>
+</g>
+<g>
+<text x="401" y="44">
+ELONGATED
+</text>
+</g>
+<g>
+<text x="497" y="1260">
+M
+</text>
+</g>
+<g>
+<text x="513" y="124">
+C
+</text>
+</g>
+<g>
+<text x="513" y="156">
+C
+</text>
+</g>
+<g>
+<text x="513" y="220">
+C
+</text>
+</g>
+<g>
+<text x="513" y="284">
+E
+</text>
+</g>
+<g>
+<text x="513" y="348">
+E
+</text>
+</g>
+<g>
+<text x="513" y="380">
+E
+</text>
+</g>
+<g>
+<text x="513" y="412">
+E
+</text>
+</g>
+<g>
+<text x="521" y="812">
+C
+</text>
+</g>
+<g>
+<text x="521" y="876">
+C
+</text>
+</g>
+<g>
+<text x="521" y="1324">
+M
+</text>
+</g>
+<g>
+<text x="521" y="1388">
+M
+</text>
+</g>
+<g>
+<text x="529" y="108">
+C
+</text>
+</g>
+<g>
+<text x="529" y="172">
+C
+</text>
+</g>
+<g>
+<text x="529" y="204">
+C
+</text>
+</g>
+<g>
+<text x="529" y="252">
+C
+</text>
+</g>
+<g>
+<text x="529" y="300">
+E
+</text>
+</g>
+<g>
+<text x="529" y="332">
+E
+</text>
+</g>
+<g>
+<text x="529" y="428">
+E
+</text>
+</g>
+<g>
+<text x="529" y="844">
+C
+</text>
+</g>
+<g>
+<text x="529" y="892">
+C
+</text>
+</g>
+<g>
+<text x="529" y="1212">
+M
+</text>
+</g>
+<g>
+<text x="537" y="140">
+C
+</text>
+</g>
+<g>
+<text x="537" y="764">
+E
+</text>
+</g>
+<g>
+<text x="537" y="956">
+C
+</text>
+</g>
+<g>
+<text x="537" y="1356">
+M
+</text>
+</g>
+<g>
+<text x="545" y="172">
+C
+</text>
+</g>
+<g>
+<text x="545" y="220">
+C
+</text>
+</g>
+<g>
+<text x="545" y="236">
+C
+</text>
+</g>
+<g>
+<text x="545" y="268">
+C
+</text>
+</g>
+<g>
+<text x="545" y="396">
+E
+</text>
+</g>
+<g>
+<text x="545" y="780">
+E
+</text>
+</g>
+<g>
+<text x="545" y="796">
+C
+</text>
+</g>
+<g>
+<text x="545" y="828">
+C
+</text>
+</g>
+<g>
+<text x="545" y="860">
+C
+</text>
+</g>
+<g>
+<text x="545" y="924">
+C
+</text>
+</g>
+<g>
+<text x="545" y="940">
+C
+</text>
+</g>
+<g>
+<text x="545" y="1276">
+M
+</text>
+</g>
+<g>
+<text x="553" y="748">
+E
+</text>
+</g>
+<g>
+<text x="553" y="812">
+C
+</text>
+</g>
+<g>
+<text x="553" y="892">
+C
+</text>
+</g>
+<g>
+<text x="553" y="908">
+C
+</text>
+</g>
+<g>
+<text x="553" y="1180">
+M
+</text>
+</g>
+<g>
+<text x="561" y="124">
+C
+</text>
+</g>
+<g>
+<text x="561" y="156">
+C
+</text>
+</g>
+<g>
+<text x="561" y="204">
+C
+</text>
+</g>
+<g>
+<text x="561" y="284">
+E
+</text>
+</g>
+<g>
+<text x="561" y="316">
+E
+</text>
+</g>
+<g>
+<text x="561" y="348">
+E
+</text>
+</g>
+<g>
+<text x="561" y="380">
+E
+</text>
+</g>
+<g>
+<text x="561" y="412">
+E
+</text>
+</g>
+<g>
+<text x="561" y="764">
+E
+</text>
+</g>
+<g>
+<text x="561" y="844">
+C
+</text>
+</g>
+<g>
+<text x="561" y="972">
+C
+</text>
+</g>
+<g>
+<text x="561" y="988">
+C
+</text>
+</g>
+<g>
+<text x="569" y="716">
+E
+</text>
+</g>
+<g>
+<text x="569" y="876">
+C
+</text>
+</g>
+<g>
+<text x="569" y="924">
+C
+</text>
+</g>
+<g>
+<text x="569" y="956">
+C
+</text>
+</g>
+<g>
+<text x="569" y="1020">
+C
+</text>
+</g>
+<g>
+<text x="577" y="140">
+C
+</text>
+</g>
+<g>
+<text x="577" y="188">
+C
+</text>
+</g>
+<g>
+<text x="577" y="220">
+C
+</text>
+</g>
+<g>
+<text x="577" y="252">
+C
+</text>
+</g>
+<g>
+<text x="577" y="300">
+E
+</text>
+</g>
+<g>
+<text x="577" y="332">
+E
+</text>
+</g>
+<g>
+<text x="577" y="364">
+E
+</text>
+</g>
+<g>
+<text x="577" y="428">
+E
+</text>
+</g>
+<g>
+<text x="577" y="764">
+E
+</text>
+</g>
+<g>
+<text x="577" y="796">
+C
+</text>
+</g>
+<g>
+<text x="577" y="844">
+C
+</text>
+</g>
+<g>
+<text x="577" y="860">
+C
+</text>
+</g>
+<g>
+<text x="577" y="892">
+C
+</text>
+</g>
+<g>
+<text x="577" y="908">
+C
+</text>
+</g>
+<g>
+<text x="577" y="1004">
+C
+</text>
+</g>
+<g>
+<text x="577" y="1340">
+M
+</text>
+</g>
+<g>
+<text x="585" y="732">
+E
+</text>
+</g>
+<g>
+<text x="585" y="812">
+C
+</text>
+</g>
+<g>
+<text x="593" y="76">
+ACTUAL
+</text>
+</g>
+<g>
+<text x="593" y="700">
+E
+</text>
+</g>
+<g>
+<text x="593" y="924">
+C
+</text>
+</g>
+<g>
+<text x="593" y="940">
+C
+</text>
+</g>
+<g>
+<text x="593" y="988">
+C
+</text>
+</g>
+<g>
+<text x="593" y="1020">
+C
+</text>
+</g>
+<g>
+<text x="601" y="556">
+ACTUAL
+</text>
+</g>
+<g>
+<text x="601" y="748">
+E
+</text>
+</g>
+<g>
+<text x="601" y="780">
+E
+</text>
+</g>
+<g>
+<text x="601" y="1260">
+E
+</text>
+</g>
+<g>
+<text x="609" y="956">
+C
+</text>
+</g>
+<g>
+<text x="609" y="972">
+C
+</text>
+</g>
+<g>
+<text x="617" y="716">
+E
+</text>
+</g>
+<g>
+<text x="617" y="1180">
+E
+</text>
+</g>
+<g>
+<text x="625" y="732">
+E
+</text>
+</g>
+<g>
+<text x="625" y="1004">
+C
+</text>
+</g>
+<g>
+<text x="625" y="1308">
+E
+</text>
+</g>
+<g>
+<text x="633" y="908">
+C
+</text>
+</g>
+<g>
+<text x="633" y="1244">
+E
+</text>
+</g>
+<g>
+<text x="633" y="1372">
+E
+</text>
+</g>
+<g>
+<text x="641" y="604">
+E
+</text>
+</g>
+<g>
+<text x="641" y="1020">
+C
+</text>
+</g>
+<g>
+<text x="649" y="588">
+E
+</text>
+</g>
+<g>
+<text x="649" y="892">
+C
+</text>
+</g>
+<g>
+<text x="657" y="108">
+C
+</text>
+</g>
+<g>
+<text x="657" y="140">
+C
+</text>
+</g>
+<g>
+<text x="657" y="172">
+C
+</text>
+</g>
+<g>
+<text x="657" y="236">
+C
+</text>
+</g>
+<g>
+<text x="657" y="268">
+C
+</text>
+</g>
+<g>
+<text x="657" y="284">
+E
+</text>
+</g>
+<g>
+<text x="657" y="316">
+E
+</text>
+</g>
+<g>
+<text x="657" y="396">
+E
+</text>
+</g>
+<g>
+<text x="657" y="428">
+E
+</text>
+</g>
+<g>
+<text x="657" y="1340">
+E
+</text>
+</g>
+<g>
+<text x="657" y="1388">
+E
+</text>
+</g>
+<g>
+<text x="665" y="620">
+E
+</text>
+</g>
+<g>
+<text x="665" y="876">
+C
+</text>
+</g>
+<g>
+<text x="665" y="908">
+C
+</text>
+</g>
+<g>
+<text x="665" y="1212">
+E
+</text>
+</g>
+<g>
+<text x="673" y="124">
+C
+</text>
+</g>
+<g>
+<text x="673" y="188">
+C
+</text>
+</g>
+<g>
+<text x="673" y="220">
+C
+</text>
+</g>
+<g>
+<text x="673" y="300">
+E
+</text>
+</g>
+<g>
+<text x="673" y="332">
+E
+</text>
+</g>
+<g>
+<text x="673" y="364">
+E
+</text>
+</g>
+<g>
+<text x="673" y="412">
+E
+</text>
+</g>
+<g>
+<text x="673" y="604">
+E
+</text>
+</g>
+<g>
+<text x="673" y="860">
+C
+</text>
+</g>
+<g>
+<text x="673" y="1148">
+ACTUAL
+</text>
+</g>
+<g>
+<text x="673" y="1260">
+E
+</text>
+</g>
+<g>
+<text x="681" y="588">
+E
+</text>
+</g>
+<g>
+<text x="681" y="652">
+E
+</text>
+</g>
+<g>
+<text x="681" y="844">
+C
+</text>
+</g>
+<g>
+<text x="689" y="108">
+C
+</text>
+</g>
+<g>
+<text x="689" y="140">
+C
+</text>
+</g>
+<g>
+<text x="689" y="172">
+C
+</text>
+</g>
+<g>
+<text x="689" y="204">
+C
+</text>
+</g>
+<g>
+<text x="689" y="268">
+C
+</text>
+</g>
+<g>
+<text x="689" y="380">
+E
+</text>
+</g>
+<g>
+<text x="689" y="684">
+E
+</text>
+</g>
+<g>
+<text x="689" y="764">
+E
+</text>
+</g>
+<g>
+<text x="689" y="796">
+C
+</text>
+</g>
+<g>
+<text x="689" y="892">
+C
+</text>
+</g>
+<g>
+<text x="697" y="620">
+E
+</text>
+</g>
+<g>
+<text x="697" y="780">
+E
+</text>
+</g>
+<g>
+<text x="697" y="812">
+C
+</text>
+</g>
+<g>
+<text x="697" y="828">
+C
+</text>
+</g>
+<g>
+<text x="697" y="908">
+C
+</text>
+</g>
+<g>
+<text x="705" y="156">
+C
+</text>
+</g>
+<g>
+<text x="705" y="252">
+C
+</text>
+</g>
+<g>
+<text x="705" y="284">
+E
+</text>
+</g>
+<g>
+<text x="705" y="316">
+E
+</text>
+</g>
+<g>
+<text x="705" y="348">
+E
+</text>
+</g>
+<g>
+<text x="705" y="604">
+E
+</text>
+</g>
+<g>
+<text x="705" y="668">
+E
+</text>
+</g>
+<g>
+<text x="705" y="716">
+E
+</text>
+</g>
+<g>
+<text x="705" y="844">
+C
+</text>
+</g>
+<g>
+<text x="713" y="652">
+E
+</text>
+</g>
+<g>
+<text x="713" y="748">
+E
+</text>
+</g>
+<g>
+<text x="713" y="796">
+C
+</text>
+</g>
+<g>
+<text x="713" y="876">
+C
+</text>
+</g>
+<g>
+<text x="721" y="124">
+C
+</text>
+</g>
+<g>
+<text x="721" y="204">
+C
+</text>
+</g>
+<g>
+<text x="721" y="236">
+C
+</text>
+</g>
+<g>
+<text x="721" y="300">
+E
+</text>
+</g>
+<g>
+<text x="721" y="332">
+E
+</text>
+</g>
+<g>
+<text x="721" y="364">
+E
+</text>
+</g>
+<g>
+<text x="721" y="396">
+E
+</text>
+</g>
+<g>
+<text x="721" y="428">
+E
+</text>
+</g>
+<g>
+<text x="721" y="636">
+E
+</text>
+</g>
+<g>
+<text x="721" y="684">
+E
+</text>
+</g>
+<g>
+<text x="721" y="732">
+E
+</text>
+</g>
+<g>
+<text x="729" y="700">
+E
+</text>
+</g>
+<g>
+<text x="729" y="844">
+C
+</text>
+</g>
+<g>
+<text x="737" y="652">
+E
+</text>
+</g>
+<g>
+<text x="737" y="764">
+E
+</text>
+</g>
+<g>
+<text x="737" y="796">
+C
+</text>
+</g>
+<g>
+<text x="745" y="732">
+E
+</text>
+</g>
+<g>
+<text x="745" y="748">
+E
+</text>
+</g>
+<g>
+<text x="745" y="780">
+E
+</text>
+</g>
+<g>
+<text x="745" y="812">
+C
+</text>
+</g>
+<g>
+<text x="753" y="684">
+E
+</text>
+</g>
+<g>
+<text x="761" y="716">
+E
+</text>
+</g>
+<g>
+<text x="761" y="1212">
+CC
+</text>
+</g>
+<g>
+<text x="761" y="1228">
+C
+</text>
+</g>
+<g>
+<text x="761" y="1340">
+C
+</text>
+</g>
+<g>
+<text x="761" y="1356">
+C
+</text>
+</g>
+<g>
+<text x="777" y="1196">
+C
+</text>
+</g>
+<g>
+<text x="777" y="1228">
+CC
+</text>
+</g>
+<g>
+<text x="777" y="1244">
+C
+</text>
+</g>
+<g>
+<text x="777" y="1324">
+CC
+</text>
+</g>
+<g>
+<text x="777" y="1340">
+C
+</text>
+</g>
+<g>
+<text x="777" y="1356">
+C
+</text>
+</g>
+<g>
+<text x="777" y="1372">
+C
+</text>
+</g>
+<g>
+<text x="785" y="1212">
+CC
+</text>
+</g>
+<g>
+<text x="793" y="1244">
+CC
+</text>
+</g>
+<g>
+<text x="793" y="1340">
+CC
+</text>
+</g>
+<g>
+<text x="793" y="1356">
+CC
+</text>
+</g>
+<g>
+<text x="801" y="1180">
+C
+</text>
+</g>
+<g>
+<text x="801" y="1196">
+CC
+</text>
+</g>
+<g>
+<text x="801" y="1228">
+CC
+</text>
+</g>
+<g>
+<text x="801" y="1260">
+CCC
+</text>
+</g>
+<g>
+<text x="801" y="1308">
+CCC
+</text>
+</g>
+<g>
+<text x="801" y="1324">
+C
+</text>
+</g>
+<g>
+<text x="801" y="1372">
+C
+</text>
+</g>
+<g>
+<text x="801" y="1388">
+C
+</text>
+</g>
+<g>
+<text x="817" y="1180">
+C
+</text>
+</g>
+<g>
+<text x="817" y="1212">
+CC
+</text>
+</g>
+<g>
+<text x="817" y="1244">
+CC
+</text>
+</g>
+<g>
+<text x="817" y="1340">
+C
+</text>
+</g>
+<g>
+<text x="817" y="1356">
+C
+</text>
+</g>
+<g>
+<text x="817" y="1388">
+C
+</text>
+</g>
+<g>
+<text x="825" y="1196">
+C
+</text>
+</g>
+<g>
+<text x="825" y="1228">
+C
+</text>
+</g>
+<g>
+<text x="825" y="1324">
+C
+</text>
+</g>
+<g>
+<text x="825" y="1372">
+C
+</text>
+</g>
+<g>
+<text x="833" y="1180">
+C
+</text>
+</g>
+<g>
+<text x="833" y="1260">
+C
+</text>
+</g>
+<g>
+<text x="833" y="1308">
+C
+</text>
+</g>
+<g>
+<text x="833" y="1340">
+C
+</text>
+</g>
+<g>
+<text x="833" y="1356">
+C
+</text>
+</g>
+<g>
+<text x="833" y="1388">
+C
+</text>
+</g>
+<g>
+<text x="841" y="1196">
+C
+</text>
+</g>
+<g>
+<text x="841" y="1212">
+C
+</text>
+</g>
+<g>
+<text x="841" y="1228">
+C
+</text>
+</g>
+<g>
+<text x="841" y="1244">
+C
+</text>
+</g>
+<g>
+<text x="841" y="1324">
+C
+</text>
+</g>
+<g>
+<text x="841" y="1372">
+CC
+</text>
+</g>
+<g>
+<text x="849" y="1340">
+C
+</text>
+</g>
+<g>
+<text x="849" y="1356">
+C
+</text>
+</g>
+<g>
+<text x="857" y="1196">
+C
+</text>
+</g>
+<g>
+<text x="857" y="1212">
+CC
+</text>
+</g>
+<g>
+<text x="857" y="1228">
+C
+</text>
+</g>
+<g>
+<text x="857" y="1244">
+C
+</text>
+</g>
+<g>
+<text x="857" y="1324">
+C
+</text>
+</g>
+<g>
+<text x="865" y="1340">
+CC
+</text>
+</g>
+<g>
+<text x="865" y="1356">
+C
+</text>
+</g>
+<g>
+<text x="865" y="1372">
+C
+</text>
+</g>
+<g>
+<text x="873" y="1228">
+C
+</text>
+</g>
+</svg>

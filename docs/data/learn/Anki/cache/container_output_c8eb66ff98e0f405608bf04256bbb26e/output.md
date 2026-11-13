@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(translation|translated|translate)/i"></span>

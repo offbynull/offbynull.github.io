@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(sex-chromosome dosage compensation|sex chromosome dosage compensation|dosage compensation)/i"></span>

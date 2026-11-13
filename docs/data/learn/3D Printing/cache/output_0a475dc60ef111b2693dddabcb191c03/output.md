@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://wiki.bambulab.com/en/ams-2-pro/ams-2-pro-for-drying-in-x1-p1-series)</sub>

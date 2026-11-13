@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(5'|5 prime)/i"></span>

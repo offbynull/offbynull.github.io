@@ -1,1 +1,0 @@
-<sub>\[[OSIS](https://openstax.org/details/books/introductory-statistics):4.1\]</sub>

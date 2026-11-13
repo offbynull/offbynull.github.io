@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(trim distance matrix|trimmed distance matrix|trim distance matrices|trimmed distance matrices)/i"></span>

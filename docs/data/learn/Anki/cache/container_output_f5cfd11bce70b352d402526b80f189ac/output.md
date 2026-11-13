@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(small parsimony|large parsimony)/i"></span>

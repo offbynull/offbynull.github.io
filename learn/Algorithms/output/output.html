@@ -1,0 +1,164 @@
+<!DOCTYPE html><html><head>
+            <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+            <meta content="utf-8" http-equiv="encoding">
+          <title>Algorithms</title><meta name="viewport" content="width=device-width,initial-scale=1"><link href=".temp_githib_css/github-markdown.css" rel="stylesheet"><link href=".temp_highlightjs_css/default.css" rel="stylesheet"></head>
+          <body class="markdown-body"><p></p>
+<div class="toc">
+<ul>
+<li><a href="#H_Terminology">Terminology</a></li>
+</ul>
+</div>
+<a name="H_Terminology"></a><h1>Terminology</h1>
+<ul>
+<li>
+<p><a name="BM_(algorithm)%2Fi"></a><strong>algorithm</strong> - A sequence of instructions that are performed to solve some unambiguous <a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>. Unambiguous means that the <a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>'s description leaves no room for misinterpretation. As such, these <a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a> descriptions are often specified in terms of inputs and outputs.</p>
+</li>
+<li>
+<p><a name="BM_(problem%20instance%7Cproblem)%2Fi"></a><strong>problem</strong> - A class of computational tasks. For example, given a number of cents, figuring out the minimum number of coins to represent those cents is a class of <a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a> (what's the minimum number of quarters, dimes, nickles, and pennies needed to represent some number of cents).</p>
+<p>A <a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem instance</a> is one particular input for a <a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>. Figuring out the minimum number of coins needed for 77 cents is an instance of the example <a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a> described above. 77 cents is the input.</p>
+</li>
+<li>
+<p><a name="BM_(Big-O)%2Fi"></a><strong>Big-O</strong> - An abstraction that describes an <a href="#BM_(algorithm)%2Fi">algorithm</a>'s performance in terms of some generic input of size n. Performance is measured either in terms of speed or memory consumption:</p>
+<ul>
+<li>For speed, <a href="#BM_(Big-O)%2Fi">Big-O</a> describes the number of elementary operations (addition, division, equality test, etc..) run my the <a href="#BM_(algorithm)%2Fi">algorithm</a> when given some input of size n.</li>
+<li>For memory, <a href="#BM_(Big-O)%2Fi">Big-O</a> describes the number of memory units (bytes, bits, etc..) consumed by the <a href="#BM_(algorithm)%2Fi">algorithm</a> when given some input of size n.</li>
+</ul>
+<p>The idea with <a href="#BM_(Big-O)%2Fi">Big-O</a> is to quickly describes an <a href="#BM_(algorithm)%2Fi">algorithm</a>'s performance characteristics as n grows, denoted as function O(...). What exactly n represents is dependent on the <a href="#BM_(algorithm)%2Fi">algorithm</a> and what the level of detail the <a href="#BM_(algorithm)%2Fi">algorithm</a> works at. For example, <a href="#BM_(algorithm)%2Fi">algorithm</a>s that deal with strings typically work on characters, and so n represents the number of characters in the input string. For example, in terms of speed, the following <a href="#BM_(algorithm)%2Fi">algorithm</a> runs n operations</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">count_x</span><span class="hljs-params">(std::string&amp; str)</span> </span>{
+  <span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;              <span class="hljs-comment">// initialize to 0, 1 operation</span>
+  <span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;                <span class="hljs-comment">// initialize to 0, 1 operation</span>
+  <span class="hljs-keyword">while</span> (i &lt; str.<span class="hljs-built_in">size</span>()) {  <span class="hljs-comment">// looping over n characters: do everything in here per character</span>
+    <span class="hljs-keyword">if</span> (str[i] == <span class="hljs-string">'x'</span>) {      <span class="hljs-comment">// check if 'x', 1 operation</span>
+      cnt += <span class="hljs-number">1</span>;                 <span class="hljs-comment">// add 1, 1 operation </span>
+    }
+  }
+  <span class="hljs-keyword">return</span> x;
+}
+</code></pre>
+<p>In the above example, determining the number of elementary operations performed is obvious for everything other than the contents of the while loop. What happens inside the while loop in dependent on the string that gets passed in. If the string ...</p>
+<ul>
+<li>is entirely comprised of x characters, the if condition is triggered for every single character and so the increment operation runs as well.</li>
+<li>has no x characters at all, the if condition is never triggered and so the increment operation never runs.</li>
+<li>has some x characters, the if condition is triggered only for those x characters and so the increment operation runs only as many times as there are x characters.</li>
+</ul>
+<p>When an <a href="#BM_(algorithm)%2Fi">algorithm</a>'s exact execution path isn't clear, whether its because the execution path depends on the input or the <a href="#BM_(algorithm)%2Fi">algorithm</a> is non-deterministic, standard practice is to assume the worst case. In the example above, the worst case is to assume that the string is comprised entirely x characters. Given that assumption, the performance characteristics becomes obvious:</p>
+<p><img src="svgbob_01f4683e45ede26ec1ca739aa6447b7b3b9bd6f4.svg" alt="Kroki diagram output"></p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">count_x</span><span class="hljs-params">(std::string&amp; str)</span> </span>{ <span class="hljs-comment">// O(2+2*n)</span>
+  <span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;                  <span class="hljs-comment">// |-O(1), setting to 0 is 1 op</span>
+  <span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;                    <span class="hljs-comment">// |-O(1), setting to 0 is 1 op</span>
+  <span class="hljs-keyword">while</span> (i &lt; str.<span class="hljs-built_in">size</span>()) {      <span class="hljs-comment">// |-O(1+1*n),</span>
+    <span class="hljs-keyword">if</span> (str[i] == <span class="hljs-string">'x'</span>) {        <span class="hljs-comment">// | |-O(1), test for ==</span>
+      cnt += <span class="hljs-number">1</span>;                 <span class="hljs-comment">// | | |-O(1), add</span>
+    }                           <span class="hljs-comment">// | | |</span>
+  }                             <span class="hljs-comment">// | |</span>
+}                               <span class="hljs-comment">// |</span>
+</code></pre>
+<p>Inside the while loop, the code checks if the character is x and increments the counter if it is. Because the assumption is made that the string is filled with x characters, both lines are guaranteed to execute: O(2). The while loop itself goes over every character of the string, meaning those 2 operations run n times (where n is the number of characters in the string): O(2*n). Also, the first two operations at the beginning initialize variables to 0: O(2). Ultimately, the number of elementary operations executed in the example above is O(2+2*n), meaning that the <a href="#BM_(algorithm)%2Fi">algorithm</a> executes O(2+2*n) elementary operations given a string of size n.</p>
+<p>The above example used a single input. If an <a href="#BM_(algorithm)%2Fi">algorithm</a> has multiple inputs, other variables may be used to represent the size of each input. For example, if a function took two strings for its inputs, the first string's size could be represented as n while the second string's size could be represented as m.</p>
+<pre class="hljs"><code><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">contains</span><span class="hljs-params">(std::string&amp; str_longer, std::string&amp; str_shorter)</span> </span>{    <span class="hljs-comment">// O(n*(m*4))</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; str_longer.<span class="hljs-built_in">size</span>() - str_shorter.<span class="hljs-built_in">size</span>(); i++) {  <span class="hljs-comment">// |-O(n*(m*4))</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; str_shorter.<span class="hljs-built_in">size</span>(); j++) {                    <span class="hljs-comment">// | |-O(m*4)</span>
+      <span class="hljs-type">bool</span> failed = <span class="hljs-literal">false</span>;                                            <span class="hljs-comment">// | | |-O(1)</span>
+      <span class="hljs-keyword">if</span> (str_longer[i+j] != str_shorter[j]) {                        <span class="hljs-comment">// | | |-O(1+1), adding to get index, then testing for !=</span>
+        failed = <span class="hljs-literal">true</span>;                                                <span class="hljs-comment">// | | |-skip, won't happen in worst case</span>
+        <span class="hljs-keyword">break</span>;                                                        <span class="hljs-comment">// | | |-skip, won't happen in worst case</span>
+      }                                                               <span class="hljs-comment">// | | |</span>
+      <span class="hljs-keyword">if</span> (!failed) {                                                  <span class="hljs-comment">// | | |-O(1), testing for !</span>
+         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;                                                 <span class="hljs-comment">// | | |-skip, won't happen in worst case</span>
+      }                                                               <span class="hljs-comment">// | | |</span>
+    }                                                                 <span class="hljs-comment">// | | |</span>
+  }                                                                   <span class="hljs-comment">// | |</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;                                                       <span class="hljs-comment">// |-skip, assuming this has no cost but it may </span>
+}                                                                     <span class="hljs-comment">// |</span>
+</code></pre>
+<p><a href="#BM_(Big-O)%2Fi">Big-O</a> is essentially a measure of growth (e.g. how much quickly does memory usage grow in relation to input size). As such, it's typically to simplify <a href="#BM_(Big-O)%2Fi">Big-O</a> notation into classes of growth. For example, rather than saying O(2+2*n), it's simpler to say that the <a href="#BM_(algorithm)%2Fi">algorithm</a> grows linearly and boil down the equation to just O(n). How you boil down depends on the heaviest growing term in the equation.</p>
+<ul>
+<li>constant: O(1), synonyms for O(1), O(4), O(2000), etc..</li>
+<li>linear: O(n), synonyms for O(n), O(5n), O(3n+15), etc..</li>
+<li>quadratic: O(n^2), synonyms for O(n^2), O(3n^2+15n+2), O(55n^2+12), etc..</li>
+<li>exponential: O(2^n), synonyms for O(2^n), O(5^n+n^2+3n+15), etc..</li>
+<li>logarithmic: O(log(n)), synonyms for O(log(n)), O(4log(n)+5), etc..</li>
+<li>logarithmic: O(n*log(n)), synonyms for O(n*log(n)), O(4n*log(n)+5), etc..</li>
+</ul>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Logarithmic growth typically applies to trees, such as searching a binary search tree.</p>
+</div>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>The "five common rules" as according to the book:</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Multiplicative constants can be omitted</td>
+<td>O(c*n) grows same as O(n)</td>
+</tr>
+<tr>
+<td>Smaller terms can be omitted</td>
+<td>O(n+5) grows same a O(n)</td>
+</tr>
+<tr>
+<td>Out of two polynomials, the one with a larger degree grows faster</td>
+<td>O(n^3) grows faster than O(n^2)</td>
+</tr>
+<tr>
+<td>Any polynomial grows slower than exponential</td>
+<td>O(2^n) grows faster than O(n^2)</td>
+</tr>
+<tr>
+<td>Any polylogarithm grows slower than a polynomial</td>
+<td>O(n^2) grows faster than O((log(n))^2)</td>
+</tr>
+</tbody>
+</table>
+<p>Note that a polylogarithm is a function in the form log(n)^a.</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(bruteforce%7Cbrute%20force%7Cexhaustive%20search)%2Fi"></a><strong>bruteforce</strong> - An <a href="#BM_(algorithm)%2Fi">algorithm</a> design strategy that examines all possible options. <a href="#BM_(bruteforce%7Cbrute%20force%7Cexhaustive%20search)%2Fi">Bruteforce</a> <a href="#BM_(algorithm)%2Fi">algorithm</a>s are often simple to design, but are typically too slow to be useful for larger inputs.</p>
+</li>
+<li>
+<p><a name="BM_(branch%5B%5Cs%5C-%5Dand%5B%5Cs%5C-%5Dbound)%2Fi"></a><strong>branch-and-bound</strong> - An <a href="#BM_(algorithm)%2Fi">algorithm</a> design strategy that explores by branching into only viable options. This <a href="#BM_(algorithm)%2Fi">algorithm</a> design strategy explores outward (branches), and as the exploration leads to further exploration options, those exploration options are tested for viability (bound) before being considered.</p>
+</li>
+<li>
+<p><a name="BM_(greedy)%2Fi"></a><strong>greedy</strong> - An <a href="#BM_(algorithm)%2Fi">algorithm</a> design strategy that explores by branching into the locally optimal choice (most attractive choice) at each step. This <a href="#BM_(algorithm)%2Fi">algorithm</a> design strategy often used to produce a "good enough" answer where as an exact answer would take much longer. However, sometimes the <a href="#BM_(greedy)%2Fi">greedy</a> approach will produce an exact answer.</p>
+</li>
+<li>
+<p><a name="BM_(dynamic%20programming)%2Fi"></a><strong>dynamic programming</strong> - An <a href="#BM_(algorithm)%2Fi">algorithm</a> design strategy that breaks down a <a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a> into sub-<a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>s. Those sub-<a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>s, once solved, go on to construct the solution to the original <a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>.</p>
+<p>The difference between <a href="#BM_(dynamic%20programming)%2Fi">dynamic programming</a> and <a href="#BM_(divide%5B%5Cs%5C-%5Dand%5B%5Cs-%5Dconquer)%2Fi">divide-and-conquer</a> is that <a href="#BM_(dynamic%20programming)%2Fi">dynamic programming</a> typically has overlapping sub-<a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>s. For a <a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>, the number of sub-<a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>s produced is typically very large and the same sub-<a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a> may appear more than once. <a href="#BM_(dynamic%20programming)%2Fi">Dynamic programming</a> organizes computations such that those repeating sub-<a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>s only need to be solved once.</p>
+<p>In addition, the sub-<a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>s are for <a href="#BM_(divide%5B%5Cs%5C-%5Dand%5B%5Cs-%5Dconquer)%2Fi">divide-and-conquer</a> are just smaller sized instances of the original <a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>. This may not be the case with <a href="#BM_(dynamic%20programming)%2Fi">dynamic programming</a>.</p>
+</li>
+<li>
+<p><a name="BM_(divide%5B%5Cs%5C-%5Dand%5B%5Cs-%5Dconquer)%2Fi"></a><strong>divide-and-conquer</strong> - An <a href="#BM_(algorithm)%2Fi">algorithm</a> design strategy that splits a <a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a> into smaller sub-<a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>s. Those sub-<a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>s, once solved, are combined to construct the solution to the original <a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>.</p>
+<p>The difference between <a href="#BM_(dynamic%20programming)%2Fi">dynamic programming</a> and <a href="#BM_(divide%5B%5Cs%5C-%5Dand%5B%5Cs-%5Dconquer)%2Fi">divide-and-conquer</a> is that <a href="#BM_(dynamic%20programming)%2Fi">dynamic programming</a> typically has overlapping sub-<a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>s. With <a href="#BM_(divide%5B%5Cs%5C-%5Dand%5B%5Cs-%5Dconquer)%2Fi">divide-and-conquer</a>, the sub-<a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>s typically don't overlap. In addition, the sub-<a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>s are for <a href="#BM_(divide%5B%5Cs%5C-%5Dand%5B%5Cs-%5Dconquer)%2Fi">divide-and-conquer</a> are just smaller sized instances of the original <a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>.</p>
+</li>
+<li>
+<p><a name="BM_(recursive%7Crecursion)%2Fi"></a><strong>recursive</strong> - An <a href="#BM_(algorithm)%2Fi">algorithm</a> design strategy where the <a href="#BM_(algorithm)%2Fi">algorithm</a> runs itself to solve a <a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>. Each self invocation typically runs on a smaller instances of the same <a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>, effectively a sub-<a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a>.</p>
+<p>The difference between <a href="#BM_(recursive%7Crecursion)%2Fi">recursive</a> <a href="#BM_(algorithm)%2Fi">algorithm</a>s and <a href="#BM_(divide%5B%5Cs%5C-%5Dand%5B%5Cs-%5Dconquer)%2Fi">divide-and-conquer</a> is mostly the self-invocation (<a href="#BM_(recursive%7Crecursion)%2Fi">recursion</a>). Many <a href="#BM_(recursive%7Crecursion)%2Fi">recursive</a> <a href="#BM_(algorithm)%2Fi">algorithm</a>s can be written as <a href="#BM_(divide%5B%5Cs%5C-%5Dand%5B%5Cs-%5Dconquer)%2Fi">divide-and-conquer</a> and vice-versa.</p>
+<div style="margin:2em; background-color: #e0e0e0;">
+<p><strong>⚠️NOTE️️️⚠️</strong></p>
+<p>Not every <a href="#BM_(recursive%7Crecursion)%2Fi">recursive</a> <a href="#BM_(algorithm)%2Fi">algorithm</a> can be converted to <a href="#BM_(divide%5B%5Cs%5C-%5Dand%5B%5Cs-%5Dconquer)%2Fi">divide-and-conquer</a>. See <a href="https://stackoverflow.com/a/53796319">here</a>.</p>
+</div>
+</li>
+<li>
+<p><a name="BM_(random%7Clas%20vegas%7Cmonte%20carlo)%2Fi"></a><strong>randomized</strong> - An <a href="#BM_(algorithm)%2Fi">algorithm</a> design strategy that uses a source of <a href="#BM_(random%7Clas%20vegas%7Cmonte%20carlo)%2Fi">random</a>ness as part of its logic (non-deterministic). <a href="#BM_(random%7Clas%20vegas%7Cmonte%20carlo)%2Fi">Random</a>ized <a href="#BM_(algorithm)%2Fi">algorithm</a>s come in two forms:</p>
+<ul>
+<li>
+<p><a href="#BM_(random%7Clas%20vegas%7Cmonte%20carlo)%2Fi">Las Vegas</a> <a href="#BM_(algorithm)%2Fi">algorithm</a> - A <a href="#BM_(random%7Clas%20vegas%7Cmonte%20carlo)%2Fi">random</a>ized <a href="#BM_(algorithm)%2Fi">algorithm</a> that delivers a guaranteed exact solution. That is, even though the <a href="#BM_(algorithm)%2Fi">algorithm</a> makes <a href="#BM_(random%7Clas%20vegas%7Cmonte%20carlo)%2Fi">random</a> decisions it is guaranteed to converge on the exact solution to the <a href="#BM_(problem%20instance%7Cproblem)%2Fi">problem</a> its trying to solve (not an approximate solution).</p>
+</li>
+<li>
+<p><a href="#BM_(random%7Clas%20vegas%7Cmonte%20carlo)%2Fi">Monte Carlo</a> <a href="#BM_(algorithm)%2Fi">algorithm</a> - A <a href="#BM_(random%7Clas%20vegas%7Cmonte%20carlo)%2Fi">random</a>ized <a href="#BM_(algorithm)%2Fi">algorithm</a> that delivers an approximate solution. Because these <a href="#BM_(algorithm)%2Fi">algorithm</a>s are quick, they're typically run many times. The approximation considered the best out of all runs is the one that gets chosen as the solution.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>
+</p>
+
+        </body></html>

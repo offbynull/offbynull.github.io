@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://wiki.bambulab.com/en/software/bambu-studio/adaptive-layer-height)</sub>

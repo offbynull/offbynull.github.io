@@ -1,1 +1,0 @@
-echo "<span class=\"anki-deadquestion\"></span>" >> /output/output.md

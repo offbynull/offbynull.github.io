@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(lloyd algorithm|lloyd's algorithm)/i"></span>

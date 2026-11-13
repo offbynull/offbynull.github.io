@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://wiki.bambulab.com/en/h2/manual/cooling-fan-system)</sub>

@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(paleontology|palaeontology|pal&#230;ontology)/i"></span>

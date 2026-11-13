@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(pearson correlation coefficient|pearson correlation)/i"></span>

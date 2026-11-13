@@ -1,1 +1,0 @@
-<span class="anki-hidepattern" data-pattern="(\(\d+,\s*\d+\)-mer)/i"></span>

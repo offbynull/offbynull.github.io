@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(synteny block|synteny region|syntenic region|synteny|syntenic|syntenies)/i"></span>

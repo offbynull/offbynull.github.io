@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(pre[-\s]?order traversal)/i"></span>

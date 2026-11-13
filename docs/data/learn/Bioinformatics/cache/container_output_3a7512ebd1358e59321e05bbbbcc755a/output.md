@@ -1,1 +1,0 @@
-<span style="background-color: red; color: white; padding: 3px">10-2=8</span>

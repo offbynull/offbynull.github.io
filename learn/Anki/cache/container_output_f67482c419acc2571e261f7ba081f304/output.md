@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(k-means?|\d+-means?)/i"></span>

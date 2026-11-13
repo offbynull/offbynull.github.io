@@ -1,1 +1,0 @@
-<span class="anki-hidepattern" data-pattern="(BLAST)/"></span>

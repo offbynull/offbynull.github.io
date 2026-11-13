@@ -1,0 +1,7 @@
+{
+    "scripts": {
+        "start": "node code.js"
+      },
+    "dependencies": {
+    }
+}

@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(sum of squared errors|sum of square error|sum of errors squared)/i"></span>

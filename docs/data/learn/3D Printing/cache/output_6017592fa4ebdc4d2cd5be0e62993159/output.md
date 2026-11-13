@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://www.youtube.com/watch?v=ZsgJz0qk4eE)</sub>

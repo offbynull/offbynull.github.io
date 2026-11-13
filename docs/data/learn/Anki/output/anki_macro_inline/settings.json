@@ -1,3 +1,0 @@
-{
-    "copyInputs": [ "anki_src/dist/anki.js", "anki_src/dist/anki.js.map" ]
-}

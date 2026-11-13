@@ -1,0 +1,1 @@
+<sub>[\[src\]](https://en.wikipedia.org/wiki/Heat_deflection_temperature)</sub>

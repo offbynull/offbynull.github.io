@@ -1,0 +1,169 @@
+<svg class="bob" font-family="arial" font-size="14" height="192" width="184" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="triangle" markerHeight="8" markerWidth="8" orient="auto" refX="4" refY="2" viewBox="0 0 8 4">
+<polygon class="fg_fill" points="0,0 0,4 8,2 0,0"/>
+</marker>
+<marker id="clear_triangle" markerHeight="10" markerWidth="10" orient="auto" refX="1" refY="7" viewBox="0 0 20 14">
+<polygon class="bg_fill" points="2,2 2,12 18,7 2,2"/>
+</marker>
+<marker id="circle" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<circle class="fg_fill" cx="10" cy="10" r="8"/>
+</marker>
+<marker id="square" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<rect class="fg_fill" height="20" width="20" x="0" y="0"/>
+</marker>
+<marker id="open_circle" markerHeight="10" markerWidth="10" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<circle class="bg_fill" cx="10" cy="10" r="4"/>
+</marker>
+<marker id="big_open_circle" markerHeight="20" markerWidth="20" orient="auto" refX="20" refY="20" viewBox="0 0 40 40">
+<circle class="bg_fill" cx="20" cy="20" r="6"/>
+</marker>
+</defs>
+<style type="text/css">
+
+rect.backdrop {
+    fill: white;
+}
+text{
+    fill: black;
+}
+
+circle {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+}
+
+line {
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    stroke-linecap: round;
+    stroke-linejoin: miter;
+}
+
+path {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    stroke-linecap: round;
+    stroke-linejoin: miter;
+}
+
+line.dashed {
+    stroke-dasharray: 5;
+}
+
+.fg_fill {
+    fill: black;
+}
+
+
+.bg_fill {
+    fill: white;
+    stroke: black;
+    stroke-width: 2;
+}
+
+tspan.head{
+    fill: none;
+    stroke: none;
+}
+    
+</style>
+<rect class="backdrop" height="192" width="184" x="0" y="0"/>
+<g>
+<line marker-end="url(#triangle)" x1="4" x2="4" y1="76" y2="108"/>
+<path d="M 8 72 A 4 4 0 0 0 4 76"/>
+</g>
+<g>
+<line x1="4" x2="4" y1="112" y2="148"/>
+<path d="M 4 148 A 4 4 0 0 0 8 152"/>
+</g>
+<g>
+<line x1="8" x2="32" y1="72" y2="72"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="8" x2="20" y1="152" y2="152"/>
+<line marker-start="url(#triangle)" x1="16" x2="20" y1="152" y2="152"/>
+</g>
+<g>
+<line x1="24" x2="48" y1="152" y2="152"/>
+</g>
+<g>
+<line marker-start="url(#triangle)" x1="40" x2="36" y1="72" y2="72"/>
+<line marker-end="url(#triangle)" x1="40" x2="36" y1="72" y2="72"/>
+<line x1="40" x2="48" y1="72" y2="72"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="96" x2="108" y1="40" y2="40"/>
+<line marker-start="url(#triangle)" x1="104" x2="108" y1="40" y2="40"/>
+</g>
+<g>
+<line x1="96" x2="120" y1="184" y2="184"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="112" x2="156" y1="40" y2="40"/>
+<line marker-start="url(#triangle)" x1="152" x2="156" y1="40" y2="40"/>
+</g>
+<g>
+<line marker-start="url(#triangle)" x1="128" x2="124" y1="184" y2="184"/>
+<line marker-end="url(#triangle)" x1="128" x2="124" y1="184" y2="184"/>
+<line x1="128" x2="152" y1="184" y2="184"/>
+</g>
+<g>
+<line x1="160" x2="176" y1="40" y2="40"/>
+<path d="M 180 44 A 4 4 0 0 0 176 40"/>
+</g>
+<g>
+<line marker-start="url(#triangle)" x1="160" x2="156" y1="184" y2="184"/>
+<line marker-end="url(#triangle)" x1="160" x2="156" y1="184" y2="184"/>
+<line x1="160" x2="176" y1="184" y2="184"/>
+<path d="M 176 184 A 4 4 0 0 0 180 180"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="180" x2="180" y1="44" y2="76"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="180" x2="180" y1="80" y2="108"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="180" x2="180" y1="112" y2="140"/>
+</g>
+<g>
+<line x1="180" x2="180" y1="144" y2="180"/>
+</g>
+<g>
+<text x="9" y="12">
+forward
+</text>
+</g>
+<g>
+<text x="65" y="44">
+ori
+</text>
+</g>
+<g>
+<text x="65" y="76">
+ori
+</text>
+</g>
+<g>
+<text x="65" y="156">
+ter
+</text>
+</g>
+<g>
+<text x="65" y="188">
+ter
+</text>
+</g>
+<g>
+<text x="73" y="12">
+half-strands
+</text>
+</g>
+</svg>

@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(k-centers? clustering|\d+-centers? clustering|k-centers?|\d+-centers?)/i"></span>

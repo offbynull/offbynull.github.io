@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(alignment graph|sequence alignment graph)/i"></span>

@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://us.store.bambulab.com/products/vision-encoder?id=601545719002021889)</sub>

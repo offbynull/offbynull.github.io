@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(regulatory gene|regulatory protein)/i"></span>

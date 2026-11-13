@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://wiki.freecad.org/Assembly_CreateJointDistance)</sub>

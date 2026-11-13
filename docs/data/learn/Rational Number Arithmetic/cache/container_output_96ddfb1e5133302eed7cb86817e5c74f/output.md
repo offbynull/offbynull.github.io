@@ -1,1 +1,0 @@
-![Concept diagram for partial rule 333](MainPartialConceptRecurseDraw85b1a8e98dc1d005e31f76e5bba0199f.svg)

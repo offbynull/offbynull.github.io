@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://wiki.bambulab.com/en/h2s/manual/screen-operation#h-1-air-management)</sub>

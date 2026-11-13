@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="\b(2-break|2 break|two break|two-break)s?\b/i"></span>

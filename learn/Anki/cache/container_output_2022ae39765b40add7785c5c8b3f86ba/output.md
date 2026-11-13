@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(non-ribosomal peptide synthetase|NRP synthetase)/i"></span>

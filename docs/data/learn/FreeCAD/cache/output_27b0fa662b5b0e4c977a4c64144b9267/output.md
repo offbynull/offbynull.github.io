@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://forum.freecad.org/viewtopic.php?p=732972#p732972)</sub>

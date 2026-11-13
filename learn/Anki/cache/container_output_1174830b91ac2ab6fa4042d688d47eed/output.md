@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(phylogenetic tree|phylogeny tree|phylogenies|evolutionary tree)/i"></span>

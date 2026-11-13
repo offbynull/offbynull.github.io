@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="point mutation"></span>

@@ -1,1 +1,0 @@
-<span style="background-color: blue; color: white; padding: 3px">ITERATING STEP 1 AND STEP 2</span>

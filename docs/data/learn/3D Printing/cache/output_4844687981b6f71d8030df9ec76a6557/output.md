@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://wiki.bambulab.com/en/software/bambu-studio/cut-tool)</sub>

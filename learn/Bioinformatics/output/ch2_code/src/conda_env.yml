@@ -1,0 +1,9 @@
+name: unused
+channels:
+- conda-forge
+dependencies:
+- python=3.7
+- matplotlib=3.2.1
+- pip
+- pip:
+  - logomaker==0.8

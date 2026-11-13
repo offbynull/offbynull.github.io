@@ -1,0 +1,1 @@
+<span style="background-color: red; color: white; padding: 3px">(21+12-13)/2=10</span>

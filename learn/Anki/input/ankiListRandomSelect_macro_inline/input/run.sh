@@ -1,0 +1,1 @@
+printf "<span class=\"anki-listrandomselect\"></span>" >> /output/output.md

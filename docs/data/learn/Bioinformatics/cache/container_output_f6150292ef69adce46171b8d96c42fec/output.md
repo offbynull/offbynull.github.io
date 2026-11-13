@@ -1,1 +1,0 @@
-<span style="background-color: red; color: white; padding: 3px">(22+14-14)/2=11</span>

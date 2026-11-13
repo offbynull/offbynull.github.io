@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://wiki.freecad.org/Basic_Part_Design_Tutorial)</sub>

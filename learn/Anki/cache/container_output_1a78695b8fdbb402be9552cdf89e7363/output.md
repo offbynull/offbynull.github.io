@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(un-rooted tree|unrooted tree)/i"></span>

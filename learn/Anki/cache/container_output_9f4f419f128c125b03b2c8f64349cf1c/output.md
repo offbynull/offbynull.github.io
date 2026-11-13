@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(burrows[-\s]wheeler transform)/i"></span>

@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(symbol emission sequence|emission sequence|emitted sequence)/i"></span>

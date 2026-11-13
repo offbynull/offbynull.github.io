@@ -1,1 +1,0 @@
-<span style="background-color: blue; color: white; padding: 3px">STEP 2: CLUSTERS TO CENTERS (M-STEP)</span>

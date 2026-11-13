@@ -1,1 +1,0 @@
-<span style="background-color: green; color: white; padding: 3px">v0, v1, i0</span>

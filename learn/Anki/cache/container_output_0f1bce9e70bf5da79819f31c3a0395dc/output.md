@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(Laplace'?s? rule of succession|Laplace'?s? rule)/i"></span>

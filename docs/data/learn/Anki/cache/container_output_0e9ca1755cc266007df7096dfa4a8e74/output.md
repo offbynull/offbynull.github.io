@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="co-regulate"></span>

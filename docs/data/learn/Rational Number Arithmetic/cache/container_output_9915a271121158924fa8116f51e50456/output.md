@@ -1,1 +1,0 @@
-![Concept diagram for fraction 0 / 12](MainNumberLineDraw5cd97cd675610b7d4e34d3421b527f98.svg)

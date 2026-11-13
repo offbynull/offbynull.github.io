@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(mass spectrometer|mass spectrometry)/i"></span>

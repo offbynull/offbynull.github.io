@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(logo|sequence logo|motif logo)/i"></span>

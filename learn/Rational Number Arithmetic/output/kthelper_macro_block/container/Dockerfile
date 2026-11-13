@@ -1,0 +1,1 @@
+FROM adoptopenjdk:13.0.2_8-jdk-hotspot

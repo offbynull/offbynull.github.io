@@ -1,1 +1,0 @@
-echo "<span class=\"anki-infopanel\"></span>" >> /output/output.md

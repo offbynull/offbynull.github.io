@@ -1,0 +1,1 @@
+![Concept diagram for fraction 0 / 2](MainNumberLineDraw0bdbb480698c63a047298cceae4d9ebe.svg)

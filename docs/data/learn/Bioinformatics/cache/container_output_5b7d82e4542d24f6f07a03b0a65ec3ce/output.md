@@ -1,1 +1,0 @@
-<span style="background-color: brown; color: white; padding: 3px">path(v4,v2)</span>

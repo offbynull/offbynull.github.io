@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://wiki.bambulab.com/en/software/bambu-studio/brim-ears)</sub>

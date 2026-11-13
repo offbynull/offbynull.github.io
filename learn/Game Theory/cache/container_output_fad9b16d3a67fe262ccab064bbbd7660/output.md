@@ -1,0 +1,1 @@
+<sub>[\[GT2018:p23\]](http://faculty.econ.ucdavis.edu/faculty/bonanno/GT_Book.html)</sub>

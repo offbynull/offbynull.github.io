@@ -1,0 +1,1 @@
+<sub>[\[src\]](https://wiki.bambulab.com/en/ams-2-pro/manual/setup-and-printting#ams-auto-refill)</sub>

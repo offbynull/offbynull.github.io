@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(Red Queen effect|Red Queen hypothesis)/i"></span>

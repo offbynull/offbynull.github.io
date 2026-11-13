@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://wiki.freecad.org/Sketcher_ConstrainDistance)</sub>

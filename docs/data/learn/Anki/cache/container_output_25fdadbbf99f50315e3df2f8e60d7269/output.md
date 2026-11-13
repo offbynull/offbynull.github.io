@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(point accepted mutation|percent accepted mutation)/i"></span>

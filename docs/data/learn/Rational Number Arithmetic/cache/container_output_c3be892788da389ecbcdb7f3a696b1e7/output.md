@@ -1,1 +1,0 @@
-![Concept diagram for fraction 0 / 4](MainNumberLineDraw74b64723fbf3ccc3817103f32cb9a96b.svg)

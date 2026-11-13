@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(sequencing error|sequencer error)/i"></span>

@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(A[\s-]domain)/i"></span>

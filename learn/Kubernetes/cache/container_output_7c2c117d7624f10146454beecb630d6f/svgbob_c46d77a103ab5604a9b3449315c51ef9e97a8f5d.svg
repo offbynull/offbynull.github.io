@@ -1,0 +1,509 @@
+<svg class="bob" font-family="arial" font-size="14" height="304" width="880" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="triangle" markerHeight="8" markerWidth="8" orient="auto" refX="4" refY="2" viewBox="0 0 8 4">
+<polygon class="fg_fill" points="0,0 0,4 8,2 0,0"/>
+</marker>
+<marker id="clear_triangle" markerHeight="10" markerWidth="10" orient="auto" refX="1" refY="7" viewBox="0 0 20 14">
+<polygon class="bg_fill" points="2,2 2,12 18,7 2,2"/>
+</marker>
+<marker id="circle" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<circle class="fg_fill" cx="10" cy="10" r="8"/>
+</marker>
+<marker id="square" markerHeight="5" markerWidth="5" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<rect class="fg_fill" height="20" width="20" x="0" y="0"/>
+</marker>
+<marker id="open_circle" markerHeight="10" markerWidth="10" orient="auto" refX="10" refY="10" viewBox="0 0 20 20">
+<circle class="bg_fill" cx="10" cy="10" r="4"/>
+</marker>
+<marker id="big_open_circle" markerHeight="20" markerWidth="20" orient="auto" refX="20" refY="20" viewBox="0 0 40 40">
+<circle class="bg_fill" cx="20" cy="20" r="6"/>
+</marker>
+</defs>
+<style type="text/css">
+
+rect.backdrop {
+    fill: white;
+}
+text{
+    fill: black;
+}
+
+circle {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+}
+
+line {
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    stroke-linecap: round;
+    stroke-linejoin: miter;
+}
+
+path {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+    stroke-linecap: round;
+    stroke-linejoin: miter;
+}
+
+line.dashed {
+    stroke-dasharray: 5;
+}
+
+.fg_fill {
+    fill: black;
+}
+
+
+.bg_fill {
+    fill: white;
+    stroke: black;
+    stroke-width: 2;
+}
+
+tspan.head{
+    fill: none;
+    stroke: none;
+}
+    
+</style>
+<rect class="backdrop" height="304" width="880" x="0" y="0"/>
+<g>
+<line x1="4" x2="4" y1="172" y2="196"/>
+<path d="M 4 196 A 4 4 0 0 0 8 200"/>
+<path d="M 8 168 A 4 4 0 0 0 4 172"/>
+</g>
+<g>
+<line x1="8" x2="80" y1="168" y2="168"/>
+<path d="M 84 172 A 4 4 0 0 0 80 168"/>
+</g>
+<g>
+<line x1="8" x2="80" y1="200" y2="200"/>
+<path d="M 80 200 A 4 4 0 0 0 84 196"/>
+</g>
+<g>
+<line x1="84" x2="84" y1="172" y2="196"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="84" x2="116" y1="184" y2="184"/>
+</g>
+<g>
+<line x1="124" x2="124" y1="172" y2="196"/>
+<path d="M 124 196 A 4 4 0 0 0 128 200"/>
+<path d="M 128 168 A 4 4 0 0 0 124 172"/>
+</g>
+<g>
+<line x1="128" x2="200" y1="168" y2="168"/>
+<path d="M 204 172 A 4 4 0 0 0 200 168"/>
+</g>
+<g>
+<line x1="128" x2="200" y1="200" y2="200"/>
+<path d="M 200 200 A 4 4 0 0 0 204 196"/>
+</g>
+<g>
+<line x1="204" x2="204" y1="172" y2="196"/>
+</g>
+<g>
+<line x1="204" x2="244" y1="184" y2="184"/>
+<line x1="244" x2="244" y1="136" y2="184"/>
+<line marker-end="url(#triangle)" x1="244" x2="476" y1="136" y2="136"/>
+<line x1="244" x2="244" y1="184" y2="232"/>
+<line x1="244" x2="244" y1="232" y2="292"/>
+<line marker-end="url(#triangle)" x1="244" x2="476" y1="232" y2="232"/>
+<path d="M 244 292 A 4 4 0 0 0 248 296"/>
+</g>
+<g>
+<line x1="244" x2="244" y1="44" y2="136"/>
+<path d="M 248 40 A 4 4 0 0 0 244 44"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="248" x2="476" y1="40" y2="40"/>
+</g>
+<g>
+<line x1="248" x2="512" y1="296" y2="296"/>
+<path d="M 512 296 A 4 4 0 0 0 516 292"/>
+</g>
+<g>
+<line x1="484" x2="484" y1="28" y2="52"/>
+<path d="M 484 52 A 4 4 0 0 0 488 56"/>
+<path d="M 488 24 A 4 4 0 0 0 484 28"/>
+</g>
+<g>
+<line x1="484" x2="484" y1="124" y2="148"/>
+<path d="M 484 148 A 4 4 0 0 0 488 152"/>
+<path d="M 488 120 A 4 4 0 0 0 484 124"/>
+</g>
+<g>
+<line x1="484" x2="484" y1="220" y2="244"/>
+<path d="M 484 244 A 4 4 0 0 0 488 248"/>
+<path d="M 488 216 A 4 4 0 0 0 484 220"/>
+</g>
+<g>
+<line x1="488" x2="560" y1="24" y2="24"/>
+<path d="M 564 28 A 4 4 0 0 0 560 24"/>
+</g>
+<g>
+<line x1="488" x2="560" y1="56" y2="56"/>
+<path d="M 560 56 A 4 4 0 0 0 564 52"/>
+</g>
+<g>
+<line x1="488" x2="560" y1="120" y2="120"/>
+<path d="M 564 124 A 4 4 0 0 0 560 120"/>
+</g>
+<g>
+<line x1="488" x2="560" y1="152" y2="152"/>
+<path d="M 560 152 A 4 4 0 0 0 564 148"/>
+</g>
+<g>
+<line x1="488" x2="560" y1="216" y2="216"/>
+<path d="M 564 220 A 4 4 0 0 0 560 216"/>
+</g>
+<g>
+<line x1="488" x2="560" y1="248" y2="248"/>
+<path d="M 560 248 A 4 4 0 0 0 564 244"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="516" x2="516" y1="272" y2="260"/>
+<line x1="516" x2="516" y1="272" y2="292"/>
+</g>
+<g>
+<line x1="564" x2="564" y1="28" y2="52"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="564" x2="596" y1="40" y2="40"/>
+</g>
+<g>
+<line x1="564" x2="564" y1="124" y2="148"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="564" x2="596" y1="136" y2="136"/>
+</g>
+<g>
+<line x1="564" x2="564" y1="220" y2="244"/>
+</g>
+<g>
+<line marker-end="url(#triangle)" x1="564" x2="596" y1="232" y2="232"/>
+</g>
+<g>
+<line x1="604" x2="604" y1="8" y2="72"/>
+<line x1="604" x2="876" y1="8" y2="8"/>
+<line x1="604" x2="876" y1="72" y2="72"/>
+<line x1="876" x2="876" y1="8" y2="72"/>
+</g>
+<g>
+<line x1="604" x2="604" y1="104" y2="168"/>
+<line x1="604" x2="876" y1="104" y2="104"/>
+<line x1="604" x2="876" y1="168" y2="168"/>
+<line x1="876" x2="876" y1="104" y2="168"/>
+</g>
+<g>
+<line x1="604" x2="604" y1="200" y2="264"/>
+<line x1="604" x2="876" y1="200" y2="200"/>
+<line x1="604" x2="876" y1="264" y2="264"/>
+<line x1="876" x2="876" y1="200" y2="264"/>
+</g>
+<g>
+<line x1="620" x2="620" y1="28" y2="52"/>
+<path d="M 620 52 A 4 4 0 0 0 624 56"/>
+<path d="M 624 24 A 4 4 0 0 0 620 28"/>
+</g>
+<g>
+<line x1="620" x2="620" y1="124" y2="148"/>
+<path d="M 620 148 A 4 4 0 0 0 624 152"/>
+<path d="M 624 120 A 4 4 0 0 0 620 124"/>
+</g>
+<g>
+<line x1="620" x2="620" y1="220" y2="244"/>
+<path d="M 620 244 A 4 4 0 0 0 624 248"/>
+<path d="M 624 216 A 4 4 0 0 0 620 220"/>
+</g>
+<g>
+<line x1="624" x2="664" y1="24" y2="24"/>
+<path d="M 668 28 A 4 4 0 0 0 664 24"/>
+</g>
+<g>
+<line x1="624" x2="664" y1="56" y2="56"/>
+<path d="M 664 56 A 4 4 0 0 0 668 52"/>
+</g>
+<g>
+<line x1="624" x2="664" y1="120" y2="120"/>
+<path d="M 668 124 A 4 4 0 0 0 664 120"/>
+</g>
+<g>
+<line x1="624" x2="664" y1="152" y2="152"/>
+<path d="M 664 152 A 4 4 0 0 0 668 148"/>
+</g>
+<g>
+<line x1="624" x2="664" y1="216" y2="216"/>
+<path d="M 668 220 A 4 4 0 0 0 664 216"/>
+</g>
+<g>
+<line x1="624" x2="664" y1="248" y2="248"/>
+<path d="M 664 248 A 4 4 0 0 0 668 244"/>
+</g>
+<g>
+<line x1="668" x2="668" y1="28" y2="52"/>
+</g>
+<g>
+<line x1="668" x2="668" y1="124" y2="148"/>
+</g>
+<g>
+<line x1="668" x2="668" y1="220" y2="244"/>
+</g>
+<g>
+<line x1="684" x2="684" y1="28" y2="52"/>
+<path d="M 684 52 A 4 4 0 0 0 688 56"/>
+<path d="M 688 24 A 4 4 0 0 0 684 28"/>
+</g>
+<g>
+<line x1="684" x2="684" y1="124" y2="148"/>
+<path d="M 684 148 A 4 4 0 0 0 688 152"/>
+<path d="M 688 120 A 4 4 0 0 0 684 124"/>
+</g>
+<g>
+<line x1="684" x2="684" y1="220" y2="244"/>
+<path d="M 684 244 A 4 4 0 0 0 688 248"/>
+<path d="M 688 216 A 4 4 0 0 0 684 220"/>
+</g>
+<g>
+<line x1="688" x2="728" y1="24" y2="24"/>
+<path d="M 732 28 A 4 4 0 0 0 728 24"/>
+</g>
+<g>
+<line x1="688" x2="728" y1="56" y2="56"/>
+<path d="M 728 56 A 4 4 0 0 0 732 52"/>
+</g>
+<g>
+<line x1="688" x2="728" y1="120" y2="120"/>
+<path d="M 732 124 A 4 4 0 0 0 728 120"/>
+</g>
+<g>
+<line x1="688" x2="728" y1="152" y2="152"/>
+<path d="M 728 152 A 4 4 0 0 0 732 148"/>
+</g>
+<g>
+<line x1="688" x2="728" y1="216" y2="216"/>
+<path d="M 732 220 A 4 4 0 0 0 728 216"/>
+</g>
+<g>
+<line x1="688" x2="728" y1="248" y2="248"/>
+<path d="M 728 248 A 4 4 0 0 0 732 244"/>
+</g>
+<g>
+<line x1="732" x2="732" y1="28" y2="52"/>
+</g>
+<g>
+<line x1="732" x2="732" y1="124" y2="148"/>
+</g>
+<g>
+<line x1="732" x2="732" y1="220" y2="244"/>
+</g>
+<g>
+<line x1="748" x2="748" y1="28" y2="52"/>
+<path d="M 748 52 A 4 4 0 0 0 752 56"/>
+<path d="M 752 24 A 4 4 0 0 0 748 28"/>
+</g>
+<g>
+<line x1="748" x2="748" y1="124" y2="148"/>
+<path d="M 748 148 A 4 4 0 0 0 752 152"/>
+<path d="M 752 120 A 4 4 0 0 0 748 124"/>
+</g>
+<g>
+<line x1="748" x2="748" y1="220" y2="244"/>
+<path d="M 748 244 A 4 4 0 0 0 752 248"/>
+<path d="M 752 216 A 4 4 0 0 0 748 220"/>
+</g>
+<g>
+<line x1="752" x2="792" y1="24" y2="24"/>
+<path d="M 796 28 A 4 4 0 0 0 792 24"/>
+</g>
+<g>
+<line x1="752" x2="792" y1="56" y2="56"/>
+<path d="M 792 56 A 4 4 0 0 0 796 52"/>
+</g>
+<g>
+<line x1="752" x2="792" y1="120" y2="120"/>
+<path d="M 796 124 A 4 4 0 0 0 792 120"/>
+</g>
+<g>
+<line x1="752" x2="792" y1="152" y2="152"/>
+<path d="M 792 152 A 4 4 0 0 0 796 148"/>
+</g>
+<g>
+<line x1="752" x2="792" y1="216" y2="216"/>
+<path d="M 796 220 A 4 4 0 0 0 792 216"/>
+</g>
+<g>
+<line x1="752" x2="792" y1="248" y2="248"/>
+<path d="M 792 248 A 4 4 0 0 0 796 244"/>
+</g>
+<g>
+<line x1="796" x2="796" y1="28" y2="52"/>
+</g>
+<g>
+<line x1="796" x2="796" y1="124" y2="148"/>
+</g>
+<g>
+<line x1="796" x2="796" y1="220" y2="244"/>
+</g>
+<g>
+<line x1="812" x2="812" y1="28" y2="52"/>
+<path d="M 812 52 A 4 4 0 0 0 816 56"/>
+<path d="M 816 24 A 4 4 0 0 0 812 28"/>
+</g>
+<g>
+<line x1="812" x2="812" y1="124" y2="148"/>
+<path d="M 812 148 A 4 4 0 0 0 816 152"/>
+<path d="M 816 120 A 4 4 0 0 0 812 124"/>
+</g>
+<g>
+<line x1="812" x2="812" y1="220" y2="244"/>
+<path d="M 812 244 A 4 4 0 0 0 816 248"/>
+<path d="M 816 216 A 4 4 0 0 0 812 220"/>
+</g>
+<g>
+<line x1="816" x2="856" y1="24" y2="24"/>
+<path d="M 860 28 A 4 4 0 0 0 856 24"/>
+</g>
+<g>
+<line x1="816" x2="856" y1="56" y2="56"/>
+<path d="M 856 56 A 4 4 0 0 0 860 52"/>
+</g>
+<g>
+<line x1="816" x2="856" y1="120" y2="120"/>
+<path d="M 860 124 A 4 4 0 0 0 856 120"/>
+</g>
+<g>
+<line x1="816" x2="856" y1="152" y2="152"/>
+<path d="M 856 152 A 4 4 0 0 0 860 148"/>
+</g>
+<g>
+<line x1="816" x2="856" y1="216" y2="216"/>
+<path d="M 860 220 A 4 4 0 0 0 856 216"/>
+</g>
+<g>
+<line x1="816" x2="856" y1="248" y2="248"/>
+<path d="M 856 248 A 4 4 0 0 0 860 244"/>
+</g>
+<g>
+<line x1="860" x2="860" y1="28" y2="52"/>
+</g>
+<g>
+<line x1="860" x2="860" y1="124" y2="148"/>
+</g>
+<g>
+<line x1="860" x2="860" y1="220" y2="244"/>
+</g>
+<g>
+<text x="17" y="188">
+Request
+</text>
+</g>
+<g>
+<text x="137" y="188">
+Ingress
+</text>
+</g>
+<g>
+<text x="257" y="28">
+stats.myhost.com/graphana
+</text>
+</g>
+<g>
+<text x="257" y="124">
+api.myhost.com/v1
+</text>
+</g>
+<g>
+<text x="257" y="220">
+api.myhost.com
+</text>
+</g>
+<g>
+<text x="257" y="284">
+api.myhost.com/v2
+</text>
+</g>
+<g>
+<text x="497" y="44">
+Service
+</text>
+</g>
+<g>
+<text x="497" y="140">
+Service
+</text>
+</g>
+<g>
+<text x="497" y="236">
+Service
+</text>
+</g>
+<g>
+<text x="633" y="44">
+Pod
+</text>
+</g>
+<g>
+<text x="633" y="140">
+Pod
+</text>
+</g>
+<g>
+<text x="633" y="236">
+Pod
+</text>
+</g>
+<g>
+<text x="697" y="44">
+Pod
+</text>
+</g>
+<g>
+<text x="697" y="140">
+Pod
+</text>
+</g>
+<g>
+<text x="697" y="236">
+Pod
+</text>
+</g>
+<g>
+<text x="761" y="44">
+Pod
+</text>
+</g>
+<g>
+<text x="761" y="140">
+Pod
+</text>
+</g>
+<g>
+<text x="761" y="236">
+Pod
+</text>
+</g>
+<g>
+<text x="825" y="44">
+Pod
+</text>
+</g>
+<g>
+<text x="825" y="140">
+Pod
+</text>
+</g>
+<g>
+<text x="825" y="236">
+Pod
+</text>
+</g>
+</svg>

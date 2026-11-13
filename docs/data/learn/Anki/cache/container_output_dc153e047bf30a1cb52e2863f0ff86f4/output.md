@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(reference genome|reference human genome)/i"></span>

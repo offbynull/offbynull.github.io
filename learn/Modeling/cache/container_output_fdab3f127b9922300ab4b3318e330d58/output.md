@@ -1,0 +1,1 @@
+<sub>\[[WIKI:Event](https://en.wikipedia.org/w/index.php?title=Event_(probability_theory)&oldid=1100784657)\]</sub>

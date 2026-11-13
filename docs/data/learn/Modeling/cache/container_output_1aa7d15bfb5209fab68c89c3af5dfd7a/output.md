@@ -1,1 +1,0 @@
-<sub>\[[https://en.wikipedia.org/w/index.php?title=Disjoint_sets&oldid=1149225885](https://en.wikipedia.org/w/index.php?title=Disjoint_sets&oldid=1149225885)\]</sub>

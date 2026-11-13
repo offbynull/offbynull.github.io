@@ -1,0 +1,1 @@
+`{kt}\begin{array}{l}\phantom{{{15}\smash{)}}}{{\phantom{0}        {.}\phantom{5}}} \\{{15}}\overline{\smash{)}{        {0}        {.}        {5}}} \\\end{array}`

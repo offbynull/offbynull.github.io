@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(anti[\-]?viral|anti[\-]?retroviral)/i"></span>

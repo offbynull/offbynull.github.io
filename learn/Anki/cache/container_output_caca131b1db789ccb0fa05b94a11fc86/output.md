@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(transposon|transposable element|jumping gene)/i"></span>

@@ -1,1 +1,0 @@
-`{kt}\begin{alignedat}{3}{ }&  \enspace{7}&  \enspace{7}& \\{ }&  \enspace{7}&  \enspace{7}& \enspace * \\ \hline{ }&  \enspace{ }&  \enspace{ }&\end{alignedat}`

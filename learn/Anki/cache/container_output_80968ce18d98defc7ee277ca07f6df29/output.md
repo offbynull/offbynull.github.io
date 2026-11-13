@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(manhattan distance|taxi[\s\-]?cab distance|city[\s\-]block distance)/i"></span>

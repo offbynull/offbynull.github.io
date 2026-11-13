@@ -1,1 +1,0 @@
-FROM aergus/latex:2021-01-07

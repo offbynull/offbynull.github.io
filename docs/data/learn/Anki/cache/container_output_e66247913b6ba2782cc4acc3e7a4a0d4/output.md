@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(high[-\s]scoring segment pair)/i"></span>

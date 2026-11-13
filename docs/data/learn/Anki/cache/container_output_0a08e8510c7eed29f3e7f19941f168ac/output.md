@@ -1,1 +1,0 @@
-<span class="anki-answerpattern" data-pattern="(genome rearrangement|chromosomal rearrangement|chromosome rearrangement)/i"></span>

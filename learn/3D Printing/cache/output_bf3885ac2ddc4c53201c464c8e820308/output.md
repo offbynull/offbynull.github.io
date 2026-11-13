@@ -1,0 +1,1 @@
+<sub>[\[src\]](https://us.store.bambulab.com/products/bambu-cool-plate-supertack-pro)</sub>

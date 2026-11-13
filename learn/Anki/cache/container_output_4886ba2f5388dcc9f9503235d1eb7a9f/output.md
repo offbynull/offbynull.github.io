@@ -1,0 +1,1 @@
+<span class="anki-answerpattern" data-pattern="(read-pair breaking|read pair breaking|breaking read-pairs|breaking read pairs)/i"></span>

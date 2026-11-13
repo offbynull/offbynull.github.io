@@ -1,1 +1,0 @@
-<sub>[\[src\]](https://us.store.bambulab.com/products/bambu-textured-pei-plate)</sub>
