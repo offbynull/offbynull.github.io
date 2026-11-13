@@ -21,15 +21,15 @@
       <div class="post">
         <h1>Things I've tried: Becoming an Indie Gamedev</h1>
         <!-- NOTE: Use sentence case for title (as opposed to title case) and do not end with period (e.g., My post about stuff) -->
-        <div class="post-date">November 12, 2026</div>
+        <div class="post-date">November 13, 2026</div>
         <!-- NOTE: Use full month above, note abbreviation (e.g., September 20, 2026) -->
 
-        <p>In 2007, at the age of 22, I resigned from what was arguably my first real software engineering job to enter
-          Motorola's <a
+        <p>In 2007, at the age of 22, I resigned from my first real software engineering job to enter
+          an indie gamedev competition: The <a
             href="https://web.archive.org/web/20070218154715/https://developer.motorola.com/eventstraining/gamechallenge/">MOTODEV
-            Game Developer Challenge</a>, an indie gamedev competition for the then-flagship <a
-            href="https://en.wikipedia.org/wiki/Motorola_Krzr">KRZR K1</a>. My entry to the competition was Mad Kaz, a
-          vertical platformer backed by a custom game engine.</p>
+            Game Developer Challenge</a>. The competition was Motorola's attempt at pulling in developers to build
+          original games for their then-flagship <a href="https://en.wikipedia.org/wiki/Motorola_Krzr">KRZR</a>. For my
+          submission, I built Mad Kaz, a vertical platformer backed by a custom game engine.</p>
 
         <figure>
           <blockquote>
@@ -52,14 +52,12 @@
           <figcaption>Contest entry description</figcaption>
         </figure>
 
-        <p>Mad Kaz was my first attempt at building a real, non-trivial game. I pieced it together in the span of four
-          months. Most of those four months were spent building an elaborate game engine rather
-          than the game itself. Consequently, the game itself was hot garbage. The engine, on the other hand,
-          turned out pretty
+        <p>Mad Kaz was my first attempt at building a real, non-trivial game. I pieced it together over four
+          months, spending most of that time building an elaborate game engine rather than the game itself.
+          Consequently, the game itself was hot garbage. The game engine, on the other hand, turned out pretty
           well. It was a programmable UGC platform built from scratch by a lone 22 year-old engineer and successfully
           ran on a device with 800kb of heap. It had a virtual machine and assembler, font system, graphical post
-          processing, downloadable levels, level sharing, windowing system, etc. Many of the engine features were
-          inspired by the games I grew up playing in the 1990s and early 2000s.</p>
+          processing, downloadable levels, level sharing, windowing system, etc.</p>
 
         <p>Below is the playable game along with anecdotes and artifacts detailing the game's development and struggles.
           Use the "Next" and "Previous" buttons to flip forward and backward.</p>
@@ -68,7 +66,7 @@
           <li><a href="mad_kaz_submission_game/index.html" target="_blank">Mad Kaz</a> - The game itself, converted by
             AI to be playable inside a browser.</li>
           <li><a href="https://github.com/offbynull/mad_kaz" target="_blank">Mad Kaz code</a> - The game's source code
-            and game assets, as they were when the game was submitted to the competition.</li>
+            and assets.</li>
         </ul>
 
         <button onclick="changeArtifact(-1)">← Previous</button><button onclick="changeArtifact(1)">Next →</button>
@@ -80,10 +78,12 @@
 
             <p>Back around the time of the competition, I was still living in my childhood home with my mother. My
               108sqft bedroom was where I built Mad Kaz. I prepared it as a work area by duct taping my mother's thick
-              faux-fur blanket to the walls bordering the room's only window. The intention was to minimize distractions
-              by blacking out the room. There was a queen sized box frame bed with its head pushed up against the wall
-              with the window. Butted up against the middle of the wall to the window's right was an IKEA HEMNES desk.
-              On top of the desk was my PC tower and a single flatscreen monitor.</p>
+              faux-fur blanket to the edges of my room's only window. The intention was to minimize distractions
+              by blacking out the room.</p>
+
+            <p>There was a queen-sized box-frame bed with its head centered against the windowed wall. Butted up
+              against the middle of the right wall was an IKEA HEMNES desk. On top of that desk was a PC tower, a
+              single flatscreen monitor, and a PS/2 keyboard and mouse.</p>
 
             <p>Except for food and washroom breaks, I spent the entire four months locked in this room building Mad Kaz.
             </p>
@@ -112,14 +112,15 @@
           <div class="artifact-flip" id="phones">
             <h2>Test devices (2/10)</h2>
 
-            <p>The competition launched in late February but I didn't enter until early April. Given the time crunch,
-              it didn't make sense to place an online order for an unlocked KRZR and sit around waiting for it to
-              arrive. Instead, I went to a local store selling imported mobile phones and purchased the closest device I
-              could find: The Motorola SLVR. The SLVR and the KRZR had similar features, but the SLVR was under-specced.
-              My thinking at the time was that if the game ran fine on the SLVR, it would run fine on the KRZR.</p>
+            <p>I entered the competition late. It launched in late February, but I didn't get started until early April.
+              Given the time crunch, it didn't make sense to place an online order for an unlocked KRZR and sit around
+              waiting for it to arrive. Instead, I went to a local store selling imported mobile phones and purchased
+              the closest device I could find: The Motorola SLVR.</p>
 
-            <p>Alongside the SLVR, I also purchased a Samsung SGH-D520, just so I could have another device to test
-              with. The shop owner cut the tax off the price because I bought two phones and paid cash.</p>
+            <p>The SLVR and the KRZR had similar features, but the SLVR was under-specced. My thinking at the time was
+              that if the game ran fine on the SLVR, it would run fine on the KRZR. Alongside the SLVR, I also purchased
+              a Samsung SGH-D520, just so I could have another device to test with. The shop owner cut the tax off the
+              price because I bought two phones and paid cash.</p>
 
             <figure>
               <a href="https://commons.wikimedia.org/w/index.php?curid=1482695" target="_blank">
@@ -187,7 +188,7 @@
           <div class="artifact-flip" id="mmo-origins">
             <h2>Origins of the engine (3/10)</h2>
 
-            <p>Before coming up with Mad Kaz, I was planning to make an entirely different game. My original game idea
+            <p>Before coming up with Mad Kaz, I was planning on making an entirely different game. My original idea
               was a social top-down 2D MMO with mini-games. I created documents mocking out how it would look and how I
               would go about building it.</p>
 
@@ -212,7 +213,7 @@
               </figcaption>
             </figure>
 
-            <p>I ditched the MMO idea early on because, even if it all went according to plan, development would have
+            <p>I ditched the MMO idea early on. Even if it all went according to plan, development would have
               stretched well past the competition's deadline of early August. What I didn't ditch were the game engine
               components highlighted in the work plan. I figured that many of them would still be needed regardless of
               the game idea I finally settled on.</p>
@@ -601,10 +602,11 @@
               <figcaption>From left to right: Entry form, entry documentation, source code, playable game</figcaption>
             </figure>
 
-            <p>I showed Mad Kaz to a few friends. Many of them didn't understand or care about the technical merits of
-              the engine. I also wrote my father, living in California at the
-              time, letting him know what I had been up to during the four months I'd been unemployed. I don't think he
-              fully grasped what had happened.</p>
+            <p>I showed Mad Kaz to a few friends. I also wrote my father, living in California at the time, letting him
+              know what I had been up to during the four months I'd been unemployed. My friends didn't really understand
+              or care about the technical merits of the engine. To their credit, the guts don't matter all that much if
+              the game itself is mediocre. My father, on the other hand, probably understood even less than my friends. I
+              had a feeling that he thought I was making excuses for being unemployed.</p>
 
             <figure>
               <blockquote>
@@ -816,7 +818,7 @@
             <p>I started looking for work almost immediately after submitting Mad Kaz. I fired off applications to
               any place that had a opening, but at the same time I was also trying to leverage Mad Kaz to get hired at a
               real game studio. I ended up open-sourcing all of it in the hopes that a technically inclined
-              reviewer would look through it and see enough there to pull me in for an interview.</p>
+              reviewer would see enough there to pull me in for an interview.</p>
 
             <p>I applied to four now-defunct studios: Radical Entertainment, Threewave, Blue Castle Games, and IUGO. The
               application to Radical Entertainment went nowhere. Threewave had me fill out a questionnaire and scheduled
@@ -825,7 +827,7 @@
             <p>Blue Castle Games had me come in for an interview. They were hiring a <a
                 href="https://web.archive.org/web/20071115235430/http://www.bluecastlegames.com/jobs_softwareengineer_junior.html">junior
                 network programmer</a> for Dead Rising 2. It didn't go well. An interviewer had gone through Mad Kaz's
-              code and made derisive comments in what felt like a failed attempt at shit testing me. Another
+              code and made spicy comments in what felt like a failed attempt at shit testing me. Another
               interviewer had me whiteboarding how to model zombie movements, and when he jumped in with a question a
               competing thought entered my head and I inadvertently told him to shut up. The
               interview ended with a brain teaser that had me fumbling my words and freezing up (<a
@@ -864,7 +866,7 @@
               <figcaption>Blue Castle interview invitation</figcaption>
             </figure>
 
-            <p>IUGO had me come in for an interview after I made a personal appeal to the CEO. It went well. The
+            <p>IUGO had me come in for an interview after a personal appeal to the CEO. It went well. The
               atmosphere was relaxed. A college acquaintance was working there. One of the interviewers had me sit down
               with a stack of papers full of game coding and design questions. When I finished, he tossed them aside,
               saying something to the effect of "I don't need to look at it. I know you know your stuff."</p>
@@ -953,7 +955,7 @@
             <p>In the end, my money was drying up. I had around $800 left in the bank and so I accepted a job at a
               company that made calendar software. The salary was around 15% lower than that of the job I resigned from
               to enter the competition.</p>
-              
+
             <p>A few weeks after starting, I revisited the <a
                 href="https://web.archive.org/web/20071021030058/http://developer.motorola.com/eventstraining/gamechallenge/">MOTODEV
                 Game Developer Challenge website</a>. Mad Kaz hadn't won, nor was it one of the finalists. I never heard
